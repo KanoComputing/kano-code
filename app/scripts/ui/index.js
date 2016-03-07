@@ -3,7 +3,9 @@ import Speaker from './speaker';
 import TextInput from './text-input';
 import Canvas from './canvas';
 import Button from './button';
+import Label from './label';
 import GifCreator from './gif-creator';
+import LayoutVertical from './layout-vertical';
 
 // Group models by type
 let models = {
@@ -12,7 +14,9 @@ let models = {
     'camera': Camera,
     'canvas': Canvas,
     'button': Button,
-    'gif-creator': GifCreator
+    'label': Label,
+    'gif-creator': GifCreator,
+    'layout-vertical': LayoutVertical
 };
 
 // Get an array of each instance

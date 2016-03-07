@@ -5,7 +5,7 @@ export default class Canvas extends UI {
         super({
             type: 'canvas',
             label: 'Canvas',
-            image: 'assets/hw/canvas.png',
+            image: 'assets/ui/canvas.png',
             hue: 60
         });
         this.addBlock({

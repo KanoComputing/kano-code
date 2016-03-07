@@ -5,7 +5,7 @@ export default class Speaker extends UI {
         super({
             type: 'speaker',
             label: 'Speaker',
-            image: 'assets/hw/speaker.png',
+            image: 'assets/ui/speaker.png',
             hue: 200
         });
         this.addBlock({

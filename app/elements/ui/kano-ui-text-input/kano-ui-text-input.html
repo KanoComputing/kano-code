@@ -12,13 +12,6 @@
         border-bottom-right-radius: 0px !important;
         border-right: 0px !important;
     }
-    :host button {
-        @apply(--kano-button);
-        border-top-left-radius: 0px !important;
-        border-bottom-left-radius: 0px !important;
-        border-left: 0px !important;
-        background-color: var(--color-green);
-    }
     @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
         :host input[type='text'] {
             width: 120px;
@@ -28,7 +21,6 @@
     </style>
     <template>
         <input type="text" value="{{value::keyup}}" on-keyup="onKeyUp" placeholder="type text here">
-        <button type="button" on-tap="buttonClicked">Send</button>
     </template>
 </dom-module>
 
@@ -44,9 +36,6 @@
                     }
                 }
             };
-        }
-        buttonClicked () {
-            this.fire('button-clicked', this.value);
         }
         onKeyUp () {
             this.fire('input-keyup', this.value);

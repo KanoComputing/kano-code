@@ -5,7 +5,7 @@ export default class Button extends UI {
         super({
             type: 'button',
             label: 'Button',
-            image: 'assets/hw/button.png',
+            image: 'assets/ui/button.png',
             hue: 118
         });
         this.addEvent({

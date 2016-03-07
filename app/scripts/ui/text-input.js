@@ -5,7 +5,7 @@ export default class TextInput extends UI {
         super({
             type: 'text-input',
             label: 'Text input',
-            image: 'assets/hw/text-input.png',
+            image: 'assets/ui/text-input.png',
             hue: 118
         });
         this.addBlock({
@@ -22,10 +22,6 @@ export default class TextInput extends UI {
                     return [`input value`];
                 };
             }
-        });
-        this.addEvent({
-            label: 'is clicked',
-            id: 'button-clicked'
         });
         this.addEvent({
             label: 'has changed',

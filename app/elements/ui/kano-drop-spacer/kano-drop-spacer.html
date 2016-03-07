@@ -1,0 +1,39 @@
+<dom-module id="kano-drop-spacer">
+    <style>
+    :host {
+        display: block;
+        transition: all linear 100ms;
+        border-bottom: 1px dashed var(--color-grey);
+    }
+    :host.hover {
+        background-color: var(--color-blue);
+    }
+    </style>
+    <template>
+
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    class KanoDropSpacer {
+        beforeRegister () {
+            this.is = 'kano-drop-spacer';
+        }
+        attached () {
+            app.Interact(this).dropzone({
+                accept: 'kano-ui-item',
+                ondragenter: () => {
+                    this.classList.add('hover');
+                },
+                ondragleave: () => {
+                    this.classList.remove('hover');
+                },
+                ondrop: (e) => {
+                    this.fire('dropped', e.relatedTarget.model.type);
+                    this.classList.remove('hover');
+                }
+            });
+        }
+    }
+    Polymer(KanoDropSpacer);
+</script>

@@ -5,7 +5,7 @@ export default class GifCreator extends UI {
         super({
             type: 'gif-creator',
             label: 'Gif Creator',
-            image: 'assets/hw/canvas.png',
+            image: 'assets/ui/canvas.png',
             hue: 60
         });
         this.addBlock({

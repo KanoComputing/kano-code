@@ -4,17 +4,25 @@
 <link rel="import" href="../kano-ui-gif-creator/kano-ui-gif-creator.html">
 <link rel="import" href="../kano-ui-button/kano-ui-button.html">
 <link rel="import" href="../kano-ui-text-input/kano-ui-text-input.html">
+<link rel="import" href="../kano-drop-spacer/kano-drop-spacer.html">
+<link rel="import" href="../kano-ui-label/kano-ui-label.html">
+<link rel="import" href="../kano-ui-layout-vertical/kano-ui-layout-vertical.html">
 
 <dom-module id="kano-ui">
     <style>
     :host {
-        display: inline-block;
+        display: block;
+        position: relative;
         animation: zoom-in 150ms ease-out;
+        @apply(--layout-vertical);
     }
-    :host .content {
-        @apply(--layout-horizontal);
+    :host #ui-container {
+        @apply(--layout-vertical);
+        @apply(--layout-flex);
     }
     :host .controls {
+        position: absolute;
+        left: 100%;
         @apply(--layout-vertical);
         margin-left: 10px;
         font-size: 1.2em;
@@ -42,6 +50,7 @@
     }
     :host .overlay-container {
         position: relative;
+        @apply(--layout-vertical);
         @apply(--layout-flex);
     }
     :host .add-rule:hover,
@@ -59,31 +68,22 @@
     :host .rule .trigger {
         font-weight: 600;
     }
-    :host .remote {
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        top: -15px;
-        right: -15px;
-    }
     </style>
     <template>
-        <div class="content">
-            <div class="overlay-container">
-                <div id="overlay" class="overlay" on-tap="toggleSelected"></div>
-                <div id="ui-container"></div>
-            </div>
-            <div class="controls" hidden$="{{!showControls}}">
-                <label class="title">{{model.label}}</label>
-                <template is="dom-repeat" items="{{rules}}" as="rule">
-                    <div class="rule">
-                        <span class="trigger">{{rule.trigger}}</span>
-                        <span class="action">{{rule.action}}</span>
-                    </div>
-                </template>
-                <div>
-                    <label class="add-rule"><button type="button" on-tap="addRuleTapped">+</button>Add Rule</label>
+        <div class="overlay-container">
+            <div id="overlay" class="overlay" on-tap="toggleSelected" hidden$="[[model.passive]]"></div>
+            <div id="ui-container"></div>
+        </div>
+        <div class="controls" hidden$="{{!showControls}}">
+            <label class="title">{{model.label}}</label>
+            <template is="dom-repeat" items="{{rules}}" as="rule">
+                <div class="rule">
+                    <span class="trigger">{{rule.trigger}}</span>
+                    <span class="action">{{rule.action}}</span>
                 </div>
+            </template>
+            <div>
+                <label class="add-rule"><button type="button" on-tap="addRuleTapped">+</button>Add Rule</label>
             </div>
         </div>
     </template>
@@ -129,6 +129,7 @@
             while(uiContainer.firstChild) {
                 uiContainer.removeChild(uiContainer.firstChild);
             }
+            ui.style.flex = 1;
             Polymer.dom(uiContainer).appendChild(ui);
             this.ui = ui;
             this.fire('ui-ready', this);

@@ -6,33 +6,11 @@
         display: block;
         @apply(--layout-vertical);
     }
-    :host header {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-        background-color: var(--color-grey-dark, lightgray);
-        color: var(--white, white);
-        height: 92px;
-        text-align: center;
-    }
     :host kano-ui-list {
         @apply(--layout-flex);
     }
-    /* Smartphones (portrait and landscape) ----------- */
-    @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-        :host header h1 {
-            margin: 0px;
-            font-weight: normal;
-        }
-        :host header {
-            height: auto;
-        }
-    }
     </style>
     <template>
-        <header>
-            <h1>My Hardware</h1>
-        </header>
         <kano-ui-list id="list" items="{{uiElements}}"></kano-ui-list>
     </template>
 </dom-module>

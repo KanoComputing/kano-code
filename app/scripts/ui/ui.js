@@ -9,8 +9,7 @@ export default class UI {
         this.blocks = opts.blocks || [];
         this.events = opts.events || [];
         this.listeners = opts.listeners || [];
-        this.remote = opts.remote || false;
-        this.slave = opts.slave || false;
+        this.passive = opts.passive || false;
     }
     getElement () {
         return Elements.get(this.id);
