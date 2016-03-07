@@ -5,7 +5,7 @@ export default class Camera extends UI {
         super({
             type: 'camera',
             label: 'Camera',
-            image: 'assets/hw/camera.png',
+            image: 'assets/ui/camera.png',
             hue: 60
         });
         this.addBlock({

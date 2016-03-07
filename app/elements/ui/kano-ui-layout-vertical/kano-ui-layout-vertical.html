@@ -1,0 +1,49 @@
+<dom-module id="kano-ui-layout-vertical">
+    <style>
+    :host {
+        display: block;
+        border: 2px solid var(--color-blue);
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+    }
+    :host kano-drop-spacer {
+        width: 100%;
+        @apply(--layout-flex);
+    }
+    :host kano-ui {
+        @apply(--layout-flex);
+    }
+    </style>
+    <template>
+        <kano-drop-spacer on-dropped="onDropped" id="first"></kano-drop-spacer>
+        <template is="dom-repeat" items="[[models]]">
+            <kano-ui model="[[item]]"></kano-ui>
+            <kano-drop-spacer id$="[[index]]" on-dropped="onDropped"></kano-drop-spacer>
+        </template>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    class KanoUiLayoutVertical {
+        beforeRegister () {
+            this.is = 'kano-ui-layout-vertical';
+            this.properties = {
+                models: {
+                    type: Array,
+                    value: () => []
+                }
+            };
+        }
+        onDropped (e) {
+            let position = e.target.getAttribute('id'),
+                model = app.ui.create(e.detail);
+            if (position === 'first') {
+                this.unshift('models', model);
+            } else {
+                position = parseInt(position);
+                this.splice('models', position + 1, 0, model);
+            }
+        }
+    }
+    Polymer(KanoUiLayoutVertical);
+</script>

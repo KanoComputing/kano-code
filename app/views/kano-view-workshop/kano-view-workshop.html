@@ -171,13 +171,6 @@
             let element = e.detail;
             // Register the element in the service
             app.elements.add(element.model.id, element.getComponent());
-            app.Interact(element).draggable({
-                onmove: app.dragMoveListener,
-                restrict: {
-                    restriction: this.$.workspace,
-                    elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-                }
-            });
         }
         openModal (e) {
             let modal = document.createElement('kano-modal'),

@@ -14,20 +14,15 @@
         box-shadow: 0px 0px 0px 4px var(--primary-color) inset;
     }
     :host .content {
+        @apply(--layout-vertical);
         @apply(--layout-flex);
         background-color: transparent;
         background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
-        height: 100%;
         background-size: 50px 50px;
         overflow: auto;
     }
     :host .content.running {
         border: 3px solid var(--color-red);
-    }
-    :host kano-ui {
-        position: absolute;
-        top: 0px;
-        left: 0px;
     }
     :host .trash {
         position: absolute;
@@ -76,16 +71,10 @@
         attached () {
             this.uiElements = [];
         }
-        addUi (model, position) {
-            let rect = this.getBoundingClientRect(),
-                el;
-            position.x = position.x - rect.left;
-            position.y = position.y - rect.top;
-            el = document.createElement('kano-ui');
+        addUi (model) {
+            let el = document.createElement('kano-ui');
             el.model = model;
-            el.style.position = 'absolute';
-            el.style.left = `${position.x}px`;
-            el.style.top = `${position.y}px`;
+            el.style.flex = 1;
             el.setAttribute('id', model.id);
             this.$.content.appendChild(el);
             this.push('uiElements', model);

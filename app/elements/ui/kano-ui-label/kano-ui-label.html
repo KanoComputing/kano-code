@@ -1,0 +1,34 @@
+<dom-module id="kano-ui-label">
+    <style>
+    :host {
+        display: block;
+    }
+    </style>
+    <template>
+        <label>{{text}}</label>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    class KanoUiLabel {
+        beforeRegister () {
+            this.is = 'kano-ui-label';
+            this.properties = {
+                model: {
+                    type: Object,
+                    value: () => {
+                        return {};
+                    }
+                },
+                text: {
+                    type: String,
+                    value: 'Empty label'
+                }
+            };
+        }
+        setText (text) {
+            return this.set('text', text);
+        }
+    }
+    Polymer(KanoUiLabel);
+</script>
