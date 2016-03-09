@@ -1,0 +1,53 @@
+<dom-module id="kano-ui-make-art">
+    <style>
+        :host {
+            display: block;
+        }
+
+        :host .make-art-container {
+            background-color: salmon;
+            width: 400px;
+            height: 500px;
+        }
+
+        :host img {
+            width: 100%;
+            height: 100%;
+        }
+      </style>
+        <template>
+            <h1>ds</h1>
+            <div class='make-art-container'>
+                <img src$="{{imageSrc}}" alt="make-art-image" />
+            </div>
+        </template>
+</dom-module>
+
+<script type="text/javascript">
+    class KanoUiMakeArtBox {
+        beforeRegister () {
+            console.log('ssss');
+            this.is = 'kano-ui-make-art';
+            this.properties = {
+                model: {
+                    type: Object,
+                    value: () => {
+                        return {};
+                    }
+                },
+                imageSrc: {
+                    type: String,
+                    value: 'https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/56e0116e05f520c16e5497ce.png'
+                }
+            }
+        }
+
+        handleClick () {
+            this.fire('fetchData');
+        }
+        getValue () {
+            return this.value;
+        }
+    }
+    Polymer(KanoUiMakeArtBox)
+</script>

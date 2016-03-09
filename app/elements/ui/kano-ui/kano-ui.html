@@ -6,6 +6,7 @@
 <link rel="import" href="../kano-ui-image/kano-ui-image.html">
 <link rel="import" href="../kano-ui-video/kano-ui-video.html">
 <link rel="import" href="../kano-ui-viewport/kano-ui-viewport.html">
+<link rel="import" href="../kano-ui-make-art/kano-ui-make-art.html">
 
 <dom-module id="kano-ui">
     <style>
@@ -92,7 +93,7 @@
             let uiContainer = this.$['ui-container'],
                 ui = document.createElement(`kano-ui-${this.model.type}`);
             ui.model = this.model;
-            while(uiContainer.firstChild) {
+            while (uiContainer.firstChild) {
                 uiContainer.removeChild(uiContainer.firstChild);
             }
             Polymer.dom(uiContainer).appendChild(ui);
