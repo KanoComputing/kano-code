@@ -45,6 +45,28 @@
 </dom-module>
 
 <script type="text/javascript">
+    const STYLE_CONF = {
+        'background-color': {
+            key: 'background-color',
+            type: 'color',
+            label: 'Background color'
+        },
+        'width': {
+            key: 'width',
+            type: 'size',
+            label: 'Width'
+        },
+        'height': {
+            key: 'height',
+            type: 'size',
+            label: 'Height'
+        },
+        'background-image': {
+            key: 'background-image',
+            type: 'image',
+            label: 'Background image'
+        }
+    };
     class KanoWorkspace {
         beforeRegister () {
             this.is = 'kano-workspace';

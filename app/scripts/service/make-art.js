@@ -1,11 +1,21 @@
-import config from '../config'
+import config from '../config';
 
-export default class MakeArtService {
-    get (userId) {
-        fetch(`${config.API_URL}/${userId}/kano-draw`)
-            .then((res) => res.json())
-            .then((obj) => {
-                console.log(obj);
-            })
+const MakeArtService = {
+    getImages (userId) {
+        let headers = new Headers();
+        headers.append('Authorization', app.modelManager.get('user').token);
+
+        const request = {
+            method: 'GET',
+            headers
+        };
+
+        //TODO:should update the SDK first then change this to a proper call using it.
+        return fetch(`${config.API_URL}/share/${userId}/kano-draw`, request)
+            .then((res) => {
+                return res.json();
+            });
     }
-}
+};
+
+export default MakeArtService;

@@ -1,13 +1,15 @@
+<script src="../behaviors.js"></script>
 <dom-module id="kano-ui-make-art">
     <style>
         :host {
             display: block;
         }
 
-        :host .make-art-container {
-            background-color: salmon;
-            width: 400px;
+        :host #make-art-container {
+            border: 1px solid black;
+            width: 500px;
             height: 500px;
+            background-size: cover;
         }
 
         :host img {
@@ -16,37 +18,30 @@
         }
       </style>
         <template>
-            <h1>ds</h1>
-            <div class='make-art-container'>
-                <img src$="{{imageSrc}}" alt="make-art-image" />
+            <div
+                id='make-art-container'
+                style$="[[computeStyle(model.userStyle.*)]]">
             </div>
         </template>
 </dom-module>
 
 <script type="text/javascript">
     class KanoUiMakeArtBox {
-        beforeRegister () {
-            console.log('ssss');
-            this.is = 'kano-ui-make-art';
-            this.properties = {
-                model: {
-                    type: Object,
-                    value: () => {
-                        return {};
-                    }
-                },
-                imageSrc: {
-                    type: String,
-                    value: 'https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/56e0116e05f520c16e5497ce.png'
-                }
-            }
+
+        get behaviors () {
+            return [KanoBehaviors.UIBehavior];
         }
 
-        handleClick () {
-            this.fire('fetchData');
+        beforeRegister () {
+            this.is = 'kano-ui-make-art';
         }
-        getValue () {
-            return this.value;
+
+        attached () {
+            this.set('model.userStyle.background-image',
+                this.$['make-art-container'].style.backgroundImage);
+        }
+        computeStyle (style) {
+            return `background-image:url(${style.base['background-image']})`
         }
     }
     Polymer(KanoUiMakeArtBox)
