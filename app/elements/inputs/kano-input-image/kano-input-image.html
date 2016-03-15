@@ -47,7 +47,7 @@
         }
 
         attached () {
-            app.MakeArtService.getImages(app.modelManager.get('user').user.id)
+            app.MakeArtService.getImages(app.sdk.auth.getUser().id)
                 .then((j) => {
                     let images = []
                     j.items.map((elem) => {

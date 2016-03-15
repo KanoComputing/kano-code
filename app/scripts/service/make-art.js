@@ -3,7 +3,7 @@ import config from '../config';
 const MakeArtService = {
     getImages (userId) {
         let headers = new Headers();
-        headers.append('Authorization', app.modelManager.get('user').token);
+        headers.append('Authorization', app.sdk.auth.getToken());
 
         const request = {
             method: 'GET',
