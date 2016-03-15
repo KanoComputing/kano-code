@@ -10,10 +10,9 @@ const MakeArtService = {
             headers
         };
 
-        //TODO:should update the SDK first then change this to a proper call using it.
-        return fetch(`${config.API_URL}/share/${userId}/kano-draw`, request)
+        return app.sdk.api.share.get.byUsername({userId: userId, app: 'kano-draw'})
             .then((res) => {
-                return res.json();
+                return res.body;
             });
     }
 };
