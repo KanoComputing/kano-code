@@ -4,9 +4,9 @@ import Stories from './service/stories';
 import Components from './service/components';
 import Part from './part';
 import KanoWorldSdk from 'kano-world-sdk';
-import ModelManager from './service/modelManager';
 import DragAndDrop from './drag-and-drop';
 import config from './config';
+import MakeArtService from './service/make-art'
 
 import es6Assign from 'es6-object-assign';
 
@@ -24,8 +24,8 @@ es6Assign.polyfill();
     app.part = Part;
     app.stories = Stories;
     app.components = Components;
-    app.modelManager = ModelManager;
     app.dragAndDrop = DragAndDrop;
+    app.MakeArtService = MakeArtService;
 
     app.defaultCategories = Blockly.categories;
 

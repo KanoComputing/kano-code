@@ -2,6 +2,7 @@
 <link rel="import" href="../kano-input-color/kano-input-color.html">
 <link rel="import" href="../kano-input-size/kano-input-size.html">
 <link rel="import" href="../kano-input-text/kano-input-text.html">
+<link rel="import" href="../kano-input-image/kano-input-image.html">
 
 <dom-module id="kano-input">
     <style>
@@ -24,7 +25,7 @@
             this.is = 'kano-input';
             this.observers = [
                 'typeChanged(type)',
-                'valueChanged(value)',
+                'valueChanged(value)'
             ];
         }
         typeChanged () {

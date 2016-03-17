@@ -1,0 +1,68 @@
+<script src="../behaviors.js"></script>
+
+<dom-module id='kano-input-image'>
+    <style>
+        :host {
+            display: block;
+            @apply(--layout-vertical);
+        }
+        :host .selectedImage {
+            width: 60px;
+            height: 60px;
+            border-radius: 2px;
+            margin: 2px;
+        }
+        :host .images {
+            @apply(--layout-horizontal);
+            @apply(--layout-wrap);
+        }
+        :host .image {
+            width: 30px;
+            height: 30px;
+            margin: 2px;
+            border-radius: 2px;
+        }
+        :host .image:hover {
+            cursor: pointer;
+        }
+    </style>
+    <template>
+        <div class="selectedImage" style$="[[computeImage(value)]]"></div>
+        <div class="images">
+            <template is="dom-repeat" items="{{images}}" as="image">
+                <div class="image" style$="[[computeImage(image)]]" on-tap="selectImage"></div>
+            </template>
+        </div>
+    </template>
+</dom-module>
+<script type="text/javascript">
+    class KanoInputImage {
+
+        get behaviors () {
+            return [KanoBehaviors.Input];
+        }
+
+        beforeRegister () {
+            this.is = 'kano-input-image';
+        }
+
+        attached () {
+            app
+                .MakeArtService
+                .getImages(app.sdk.auth.getUser().id)
+                .then((j) => j.items.map((elem) => elem.cover_url))
+                .then((images) => this.images = images)
+        }
+
+        computeImage (image) {
+            return `background-image: url("${image}"); background-size:cover`;
+        }
+
+        selectImage (e) {
+            console.log(e);
+            this.set('value', e.model.get('image'));
+            this.fire('change', this.value);
+        }
+    }
+    Polymer(KanoInputImage);
+</script>

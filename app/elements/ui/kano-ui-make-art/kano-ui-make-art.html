@@ -1,0 +1,49 @@
+<script src="../behaviors.js"></script>
+<dom-module id="kano-ui-make-art">
+    <style>
+        :host {
+            display: block;
+        }
+
+        :host #make-art-container {
+            border: 1px solid black;
+            width: 500px;
+            height: 500px;
+            background-size: cover;
+        }
+
+        :host img {
+            width: 100%;
+            height: 100%;
+        }
+      </style>
+        <template>
+            <div
+                id='make-art-container'
+                style$="[[computeStyle(model.userStyle.*)]]">
+            </div>
+        </template>
+</dom-module>
+
+<script type="text/javascript">
+    class KanoUiMakeArtBox {
+
+        get behaviors () {
+            return [KanoBehaviors.UIBehavior];
+        }
+
+        beforeRegister () {
+            this.is = 'kano-ui-make-art';
+        }
+
+        attached () {
+            console.log('attached make art part');
+            this.set('model.userStyle.background-image',
+                this.$['make-art-container'].style.backgroundImage);
+        }
+        computeStyle (style) {
+            return `background-image:url(${style.base['background-image']})`
+        }
+    }
+    Polymer(KanoUiMakeArtBox)
+</script>

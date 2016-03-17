@@ -52,7 +52,7 @@
                 canvas = this.$.canvas,
                 context = canvas.getContext('2d');
 
-            img.onload = function() {
+            img.onload = function () {
                 context.drawImage(this, 0, 0, canvas.width, canvas.height);
             }
             img.src = pic;
