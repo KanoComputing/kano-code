@@ -47,16 +47,11 @@
         }
 
         attached () {
-            app.MakeArtService.getImages(app.sdk.auth.getUser().id)
-                .then((j) => {
-                    let images = []
-                    j.items.map((elem) => {
-                        images.push(elem.cover_url)
-                    });
-                    return images;
-                }).then((images) => {
-                    this.images = images
-                })
+            app
+                .MakeArtService
+                .getImages(app.sdk.auth.getUser().id)
+                .then((j) => j.items.map((elem) => elem.cover_url))
+                .then((images) => this.images = images)
         }
 
         computeImage (image) {
