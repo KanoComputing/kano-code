@@ -112,7 +112,8 @@ gulp.task('copy', () => {
             'app/assets/vendor/google-blockly/blockly_compressed.js',
             'app/assets/vendor/google-blockly/blocks_compressed.js',
             'app/assets/vendor/google-blockly/javascript_compressed.js',
-            'app/assets/vendor/google-blockly/msg/js/en.js'
+            'app/assets/vendor/google-blockly/msg/js/en.js',
+            'app/assets/vendor/annyang/annyang.js'
         ], { base: 'app'})
         .pipe(gulp.dest('.tmp/app'));
 });
