@@ -1,3 +1,4 @@
+<link rel="import" href="../../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../behaviors.html">
 
 <dom-module id="kano-input-background">
@@ -6,12 +7,28 @@
         display: block;
         @apply(--layout-vertical);
     }
+    :host paper-tabs {
+        margin-bottom: 5px;
+        --paper-tabs-selection-bar-color: var(--color-orange, orange);
+    }
+    :host label {
+        font-size: 1.4em;
+    }
     </style>
     <template>
         <label>{{label}}</label>
-        <div>
-            <kano-input-color value="{{color}}"></kano-input-color>
-        </div>
+        <paper-tabs selected="{{page}}" attr-for-selected="name" noink>
+            <paper-tab name="pattern">Pattern</paper-tab>
+            <paper-tab name="color">Color</paper-tab>
+        </paper-tabs>
+        <iron-pages selected="[[page]]" attr-for-selected="name">
+          <div name="color">
+              <kano-input-color on-value-changed="colorChanged"></kano-input-color>
+          </div>
+          <div name="pattern">
+              <kano-input-pattern on-value-changed="patternChanged"></kano-input-pattern>
+          </div>
+        </iron-pages>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -23,13 +40,18 @@
 
         beforeRegister () {
             this.is = 'kano-input-background';
-            this.observers = [
-                'computeValue(color)'
-            ];
         }
 
-        computeValue () {
-            this.set('value', this.color);
+        ready () {
+            this.set('page', 'pattern');
+        }
+
+        colorChanged (e) {
+            this.set('value', `background-color: ${e.detail.value}`);
+        }
+
+        patternChanged (e) {
+            this.set('value', e.detail.value);
         }
     }
     Polymer(KanoInputBackground);

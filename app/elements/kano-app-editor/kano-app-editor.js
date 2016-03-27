@@ -75,13 +75,6 @@ class KanoAppEditor {
             this.set('leftPanelView', 'code');
         }
     }
-    computeBackground () {
-        let style = this.background.userStyle;
-        return Object.keys(style).reduce((acc, property) => {
-            acc += `${property}:${style[property]};`;
-            return acc;
-        }, '');
-    }
     previous () {
         this.set('leftViewOpened', false);
     }

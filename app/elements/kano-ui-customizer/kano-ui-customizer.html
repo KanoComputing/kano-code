@@ -30,7 +30,7 @@
                 <kano-input type="{{property.type}}"
                         name="name"
                         label="{{property.label}}"
-                        on-change="propertyChanged"
+                        on-value-changed="propertyChanged"
                         value$="[[computeValue(property.key)]]"
                         min="[[property.min]]"
                         max="[[property.max]]">

@@ -5,6 +5,7 @@
 <link rel="import" href="../kano-input-font-size/kano-input-font-size.html">
 <link rel="import" href="../kano-input-font-weight/kano-input-font-weight.html">
 <link rel="import" href="../kano-input-background/kano-input-background.html">
+<link rel="import" href="../kano-input-pattern/kano-input-pattern.html">
 
 <dom-module id="kano-input">
     <style>
@@ -26,27 +27,26 @@
         beforeRegister () {
             this.is = 'kano-input';
             this.observers = [
-                'typeChanged(type)',
-                'valueChanged(value)',
+                'typeChanged(type)'
             ];
         }
         typeChanged () {
-            let input = document.createElement(this.getTagName());
-            input.value = this.value;
-            input.label = this.label;
-            input.min = this.min;
-            input.max = this.max;
+            let input = this.create(this.getTagName(), {
+                value: this.value,
+                label: this.label,
+                min: this.min,
+                max: this.max
+            });
+
+            input.addEventListener('value-changed', (e) => {
+                this.set('value', e.detail.value);
+            });
 
             this.input = input;
             while (this.firstChild) {
                 this.removeChild(this.firstChild);
             }
             this.appendChild(this.input);
-        }
-        valueChanged () {
-            if (this.input) {
-                this.input.value = this.value;
-            }
         }
         getTagName () {
             return `kano-input-${this.type}`;

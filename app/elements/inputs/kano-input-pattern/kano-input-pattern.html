@@ -1,0 +1,262 @@
+<link rel="import" href="../behaviors.html">
+
+<dom-module id="kano-input-pattern">
+    <style>
+    :host {
+        display: block;
+        @apply(--layout-vertical);
+    }
+    :host .inputs {
+        @apply(--layout-horizontal);
+    }
+    :host .input {
+        margin-right: 20px;
+    }
+    :host .preview {
+        width: 120px;
+        height: 120px;
+    }
+    :host .patterns {
+        @apply(--layout-horizontal);
+    }
+    :host .pattern {
+        width: 50px;
+        height: 50px;
+        margin: 10px 10px 10px 0px;
+    }
+    :host .pattern:hover {
+        cursor: pointer;
+    }
+    </style>
+    <template>
+        <label>{{label}}</label>
+        <div class="preview" style$="[[value]]"></div>
+        <div class="patterns">
+            <template is="dom-repeat" items="{{patterns}}" as="pattern">
+                <div class="pattern" style$="[[computePatternStyle(pattern)]]" on-tap="selectPattern"></div>
+            </template>
+        </div>
+        <div class="inputs">
+            <template is="dom-repeat" items="{{pattern.inputs}}" as="input">
+                <div class="input">
+                    <label>[[input.label]]</label>
+                    <kano-input type="[[input.type]]" on-change="inputChanged"></kano-input>
+                </div>
+            </template>
+        </div>
+        <array-selector id="selector" items="{{patterns}}" selected="{{pattern}}"></array-selector>
+    </template>
+</dom-module>
+<script type="text/javascript">
+    function hexToRGB (hex) {
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
+    }
+    class KanoInputPattern {
+
+        get behaviors () {
+            return [KanoBehaviors.Input];
+        }
+
+        beforeRegister () {
+            this.is = 'kano-input-pattern';
+            this.properties = {
+                pattern: {
+                    type: Object
+                },
+                patterns: {
+                    type: Array,
+                    value: () => {
+                        return [];
+                    }
+                }
+            };
+            this.observers = [
+                'computeValue(pattern.*)'
+            ];
+        }
+
+        inputChanged (e) {
+            let input = e.model.get('input');
+            e.stopPropagation();
+            this.set('pattern.args', this.pattern.args || {});
+            this.set(`pattern.args.${input.id}`, e.detail);
+        }
+
+        computePatternStyle (pattern) {
+            return pattern.generator(pattern.args);
+        }
+
+        computeValue () {
+            if (!this.pattern) {
+                return;
+            }
+            this.set('value', this.pattern.generator(this.pattern.args));
+        }
+
+        selectPattern (e) {
+            let pattern = e.model.get('pattern');
+            this.$.selector.select(pattern);
+        }
+
+        attached () {
+            this.set('patterns', [{
+                generator (args) {
+                    return `background-size: 50px 50px;
+                            background-color: ${args.color1};
+                            background-image: linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': '#0ae'
+                }
+            },{
+                generator (args) {
+                    return `background-size: 50px 50px;
+                            background-color: ${args.color1};
+                            background-image: linear-gradient(90deg, rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': '#0ae'
+                }
+            },{
+                generator (args) {
+                    let rgb = hexToRGB(args.color2),
+                        rgbString = `rgba(${rgb.r}, ${rgb.g}, ${rgb.g}, 0.5)`;
+                    return `background-size: 50px 50px;
+                            background-color: ${args.color1};
+                            background-image: linear-gradient(transparent 50%, ${rgbString} 50%, ${rgbString}),
+                                              linear-gradient(90deg, transparent 50%, ${rgbString} 50%, ${rgbString});`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                },{
+                    id: 'color2',
+                    label: 'Stripes',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': 'white',
+                    'color2': '#c80000'
+                }
+            },{
+                generator (args) {
+                    return `background-size: 50px 50px;
+                            background-color: ${args.color1};
+                            background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+                                              transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+                                              transparent 75%, transparent);`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': '#ac0'
+                }
+            },{
+                generator (args) {
+                    return `background-size: 50px 50px;
+                            background-color: ${args.color1};
+                            background-image: linear-gradient(135deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+                                              transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+                                              transparent 75%, transparent);`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': '#c16'
+                }
+            },{
+                generator (args) {
+                    return `background-size: 50px 50px;
+                            background-color: ${args.color1};
+                            background-position: 0 0, 25px 25px;
+                            background-image: linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black),
+                                                linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black);`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                },{
+                    id: 'color2',
+                    label: 'Front',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': 'white',
+                    'color2': 'black'
+                }
+            },{
+                generator (args) {
+                    return `background: linear-gradient(324deg, ${args.color1} 4%,   transparent 4%) -70px 43px,
+                                        linear-gradient( 36deg, ${args.color1} 4%,   transparent 4%) 30px 43px,
+                                        linear-gradient( 72deg, ${args.color2} 8.5%, transparent 8.5%) 30px 43px,
+                                        linear-gradient(288deg, ${args.color2} 8.5%, transparent 8.5%) -70px 43px,
+                                        linear-gradient(216deg, ${args.color2} 7.5%, transparent 7.5%) -70px 23px,
+                                        linear-gradient(144deg, ${args.color2} 7.5%, transparent 7.5%) 30px 23px,
+                                        linear-gradient(324deg, ${args.color1} 4%,   transparent 4%) -20px 93px,
+                                        linear-gradient( 36deg, ${args.color1} 4%,   transparent 4%) 80px 93px,
+                                        linear-gradient( 72deg, ${args.color2} 8.5%, transparent 8.5%) 80px 93px,
+                                        linear-gradient(288deg, ${args.color2} 8.5%, transparent 8.5%) -20px 93px,
+                                        linear-gradient(216deg, ${args.color2} 7.5%, transparent 7.5%) -20px 73px,
+                                        linear-gradient(144deg, ${args.color2} 7.5%, transparent 7.5%) 80px 73px;
+                            background-color: ${args.color1};
+                            background-size: 100px 100px;`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                },{
+                    id: 'color2',
+                    label: 'Stars',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': '#232927',
+                    'color2': '#e3d7bf'
+                }
+            },{
+                generator (args) {
+                    return `background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+                                              linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+                                              linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+                                              linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+                            background-color: ${args.color1};
+                            background-size: 13px 13px, 29px 29px, 37px 37px, 53px 53px;`;
+                },
+                inputs: [{
+                    id: 'color1',
+                    label: 'Back',
+                    type: 'color'
+                }],
+                args: {
+                    'color1': '#026873'
+                }
+            }]);
+            this.$.selector.select(this.patterns[0]);
+        }
+    }
+    Polymer(KanoInputPattern);
+</script>
