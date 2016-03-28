@@ -9,12 +9,8 @@
     :host .inputs {
         @apply(--layout-horizontal);
     }
-    :host .input {
+    :host kano-input {
         margin-right: 20px;
-    }
-    :host .preview {
-        width: 120px;
-        height: 120px;
     }
     :host .patterns {
         @apply(--layout-horizontal);
@@ -30,19 +26,14 @@
     </style>
     <template>
         <label>{{label}}</label>
-        <div class="preview" style$="[[value]]"></div>
         <div class="patterns">
             <template is="dom-repeat" items="{{patterns}}" as="pattern">
                 <div class="pattern" style$="[[computePatternStyle(pattern)]]" on-tap="selectPattern"></div>
             </template>
         </div>
         <div class="inputs">
-            <template is="dom-repeat" items="{{pattern.inputs}}" as="input">
-                <div class="input">
-                    <label>[[input.label]]</label>
-                    <kano-input type="[[input.type]]" on-change="inputChanged"></kano-input>
-                </div>
-            </template>
+            <kano-input-color value="{{color}}" hidden$="{{!pattern.color}}" label="Color"></kano-input-color>
+            <kano-input-size value="{{size}}" hidden$="{{!pattern.size}}" label="Size"></kano-input-size>
         </div>
         <array-selector id="selector" items="{{patterns}}" selected="{{pattern}}"></array-selector>
     </template>
@@ -73,29 +64,53 @@
                     value: () => {
                         return [];
                     }
+                },
+                color: {
+                    type: String
+                },
+                size: {
+                    type: String
+                },
+                backgroundColor: {
+                    type: String
                 }
             };
             this.observers = [
-                'computeValue(pattern.*)'
+                'computeValue(pattern.*)',
+                'computeValue(color)',
+                'computeValue(size)',
+                'computeValue(backgroundColor)'
             ];
         }
 
         inputChanged (e) {
-            let input = e.model.get('input');
             e.stopPropagation();
-            this.set('pattern.args', this.pattern.args || {});
-            this.set(`pattern.args.${input.id}`, e.detail);
         }
 
         computePatternStyle (pattern) {
-            return pattern.generator(pattern.args);
+            let generatedPattern,
+                args;
+            if (!pattern) {
+                return;
+            }
+            args = {
+                color: pattern.color || 'rgba(0, 0, 0, 0.4)',
+                size: pattern.size || '50px',
+                backgroundColor: pattern.backgroundColor || 'white'
+            };
+            generatedPattern = pattern.generator(args);
+            return `background: ${generatedPattern}, ${args.backgroundColor}`;
         }
 
         computeValue () {
             if (!this.pattern) {
                 return;
             }
-            this.set('value', this.pattern.generator(this.pattern.args));
+            this.set('value', this.pattern.generator({
+                color: this.color || this.pattern.color,
+                size: this.size || this.pattern.size,
+                backgroundColor: this.backgroundColor || this.pattern.backgroundColor
+            }));
         }
 
         selectPattern (e) {
@@ -106,154 +121,79 @@
         attached () {
             this.set('patterns', [{
                 generator (args) {
-                    return `background-size: 50px 50px;
-                            background-color: ${args.color1};
-                            background-image: linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);`;
+                    return `linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent) 0px 0px/${args.size} ${args.size}`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': '#0ae'
-                }
+                size: '50px',
+                backgroundColor: '#0ae'
             },{
                 generator (args) {
-                    return `background-size: 50px 50px;
-                            background-color: ${args.color1};
-                            background-image: linear-gradient(90deg, rgba(255, 255, 255, .2) 50%, transparent 50%, transparent);`;
+                    return `linear-gradient(90deg, rgba(255, 255, 255, .2) 50%, transparent 50%, transparent) 0px 0px/${args.size} ${args.size}`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': '#0ae'
-                }
+                size: '50px',
+                backgroundColor: '#f90'
             },{
                 generator (args) {
-                    let rgb = hexToRGB(args.color2),
-                        rgbString = `rgba(${rgb.r}, ${rgb.g}, ${rgb.g}, 0.5)`;
-                    return `background-size: 50px 50px;
-                            background-color: ${args.color1};
-                            background-image: linear-gradient(transparent 50%, ${rgbString} 50%, ${rgbString}),
-                                              linear-gradient(90deg, transparent 50%, ${rgbString} 50%, ${rgbString});`;
+                    let rgb = hexToRGB(args.color),
+                        rgbString;
+                    if (!rgb) {
+                        return '';
+                    }
+                    rgbString = `rgba(${rgb.r}, ${rgb.g}, ${rgb.g}, 0.5)`;
+                    return `linear-gradient(transparent 50%, ${rgbString} 50%, ${rgbString}) 0 0/${args.size} ${args.size},
+                              linear-gradient(90deg, transparent 50%, ${rgbString} 50%, ${rgbString}) 0 0/${args.size} ${args.size}`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                },{
-                    id: 'color2',
-                    label: 'Stripes',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': 'white',
-                    'color2': '#c80000'
-                }
+                color: '#c80000',
+                size: '50px',
+                backgroundColor: 'white'
             },{
                 generator (args) {
-                    return `background-size: 50px 50px;
-                            background-color: ${args.color1};
-                            background-image: linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
-                                              transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
-                                              transparent 75%, transparent);`;
+                    return `linear-gradient(45deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+                                          transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+                                          transparent 75%, transparent) 0 0/${args.size} ${args.size}`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': '#ac0'
-                }
+                size: '50px',
+                backgroundColor: '#ac0'
             },{
                 generator (args) {
-                    return `background-size: 50px 50px;
-                            background-color: ${args.color1};
-                            background-image: linear-gradient(135deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
-                                              transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
-                                              transparent 75%, transparent);`;
+                    return `linear-gradient(135deg, rgba(255, 255, 255, .2) 25%, transparent 25%,
+                                          transparent 50%, rgba(255, 255, 255, .2) 50%, rgba(255, 255, 255, .2) 75%,
+                                          transparent 75%, transparent) 0 0/${args.size} ${args.size}`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': '#c16'
-                }
+                size: '50px',
+                backgroundColor: '#c16'
             },{
                 generator (args) {
-                    return `background-size: 50px 50px;
-                            background-color: ${args.color1};
-                            background-position: 0 0, 25px 25px;
-                            background-image: linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black),
-                                                linear-gradient(45deg, black 25%, transparent 25%, transparent 75%, black 75%, black);`;
+                    return `linear-gradient(45deg, ${args.color} 25%, transparent 25%, transparent 75%, ${args.color} 75%, ${args.color}) 0 0/${args.size} ${args.size},
+                            linear-gradient(45deg, ${args.color} 25%, transparent 25%, transparent 75%, ${args.color} 75%, ${args.color}) calc(${args.size} / 2) calc(${args.size} / 2)/${args.size} ${args.size}`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                },{
-                    id: 'color2',
-                    label: 'Front',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': 'white',
-                    'color2': 'black'
-                }
+                color: 'black',
+                size: '50px',
+                backgroundColor: 'white'
             },{
                 generator (args) {
-                    return `background: linear-gradient(324deg, ${args.color1} 4%,   transparent 4%) -70px 43px,
-                                        linear-gradient( 36deg, ${args.color1} 4%,   transparent 4%) 30px 43px,
-                                        linear-gradient( 72deg, ${args.color2} 8.5%, transparent 8.5%) 30px 43px,
-                                        linear-gradient(288deg, ${args.color2} 8.5%, transparent 8.5%) -70px 43px,
-                                        linear-gradient(216deg, ${args.color2} 7.5%, transparent 7.5%) -70px 23px,
-                                        linear-gradient(144deg, ${args.color2} 7.5%, transparent 7.5%) 30px 23px,
-                                        linear-gradient(324deg, ${args.color1} 4%,   transparent 4%) -20px 93px,
-                                        linear-gradient( 36deg, ${args.color1} 4%,   transparent 4%) 80px 93px,
-                                        linear-gradient( 72deg, ${args.color2} 8.5%, transparent 8.5%) 80px 93px,
-                                        linear-gradient(288deg, ${args.color2} 8.5%, transparent 8.5%) -20px 93px,
-                                        linear-gradient(216deg, ${args.color2} 7.5%, transparent 7.5%) -20px 73px,
-                                        linear-gradient(144deg, ${args.color2} 7.5%, transparent 7.5%) 80px 73px;
-                            background-color: ${args.color1};
-                            background-size: 100px 100px;`;
+                    return `linear-gradient(324deg, ${args.backgroundColor} 4%,   transparent 4%)    -70px 43px/100px 100px,
+                            linear-gradient( 36deg, ${args.backgroundColor} 4%,   transparent 4%)    30px 43px/100px 100px,
+                            linear-gradient( 72deg, ${args.color} 8.5%, transparent 8.5%)  30px 43px/100px 100px,
+                            linear-gradient(288deg, ${args.color} 8.5%, transparent 8.5%)  -70px 43px/100px 100px,
+                            linear-gradient(216deg, ${args.color} 7.5%, transparent 7.5%)  -70px 23px/100px 100px,
+                            linear-gradient(144deg, ${args.color} 7.5%, transparent 7.5%)  30px 23px/100px 100px,
+                            linear-gradient(324deg, ${args.backgroundColor} 4%,   transparent 4%)    -20px 93px/100px 100px,
+                            linear-gradient( 36deg, ${args.backgroundColor} 4%,   transparent 4%)    80px 93px/100px 100px,
+                            linear-gradient( 72deg, ${args.color} 8.5%, transparent 8.5%)  80px 93px/100px 100px,
+                            linear-gradient(288deg, ${args.color} 8.5%, transparent 8.5%)  -20px 93px/100px 100px,
+                            linear-gradient(216deg, ${args.color} 7.5%, transparent 7.5%)  -20px 73px/100px 100px,
+                            linear-gradient(144deg, ${args.color} 7.5%, transparent 7.5%)  80px 73px/100px 100px`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                },{
-                    id: 'color2',
-                    label: 'Stars',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': '#232927',
-                    'color2': '#e3d7bf'
-                }
+                color: '#e3d7bf',
+                backgroundColor: '#232927'
             },{
-                generator (args) {
-                    return `background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
-                                              linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
-                                              linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
-                                              linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-                            background-color: ${args.color1};
-                            background-size: 13px 13px, 29px 29px, 37px 37px, 53px 53px;`;
+                generator () {
+                    return `linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%) 0 0/13px 13px,
+                              linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%) 0 0/29px 29px,
+                              linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%) 0 0/37px 37px,
+                              linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%) 0 0/53px 53px`;
                 },
-                inputs: [{
-                    id: 'color1',
-                    label: 'Back',
-                    type: 'color'
-                }],
-                args: {
-                    'color1': '#026873'
-                }
+                backgroundColor: '#026873'
             }]);
             this.$.selector.select(this.patterns[0]);
         }

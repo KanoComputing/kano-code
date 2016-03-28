@@ -27,29 +27,32 @@
         beforeRegister () {
             this.is = 'kano-input';
             this.observers = [
-                'typeChanged(type)'
+                'typeChanged(type)',
+                'valueChanged(value)'
             ];
         }
+        valueChanged (value) {
+            if (!this.input) {
+                return;
+            }
+            this.input.value = value;
+        }
         typeChanged () {
-            let input = this.create(this.getTagName(), {
-                value: this.value,
+            let input = this.create(`kano-input-${this.type}`, {
                 label: this.label,
+                value: this.value,
                 min: this.min,
                 max: this.max
-            });
-
+            }),
+            content = Polymer.dom(this.root);
             input.addEventListener('value-changed', (e) => {
                 this.set('value', e.detail.value);
             });
-
-            this.input = input;
-            while (this.firstChild) {
-                this.removeChild(this.firstChild);
+            while (content.firstChild) {
+                content.removeChild(content.firstChild);
             }
-            this.appendChild(this.input);
-        }
-        getTagName () {
-            return `kano-input-${this.type}`;
+            content.appendChild(input);
+            this.input = input;
         }
     }
     Polymer(KanoInput);
