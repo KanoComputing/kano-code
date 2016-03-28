@@ -8,12 +8,14 @@
     }
     :host .inputs {
         @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
     }
     :host kano-input {
         margin-right: 20px;
     }
     :host .patterns {
         @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
     }
     :host .pattern {
         width: 50px;
@@ -121,6 +123,11 @@
         attached () {
             this.set('patterns', [{
                 generator (args) {
+                    return `linear-gradient(${args.backgroundColor}, ${args.backgroundColor})`;
+                },
+                backgroundColor: '#70c222'
+            },{
+                generator (args) {
                     return `linear-gradient(rgba(255, 255, 255, .2) 50%, transparent 50%, transparent) 0px 0px/${args.size} ${args.size}`;
                 },
                 size: '50px',
@@ -194,6 +201,27 @@
                               linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%) 0 0/53px 53px`;
                 },
                 backgroundColor: '#026873'
+            },{
+                generator () {
+                    return `radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 9%, hsla(0, 100%, 20%, 0) 9%) 0 0/100px 100px,
+                            radial-gradient(hsl(0, 100%, 27%) 4%, hsl(0, 100%, 18%) 8%, hsla(0, 100%, 20%, 0) 10%) 50px 50px/100px 100px,
+                            radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 50px 0/100px 100px,
+                            radial-gradient(hsla(0, 100%, 30%, 0.8) 20%, hsla(0, 100%, 20%, 0)) 0 50px/100px 100px,
+                            radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 50px 0/100px 100px,
+                            radial-gradient(hsla(0, 100%, 20%, 1) 35%, hsla(0, 100%, 20%, 0) 60%) 100px 50px/100px 100px,
+                            radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 0 0/100px 100px,
+                            radial-gradient(hsla(0, 100%, 15%, 0.7), hsla(0, 100%, 20%, 0)) 50px 50px/100px 100px,
+                            linear-gradient(45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0/100px 100px,
+                            linear-gradient(-45deg, hsla(0, 100%, 20%, 0) 49%, hsla(0, 100%, 0%, 1) 50%, hsla(0, 100%, 20%, 0) 70%) 0 0/100px 100px`;
+                }
+            },{
+                generator () {
+                    return `repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px) 0 0/70px 120px,
+                            repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px) 0 0/70px 120px,
+                            linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)) 0 0/70px 120px,
+                            linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)) 0 0/70px 120px`;
+                },
+                backgroundColor: '#6d695c'
             }]);
             this.$.selector.select(this.patterns[0]);
         }
