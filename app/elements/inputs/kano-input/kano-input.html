@@ -6,6 +6,7 @@
 <link rel="import" href="../kano-input-font-weight/kano-input-font-weight.html">
 <link rel="import" href="../kano-input-background/kano-input-background.html">
 <link rel="import" href="../kano-input-pattern/kano-input-pattern.html">
+<link rel="import" href="../kano-input-image/kano-input-image.html">
 
 <dom-module id="kano-input">
     <style>
@@ -42,7 +43,8 @@
                 label: this.label,
                 value: this.value,
                 min: this.min,
-                max: this.max
+                max: this.max,
+                data: this.data
             }),
             content = Polymer.dom(this.root);
             input.addEventListener('value-changed', (e) => {

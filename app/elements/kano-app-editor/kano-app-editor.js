@@ -187,6 +187,12 @@ class KanoAppEditor {
     }
     attached () {
         this.$.workspace.size = this.wsSize;
+        this.set('background', new UI({
+            name: 'My App',
+            customizable: {
+                style: ['background']
+            }
+        }, this.wsSize))
         setTimeout(() => {
             this.triggerResize();
         }, 200);

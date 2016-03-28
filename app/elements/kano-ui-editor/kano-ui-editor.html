@@ -175,7 +175,7 @@
             selected="{{selectedPage}}">
             <div name="background" class="background">
                 <input type="text" value="{{background.name::keyup}}">
-                <kano-ui-customizer customizable="{{backgroundOptions}}"
+                <kano-ui-customizer customizable="{{background.customizable.style}}"
                                     user-values="{{background.userStyle}}"></kano-ui-customizer>
             </div>
             <div class="default" name="default">
@@ -250,12 +250,6 @@
                 },
                 background: {
                     type: Object,
-                    value: () => {
-                        return {
-                            name: 'My app',
-                            userStyle: {}
-                        };
-                    },
                     notify: true
                 },
                 title: {
@@ -292,11 +286,6 @@
             this.showPage('code');
         }
         attached () {
-            this.set('backgroundOptions', [{
-                key: 'background',
-                type: 'background',
-                label: 'Background'
-            }]);
             this.set('usedCategories', {});
         }
         selectedChanged (newValue, oldValue) {

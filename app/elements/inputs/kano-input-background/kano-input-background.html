@@ -18,6 +18,11 @@
         width: 120px;
         height: 120px;
     }
+    :host iron-pages div {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+    }
     </style>
     <template>
         <label>{{label}}</label>
@@ -32,10 +37,10 @@
               <kano-input-color value="{{color}}"></kano-input-color>
           </div>
           <div name="pattern">
-              <kano-input-pattern value="{{image}}" background-color="[[color]]"></kano-input-pattern>
+              <kano-input-pattern value="{{pattern}}" background-color="[[color]]" min="[[min]]" max="[[max]]"></kano-input-pattern>
           </div>
           <div name="image">
-              <kano-input-image value="{{image}}"></kano-input-image>
+              <kano-input-image value="{{image}}" min="[[min]]" max="[[max]]" data="[[data]]"></kano-input-image>
           </div>
         </iron-pages>
     </template>
@@ -55,10 +60,14 @@
                 },
                 image: {
                     type: String
+                },
+                pattern: {
+                    type: String
                 }
             };
             this.observers = [
-                'valueChanged(color, image)'
+                'valueChanged(color, pattern)',
+                'valueChanged(image)',
             ];
         }
 
@@ -66,8 +75,9 @@
             this.set('page', 'color');
         }
 
-        valueChanged (color, image) {
-            this.set('value', `${image}, ${color}`);
+        valueChanged () {
+            let layers = [this.image, this.pattern, this.color].filter(layer => layer);
+            this.set('value', layers.join(','));
         }
     }
     Polymer(KanoInputBackground);

@@ -16,6 +16,7 @@
     }
     :host .patterns {
         @apply(--layout-horizontal);
+        @apply(--layout-wrap);
         @apply(--layout-around-justified);
     }
     :host .pattern {
@@ -36,7 +37,7 @@
         </div>
         <div class="inputs">
             <kano-input-color value="{{color}}" hidden$="{{!pattern.color}}" label="Color"></kano-input-color>
-            <kano-input-size value="{{size}}" hidden$="{{!pattern.size}}" label="Size"></kano-input-size>
+            <kano-input-size value="{{size}}" hidden$="{{!pattern.size}}" label="Size" min="[[min]]" max="[[max]]"></kano-input-size>
         </div>
         <array-selector id="selector" items="{{patterns}}" selected="{{pattern}}"></array-selector>
     </template>

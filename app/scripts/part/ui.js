@@ -1,3 +1,4 @@
+import filesets from '../service/filesets';
 import Part from './part';
 
 const STYLE_CONF = {
@@ -25,8 +26,12 @@ const STYLE_CONF = {
     },
     'background': {
         key: 'background',
-        type: 'color',
-        label: 'Background'
+        type: 'background',
+        label: 'Background',
+        boundTo: 'width',
+        data: {
+            files: filesets.load('background')
+        }
     },
     'font-size': {
         key: 'font-size',
