@@ -1,3 +1,4 @@
+<link rel="import" href="../behaviors.html">
 <dom-module id="kano-event-select">
     <style>
     :host {
@@ -27,6 +28,11 @@
 </dom-module>
 <script type="text/javascript">
     class KanoEventSelect {
+
+        get behaviors () {
+            return [KanoBehaviors.AppEditorBehavior];
+        }
+
         beforeRegister () {
             this.is = 'kano-event-select';
             this.properties = {
@@ -55,7 +61,11 @@
             }, []);
         }
         selectTrigger (e) {
-            this.fire('selected', e.model.get('trigger'));
+            let trigger = e.model.get('trigger');
+            this.fire('selected', trigger);
+            this.notifyChange('trigger', {
+                trigger
+            });
         }
     }
     Polymer(KanoEventSelect);

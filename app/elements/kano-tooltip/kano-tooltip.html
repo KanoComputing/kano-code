@@ -1,0 +1,128 @@
+<link rel="import" href="../../bower_components/paper-styles/shadow.html">
+<script src="../../scripts/util/dom.js"></script>
+<dom-module id="kano-tooltip">
+    <style>
+    :host {
+        display: inline-block;
+        position: fixed;
+        z-index: 1;
+    }
+    :host .tooltip {
+        @apply(--shadow-elevation-6dp);
+        background-color: var(--kano-tooltip-color, white);
+        border-radius: 4px;
+        padding: 10px;
+    }
+    :host .tooltip:before {
+        content: '';
+        position: absolute;
+        border: 10px solid transparent;
+    }
+    :host .tooltip.top:before,
+    :host .tooltip.bottom:before {
+        margin-left: -10px;
+        left: 50%;
+    }
+    :host .tooltip.right:before,
+    :host .tooltip.left:before {
+        margin-top: -10px;
+        top: 50%;
+    }
+    :host .tooltip.top:before {
+        border-top-color: var(--kano-tooltip-color, white);
+        top: 100%;
+    }
+    :host .tooltip.bottom:before {
+        border-bottom-color: var(--kano-tooltip-color, white);
+        bottom: 100%;
+    }
+    :host .tooltip.right:before {
+        border-right-color: var(--kano-tooltip-color, white);
+        left: -20px;
+    }
+    :host .tooltip.left:before {
+        border-left-color: var(--kano-tooltip-color, white);
+        left: 100%;
+    }
+    :host .wrapper {
+        position: relative;
+    }
+    </style>
+    <template>
+        <div class$="tooltip [[position]]" id="tooltip">
+            <content></content>
+        </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    class KanoTooltip {
+        beforeRegister () {
+            this.is = 'kano-tooltip';
+            this.properties = {
+                position: {
+                    type: String,
+                    value: 'top'
+                },
+                target: {
+                    type: Object
+                }
+            };
+            this.observers = [
+                'updatePosition(target.*, position)'
+            ];
+        }
+        ready () {
+            let observer = new MutationObserver(() => {
+                this.updatePosition();
+            });
+            observer.observe(this, { childList: true, subtree: true, characterData: true });
+            window.addEventListener('resize', this.updatePosition.bind(this));
+        }
+        detached () {
+            window.removeEventListener('resize', this.updatePosition.bind(this));
+        }
+        updatePosition () {
+            this.debounce('updatePosition', () => {
+                let target = this.target,
+                tooltip,
+                rect,
+                style,
+                tooltipStyle,
+                widthCenter,
+                heightCenter;
+
+                if (!target) {
+                    return;
+                }
+                style = this.style;
+                tooltip = this.$.tooltip;
+                tooltipStyle = tooltip.style;
+                rect = tooltip.getBoundingClientRect();
+
+                widthCenter = target.left + (target.width / 2) - (rect.width / 2);
+                heightCenter = target.top + (target.height / 2) - (rect.height / 2);
+
+                if (['top', 'bottom'].indexOf(this.position) !== -1) {
+                    style.left = `${widthCenter}px`;
+                } else {
+                    style.top = `${heightCenter}px`;
+                }
+
+                if (this.position === 'top') {
+                    style.top = `${target.top - rect.height - 20}px`;
+                } else if (this.position === 'bottom') {
+                    style.top = `${target.bottom + 20}px`;
+                } else if (this.position === 'right') {
+                    style.left = `${target.right + 20}px`;
+                } else if (this.position === 'left') {
+                    style.left = `${target.left - rect.width - 20}px`;
+                }
+            }, 10);
+        }
+        hide () {
+
+        }
+    }
+    Polymer(KanoTooltip);
+</script>

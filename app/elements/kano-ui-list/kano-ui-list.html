@@ -5,6 +5,7 @@
         display: block;
         @apply(--layout-horizontal);
         @apply(--layout-wrap);
+        @apply(--layout-start);
         overflow-y: auto;
     }
     :host kano-ui-item {
@@ -14,7 +15,7 @@
     </style>
     <template>
         <template is="dom-repeat" items="{{items}}">
-            <kano-ui-item model="{{item}}"></kano-ui-item>
+            <kano-ui-item model="{{item}}" id$="part-[[item.type]]"></kano-ui-item>
         </template>
     </template>
 </dom-module>

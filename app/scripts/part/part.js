@@ -329,3 +329,6 @@ export default class Part {
 }
 
 Part.nameRegistry = {};
+Part.clear = () => {
+    Part.nameRegistry = {};
+};

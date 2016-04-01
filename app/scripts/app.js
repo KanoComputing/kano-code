@@ -38,7 +38,6 @@ es6Assign.polyfill();
             };
             mod.blocks.forEach((definition) => {
                 let block = definition.block;
-                block.id = `${moduleName}#${block.id}`;
                 block.colour = mod.colour;
                 Blockly.Blocks[block.id] = {
                     init: function () {

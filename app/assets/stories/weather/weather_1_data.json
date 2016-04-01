@@ -1,0 +1,235 @@
+{
+    "parts": ["label"],
+    "steps": [{
+        "modal": {
+            "text": "Welcome to the **App Editor**, I will guide you through the interface, and help you make your own weather app"
+        }
+    },{
+        "focus": "block-editor.background_style.background",
+        "tooltips": [{
+            "text": "To make your app nice and shinny, pick a background color",
+            "position": "right",
+            "location": "block-editor.background_style.background"
+        }],
+        "validation": {
+            "background": {
+                "property": "userStyle.background"
+            }
+        }
+    },{
+        "focus": "workspace-controls.add-part",
+        "validation": {
+            "open-parts": true
+        },
+        "tooltips": [{
+            "location": "workspace-controls.add-part",
+            "position": "left",
+            "text": "Click on this button to see the parts you can add to your app"
+        }]
+    },{
+        "validation": {
+            "add-part": {
+                "type": "label",
+                "id": "label_1"
+            }
+        },
+        "arrow": {
+            "source": "sidebar.parts.part-label",
+            "target": "right-panel"
+        },
+        "tooltips": [{
+            "location": "sidebar.parts.part-label",
+            "position": "right",
+            "text": "Drag the `Label` part..."
+        },{
+            "location": "right-panel",
+            "position": "left",
+            "text": "...and drop it in here"
+        }]
+    },{
+        "focus": {
+            "path": "workspace-controls",
+            "part": "label_1"
+        },
+        "validation": {
+            "select-part": {
+                "target": "label_1"
+            }
+        },
+        "tooltips": [{
+            "location": {
+                "path": "workspace-controls",
+                "part": "label_1"
+            },
+            "position": "right",
+            "text": "Select the part you added by clicking on it"
+        }]
+    },{
+        "validation": {
+            "open-part-config": true
+        },
+        "focus": "block-editor.look-button",
+        "tooltips": [{
+            "location": "block-editor.look-button",
+            "position": "right",
+            "text": "This button allows you to add style to the parts of your app"
+        }]
+    },{
+        "focus": "block-editor.look",
+        "tooltips": [{
+            "location": "block-editor.look",
+            "position": "right",
+            "text": "Each part can be styled in its own way within this panel.",
+            "next_button": true
+        }]
+    },{
+        "validation": {
+            "selected-part-change": {
+                "target": "label_1",
+                "property": "userStyle.font-size",
+                "count": 7
+            }
+        },
+        "focus": ["block-editor.look.style.font-size", "workspace"],
+        "tooltips": [{
+            "location": "block-editor.look.style.font-size",
+            "position": "right",
+            "text": "Try to make it bigger by using this slider"
+        }]
+    },{
+        "validation": {
+            "selected-part-change": {
+                "target": "label_1",
+                "property": "position.*",
+                "count": 50
+            }
+        },
+        "focus": "workspace",
+        "tooltips": [{
+            "location": "workspace",
+            "position": "left",
+            "text": "Nice, now, to make your app look nice, move the text in the middle"
+        }]
+    },{
+        "validation": {
+            "open-part-default": true
+        },
+        "focus": "block-editor.back-button",
+        "tooltips": [{
+            "location": "block-editor.back-button",
+            "position": "right",
+            "text": "Now, it is time to code your app, click on the button at the top left of the screen to go back"
+        }]
+    },{
+        "validation": {
+            "open-part-trigger": true
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "Click on the big 'Add code' button"
+        }]
+    },{
+        "validation": {
+            "trigger": {
+                "emitter": "global",
+                "event": "start"
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "Choose 'When make is clicked' to add code that will run when your app starts"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "create": {
+                    "target": "label_1",
+                    "type": "set_value",
+                    "id": "set_text_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "To change what the text says, you can use the 'set Label to' block.\n You can find the block in the 'Label' category on the top left"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "create": {
+                    "type": "text",
+                    "id": "text_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "The block you just added need another block that tell what to write.\n Take the text block in the text section and plug it in the block you just created"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "connect": {
+                    "parent": "set_text_block_1",
+                    "target": "text_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "The block you just added need another block that tell what to write.\n Take the text block in the text section and plug it in the block you just created"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "value": {
+                    "target": "text_block_1",
+                    "minLength": 4
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "Now, you can type in the text you want to be displayed. Just to see if it works, type in your name"
+        }]
+    },{
+        "validation": {
+            "running": {
+                "value": true
+            }
+        },
+        "focus": "workspace-controls.make-button",
+        "tooltips": [{
+            "location": "workspace-controls.make-button",
+            "position": "left",
+            "text": "Let's see if your test program works, hit the 'make' button"
+        }]
+    },{
+        "instruction": "Yay, we can control the text to display what we want! Next step, displaying the temperature",
+        "tooltips": [{
+            "location": "workspace",
+            "position": "bottom",
+            "text": "The text now changes to what you defined",
+            "next_button": true
+        }]
+    },{
+        "modal": {
+            "text": "Yay, we can control the text to display what we want! Next step, displaying the temperature",
+            "next_button": true
+        },
+        "save_app": "app_1"
+    }],
+    "modules": ["Text"]
+}

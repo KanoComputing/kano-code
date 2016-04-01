@@ -31,7 +31,7 @@
     class KanoBlockly {
 
         get behaviors () {
-            return [KanoBehaviors.CodeEditorBehavior];
+            return [KanoBehaviors.CodeEditorBehavior, KanoBehaviors.AppEditorBehavior];
         }
 
         beforeRegister () {
@@ -103,10 +103,7 @@
             this.resize();
         }
         detached () {
-            // Hack to get rid of the remaining blockly elements
-            this.getToolboxElements().forEach((el) => {
-                el.parentNode.removeChild(el);
-            });
+            this.workspace.dispose();
         }
         /**
          * Triggers the resize event on the window
@@ -179,7 +176,9 @@
          */
         onBlocklyChange (e) {
             this.set('code', this.getCode('JavaScript'));
-            this.fire('change', e);
+            this.notifyChange('blockly', {
+                event: e
+            });
         }
         /**
          * Generate a XML string representation of the blocks

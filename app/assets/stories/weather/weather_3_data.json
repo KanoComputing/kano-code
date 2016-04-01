@@ -1,0 +1,147 @@
+{
+    "parts": ["label"],
+    "steps": [{
+        "modal": {
+            "text": "Using the set text block allows you to change what is the text displayed. Now we will see how to get the temperature from the Internet",
+            "next_button": true
+        }
+    },{
+        "validation": {
+            "blockly": {
+                "delete": "text_block_1"
+            }
+        },
+        "load_app": "app_1",
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "Select the text block with your name inside and remove it. Tip: you can remove blocks by hitting backspace on your keyboard or by dropping them on the trash bin"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "create": {
+                    "type": "get_temperature",
+                    "id": "temp_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "In the 'Weather' section grab the temperture block and put it where your name was before"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "connect": {
+                    "target": "temp_block_1",
+                    "parent": "set_text_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "In the 'Weather' section grab the temperture block and put it where your name was before"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "create": {
+                    "id": "city_block_1",
+                    "type": "text"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "As you can see, the temperature block needs another block. This block will tell to the temperature block what city we want the temperature from. Grab a text block and plug it to the temperature block"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "connect": {
+                    "target": "city_block_1",
+                    "parent": "temp_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "As you can see, the temperature block needs another block. This block will tell to the temperature block what city we want the temperature from. Grab a text block and plug it to the temperature block"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "value": {
+                    "target": "city_block_1",
+                    "minLength": 3
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "Now enter in the block you just added the name of a city"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "create": {
+                    "type": "refresh_weather",
+                    "id": "refresh_temp_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "Your app is almost done, we need a last thing. You now need to tell your app to get the weather from the web. To do that, grab the refresh block in the Weather section and add it underneath your blocks"
+        }]
+    },{
+        "validation": {
+            "blockly": {
+                "connect": {
+                    "target": "refresh_temp_block_1",
+                    "parent": "set_text_block_1"
+                }
+            }
+        },
+        "focus": "block-editor",
+        "tooltips": [{
+            "location": "block-editor",
+            "position": "right",
+            "text": "Your app is almost done, we need a last thing. You now need to tell your app to get the weather from the web. To do that, grab the refresh block in the Weather section and add it underneath your blocks"
+        }]
+    },{
+        "validation": {
+            "running": {
+                "value": true
+            }
+        },
+        "focus": "workspace-controls.make-button",
+        "tooltips": [{
+            "location": "workspace-controls.make-button",
+            "position": "left",
+            "text": "Your app is ready, let's see if it works. Hit the make button"
+        }]
+    },{
+        "tooltips": [{
+            "location": "workspace",
+            "position": "bottom",
+            "text": "Yay, your app works!",
+            "next_button": true
+        }]
+    }],
+    "modules": ["Weather", "Time", "Text"]
+}

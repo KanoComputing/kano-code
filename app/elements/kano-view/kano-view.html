@@ -22,33 +22,35 @@
                 },
                 attributes: {
                     type: Object,
-                    observer: 'attributesChanged',
                     value: () => {
                         return {};
-                    }
+                    },
+                    notify: true
                 }
             };
             this.observers = [
-                'viewChanged(viewName)'
+                'viewChanged(viewName)',
+                'attributesChanged(attributes.*)'
             ];
         }
-        attributesChanged () {
-            if (!this.viewComponent) {
-                return;
-            }
-            this.applyAttributes();
+        getComponent () {
+            return this.viewComponent;
         }
         /**
          * Apply the attributes to the loaded component
          */
-        applyAttributes () {
-            Object.keys(this.attributes).forEach((attribute) => {
-                try {
-                    this.viewComponent.set(attribute, this.attributes[attribute]);
-                } catch (e) {
-                    console.log(e);
-                }
-            });
+        attributesChanged (e) {
+            let path;
+            if (!this.viewComponent) {
+                return;
+            }
+            path = e.path.split('.');
+            path.shift();
+            if (!path.length) {
+                return;
+            }
+            path = path.join('.');
+            this.viewComponent.set(e.path, e.value);
         }
         viewChanged () {
             if ((this.viewName && !this.viewName.length) || !this.location) {
@@ -56,18 +58,21 @@
             }
             this.loadView(this.viewName)
                 .then(this.displayView.bind(this))
-                .catch((e) => {
+                .catch(() => {
                     this.fire('kano-error', new Error(`Could not load view ${this.viewName}`));
                 });
         }
         displayView () {
-            this.viewComponent = document.createElement(this.viewName);
-            this.viewComponent.style.flex = 1;
+            let view = this.create(this.viewName, this.attributes);
+            this.mountComponent(view);
+        }
+        mountComponent (component) {
+            component.style.flex = 1;
             while (this.firstChild) {
                 this.removeChild(this.firstChild);
             }
-            this.appendChild(this.viewComponent);
-            this.applyAttributes();
+            this.appendChild(component);
+            this.viewComponent = component;
         }
         /**
          * Import the view component

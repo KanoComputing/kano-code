@@ -1,3 +1,4 @@
+<link rel="import" href="../behaviors.html">
 <dom-module id="kano-workspace-controls">
     <style>
     :host {
@@ -58,6 +59,9 @@
     :host .part {
         padding: 3px;
     }
+    :host kano-ui-item {
+        --kano-ui-item-color: var(--color-white, white);
+    }
     :host .share-button {
         background: var(--blue-gradient, blue);
     }
@@ -69,7 +73,8 @@
     }
     </style>
     <template>
-        <button type="button"
+        <button id="add-part"
+                type="button"
                 class$="add-ui [[computeAddUiClass(opened)]]"
                 on-tap="addTapped">
             <iron-image src="/assets/icons/plus-icon.png"
@@ -81,20 +86,22 @@
                     <button type="button"
                             class="share-button"
                             on-tap="shareTapped">share</button>
-                    <button type="button"
+                    <button id="make-button"
+                            type="button"
                             class$="make-button {{computeRunningClass(running)}}"
                             on-tap="makeTapped">make</button>
                 </div>
 
             </div>
-            <div class="parts">
+            <div class="parts" id="parts-tray">
                 <template is="dom-repeat"
                             items="{{parts}}"
                             as="part">
                     <div class="part" style$="[[partStyle(part, selected)]]">
                         <kano-ui-item model="[[part]]"
-                                      on-tap="selectPart"
-                                      size="70"></kano-ui-item>
+                                      on-tap="partTapped"
+                                      size="70"
+                                      id$="part-[[part.id]]"></kano-ui-item>
                     </div>
                 </template>
             </div>
@@ -104,6 +111,11 @@
 </dom-module>
 <script type="text/javascript">
     class KanoWorkspaceControls {
+
+        get behaviors () {
+            return [KanoBehaviors.AppEditorBehavior];
+        }
+
         beforeRegister () {
             this.is = 'kano-workspace-controls';
             this.properties = {
@@ -184,8 +196,13 @@
         makeTapped () {
             this.fire('make-tap');
         }
-        selectPart (e) {
-            this.$.selector.select(e.model.get('part'));
+        partTapped (e) {
+            let part = e.model.get('part');
+            this.selectPart(part);
+        }
+        selectPart (part) {
+            this.$.selector.select(part);
+            this.notifyChange('select-part', { part });
         }
         partStyle (part, selected) {
             if (!selected) {

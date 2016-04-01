@@ -1,0 +1,87 @@
+<dom-module id="kano-scene-editor">
+  <style>
+    :host {
+      display: block;
+      @apply(--layout-vertical);
+    }
+    :host kano-app-challenge {
+        @apply(--layout-flex);
+    }
+    :host kano-app-editor {
+        @apply(--layout-flex);
+    }
+  </style>
+  <template>
+      <kano-app-challenge id="challenge"
+                            steps="[[scene.steps]]"
+                            on-save="saveApp"
+                            on-load="loadApp">
+          <kano-app-editor id="editor"
+                            parts="[[computeParts(scene.*)]]"
+                            default-categories="[[computeCategories(scene.*)]]"
+                            class="editor"
+                            ws-size="[[size]]"
+                            running="{{running}}"></kano-app-editor>
+      </kano-app-challenge>
+  </template>
+</dom-module>
+<script type="text/javascript">
+    class KanoSceneVideo {
+
+        get behaviors () {
+            return [KanoBehaviors.SceneComponentBehavior];
+        }
+
+        beforeRegister () {
+            this.is = 'kano-scene-editor';
+            this.properties = {
+                running: {
+                    type: Boolean,
+                    observer: 'runningChanged'
+                }
+            };
+        }
+
+        attached () {
+            this.set('size', app.config.WORKSPACE_FULL_SIZE);
+        }
+
+        computeParts () {
+            return app.part.filter(part => this.scene.parts.indexOf(part.type) !== -1);
+        }
+
+        computeCategories () {
+            return app.defaultCategories.filter(category => this.scene.modules.indexOf(category.name) !== -1)
+        }
+
+        runningChanged () {
+            if (this.running) {
+                app.components.run(this.$.editor.addedParts);
+            } else {
+                app.components.stop(this.$.editor.addedParts);
+            }
+        }
+        saveApp (e) {
+            let id = e.detail.id,
+                blockIds = e.detail.blockIds,
+                stepIds = e.detail.stepIds,
+                app = this.$.editor.save(true);
+            this.addToStore(id, {
+                app,
+                blockIds,
+                stepIds
+            });
+        }
+        loadApp (e) {
+            let id = e.detail,
+                savedState,
+                challenge;
+            savedState = this.fromStore(id);
+            challenge = this.$.challenge;
+            this.$.editor.load(savedState.app, this.computeParts());
+            challenge.set('stepIds', savedState.stepIds);
+            challenge.set('blockIds', savedState.blockIds);
+        }
+    }
+    Polymer(KanoSceneVideo);
+</script>

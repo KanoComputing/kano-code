@@ -62,26 +62,13 @@ gulp.task('serve-prod', () => {
     return $.connect.server({
         root: 'www',
         port: process.env.PORT,
-        fallback: './www/index.html',
-        middleware: (connect, opt) => {
-            return [(req, res, next) => {
-                let credentials = auth(req);
-
-                if (!credentials || credentials.name !== 'kano-member' || credentials.pass !== 'Gb0yZGMb') {
-                    res.statusCode = 401;
-                    res.setHeader('WWW-Authenticate', 'Basic realm="example"');
-                    res.end('Access denied');
-                } else {
-                    next();
-                }
-            }];
-        }
+        fallback: './www/index.html'
     });
 });
 
 // For a build with cordova, add this to html replace
 // <meta http-equiv="Content-Security-Policy" content="media-src *">
-gulp.task('js', ['babel', 'bundle'], () => {
+gulp.task('js', ['babel', 'bundle', 'dom-util'], () => {
     gulp.src('./.tmp/app/index.html')
         .pipe(utils.vulcanize({ inlineScripts: true }))
         .pipe($.crisper({ scriptInHead: false }))
@@ -226,6 +213,16 @@ function getImports(filePath, opts) {
         return files;
     });
 }
+
+let DOMUtilBundler = browserify('app/scripts/util/dom.js', { standalone: 'DOMUtil' })
+                        .transform(babelify.configure({ presets: ['es2015'] }));
+
+gulp.task('dom-util', () => {
+    DOMUtilBundler.bundle()
+        .on('error', utils.notifyError)
+        .pipe(source('dom.js'))
+        .pipe(gulp.dest('.tmp/app/scripts/util/'));
+});
 
 gulp.task('dev', ['watch', 'serve']);
 

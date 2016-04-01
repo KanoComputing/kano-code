@@ -6,6 +6,13 @@
             @apply(--layout-vertical);
             padding: 20px 20px 5px 20px;
         }
+        :host button {
+            @apply(--kano-button-small);
+            margin-left: 5px;
+        }
+        :host button.share {
+            background: var(--green-gradient, green);
+        }
     </style>
     <template>
         <label>Title</label>
@@ -14,6 +21,10 @@
         <textarea rows="8"
                 cols="40"
                 value="{{description::change}}"></textarea>
+        <div class="buttons">
+            <button on-tap="dismiss">Cancel</button>
+            <button on-tap="share" class="share">Share</button>
+        </div>
     </template>
 </dom-module>
 

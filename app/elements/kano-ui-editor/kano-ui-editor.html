@@ -1,6 +1,7 @@
 <link rel="import" href="../kano-blockly/kano-blockly.html">
 <link rel="import" href="../kano-code-editor/kano-code-editor.html">
 <link rel="import" href="../kano-style/kano-style.html">
+<link rel="import" href="../behaviors.html">
 
 <dom-module id="kano-ui-editor">
     <style>
@@ -151,7 +152,8 @@
     <template>
         <header>
             <div class="header-left">
-                <button class="back"
+                <button id="back-button"
+                        class="back"
                         type="button"
                         on-tap="previous">
                     <iron-image src="/assets/icons/back-arrow-icon.png" sizing="contain"></iron-image>
@@ -163,7 +165,8 @@
                 <span>[[title]]</span>
             </div>
             <div class="header-right">
-                <button type="button"
+                <button id="look-button"
+                        type="button"
                         class="edit-config"
                         on-tap="editConfig"
                         hidden$="[[isEditHidden(selectedPage, selected)]]">E</button>
@@ -173,9 +176,10 @@
             id="pages"
             attr-for-selected="name"
             selected="{{selectedPage}}">
-            <div name="background" class="background">
-                <input type="text" value="{{background.name::keyup}}">
-                <kano-ui-customizer customizable="{{background.customizable.style}}"
+            <div name="background" class="background" id="background">
+                <input type="text" value="{{background.name::keyup}}" id="background_name">
+                <kano-ui-customizer id="background_style"
+                                    customizable="{{backgroundOptions}}"
                                     user-values="{{background.userStyle}}"></kano-ui-customizer>
             </div>
             <div class="default" name="default">
@@ -199,7 +203,8 @@
                     parts="{{computeParts(parts.*)}}"
                     on-selected="triggerSelected"></kano-event-select>
             </div>
-            <kano-ui-configuration element="{{selected}}"
+            <kano-ui-configuration id="look"
+                        element="{{selected}}"
                         name="config"></kano-ui-configuration>
             <div name="code" class="code-editor">
                 <kano-blockly id="code-editor"
@@ -218,6 +223,11 @@
 </dom-module>
 <script type="text/javascript">
     class KanoUiEditor {
+
+        get behaviors () {
+            return [KanoBehaviors.AppEditorBehavior];
+        }
+
         beforeRegister () {
             this.is = 'kano-ui-editor';
             this.properties = {
@@ -259,12 +269,22 @@
             this.observers = [
                 'computeToolbox(parts.*)',
                 'triggerChanged(trigger.*, selected.name)',
-                'computeTitle(selectedPage, background.name, selected.*)'
+                'computeTitle(selectedPage, background.name, selected.*)',
+                'backgroundChanged(background.*)'
             ];
             this.listeners = {
                 'pages.iron-select': 'pageEntered',
                 'pages.iron-deselect': 'pageLeft'
             };
+        }
+        backgroundChanged (e) {
+            let property = e.path.split('.');
+            property.shift();
+            property = property.join('.');
+            this.notifyChange('background', {
+                property,
+                value: e.value
+            });
         }
         triggerChanged () {
             let trigger = this.trigger,
@@ -342,7 +362,7 @@
             this.set('trigger', e.detail);
             this.showPage('code');
         }
-        saveCode (e) {
+        saveCode () {
             this.debounce('saveCode', () => {
                 let code = {},
                     codeEditor = this.$['code-editor'],
@@ -441,6 +461,9 @@
         }
         showPage (page) {
             this.set('selectedPage', page);
+            this.fire('change', {
+                type: `open-part-${page}`
+            });
         }
         previous () {
             let targetPage;

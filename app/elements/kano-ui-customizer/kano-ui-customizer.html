@@ -4,6 +4,7 @@
     :host {
         display: block;
         @apply(--layout-vertical);
+        @apply(--layout-start);
         transition: all linear 100ms;
     }
     :host .line {
@@ -26,7 +27,7 @@
         <template is="dom-repeat"
                 items="{{customizable}}"
                 as="property">
-            <div class="line">
+            <div class="line" id$="[[property.key]]">
                 <kano-input type="{{property.type}}"
                         name="name"
                         label="{{property.label}}"

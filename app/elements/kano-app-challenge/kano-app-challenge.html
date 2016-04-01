@@ -1,0 +1,338 @@
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../kano-focus-on/kano-focus-on.html">
+<link rel="import" href="../kano-tooltip/kano-tooltip.html">
+<link rel="import" href="../kano-arrow/kano-arrow.html">
+<link rel="import" href="../behaviors.html">
+<dom-module id="kano-app-challenge">
+    <style>
+    :host {
+        display: block;
+        @apply(--layout-vertical);
+    }
+    :host .instruction-overlay {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        padding: 5px;
+    }
+    :host button {
+        @apply(--kano-button-small);
+        background: var(--green-gradient, green);
+        margin-left: 10px;
+    }
+    :host content {
+        @apply(--layout-flex);
+    }
+    :host #modal {
+        border-radius: 4px;
+    }
+    :host .modal-content {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        font-family: var(--font-body, Arial);
+        font-weight: 500;
+        font-size: 1.4em;
+        color: black;
+    }
+    :host .modal-content button {
+        @apply(--kano-button);
+        margin-top: 15px;
+    }
+    :host .tooltip-content {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+    }
+    :host .tooltip-text {
+        font-size: 1.4em;
+        font-weight: 400;
+    }
+    :host .tooltip-content button {
+        margin-top: 10px;
+    }
+    </style>
+    <template>
+        <content select=".editor" id="content"></content>
+        <kano-focus-on id="focus" breathe></kano-focus-on>
+        <kano-arrow source="[[arrow.source]]" target="[[arrow.target]]"></kano-arrow>
+        <template is="dom-repeat" items="{{tooltips}}" as="tooltip">
+            <kano-tooltip target="[[tooltip.target]]" position="[[tooltip.position]]">
+                <div class="tooltip-content">
+                    <div class="tooltip-text">
+                        <marked-element markdown="[[tooltip.text]]">
+                            <div class="markdown-html"></div>
+                        </marked-element>
+                    </div>
+                    <button type="button" on-tap="nextStep" hidden$="[[!tooltip.next_button]]">Next</button>
+                </div>
+            </kano-tooltip>
+        </template>
+        <paper-dialog id="modal"
+                      with-backdrop>
+            <div class="modal-content">
+                <div class="text">
+                    <marked-element markdown="[[selectedStep.modal.text]]">
+                        <div class="markdown-html"></div>
+                    </marked-element>
+                </div>
+                <button type="button" on-tap="nextStep">Next</button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    class KanoAppChallenge {
+
+        get behaviors () {
+            return [KanoBehaviors.ValidatorBehavior, KanoBehaviors.BlocklyValidatorBehavior];
+        }
+
+        beforeRegister () {
+            this.is = 'kano-app-challenge';
+            this.properties = {
+                tooltips: {
+                    type: Array
+                },
+                selectedStep: {
+                    type: Object,
+                    computed: 'computeSelectedStep(steps, step)'
+                },
+                arrow: {
+                    type: Object
+                }
+            };
+            this.observers = [
+                'stepChanged(steps, step)'
+            ];
+            this.listeners = {
+                'change': 'editorChanged'
+            };
+        }
+        computeSelectedStep () {
+            return this.steps[this.step];
+        }
+        /**
+         * Find the blockly element and listens to the change event
+         */
+        ready () {
+            this.validators = {
+                "background": this.matchProperty.bind(this),
+                "add-part": this.matchAddPart.bind(this),
+                "select-part": this.matchPartTarget.bind(this),
+                "selected-part-change": this.matchPartChange.bind(this),
+                "trigger": this.matchTrigger.bind(this),
+                "running": this.matchValue.bind(this)
+            };
+            this.changeCounts = {};
+            this.editor = Polymer.dom(this.$.content).getDistributedNodes()[0];
+            this.focus = this.$.focus;
+            this.modal = this.$.modal;
+        }
+        attached () {
+            this.isAttached = true;
+            this.fire('attached');
+        }
+        computeTooltips (step) {
+            let tooltips = step.tooltips || [];
+            tooltips = tooltips.map((tooltip) => {
+                let target = this.getDeepElement(tooltip.location),
+                    rect = target.getBoundingClientRect();
+                tooltip.target = rect;
+                return tooltip;
+            });
+            this.set('tooltips', tooltips);
+        }
+        computeArrow (step) {
+            let source, target;
+            if (!step.arrow) {
+                return this.set('arrow', null);
+            }
+            source = this.getDeepElement(step.arrow.source);
+            target = this.getDeepElement(step.arrow.target);
+            source = source.getBoundingClientRect();
+            target = target.getBoundingClientRect();
+            this.set('arrow', {
+                source,
+                target
+            });
+        }
+        stepChanged () {
+            let step,
+                focusString;
+            // Prevent the loading of the saved app before the store is initialized
+            if (!this.isAttached) {
+                this.addEventListener('attached', this.stepChanged.bind(this));
+                return;
+            }
+            this.debounce('stepChanged', () => {
+                if (!this.steps) {
+                    return;
+                }
+                step = this.steps[this.step];
+                if (!step) {
+                    return;
+                }
+                if (step.load_app) {
+                    this.fire('load', step.load_app);
+                }
+                if (step.save_app) {
+                    this.fire('save', {
+                        id: step.save_app,
+                        stepIds: this.stepIds,
+                        blockIds: this.blockIds
+                    });
+                }
+                if (step.focus) {
+                    focusString = JSON.stringify(step.focus);
+                    if (focusString !== this.previousFocus) {
+                        this.focus.hide();
+                        this.deepFocus(step.focus);
+                        this.previousFocus = JSON.stringify(step.focus);
+                    }
+                } else {
+                    this.focus.hide();
+                }
+                this.modal.close();
+                if (step.modal) {
+                    this.modal.open();
+                }
+                this.computeTooltips(step);
+                this.computeArrow(step);
+            }, 10);
+        }
+        getDeepElement (selector) {
+            let pieces,
+                element = this.editor;
+            if (typeof selector == 'object') {
+                selector = `${selector.path}.part-${this.stepIds[selector.part]}`;
+            }
+            pieces = selector.split('.');
+            for (let i = 0, len = pieces.length; i < len; i++) {
+                element = element.$$(`#${pieces[i]}`);
+            }
+            return element;
+        }
+        deepFocus (selector) {
+            let targets;
+            targets = Array.isArray(selector) ? selector : [selector];
+            targets = targets.map(this.getDeepElement.bind(this));
+            this.focus.show(targets);
+        }
+        isNextHidden () {
+            let currentStep;
+            if (!this.steps) {
+                return true;
+            }
+            currentStep = this.steps[this.step];
+            if (!currentStep) {
+                return true;
+            }
+            return !currentStep.next_button;
+        }
+        matchTrigger (validation, event) {
+            return validation.emitter === event.trigger.emitter &&
+                    validation.event === event.trigger.event;
+        }
+        matchPartChange (validation, event) {
+            if (!this.matchPartTarget(validation, event)) {
+                return false;
+            }
+            return this.matchProperty(validation, event);
+        }
+        matchPartTarget (validation, event) {
+            let target = this.stepIds[validation.target];
+            // Match if there is not target defined or if the target matches
+            return validation.target || target === event.part.id;
+        }
+        /**
+         * Will tell if a property defined in a validation and an event matches
+         * Example:
+         * The validation says: 'userStyle.background' and the event says
+         * 'userStyle.background', the properties match
+         * The story creator can define a step that just wait for a vague action
+         * to be made:
+         * validation: 'position.*' will match things like 'position.x' and
+         * 'position.y'
+         */
+        matchProperty (validation, event) {
+            // Split the properties paths
+            let validationParts = validation.property.split('.'),
+                eventParts = event.property.split('.'),
+                count = this.changeCounts[this.step];
+            // Loop through the smallest part
+            for (let i = 0, len = validationParts.length; i < len; i++) {
+                // If the validation used the joker, the remaining parts are accepted
+                if (validationParts[i] === '*') {
+                    break;
+                }
+                // If the part doesn't match, stop
+                if (validationParts[i] !== eventParts[i]) {
+                    return false;
+                }
+            }
+            if (validation.count) {
+                if (count < validation.count) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        matchValue (validation, event) {
+            return validation.value === event.value;
+        }
+        matchAddPart (validation, event) {
+            // Check the type of the added part
+            if (!this.matchPartType(validation, event)) {
+                return false;
+            }
+            // If an id is provided, save the id of the added part
+            if (validation.id) {
+                this.stepIds[validation.id] = event.part.id;
+            }
+            return true;
+        }
+        matchPartType (validation, event) {
+            return validation.type === event.part.type;
+        }
+        isStepTarget (validation, id) {
+            let target = this.stepIds[validation.target];
+            return target === id;
+        }
+        isStepEvent (step, type, event) {
+            return step[type] && event.type === type;
+        }
+        /**
+         * Try to match the blockly event to the current step
+         * @param  {Event} e  A blockyl change event
+         */
+        editorChanged (e) {
+            // Store current step object
+            let step = this.steps[this.step],
+                detail = e.detail;
+
+            if (!step || !step.validation) {
+                return;
+            }
+            Object.keys(step.validation).forEach((type) => {
+                let validation;
+                if (type !== detail.type) {
+                    return;
+                }
+                validation = step.validation[type];
+                if (validation === true) {
+                    return this.nextStep();
+                }
+                this.changeCounts[this.step] = this.changeCounts[this.step] + 1 || 1;
+                if (type === 'blockly') {
+                    return this.handleBlocklyChange(validation, detail.event);
+                }
+                if (typeof this.validators[type] === 'function' &&
+                        this.validators[type](validation, detail)) {
+                    this.nextStep();
+                }
+            });
+        }
+    }
+    Polymer(KanoAppChallenge);
+</script>

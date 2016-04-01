@@ -1,4 +1,4 @@
-<dom-module id="kano-scene-dummy-intro">
+<dom-module id="kano-scene-weather-intro">
     <style>
     :host {
         display: block;
@@ -40,15 +40,15 @@
     </template>
 </dom-module>
 <script type="text/javascript">
-    class KanoSceneDummyIntro {
+    class KanoSceneWeatherIntro {
 
         get behaviors () {
-            return [Kano.SceneComponentBehavior];
+            return [KanoBehaviors.SceneComponentBehavior];
         }
 
         beforeRegister () {
-            this.is = 'kano-scene-dummy-intro';
+            this.is = 'kano-scene-weather-intro';
         }
     }
-    Polymer(KanoSceneDummyIntro);
+    Polymer(KanoSceneWeatherIntro);
 </script>

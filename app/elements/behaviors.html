@@ -21,4 +21,178 @@
 
         }
     };
+
+    window.KanoBehaviors.AppEditorBehavior = {
+        notifyChange (type, data) {
+            data.type = type;
+            this.fire('change', data);
+        }
+    };
+
+    window.KanoBehaviors.ValidatorBehavior = {
+        properties: {
+            step: {
+                type: Number,
+                value: 0
+            },
+            steps: {
+                type: Array,
+                value: () => []
+            },
+            instruction: {
+                type: String,
+                computed: 'computeInstruction(step, steps.*, done)',
+                readOnly: true
+            },
+            done: {
+                type: Boolean,
+                value: false
+            },
+            stepIds: {
+                type: Object,
+                value: () => {
+                    return {};
+                }
+            }
+        },
+        /**
+         * Get the instruction to display
+         */
+        computeInstruction () {
+            if (!this.steps[this.step]) {
+                return;
+            }
+            return this.done ? 'Done' : this.steps[this.step].instruction;
+        },
+        /**
+         * Move to the next step or set the challenge as done
+         */
+        nextStep () {
+            if (this.step < this.steps.length - 1) {
+                this.step++;
+            } else {
+                this.set('done', true);
+                this.fire('done');
+            }
+        }
+    };
+
+    window.KanoBehaviors.BlocklyValidatorBehavior = {
+        properties: {
+            blockIds: {
+                type: Object,
+                value: () => {
+                    return {};
+                }
+            }
+        },
+        attached () {
+            this.eventsMap = {
+                create: 'Create',
+                connect: 'Move',
+                value: 'Change',
+                delete: 'Delete'
+            };
+            this.blocklyValidators = {
+                'create': this.matchCreate.bind(this),
+                'connect': this.matchConnect.bind(this),
+                'value': this.matchValue.bind(this),
+                'delete': this.matchDelete.bind(this)
+            };
+        },
+        matchBlockType (type, event) {
+            return event.xml.getAttribute('type') === type;
+        },
+        matchBlocklyEvent (type, event) {
+            return event instanceof Blockly.Events[this.eventsMap[type]];
+        },
+        getBlockType (validation) {
+            let target = this.stepIds[validation.target],
+                type;
+            // Use the type or the value directly
+            // Allows to declare shorthand creation as:
+            // create: 'text'
+            // or
+            // create: {
+            //     type: 'text'
+            // }
+            if (typeof validation === 'string') {
+                type = validation;
+            } else if (validation.type) {
+                type = validation.type;
+                type = target ? `${target}#${type}` : type;
+            }
+            return type;
+        },
+        matchDelete (validation, event) {
+            let target = validation.target || validation,
+                blockId = this.blockIds[target];
+            if (blockId !== event.blockId) {
+                return;
+            }
+            delete this.blockIds[target];
+            return true;
+        },
+        matchCreate (validation, event) {
+            let type = this.getBlockType(validation);
+            // Check the type of the added block
+            if (this.matchBlockType(type, event)) {
+                // The new block created is added to the step, using its
+                // step id for further reference
+                if (validation.id) {
+                    this.blockIds[validation.id] = event.blockId;
+                }
+                return true;
+            }
+        },
+        matchConnect (validation, event) {
+            // Extract the validation object, target and parent step ids and
+            // the block moved
+            let targetId = this.blockIds[validation.target],
+                parentId = this.blockIds[validation.parent];
+            // Check that the element moved is the one targeted and that its
+            // new parent is the right one
+            if (event.blockId === targetId && event.newParentId === parentId) {
+                return true;
+            }
+        },
+        matchValue (validation, event) {
+            let targetId = this.blockIds[validation.target],
+                block = event,
+                failed = false;
+            // Check that the element that changed is the one we target
+            if (block.blockId === targetId) {
+                if (validation.minLength &&
+                        block.newValue.length &&
+                        block.newValue.length < validation.minLength) {
+                    failed = true;
+                }
+                // Check that
+                // the value is set to the one we expect
+                // We use the double equal to be sure we catch Number/String
+                // parsing
+                if (validation.value && block.newValue != validation.value) {
+                    failed = true;
+                }
+                return !failed;
+            }
+        },
+        handleBlocklyChange (step, e) {
+            // Store current step object
+            Object.keys(step).forEach((type) => {
+                let validation;
+                if (!this.matchBlocklyEvent(type, e)) {
+                    return;
+                }
+                validation = step[type];
+                if (validation === true) {
+                    return this.nextStep();
+                }
+                if (typeof this.blocklyValidators[type] === 'function' &&
+                        this.blocklyValidators[type](validation, e)) {
+                    this.nextStep();
+                }
+            });
+        }
+    };
 </script>

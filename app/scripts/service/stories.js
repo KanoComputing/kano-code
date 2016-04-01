@@ -4,9 +4,9 @@ class Stories {
     }
     list () {
         return Promise.resolve([{
-            name: 'Dummy',
-            id: 'dummy',
-            image: 'http://siliconvalleyrealtyworld.com/files/2011/09/Crash_Test_Dummy.jpg'
+            name: 'Weather',
+            id: 'weather',
+            image: 'https://www.mikeafford.com/store/store-images/ms02_example_heavy_rain_showers.png'
         }]);
     }
     getById (id) {

@@ -6,6 +6,7 @@
 <link rel="import" href="../kano-workspace-controls/kano-workspace-controls.html">
 <link rel="import" href="../kano-ui-configuration/kano-ui-configuration.html">
 <link rel="import" href="../kano-ui-editor/kano-ui-editor.html">
+<link rel="import" href="../behaviors.html">
 
 <dom-module id="kano-app-editor">
     <style>
@@ -46,13 +47,6 @@
     :host kano-sidebar {
         @apply(--layout-flex);
     }
-    :host #share-modal ::content button {
-        @apply(--kano-button-small);
-        margin-left: 5px;
-    }
-    :host #share-modal ::content button.share {
-        background: var(--green-gradient, green);
-    }
     </style>
     <template>
         <section id="section">
@@ -60,9 +54,10 @@
                 attr-for-selected="name"
                 selected="[[leftPanelView]]"
                 hidden$="[[!leftViewOpened]]"
-                id="pages">
+                id="left-panel">
                 <!--TODO rename ui-elements to parts-->
-                <kano-sidebar ui-elements="{{parts}}"
+                <kano-sidebar id="sidebar"
+                            ui-elements="{{parts}}"
                             name="parts"
                             on-ui-ready="sidebarUiReady"></kano-sidebar>
                 <kano-ui-editor
@@ -74,7 +69,7 @@
                     default-categories="{{defaultCategories}}"
                     name="code"></kano-ui-editor>
             </iron-pages>
-            <div class="ui-edition" id="rightPanel">
+            <div class="ui-edition" id="right-panel">
                 <kano-workspace id="workspace"
                                 on-ui-ready="workspaceUiReady"
                                 parts="{{addedParts}}"
@@ -82,6 +77,7 @@
                                 running="{{running}}"
                                 style$="background: [[background.userStyle.background]]"></kano-workspace>
                 <kano-workspace-controls
+                    id="workspace-controls"
                     parts="{{addedParts}}"
                     opened="[[isPartsOpened(leftPanelView, leftViewOpened)]]"
                     running="{{running}}"
@@ -92,15 +88,8 @@
                     on-remove-part="removePart"></kano-workspace-controls>
             </div>
         </section>
-        <paper-dialog id="share-modal"
-                      on-iron-overlay-closed="shareModalClosed"
-                      with-backdrop>
-            <kano-view view-name="kano-view-share-modal"></kano-view>
-                <div class="buttons">
-                    <button dialog-dismiss>Cancel</button>
-                    <button dialog-confirm
-                            class="share">Share</button>
-                </div>
+        <paper-dialog id="share-modal" accesskey=""with-backdrop>
+            <kano-view view-name="kano-view-share-modal" on-confirm="confirmShare" on-dismiss="dismissShare"></kano-view>
         </paper-dialog>
     </template>
 </dom-module>

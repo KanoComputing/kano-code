@@ -24,7 +24,7 @@ export default label = {
     blocks: [{
         block: (ui) => {
             return {
-                id: 'label_text_set_value',
+                id: 'set_value',
                 message0: `set ${ui.name} to %1`,
                 args0: [{
                     type: "input_value",
