@@ -179,7 +179,7 @@
             <div name="background" class="background" id="background">
                 <input type="text" value="{{background.name::keyup}}" id="background_name">
                 <kano-ui-customizer id="background_style"
-                                    customizable="{{backgroundOptions}}"
+                                    customizable="{{background.customizable.style}}"
                                     user-values="{{background.userStyle}}"></kano-ui-customizer>
             </div>
             <div class="default" name="default">
@@ -306,7 +306,7 @@
             this.showPage('code');
         }
         attached () {
-            this.set('usedCategories', {});
+
         }
         selectedChanged (newValue, oldValue) {
             if (oldValue === null && newValue !== null) {
