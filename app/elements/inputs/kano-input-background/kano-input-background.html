@@ -1,3 +1,4 @@
+<link rel="import" href="../../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../behaviors.html">
 
 <dom-module id="kano-input-background">
@@ -6,12 +7,42 @@
         display: block;
         @apply(--layout-vertical);
     }
+    :host paper-tabs {
+        margin-bottom: 5px;
+        --paper-tabs-selection-bar-color: var(--color-orange, orange);
+    }
+    :host label {
+        font-size: 1.4em;
+    }
+    :host .preview {
+        width: 120px;
+        height: 120px;
+    }
+    :host iron-pages div {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+    }
     </style>
     <template>
         <label>{{label}}</label>
-        <div>
-            <kano-input-color value="{{color}}"></kano-input-color>
-        </div>
+        <div class="preview" style$="background: [[value]]"></div>
+        <paper-tabs selected="{{page}}" attr-for-selected="name" noink>
+            <paper-tab name="color">Color</paper-tab>
+            <paper-tab name="pattern">Pattern</paper-tab>
+            <paper-tab name="image">Image</paper-tab>
+        </paper-tabs>
+        <iron-pages selected="[[page]]" attr-for-selected="name">
+          <div name="color">
+              <kano-input-color value="{{color}}"></kano-input-color>
+          </div>
+          <div name="pattern">
+              <kano-input-pattern value="{{pattern}}" background-color="[[color]]" min="[[min]]" max="[[max]]"></kano-input-pattern>
+          </div>
+          <div name="image">
+              <kano-input-image value="{{image}}" min="[[min]]" max="[[max]]" data="[[data]]"></kano-input-image>
+          </div>
+        </iron-pages>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -23,13 +54,30 @@
 
         beforeRegister () {
             this.is = 'kano-input-background';
+            this.properties = {
+                color: {
+                    type: String
+                },
+                image: {
+                    type: String
+                },
+                pattern: {
+                    type: String
+                }
+            };
             this.observers = [
-                'computeValue(color)'
+                'valueChanged(color, pattern)',
+                'valueChanged(image)',
             ];
         }
 
-        computeValue () {
-            this.set('value', this.color);
+        ready () {
+            this.set('page', 'color');
+        }
+
+        valueChanged () {
+            let layers = [this.image, this.pattern, this.color].filter(layer => layer);
+            this.set('value', layers.join(','));
         }
     }
     Polymer(KanoInputBackground);

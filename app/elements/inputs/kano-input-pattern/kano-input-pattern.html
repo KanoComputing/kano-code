@@ -1,0 +1,123 @@
+<link rel="import" href="../behaviors.html">
+<script src="./patterns.js"></script>
+
+<dom-module id="kano-input-pattern">
+    <style>
+    :host {
+        display: block;
+        @apply(--layout-vertical);
+    }
+    :host .inputs {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+    }
+    :host kano-input {
+        margin-right: 20px;
+    }
+    :host .patterns {
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        @apply(--layout-around-justified);
+    }
+    :host .pattern {
+        width: 50px;
+        height: 50px;
+        margin: 10px 10px 10px 0px;
+    }
+    :host .pattern:hover {
+        cursor: pointer;
+    }
+    </style>
+    <template>
+        <label>{{label}}</label>
+        <div class="patterns">
+            <template is="dom-repeat" items="{{patterns}}" as="pattern">
+                <div class="pattern" style$="[[computePatternStyle(pattern)]]" on-tap="selectPattern"></div>
+            </template>
+        </div>
+        <div class="inputs">
+            <kano-input-color value="{{color}}" hidden$="{{!pattern.color}}" label="Color"></kano-input-color>
+            <kano-input-size value="{{size}}" hidden$="{{!pattern.size}}" label="Size" min="[[min]]" max="[[max]]"></kano-input-size>
+        </div>
+        <array-selector id="selector" items="{{patterns}}" selected="{{pattern}}"></array-selector>
+    </template>
+</dom-module>
+<script type="text/javascript">
+    class KanoInputPattern {
+
+        get behaviors () {
+            return [KanoBehaviors.Input];
+        }
+
+        beforeRegister () {
+            this.is = 'kano-input-pattern';
+            this.properties = {
+                pattern: {
+                    type: Object
+                },
+                patterns: {
+                    type: Array,
+                    value: () => {
+                        return [];
+                    }
+                },
+                color: {
+                    type: String
+                },
+                size: {
+                    type: String
+                },
+                backgroundColor: {
+                    type: String
+                }
+            };
+            this.observers = [
+                'computeValue(pattern.*)',
+                'computeValue(color)',
+                'computeValue(size)',
+                'computeValue(backgroundColor)'
+            ];
+        }
+
+        inputChanged (e) {
+            e.stopPropagation();
+        }
+
+        computePatternStyle (pattern) {
+            let generatedPattern,
+                args;
+            if (!pattern) {
+                return;
+            }
+            args = {
+                color: pattern.color || 'rgba(0, 0, 0, 0.4)',
+                size: pattern.size || '50px',
+                backgroundColor: pattern.backgroundColor || 'white'
+            };
+            generatedPattern = pattern.generator(args);
+            return `background: ${generatedPattern}, ${args.backgroundColor}`;
+        }
+
+        computeValue () {
+            if (!this.pattern) {
+                return;
+            }
+            this.set('value', this.pattern.generator({
+                color: this.color || this.pattern.color,
+                size: this.size || this.pattern.size,
+                backgroundColor: this.backgroundColor || this.pattern.backgroundColor
+            }));
+        }
+
+        selectPattern (e) {
+            let pattern = e.model.get('pattern');
+            this.$.selector.select(pattern);
+        }
+
+        attached () {
+            this.set('patterns', Kano.patterns);
+            this.$.selector.select(this.patterns[0]);
+        }
+    }
+    Polymer(KanoInputPattern);
+</script>

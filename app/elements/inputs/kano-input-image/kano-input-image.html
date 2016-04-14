@@ -1,0 +1,107 @@
+<link rel="import" href="../behaviors.html">
+<link rel="import" href="../../kano-fs/kano-fs.html">
+
+<dom-module id="kano-input-image">
+    <style>
+    :host {
+        display: block;
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+    }
+    :host button {
+        @apply(--kano-button);
+    }
+    :host .actions button {
+        margin: 7px;
+    }
+    :host .accept,
+    :host .change-button {
+        background: var(--green-gradient, green);
+    }
+    :host .remove-button {
+        background: var(--red-gradient, red);
+    }
+    :host .buttons button {
+        margin-left: 5px;
+    }
+    :host kano-fs {
+        margin: 20px;
+    }
+    :host paper-dialog h2 {
+        text-align: center;
+        font-weight: 500;
+    }
+    </style>
+    <template>
+        <h4>[[title]]</h4>
+        <div class="actions">
+            <button type="button" on-tap="openModal" class="change-button">Change image</button>
+            <button type="button" on-tap="removeImage" class="remove-button" hidden$="[[!src]]">Remove image</button>
+        </div>
+        <kano-input-size value="{{size}}" label="Size" min="[[min]]" max="[[max]]"></kano-input-size>
+        <paper-dialog id="modal" with-backdrop on-iron-overlay-closed="modalClosed">
+            <h2>Choose an image</h2>
+            <paper-dialog-scrollable>
+                <kano-fs files="[[data.files]]" id="fs" on-dom-change="refitModal"></kano-fs>
+            </paper-dialog-scrollable>
+            <div class="buttons">
+                <button dialog-dismiss>Cancel</button>
+                <button dialog-confirm class="accept">Choose</button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+<script type="text/javascript">
+    class KanoInputImage {
+
+        get behaviors () {
+            return [KanoBehaviors.Input];
+        }
+
+        beforeRegister () {
+            this.is = 'kano-input-image';
+            this.properties = {
+                title: {
+                    type: String
+                },
+                size: {
+                    type: String,
+                    value: '50px'
+                },
+                src: {
+                    type: String,
+                    value: null
+                }
+            };
+            this.observers = [
+                'valueChanged(src, size)'
+            ];
+        }
+
+        openModal () {
+            this.$.modal.open();
+        }
+
+        modalClosed (e) {
+            let file = this.$.fs.selectedFile;
+            if (e.detail.confirmed && file) {
+                this.set('src', file.data.src);
+                this.set('title', file.name);
+            }
+        }
+
+        valueChanged () {
+            this.set('value', `url("${this.src}") 0 0/${this.size} ${this.size}`);
+        }
+
+        removeImage () {
+            this.set('title', null);
+            this.set('src', null);
+        }
+
+        refitModal () {
+            this.$.modal.refit();
+        }
+    }
+    Polymer(KanoInputImage);
+</script>

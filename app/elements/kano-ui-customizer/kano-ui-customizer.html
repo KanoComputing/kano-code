@@ -10,6 +10,7 @@
     :host .line {
         margin-top: 5px;
         @apply(--layout-vertical);
+        width: 100%;
     }
     :host .line label {
         font-size: 1.1em;
@@ -31,10 +32,11 @@
                 <kano-input type="{{property.type}}"
                         name="name"
                         label="{{property.label}}"
-                        on-change="propertyChanged"
-                        value$="[[computeValue(property.key)]]"
+                        on-value-changed="propertyChanged"
+                        value="[[computeValue(property.key)]]"
                         min="[[property.min]]"
-                        max="[[property.max]]">
+                        max="[[property.max]]"
+                        data="[[property.data]]">
                 </kano-input>
             </div>
         </template>

@@ -14,6 +14,7 @@
     :host iron-pages {
         @apply(--layout-flex);
         @apply(--layout-vertical);
+        overflow-y: auto;
     }
     :host .code-editor {
         position: relative;
@@ -185,7 +186,7 @@
             <div name="background" class="background" id="background">
                 <input type="text" value="{{background.name::keyup}}" id="background_name">
                 <kano-ui-customizer id="background_style"
-                                    customizable="{{backgroundOptions}}"
+                                    customizable="{{background.customizable.style}}"
                                     user-values="{{background.userStyle}}"></kano-ui-customizer>
             </div>
             <div class="default" name="default">
@@ -266,12 +267,6 @@
                 },
                 background: {
                     type: Object,
-                    value: () => {
-                        return {
-                            name: 'My app',
-                            userStyle: {}
-                        };
-                    },
                     notify: true
                 },
                 title: {
@@ -318,12 +313,7 @@
             this.$['code-editor'].load(event.snapshot);
         }
         attached () {
-            this.set('backgroundOptions', [{
-                key: 'background',
-                type: 'background',
-                label: 'Background'
-            }]);
-            this.set('usedCategories', {});
+
         }
         selectedChanged (newValue, oldValue) {
             if (oldValue === null && newValue !== null) {

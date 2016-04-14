@@ -98,13 +98,6 @@ class KanoAppEditor {
             this.set('leftPanelView', 'code');
         }
     }
-    computeBackground () {
-        let style = this.background.userStyle;
-        return Object.keys(style).reduce((acc, property) => {
-            acc += `${property}:${style[property]};`;
-            return acc;
-        }, '');
-    }
     previous () {
         this.set('leftViewOpened', false);
     }
@@ -235,6 +228,12 @@ class KanoAppEditor {
     }
     attached () {
         this.$.workspace.size = this.wsSize;
+        this.set('background', new UI({
+            name: 'My App',
+            customizable: {
+                style: ['background']
+            }
+        }, this.wsSize))
         setTimeout(() => {
             this.triggerResize();
         }, 200);
