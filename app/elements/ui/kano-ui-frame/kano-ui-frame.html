@@ -5,14 +5,15 @@
     :host {
         display: inline-block;
     }
-    :host iron-image {
-        border: 2px solid var(--color-primary);
+    :host iron-image.empty {
+        @apply(--kano-empty-box);
     }
     </style>
     <template>
         <iron-image id="image"
                     style$="[[computeImageStyle(model.userStyle.*)]]"
-                    sizing="cover"></iron-image>
+                    sizing="cover"
+                    loaded="{{loaded}}"></iron-image>
     </template>
 </dom-module>
 
@@ -27,6 +28,13 @@
 
         beforeRegister () {
             this.is = 'kano-ui-frame';
+            this.observers = [
+                'loadedChanged(loaded)'
+            ];
+        }
+        loadedChanged (loaded) {
+            // Check if the src is set or empty and toggle the class accordingly
+            this.toggleClass('empty', !loaded, this.$.image);
         }
         drawPicture (pic) {
             this.$.image.src = pic;

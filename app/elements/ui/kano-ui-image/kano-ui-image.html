@@ -5,16 +5,18 @@
     :host {
         display: inline-block;
     }
-    :host iron-image {
-        border: 2px solid var(--color-primary);
+    :host iron-image.empty {
+        @apply(--kano-empty-box);
     }
     </style>
     <template>
         <iron-image id="image"
                     src="[[model.userProperties.src]]"
                     style$="[[computeImageStyle(model.userStyle.*)]]"
-                    sizing="cover"
-                    on-tap="tapped"></iron-image>
+                    sizing="contain"
+                    on-tap="tapped"
+                    class="empty"
+                    loaded="{{loaded}}"></iron-image>
     </template>
 </dom-module>
 
@@ -30,8 +32,12 @@
         beforeRegister () {
             this.is = 'kano-ui-image';
             this.observers = [
-                'onPropertiesChange(model.userProperties.*)'
+                'loadedChanged(loaded)'
             ];
+        }
+        loadedChanged (loaded) {
+            // Check if the src is set or empty and toggle the class accordingly
+            this.toggleClass('empty', !loaded, this.$.image);
         }
         setImage (pic) {
             this.set('model.userProperties.src', pic);
