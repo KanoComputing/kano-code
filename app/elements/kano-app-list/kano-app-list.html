@@ -1,0 +1,141 @@
+<dom-module id="kano-app-list">
+    <style>
+        :host a:hover,
+        :host a:visited,
+        :host a:link,
+        :host a:active {
+            text-decoration: none;
+            color: #4B4B4B;
+        }
+        :host .app-list {
+            @apply(--layout-horizontal);
+            @apply(--layout-wrap);
+            @apply(--layout-center);
+            @apply(--layout-center-justified);
+            width: 100%;
+            justify-content: initial;
+            align-items: initial;
+        }
+        :host .block {
+            width: 100%;
+            @apply(--layout-vertical);
+            @apply(--layout-center);
+            margin-bottom: 20px;
+        }
+        @media screen and (min-width: 768px) {
+            .block {
+                width: 50%;
+            }
+        }
+        @media screen and (min-width: 1270px) {
+            .block {
+                width: 25%;
+            }
+        }
+        :host .app-list-item {
+            display: inline-block;
+            @apply(--layout-vertical);
+            @apply(--layout-center);
+            border-radius: 4px;
+            overflow: hidden;
+            @apply(--shadow-elevation-2dp);
+        }
+        :host .app-list-item:hover {
+            cursor: pointer;
+        }
+        :host .app-list-item .app-list-item-image {
+            width: 250px;
+            height: 250px;
+        }
+        :host .app-list-item .info {
+            @apply(--layout-horizontal);
+            width: 100%;
+            padding: 10px;
+            background: var(--color-white, white);
+        }
+        :host .app-list-item .app-name {
+            color: var(--color-black, black);
+            font-size: 1.3em;
+        }
+        :host .new-app {
+            width: 250px;
+            height: 295px;
+            align-items: center;
+            justify-content: center;  
+            font-size: 36px;
+        }
+    </style>
+    <template>
+    <div class="app-list">
+        <template is="dom-if" if="{{isMyApps}}">
+        <div class="block">
+            <a class="app-list-item new-app" href="/make">
+                + New App
+            </a>
+        </div>
+        </template>
+        <template is="dom-repeat" items="{{apps}}" as="app">
+            <div class="block">
+                <a class="app-list-item" href="//apps.kano.me/#!/app/{{app.id}}">
+                    <iron-image src="{{app.cover_url}}" fade sizing="cover" class="app-list-item-image"></iron-image>
+                    <div class="info">
+                        <div class="app-name">{{app.title}}</div>
+                    </div>
+                </a>
+            </div>
+        </template>
+    </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    /* globals Polymer */
+    /* globals app */
+    class KanoAppList {
+        beforeRegister () {
+            this.is = 'kano-app-list';
+            this.properties = {
+                limit: {
+                    type: Number,
+                    value: 48
+                },
+                view: {
+                    type: String
+                },
+                viewFlags: {
+                    type: Object
+                },
+                user: {
+                    type: Object,
+                    value: null,
+                    observer: 'getMyApps'
+                },
+            }
+        }
+
+        attached() {
+
+            if (this.view === 'my') {
+                this.isMyApps = true;
+            }
+            this.getApps();
+        }
+
+        getMyApps() {
+            let userId = this.user ? this.user.id : null;
+
+            if (this.view === 'my' && userId !== null) {
+                this.getApps(userId); 
+            }
+        }
+
+        getApps (userId) {
+            app.sdk.api.share.list({},{ app_name: 'make-apps', user_id: userId, limit: this.limit})
+                .then((apps) => {
+                    this.set('apps', apps.body.entries);
+                });
+        }
+    }
+
+    Polymer(KanoAppList);
+</script>

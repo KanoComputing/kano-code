@@ -1,0 +1,87 @@
+<dom-module id="kano-view-apps">
+    <style>
+        :host {
+            display: block;
+            position: relative;
+            @apply(--layout-vertical);
+            @apply(--layout-center);
+            background-color: #DCDCDC;
+            padding-top: 20px;
+        }
+        :host a:hover,
+        :host a:visited,
+        :host a:link,
+        :host a:active {
+            text-decoration: none;
+            color: #4B4B4B;
+        }
+        :host h1 {
+            color: #4B4B4B;
+            font-weight: 600;
+            text-align: center;
+        }
+        :host .container {
+            width: 100%;
+            padding: 0 35px;
+        }
+        :host .logo-holder {
+            width: 100%;
+            text-align: center;
+        }
+        :host .back-to-home {
+            float:left;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 45px;
+            position: absolute;
+        }
+        @media screen and (min-width: 550px) {
+            .container {
+                padding: 0 100px;
+            }
+            .logo-holder {
+                text-align: left;
+            }
+        }
+    </style>
+    <template>
+        <style include="kano-style"></style>
+        <div class="container">
+            <div class="logo-holder"><iron-image src="../../assets/logo.png" preload></iron-image></div>
+            <a href="/" class="back-to-home">&lt; Home</a>
+            <h1>{{appListHeader}}</h1>
+            <kano-app-list view="{{view}}" user="[[user]]"></kano-app-list>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    /* globals Polymer */
+    /* globals app */
+    class KanoViewApps{
+        beforeRegister () {
+            this.is = 'kano-view-apps';
+            this.properties = {
+                view: {
+                    type: String
+                },
+                appListHeader: {
+                    type: String
+                }
+            }
+        }
+        attached () {
+            let view = app.ctx.params.view,
+                appListHeader = 'Apps';
+
+            if (view === 'my') {
+                appListHeader = 'My Apps'
+            } 
+
+            this.appListHeader = appListHeader;
+            this.view = view;
+        }
+    }
+
+    Polymer(KanoViewApps);
+</script>

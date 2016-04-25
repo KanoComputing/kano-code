@@ -1,36 +1,35 @@
-<dom-module id="kano-view-stories">
+<dom-module id="kano-projects">
     <style>
-        :host {
-            display: block;
-            position: relative;
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-            background-color: var(--color-grey-darker);
-        }
         :host a:hover,
         :host a:visited,
         :host a:link,
         :host a:active {
             text-decoration: none;
         }
-        :host h1 {
-            color: var(--color-white, white);
-            font-weight: 400;
-        }
-        :host .stories {
+        :host .projects {
             @apply(--layout-horizontal);
             @apply(--layout-wrap);
             @apply(--layout-center);
             @apply(--layout-center-justified);
-            @apply(--layout-flex);
+            width: 100%;
         }
         :host .block {
-            width: 30%;
+            width: 100%;
             @apply(--layout-vertical);
             @apply(--layout-center);
             margin-bottom: 20px;
         }
-        :host .story {
+        @media screen and (min-width: 768px) {
+            .block {
+                width: 50%;
+            }
+        }
+        @media screen and (min-width: 1270px) {
+            .block {
+                width: 25%;
+            }
+        }
+        :host .project {
             display: inline-block;
             @apply(--layout-vertical);
             @apply(--layout-center);
@@ -38,33 +37,32 @@
             overflow: hidden;
             @apply(--shadow-elevation-2dp);
         }
-        :host .story:hover {
+        :host .project:hover {
             cursor: pointer;
         }
-        :host .story .story-image {
+        :host .project .project-image {
             width: 250px;
             height: 250px;
         }
-        :host .story .info {
+        :host .project .info {
             @apply(--layout-horizontal);
             width: 100%;
             padding: 10px;
             background: var(--color-white, white);
         }
-        :host .story .story-name {
+        :host .project .project-name {
             color: var(--color-black, black);
             font-size: 1.3em;
         }
     </style>
     <template>
-        <h1>Projects</h1>
-        <div class="stories">
-            <template is="dom-repeat" items="{{stories}}" as="story">
+        <div class="projects">
+            <template is="dom-repeat" items="{{projects}}" as="project">
                 <div class="block">
-                    <a class="story" href="/story/{{story.id}}">
-                        <iron-image src="{{story.image}}" fade sizing="cover" class="story-image"></iron-image>
+                    <a class="project" href="/project/{{project.id}}">
+                        <iron-image src="{{project.image}}" fade sizing="cover" class="project-image"></iron-image>
                         <div class="info">
-                            <div class="story-name">{{story.name}}</div>
+                            <div class="project-name">{{project.name}}</div>
                             <iron-image></iron-image>
                         </div>
                     </a>
@@ -74,4 +72,22 @@
     </template>
 </dom-module>
 
-<script src="./kano-view-stories.js"></script>
+<script type="text/javascript">
+    /* globals Polymer */
+    /* globals app */
+    class KanoProjects {
+        beforeRegister () {
+            this.is = 'kano-projects';
+            this.properties = {
+            }
+        }
+        attached () {
+            app.stories.list()
+                .then((projects) => {
+                    this.set('projects', projects);
+                });
+        }
+    }
+
+    Polymer(KanoProjects);
+</script>

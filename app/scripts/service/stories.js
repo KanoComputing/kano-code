@@ -4,13 +4,13 @@ class Stories {
     }
     list () {
         return Promise.resolve([{
+            name: 'ISS tracker',
+            id: 'space_tracker',
+            image: '/assets/stories/space_tracker/space-tracker.svg'
+        },{
             name: 'Weather',
             id: 'weather',
             image: '/assets/stories/weather/weather.svg'
-        },{
-            name: 'Space tracker',
-            id: 'space_tracker',
-            image: '/assets/stories/space_tracker/space-tracker.svg'
         },{
             name: 'AI Robot',
             id: 'ai_robot',
@@ -19,14 +19,6 @@ class Stories {
             name: 'Cat Factory',
             id: 'cat_factory',
             image: '/assets/stories/cat-factory.svg'
-        },{
-            name: 'Petri Programmer',
-            id: 'petri_programmer',
-            image: '/assets/stories/petri-programmer.svg'
-        },{
-            name: 'Umbrella Time',
-            id: 'ai_robot',
-            image: '/assets/stories/umbrella-time.svg'
         }]);
     }
     getById (id) {

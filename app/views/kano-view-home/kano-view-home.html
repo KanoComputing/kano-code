@@ -1,0 +1,123 @@
+<dom-module id="kano-view-home">
+    <style>
+        :host {
+            display: block;
+            position: relative;
+            @apply(--layout-vertical);
+            @apply(--layout-center);
+            background-color: #DCDCDC;
+        }
+        :host .pure-g [class *= "pure-u"] {
+            font-family: 'Bariol', Helvetica, Arial, sans-serif;
+        }
+        :host a:hover,
+        :host a:visited,
+        :host a:link,
+        :host a:active {
+            text-decoration: none;
+            color: #4B4B4B;
+        }
+        :host h1 {
+            color: #4B4B4B;
+            font-weight: 600;
+            display: inline-block;
+        }
+        :host .container {
+            width: 100%;
+            padding: 0 100px;
+        }
+        :host .banner {
+            background-color: #444444;
+            width: 100%;
+            text-align: center;
+        }
+        :host .banner-content {
+            display: inline-block;
+        }
+        :host .banner-image, .banner-text {
+            text-align: center;
+        }
+        :host .banner-text > div {
+            padding:10px;
+            line-height: 1.5em;
+            font-size: 24px;
+            color: white;
+        }
+        :host .see-all {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-left: 10px;
+        }
+        :host a.button {
+            background-color: #7DC242;
+            color: #fff;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            -webkit-font-smoothing: antialiased;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            display: inline-block;
+            padding: 10px 15px;
+            text-transform: uppercase;
+            font-size: 15px;
+            font-weight: bold;
+        };
+        @media screen and (min-width: 550px) {
+            .banner-text {
+                padding: 50px 100px;
+                text-align: left;
+            }
+            .banner-image {
+                padding: 20px;
+            }
+            .make-app-button {
+                margin-left: 10px;
+                margin-top: 20px;
+            }
+        }
+        @media screen and (min-width: 1400px) {
+            .banner-content {
+                width: 1400px;
+            }
+            .banner-image {
+                padding: 0 100px;
+            }
+        }
+    </style>
+    <template>
+        <div class="banner">
+            <div class="banner-content pure-g">
+                <div class="banner-text pure-u-1 pure-u-md-1-2">
+                    <div><iron-image src="../../assets/logo.png" preload ></iron-image></div>
+                    <div>Follow simple steps, grab live data from the International Space Station and in minutes create your first real app to share with friends.</div>
+                    <a class="link style-scope kano-app button make-app-button" href="/story/space_tracker">Make your first app</a>
+                </div>
+                <div class="banner-image pure-u-1 pure-u-md-1-2"><img src="../../assets/stories/space_tracker/iss.svg" /></div></div>
+            </div>
+        </div>
+        <div class="container">
+            <h1>Projects</h1>
+            <kano-projects></kano-projects>
+            <h1>My Apps</h1><a class="see-all" href="/apps/my">See all &gt;</a>
+            <kano-app-list limit="3" view="my" user="[[user]]"></kano-app-list>
+            <h1>Latest Apps</h1><a class="see-all" href="/apps">See all &gt;</a>
+            <kano-app-list limit="4"></kano-app-list>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    /* globals Polymer */
+    /* globals app */
+    class KanoViewHome {
+        beforeRegister () {
+            this.is = 'kano-view-home';
+            this.properties = {
+            }
+        }
+    }
+
+    Polymer(KanoViewHome);
+</script>

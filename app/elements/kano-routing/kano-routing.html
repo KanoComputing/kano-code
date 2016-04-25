@@ -15,7 +15,7 @@
           width: 100%;
       }
     </style>
-    <kano-view id="view" view-name="[[currentView]]"></kano-view>
+    <kano-view id="view" view-name="[[currentView]]" flex-enabled="[[flexEnabled]]" user="[[user]]"></kano-view>
   </template>
   <script>
   /* globals Polymer, page */
@@ -26,9 +26,13 @@
               ctx: {
                   type: Object,
                   notify: true
+              },
+              user: {
+                  type: Object              
               }
           };
       }
+
       /**
        * Initialize the views
        */
@@ -39,7 +43,10 @@
                   url: '/make'
               }]
           };
-          page('/', this.partial('kano-view-stories'));
+
+          page('/', this.partial('kano-view-home'));
+          page('/apps', this.partial('kano-view-apps'));
+          page('/apps/:view', this.partial('kano-view-apps'));
           page('/make', this.partial('kano-view-workshop'));
           page('/preview', this.partial('kano-view-preview'));
           page('/story/:id', this.partial('kano-view-story'));
@@ -58,7 +65,9 @@
           return (ctx) => {
               ctx.links = this.viewLinks[ctx.path];
               this.ctx = ctx;
+              this.flexEnabled = (name === 'kano-view-home' || name === 'kano-view-apps') ? false : true;
               this.currentView = name;
+              
           };
       }
 

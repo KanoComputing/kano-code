@@ -19,7 +19,7 @@
                 },
                 location: {
                     type: String,
-                    value: 'views',
+                    value: 'views'
                 },
                 attributes: {
                     type: Object,
@@ -27,6 +27,13 @@
                         return {};
                     },
                     notify: true
+                },
+                flexEnabled: {
+                    type: Boolean,
+                    value: true
+                },
+                user: {
+                    type: Object
                 }
             };
             this.observers = [
@@ -71,7 +78,9 @@
             this.mountComponent(view);
         }
         mountComponent (component) {
-            component.style.flex = 1;
+            component.style.flex = this.flexEnabled ? 1 : 'none';
+            component.user = this.user;
+
             while (this.firstChild) {
                 this.removeChild(this.firstChild);
             }
