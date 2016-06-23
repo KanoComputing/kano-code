@@ -76,7 +76,7 @@
         <div class="projects">
             <template is="dom-repeat" items="{{projects}}" as="project" on-dom-change="updateAnimation">
                 <div class="block">
-                    <a class$="project [[computeProjectClass(project)]]" href="/story/{{project.id}}">
+                    <a id$="[[project.id]]" class$="project [[computeProjectClass(project)]]" href="/story/{{project.id}}" on-tap="_onProjectTap">
                         <iron-image src="{{project.image}}" fade sizing="cover" class="project-image"></iron-image>
                         <div class="info">
                             <div class="project-name">{{project.name}}</div>
@@ -145,6 +145,15 @@
                 }]
             };
             this.playAnimation('entry');
+        },
+        _onProjectTap (e) {
+            let project = e.model.get('project'),
+                element = this.$$(`#${project.id}`),
+                image = element.querySelector('iron-image');
+            this.fire('project-tap', {
+                project,
+                image
+            });
         }
     });
 </script>
