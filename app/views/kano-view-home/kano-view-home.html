@@ -148,15 +148,15 @@
                     <img id="logo" src="/assets/make-apps-logo.svg" preload fade/>
                     <h1>Make Apps</h1>
                     <div>Want to control color? Check wind-speed on Mount Everest? Track astronauts in space? Make an app for that! Then share it with friends.</div>
-                    <a id="get-started" class="link style-scope kano-app button make-app-button" href="/story/background_color">Get started</a>
+                    <a id="get-started" class="link style-scope kano-app button make-app-button" href="/story/background_color" on-tap="_onGetStartedTap">Get started</a>
                 </div>
             </div>
         </div>
         <div class="container">
             <h1>Projects</h1>
-            <kano-projects projects="[[projects]]" loading="[[loadingProjects]]"></kano-projects>
+            <kano-projects projects="[[projects]]" loading="[[loadingProjects]]" on-project-tap="_onProjectTap"></kano-projects>
             <h1>My Apps</h1><a class="see-all" href="/apps/my">See all &gt;</a>
-            <kano-app-list limit="3" view="my" apps="[[user_apps]]"></kano-app-list>
+            <kano-app-list limit="3" view="my" apps="[[user_apps]]" on-new-app-tap="_onNewAppTap"></kano-app-list>
             <h1>Latest Apps</h1><a  id="see-all-community" class="see-all" href="/apps">See all &gt;</a>
             <kano-app-list limit="4" apps="[[apps]]"></kano-app-list>
         </div>
@@ -167,7 +167,7 @@
     /* globals Polymer, Kano */
     Polymer({
         is: 'kano-view-home',
-        behaviors: [Kano.Behaviors.ViewBehavior, Kano.Behaviors.NavBarViewBehavior],
+        behaviors: [Kano.Behaviors.ViewBehavior, Kano.Behaviors.NavBarViewBehavior, Polymer.NeonSharedElementAnimatableBehavior],
         properties: {
             projects: {
                 type: Array,
@@ -191,6 +191,16 @@
             });
         },
         ready () {
+            this.animationConfig = {
+                exit: [{
+                    name: 'fade-out-animation',
+                    node: this
+                }, {
+                    name: 'hero-animation',
+                    id: 'image',
+                    fromPage: this
+                }]
+            };
             this.worldRoot = Kano.MakeApps.config.WORLD_URL;
             this.loadingProjects = true;
             Kano.MakeApps.stories.list()
@@ -222,6 +232,43 @@
         },
         _computeNotifications (notifications) {
             return notifications || [];
+        },
+        _onProjectTap (e) {
+            let project = e.detail.project,
+                loader = {
+                    heading: project.name,
+                    message: project.description,
+                    image: project.image,
+                    animatable: this
+                };
+            this.sharedElements = {
+                image: e.detail.image
+            };
+            this.fire('loader-updated', loader);
+        },
+        _onGetStartedTap () {
+            let project = this.projects[0],
+                loader = {
+                    heading: project.name,
+                    message: project.description,
+                    image: project.image,
+                    animatable: this
+                };
+            this.sharedElements = {
+                image: this.$['get-started']
+            };
+            this.fire('loader-updated', loader);
+        },
+        _onNewAppTap (e) {
+            this.sharedElements = {
+                image: e.detail
+            };
+            this.fire('loader-updated', {
+                heading: 'Loading Make Apps editor',
+                message: 'I\'m loading the editor for you to create awesome apps. Almost done...',
+                image: '/assets/make-apps-logo.svg',
+                animatable: this
+            });
         }
     });
 </script>

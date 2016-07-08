@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../kano-transition-screen/kano-transition-screen.html">
 <script src="../../bower_components/page/page.js"></script>
 
 <dom-module id="kano-routing">
@@ -33,6 +35,17 @@
           top: 0px;
           opacity: 1;
       }
+      .loader {
+          position: fixed;
+          top: 0px;
+          left: 0px;
+          width: 100%;
+          height: 100%;
+          @apply(--layout-horizontal);
+          @apply(--layout-center);
+          @apply(--layout-center-justified);
+          z-index: 999;
+      }
     </style>
     <iron-lazy-pages selected="[[page]]" attr-for-selected="name" loading="{{loading}}" restamp>
         <template is="iron-lazy-page" name="home" path="/views/kano-view-home/kano-view-home.html">
@@ -54,12 +67,14 @@
             <kano-view-flags context="[[context]]" user="{{user}}"></kano-view-flags>
         </template>
     </iron-lazy-pages>
+    <kano-transition-screen class="loader" id="loader" hidden$="[[loader.hidden]]" loader="[[loader]]"></kano-transition-screen>
     <paper-progress indeterminate class$="[[_computeLoadingClass(loading)]]"></paper-progress>
   </template>
   <script>
   /* globals Polymer, page, Kano */
   Polymer({
       is: 'kano-routing',
+      behaviors: [Polymer.NeonAnimationRunnerBehavior],
       properties: {
           context: {
               type: Object
@@ -71,12 +86,23 @@
               type: String,
               reflectToAttribute: true,
               notify: true
+          },
+          loading: {
+              type: String,
+              observer: '_loadingChanged'
           }
+      },
+      listeners: {
+          'loader-updated': '_onLoaderUpdated',
+          'neon-animation-finish': '_onAnimationFinish'
       },
       /**
        * Initialize the views
        */
       ready () {
+          this.loader = {
+              hidden: true
+          };
           page('/',             this._showPageThunk('home'));
           page('/apps',         this._showPageThunk('apps'));
           page('/apps/:view',   this._showPageThunk('apps'));
@@ -113,6 +139,58 @@
       },
       _computeLoadingClass (loading) {
           return loading ? 'loading' : '';
+      },
+      _isLoaderSet () {
+          return this.loader.heading && this.loader.image && this.loader.message;
+      },
+      _loadingChanged (loading) {
+          if (loading && this._isLoaderSet()) {
+              this.set('loader.hidden', false);
+              this.animationConfig = [{
+                  animatable: this.loader.animatable,
+                  type: 'exit'
+              }, {
+                  animatable: this.$.loader,
+                  type: 'entry'
+              }];
+              this.set('loader.loading', true);
+              this.playAnimation();
+              // End the transition after 2 secs. This ensure, we have the transition screen at least 2 secs on the screen
+              // and not a flash when the loading time is really short
+              setTimeout(() => {
+                  this.set('loader.timeout', true);
+                  this._onLoadingFinish();
+              }, 2000);
+          } else if (this.loader) {
+              // Finish the transition
+              this.set('loader.loading', false);
+              this._onLoadingFinish();
+          }
+      },
+      _onLoadingFinish () {
+          // If the loader is still loading, cancel, the timeout will call this function again when it is done
+          if (this.loader.loading || !this.loader.timeout) {
+              return;
+          }
+          this.animationConfig = [{
+              animatable: this.$.loader,
+              type: 'exit'
+          }];
+          this.playAnimation(undefined, 'exit-transition-screen');
+      },
+      _onAnimationFinish (e) {
+          if (e.detail === 'exit-transition-screen') {
+              this.set('loader', {
+                  hidden: true
+              });
+          }
+      },
+      _onLoaderUpdated (e) {
+          let loaderInfo = e.detail;
+          this.set('loader.heading', loaderInfo.heading);
+          this.set('loader.message', loaderInfo.message);
+          this.set('loader.image', loaderInfo.image);
+          this.set('loader.animatable', loaderInfo.animatable);
       }
   });
   </script>

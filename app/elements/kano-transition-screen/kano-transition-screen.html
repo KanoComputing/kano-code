@@ -1,0 +1,79 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-shared-element-animatable-behavior.html">
+<dom-module id="kano-transition-screen">
+    <style>
+    :host {
+        display: block;
+    }
+    .content {
+        @apply(--layout-horizontal);
+    }
+    #loader-image {
+        width: 200px;
+        height: 200px;
+        border-radius: 4px;
+        @apply(--shadow-elevation-2dp);
+    }
+    .message {
+        margin-left: 24px;
+    }
+    .stencil-box {
+        overflow: hidden;
+    }
+    </style>
+    <template>
+        <div class="content">
+            <iron-image id="loader-image" src="[[loader.image]]"></iron-image>
+            <div class="stencil-box">
+                <div class="message" id="info">
+                    <h1>[[loader.heading]]</h1>
+                    <p>[[loader.message]]</p>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kano-transition-screen',
+            behaviors: [Polymer.NeonSharedElementAnimatableBehavior],
+            properties: {
+                loader: {
+                    type: Object
+                }
+            },
+            ready () {
+                this.animationConfig = {
+                    entry: [{
+                        name: 'hero-animation',
+                        id: 'image',
+                        toPage: this
+                    }, {
+                        name: 'slide-from-left-animation',
+                        node: this.$.info,
+                        timing: {
+                            delay: 500
+                        }
+                    }, {
+                        name: 'fade-in-animation',
+                        node: this.$.info,
+                        timing: {
+                            delay: 500
+                        }
+                    }],
+                    exit: [{
+                        name: 'fade-out-animation',
+                        node: this
+                    }, {
+                        name: 'transform-animation',
+                        node: this.$['loader-image'],
+                        transformTo: 'scale(3, 3)',
+                        transformOrigin: 'center center'
+                    }]
+                };
+                this.sharedElements = {
+                    image: this.$['loader-image']
+                };
+            }
+        });
+    </script>
+</dom-module>

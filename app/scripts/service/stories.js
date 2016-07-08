@@ -2,6 +2,7 @@ let cache = {},
     stories = [{
         name: 'Random colors',
         id: 'background_color',
+        description: 'I\'m preparing the editor for you to make an app that control colors. Almost there...',
         image: '/assets/stories/background_color/background-color.svg',
         icon: '/assets/stories/background_color/color-icon.png',
         progress: {
@@ -12,6 +13,7 @@ let cache = {},
     },{
         name: 'Sports ticker',
         id: 'sports_round',
+        description: 'I\'m preparing the editor for you to make an app that displays sports news. Almost there...',
         image: '/assets/stories/sports_round/sports-round.svg',
         icon: '/assets/stories/sports_round/sports-icon.png',
         progress: {
@@ -22,6 +24,7 @@ let cache = {},
     },{
         name: 'ISS tracker',
         id: 'space_tracker',
+        description: 'I\'m preparing the editor for you to make an app that tracks the International Space Station. Almost there...',
         image: '/assets/stories/space_tracker/space-tracker.svg',
         icon: '/assets/stories/space_tracker/iss-icon.png',
         progress: {
