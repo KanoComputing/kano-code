@@ -14,6 +14,30 @@ import config from './config';
 window.Kano = window.Kano || {};
 
 (function (MakeApps) {
+    fetch('https://10.0.30.142:8000')
+        .then(function (res) {
+            console.log(res);
+        }).catch(function (err) {
+            console.log("err");
+        });
+
+    fetch('https://10.0.30.142:8000', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: 'Hubot',
+            login: 'hubot'
+        })
+    })
+        .then(function (res) {
+            console.log(res);
+        }).catch(function (err) {
+            console.log("err");
+        });
+
     MakeApps.config = config;
 
     DragAndDrop.init({ workspaceFullSize: config.WORKSPACE_FULL_SIZE });
