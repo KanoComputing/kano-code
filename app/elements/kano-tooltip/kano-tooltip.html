@@ -147,9 +147,22 @@
     :host button {
         @apply(--kano-button);
     }
+    :host button.minimize {
+        position: absolute;
+        right: 10px;
+        top: 7px;
+        padding: 5px 10px;
+        background: var(--kano-tooltip-background-color, white);
+        color: #2E7D9C; /* lighter version of var(--kano-tooltip-background-color, white);*/
+    }
+    :host button.minimize:hover {
+        color: white;
+    }
+
     </style>
     <template>
         <div class$="tooltip [[position]]" id="tooltip">
+            <button class="minimize" type="button">X</button>
             <div class="caret-shadow"></div>
             <content></content>
         </div>
