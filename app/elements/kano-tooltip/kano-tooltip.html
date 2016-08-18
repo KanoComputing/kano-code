@@ -159,13 +159,35 @@
         color: white;
     }
 
+    :host #minimized-tooltip {
+        display: none;
+    }
+    :host([minimized]) #tooltip {
+        display: none;
+    }
+    :host([minimized]) #minimized-tooltip {
+        display: block;
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        background: var(--kano-tooltip-background-color, white);
+        @apply(--shadow-elevation-6dp);
+        cursor: pointer;
+        opacity: 0.7;
+        border-radius: 50%;
+        border: solid;
+        border-color: var(--kano-tooltip-border-color);
+        border-width: var(--kano-tooltip-border-width);
+
+    }
     </style>
     <template>
         <div class$="tooltip [[position]]" id="tooltip">
-            <button class="minimize" type="button">X</button>
+            <button class="minimize" type="button" on-tap="minimize">X</button>
             <div class="caret-shadow"></div>
             <content></content>
         </div>
+        <div id="minimized-tooltip" on-tap="maximize"></div>
     </template>
 </dom-module>
 
@@ -190,6 +212,11 @@
             zIndex: {
                 type: Number,
                 value: null
+            },
+            minimized: {
+                type: Boolean,
+                value: false,
+                reflectToAttribute: true
             }
         },
         observers: [
@@ -317,6 +344,34 @@
             if (this.trackTarget && target && 'getBoundingClientRect' in target) {
                 this.targetTracker = setInterval(this.updatePosition.bind(this), 1000);
             }
+        },
+        minimize: function(){
+            let tip = {}, // tip of the caret
+                size = 40,
+                tooltipRect = this.getBoundingClientRect(),
+                caretRect = this.$$(".caret-shadow").getBoundingClientRect(),
+                style = this.$$("#minimized-tooltip").style;
+            
+            if (this.position === "top") {
+                tip.top = caretRect.top + caretRect.height;
+                tip.left = caretRect.left + (caretRect.width / 2);
+            } else if (this.position === "bottom") {
+                tip.top = caretRect.top;
+                tip.left = caretRect.left + (caretRect.width / 2);
+            } else if (this.position === "left") {
+                tip.top = caretRect.top + (caretRect.height / 2);
+                tip.left = caretRect.right;
+            } else if (this.position === "right") {
+                tip.top = caretRect.top + (caretRect.height / 2);
+                tip.left = caretRect.left;
+            }
+            style.top = `${(tip.top - tooltipRect.top) - (size/2)}px`;
+            style.left = `${(tip.left - tooltipRect.left)- (size/2)}px`;
+
+            this.minimized = true;
+        },
+        maximize: function(){
+            this.minimized = false;
         }
     });
 </script>
