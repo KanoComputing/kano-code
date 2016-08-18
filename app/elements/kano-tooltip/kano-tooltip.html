@@ -158,14 +158,14 @@
     :host button.minimize:hover {
         color: white;
     }
-
     :host #minimized-tooltip {
-        display: none;
+        visibility: hidden;
     }
     :host([minimized]) #tooltip {
-        display: none;
+        visibility: hidden;
     }
     :host([minimized]) #minimized-tooltip {
+        visibility: visible;
         display: block;
         position: absolute;
         width: 40px;
@@ -352,6 +352,7 @@
                 caretRect = this.$$(".caret-shadow").getBoundingClientRect(),
                 style = this.$$("#minimized-tooltip").style;
             
+            // calculate the tip of the caret, so we can put the dot there
             if (this.position === "top") {
                 tip.top = caretRect.top + caretRect.height;
                 tip.left = caretRect.left + (caretRect.width / 2);
