@@ -38,7 +38,7 @@ export default light = {
         javascript: (part) => {
             return (block) => {
                 let target = Blockly.JavaScript.valueToCode(block, 'TARGET') || '',
-                    color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '""',
+                    color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '"#ffffff"',
                     code = `devices.get('${part.id}').turnOn(${target}, ${color});\n`;
                 return code;
             };
