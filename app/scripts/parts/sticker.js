@@ -27,7 +27,7 @@ export default sticker = {
         style: []
     },
     userProperties: {
-        size: '100px'
+        size: 100
     },
     events: [{
         label: 'is clicked',
