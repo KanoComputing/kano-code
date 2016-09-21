@@ -23,6 +23,9 @@
     :host .line {
         @apply(--layout-vertical);
         @apply(--layout-start);
+        margin-top: 12px;
+        margin-bottom: 20px;
+        text-align: left;
     }
     :host .refresh-button {
         @apply(--layout-vertical);
@@ -53,10 +56,6 @@
     }
     :host paper-spinner-lite {
         --paper-spinner-color: var(--primary-color, orange);
-    }
-    :host .line {
-        margin-top: 12px;
-        margin-bottom: 20px;
     }
     :host .data-browser {
         position: relative;
@@ -92,10 +91,8 @@
         <div class="content">
             <div class="config">
                 <template is="dom-repeat" items="[[selected.parameters]]" as="param">
-                    <div class="line">
-                        <kano-input id="[[param.key]]" type="[[param.type]]" label="[[param.label]]" options="[[param.options]]" value="[[_computeInputValue(param.key, param.value, selected.config)]]" on-change="paramChanged"></kano-input>
-                        <span class="param-description">[[param.description]]</span>
-                    </div>
+                    <kano-input id="[[param.key]]" type="[[param.type]]" label="[[param.label]]" options="[[param.options]]" value="[[_computeInputValue(param.key, param.value, selected.config)]]" on-change="paramChanged"></kano-input>
+                    <span class="param-description">[[param.description]]</span>
                 </template>
                 <div class="line" id="refresh-toggle">
                     <paper-toggle-button checked="{{selected.refreshEnabled}}">Refresh</paper-toggle-button>

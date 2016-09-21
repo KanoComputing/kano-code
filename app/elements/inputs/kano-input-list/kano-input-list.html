@@ -7,10 +7,11 @@
     <style>
     :host {
         display: block;
+        text-align: left;
     }
     </style>
     <template>
-        <paper-dropdown-menu label="[[label]]">
+        <paper-dropdown-menu noink no-animations label="[[label]]">
             <paper-listbox class="dropdown-content" selected="{{value}}" attr-for-selected="value">
                 <template is="dom-repeat" items="[[options]]" as="option">
                     <paper-item value="[[option.value]]">[[option.label]]</paper-item>
