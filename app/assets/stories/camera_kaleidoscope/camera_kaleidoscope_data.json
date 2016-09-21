@@ -5,7 +5,7 @@
 				{
 					"location": "add-part-button",
 					"position": "top",
-					"text": "Get started by adding parts to your app.<br>Open the parts drawer (click the green circle)."
+					"text": "We'll start by adding parts to our app.<br>Open the parts drawer by clicking here."
 				}
 			],
 			"validation": {
@@ -15,51 +15,9 @@
 		{
 			"tooltips": [
 				{
-					"location": "sidebar.parts.part-button",
-					"position": "right",
-					"text": "Drag the Button to your app"
-				}
-			],
-			"highlight": "sidebar.parts.part-button",
-			"arrow": {
-				"source": "sidebar.parts.part-button",
-				"target": "left-panel",
-				"size": 120
-			},
-			"validation": {
-				"add-part": {
-					"type": "button",
-					"id": "part_0"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "sidebar.parts.part-kaleidoscope",
-					"position": "right",
-					"text": "Drag the Kaleidoscope to your app on the left"
-				}
-			],
-			"highlight": "sidebar.parts.part-kaleidoscope",
-			"arrow": {
-				"source": "sidebar.parts.part-kaleidoscope",
-				"target": "left-panel",
-				"size": 120
-			},
-			"validation": {
-				"add-part": {
-					"type": "kaleidoscope",
-					"id": "part_0"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
 					"location": "sidebar.parts.part-slider",
 					"position": "right",
-					"text": "Now add a slider to your app too.<br/>You can use it to control the kaleidoscope."
+					"text": "Drag the Slider to your app"
 				}
 			],
 			"highlight": "sidebar.parts.part-slider",
@@ -71,28 +29,7 @@
 			"validation": {
 				"add-part": {
 					"type": "slider",
-					"id": "part_1"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "sidebar.parts.part-slider",
-					"position": "right",
-					"text": "Two sliders are better that one.<br />Grab another and add it to your app."
-				}
-			],
-			"highlight": "sidebar.parts.part-slider",
-			"arrow": {
-				"source": "sidebar.parts.part-slider",
-				"target": "left-panel",
-				"size": 120
-			},
-			"validation": {
-				"add-part": {
-					"type": "slider",
-					"id": "part_2"
+					"id": "part_0"
 				}
 			}
 		},
@@ -101,7 +38,7 @@
 				{
 					"location": "add-part-button",
 					"position": "top",
-					"text": "Nice! That's all the parts you need.<br />Close the drawer to begin coding."
+					"text": "All the parts are here, let's code!<br>Hit that button"
 				}
 			],
 			"validation": {
@@ -112,496 +49,10 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": {
-							"rawId": "default_part_event_id"
-						}
-					},
-					"position": "bottom",
-					"text": "This is an 'event'. When the event happens,<br />the code runs. Change the event from<br />‘app starts’ to ‘Camera takes picture’"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"rawId": "default_part_event_id"
-						},
-						"value": "camera.picture-taken"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "left",
-					"text": "The Kaleidoscope code is in here.<br />Click on the word 'Kaleidoscope'."
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "set_image"
-						}
-					},
-					"position": "bottom",
-					"text": "Drag the block that looks like this <br /><kano-blockly-block type=\"part_0#set_image\"></kano-blockly-block>"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "set_image"
-					}
-				},
-				"angle": 315,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "set_image",
-						"id": "block_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"rawId": "default_part_event_id"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to the event"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"rawId": "default_part_event_id"
-						},
-						"target": "block_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "camera"
-					},
-					"position": "left",
-					"text": "The camera code is in here.<br /> Click to see what's there."
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "camera"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "camera#last_picture"
-					},
-					"position": "bottom",
-					"text": "Drag this block to your code<br /><kano-blockly-block type=\"camera#last_picture\"></kano-blockly-block>"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "camera#last_picture"
-				},
-				"angle": 315,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "camera#last_picture",
-						"id": "block_1"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": "block_0"
-					},
-					"position": "left",
-					"text": "Connect it here so that when<br />the camera takes a picture,<br />the kaleidoscope image updates."
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": "block_0",
-						"target": "block_1"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_1"
-						}
-					},
-					"position": "left",
-					"text": "Now you can set up the sliders<br />to control the kaleidoscope."
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_1"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_1",
-							"type": "connect"
-						}
-					},
-					"position": "bottom",
-					"text": "Grab the block which looks like this<br/><kano-blockly-block type=\"part_1#connect\"></kano-blockly-block>"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_1",
-						"type": "connect"
-					}
-				},
-				"angle": 315,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_1",
-						"type": "connect",
-						"id": "block_2"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": "block_0"
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": "block_0",
-						"target": "block_2"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "left",
-					"text": "Open the Kaleidoscope tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "get_property"
-						}
-					},
-					"position": "left",
-					"text": "Grab one of these blocks<br/><kano-blockly-block type=\"part_0#get_property\"></kano-blockly-block>"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "get_property"
-					}
-				},
-				"angle": 315,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "get_property",
-						"id": "block_3"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": "block_2"
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": "block_2",
-						"target": "block_3"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": "block_3"
-					},
-					"position": "bottom",
-					"text": "You can decide how the slider will<br />change the kaleidoscope with this menu.<br />Change <kano-value-preview>speed</kano-value-preview> to <kano-value-preview>slices</kano-value-preview>."
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": "block_3",
-						"value": "model.userProperties.slices"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_2"
-						}
-					},
-					"position": "left",
-					"text": "Now set the other slider.<br />Click on its tray."
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_2"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_2",
-							"type": "connect"
-						}
-					},
-					"position": "bottom",
-					"text": "Grab one of these blocks<br /><kano-blockly-block type=\"part_2#connect\"></kano-blockly-block>"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_2",
-						"type": "connect"
-					}
-				},
-				"angle": 315,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_2",
-						"type": "connect",
-						"id": "block_4"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": "block_2"
-					},
-					"position": "left",
-					"text": "Connect it to the bottom of your code"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": "block_2",
-						"target": "block_4"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "left",
-					"text": "Open the Kaleidoscope tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "get_property"
-						}
-					},
-					"position": "left",
-					"text": "Use another of these blocks<br /><kano-blockly-block type=\"part_0#get_property\"></kano-blockly-block>"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "get_property"
-					}
-				},
-				"angle": 315,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "get_property",
-						"id": "block_5"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": "block_4"
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": "block_4",
-						"target": "block_5"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": "block_5"
-					},
-					"position": "top",
-					"text": "This time, change <kano-value-preview>speed</kano-value-preview> to <kano-value-preview>rotation offset</kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": "block_5",
-						"value": "model.userProperties.offsetRotation"
-					}
-				}
-			}
-		},
-        {
-			"tooltips": [
-				{
-					"location": {
 						"category": "events"
 					},
 					"position": "left",
-					"text": "Open this tray"
+					"text": "Open the Events tray"
 				}
 			],
 			"validation": {
@@ -631,12 +82,12 @@
 				"blockly": {
 					"create": {
 						"type": "part_event",
-						"id": "block_6"
+						"id": "block_0"
 					}
 				}
 			}
 		},
-        {
+		{
 			"tooltips": [
 				{
 					"location": "right-panel",
@@ -647,7 +98,7 @@
 			"validation": {
 				"blockly": {
 					"drop": {
-						"target": "block_6"
+						"target": "block_0"
 					}
 				}
 			}
@@ -656,17 +107,98 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_6"
+						"category": "control"
+					},
+					"position": "left",
+					"text": "Open the Control tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "control"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "every_x_seconds"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "every_x_seconds"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "every_x_seconds",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "VM{b|2b2X7%i~g=OXdGI"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "VM{b|2b2X7%i~g=OXdGI",
+							"inputName": "DO"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "VM{b|2b2X7%i~g=OXdGI"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1"
+						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>Button is clicked</kano-value-preview>"
+					"text": "Change to <kano-value-preview>frames</kano-value-preview>"
 				}
 			],
 			"validation": {
 				"blockly": {
 					"value": {
-						"target": "block_6",
-						"value": "button.clicked"
+						"target": {
+							"id": "block_1"
+						},
+						"value": "frames"
 					}
 				}
 			}
@@ -691,15 +223,15 @@
 			"tooltips": [
 				{
 					"location": {
-						"flyout_block": "camera#take_picture"
+						"flyout_block": "camera#filter_kaleidoscope"
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"camera#take_picture\"></kano-blockly-block> block onto your code space"
+					"text": "Drag the <kano-blockly-block type=\"camera#filter_kaleidoscope\"></kano-blockly-block> block onto your code space"
 				}
 			],
 			"arrow": {
 				"target": {
-					"flyout_block": "camera#take_picture"
+					"flyout_block": "camera#filter_kaleidoscope"
 				},
 				"angle": 315,
 				"size": 80
@@ -707,8 +239,8 @@
 			"validation": {
 				"blockly": {
 					"create": {
-						"type": "camera#take_picture",
-						"id": "block_7"
+						"type": "camera#filter_kaleidoscope",
+						"id": "block_2"
 					}
 				}
 			}
@@ -717,7 +249,10 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_6"
+						"block": {
+							"id": "block_1",
+							"rawId": "Vt`S[OELGy0r}FB/^~r#"
+						}
 					},
 					"position": "left",
 					"text": "Connect it to this block"
@@ -726,8 +261,41 @@
 			"validation": {
 				"blockly": {
 					"connect": {
-						"parent": "block_6",
-						"target": "block_7"
+						"parent": {
+							"id": "block_1",
+							"rawId": "Vt`S[OELGy0r}FB/^~r#",
+							"inputName": "DO"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "Vt`S[OELGy0r}FB/^~r#"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Slider tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
 					}
 				}
 			}
@@ -735,15 +303,69 @@
 		{
 			"tooltips": [
 				{
-					"location": "make-button",
-					"position": "bottom",
-					"text": "Time to test you app!<br/>Press the play button."
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "get_value"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_0#get_value\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "get_value"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "get_value",
+						"id": "block_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2",
+							"rawId": ".P`FOy#:BR0G6*i}WD]e"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
 				}
 			],
 			"validation": {
-				"running": {
-					"value": true
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_2",
+							"rawId": ".P`FOy#:BR0G6*i}WD]e",
+							"inputName": "ROTATION_OFFSET"
+						},
+						"target": "block_3"
+					}
 				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": ".P`FOy#:BR0G6*i}WD]e"
+					}
+				},
+				"target": "ROTATION_OFFSET"
 			}
 		},
 		{
@@ -751,18 +373,20 @@
 				{
 					"location": "left-panel",
 					"position": "right",
-					"text": "Take a picture with your camera,<br />then try moving the sliders.",
+					"text": "Press the shutter to test your app!",
 					"next_button": true
 				}
 			]
 		}
 	],
 	"parts": [
-		"kaleidoscope",
-		"slider",
-        "button"
+		"slider"
 	],
-	"modules": [],
+	"modules": [
+		"events",
+		"control"
+	],
 	"variables": [],
-	"mode": "camera"
+	"mode": "camera",
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"83\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"><block type=\\\"camera#take_picture\\\" id=\\\"default_take_picture_id\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"camera\"}"
 }

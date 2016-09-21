@@ -1,6 +1,7 @@
 <link rel="import" href="../kano-ui-behavior.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/base.html">
 <script src="../../../scripts/kano/make-apps/text-to-speech.js"></script>
+<link rel="import" href="../../../scripts/kano/make-apps/files/samples.html">
 <dom-module id="kano-part-speaker">
     <style>
     :host {
@@ -78,7 +79,7 @@
             if (this.samples[name]) {
                 return Promise.resolve(this.samples[name]);
             } else {
-                return fetch(`/assets/audio/samples/${name}.wav`)
+                return fetch(Kano.MakeApps.Files.generators.samples(name))
                     .then(res => res.arrayBuffer())
                     .then(data => {
                         return new Promise((resolve, reject) => {

@@ -30,8 +30,9 @@
             text (text, color, backgroundColor) {
                 return this.appModules.getModule('lightboard').text(text, color, backgroundColor);
             },
+            render () {},
             scroll (text, color, backgroundColor, speed) {
-                return this.appModules.getModule('lightboard').scroll(text, color, backgroundColor, speed);
+                return this.appModules.getModule('lightboard').scroll(text, color, backgroundColor, speed, this.render.bind(this));
             },
             _propagateButtonEvent (data) {
                 this.fire("lightboard-" + data['button-id']);

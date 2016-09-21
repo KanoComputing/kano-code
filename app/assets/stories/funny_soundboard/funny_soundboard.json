@@ -1,0 +1,983 @@
+{
+	"steps": [
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "You're going to build a funny soundboard.<br/>Start with three buttons and the speaker part."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-button",
+					"position": "right",
+					"text": "Drag the first button to your app"
+				}
+			],
+			"highlight": "sidebar.parts.part-button",
+			"arrow": {
+				"source": "sidebar.parts.part-button",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "button",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-button",
+					"position": "right",
+					"text": "Two buttons are better than one.<br />Drag another one in."
+				}
+			],
+			"highlight": "sidebar.parts.part-button",
+			"arrow": {
+				"source": "sidebar.parts.part-button",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "button",
+					"id": "part_1"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-button",
+					"position": "right",
+					"text": "Those two buttons look a little lonely.<br />Add one more."
+				}
+			],
+			"highlight": "sidebar.parts.part-button",
+			"arrow": {
+				"source": "sidebar.parts.part-button",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "button",
+					"id": "part_2"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-speaker",
+					"position": "right",
+					"text": "Drag the Speaker into your app too"
+				}
+			],
+			"highlight": "sidebar.parts.part-speaker",
+			"arrow": {
+				"source": "sidebar.parts.part-speaker",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "speaker",
+					"id": "part_3"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "Close the parts menu to start coding."
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>Button is clicked</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"rawId": "default_part_event_id"
+						},
+						"value": "button.clicked"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_3"
+						}
+					},
+					"position": "left",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_3",
+							"type": "speaker_play"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_play\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_3",
+						"type": "speaker_play"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_3",
+						"type": "speaker_play",
+						"id": "block_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_3"
+						}
+					},
+					"position": "left",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_3",
+							"type": "speaker_sample"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_sample\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_3",
+						"type": "speaker_sample"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_3",
+						"type": "speaker_sample",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "dWa1n5{!bE7w6wE;kMgk"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "dWa1n5{!bE7w6wE;kMgk",
+							"inputName": "SAMPLE"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "dWa1n5{!bE7w6wE;kMgk"
+					}
+				},
+				"target": "SAMPLE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>sounds</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_1"
+						},
+						"value": "sounds"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>crow</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_1"
+						},
+						"value": "misc_crow"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "events"
+					},
+					"position": "left",
+					"text": "Open the Events tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "events"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "part_event"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "part_event"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "part_event",
+						"id": "block_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "right-panel",
+					"position": "left",
+					"text": "Drop the block anywhere on your code space"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"drop": {
+						"target": "block_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>Button 1 is clicked</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_2"
+						},
+						"value": "button1.clicked"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_3"
+						}
+					},
+					"position": "left",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_3",
+							"type": "speaker_play"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_play\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_3",
+						"type": "speaker_play"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_3",
+						"type": "speaker_play",
+						"id": "block_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2",
+							"rawId": "p4!)q:5C,Vwz)?4Wv}q1"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_2",
+							"rawId": "p4!)q:5C,Vwz)?4Wv}q1",
+							"inputName": "DO"
+						},
+						"target": "block_3"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "p4!)q:5C,Vwz)?4Wv}q1"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_3"
+						}
+					},
+					"position": "left",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_3",
+							"type": "speaker_sample"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_sample\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_3",
+						"type": "speaker_sample"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_3",
+						"type": "speaker_sample",
+						"id": "block_4"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_3",
+							"rawId": "0n,SuTS#0!%?NbZw=j:("
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_3",
+							"rawId": "0n,SuTS#0!%?NbZw=j:(",
+							"inputName": "SAMPLE"
+						},
+						"target": "block_4"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_3",
+						"rawId": "0n,SuTS#0!%?NbZw=j:("
+					}
+				},
+				"target": "SAMPLE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_4"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>sounds</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_4"
+						},
+						"value": "sounds"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_4"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>bell</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_4"
+						},
+						"value": "perc_bell"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "events"
+					},
+					"position": "left",
+					"text": "Open the Events tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "events"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "part_event"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "part_event"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "part_event",
+						"id": "block_5"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "right-panel",
+					"position": "left",
+					"text": "Drop the block anywhere on your code space"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"drop": {
+						"target": "block_5"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_5"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>Button 2 is clicked</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_5"
+						},
+						"value": "button2.clicked"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_3"
+						}
+					},
+					"position": "left",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_3",
+							"type": "speaker_play"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_play\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_3",
+						"type": "speaker_play"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_3",
+						"type": "speaker_play",
+						"id": "block_6"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_5",
+							"rawId": "IRlSoQd(`Zsi)iK,GmY?"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_5",
+							"rawId": "IRlSoQd(`Zsi)iK,GmY?",
+							"inputName": "DO"
+						},
+						"target": "block_6"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_5",
+						"rawId": "IRlSoQd(`Zsi)iK,GmY?"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_3"
+						}
+					},
+					"position": "left",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_3",
+							"type": "speaker_sample"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_sample\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_3",
+						"type": "speaker_sample"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_3",
+						"type": "speaker_sample",
+						"id": "block_7"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_6",
+							"rawId": "5(}T0p1oPE#C;Q_n-`7U"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_6",
+							"rawId": "5(}T0p1oPE#C;Q_n-`7U",
+							"inputName": "SAMPLE"
+						},
+						"target": "block_7"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_6",
+						"rawId": "5(}T0p1oPE#C;Q_n-`7U"
+					}
+				},
+				"target": "SAMPLE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_7"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>sounds</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_7"
+						},
+						"value": "sounds"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_7"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>swash</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_7"
+						},
+						"value": "perc_swash"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "left-panel",
+					"position": "right",
+					"text": "You can now test the app",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"button",
+		"speaker"
+	],
+	"modules": [
+		"events"
+	],
+	"variables": [],
+	"mode": "normal",
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"90\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"normal\"}"
+}

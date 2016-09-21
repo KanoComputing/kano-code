@@ -185,6 +185,16 @@
                     // Frame dropped
                 });
             },
+            text (light) {
+                Kano.MakeApps.PartsAPI.lightboard.text.apply(this, arguments).then(bitmap => {
+                    this.render(bitmap);
+                }).catch(e => {
+                    // Frame dropped
+                });
+            },
+            scroll (light) {
+                Kano.MakeApps.PartsAPI.lightboard.scroll.apply(this, arguments);
+            },
             _buttonATapped () {
                 this.fire('lightboard-btn-A');
             },

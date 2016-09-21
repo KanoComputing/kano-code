@@ -200,7 +200,7 @@ export default light = {
         },
         javascript: (part) => {
             return (block) => {
-                let text = Blockly.JavaScript.valueToCode(block, 'TEXT') || '',
+                let text = Blockly.JavaScript.valueToCode(block, 'TEXT') || '""',
                     color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '"#ffffff"',
                     backgroundColor = Blockly.JavaScript.valueToCode(block, 'BACKGROUND_COLOR') || '"#000000"',
                     code = `devices.get('${part.id}').text(${text}, ${color}, ${backgroundColor});\n`;
@@ -209,7 +209,7 @@ export default light = {
         },
         pseudo: (part) => {
             return (block) => {
-                let text = Blockly.Pseudo.valueToCode(block, 'TEXT') || '',
+                let text = Blockly.Pseudo.valueToCode(block, 'TEXT') || '""',
                     color = Blockly.Pseudo.valueToCode(block, 'COLOR') || '"#ffffff"',
                     backgroundColor = Blockly.Pseudo.valueToCode(block, 'BACKGROUND_COLOR') || '"#000000"',
                     code = `devices.get('${part.id}').text(${text}, ${color}, ${backgroundColor});\n`;
@@ -252,7 +252,7 @@ export default light = {
         },
         javascript: (part) => {
             return (block) => {
-                let text = Blockly.JavaScript.valueToCode(block, 'TEXT') || '',
+                let text = Blockly.JavaScript.valueToCode(block, 'TEXT') || '""',
                     color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '"#ffffff"',
                     backgroundColor = Blockly.JavaScript.valueToCode(block, 'BACKGROUND_COLOR') || '"#000000"',
                     speed = Blockly.JavaScript.valueToCode(block, 'SPEED') || '50',
@@ -262,7 +262,7 @@ export default light = {
         },
         pseudo: (part) => {
             return (block) => {
-                let text = Blockly.Pseudo.valueToCode(block, 'TEXT') || '',
+                let text = Blockly.Pseudo.valueToCode(block, 'TEXT') || '""',
                     color = Blockly.Pseudo.valueToCode(block, 'COLOR') || '"#ffffff"',
                     backgroundColor = Blockly.Pseudo.valueToCode(block, 'BACKGROUND_COLOR') || '"#000000"',
                     speed = Blockly.Pseudo.valueToCode(block, 'SPEED') || '50',

@@ -1,475 +1,279 @@
 {
-		"steps": [
-			{
-				"tooltips": [
-					{
-						"location": "add-part-button",
-						"position": "top",
-						"text": "This app needs the microphone part and the image part.<br />Click here to find them."
-					}
-				],
-				"validation": {
-					"open-parts": true
+	"steps": [
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "This app will listen for sounds.<br />Add the microphone part."
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": "sidebar.parts.part-microphone",
-						"position": "right",
-						"text": "Click and drag the Microphone.<br />Drop it your app (on the left)."
-					}
-				],
-				"highlight": "sidebar.parts.part-microphone",
-				"arrow": {
-					"source": "sidebar.parts.part-microphone",
-					"target": "left-panel",
-					"size": 120
-				},
-				"validation": {
-					"add-part": {
-						"type": "microphone",
-						"id": "part_0"
-					}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-microphone",
+					"position": "right",
+					"text": "Drag the Mic to your app"
 				}
+			],
+			"highlight": "sidebar.parts.part-microphone",
+			"arrow": {
+				"source": "sidebar.parts.part-microphone",
+				"target": "left-panel",
+				"size": 120
 			},
-			{
-				"tooltips": [
-					{
-						"location": "sidebar.parts.part-image",
-						"position": "right",
-						"text": "Now drag an image in too"
-					}
-				],
-				"highlight": "sidebar.parts.part-image",
-				"arrow": {
-					"source": "sidebar.parts.part-image",
-					"target": "left-panel",
-					"size": 120
-				},
-				"validation": {
-					"add-part": {
-						"type": "image",
-						"id": "part_1"
-					}
+			"validation": {
+				"add-part": {
+					"type": "microphone",
+					"id": "part_0"
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": "add-part-button",
-						"position": "top",
-						"text": "Alright! Let's code!<br>Close the parts tray."
-					}
-				],
-				"validation": {
-					"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "Now we can start coding.<br>Close the drawer."
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"category": {
-								"part": "part_0"
-							}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"rawId": "default_event_part_id"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>app starts</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"rawId": "default_event_part_id"
 						},
-						"position": "left",
-						"text": "Microphone code blocks are in here.<br />Click the button to see them."
+						"value": "global.start"
 					}
-				],
-				"validation": {
-					"blockly": {
-						"open-flyout": {
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
 							"part": "part_0"
 						}
+					},
+					"position": "left",
+					"text": "Open the Mic tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
 					}
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"flyout_block": {
-								"part": "part_0",
-								"type": "threshold"
-							}
-						},
-						"position": "left",
-						"text": "Drag the block that looks like this ...<br/><kano-blockly-block type=\"part_0#threshold\"></kano-blockly-block>"
-					}
-				],
-				"arrow": {
-					"target": {
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
 						"flyout_block": {
 							"part": "part_0",
 							"type": "threshold"
 						}
 					},
-					"angle": 315,
-					"size": 80
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_0#threshold\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "threshold"
+					}
 				},
-				"validation": {
-					"blockly": {
-						"create": {
-							"target": "part_0",
-							"type": "threshold",
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "threshold",
+						"id": "block_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_event_part_id"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_event_part_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_event_part_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "VALUE",
 							"id": "block_0"
 						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>90</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "VALUE",
+							"id": "block_0"
+						},
+						"value": "90"
 					}
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"block": {
-								"rawId": "default_part_event_id"
-							}
-						},
-						"position": "left",
-						"text": "... and connect it to this block."
-					}
-				],
-				"validation": {
-					"blockly": {
-						"connect": {
-							"parent": {
-								"rawId": "default_part_event_id"
-							},
-							"target": "block_0"
-						}
-					}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "camera"
+					},
+					"position": "left",
+					"text": "Open this tray"
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"block": {
-								"id": "block_0",
-								"shadow": "VALUE"
-							}
-						},
-						"position": "top",
-						"text": "Change this number to <kano-value-preview>85</kano-value-preview>"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"value": {
-							"target": {
-								"id": "block_0",
-								"shadow": "VALUE"
-							},
-							"value": "85"
-						}
-					}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "camera"
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"category": "camera"
-						},
-						"position": "left",
-						"text": "The camera code is kept in here.<br /> Click to open."
-					}
-				],
-				"validation": {
-					"blockly": {
-						"open-flyout": "camera"
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"flyout_block": "camera#take_picture"
-						},
-						"position": "left",
-						"text": "We're going to tell the camera to take a picture.<br />Drag the <kano-blockly-block type=\"camera#take_picture\"></kano-blockly-block> block to your code."
-					}
-				],
-				"arrow": {
-					"target": {
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
 						"flyout_block": "camera#take_picture"
 					},
-					"angle": 315,
-					"size": 80
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"camera#take_picture\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "camera#take_picture"
 				},
-				"validation": {
-					"blockly": {
-						"create": {
-							"type": "camera#take_picture",
-							"id": "block_1"
-						}
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "camera#take_picture",
+						"id": "block_1"
 					}
 				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"block": "block_0"
-						},
-						"position": "left",
-						"text": "Connect it here"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"connect": {
-							"parent": "block_0",
-							"target": "block_1"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"category": "events"
-						},
-						"position": "left",
-						"text": "Open this tray"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"open-flyout": "events"
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"flyout_block": "part_event"
-						},
-						"position": "bottom",
-						"text": "Drag one of these blocks to your code<br /><kano-blockly-block type=\"part_event\"></kano-blockly-block>"
-					}
-				],
-				"arrow": {
-					"target": {
-						"flyout_block": "part_event"
-					},
-					"angle": 315,
-					"size": 80
-				},
-				"validation": {
-					"blockly": {
-						"create": {
-							"type": "part_event",
-							"id": "block_2"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": "right-panel",
-						"position": "left",
-						"text": "Drop the block anywhere on your code space"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"drop": {
-							"target": "block_2"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"block": "block_2"
-						},
-						"position": "top",
-						"text": "Change 'apps starts' to <kano-value-preview>Camera takes picture</kano-value-preview>"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"value": {
-							"target": "block_2",
-							"value": "camera.picture-taken"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"category": {
-								"part": "part_1"
-							}
-						},
-						"position": "left",
-						"text": "Open the Image tray"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"open-flyout": {
-							"part": "part_1"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"flyout_block": {
-								"part": "part_1",
-								"type": "set_image_to"
-							}
-						},
-						"position": "bottom",
-						"text": "You can set which image is shown<br />with this block:<br /> <kano-blockly-block type=\"part_1#set_image_to\"></kano-blockly-block> <br />Grab one now."
-					}
-				],
-				"arrow": {
-					"target": {
-						"flyout_block": {
-							"part": "part_1",
-							"type": "set_image_to"
-						}
-					},
-					"angle": 315,
-					"size": 80
-				},
-				"validation": {
-					"blockly": {
-						"create": {
-							"target": "part_1",
-							"type": "set_image_to",
-							"id": "block_3"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"block": "block_2"
-						},
-						"position": "left",
-						"text": "Connect it to this event"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"connect": {
-							"parent": "block_2",
-							"target": "block_3"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"category": "camera"
-						},
-						"position": "left",
-						"text": "Open the camera tray again"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"open-flyout": "camera"
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"flyout_block": "camera#last_picture"
-						},
-						"position": "left",
-						"text": "This block brings you the latest picture.<br/> <kano-blockly-block type=\"camera#last_picture\"></kano-blockly-block><br/> Grab it!"
-					}
-				],
-				"arrow": {
-					"target": {
-						"flyout_block": "camera#last_picture"
-					},
-					"angle": 315,
-					"size": 80
-				},
-				"validation": {
-					"blockly": {
-						"create": {
-							"type": "camera#last_picture",
-							"id": "block_4"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": {
-							"block": "block_3"
-						},
-						"position": "left",
-						"text": "Connect it to this block"
-					}
-				],
-				"validation": {
-					"blockly": {
-						"connect": {
-							"parent": "block_3",
-							"target": "block_4"
-						}
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": "make-button",
-						"position": "bottom",
-						"text": "Coding done. Test your app<br />by pressing the play button."
-					}
-				],
-				"validation": {
-					"running": {
-						"value": true
-					}
-				}
-			},
-			{
-				"tooltips": [
-					{
-						"location": "left-panel",
-						"position": "right",
-						"text": "Make some noise! Whenever the microphone<br/>detects a loud noise, the camera takes a picture.",
-						"next_button": true
-					}
-				]
 			}
-		],
-		"parts": [
-			"microphone",
-			"image"
-		],
-		"modules": [
-			"events"
-		],
-		"variables": [],
-		"mode": "camera"
-	}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "7m{v5b*1Fr3!v2Mh^/jF"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "7m{v5b*1Fr3!v2Mh^/jF",
+							"inputName": "DO"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "7m{v5b*1Fr3!v2Mh^/jF"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "left-panel",
+					"position": "right",
+					"text": "Clap your hands to take a photo!",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"microphone"
+	],
+	"modules": [],
+	"variables": [],
+	"mode": "camera",
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"83\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"camera\"}"
+}

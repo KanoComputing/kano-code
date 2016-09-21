@@ -47,6 +47,7 @@
 				{
 					"location": {
 						"block": {
+							"id": null,
 							"rawId": "default_part_event_id"
 						}
 					},
@@ -58,11 +59,22 @@
 				"blockly": {
 					"connect": {
 						"parent": {
-							"rawId": "default_part_event_id"
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
 						},
 						"target": "block_0"
 					}
 				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
 			}
 		},
 		{
@@ -111,7 +123,10 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_0"
+						"block": {
+							"id": "block_0",
+							"rawId": "Qn?NCh`QvFl],N)mC+9a"
+						}
 					},
 					"position": "left",
 					"text": "Connect it to this block"
@@ -120,17 +135,32 @@
 			"validation": {
 				"blockly": {
 					"connect": {
-						"parent": "block_0",
+						"parent": {
+							"id": "block_0",
+							"rawId": "Qn?NCh`QvFl],N)mC+9a",
+							"inputName": "COLOR"
+						},
 						"target": "block_1"
 					}
 				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "Qn?NCh`QvFl],N)mC+9a"
+					}
+				},
+				"target": "COLOR"
 			}
 		},
 		{
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_1"
+						"block": {
+							"id": "block_1"
+						}
 					},
 					"position": "top",
 					"text": "Pick a blue for the sky"
@@ -139,7 +169,9 @@
 			"validation": {
 				"blockly": {
 					"value": {
-						"target": "block_1"
+						"target": {
+							"id": "block_1"
+						}
 					}
 				}
 			}
@@ -190,7 +222,10 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_0"
+						"block": {
+							"id": "block_0",
+							"rawId": "Qn?NCh`QvFl],N)mC+9a"
+						}
 					},
 					"position": "left",
 					"text": "Connect it to this block"
@@ -199,8 +234,19 @@
 			"validation": {
 				"blockly": {
 					"connect": {
-						"parent": "block_0",
+						"parent": {
+							"id": "block_0",
+							"rawId": "Qn?NCh`QvFl],N)mC+9a"
+						},
 						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "Qn?NCh`QvFl],N)mC+9a"
 					}
 				}
 			}
@@ -251,7 +297,10 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_2"
+						"block": {
+							"id": "block_2",
+							"rawId": "I{%qy||N?fdTwJd5;EVx"
+						}
 					},
 					"position": "left",
 					"text": "Connect it to this block"
@@ -260,17 +309,32 @@
 			"validation": {
 				"blockly": {
 					"connect": {
-						"parent": "block_2",
+						"parent": {
+							"id": "block_2",
+							"rawId": "I{%qy||N?fdTwJd5;EVx",
+							"inputName": "COLOR"
+						},
 						"target": "block_3"
 					}
 				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "I{%qy||N?fdTwJd5;EVx"
+					}
+				},
+				"target": "COLOR"
 			}
 		},
 		{
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_3"
+						"block": {
+							"id": "block_3"
+						}
 					},
 					"position": "top",
 					"text": "Pick a sunny yellow color"
@@ -279,7 +343,9 @@
 			"validation": {
 				"blockly": {
 					"value": {
-						"target": "block_3"
+						"target": {
+							"id": "block_3"
+						}
 					}
 				}
 			}
@@ -330,7 +396,10 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": "block_2"
+						"block": {
+							"id": "block_2",
+							"rawId": "I{%qy||N?fdTwJd5;EVx"
+						}
 					},
 					"position": "left",
 					"text": "Connect it to this block"
@@ -339,8 +408,19 @@
 			"validation": {
 				"blockly": {
 					"connect": {
-						"parent": "block_2",
+						"parent": {
+							"id": "block_2",
+							"rawId": "I{%qy||N?fdTwJd5;EVx"
+						},
 						"target": "block_4"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "I{%qy||N?fdTwJd5;EVx"
 					}
 				}
 			}
@@ -350,8 +430,8 @@
 				{
 					"location": {
 						"block": {
-							"id": "block_4",
-							"shadow": "RADIUS"
+							"shadow": "RADIUS",
+							"id": "block_4"
 						}
 					},
 					"position": "top",
@@ -362,25 +442,11 @@
 				"blockly": {
 					"value": {
 						"target": {
-							"id": "block_4",
-							"shadow": "RADIUS"
+							"shadow": "RADIUS",
+							"id": "block_4"
 						},
 						"value": "100"
 					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "make-button",
-					"position": "bottom",
-					"text": "The app is finished, hit the play button."
-				}
-			],
-			"validation": {
-				"running": {
-					"value": true
 				}
 			}
 		},
@@ -397,7 +463,10 @@
 	],
 	"parts": [],
 	"modules": [
-        "color"
+		"color"
 	],
-	"variables": []
+	"variables": [],
+	"mode": "normal",
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"90\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"normal\"}"
+
 }

@@ -221,6 +221,9 @@
                     if (defaultNode) {
                         steps = steps.concat(this.matchDefaultNode(node.firstChild, defaultNode.firstChild));
                     }
+                    if (node) {
+                        steps = steps.concat(this.blockToSteps(node.firstChild));
+                    }
                     break;
                 }
                 case 'next': {
@@ -243,6 +246,7 @@
                 parentTagName = parent.tagName,
                 parentBlockType = Challenge.parseBlockType(parent.getAttribute('type')),
                 steps = [],
+                fieldValue,
                 inputName,
                 fieldName;
 
@@ -318,6 +322,7 @@
                 blockLocation,
                 markdownType,
                 creationType,
+                categoryLabel,
                 inputName;
 
             node.setAttribute('challengeId', blockChallengeId);
@@ -475,7 +480,7 @@
         Challenge.prototype.valueToSteps = function (node) {
             let steps = [],
                 child;
-            for (i = 0; i < node.children.length; i++) {
+            for (let i = 0; i < node.children.length; i++) {
                 if (node.children[i].tagName === 'block') {
                     child = node.children[i];
                     break;

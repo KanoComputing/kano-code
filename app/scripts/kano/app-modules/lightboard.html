@@ -1,7 +1,7 @@
 <link rel="import" href="./app-module.html">
+<script src="../pixel-font.js"></script>
 <script>
     (function (Kano) {
-
         class LightboardModule extends Kano.AppModules.AppModule {
             constructor () {
                 super();
@@ -32,6 +32,7 @@
             _stop () {
                 this.lights = new Array(128);
                 this.shapes = {};
+                this.currentAnimation = null;
             }
 
             static getIndex (x, y) {
@@ -177,22 +178,27 @@
             }
 
             _text (text, color, backgroundColor) {
-                this.api.light.text({
-                    text,
-                    color,
-                    backgroundColor
-                });
+                this.lights = Kano.PixelFont.generateMatrix(text, color, backgroundColor);
+                return this.updateAndSync(); 
             }
 
-            _scroll (text, color, backgroundColor, speed) {
-                // Transform speed 0 - 100 to 232 - 32
-                let framePeriod = 232 - speed * 2;
-                this.api.light.scroll({
-                    text,
-                    color,
-                    backgroundColor,
-                    framePeriod
-                });
+            _animateText (animationFrames, animationTime, speed, callback) {
+                if (animationFrames.length && this.currentAnimation === animationTime){
+                    setTimeout(() => {
+                        this.bitmap = animationFrames.shift();
+                        this.syncApi();
+                        callback(this.bitmap);
+                        this._animateText(animationFrames, animationTime, speed, callback);
+                    }, speed);
+                }
+                
+            }
+
+            _scroll (text, color, backgroundColor, speed, callback) {
+                let animationFrames = Kano.PixelFont.generateAnimation(text, color, backgroundColor);
+
+                this.currentAnimation = Date.now();
+                this._animateText(animationFrames, this.currentAnimation, speed, callback);
             }
 
             _on () {
