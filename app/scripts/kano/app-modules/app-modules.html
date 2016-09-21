@@ -1,39 +1,48 @@
 <script>
     (function (Kano) {
 
-        const AppModules = {
+        class AppModules {
+
+            constructor () {
+                this.modules = {};
+            }
+
             config (config) {
-                Object.keys(AppModules.modules).forEach(name => {
-                    AppModules.modules[name].config(config);
+                Object.keys(this.modules).forEach(name => {
+                    this.modules[name].config(config);
                 });
-            },
+            }
+
             /**
              * Support legacy API
              */
             init () {
                 this.config.apply(this, arguments);
-            },
+            }
+
             getModule (name) {
-                if (AppModules.modules[name]) {
-                    return AppModules.modules[name].methods;
+                if (this.modules[name]) {
+                    return this.modules[name].methods;
                 }
                 return {};
-            },
+            }
+
             createAppCode (prefix, code) {
-                let moduleNames = Object.keys(AppModules.modules),
+                let moduleNames = Object.keys(this.modules),
                     moduleImports = moduleNames.map(name => `${prefix}.getModule('${name}')`);
                 // This adds a module called devices that returns the part module. Used for older apps support
                 moduleNames.push('devices');
                 moduleImports.push(`${prefix}.getModule('parts')`);
                 return `(function (${moduleNames.join(', ')}) {\n${code}\nglobal.emit('start');\n})(${moduleImports.join(', ')});\n`;
-            },
+            }
+
             generateStandaloneComponent (componentName, parts, background, mode, codes) {
                 let template = [],
                     // TODO find a better way to avoid having this script tag swallowed by crisper
                     scriptTagName = 'script',
                     tagName,
                     components,
-                    code = this.createAppCode('Kano.AppModules', codes.snapshot.javascript),
+                    code = this.createAppCode('this.appModules', codes.snapshot.javascript),
                     component,
                     partsString;
 
@@ -90,7 +99,9 @@
                                     }
                                 },
                                 attached: function () {
-                                    Kano.AppModules.loadParts(this.$);
+                                    this.appModules = Kano.AppModules.createStandalone();
+                                    this.appModules.init(Kano.MakeApps.config);
+                                    this.appModules.loadParts(this.$);
                                     var ws = this.$['${mode.id}'];
 
                                     if (ws.setBackgroundColor) {
@@ -99,7 +110,10 @@
 
                                     ${code}
 
-                                    Kano.AppModules.start();
+                                    this.appModules.start();
+                                },
+                                detached () {
+                                    this.appModules.stop();
                                 }
                             });
                         </${scriptTagName}>
@@ -107,40 +121,100 @@
                 `;
 
                 return component;
-            },
+            }
+
             loadParts (parts) {
                 // Give a reference to the app modules to every part
                 Object.keys(parts).forEach(id => {
                     parts[id].appModules = this;
                 });
-                AppModules.modules.parts.loadParts(parts);
-            },
+                this.modules.parts.loadParts(parts);
+            }
+
             _runModuleLifecycleStep (name) {
-                Object.keys(AppModules.modules).forEach(key => {
-                    AppModules.modules[key].executeLifecycleStep(name);
+                Object.keys(this.modules).forEach(key => {
+                    this.modules[key].executeLifecycleStep(name);
                 });
-            },
+            }
+
             start () {
                 if (this.state === 'running') {
                     return;
                 }
                 this._runModuleLifecycleStep('start');
                 this.state = 'running';
-            },
-            stop () {
-                this._runModuleLifecycleStep('stop');
-                this.state = 'stopped';
             }
-        };
 
-        AppModules.enablePreviousVersionsSupport = () => {
-            Kano.MakeApps = Kano.MakeApps || {};
-            Kano.MakeApps.Modules = AppModules.modules;
-            KanoModules = AppModules.modules;
-            KanoModules.init = { methods: {} };
-        };
+            stop () {
+                if (this.state === 'running') {
+                    this._runModuleLifecycleStep('stop');
+                    this.state = 'stopped';
+                }
+            }
 
-        AppModules.modules = {};
+            addModule (id, m) {
+                this.modules[id] = m;
+            }
+
+            static addModule () {
+                return this.default.addModule.apply(this.default, arguments);
+            }
+
+            static enablePreviousVersionsSupport () {
+                Kano.MakeApps = Kano.MakeApps || {};
+                Kano.MakeApps.Modules = AppModules.default.modules;
+                KanoModules = AppModules.default.modules;
+                KanoModules.init = { methods: {} };
+            }
+
+            static config () {
+                return this.default.config.apply(this.default, arguments);
+            }
+
+            static init () {
+                return this.default.init.apply(this.default, arguments);
+            }
+
+            static start () {
+                return this.default.start.apply(this.default, arguments);
+            }
+
+            static stop () {
+                return this.default.stop.apply(this.default, arguments);
+            }
+
+            static loadParts () {
+                return this.default.loadParts.apply(this.default, arguments);
+            }
+
+            static getModule () {
+                return this.default.getModule.apply(this.default, arguments);
+            }
+
+            static generateStandaloneComponent  () {
+                return this.default.generateStandaloneComponent.apply(this.default, arguments);
+            }
+
+            static createAppCode  () {
+                return this.default.createAppCode.apply(this.default, arguments);
+            }
+
+            static get modules () {
+                return this.default.modules;
+            }
+
+            static createStandalone () {
+                let appModules = new AppModules();
+                // Get all the default modules and instantiate+add each one in the standalone
+                // AppModules
+                Object.keys(AppModules.modules).forEach(key => {
+                    appModules.addModule(key, new AppModules.modules[key].constructor());
+                });
+                return appModules;
+            }
+        }
+
+        AppModules.default = new AppModules();
 
         Kano.AppModules = AppModules;
 

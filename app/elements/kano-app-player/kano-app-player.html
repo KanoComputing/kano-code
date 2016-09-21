@@ -46,12 +46,6 @@
                     value:false
                 }
             },
-            attached () {
-                Kano.AppModules.start();
-            },
-            detached () {
-                Kano.AppModules.stop();
-            },
             _srcChanged () {
                 // Check that we are loading and html file. Bsing that on the extension is not the best solution
                 // as any server coulde return html content. This prevents loading of late setups bindings. For
