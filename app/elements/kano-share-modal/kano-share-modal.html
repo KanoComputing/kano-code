@@ -19,18 +19,16 @@
             margin: 0px !important;
             padding: 24px !important;
         }
+        :host .right {
+            float: right;
+        }
         :host .dialog button {
             @apply(--kano-button);
-            margin-left: 5px;
         }
         :host .button-container {
             position: relative;
             width: 100%;
             height: 52px;
-        }
-        :host .button-container button {
-            /*position: absolute;*/
-            /*right: 0;*/
         }
         :host button.share {
             text-transform: none;
@@ -44,6 +42,19 @@
             border-radius: 24px;
             margin-bottom: 12px;
         }
+        .social-share-container {
+            display: flex;
+            height: 48px;
+            justify-content: center;
+            align-items: center;
+            margin-right: 8px;
+        }
+        .social-share-container iron-image {
+            margin-left: 6px;
+            width: 25px;
+            height: 25px;
+            border-radius: 2px;
+        }
         :host button .button-img {
             width: 25px;
             vertical-align: middle;
@@ -56,19 +67,7 @@
         }
         .success {
             @apply(--layout-vertical);
-        }
-        .success .buttons {
-            @apply(--layout-horizonal);
-            padding: 0px;
-            margin-top: 10px;
-        }
-        .success .buttons iron-image {
-            margin-left: 5px;
-            width: 40px;
-            height: 40px;
-        }
-        .success .buttons .spacer {
-            @apply(--layout-flex);
+            text-align: center;
         }
         .success .title, .fail .title {
             font-size: 2.0em;
@@ -93,6 +92,7 @@
             @apply(--kano-button);
             background: var(--color-green);
             height: 40px;
+            margin-top: 10px;
             margin-left: 5px;
             padding-top: 12px;
         }
@@ -107,13 +107,12 @@
                 width: 100%;
             }
         }
-        .form {
+        :host .form {
             @apply(--layout-vertical);
             padding-right: 24px;
         }
-        .buttons {
-            /*@apply(--layout-horizontal);*/
-            @apply(--layout-around-justified);
+        :host .form a {
+            text-align: center;
         }
         :host .close {
             position: absolute;
@@ -154,7 +153,17 @@
             text-transform: none;
             border-radius: 24px;
         }
-        :host .generate-url .composed-button,
+        :host .loading-overlay {
+            position: absolute;
+            top: 7px;
+            right: 46px;
+            @apply(--layout-vertical);
+            @apply(--layout-center);
+            @apply(--layout-center-justified);
+        }
+        paper-spinner-lite {
+            --paper-spinner-color: white;
+        }
         :host .normal-button {
             position: absolute;
             right: 0;
@@ -190,25 +199,36 @@
                             value="{{shareInfo.description::change}}"
                             placeholder="Description"></textarea>
                     </div>
-                    <div class="buttons">
-                        <div class="button-container">
-                            <button type="button" name="button" class="share normal-button" on-tap="confirm"><img class="button-img" src="../../assets/kano-world-planet.svg" alt="" /><span>Share on Kano World</span></button>
-                        </div>
 
-                        <div class="button-container generate-url">
-                            <template is="dom-if" if="{{shareInfo.id}}">
-                                <div class="composed-button">
-                                    <input type="text" id="shareurl" value="{{playUrl(shareInfo.id)}}"><!--
-                                    --><button on-tap="copyToClipboard"><img src="../../assets/get-share-link.svg"/> <span>copy</span></button>
-                                </div>
-                            </template>
-
-                            <template is="dom-if" if="{{!shareInfo.id}}">
-                                <button on-tap="generateUrl" class="normal-button"><img src="../../assets/get-share-link.svg"/> <span>Get share link</span></button>
-                            </template>
-                        </div>
-
+                    <div class="button-container">
+                        <button type="button" name="button" class="share normal-button" on-tap="confirm"><img class="button-img" src="../../assets/kano-world-planet.svg" alt="" /><span>Share on Kano World</span></button>
                     </div>
+
+                    <div class="button-container generate-url">
+
+                        <template is="dom-if" if="{{shareInfo.id}}">
+                            <div class="composed-button right">
+                                <input type="text" id="shareurl" value="{{playUrl(shareInfo.id)}}">
+                                <button on-tap="copyToClipboard"><img src="../../assets/get-share-link.svg"/> <span>copy</span></button>
+                            </div>
+                        </template>
+
+                        <template is="dom-if" if="{{!shareInfo.id}}">
+                            <button on-tap="generateUrl" class="share-button right"><img src="../../assets/get-share-link.svg"/> <span>Get share link</span></button>
+                        </template>
+
+                        <template is="dom-if" if="{{loading}}">
+                            <div class="loading-overlay">
+                                <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+                            </div>
+                        </template>
+
+                        <div class="social-share-container right">
+                            <a href="{{fbLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image></a>
+                            <a href="{{twitterLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image></a>
+                        </div>
+
+                  </div>
                 </div>
                 <div class="app-player-container">
                     <kano-app-player id="kano_app_player" src="[[appData]]" slug="[[appSlug]]"></kano-app-player>
@@ -217,23 +237,17 @@
             <div>Publishing ...</div>
             <div class="success">
                 <iron-image src="[[shareInfo.image.src]]" sizing="contain"></iron-image>
-                <div>
-                    <div class="title">
-                        {{shareInfo.title}}
-                    </div>
-                    <div class="instructions">
-                        Your app is live now. Open it up and share it with your friends!
-                    </div>
-                    <div class="buttons">
-                        <a href="{{fbLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image></a>
-                        <a href="{{twitterLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image></a>
-                        <a href="{{tumblrLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/tumblr.png" sizing="contain"></iron-image></a>
-                        <a href="{{redditLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/reddit.png" sizing="contain"></iron-image></a>
-                        <a href="{{gplusLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/gplus.png" sizing="contain"></iron-image></a>
-                        <div class="spacer"></div>
-                        <a href="{{playUrl(shareInfo.id)}}" target="_blank"><button class="open-app">Open app</button></a>
-                    </div>
+                <div class="title">
+                    {{shareInfo.title}}
                 </div>
+                <div class="instructions">
+                    Your app is live! Share it with your friends.
+                </div>
+                <div class="social-share-container">
+                    <a href="{{fbLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image></a>
+                    <a href="{{twitterLink(shareInfo.id)}}" target="_blank"><iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image></a>
+                </div>
+                    <a href="{{playUrl(shareInfo.id)}}" target="_blank"><button class="open-app">Open app</button></a>
             </div>
             <div class="fail">
                 <div class="title">
@@ -269,6 +283,11 @@
             appSlug: {
                 type: String,
                 value: ""
+            },
+            loading: {
+                type: Boolean,
+                value: false,
+                observer: 'loadingChanged'
             }
         },
         _checkTitleInput () {
@@ -287,7 +306,13 @@
         dismiss () {
             this.fire('dismiss');
         },
-        playUrl () {
+        loadingChanged () {
+            this.toggleClass('loading', this.loading);
+        },
+        playUrl (newValue, oldValue) {
+            if (!oldValue && newValue) {
+                this.loading = false;
+            }
             return `${location.protocol}//${location.host}/app/${this.shareInfo.id}`;
         },
         fbLink () {
@@ -307,6 +332,7 @@
         },
         generateUrl () {
             if (this._checkTitleInput()) {
+                this.loading = true;
                 this.fire('confirm', { 'is_private': true });
             }
         },
@@ -325,6 +351,7 @@
 
                     this.set('appSlug', slug);
                     this.set('appData', appBase64);
+
                 });
             }
         }
