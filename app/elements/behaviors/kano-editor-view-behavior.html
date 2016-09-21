@@ -27,17 +27,19 @@
                         return;
                     }
                     Kano.AppModules.stop();
+
                     // Get the parts elements from the workspace
                     parts = this.$.editor.getWorkspace().getPartsDict();
                     // Tell AppModules where to find the parts
                     Kano.AppModules.loadParts(parts);
                     // Generate the code
                     appCode = Kano.AppModules.createAppCode('AppModules', this.code.snapshot.javascript);
+
                     // Prepare a sandbox exposing AppModules
                     vm = new Kano.VM({ AppModules: Kano.AppModules });
                     // Run the code
                     vm.runInContext(appCode);
-                    // Start all the modules. Will also trigger the `start` event from `global` 
+                    // Start all the modules. Will also trigger the `start` event from `global`
                     Kano.AppModules.start();
                 } else {
                     Kano.AppModules.stop();
