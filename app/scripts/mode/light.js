@@ -112,16 +112,18 @@ export default light = {
         },
         javascript: () => {
             return () => {
-                return [JSON.stringify({
+                let code = JSON.stringify({
                     type: 'all'
-                })];
+                });
+                return [`(() => { return ${code}})()`];
             };
         },
         pseudo: () => {
             return () => {
-                return [JSON.stringify({
+                let code = JSON.stringify({
                     type: 'all'
-                })];
+                });
+                return [`(() => { return ${code}})()`];
             };
         }
     },{
@@ -151,22 +153,22 @@ export default light = {
             return (block) => {
                 let x = Blockly.JavaScript.valueToCode(block, 'X') || 0,
                     y = Blockly.JavaScript.valueToCode(block, 'Y') || 0;
-                return [`{
+                return [`(() => { return {
                     type: 'single',
                     x: ${x},
                     y: ${y}
-                }`];
+                }})()`];
             };
         },
         pseudo: () => {
             return (block) => {
                 let x = Blockly.Pseudo.valueToCode(block, 'X') || 0,
                     y = Blockly.Pseudo.valueToCode(block, 'Y') || 0;
-                return [`{
+                return [`(() => { return {
                     type: 'single',
                     x: ${x},
                     y: ${y}
-                }`];
+                }})()`];
             };
         }
     },{
