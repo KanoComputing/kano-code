@@ -192,7 +192,6 @@
             }
 
             _animateText (animationFrames, animationTime, speed, callback) {
-                console.log(speed);
                 if (animationFrames.length && this.currentAnimation === animationTime){
                     this.bitmap = animationFrames.shift();
                     this.syncApi();
