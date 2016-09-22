@@ -37,7 +37,7 @@
                 this.fire("lightboard-" + data['button-id']);
             },
             _updateShape (e) {
-                this.debounce('updateShape', () => {
+                this.debounce("updateShape-" + e.detail.id, () => {
                     let shape = e.detail;
                     this.appModules.getModule('lightboard').updateOrCreateShape(shape.id, shape, this.render.bind(this));
                 });
