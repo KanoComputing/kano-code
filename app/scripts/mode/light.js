@@ -147,16 +147,18 @@ export default light = {
                     check: "Number",
                     align: "RIGHT"
                 }],
+                // displayed index starting at 1,1
                 shadow: {
-                    'X': '<shadow type="math_number"><field name="NUM">0</field></shadow>',
-                    'Y': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'X': '<shadow type="math_number"><field name="NUM">1</field></shadow>',
+                    'Y': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },
         javascript: () => {
+                // code index converted back to 0,0
             return (block) => {
-                let x = Blockly.JavaScript.valueToCode(block, 'X') || 0,
-                    y = Blockly.JavaScript.valueToCode(block, 'Y') || 0;
+                let x = Blockly.JavaScript.valueToCode(block, 'X') - 1 || 0,
+                    y = Blockly.JavaScript.valueToCode(block, 'Y') - 1 || 0;
                 if (block.parentBlock_) {
                     return [`{
                         type: 'single',
@@ -169,8 +171,8 @@ export default light = {
         },
         pseudo: () => {
             return (block) => {
-                let x = Blockly.Pseudo.valueToCode(block, 'X') || 0,
-                    y = Blockly.Pseudo.valueToCode(block, 'Y') || 0;
+                let x = Blockly.Pseudo.valueToCode(block, 'X') - 1 || 0,
+                    y = Blockly.Pseudo.valueToCode(block, 'Y') - 1 || 0;
                 if (block.parentBlock_) {
                     return [`{
                         type: 'single',
