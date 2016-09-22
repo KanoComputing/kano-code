@@ -184,8 +184,6 @@ export default lightRectangle = {
             return (block) => {
                 let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '"#ffffff"',
                     code = `devices.get('${part.id}').setColor(${color});\n`;
-
-                    console.log("+===+", code);
                 return code;
             };
         },
