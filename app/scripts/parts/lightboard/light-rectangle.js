@@ -181,14 +181,14 @@ export default lightRectangle = {
         },
         javascript: (part) => {
             return (block) => {
-                let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || 1,
+                let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '#ffffff',
                     code = `devices.get('${part.id}').setColor(${color});\n`;
                 return code;
             };
         },
         pseudo: (part) => {
             return (block) => {
-                let color = Blockly.Pseudo.valueToCode(block, 'COLOR') || 1,
+                let color = Blockly.Pseudo.valueToCode(block, 'COLOR') || '#ffffff',
                     code = `devices.get('${part.id}').setColor(${color});\n`;
                 return code;
             };
