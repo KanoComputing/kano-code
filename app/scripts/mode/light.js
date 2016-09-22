@@ -110,20 +110,24 @@ export default light = {
                 output: 'Light'
             };
         },
-        javascript: () => {
-            return () => {
-                let code = JSON.stringify({
-                    type: 'all'
-                });
-                return [`(() => { return ${code}})()`];
+        javascript: (part) => {
+            return (block) => {
+                if (block.parentBlock_) {
+                    return [JSON.stringify({
+                        type: 'all'
+                    })];
+                }
+                return;
             };
         },
-        pseudo: () => {
-            return () => {
-                let code = JSON.stringify({
-                    type: 'all'
-                });
-                return [`(() => { return ${code}})()`];
+        pseudo: (part) => {
+            return (block) => {
+                if (block.parentBlock_) {
+                    return [JSON.stringify({
+                        type: 'all'
+                    })];
+                }
+                return;
             };
         }
     },{
@@ -153,22 +157,28 @@ export default light = {
             return (block) => {
                 let x = Blockly.JavaScript.valueToCode(block, 'X') || 0,
                     y = Blockly.JavaScript.valueToCode(block, 'Y') || 0;
-                return [`(() => { return {
-                    type: 'single',
-                    x: ${x},
-                    y: ${y}
-                }})()`];
+                if (block.parentBlock_) {
+                    return [`{
+                        type: 'single',
+                        x: ${x},
+                        y: ${y}
+                    }`];
+                }
+                return;
             };
         },
         pseudo: () => {
             return (block) => {
                 let x = Blockly.Pseudo.valueToCode(block, 'X') || 0,
                     y = Blockly.Pseudo.valueToCode(block, 'Y') || 0;
-                return [`(() => { return {
-                    type: 'single',
-                    x: ${x},
-                    y: ${y}
-                }})()`];
+                if (block.parentBlock_) {
+                    return [`{
+                        type: 'single',
+                        x: ${x},
+                        y: ${y}
+                    }`];
+                }
+                return;
             };
         }
     },{
