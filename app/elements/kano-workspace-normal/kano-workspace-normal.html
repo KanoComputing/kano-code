@@ -97,9 +97,10 @@
             _onMouseMove (e) {
                 if (this._isMouseOver) {
                     this.rectangle = this.canvasElement.getBoundingClientRect();
+                    let scalingFactor = this.rectangle.width / 512;
 
-                    this.mousePositionX = parseInt(e.x - this.rectangle.left);
-                    this.mousePositionY = parseInt(e.y - this.rectangle.top);
+                    this.mousePositionX = parseInt(parseInt(e.x - this.rectangle.left) / scalingFactor);
+                    this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
                 }
             }
         });
