@@ -174,6 +174,7 @@ export default lightRectangle = {
                     name: "COLOR",
                     check: 'Colour'
                 }],
+
                 inputsInline: false,
                 previousStatement: null,
                 nextStatement: null
@@ -181,14 +182,16 @@ export default lightRectangle = {
         },
         javascript: (part) => {
             return (block) => {
-                let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '#ffffff',
+                let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '"#ffffff"',
                     code = `devices.get('${part.id}').setColor(${color});\n`;
+
+                    console.log("+===+", code);
                 return code;
             };
         },
         pseudo: (part) => {
             return (block) => {
-                let color = Blockly.Pseudo.valueToCode(block, 'COLOR') || '#ffffff',
+                let color = Blockly.Pseudo.valueToCode(block, 'COLOR') || '"#ffffff"',
                     code = `devices.get('${part.id}').setColor(${color});\n`;
                 return code;
             };
