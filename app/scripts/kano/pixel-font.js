@@ -756,6 +756,10 @@
                 fullBitmap = this.generateFullBitmap(needed, fontColor, backgroundColor),
                 animationFrames = new Array();
 
+            if (fullBitmap.length < 1) {
+                return [new Array(128).fill(backgroundColor)];
+            }
+
             for (let i = 16; i > (fullBitmap[1].length * (-1)) - 16; i--) {
                 // Refactor this, we shouldn't recreate the object
                 fullBitmap = this.generateFullBitmap(needed, fontColor, backgroundColor)
