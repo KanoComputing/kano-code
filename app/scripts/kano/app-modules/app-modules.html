@@ -144,10 +144,12 @@
                 this._runModuleLifecycleStep('start');
                 this.state = 'running';
             }
-            
+
             stop () {
-                this._runModuleLifecycleStep('stop');
-                this.state = 'stopped';
+                if (this.state === 'running') {
+                    this._runModuleLifecycleStep('stop');
+                    this.state = 'stopped';
+                }
             }
 
             addModule (id, m) {

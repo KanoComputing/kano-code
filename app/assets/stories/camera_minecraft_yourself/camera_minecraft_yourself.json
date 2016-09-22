@@ -1,0 +1,466 @@
+{
+	"steps": [
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "We'll start by adding parts to our app.<br>Click here to see all the parts."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-slider",
+					"position": "right",
+					"text": "Drag the Slider to your app"
+				}
+			],
+			"highlight": "sidebar.parts.part-slider",
+			"arrow": {
+				"source": "sidebar.parts.part-slider",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "slider",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "Now we can start coding.<br>Close the drawer."
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "camera"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "camera"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "camera#take_picture"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"camera#take_picture\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "camera#take_picture"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "camera#take_picture",
+						"id": "block_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_event_part_id"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_event_part_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_event_part_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "events"
+					},
+					"position": "left",
+					"text": "Open the Events tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "events"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "part_event"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "part_event"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "part_event",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "right-panel",
+					"position": "left",
+					"text": "Drop the block anywhere on your code space"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"drop": {
+						"target": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>Slider changed</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_1"
+						},
+						"value": "slider.update"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "camera"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "camera"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "camera#filter_clear"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"camera#filter_clear\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "camera#filter_clear"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "camera#filter_clear",
+						"id": "block_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "dz*CgZ}m1)6rBP-BCucT"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "dz*CgZ}m1)6rBP-BCucT",
+							"inputName": "DO"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "dz*CgZ}m1)6rBP-BCucT"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "camera"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "camera"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "camera#filter_pixelate"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"camera#filter_pixelate\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "camera#filter_pixelate"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "camera#filter_pixelate",
+						"id": "block_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2",
+							"rawId": "[^EO_:7uvG!-^|?*F+cz"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_2",
+							"rawId": "[^EO_:7uvG!-^|?*F+cz"
+						},
+						"target": "block_3"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "[^EO_:7uvG!-^|?*F+cz"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Slider tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "get_value"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_0#get_value\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "get_value"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "get_value",
+						"id": "block_4"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_3",
+							"rawId": "tqZs^}NW_9shh6WvC?KH"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_3",
+							"rawId": "tqZs^}NW_9shh6WvC?KH",
+							"inputName": "SIZE"
+						},
+						"target": "block_4"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_3",
+						"rawId": "tqZs^}NW_9shh6WvC?KH"
+					}
+				},
+				"target": "SIZE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "left-panel",
+					"position": "right",
+					"text": "You can now test the app",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"slider"
+	],
+	"modules": [
+		"events"
+	],
+	"variables": [],
+	"mode": "camera",
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  });\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n });\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"83\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"camera\"}"
+}

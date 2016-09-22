@@ -67,7 +67,12 @@
     };
 
     Kano.MakeApps.Blockly.removeLookupString = function (blockType) {
-        delete this.lookupStrings[lookupString];
+        Object.keys(this.lookupStrings).forEach((key) => {
+            let index = this.lookupStrings[key].indexOf(blockType);
+            if (index >= 0) {
+                delete this.lookupStrings[key];
+            }
+        });
     };
 
     Kano.MakeApps.Blockly.lookupBlock = function (query) {

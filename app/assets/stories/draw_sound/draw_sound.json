@@ -1,0 +1,935 @@
+{
+	"steps": [
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "First grab a microphone to hear the sound around you."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-microphone",
+					"position": "right",
+					"text": "Drag the Mic to your app"
+				}
+			],
+			"highlight": "sidebar.parts.part-microphone",
+			"arrow": {
+				"source": "sidebar.parts.part-microphone",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "microphone",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "Close the drawer."
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "normal"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "normal"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "normal#move_to"
+					},
+					"position": "left",
+					"text": "This block sets where the drawing pen is. Grab one.<br /><kano-blockly-block type=\"normal#move_to\"></kano-blockly-block>"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "normal#move_to"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "normal#move_to",
+						"id": "block_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "X",
+							"id": "block_0"
+						}
+					},
+					"position": "top",
+					"text": "Change the x (left to right) to <kano-value-preview>0</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "X",
+							"id": "block_0"
+						},
+						"value": "0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "Y",
+							"id": "block_0"
+						}
+					},
+					"position": "bottom",
+					"text": "Change the y (top to bottom) to <kano-value-preview>190</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "Y",
+							"id": "block_0"
+						},
+						"value": "190"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "normal"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "normal"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "normal#color"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"normal#color\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "normal#color"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "normal#color",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "`8*u[W%@ULYO%%#6qBmw"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "`8*u[W%@ULYO%%#6qBmw"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "`8*u[W%@ULYO%%#6qBmw"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "color"
+					},
+					"position": "left",
+					"text": "Open the Color tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "color"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "colour_picker"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"colour_picker\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "colour_picker"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "colour_picker",
+						"id": "block_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "ACR2tsPl0HX?=e^iu~-6"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "ACR2tsPl0HX?=e^iu~-6",
+							"inputName": "COLOR"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "ACR2tsPl0HX?=e^iu~-6"
+					}
+				},
+				"target": "COLOR"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2"
+						}
+					},
+					"position": "top",
+					"text": "Change to a bright color like <kano-value-preview>#ffff00</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_2"
+						}
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "normal"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "normal"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "normal#stroke"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"normal#stroke\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "normal#stroke"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "normal#stroke",
+						"id": "block_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "ACR2tsPl0HX?=e^iu~-6"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "ACR2tsPl0HX?=e^iu~-6"
+						},
+						"target": "block_3"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "ACR2tsPl0HX?=e^iu~-6"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "color"
+					},
+					"position": "left",
+					"text": "Open the Color tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "color"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "colour_picker"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"colour_picker\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "colour_picker"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "colour_picker",
+						"id": "block_4"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_3",
+							"rawId": "F#ArBE7^H=0DvaR_jN:L"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_3",
+							"rawId": "F#ArBE7^H=0DvaR_jN:L",
+							"inputName": "COLOR"
+						},
+						"target": "block_4"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_3",
+						"rawId": "F#ArBE7^H=0DvaR_jN:L"
+					}
+				},
+				"target": "COLOR"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "control"
+					},
+					"position": "left",
+					"text": "Open the Control tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "control"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "every_x_seconds"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "every_x_seconds"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "every_x_seconds",
+						"id": "block_5"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_3",
+							"rawId": "F#ArBE7^H=0DvaR_jN:L"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_3",
+							"rawId": "F#ArBE7^H=0DvaR_jN:L"
+						},
+						"target": "block_5"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_3",
+						"rawId": "F#ArBE7^H=0DvaR_jN:L"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_5"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>frames</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_5"
+						},
+						"value": "frames"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "normal"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "normal"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "normal#move"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"normal#move\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "normal#move"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "normal#move",
+						"id": "block_6"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_5",
+							"rawId": ",-.2dTGy/KR*tv1Vz?@0"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_5",
+							"rawId": ",-.2dTGy/KR*tv1Vz?@0",
+							"inputName": "DO"
+						},
+						"target": "block_6"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_5",
+						"rawId": ",-.2dTGy/KR*tv1Vz?@0"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "X",
+							"id": "block_6"
+						}
+					},
+					"position": "top",
+					"text": "Move x along by <kano-value-preview>1</kano-value-preview> pixel each frame"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "X",
+							"id": "block_6"
+						},
+						"value": "1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "Y",
+							"id": "block_6"
+						}
+					},
+					"position": "bottom",
+					"text": "Set y to move <kano-value-preview>0</kano-value-preview> pixels"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "Y",
+							"id": "block_6"
+						},
+						"value": "0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "normal"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "normal"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "normal#ellipse"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"normal#ellipse\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "normal#ellipse"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "normal#ellipse",
+						"id": "block_7"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_6",
+							"rawId": "M=QqGn5pi~-7k._R`l+%"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_6",
+							"rawId": "M=QqGn5pi~-7k._R`l+%"
+						},
+						"target": "block_7"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_6",
+						"rawId": "M=QqGn5pi~-7k._R`l+%"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "RADIUSX",
+							"id": "block_7"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>1</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "RADIUSX",
+							"id": "block_7"
+						},
+						"value": "1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Mic tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "get_volume"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_0#get_volume\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "get_volume"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "get_volume",
+						"id": "block_8"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_7",
+							"rawId": "rDUmTEBLgb]W]Rt%p:a."
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_7",
+							"rawId": "rDUmTEBLgb]W]Rt%p:a.",
+							"inputName": "RADIUSY"
+						},
+						"target": "block_8"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_7",
+						"rawId": "rDUmTEBLgb]W]Rt%p:a."
+					}
+				},
+				"target": "RADIUSY"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "left-panel",
+					"position": "right",
+					"text": "Say something and see what shapes the sound can make.",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"microphone"
+	],
+	"modules": [
+		"color",
+		"control"
+	],
+	"variables": [],
+	"mode": "normal",
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"90\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"normal\"}"
+}

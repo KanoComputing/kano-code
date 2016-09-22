@@ -1,0 +1,1047 @@
+{
+	"steps": [
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "Let's add loads of stickers to your photo."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-sticker",
+					"position": "right",
+					"text": "Drag the sticker onto your photo."
+				}
+			],
+			"highlight": "sidebar.parts.part-sticker",
+			"arrow": {
+				"source": "sidebar.parts.part-sticker",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "sticker",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-sticker",
+					"position": "right",
+					"text": "Add another three."
+				}
+			],
+			"highlight": "sidebar.parts.part-sticker",
+			"arrow": {
+				"source": "sidebar.parts.part-sticker",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "sticker",
+					"id": "part_1"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-sticker",
+					"position": "right",
+					"text": "Can't have too many stickers"
+				}
+			],
+			"highlight": "sidebar.parts.part-sticker",
+			"arrow": {
+				"source": "sidebar.parts.part-sticker",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "sticker",
+					"id": "part_2"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-sticker",
+					"position": "right",
+					"text": "Last one"
+				}
+			],
+			"highlight": "sidebar.parts.part-sticker",
+			"arrow": {
+				"source": "sidebar.parts.part-sticker",
+				"target": "left-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "sticker",
+					"id": "part_3"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "You can add more stickers later. Let's control these ones with code."
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "events"
+					},
+					"position": "left",
+					"text": "Open the Events tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "events"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "part_event"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "part_event"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "part_event",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "right-panel",
+					"position": "left",
+					"text": "Drop the block anywhere on your code space"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"drop": {
+						"target": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "set_sticker"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_0#set_sticker\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "set_sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "set_sticker",
+						"id": "block_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "b`9qe4MAna3sfS%~D7mv"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "b`9qe4MAna3sfS%~D7mv",
+							"inputName": "DO"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "b`9qe4MAna3sfS%~D7mv"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "sticker"
+						}
+					},
+					"position": "left",
+					"text": "This block <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block> lets you pick any sticker picture."
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "sticker",
+						"id": "block_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2",
+							"rawId": "^#22-^:gBKAI+ra@`;wV"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_2",
+							"rawId": "^#22-^:gBKAI+ra@`;wV",
+							"inputName": "PICTURE"
+						},
+						"target": "block_3"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "^#22-^:gBKAI+ra@`;wV"
+					}
+				},
+				"target": "PICTURE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_3"
+						}
+					},
+					"position": "top",
+					"text": "Change <kano-value-preview>animals</kano-value-preview> to <kano-value-preview>photo-play</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_3"
+						},
+						"value": "photo-play"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_1"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker 1 tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_1",
+							"type": "set_sticker"
+						}
+					},
+					"position": "left",
+					"text": "Grab a block to set the next sticker<br /><kano-blockly-block type=\"part_1#set_sticker\"></kano-blockly-block>"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_1",
+						"type": "set_sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_1",
+						"type": "set_sticker",
+						"id": "block_4"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2",
+							"rawId": "^#22-^:gBKAI+ra@`;wV"
+						}
+					},
+					"position": "left",
+					"text": "Add it here"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_2",
+							"rawId": "^#22-^:gBKAI+ra@`;wV"
+						},
+						"target": "block_4"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "^#22-^:gBKAI+ra@`;wV"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "sticker"
+						}
+					},
+					"position": "left",
+					"text": "Another of these <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block>"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "sticker",
+						"id": "block_5"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_4",
+							"rawId": "zZHzjc7te1-bTbNIAsTg"
+						}
+					},
+					"position": "left"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_4",
+							"rawId": "zZHzjc7te1-bTbNIAsTg",
+							"inputName": "PICTURE"
+						},
+						"target": "block_5"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_4",
+						"rawId": "zZHzjc7te1-bTbNIAsTg"
+					}
+				},
+				"target": "PICTURE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_5"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>photo-play</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_5"
+						},
+						"value": "photo-play"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_5"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>Speech right</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_5"
+						},
+						"value": "photo-bubble-speech-right"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_2"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker 2 tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_2",
+							"type": "set_sticker"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_2#set_sticker\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_2",
+						"type": "set_sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_2",
+						"type": "set_sticker",
+						"id": "block_6"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_4",
+							"rawId": "zZHzjc7te1-bTbNIAsTg"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_4",
+							"rawId": "zZHzjc7te1-bTbNIAsTg"
+						},
+						"target": "block_6"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_4",
+						"rawId": "zZHzjc7te1-bTbNIAsTg"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "sticker"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "sticker",
+						"id": "block_7"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_6",
+							"rawId": "3H9bw-Te`z;KmTJ;][-)"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_6",
+							"rawId": "3H9bw-Te`z;KmTJ;][-)",
+							"inputName": "PICTURE"
+						},
+						"target": "block_7"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_6",
+						"rawId": "3H9bw-Te`z;KmTJ;][-)"
+					}
+				},
+				"target": "PICTURE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_7"
+						}
+					},
+					"position": "top",
+					"text": "Change <kano-value-preview>animals</kano-value-preview> to <kano-value-preview>photo-play</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_7"
+						},
+						"value": "photo-play"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_7"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>Sunglasses</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_7"
+						},
+						"value": "photo-sunglasses"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_3"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker 3 tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_3",
+							"type": "set_sticker"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_3#set_sticker\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_3",
+						"type": "set_sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_3",
+						"type": "set_sticker",
+						"id": "block_8"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_6",
+							"rawId": "3H9bw-Te`z;KmTJ;][-)"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_6",
+							"rawId": "3H9bw-Te`z;KmTJ;][-)"
+						},
+						"target": "block_8"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_6",
+						"rawId": "3H9bw-Te`z;KmTJ;][-)"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "left",
+					"text": "Open the Sticker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "sticker"
+						}
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "sticker"
+					}
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "sticker",
+						"id": "block_9"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_8",
+							"rawId": "TEh93gR#!~`2:%v^+[}a"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_8",
+							"rawId": "TEh93gR#!~`2:%v^+[}a",
+							"inputName": "PICTURE"
+						},
+						"target": "block_9"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_8",
+						"rawId": "TEh93gR#!~`2:%v^+[}a"
+					}
+				},
+				"target": "PICTURE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_9"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>photo-play</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_9"
+						},
+						"value": "photo-play"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_9"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview>Crown</kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_9"
+						},
+						"value": "photo-crown"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "left-panel",
+					"position": "right",
+					"text": "Now the fun part! Click 'EDIT LAYOUT' and move, scale, and rotate the parts to fit your face. How big a crown do you think you need? When you're done, add more stickers!",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"sticker"
+	],
+	"modules": [
+		"events"
+	],
+	"variables": [],
+	"mode": "camera",
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"83\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"><block type=\\\"camera#take_picture\\\" id=\\\"default_take_picture_id\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"camera\"}"
+}

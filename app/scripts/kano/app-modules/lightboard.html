@@ -188,22 +188,23 @@
 
             _text (text, color, backgroundColor, cb) {
                 this.lights = Kano.PixelFont.generateMatrix(text, color, backgroundColor);
-                this.updateAndSync(false, cb); 
+                this.updateAndSync(false, cb);
             }
 
             _animateText (animationFrames, animationTime, speed, callback) {
                 if (animationFrames.length && this.currentAnimation === animationTime){
+                    this.bitmap = animationFrames.shift();
+                    this.syncApi();
                     setTimeout(() => {
-                        this.bitmap = animationFrames.shift();
-                        this.syncApi();
                         callback(this.bitmap);
                         this._animateText(animationFrames, animationTime, speed, callback);
                     }, speed);
                 }
-                
+
             }
 
             _scroll (text, color, backgroundColor, speed, callback) {
+                speed = (speed > 100) ? 10 : (100 - speed) * 10;
                 let animationFrames = Kano.PixelFont.generateAnimation(text, color, backgroundColor);
 
                 this.currentAnimation = Date.now();
