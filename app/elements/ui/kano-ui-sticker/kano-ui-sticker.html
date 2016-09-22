@@ -45,7 +45,9 @@
             this.fire('clicked');
         },
         attached () {
-            this.setSticker(this.randomSticker());
+            if (!this.getSource()) {
+                this.setSticker(this.randomSticker());
+            }
         },
         renderOnCanvas (ctx) {
             return Kano.Behaviors.UIBehavior.renderOnCanvas.apply(this, arguments).then(() => {
