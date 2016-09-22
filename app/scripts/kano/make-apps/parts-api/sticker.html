@@ -12,7 +12,9 @@
                 return Kano.MakeApps.Files.generators.stickers(set, sticker);
             },
             setSticker (pic) {
-                this.set('model.userProperties.src', pic);
+                if (pic) {
+                    this.set('model.userProperties.src', pic);
+                }
             },
             getSource () {
                 return this.get('model.userProperties.src');
