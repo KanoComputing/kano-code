@@ -296,6 +296,35 @@
             return CONSTANTS[block.getFieldValue('CONSTANT')];
         };
 
+        Blockly.JavaScript.math_arithmetic = (block) => {
+            // Basic arithmetic operators, and power.
+            let OPERATORS = {
+                'ADD': [' + ', Blockly.JavaScript.ORDER_ADDITION],
+                'MINUS': [' - ', Blockly.JavaScript.ORDER_SUBTRACTION],
+                'MULTIPLY': [' * ', Blockly.JavaScript.ORDER_MULTIPLICATION],
+                'DIVIDE': [' / ', Blockly.JavaScript.ORDER_DIVISION],
+                'POWER': [null, Blockly.JavaScript.ORDER_COMMA]  // Handle power separately.
+            },
+            tuple = OPERATORS[block.getFieldValue('OP')],
+            operator = tuple[0],
+            order = tuple[1],
+            argument0 = Blockly.JavaScript.valueToCode(block, 'A', order) || '0',
+            argument1 = Blockly.JavaScript.valueToCode(block, 'B', order) || '0',
+            code;
+
+            // Avoid division by 0
+            if (operator == OPERATORS.DIVIDE[0] && argument1 == "0") {
+                argument1 = "1";
+            }
+            // Power in JavaScript requires a special case since it has no operator.
+            if (!operator) {
+                code = 'Math.pow(' + argument0 + ', ' + argument1 + ')';
+                return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+            }
+            code = argument0 + operator + argument1;
+            return [code, order];
+        };
+
         Blockly.Blocks.unary = {
             init: function () {
                 let json = {
