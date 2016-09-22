@@ -97,7 +97,7 @@
             _onMouseMove (e) {
                 if (this._isMouseOver) {
                     this.rectangle = this.canvasElement.getBoundingClientRect();
-                    let scalingFactor = this.rectangle.width / 512;
+                    let scalingFactor = this.rectangle.width / this.width;
 
                     this.mousePositionX = parseInt(parseInt(e.x - this.rectangle.left) / scalingFactor);
                     this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
