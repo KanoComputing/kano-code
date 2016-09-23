@@ -42,7 +42,7 @@ node {
     }
 
     stage('pwa') {
-        def report_path = './lighthouse-results.json'
+        def report_path = './lighthouse-report.html'
         def deployed_url = ''
         if (env.NODE_ENV=="staging") {
             deployed_url = "https://apps-staging.kano.me"
@@ -51,11 +51,20 @@ node {
         }
         env.DISPLAY = ':99.0'
         env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
-        sh "xvfb-run lighthouse ${deployed_url} --output json --output-path=${report_path}"
+        sh "xvfb-run lighthouse ${deployed_url} --output html --output-path=${report_path}"
 
-        def result = readFile(report_path).trim()
+        publishHTML (target: [
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: true,
+            reportDir: './',
+            reportFiles: 'lighthouse-report.html',
+            reportName: "Lighthouse report"
+        ])
 
-        slackSend channel: 'test_github', color: 'good', message: result
+        //def result = readFile(report_path).trim()
+
+        //slackSend channel: 'test_github', color: 'good', message: result
     }
 }
 
