@@ -2,8 +2,8 @@ node {
     stage('check environment') {
         if (env.BRANCH_NAME=="staging") {
             env.DEV_ENV = "staging"
-        } else if (env.BRANCH_NAME=="jenkins") {
-            env.DEV_ENV = "staging"
+        } else if (env.BRANCH_NAME=="prod") {
+            env.DEV_ENV = "production"
         }
         env.NODE_ENV = "${env.DEV_ENV}"
     }
@@ -12,10 +12,18 @@ node {
         checkout scm
     }
 
-    stage('install dependencies') {
+    stage('clean') {
         sh "rm -rf app/bower_components"
         sh "bower cache clean"
-        sh "npm install"
+    }
+
+    stage('install dependencies') {
+        sh "npm install --ignore-scripts"
+        sh "bower install"
+    }
+
+    stage('build') {
+        sh "gulp build"
     }
 
     stage('compress') {
