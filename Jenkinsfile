@@ -42,28 +42,35 @@ node {
     }
 
     stage('pwa') {
-        def report_path = './lighthouse-report.html'
-        def deployed_url = ''
-        if (env.NODE_ENV=="staging") {
-            deployed_url = "https://apps-staging.kano.me"
-        } else if (env.NODE_ENV=="production") {
-            deployed_url = "https://apps.kano.me"
-        }
-        env.DISPLAY = ':99.0'
-        env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
-        sh "xvfb-run lighthouse ${deployed_url} --output html --output-path=${report_path}"
+        parallel(
+            'lighthouse report': {
+                def report_path = './lighthouse-report.html'
+                def deployed_url = ''
+                if (env.NODE_ENV=="staging") {
+                    deployed_url = "https://apps-staging.kano.me"
+                } else if (env.NODE_ENV=="production") {
+                    deployed_url = "https://apps.kano.me"
+                }
+                env.DISPLAY = ':99.0'
+                env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
+                sh "xvfb-run lighthouse ${deployed_url} --output html --output-path=${report_path}"
 
-        publishHTML (target: [
-            allowMissing: false,
-            alwaysLinkToLastBuild: false,
-            keepAll: true,
-            reportFiles: report_path,
-            reportName: "Lighthouse report"
-        ])
-
-        //def result = readFile(report_path).trim()
-
-        //slackSend channel: 'test_github', color: 'good', message: result
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportFiles: report_path,
+                    reportName: "Lighthouse report"
+                ])
+            },
+            'archive': {
+                def packageJsonString = readFile './package.json'
+                def packageJson = parseJson(packageJsonString)
+                def filename = "kano-code-v${packageJon.version}-build-${env.BUILD_NUMBER}.tar.gz"
+                sh "tar -czvf ${filename} ./www"
+                archiveArtifacts filename
+            }
+        )
     }
 }
 
@@ -73,4 +80,8 @@ def deploy_staging() {
 
 def deploy_prod() {
     sh 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600"'
+}
+
+def parseJson(s) {
+    return new groovy.json.JsonSlurper().parseText(s)
 }
