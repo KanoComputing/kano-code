@@ -2,6 +2,8 @@ node {
     stage('check environment') {
         if (env.BRANCH_NAME=="staging") {
             env.DEV_ENV = "staging"
+        } else if (env.BRANCH_NAME=="jenkins") {
+            env.DEV_ENV = "staging"
         } else if (env.BRANCH_NAME=="prod") {
             env.DEV_ENV = "production"
         }
