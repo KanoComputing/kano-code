@@ -43,10 +43,11 @@ node {
 
     stage('pwa') {
         def report_path = './lighthouse-results.json'
+        def deployed_url = ''
         if (env.NODE_ENV=="staging") {
-            def deployed_url = 'https://apps-staging.kano.me'
+            deployed_url = "https://apps-staging.kano.me"
         } else if (env.NODE_ENV=="production") {
-            def deployed_url = 'https://apps.kano.me'
+            deployed_url = "https://apps.kano.me"
         }
         env.DISPLAY = ':99.0'
         env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
