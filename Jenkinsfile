@@ -67,7 +67,7 @@ node {
             'archive': {
                 def version = getVersion()
                 def filename = "kano-code-v${version}-build-${env.BUILD_NUMBER}.tar.gz"
-                sh "tar -czv ${filename} ./www"
+                sh "tar -czf ${filename} ./www"
                 archiveArtifacts filename
             }
         )
