@@ -2,8 +2,6 @@ node {
     stage('check environment') {
         if (env.BRANCH_NAME=="staging") {
             env.DEV_ENV = "staging"
-        } else if (env.BRANCH_NAME=="jenkins") {
-            env.DEV_ENV = "staging"
         } else if (env.BRANCH_NAME=="prod") {
             env.DEV_ENV = "production"
         }
@@ -42,9 +40,9 @@ node {
 }
 
 def deploy_staging() {
-    echo 'aws s3 sync ./www s3://make-apps-staging-site.kano.me --region eu-west-1 --cache-control "max-age=600"'
+    sh 'aws s3 sync ./www s3://make-apps-staging-site.kano.me --region eu-west-1 --cache-control "max-age=600"'
 }
 
 def deploy_prod() {
-    echo 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600"'
+    sh 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600"'
 }
