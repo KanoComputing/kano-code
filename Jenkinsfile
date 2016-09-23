@@ -1,7 +1,7 @@
 #!groovy
 node {
     stage('check environment') {
-        if (env.BRANCH_NAME=="master") {
+        if (env.BRANCH_NAME=="master" || env.BRANCH_NAME=="jenkins") {
             env.DEV_ENV = "staging"
         } else if (env.BRANCH_NAME=="prod") {
             env.DEV_ENV = "production"
