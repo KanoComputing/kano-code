@@ -53,7 +53,7 @@ node {
                 }
                 env.DISPLAY = ':99.0'
                 env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
-                sh "xvfb-run lighthouse ${deployed_url} --output html --output-path=${report_path}"
+                sh "xvfb-run lighthouse ${deployed_url} --output html --output-path=${report_path} --quiet"
 
                 publishHTML (target: [
                     allowMissing: false,
@@ -67,7 +67,7 @@ node {
             'archive': {
                 def version = getVersion()
                 def filename = "kano-code-v${version}-build-${env.BUILD_NUMBER}.tar.gz"
-                sh "tar -czvf ${filename} ./www"
+                sh "tar -czv ${filename} ./www"
                 archiveArtifacts filename
             }
         )
