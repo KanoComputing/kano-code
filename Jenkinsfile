@@ -57,8 +57,7 @@ node {
             allowMissing: false,
             alwaysLinkToLastBuild: false,
             keepAll: true,
-            reportDir: './',
-            reportFiles: 'lighthouse-report.html',
+            reportFiles: report_path,
             reportName: "Lighthouse report"
         ])
 
