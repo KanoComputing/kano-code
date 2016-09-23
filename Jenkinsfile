@@ -66,7 +66,7 @@ node {
             'archive': {
                 def packageJsonString = readFile './package.json'
                 def packageJson = parseJson(packageJsonString)
-                def filename = "kano-code-v${packageJon.version}-build-${env.BUILD_NUMBER}.tar.gz"
+                def filename = "kano-code-v${packageJson.version}-build-${env.BUILD_NUMBER}.tar.gz"
                 sh "tar -czvf ${filename} ./www"
                 archiveArtifacts filename
             }
