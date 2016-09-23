@@ -50,7 +50,7 @@ export default lightRectangle = {
                 previousStatement: null,
                 nextStatement: null,
                 shadow: {
-                    'X': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'X': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },
@@ -82,7 +82,7 @@ export default lightRectangle = {
                 previousStatement: null,
                 nextStatement: null,
                 shadow: {
-                    'Y': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'Y': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },
@@ -114,7 +114,7 @@ export default lightRectangle = {
                 previousStatement: null,
                 nextStatement: null,
                 shadow: {
-                    'WIDTH': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'WIDTH': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },
@@ -146,7 +146,7 @@ export default lightRectangle = {
                 previousStatement: null,
                 nextStatement: null,
                 shadow: {
-                    'HEIGHT': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'HEIGHT': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },

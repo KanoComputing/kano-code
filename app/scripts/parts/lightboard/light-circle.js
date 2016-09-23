@@ -43,7 +43,7 @@ export default lightCircle = {
                 previousStatement: null,
                 nextStatement: null,
                 shadow: {
-                    'X': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'X': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },
@@ -75,7 +75,7 @@ export default lightCircle = {
                 previousStatement: null,
                 nextStatement: null,
                 shadow: {
-                    'Y': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'Y': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },
@@ -107,7 +107,7 @@ export default lightCircle = {
                 previousStatement: null,
                 nextStatement: null,
                 shadow: {
-                    'RADIUS': '<shadow type="math_number"><field name="NUM">0</field></shadow>'
+                    'RADIUS': '<shadow type="math_number"><field name="NUM">1</field></shadow>'
                 }
             };
         },
