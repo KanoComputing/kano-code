@@ -35,11 +35,11 @@
         </kano-ui-customizer>
         <div hidden$="[[!element.showDefaultConfiguration]]">
             <div class="input-line" hidden$="[[element.positionDisabled]]">
-                <kano-input-range value="{{element.position.x}}" label="X Position" min="0" max="310">
+                <kano-input-range value="{{element.position.x}}" label="X Position" min="0" max="[[mode.workspace.viewport.width]]">
                 </kano-input-range>
             </div>
             <div class="input-line" hidden$="[[element.positionDisabled]]">
-                <kano-input-range value="{{element.position.y}}" label="Y Position" min="0" max="180">
+                <kano-input-range value="{{element.position.y}}" label="Y Position" min="0" max="[[mode.workspace.viewport.height]]">
                 </kano-input-range>
             </div>
             <div class="input-line" hidden$="[[element.rotationDisabled]]">
@@ -63,6 +63,9 @@
             element: {
                 type: Object,
                 notify: true
+            },
+            mode: {
+                type: Object
             },
             roundPosition: {
                 type: Object
