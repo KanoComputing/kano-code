@@ -44,7 +44,7 @@ node {
     stage('pwa') {
         parallel(
             'lighthouse report': {
-                def report_path = './lighthouse-report.html'
+                def report_path = 'lighthouse-report.html'
                 def deployed_url = ''
                 if (env.NODE_ENV=="staging") {
                     deployed_url = "https://apps-staging.kano.me"
@@ -59,6 +59,7 @@ node {
                     allowMissing: false,
                     alwaysLinkToLastBuild: false,
                     keepAll: true,
+                    reportDir: './',
                     reportFiles: report_path,
                     reportName: "Lighthouse report"
                 ])
