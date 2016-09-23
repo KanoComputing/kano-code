@@ -1,8 +1,8 @@
 node {
     stage('check environment') {
-        if (env.BRANCH_NAME==="staging") {
+        if (env.BRANCH_NAME=="staging") {
             env.DEV_ENV = "staging"
-        } else if (env.BRANCH_NAME==="jenkins") {
+        } else if (env.BRANCH_NAME=="jenkins") {
             env.DEV_ENV = "staging"
         }
         env.NODE_ENV = "${env.DEV_ENV}"
@@ -23,9 +23,9 @@ node {
     }
 
     stage('deploy') {
-        if (env.NODE_ENV==="staging") {
+        if (env.NODE_ENV=="staging") {
             deploy_staging()
-        } else if (env.NODE_ENV==="production") {
+        } else if (env.NODE_ENV=="production") {
             deploy_prod()
         }
     }
