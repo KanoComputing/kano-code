@@ -16,7 +16,8 @@
     <template>
         <kano-blockly id="code-editor"
                 toolbox="[[toolbox]]"
-                on-change="saveCode"></kano-blockly>
+                on-change="saveCode"
+                default-blocks="[[mode.defaultBlocks]]"></kano-blockly>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -194,7 +195,7 @@
                 parts = this.parts,
                 blocks,
                 weight;
-            if (!parts || !this.defaultCategories) {
+            if (!parts || !this.defaultCategories || !this.mode) {
                 return;
             }
             this.computeBlocks();
@@ -262,6 +263,10 @@
             }
             toolbox = toolbox.concat(categories);
             this.set('toolbox', toolbox);
+            if (!this.toolboxReady) {
+                this.toolboxReady = true;
+                this.$['code-editor'].load(this.code.snapshot);
+            }
         },
         computeToolboxDebounced () {
             this.debounce('computeToolbox', () => this.computeToolbox(), 200);

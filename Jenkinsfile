@@ -1,3 +1,4 @@
+#!groovy
 node {
     stage('check environment') {
         if (env.BRANCH_NAME=="master") {

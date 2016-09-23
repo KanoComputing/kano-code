@@ -24,7 +24,6 @@ import LightAnimationDisplay from './lightboard/light-animation-display';
 import PictureList from './picture-list';
 import Canvas from './canvas/canvas';
 import Clock from './clock';
-import Kaleidoscope from './kaleidoscope';
 import Slider from './slider';
 import ProximitySensor from './powerups/proximity-sensor';
 import MotionSensor from './powerups/motion-sensor';
@@ -45,7 +44,7 @@ module.exports = Parts = {
            ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer],
     experiments: {
         'lightboard': [LightRectangle, LightCircle, LightFrame, LightAnimation, LightAnimationDisplay],
-        'camera': [PictureList, Kaleidoscope, Slider],
+        'camera': [PictureList, Slider],
         'canvas': [Canvas]
     },
     create (model, size) {

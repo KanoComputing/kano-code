@@ -5,7 +5,7 @@
 				{
 					"location": "add-part-button",
 					"position": "top",
-					"text": "You're going to build a funny soundboard.<br/>Start with three buttons and the speaker part."
+					"text": "You're going to build a funny soundboard!<br/>Start with three buttons and the speaker part."
 				}
 			],
 			"validation": {
@@ -117,7 +117,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>Button is clicked</kano-value-preview>"
+					"text": "We want to do something when each button is clicked...<br>So change to <kano-value-preview>Button is clicked</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -140,7 +140,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the Speaker tray"
+					"text": "When it is clicked let's make a sound!<br>Open the Speaker tray"
 				}
 			],
 			"validation": {
@@ -161,7 +161,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_play\"></kano-blockly-block> block onto your code space"
+					"text": "This block tells the speaker to play something.<br>Drag it in."
 				}
 			],
 			"arrow": {
@@ -194,7 +194,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Connect it to this block"
+					"text": "Putting it here will trigger it when<br>the button is clicked"
 				}
 			],
 			"validation": {
@@ -228,7 +228,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the Speaker tray"
+					"text": "Next we need to pick a sound to play"
 				}
 			],
 			"validation": {
@@ -249,7 +249,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_sample\"></kano-blockly-block> block onto your code space"
+					"text": "Drag in this block that lets us pick a sound"
 				}
 			],
 			"arrow": {
@@ -273,18 +273,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_0",
-							"rawId": "dWa1n5{!bE7w6wE;kMgk"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -316,7 +304,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>sounds</kano-value-preview>"
+					"text": "Change from <kano-value-preview>instruments</kano-value-preview> to <kano-value-preview>sounds</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -339,7 +327,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>crow</kano-value-preview>"
+					"text": "Change <kano-value-preview>Fart</kano-value-preview> to <kano-value-preview>Crow</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -353,6 +341,17 @@
 				}
 			}
 		},
+        {
+            "tooltips": [{
+                "location": {
+                    "path": "workspace",
+                    "part": "part_0"
+                },
+                "position": "right",
+                "next_button": true,
+                "text": "Click on the green button to hear the crow sound!"
+            }]
+        },
 		{
 			"tooltips": [
 				{
@@ -360,7 +359,7 @@
 						"category": "events"
 					},
 					"position": "left",
-					"text": "Open the Events tray"
+					"text": "Nice! Now let's add sound to the next button.<br>Open the Events tray"
 				}
 			],
 			"validation": {
@@ -376,7 +375,7 @@
 						"flyout_block": "part_event"
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+					"text": "To start we need a new event block to add our code to"
 				}
 			],
 			"arrow": {
@@ -443,7 +442,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the Speaker tray"
+					"text": "Now to add the sound..."
 				}
 			],
 			"validation": {
@@ -455,18 +454,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_3",
-							"type": "speaker_play"
-						}
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_play\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": {
@@ -488,18 +475,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_2",
-							"rawId": "p4!)q:5C,Vwz)?4Wv}q1"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -543,18 +518,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_3",
-							"type": "speaker_sample"
-						}
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_sample\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": {
@@ -576,18 +539,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_3",
-							"rawId": "0n,SuTS#0!%?NbZw=j:("
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -642,7 +593,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>bell</kano-value-preview>"
+					"text": "Change to <kano-value-preview>Bell</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -656,6 +607,17 @@
 				}
 			}
 		},
+        {
+            "tooltips": [{
+                "location": {
+                    "path": "workspace",
+                    "part": "part_1"
+                },
+                "position": "right",
+                "next_button": true,
+                "text": "Click on the green button to hear the bell sound!"
+            }]
+        },
 		{
 			"tooltips": [
 				{
@@ -663,7 +625,7 @@
 						"category": "events"
 					},
 					"position": "left",
-					"text": "Open the Events tray"
+					"text": "Ding! Last part: let's add sound to the third button.<br>Open the Events tray"
 				}
 			],
 			"validation": {
@@ -679,7 +641,7 @@
 						"flyout_block": "part_event"
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+					"text": "Drag out the event"
 				}
 			],
 			"arrow": {
@@ -758,18 +720,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_3",
-							"type": "speaker_play"
-						}
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_play\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": {
@@ -791,18 +741,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_5",
-							"rawId": "IRlSoQd(`Zsi)iK,GmY?"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -846,18 +784,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_3",
-							"type": "speaker_sample"
-						}
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_3#speaker_sample\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": {
@@ -879,18 +805,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_6",
-							"rawId": "5(}T0p1oPE#C;Q_n-`7U"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -962,9 +876,12 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
+					"location":  {
+	                    "path": "workspace",
+	                    "part": "part_0"
+	                },
 					"position": "right",
-					"text": "You can now test the app",
+					"text": "Now click the green button to hear the last sound effect!<br>Try to remix the code by changing the sounds...",
 					"next_button": true
 				}
 			]

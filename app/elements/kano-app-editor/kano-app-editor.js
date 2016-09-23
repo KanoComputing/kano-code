@@ -84,8 +84,7 @@ Polymer({
             type: String
         },
         mode: {
-            type: String,
-            observer: '_modeChanged'
+            type: String
         }
     },
     observers: [
@@ -96,9 +95,6 @@ Polymer({
         'updateColors(defaultCategories.*)',
         '_codeChanged(code.*)'
     ],
-    _modeChanged () {
-        this.code = this._formatCode(this.code);
-    },
     _partsPanelStateChanged (state) {
         if (this.editableLayout && state === 'main') {
             this.$.workspace.toggleEditableLayout();
@@ -300,12 +296,8 @@ Polymer({
         this.set('background', savedApp.background);
     },
     _formatCode (code) {
-        let emptyBlocks = ['<xml xmlns="http://www.w3.org/1999/xhtml"></xml>', '', null, undefined];
         code = code || {};
         code.snapshot = code.snapshot || {};
-        if (this.mode && code && code.snapshot && emptyBlocks.indexOf(code.snapshot.blocks) !== -1) {
-            code.snapshot.blocks = this.mode.defaultBlocks;
-        }
         return code;
     },
     reset () {

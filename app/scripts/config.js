@@ -36,7 +36,7 @@ var COMMON = {
         "staging": {
             "API_URL": "https://api-staging.kano.me",
             "DATA_API_URL": "https://apps-data-staging.kano.me",
-            "WORLD_URL": "http://world-staging.kano.me",
+            "WORLD_URL": "https://world-staging.kano.me",
             "GOOGLE_API_KEY": "AIzaSyDPqXOx9Xsyjw2xP9VLcjtJQl8sbUWznqk"
         },
         "development": {

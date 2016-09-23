@@ -35,7 +35,7 @@
                 return null;
             },
             getX () {
-                let width = this.getWidth();
+                let width = this.getWidth(),
                     newPos = Math.max(0, Math.floor(PartsAPI.Base.getX.apply(this) / this.PIXEL_SIZE));
                 if (width) {
                     newPos = Math.min(this.BOARD_WIDTH - width, newPos);
@@ -43,7 +43,7 @@
                 return newPos;
             },
             getY () {
-                let height = this.getHeight();
+                let height = this.getHeight(),
                     newPos = Math.max(0, Math.floor(PartsAPI.Base.getY.apply(this) / this.PIXEL_SIZE));
                 if (height) {
                     newPos = Math.min(this.BOARD_HEIGHT - height, newPos);

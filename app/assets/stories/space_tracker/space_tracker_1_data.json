@@ -73,7 +73,7 @@
 						"category": "control"
 					},
 					"position": "left",
-					"text": "Open the Control tray"
+					"text": "We want to grab data every second.<br>Open the Control tray so we can get a <em>loop</em>"
 				}
 			],
 			"validation": {
@@ -89,7 +89,7 @@
 						"flyout_block": "every_x_seconds"
 					},
 					"position": "left",
-					"text": "Grab one of these blocks<br /><kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block>"
+					"text": "Drag in this <em>loop</em>"
 				}
 			],
 			"arrow": {
@@ -117,7 +117,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Connect it to the start event"
+					"text": "Connect it here so the loop is triggered when the app starts"
 				}
 			],
 			"validation": {
@@ -149,7 +149,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the ISS tray"
+					"text": "Next we need to refresh the data<br>The code to control it is in the ISS tray"
 				}
 			],
 			"validation": {
@@ -170,7 +170,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Grab a <kano-blockly-block type=\"part_1#refresh\"></kano-blockly-block> code block"
+					"text": "Drag in this block to refresh the data"
 				}
 			],
 			"arrow": {
@@ -202,7 +202,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Connect it to this block"
+					"text": "Drop it inside the loop so it runs every second"
 				}
 			],
 			"validation": {
@@ -241,7 +241,7 @@
 						"category": "events"
 					},
 					"position": "left",
-					"text": "Open the Events tray"
+					"text": "Finally let's update the map when the data is updated<br>Open the Events tray"
 				}
 			],
 			"validation": {
@@ -257,7 +257,7 @@
 						"flyout_block": "part_event"
 					},
 					"position": "left",
-					"text": "Drag an event block onto your code space<br /><kano-blockly-block type=\"part_event\"></kano-blockly-block>"
+					"text": "Drag in this block to trigger the map update"
 				}
 			],
 			"arrow": {
@@ -299,7 +299,7 @@
 						"block": "block_2"
 					},
 					"position": "top",
-					"text": "Change <kano-value-preview>app starts</kano-value-preview> to <kano-value-preview>ISS updated</kano-value-preview>"
+					"text": "We want it to trigger when the data is updated<br>Change <kano-value-preview>app starts</kano-value-preview> to <kano-value-preview>ISS updated</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -320,7 +320,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the Map tray"
+					"text": "Now to tell the map to move..."
 				}
 			],
 			"validation": {
@@ -332,18 +332,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "show_marker"
-						}
-					},
-					"position": "left",
-					"text": "Drag one of these blocks onto your code space<br /> <kano-blockly-block type=\"part_0#show_marker\"></kano-blockly-block>"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": {
@@ -373,7 +361,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Connect it to the refresh event"
+					"text": "Drop it inside the event so it triggers<br>when the latest data arrives"
 				}
 			],
 			"validation": {
@@ -403,7 +391,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the ISS tray"
+					"text": "Next we want to move it to the ISS's position<br>Let's grab the data from the ISS tray"
 				}
 			],
 			"validation": {
@@ -424,7 +412,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag out the <kano-blockly-block type=\"part_1#get_value\"></kano-blockly-block> block"
+					"text": "Drag out the latitude block"
 				}
 			],
 			"arrow": {
@@ -456,7 +444,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Plug it in"
+					"text": "Move the map's latitude to the ISS's latitude"
 				}
 			],
 			"validation": {

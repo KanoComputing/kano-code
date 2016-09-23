@@ -13,6 +13,7 @@
         <div class="content">
             <kano-ui-configuration id="look"
                         element="{{selected}}"
+                        mode="[[mode]]"
                         name="config"></kano-ui-configuration>
         </div>
     </template>
@@ -27,6 +28,9 @@
             selected: {
                 type: Object,
                 notify: true
+            },
+            mode: {
+                type: Object
             }
         }
     });

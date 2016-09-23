@@ -173,6 +173,10 @@
             code: {
                 type: String,
                 notify: true
+            },
+            defaultBlocks: {
+                type: String,
+                observer: '_defaultBlocksChanged'
             }
         },
         ready () {
@@ -416,36 +420,28 @@
             if (!this.workspace) {
                 return this.addEventListener('blockly-ready', this.load.bind(this, snapshot));
             }
-            if (!snapshot.blocks) {
-                return;
-            }
-            let blocks = snapshot.blocks || '<xml></xml>';
-            let xml = Blockly.Xml.textToDom(blocks);
+            this._loadBlocks(snapshot.blocks);
+        },
+        _loadBlocks (blocksXml='<xml xmlns="http://www.w3.org/1999/xhtml"></xml>') {
+            let xml = Blockly.Xml.textToDom(blocksXml);
             this.clearWorkspace();
             try {
                 Blockly.Xml.domToWorkspace(xml, this.workspace);
-            } catch (e) {} // Ignore loading errors
+            } catch (e) {console.log(e)} // Ignore loading errors
+            this._checkDefaultBlocks();
         },
-        getScreenshot () {
-            return new Promise((resolve) => {
-                let svg = this.$$('svg'),
-                    canvas = document.createElement('canvas'),
-                    ctx = canvas.getContext('2d'),
-                    loader = new Image(),
-                    svgAsXML = (new XMLSerializer()).serializeToString(svg),
-                    rect = this.getBoundingClientRect(),
-                    offsetX = rect.width / 2;
-
-                loader.width = rect.width;
-                loader.height = rect.height;
-                canvas.width = loader.width - offsetX;
-                canvas.height = loader.height;
-                loader.onload = () => {
-                    ctx.drawImage(loader, offsetX, 0, canvas.width, loader.height, 0, 0, canvas.width, canvas.height);
-                    resolve(canvas.toDataURL());
-                };
-                loader.src = 'data:image/svg+xml,' + encodeURIComponent(svgAsXML);
-            });
+        _checkDefaultBlocks () {
+            let blocks = this.workspace.getAllBlocks();
+            if (!blocks.length) {
+                this._loadBlocks(this.defaultBlocks);
+            }
+        },
+        _defaultBlocksChanged () {
+            // Defer the load until the workspace exists
+            if (!this.workspace) {
+                return this.addEventListener('blockly-ready', this._defaultBlocksChanged.bind(this));
+            }
+            this._checkDefaultBlocks();
         },
         getWorkspace () {
             return this.workspace;

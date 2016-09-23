@@ -5,7 +5,7 @@
 				{
 					"location": "add-part-button",
 					"position": "top",
-					"text": "To build the interface of the app, we need parts<br>Open the parts drawer by clicking here."
+					"text": "To build our sound meter we will need to use the microphone part<br>Click here"
 				}
 			],
 			"validation": {
@@ -38,7 +38,7 @@
 				{
 					"location": "sidebar.parts.part-light-rectangle",
 					"position": "right",
-					"text": "Drag the Rectangle to your app"
+					"text": "Drag the Rectangle onto the lightboard"
 				}
 			],
 			"highlight": "sidebar.parts.part-light-rectangle",
@@ -75,7 +75,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the Rectangle tray"
+					"text": "To start let's set up the rectangle!<br>Open the Rectangle tray"
 				}
 			],
 			"validation": {
@@ -96,7 +96,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_1#set_x\"></kano-blockly-block> block onto your code space"
+					"text": "First we will move it to the left. Drag in this block."
 				}
 			],
 			"arrow": {
@@ -184,7 +184,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_1#set_y\"></kano-blockly-block> block onto your code space"
+					"text": "Next we will move our rectangle to the top corner!<br>Drag this block to set the y position."
 				}
 			],
 			"arrow": {
@@ -208,18 +208,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_0",
-							"rawId": "yMNfGeyo)+.5FY.TjVb="
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -270,7 +258,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_1#set_height\"></kano-blockly-block> block onto your code space"
+					"text": "This block will set it to be as tall as the lightboard"
 				}
 			],
 			"arrow": {
@@ -294,18 +282,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "rc~*FeAZ,fDuM1fKKcTy"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -336,7 +312,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>8</kano-value-preview>"
+					"text": "Change to <kano-value-preview>8</kano-value-preview><br>There are 8 rows on the lightboard"
 				}
 			],
 			"validation": {
@@ -358,7 +334,7 @@
 						"category": "control"
 					},
 					"position": "left",
-					"text": "Open the Control tray"
+					"text": "Now we need a <em>loop!</em><br>pen the Control tray"
 				}
 			],
 			"validation": {
@@ -374,7 +350,7 @@
 						"flyout_block": "every_x_seconds"
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
+					"text": "This loop runs the code inside of it every second"
 				}
 			],
 			"arrow": {
@@ -394,18 +370,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_2",
-							"rawId": "z)6XOQM8(:@PEx|J(G%b"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -435,7 +399,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>frames</kano-value-preview>"
+					"text": "We can make it run even faster!<br>Change to <kano-value-preview>frames</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -453,37 +417,12 @@
 			"tooltips": [
 				{
 					"location": {
-						"block": {
-							"shadow": "INTERVAL",
-							"id": "block_3"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview>2</kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "INTERVAL",
-							"id": "block_3"
-						},
-						"value": "2"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
 						"category": {
 							"part": "part_1"
 						}
 					},
 					"position": "left",
-					"text": "Open the Rectangle tray"
+					"text": "Every frame, let's update the recangle<br>Open the Rectangle tray"
 				}
 			],
 			"validation": {
@@ -504,7 +443,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_1#set_width\"></kano-blockly-block> block onto your code space"
+					"text": "Let's set the width using the microphone data!<br>Drag this in to set the width"
 				}
 			],
 			"arrow": {
@@ -537,7 +476,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Connect it to this block"
+					"text": "Drop it inside the loop"
 				}
 			],
 			"validation": {
@@ -569,7 +508,7 @@
 						"category": "math"
 					},
 					"position": "left",
-					"text": "Open the Math tray"
+					"text": "The microphone volume is a number from 0 to 100<br>We need to make it fit on the lightboard<br>So let's divide it!<br>Open the Math tray"
 				}
 			],
 			"validation": {
@@ -648,7 +587,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>/</kano-value-preview>"
+					"text": "Change to <kano-value-preview>÷</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -692,7 +631,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_0#get_volume\"></kano-blockly-block> block onto your code space"
+					"text": "This block tells us the microphone volume"
 				}
 			],
 			"arrow": {
@@ -716,18 +655,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_5",
-							"rawId": "j47_)m-((Xl/uorQr,]|"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -767,15 +694,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_number"
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": "math_number"
@@ -793,18 +711,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_5",
-							"rawId": "j47_)m-((Xl/uorQr,]|"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -836,7 +742,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>6</kano-value-preview>"
+					"text": "We need to divide by <kano-value-preview>6</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -855,7 +761,7 @@
 				{
 					"location": "left-panel",
 					"position": "right",
-					"text": "You can now test the app",
+					"text": "Brilliant! Now make some noise...<br>...and watch as the sound meter comes to life!",
 					"next_button": true
 				}
 			]

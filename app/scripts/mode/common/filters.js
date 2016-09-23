@@ -253,16 +253,16 @@ export default [{
     javascript: (part) => {
         return (block) => {
             let offset = Blockly.JavaScript.valueToCode(block, 'ROTATION_OFFSET') || 50,
-                slices = Blockly.JavaScript.valueToCode(block, 'SLICES') || 12,
-                zoom = Blockly.JavaScript.valueToCode(block, 'ZOOM') || 1
+                slices = Math.min(Blockly.JavaScript.valueToCode(block, 'SLICES') || 12, 1000),
+                zoom = Math.min(Blockly.JavaScript.valueToCode(block, 'ZOOM') || 1, 50)
             return `devices.get('${part.id}').enableKaleidoscope(${offset}, ${slices}, ${zoom});\n`;
         };
     },
     pseudo: (part) => {
         return (block) => {
             let offset = Blockly.JavaScript.valueToCode(block, 'OFFSET_ROTATION') || 50,
-                slices = Blockly.JavaScript.valueToCode(block, 'SLICES') || 12,
-                zoom = Blockly.JavaScript.valueToCode(block, 'ZOOM') || 1
+                slices = Math.min(Blockly.JavaScript.valueToCode(block, 'SLICES') || 12, 1000),
+                zoom = Math.min(Blockly.JavaScript.valueToCode(block, 'ZOOM') || 1, 50)
             return `devices.get('${part.id}').enableKaleidoscope(${offset}, ${slices}, ${zoom});\n`;
         };
     }
