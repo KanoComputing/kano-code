@@ -64,9 +64,8 @@ node {
                 ])
             },
             'archive': {
-                def packageJsonString = new File('./package.json').text
-                def packageJson = parseJson(packageJsonString)
-                def filename = "kano-code-v${packageJson.version}-build-${env.BUILD_NUMBER}.tar.gz"
+                def version = getVersion()
+                def filename = "kano-code-v${version}-build-${env.BUILD_NUMBER}.tar.gz"
                 sh "tar -czvf ${filename} ./www"
                 archiveArtifacts filename
             }
@@ -82,6 +81,8 @@ def deploy_prod() {
     sh 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600"'
 }
 
-def parseJson(s) {
-    return new groovy.json.JsonSlurper().parseText(s)
+def getVersion() {
+    def packageJsonString = readFile('./package.json')
+    def packageJson = new groovy.json.JsonSlurper().parseText(packageJsonString)
+    return packageJson.version
 }
