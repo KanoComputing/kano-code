@@ -46,4 +46,9 @@ def deploy_staging() {
 
 def deploy_prod() {
     sh 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600"'
+    // Rebuild the config of the index with the kit's target env
+    env.TARGET = "osonline"
+    sh 'gulp copy-index'
+    // Upload the modified version to the kit's bucket
+    sh 'aws s3 sync ./www s3://make-apps-kit-site.kano.me --region eu-west-1 --cache-control "max-age=600"'
 }
