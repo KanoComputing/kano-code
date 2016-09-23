@@ -38,6 +38,22 @@ node {
             deploy_prod()
         }
     }
+
+    stage('pwa') {
+        def rapport_path = './lighthouse-results.json'
+        if (env.NODE_ENV=="staging") {
+            def deployed_url = 'https://apps-staging.kano.me'
+        } else if (env.NODE_ENV=="production") {
+            def deployed_url = 'https://apps.kano.me'
+        }
+        env.DISPLAY = ':99.0'
+        env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
+        sh 'xvfb-run lighthouse ${deployed_url} --output json --output-path=${rapport_path}'
+
+        def result = readFile(rapport_path).trim()
+
+        slackSend channel: 'test_github', color: 'good', message: result
+    }
 }
 
 def deploy_staging() {
