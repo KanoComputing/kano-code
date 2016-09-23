@@ -32,7 +32,9 @@ node {
     }
 
     stage('deploy') {
-        if (env.NODE_ENV=="staging") {
+        if (env.BRANCH_NAME == "jenkins") {
+            echo 'deploy skipped'
+        } else if (env.NODE_ENV=="staging") {
             deploy_staging()
         } else if (env.NODE_ENV=="production") {
             deploy_prod()
@@ -48,7 +50,7 @@ node {
         }
         env.DISPLAY = ':99.0'
         env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
-        sh 'xvfb-run lighthouse ${deployed_url} --output json --output-path=${report_path}'
+        sh "xvfb-run lighthouse ${deployed_url} --output json --output-path=${report_path}"
 
         def result = readFile(report_path).trim()
 
