@@ -1,11 +1,11 @@
 node {
     stage('check environment') {
-        env.DEV_ENV = "staging"
+        if (env.BRANCH_NAME==="staging") {
+            env.DEV_ENV = "staging"
+        } else if (env.BRANCH_NAME==="jenkins") {
+            env.DEV_ENV = "staging"
+        }
         env.NODE_ENV = "${env.DEV_ENV}"
-        sh "node -v"
-        sh "npm -v"
-        sh "bower -v"
-        sh "gulp -v"
     }
 
     stage('checkout') {
@@ -23,6 +23,18 @@ node {
     }
 
     stage('deploy') {
-        sh "echo 'Will deploy here when configured'"
+        if (env.NODE_ENV==="staging") {
+            deploy_staging()
+        } else if (env.NODE_ENV==="production") {
+            deploy_prod()
+        }
     }
+}
+
+def deploy_staging() {
+    sh 'aws s3 sync ./www s3://make-apps-staging-site.kano.me --region eu-west-1 --cache-control "max-age=600"'
+}
+
+def deploy_prod() {
+    sh 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600"'
 }
