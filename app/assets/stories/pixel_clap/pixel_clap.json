@@ -36,6 +36,19 @@
 		{
 			"tooltips": [
 				{
+					"location":  {
+	                    "path": "workspace",
+	                    "part": "part_0"
+	                },
+					"position": "right",
+					"text": "This part measures how loud you are!<br>It represents the volume as a number<br>Make a noise to see it change!",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
 					"location": "add-part-button",
 					"position": "top",
 					"text": "All the parts are here, let's code!<br>Close the drawer."
@@ -75,7 +88,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_0#threshold\"></kano-blockly-block> block onto your code space"
+					"text": "This block runs some code when things get loud<br>Drag it in"
 				}
 			],
 			"arrow": {
@@ -99,18 +112,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": null,
-							"rawId": "default_part_event_id"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -140,7 +141,7 @@
 						"category": "lightboard"
 					},
 					"position": "left",
-					"text": "Open this tray"
+					"text": "Now to turn on all the lights!<br>Open this tray"
 				}
 			],
 			"validation": {
@@ -150,20 +151,11 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "lightboard#turn_on"
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"lightboard#turn_on\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": "lightboard#turn_on"
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -176,18 +168,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_0",
-							"rawId": "f@9WLL=[a?/GS4:L+Va("
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -227,15 +207,7 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "lightboard#lights_all"
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"lightboard#lights_all\"></kano-blockly-block> block onto your code space"
-				}
-			],
+
 			"arrow": {
 				"target": {
 					"flyout_block": "lightboard#lights_all"
@@ -253,18 +225,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "Oc.:yI.(lwNb85SY*f^C"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -294,7 +254,7 @@
 						"category": "color"
 					},
 					"position": "left",
-					"text": "Open the Color tray"
+					"text": "Next we will pick the color of our flash"
 				}
 			],
 			"validation": {
@@ -304,20 +264,11 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "colour_picker"
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"colour_picker\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": "colour_picker"
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -330,18 +281,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "Oc.:yI.(lwNb85SY*f^C"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -394,7 +333,7 @@
 						"category": "control"
 					},
 					"position": "left",
-					"text": "Open the Control tray"
+					"text": "We don't want our flash to last forever...<br>Open the Control tray to find a block that can help"
 				}
 			],
 			"validation": {
@@ -410,7 +349,7 @@
 						"flyout_block": "in_x_time"
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"in_x_time\"></kano-blockly-block> block onto your code space"
+					"text": "This block will trigger some code after a delay<br>Drag it in"
 				}
 			],
 			"arrow": {
@@ -430,18 +369,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "Oc.:yI.(lwNb85SY*f^C"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -517,7 +444,7 @@
 						"category": "lightboard"
 					},
 					"position": "left",
-					"text": "Open this tray"
+					"text": "We want to turn off <em>all</em> the lights after 100ms<br>Open this tray"
 				}
 			],
 			"validation": {
@@ -527,15 +454,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "lightboard#turn_off"
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"lightboard#turn_off\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": "lightboard#turn_off"
@@ -553,18 +471,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_4",
-							"rawId": "I;Dbk(GaD5hP[wO7Xd+z"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -604,15 +510,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "lightboard#lights_all"
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"lightboard#lights_all\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": "lightboard#lights_all"
@@ -630,18 +527,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_5",
-							"rawId": "VxPU-1~zUnQ5txa-^!Zo"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -669,7 +554,7 @@
 				{
 					"location": "left-panel",
 					"position": "right",
-					"text": "You can now test the app",
+					"text": "Ready for some flashes?<br><b>Clap</b> to make some noise!",
 					"next_button": true
 				}
 			]

@@ -5,7 +5,7 @@
 				{
 					"location": "add-part-button",
 					"position": "top",
-					"text": "To build the interface of the app, we need parts<br>Click here to see all the parts."
+					"text": "To get started we need your microphone!<br>Click here to add it"
 				}
 			],
 			"validation": {
@@ -54,7 +54,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Open the Mic tray"
+					"text": "We need a block that tells us when things get noisy...<br>Open the Mic tray"
 				}
 			],
 			"validation": {
@@ -75,7 +75,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"part_1#threshold\"></kano-blockly-block> block onto your code space"
+					"text": "This block does the trick! Drag it in"
 				}
 			],
 			"arrow": {
@@ -99,18 +99,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": null,
-							"rawId": "default_part_event_id"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -143,7 +131,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>60</kano-value-preview>"
+					"text": "This <em>threshold</em> tells the computer how loud things need<br>to be before the code runs<br>Change to <kano-value-preview>60</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -165,7 +153,7 @@
 						"category": "lightboard"
 					},
 					"position": "left",
-					"text": "Open this tray"
+					"text": "When things get loud let's tell everyone to shhhh!<br>Open this tray"
 				}
 			],
 			"validation": {
@@ -181,7 +169,7 @@
 						"flyout_block": "lightboard#light_scroll_text"
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"lightboard#light_scroll_text\"></kano-blockly-block> block onto your code space"
+					"text": "This block helps us send the message"
 				}
 			],
 			"arrow": {
@@ -210,7 +198,7 @@
 						}
 					},
 					"position": "left",
-					"text": "Connect it to this block"
+					"text": "Drop it inside the mic block<br>This makes it run when things get loud"
 				}
 			],
 			"validation": {
@@ -242,7 +230,7 @@
 						"category": "variables"
 					},
 					"position": "left",
-					"text": "Open the Variables tray"
+					"text": "Now to write our message..."
 				}
 			],
 			"validation": {
@@ -252,15 +240,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "text"
-					},
-					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"text\"></kano-blockly-block> block onto your code space"
-				}
-			],
 			"arrow": {
 				"target": {
 					"flyout_block": "text"
@@ -278,18 +257,6 @@
 			}
 		},
 		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "dT*M)@]I5gS42j=cR,=:"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -321,7 +288,7 @@
 						}
 					},
 					"position": "top",
-					"text": "Change to <kano-value-preview>SHHHHH!!!</kano-value-preview>"
+					"text": "Write <kano-value-preview>SHHHHH!!!</kano-value-preview>"
 				}
 			],
 			"validation": {
@@ -387,7 +354,7 @@
 				{
 					"location": "left-panel",
 					"position": "right",
-					"text": "Try to stay quiet. What happens if you make too much noise?",
+					"text": "Try to stay quiet. What happens if you make too much noise?<br>Try to remix by making the text go faster!",
 					"next_button": true
 				}
 			]
