@@ -23,6 +23,12 @@ node {
         sh "bower install"
     }
 
+    stage('test') {
+        sh "xvfb-run gulp wct"
+        // Remove the test folder
+        sh "rm -rf www/test"
+    }
+
     stage('build') {
         sh "gulp build"
     }
