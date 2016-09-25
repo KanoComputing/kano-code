@@ -24,7 +24,7 @@ node {
     }
 
     stage('test') {
-        sh "xvfb-run gulp wct"
+        sh "xvfb-run --auto-servernum gulp wct"
         // Remove the test folder
         sh "rm -rf www/test"
     }
@@ -59,7 +59,7 @@ node {
                 }
                 env.DISPLAY = ':99.0'
                 env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
-                sh "xvfb-run lighthouse ${deployed_url} --output html --output-path=${report_path} --quiet"
+                sh "xvfb-run  --auto-servernum lighthouse ${deployed_url} --output html --output-path=${report_path} --quiet"
 
                 publishHTML (target: [
                     allowMissing: false,

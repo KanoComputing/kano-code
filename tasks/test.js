@@ -10,6 +10,13 @@ module.exports = (gulp, $) => {
     });
 
     gulp.task('wct', ['copy-test'], (next) => {
-        wct.cli.run(conf, [], process.stdout).then(next).catch(next);
+        wct.cli.run(conf, [], process.stdout).then(_ => {
+            next();
+            // Force process exit to kill resilient browsers
+            process.exit();
+        }).catch(e => {
+            next(e);
+            process.exit(1);
+        });
     });
 };
