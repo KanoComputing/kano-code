@@ -11,6 +11,7 @@ let progressService = (sdk) => {
         group = group || {};
         group.storyNo = group.storyNo || 0;
         group.extensions = group.extensions || [];
+        group.completedStories = group.completedStories || [];
         return group;
     }
 
@@ -21,7 +22,7 @@ let progressService = (sdk) => {
             this.saveToStorage();
         },
 
-        updateProgress (group, storyNo, extension) {
+        updateProgress (group, storyNo, extension, storyId=null) {
             let progressGroup;
 
             this.loadFromStorage();
@@ -33,6 +34,12 @@ let progressService = (sdk) => {
             progressGroup.storyNo = storyNo;
 
             progress[group] = progressGroup;
+            if (storyId) {
+                progress[group].completedStories = progress[group].completedStories || [];
+                if (progress[group].completedStories.indexOf(storyId) == -1) {
+                    progress[group].completedStories.push(storyId);
+                }
+            }
 
             this.saveToStorage();
 

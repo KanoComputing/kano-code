@@ -96,7 +96,7 @@
                 //story completed!!!
                 let progress = this.story.progress,
                     extension = this.story.extension ? this.story.id : null;
-                Kano.MakeApps.progress.updateProgress(progress.group, progress.storyNo, extension)
+                Kano.MakeApps.progress.updateProgress(progress.group, progress.storyNo, extension, this.story.id)
                     .then((progress) => this.updateExtensions(progress));
             }
         },
