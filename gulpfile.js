@@ -17,8 +17,6 @@ let gulp = require('gulp'),
     bundler,
     utils;
 
-require('web-component-tester').gulp.init(gulp, ['copy-test', 'build-dev']);
-
 bundler = browserify('app/scripts/app.js', { cache: {}, packageCache: {} })
         .transform(babelify.configure({ presets: ['es2015'] }));
 
