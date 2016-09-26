@@ -11,9 +11,7 @@ speaker = {
     image: '/assets/part/speaker.svg',
     colour: COLOUR,
     component: 'kano-part-speaker',
-    experiments: {
-        'sound': []
-    },
+    experiments: {},
     blocks: [{
         block: () => {
             return {
@@ -93,7 +91,7 @@ try {
 
 // Add speaker blocks if supported
 if (speaker.webAudioSupported) {
-    speaker.experiments.sound = [{
+    speaker.blocks = speaker.blocks.concat([{
         block: () => {
             return {
                 id: 'speaker_play',
@@ -233,7 +231,7 @@ if (speaker.webAudioSupported) {
                 return [`'${sample}'`];
             };
         }
-    }];
+    }]);
 }
 
 
