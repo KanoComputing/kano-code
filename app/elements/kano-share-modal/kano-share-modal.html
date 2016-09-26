@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../kano-style/input.html">
 <link rel="import" href="../behaviors/kano-cover-generator-behavior.html">
@@ -254,7 +255,34 @@
             margin: 4px;
             border: 0px;
         }
-        
+        paper-card {
+            font-family: Bariol;
+        }
+        .kit-card {
+            display: flex;
+            flex-direction: row;
+            height: 187px;
+            background-color: white;
+            margin-top: 20px;
+            padding: 5px;
+        }
+        .kit-card iron-image {
+            width: 220px;
+            height: 100%;
+        }
+        .kit-card button {
+            background-color: white;
+            background-image: url("/assets/campaign/ks-button.svg");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 250px;
+            height: 40px;
+            margin: 20px 0px 20px 8px;
+            border: 1px solid green;
+            border-radius: 3px;
+        }
+
     </style>
     <template>
         <iron-pages selected="[[shareInfo.page]]" attr-for-selected="name">
@@ -308,7 +336,19 @@
                                 <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
                             </div>
                         </div>
-                  </div>
+                    </div>
+
+                    <template is="dom-if" if="[[isKitAvailable(shareInfo.mode.id)]]">
+                        <paper-card class="kit-card">
+                            <iron-image src="/assets/campaign/[[shareInfo.mode.id]].jpg" sizing="contain">
+                            </iron-image>
+                            <div class="card-content">
+                                <h2>Bring your own creation to life -<br>build your own [[shareInfo.mode.id]]</h2>
+                                <a href="https://kano.me/kickstarter"><button type="button"></button></a>
+                           </div>
+                       </paper-card>
+                    </template>
+
                 </form>
                 <div class="app-player-container">
                     <iron-image src="[[gifSrc]]" preload fade sizing="contain" width="[[coverWidth]]" height="[[coverHeight]]"></iron-image>
@@ -453,7 +493,7 @@
             // Force a change on the src to reload the app from the beginning
             appPreview.src = null;
             appPreview.src = this.shareInfo.app.src;
-            
+
         },
         _onAppReady () {
             this._generateAppGif();
@@ -529,6 +569,11 @@
                 winLeft = (screen.width / 2) - (socialConfig.width / 2),
                 url = loading ? `${location.protocol}//${location.host}/loading-share.html` : '';
             this.popup = window.open(url, 'sharer', `top=${winTop},left=${winLeft},toolbar=0,status=0,width=${socialConfig.width},height=${socialConfig.height}`);
+        },
+        isKitAvailable () {
+            if (this.shareInfo.mode) {
+                return this.shareInfo.mode.id === 'lightboard' || this.shareInfo.mode.id === 'camera'
+            }
         }
     });
 </script>
