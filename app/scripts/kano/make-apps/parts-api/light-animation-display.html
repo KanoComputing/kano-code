@@ -42,7 +42,10 @@
                 this._updateFrame();
             },
             pause () {
-                clearTimeout(this.timeoutId);
+                if (this.timeoutId) {
+                    clearTimeout(this.timeoutId);
+                    this.timeoutId = null;
+                }
             },
             setSpeed (s) {
                 let speed = Math.min(30, Math.max(1, s));
@@ -50,6 +53,7 @@
             },
             setAnimation (animation) {
                 this.set('model.userProperties.animation', animation);
+                this._updateAnimation();
             },
             _updateAnimation () {
                 if (!this.model.userProperties.animation) {
@@ -64,13 +68,13 @@
                 this.bitmap = this.animation.bitmaps[0];
             },
             stop () {
-                Kano.MakeApps.PartsAPI['light-shape'].stop.call(this);
                 this.pause();
+                Kano.MakeApps.PartsAPI['light-shape'].stop.call(this);
             },
             start () {
                 this._updateAnimation();
+                this.goToFrame(0);
                 Kano.MakeApps.PartsAPI['light-shape'].start.call(this);
-                this.frameIndex = 0;
             },
             goToFrame (frameNo) {
                 let bitmaps = this.animation.bitmaps;
