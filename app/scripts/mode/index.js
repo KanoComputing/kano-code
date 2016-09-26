@@ -6,12 +6,11 @@ let Mode;
 
 export default Mode = {
     modes: {
-        normal: Normal
-    },
-    experiments: {
+        normal: Normal,
         lightboard: Light,
         camera: Camera
     },
+    experiments: {},
     init (config) {
         let flags = config.getFlags();
         flags.experiments.forEach(exp => {
