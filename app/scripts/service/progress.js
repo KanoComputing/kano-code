@@ -36,7 +36,7 @@ let progressService = (sdk) => {
             progress[group] = progressGroup;
             if (storyId) {
                 progress[group].completedStories = progress[group].completedStories || [];
-                if (progress[group].completedStories.indexOf(storyId) == -1) {
+                if (progress[group].completedStories.indexOf(storyId) === -1) {
                     progress[group].completedStories.push(storyId);
                 }
             }
