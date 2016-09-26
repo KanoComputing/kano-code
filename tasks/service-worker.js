@@ -6,8 +6,15 @@ var swPrecache = require('sw-precache'),
 module.exports = (gulp, $) => {
     const MANIFEST_NAME = 'make-apps.manifest',
           APP_ROUTES = ['/make'],
-          // Do not cache .wav files, they will be cached dynamically
-          STATIC_FILE_GLOB = ['www/**/*.!(wav)'];
+          // Cache everything except the assets folder. but include the svg files as they are quite small
+          STATIC_FILE_GLOB = [
+              'www/*',
+              'www/css/*',
+              'www/elements/**/*',
+              'www/scripts/**/*',
+              'www/views/**/*',
+              'www/assets/**/*.svg'
+          ];
     function writeServiceWorker(handleFetch, callback) {
         let config = {
             cacheId: packageJson.name,
@@ -22,7 +29,7 @@ module.exports = (gulp, $) => {
                 urlPattern: /^https:\/\/fonts\.googleapis\.com\/css/,
                 handler: 'cacheFirst'
             },{
-                urlPattern: /\.wav/,
+                urlPattern: /assets/,
                 handler: 'cacheFirst'
             }]
         };
