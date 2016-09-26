@@ -221,9 +221,6 @@ Example:
                 initialiseSDK();
             }
         },
-        attached () {
-            this.$.toast.close();
-        },
         _showErrorOnToast (e) {
             this.message = e.detail;
             if (this.message.text) {

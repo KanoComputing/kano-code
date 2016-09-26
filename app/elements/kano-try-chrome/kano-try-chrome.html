@@ -34,7 +34,6 @@
         Polymer({
             is: 'kano-try-chrome',
             attached () {
-                this.$.toast.close();
                 if (!localStorage.getItem('no-chrome')) {
                     let isChromium = window.chrome,
                         winNav = window.navigator,
