@@ -61,7 +61,7 @@ node {
                 }
                 env.DISPLAY = ':99.0'
                 env.LIGHTHOUSE_CHROMIUM_PATH = '/usr/bin/google-chrome-stable'
-                sh "rm -f ${report_folder}"
+                sh "rm -rf ${report_folder}"
                 sh "mkdir ${report_folder}"
                 sh "xvfb-run  --auto-servernum lighthouse ${deployed_url} --output html --output-path=${report_folder}${report_file} --quiet"
 

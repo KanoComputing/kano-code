@@ -18,6 +18,7 @@
 <link rel="import" href="../behaviors/kano-modal-animator-behavior.html">
 <link rel="import" href="../behaviors/kano-view-behavior.html">
 <link rel="import" href="../kano-slider/kano-slider.html">
+<link rel="import" href="../kano-try-chrome/kano-try-chrome.html">
 <!--
 `kano-app` provides the whole Make apps app.
 Example:
@@ -115,6 +116,7 @@ Example:
         <paper-toast id="toast" text="[[message.text]]" duration="[[message.duration]]">
             <button type="button" name="button" hidden$="[[!message.closeWithButton]]" on-tap="_closeToast">[[message.buttonText]]</button>
         </paper-toast>
+        <kano-try-chrome></kano-try-chrome>
     </template>
 </dom-module>
 <script>
