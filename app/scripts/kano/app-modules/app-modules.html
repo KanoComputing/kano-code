@@ -9,7 +9,7 @@
 
             config (config) {
                 Object.keys(this.modules).forEach(name => {
-                    if (this.modules[name] && this.modules[name].config) {
+                    if (this.modules[name] && this.modules[name].config && typeof this.modules[name].config === 'function') {
                         this.modules[name].config(config);
                     }
                 });
