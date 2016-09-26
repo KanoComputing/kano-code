@@ -313,6 +313,8 @@ Polymer({
         this.set('code', this._formatCode({}));
         this.set('background', getDefaultBackground());
         this.save();
+
+        this.$.workspace.reset();
     },
     closeDrawer () {
         this.$.partsPanel.closeDrawer();

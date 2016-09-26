@@ -153,6 +153,7 @@
                             this.waiting[id]();
                         }
                         this.nextCall[id] = null;
+                        this.waiting[id] = null;
                     }, delay);
                     // Execute the callback
                     cb();

@@ -98,10 +98,12 @@
                 document.body.removeChild(a);
             },
             _updateFrame () {
-                this._paintFrame(this.pictures[this.frameId]);
-                this.frameId++;
-                if (this.frameId > this.pictures.length - 1) {
-                    this.frameId = 0;
+                if (this.pictures.length > 0) {
+                    this._paintFrame(this.pictures[this.frameId]);
+                    this.frameId++;
+                    if (this.frameId > this.pictures.length - 1) {
+                        this.frameId = 0;
+                    }
                 }
                 this.playingId = setTimeout(this._updateFrame.bind(this), 1000 / Math.max(1, this.speed));
             },
@@ -109,6 +111,7 @@
                 if (this.playingId) {
                     clearTimeout(this.playingId);
                     this.playingId = null;
+                    this.pictures = [];
                 }
             },
             _startWebcam () {
@@ -187,6 +190,10 @@
                     let url = URL.createObjectURL(blob);
                     this._saveFile(url, 'kano-code-gif.gif');
                 });
+            },
+            clear () {
+                this.pictures = [];
+                this.frameId = 0;
             },
             stop () {
                 this._pausePictureList();
