@@ -75,7 +75,11 @@
             if (!workspace || !workspace.renderOnCanvas) {
                 return Promise.resolve();
             }
-            return workspace.renderOnCanvas(ctx, util, scaleFactor);
+            workspace.safeRender = true;
+            return workspace.renderOnCanvas(ctx, util, scaleFactor).then(_ => {
+                workspace.safeRender = false;
+                return _;
+            });
         },
         _generateGifCover (workspace, parts, scale, padding, color, fps, length) {
             let wait = (delay) => {

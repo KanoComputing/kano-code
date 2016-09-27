@@ -216,7 +216,7 @@
                         resolve();
                     },
                         randomIndex = Math.floor(Math.random() * 40);
-                    this._onPictureTaken(`/assets/mode/camera/placeholder_${randomIndex}.jpeg`);
+                    this._paintFrame(`/assets/mode/camera/placeholder_${randomIndex}.jpeg`);
                     this.addEventListener('rendering-done', onRenderingDone);
                 });
             },

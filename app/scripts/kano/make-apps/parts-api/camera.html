@@ -45,6 +45,10 @@
                 this.fire("camera-" + data['button-id']);
             },
             _paintFrame (src, targetCanvas, force=false) {
+                // The workspace is trying to render an unsafe to share picture while exporting
+                if (!src && this.safeRender) {
+                    return;
+                }
                 src = src || this.lastPictureUrl;
                 targetCanvas = targetCanvas || this.canvas;
                 let targetCtx = targetCanvas.getContext('2d'),
