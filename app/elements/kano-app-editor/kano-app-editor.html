@@ -164,7 +164,6 @@
         @apply(--layout-center);
         @apply(--layout-center-justified);
     }
-
     .make-button kano-animated-svg {
         @apply(--layout-flex);
         width: 17px;
@@ -180,9 +179,13 @@
             transition: all ease-in-out 200ms;
         }
     }
+    paper-drawer-panel {
+        overflow: visible;
+    }
     :host .drawer {
         position: relative;
         @apply(--layout-vertical);
+        overflow: auto;
     }
     :host .drawer-content {
         @apply(--layout-flex);
@@ -195,6 +198,9 @@
     :host .drawer-content > kano-sidebar {
         @apply(--layout-flex);
         margin-top: 0px;
+    }
+    #partsPanel {
+        overflow: visible;
     }
     :host .close-drawer {
         position: absolute;
