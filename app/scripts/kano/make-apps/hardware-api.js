@@ -131,7 +131,7 @@
         }
 
         connect () {
-            if (!HardwareAPI.socket) {
+            if (!HardwareAPI.socket && this.endpoint) {
                 HardwareAPI.socket = io.connect(this.endpoint);
             }
         }
