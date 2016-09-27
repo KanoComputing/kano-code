@@ -142,7 +142,9 @@
 
             _runModuleLifecycleStep (name) {
                 Object.keys(this.modules).forEach(key => {
-                    this.modules[key].executeLifecycleStep(name);
+                    if (typeof this.modules[key].executeLifecycleStep === 'function') {
+                        this.modules[key].executeLifecycleStep(name);
+                    }
                 });
             }
 
