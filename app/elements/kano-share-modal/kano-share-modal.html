@@ -15,15 +15,11 @@
             @apply(--layout-vertical);
             font-family: Bariol;
             background-color: var(--color-grey-lighter, lighter);
-            overflow: scroll;
             /* It's bad practice to use !important but there is no other way
                 to remove the padding & margins without affecting other
                 paper-dialogs */
             margin: 0px !important;
             padding: 24px !important;
-        }
-        iron-pages {
-            overflow: scroll;
         }
         :host .right {
             float: right;
@@ -532,7 +528,6 @@
             // Force a change on the src to reload the app from the beginning
             appPreview.src = null;
             appPreview.src = this.shareInfo.app.src;
-
         },
         _onAppReady () {
             this._generateAppGif();
