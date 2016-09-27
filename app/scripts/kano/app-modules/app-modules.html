@@ -104,10 +104,9 @@
                                     }
                                 },
                                 attached: function () {
-                                    let hardwareAPI = new Kano.MakeApps.HardwareAPI();
                                     this.workspace = this.$['${mode.id}'];
                                     this.appModules = Kano.AppModules.createStandalone();
-                                    this.appModules.init(Object.assign({ hardwareAPI: hardwareAPI }, Kano.MakeApps.config));
+                                    this.appModules.init(Object.assign({ hardwareAPI: new Kano.MakeApps.HardwareAPI()}, Kano.MakeApps.config));
                                     this.appModules.loadParts(this.$);
                                     var ws = this.$['${mode.id}'];
 
