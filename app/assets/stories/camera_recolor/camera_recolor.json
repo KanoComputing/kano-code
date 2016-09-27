@@ -20,15 +20,15 @@
 			"tooltips": [
 				{
 					"location": {
-						"flyout_block": "camera#filter_threshold"
+						"flyout_block": "camera#filter_clear"
 					},
 					"position": "left",
-					"text": "Drag the <kano-blockly-block type=\"camera#filter_threshold\"></kano-blockly-block> block onto your code space"
+					"text": "<kano-blockly-block type=\"camera#filter_clear\"></kano-blockly-block><br />This block clears out old filters<br />so you can apply new ones over and over again."
 				}
 			],
 			"arrow": {
 				"target": {
-					"flyout_block": "camera#filter_threshold"
+					"flyout_block": "camera#filter_clear"
 				},
 				"angle": 315,
 				"size": 80
@@ -36,7 +36,7 @@
 			"validation": {
 				"blockly": {
 					"create": {
-						"type": "camera#filter_threshold",
+						"type": "camera#filter_clear",
 						"id": "block_0"
 					}
 				}
@@ -79,9 +79,84 @@
 			"tooltips": [
 				{
 					"location": {
+						"category": "camera"
+					},
+					"position": "left",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "camera"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "camera#filter_threshold"
+					},
+					"position": "left",
+					"text": "Drag the <kano-blockly-block type=\"camera#filter_threshold\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "camera#filter_threshold"
+				},
+				"angle": 315,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "camera#filter_threshold",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "DS[d5pymDjH2K{`+LjU|"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "DS[d5pymDjH2K{`+LjU|"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "DS[d5pymDjH2K{`+LjU|"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
 						"block": {
 							"shadow": "THRESHOLD",
-							"id": "block_0"
+							"id": "block_1"
 						}
 					},
 					"position": "top",
@@ -93,7 +168,7 @@
 					"value": {
 						"target": {
 							"shadow": "THRESHOLD",
-							"id": "block_0"
+							"id": "block_1"
 						},
 						"value": "30"
 					}
@@ -137,7 +212,7 @@
 				"blockly": {
 					"create": {
 						"type": "camera#filter_colorize",
-						"id": "block_1"
+						"id": "block_2"
 					}
 				}
 			}
@@ -147,8 +222,8 @@
 				{
 					"location": {
 						"block": {
-							"id": "block_0",
-							"rawId": "nM*Qaf0%N6J-7}o0PS%}"
+							"id": "block_1",
+							"rawId": "%tdLd]^*`%IV`6I1RRl~"
 						}
 					},
 					"position": "left",
@@ -159,18 +234,18 @@
 				"blockly": {
 					"connect": {
 						"parent": {
-							"id": "block_0",
-							"rawId": "nM*Qaf0%N6J-7}o0PS%}"
+							"id": "block_1",
+							"rawId": "%tdLd]^*`%IV`6I1RRl~"
 						},
-						"target": "block_1"
+						"target": "block_2"
 					}
 				}
 			},
 			"phantom_block": {
 				"location": {
 					"block": {
-						"id": "block_0",
-						"rawId": "nM*Qaf0%N6J-7}o0PS%}"
+						"id": "block_1",
+						"rawId": "%tdLd]^*`%IV`6I1RRl~"
 					}
 				}
 			}
@@ -212,7 +287,7 @@
 				"blockly": {
 					"create": {
 						"type": "random_colour",
-						"id": "block_2"
+						"id": "block_3"
 					}
 				}
 			}
@@ -222,8 +297,8 @@
 				{
 					"location": {
 						"block": {
-							"id": "block_1",
-							"rawId": "L=J^Y;jplB{|Y,kz8.xL"
+							"id": "block_2",
+							"rawId": "|)RFAM?5+|{vk@,nggkA"
 						}
 					},
 					"position": "left",
@@ -234,19 +309,19 @@
 				"blockly": {
 					"connect": {
 						"parent": {
-							"id": "block_1",
-							"rawId": "L=J^Y;jplB{|Y,kz8.xL",
+							"id": "block_2",
+							"rawId": "|)RFAM?5+|{vk@,nggkA",
 							"inputName": "COLOR"
 						},
-						"target": "block_2"
+						"target": "block_3"
 					}
 				}
 			},
 			"phantom_block": {
 				"location": {
 					"block": {
-						"id": "block_1",
-						"rawId": "L=J^Y;jplB{|Y,kz8.xL"
+						"id": "block_2",
+						"rawId": "|)RFAM?5+|{vk@,nggkA"
 					}
 				},
 				"target": "COLOR"
@@ -258,7 +333,7 @@
 					"location": {
 						"block": {
 							"shadow": "VALUE",
-							"id": "block_1"
+							"id": "block_2"
 						}
 					},
 					"position": "top",
@@ -270,7 +345,7 @@
 					"value": {
 						"target": {
 							"shadow": "VALUE",
-							"id": "block_1"
+							"id": "block_2"
 						},
 						"value": "100"
 					}
@@ -282,7 +357,7 @@
 				{
 					"location": "left-panel",
 					"position": "right",
-					"text": "You can now test the app",
+					"text": "Press the shutter a few times.<br />Click, click, click.",
 					"next_button": true
 				}
 			]
@@ -293,6 +368,5 @@
 		"color"
 	],
 	"variables": [],
-	"mode": "camera",
-    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"83\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"><block type=\\\"camera#take_picture\\\" id=\\\"default_take_picture_id\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"camera\"}"
+	"mode": "camera"
 }

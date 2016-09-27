@@ -50,7 +50,7 @@
             };
             this.camera.takePicture = () => {
                 return new Promise((resolve, reject) => {
-                    this.socket.once('camera:takepicture', (data) => {
+                    HardwareAPI.socket.once('camera:takepicture', (data) => {
                         return resolve(data.filename);
                     });
                     this.socketEmit('camera:takepicture');
@@ -92,10 +92,10 @@
             };
             this.gyroAccelerometer = {};
             this.gyroAccelerometer.getPath =  (action) => {
-                return HardwareAPI.getPath('powerup/gyro-accelerometer/0', action);
+                return this.getPath('powerup/gyro-accelerometer/0', action);
             };
             this.gyroAccelerometer.getGyroData =  () => {
-                return fetch(HardwareAPI.gyroAccelerometer.getPath('gyro'))
+                return fetch(this.gyroAccelerometer.getPath('gyro'))
                     .then((res) => {
                         if (!res.ok) {
                             console.error("Failed to reach the sensor");
@@ -112,7 +112,7 @@
                     });
             };
             this.gyroAccelerometer.getAccelerometerData =  () => {
-                return fetch(HardwareAPI.gyroAccelerometer.getPath('accelerometer'))
+                return fetch(this.gyroAccelerometer.getPath('accelerometer'))
                     .then((res) => {
                         if (!res.ok) {
                             console.error("Failed to reach the sensor");
@@ -131,21 +131,24 @@
         }
 
         connect () {
-            if (!this.socket) {
-                this.socket = io.connect(this.endpoint);
+            if (!HardwareAPI.socket) {
+                HardwareAPI.socket = io.connect(this.endpoint);
             }
         }
 
         on () {
-            this.socket.on.apply(this.socket, arguments);
+            if (!HardwareAPI.socket) {
+                this.connect();
+            }
+            HardwareAPI.socket.on.apply(HardwareAPI.socket, arguments);
         }
 
         removeListener () {
-            this.socket.removeListener.apply(this.socket, arguments);
+            HardwareAPI.socket.removeListener.apply(HardwareAPI.socket, arguments);
         }
 
         emit () {
-            this.socket.emit.apply(this.socket, arguments);
+            HardwareAPI.socket.emit.apply(HardwareAPI.socket, arguments);
         }
 
         config (c) {
@@ -165,8 +168,8 @@
         }
 
         socketEmit (name, data) {
-            if (this.socket.connected) {
-                this.socket.emit(name, data);
+            if (HardwareAPI.socket.connected) {
+                HardwareAPI.socket.emit(name, data);
             }
         }
     }

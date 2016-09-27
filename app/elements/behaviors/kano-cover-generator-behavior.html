@@ -47,6 +47,30 @@
                 return image;
             });
         },
+        base64toBlob (b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+
+            let byteCharacters = atob(b64Data),
+                byteArrays = [],
+                slice, byteNumbers,
+                byteArray, offset;
+
+            for (offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                slice = byteCharacters.slice(offset, offset + sliceSize);
+
+                byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                byteArray = new Uint8Array(byteNumbers);
+
+                byteArrays.push(byteArray);
+            }
+
+            return new Blob(byteArrays, {type: contentType});
+        },
         renderOnCanvas (workspace, ctx, util, scaleFactor) {
             if (!workspace || !workspace.renderOnCanvas) {
                 return Promise.resolve();
@@ -54,12 +78,12 @@
             return workspace.renderOnCanvas(ctx, util, scaleFactor);
         },
         _generateGifCover (workspace, parts, scale, padding, color, fps, length) {
-            let p = Promise.resolve(),
-                wait = (delay) => {
+            let wait = (delay) => {
                     return new Promise((resolve, reject) => {
                         setTimeout(resolve, delay);
                     });
                 },
+                p = wait(300),
                 images = [];
 
             let getFrame = () => {
@@ -85,7 +109,7 @@
                 return new Promise((resolve, reject) => {
                     let gif = new GIF({
                         workers: 2,
-                        quality: 100,
+                        quality: 1,
                         workerScript: '/scripts/workers/gif.worker.js'
                     });
                     images.forEach((image) => {

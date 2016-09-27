@@ -153,8 +153,7 @@ export default [{
     pseudo: (part) => {
         return (block) => {
             let threshold = Blockly.Pseudo.valueToCode(block, 'THRESHOLD') || 50;
-            threshold = Math.max(0, Math.min(255, threshold * 2.55));
-            return `devices.get('${part.id}').addFilter('threshold', ${threshold});\n`;
+            return `devices.get('${part.id}').addFilter('threshold', Math.max(0, Math.min(255, ${threshold} * 2.55)));\n`;
         };
     }
 },{
@@ -185,8 +184,7 @@ export default [{
     pseudo: (part) => {
         return (block) => {
             let size = Blockly.Pseudo.valueToCode(block, 'SIZE') || 20;
-            size = Math.max(1, Math.min(100, size));
-            return `devices.get('${part.id}').addFilter('pixelate', ${size});\n`;
+            return `devices.get('${part.id}').addFilter('pixelate', Math.max(1, Math.min(100, ${size})));\n`;
         };
     }
 },{
@@ -253,9 +251,9 @@ export default [{
     javascript: (part) => {
         return (block) => {
             let offset = Blockly.JavaScript.valueToCode(block, 'ROTATION_OFFSET') || 50,
-                slices = Math.min(Blockly.JavaScript.valueToCode(block, 'SLICES') || 12, 1000),
-                zoom = Math.min(Blockly.JavaScript.valueToCode(block, 'ZOOM') || 1, 50)
-            return `devices.get('${part.id}').enableKaleidoscope(${offset}, ${slices}, ${zoom});\n`;
+                slices = Blockly.JavaScript.valueToCode(block, 'SLICES') || 12,
+                zoom = Blockly.JavaScript.valueToCode(block, 'ZOOM') || 1;
+            return `devices.get('${part.id}').enableKaleidoscope(${offset}, Math.min(${slices}, 1000), Math.min(${zoom}, 50));\n`;
         };
     },
     pseudo: (part) => {

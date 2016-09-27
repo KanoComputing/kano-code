@@ -9,7 +9,9 @@
 
             config (config) {
                 Object.keys(this.modules).forEach(name => {
-                    this.modules[name].config(config);
+                    if (this.modules[name] && this.modules[name].config && typeof this.modules[name].config === 'function') {
+                        this.modules[name].config(config);
+                    }
                 });
             }
 
@@ -102,9 +104,10 @@
                                     }
                                 },
                                 attached: function () {
+                                    let hardwareAPI = new Kano.MakeApps.HardwareAPI();
                                     this.workspace = this.$['${mode.id}'];
                                     this.appModules = Kano.AppModules.createStandalone();
-                                    this.appModules.init(Kano.MakeApps.config);
+                                    this.appModules.init(Object.assign({ hardwareAPI: hardwareAPI }, Kano.MakeApps.config));
                                     this.appModules.loadParts(this.$);
                                     var ws = this.$['${mode.id}'];
 
@@ -114,7 +117,9 @@
 
                                     ${code}
 
-                                    this.appModules.start();
+                                    this.async(function () {
+                                        this.appModules.start();
+                                    });
                                 },
                                 detached () {
                                     this.appModules.stop();
@@ -137,7 +142,9 @@
 
             _runModuleLifecycleStep (name) {
                 Object.keys(this.modules).forEach(key => {
-                    this.modules[key].executeLifecycleStep(name);
+                    if (typeof this.modules[key].executeLifecycleStep === 'function') {
+                        this.modules[key].executeLifecycleStep(name);
+                    }
                 });
             }
 

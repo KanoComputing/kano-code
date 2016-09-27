@@ -53,8 +53,8 @@
             },
             _updateSvgSize () {
                 let rect = this.wsDom.getBoundingClientRect();
-                this.$.svg.style.width = rect.width + 10;
-                this.$.svg.style.height = rect.height;
+                this.$.svg.style.width = `${rect.width + 10}px`;
+                this.$.svg.style.height = `${rect.height}px`;
             },
             detached () {
                 if (this.ws) {

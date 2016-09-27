@@ -1,5 +1,4 @@
 <link rel="import" href="../behaviors/kano-workspace-behavior.html">
-<link rel="import" href="../../bower_components/kano-hw-components/kano-led-matrix.html">
 <link rel="import" href="../../scripts/kano/make-apps/parts-api/lightboard.html">
 <dom-module id="kano-workspace-lightboard">
     <style>
@@ -16,19 +15,6 @@
             top: 43px;
             left: 18px;
             background-color: transparent;
-
-            --kano-led-matrix-led: {
-                width: 21px;
-                height: 21px;
-                margin: 3px;
-                box-shadow: none;
-                border: none;
-                border-radius: 0px;
-            };
-
-            --kano-led-matrix-row: {
-                background-color: transparent;
-            };
         }
 
         :host ::content > * {
@@ -54,11 +40,11 @@
         }
         .btn.a {
             top: 227px;
-            right: 65px;
+            left: 365px;
         }
         .btn.b {
             top: 227px;
-            right: 19px;
+            left: 411px;
         }
         .joystick {
             position: absolute;
@@ -138,7 +124,7 @@
         <iron-image src="/assets/mode/lightboard/body.svg" sizing="contain" width="[[width]]" height="[[height]]"></iron-image>
         <button class="btn a" on-tap="_buttonATapped"></button>
         <button class="btn b" on-tap="_buttonBTapped"></button>
-        <kano-led-matrix id="led-matrix"></kano-led-matrix>
+        <kano-bitmap-renderer id="led-matrix" bitmap="[[bitmap]]" width="16" height="8" pixel-size="21" spacing="3"></kano-bitmap-renderer>
         <div class="joystick">
             <button class="js-dir up" on-tap="_joystickUpTapped">
                 <div class="arrow-icon"></div>
@@ -163,13 +149,17 @@
             listeners: {
                 'update-shape': '_updateShape'
             },
+            ready () {
+                this.set('bitmap', []);
+            },
             attached () {
                 Kano.AppModules.getModule('lightboard').connect({
                     name: 'Make Apps'
                 });
             },
             render (bitmap) {
-                this.$['led-matrix'].render(bitmap);
+                this.bitmap = bitmap;
+                this.$['led-matrix']._renderCanvas();
             },
             _buttonATapped () {
                 this.fire('lightboard-btn-A');
@@ -198,7 +188,7 @@
                 for (let i = 0; i < 128; i++) {
                     empty.push('#000000');
                 }
-                this.$['led-matrix'].render(empty);
+                this.render(empty);
             },
             getRestrictElement () {
                 return this.$['led-matrix'];

@@ -5,7 +5,7 @@ export default button = {
     partType: 'ui',
     type: 'slider',
     label: 'Slider',
-    image: '/assets/part/button.svg',
+    image: '/assets/part/slider.svg',
     component: 'kano-part-slider',
     customizable: {
         properties: [{

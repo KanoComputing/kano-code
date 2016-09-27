@@ -60,6 +60,7 @@
 
                 if (this.loaded) {
                     img = new Image();
+                    img.crossOrigin = "Anonymous";
                     img.src = this.model.userProperties.src;
 
                     return new Promise((resolve) => {

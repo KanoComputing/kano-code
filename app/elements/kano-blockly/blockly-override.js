@@ -294,9 +294,11 @@ Blockly.Flyout.prototype.hide = function() {
   } else {
       this.animation = this.svgGroup_.animate([{
           transform: `${translate} scale(1)`,
+          webkitTransform: `${translate} scale(1)`,
           opacity: 1
       },{
           transform: `${translate} scale(0.5)`,
+          webkitTransform: `${translate} scale(0.5)`,
           opacity: 0
       }], {
           duration: 200,

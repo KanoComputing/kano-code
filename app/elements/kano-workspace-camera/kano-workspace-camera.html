@@ -212,9 +212,11 @@
                 return new Promise((resolve, reject) => {
                     let onRenderingDone = () => {
                         this.removeEventListener('rendering-done', onRenderingDone);
+                        ctx.putImageData(this.canvas.getContext('2d').getImageData(0, 0, this.canvas.width, this.canvas.height), 0, 0);
                         resolve();
-                    };
-                    this._paintFrame('/assets/mode/camera/default-picture.png', ctx.canvas);
+                    },
+                        randomIndex = Math.floor(Math.random() * 40);
+                    this._onPictureTaken(`/assets/mode/camera/placeholder_${randomIndex}.jpeg`);
                     this.addEventListener('rendering-done', onRenderingDone);
                 });
             },

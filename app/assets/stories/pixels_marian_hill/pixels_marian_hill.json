@@ -1,0 +1,101 @@
+{
+	"steps": [
+		{
+			"tooltips": [
+				{
+					"location": "left-panel",
+					"position": "right",
+					"text": "Switch on some music to try out the visualizer",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "Can you work out how it's coded?",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "~HFHhXMHThGxH]YA,-h."
+						}
+					},
+					"position": "left",
+					"text": "This code runs when the music is very loud.<br />It makes all the lights flash a random color.",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "Re*ZhS%GVaS}[AWMzOef"
+						}
+					},
+					"position": "left",
+					"text": "This part plays when the music is a little less loud.<br />It sets a circle to a random size and position on the board.",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "V@zF*OSTEO,OWho#%rqZ"
+						}
+					},
+					"position": "left",
+					"text": "Finally, this part runs when the music is quiet.<br />It switches on two blue lights in the middle of the board.",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "Your challenge: remix.<br />What can you change in the code to make<br />the visualizer your own? Share your results!",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"microphone",
+		"light-rectangle"
+	],
+	"modules": [
+		"control",
+		"math",
+		"variables"
+	],
+	"variables": [],
+	"mode": "lightboard",
+	"defaultApp": "{\"parts\":[{\"id\":\"mic\",\"name\":\"Mic\",\"type\":\"microphone\",\"tagName\":\"kano-part-microphone\",\"userStyle\":{},\"userProperties\":{},\"position\":{\"x\":49.98225806451613,\"y\":319.84260752688175},\"partType\":\"hardware\",\"configPanel\":\"disabled\"},{\"id\":\"circle\",\"name\":\"Circle\",\"type\":\"light-circle\",\"tagName\":\"kano-part-light-circle\",\"userStyle\":{},\"userProperties\":{\"radius\":-1,\"color\":\"#ffffff\"},\"position\":{\"x\":351,\"y\":162},\"partType\":\"ui\",\"configPanel\":\"light-shape\",\"excludeDefaultBlocks\":true,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"radius\",\"type\":\"range\",\"label\":\"Radius\",\"min\":0,\"max\":3},{\"key\":\"color\",\"type\":\"color\",\"label\":\"Color\"}],\"style\":[]},\"rotation\":0,\"scale\":100,\"visible\":true}],\"code\":{\"snapshot\":{\"javascript\":\"var toggle;\\n\\n\\nglobal.when('start', function () {\\n  toggle = 0;\\n  time.every(100, 'milliseconds', function () {\\n    if (devices.get('mic').volume >= 61) {\\n      toggle = 1;\\n      devices.get('lightboard').turnOn({\\\"type\\\":\\\"all\\\"}, colour.random());\\n    } else if (devices.get('mic').volume < 61 && devices.get('mic').volume >= 34) {\\n      toggle = 1;\\n      devices.get('lightboard').turnOff({\\\"type\\\":\\\"all\\\"});\\n      devices.get('circle').setX( math.random(1, 16)-1);\\n      devices.get('circle').setY(math.random(1, 8)-1);\\n      devices.get('circle').setRadius(math.random(1, 6));\\n    } else if (devices.get('mic').volume < 40) {\\n      if (toggle) {\\n        devices.get('circle').setRadius(-1);\\n        devices.get('lightboard').turnOff({\\\"type\\\":\\\"all\\\"});\\n      }\\n      toggle = 0;\\n      devices.get('lightboard').turnOn({\\n                              type: 'single',\\n                              x: 8-1,\\n                              y: 4-1\\n                          }, '#3366ff');\\n      devices.get('lightboard').turnOn({\\n                              type: 'single',\\n                              x: 9-1,\\n                              y: 5-1\\n                          }, '#3366ff');\\n    }\\n  });\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n  toggle = 0;\\n  time.every(100, 'milliseconds', function () {\\n    if (devices.get('mic').volume >= 61) {\\n      toggle = 1;\\n      devices.get('lightboard').turnOn({\\\"type\\\":\\\"all\\\"}, colour.random());\\n    } else if (devices.get('mic').volume < 61 && devices.get('mic').volume >= 34) {\\n      toggle = 1;\\n      devices.get('lightboard').turnOff({\\\"type\\\":\\\"all\\\"});\\n      devices.get('circle').setX( math.random(1, 16)-1);\\n      devices.get('circle').setY(math.random(1, 8)-1);\\n      devices.get('circle').setRadius(math.random(1, 6));\\n    } else if (devices.get('mic').volume < 40) {\\n      if (toggle) {\\n        devices.get('circle').setRadius(-1);\\n        devices.get('lightboard').turnOff({\\\"type\\\":\\\"all\\\"});\\n      }\\n      toggle = 0;\\n      devices.get('lightboard').turnOn({\\n                              type: 'single',\\n                              x: 8-1,\\n                              y: 4-1\\n                          }, '#3366ff');\\n      devices.get('lightboard').turnOn({\\n                              type: 'single',\\n                              x: 9-1,\\n                              y: 5-1\\n                          }, '#3366ff');\\n    }\\n  });\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"70\\\" y=\\\"30\\\"><field name=\\\"EVENT\\\">global.start</field><statement name=\\\"DO\\\"><block type=\\\"variables_set\\\" id=\\\"fVFp_?Zlq)KX!v!h[n{f\\\"><field name=\\\"VAR\\\">toggle</field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"`W[!iFSW=dN8uuR~+p([\\\"><field name=\\\"NUM\\\">0</field></block></value><next><block type=\\\"every_x_seconds\\\" id=\\\"x~CI|93JSk?]2[(ryx_7\\\"><field name=\\\"UNIT\\\">milliseconds</field><value name=\\\"INTERVAL\\\"><shadow type=\\\"math_number\\\" id=\\\"{;r3|Q:,nltt?w@K8;rc\\\"><field name=\\\"NUM\\\">100</field></shadow></value><statement name=\\\"DO\\\"><block type=\\\"controls_if\\\" id=\\\"eTS%-HRMF?[zZ}%/,jT|\\\"><mutation elseif=\\\"2\\\"></mutation><value name=\\\"IF0\\\"><block type=\\\"logic_compare\\\" id=\\\"9w`a6(O,O6Gj6@}RE#d,\\\"><field name=\\\"OP\\\">GTE</field><value name=\\\"A\\\"><block type=\\\"mic#get_volume\\\" id=\\\"[Kr}NE{+!~^)MpU[NK(S\\\"><field name=\\\"TYPE\\\">volume</field></block></value><value name=\\\"B\\\"><block type=\\\"math_number\\\" id=\\\"0;sp?_rN`[CV-1xZYQvj\\\"><field name=\\\"NUM\\\">61</field></block></value></block></value><statement name=\\\"DO0\\\"><block type=\\\"variables_set\\\" id=\\\"`)2G`u8H_2m:Q2{%^u-e\\\"><field name=\\\"VAR\\\">toggle</field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"9e(,Nf9)uSZo00A0!C#2\\\"><field name=\\\"NUM\\\">1</field></block></value><next><block type=\\\"lightboard#turn_on\\\" id=\\\"~HFHhXMHThGxH]YA,-h.\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#lights_all\\\" id=\\\".`}Q(YO58heMz7HQfU5p\\\"></block></value><value name=\\\"COLOR\\\"><block type=\\\"random_colour\\\" id=\\\"hc?!3b97w@wKi_SC1XD;\\\"></block></value></block></next></block></statement><value name=\\\"IF1\\\"><block type=\\\"logic_operation\\\" id=\\\"cofUbWK}Oaa~wYOGjpT=\\\" inline=\\\"false\\\"><field name=\\\"OP\\\">AND</field><value name=\\\"A\\\"><block type=\\\"logic_compare\\\" id=\\\"sfUar4/KbNE}bukctWsx\\\"><field name=\\\"OP\\\">LT</field><value name=\\\"A\\\"><block type=\\\"mic#get_volume\\\" id=\\\"X`3(dQo@,R84~{%@*Y5[\\\"><field name=\\\"TYPE\\\">volume</field></block></value><value name=\\\"B\\\"><block type=\\\"math_number\\\" id=\\\"S7F59`)EW?R.:08sl/LT\\\"><field name=\\\"NUM\\\">61</field></block></value></block></value><value name=\\\"B\\\"><block type=\\\"logic_compare\\\" id=\\\"|5YV3OUR~DC;Jev_#ZhM\\\"><field name=\\\"OP\\\">GTE</field><value name=\\\"A\\\"><block type=\\\"mic#get_volume\\\" id=\\\"dOxw%C8:ga?hj4OpC!-_\\\"><field name=\\\"TYPE\\\">volume</field></block></value><value name=\\\"B\\\"><block type=\\\"math_number\\\" id=\\\"@~4v{`C4:VBD:}%C)jQ}\\\"><field name=\\\"NUM\\\">34</field></block></value></block></value></block></value><statement name=\\\"DO1\\\"><block type=\\\"variables_set\\\" id=\\\"rbg2i(zS+4om;Qa.X{cT\\\"><field name=\\\"VAR\\\">toggle</field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"Ta4^hDuGQgfhBTny]+Vt\\\"><field name=\\\"NUM\\\">1</field></block></value><next><block type=\\\"lightboard#turn_off\\\" id=\\\"eiSy)7@dxyCUja|w)BsF\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#lights_all\\\" id=\\\".|PAKbZm+Vg/#@YHofK^\\\"></block></value><next><block type=\\\"circle#set_x\\\" id=\\\"Re*ZhS%GVaS}[AWMzOef\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"ghgkU%P4?yU,flVtZ!/3\\\"><field name=\\\"NUM\\\">1</field></shadow><block type=\\\"math_random\\\" id=\\\"[}`h@xl}!WpK2rU6rOXD\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"p}H4,{agT;.oE%a~_%z(\\\"><field name=\\\"NUM\\\">1</field></shadow></value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"xpE2Pf,#=V4M2TZdu~Kb\\\"><field name=\\\"NUM\\\">16</field></shadow></value></block></value><next><block type=\\\"circle#set_y\\\" id=\\\"ImibBV!F1_~2/Vv3#~*7\\\"><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"|~*8@bkR`m%cE*HrfUl[\\\"><field name=\\\"NUM\\\">1</field></shadow><block type=\\\"math_random\\\" id=\\\"G[o88K47uP:G@wl?~]Y!\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"~x:E:@2XWwHi_=(7th#e\\\"><field name=\\\"NUM\\\">1</field></shadow></value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"QHoC^T=q_vdjZ6T!:6Ga\\\"><field name=\\\"NUM\\\">8</field></shadow></value></block></value><next><block type=\\\"circle#set_size\\\" id=\\\"ro)REM8)BE(O?v`D-t54\\\"><value name=\\\"RADIUS\\\"><shadow type=\\\"math_number\\\" id=\\\"ArYhta1W1:/ZNj1Oksdo\\\"><field name=\\\"NUM\\\">1</field></shadow><block type=\\\"math_random\\\" id=\\\"k361cRo#Sj+Qqqv8DBFh\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"xFIU/,Kbt3Rc-VP3i@_^\\\"><field name=\\\"NUM\\\">1</field></shadow></value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"!qr0f%6{CZ=O^nm[}qm_\\\"><field name=\\\"NUM\\\">6</field></shadow></value></block></value></block></next></block></next></block></next></block></next></block></statement><value name=\\\"IF2\\\"><block type=\\\"logic_compare\\\" id=\\\"u%4!onXZz2p7,Kfulp_z\\\"><field name=\\\"OP\\\">LT</field><value name=\\\"A\\\"><block type=\\\"mic#get_volume\\\" id=\\\"ya35%%(%Ma(J{DMm}CX9\\\"><field name=\\\"TYPE\\\">volume</field></block></value><value name=\\\"B\\\"><block type=\\\"math_number\\\" id=\\\"QUWD8@P.1i,zSj:zEmf?\\\"><field name=\\\"NUM\\\">40</field></block></value></block></value><statement name=\\\"DO2\\\"><block type=\\\"controls_if\\\" id=\\\"V@zF*OSTEO,OWho#%rqZ\\\"><value name=\\\"IF0\\\"><block type=\\\"variables_get\\\" id=\\\"AgQk(=q:xQQPEFX-*B!H\\\"><field name=\\\"VAR\\\">toggle</field></block></value><statement name=\\\"DO0\\\"><block type=\\\"circle#set_size\\\" id=\\\"(s+u-Qm-{ka4aW~4.X[g\\\"><value name=\\\"RADIUS\\\"><shadow type=\\\"math_number\\\" id=\\\"ArYhta1W1:/ZNj1Oksdo\\\"><field name=\\\"NUM\\\">-1</field></shadow></value><next><block type=\\\"lightboard#turn_off\\\" id=\\\"l015#Dnj}CzdMvWj8@[*\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#lights_all\\\" id=\\\"^/,:x0Oza,)7RC%R~]mp\\\"></block></value></block></next></block></statement><next><block type=\\\"variables_set\\\" id=\\\"!FLAP6Y56v!zRD0oA[Y%\\\"><field name=\\\"VAR\\\">toggle</field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"L_mq?dg+Ja4-]3{#ldQD\\\"><field name=\\\"NUM\\\">0</field></block></value><next><block type=\\\"lightboard#turn_on\\\" id=\\\"k8,n7^v}pELA+XkOKC*?\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#light_x_y\\\" id=\\\"h5{0JAyA([BpbC:#sM|T\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"XdP/=W`y4SbF=4ayPr87\\\"><field name=\\\"NUM\\\">8</field></shadow></value><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"T=QRlw%G)R/UUM`o`sqo\\\"><field name=\\\"NUM\\\">4</field></shadow></value></block></value><value name=\\\"COLOR\\\"><block type=\\\"colour_picker\\\" id=\\\"kHl]HORtn,ty##6g_h{~\\\"><field name=\\\"COLOUR\\\">#3366ff</field></block></value><next><block type=\\\"lightboard#turn_on\\\" id=\\\"fEA!f`XvfV-.d{Ce%ONz\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#light_x_y\\\" id=\\\"n[Hrjme0]4n8J.qNIm/c\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"mg#verSn/l;cv~P,i-F}\\\"><field name=\\\"NUM\\\">9</field></shadow></value><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"L}=(]X2Kw^8^8%=D}/H6\\\"><field name=\\\"NUM\\\">5</field></shadow></value></block></value><value name=\\\"COLOR\\\"><block type=\\\"colour_picker\\\" id=\\\"F8hnrnlHuyK/4]6Fuidf\\\"><field name=\\\"COLOUR\\\">#3366ff</field></block></value></block></next></block></next></block></next></block></statement></block></statement></block></next></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"lightboard\"}"
+}

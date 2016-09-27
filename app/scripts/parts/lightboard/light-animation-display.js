@@ -104,13 +104,13 @@ export default lightAnimationDisplay = {
         },
         javascript: (part) => {
             return (block) => {
-                let code = `devices.get('${part.id}').stop();\n`;
+                let code = `devices.get('${part.id}').pause();\n`;
                 return code;
             };
         },
         pseudo: (part) => {
             return (block) => {
-                let code = `devices.get('${part.id}').stop();\n`;
+                let code = `devices.get('${part.id}').pause();\n`;
                 return code;
             };
         }

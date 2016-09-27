@@ -14,7 +14,9 @@ export default Camera = {
         },
         component: 'kano-workspace-camera'
     },
-    sharing: {},
+    sharing: {
+        cover: 'still'
+    },
     defaultBlocks: `<xml xmlns="http://www.w3.org/1999/xhtml"><block type="part_event" x="83" y="102" id="default_event_part_id"><field name="EVENT">camera.camera-shutter-button</field><statement name="DO"><block type="camera#take_picture" id="default_take_picture_id"></block></statement></block></xml>`,
     colour: '#82C23D',
     parts: ['clock', 'microphone', 'speaker', 'button', 'box',
