@@ -633,10 +633,20 @@
         },
         _preparePopup (loading) {
             let socialConfig = this.socialConfigs[this.socialTarget],
-                winTop = (screen.height / 2) - (socialConfig.height / 2),
-                winLeft = (screen.width / 2) - (socialConfig.width / 2),
+                //split screen scenario
+                dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left,
+                dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top,
+
+                width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width,
+                height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height,
+
+                winLeft = ((width / 2) - (socialConfig.width / 2)) + dualScreenLeft,
+                winTop = ((height / 2) - (socialConfig.height / 2)) + dualScreenTop,
+
                 url = loading ? `${location.protocol}//${location.host}/loading-share.html` : '';
-            this.popup = window.open(url, 'sharer', `top=${winTop},left=${winLeft},toolbar=0,status=0,width=${socialConfig.width},height=${socialConfig.height}`);
+
+            this.popup = window.open("", 'sharer', `top=${winTop},left=${winLeft},toolbar=0,status=0,width=${socialConfig.width},height=${socialConfig.height}`);
+            this.popup.document.write("<p>Fetching your link...</p>")
         },
         isKitAvailable () {
             if (this.shareInfo.mode) {
