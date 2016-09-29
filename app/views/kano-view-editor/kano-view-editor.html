@@ -155,6 +155,7 @@
             let file;
             e.preventDefault();
             e.stopPropagation();
+            this.toggleClass('dragging', false); 
             this._animateDrop().then(() => {
                 this.$['dropoverlay'].style.display = 'none';
             });
@@ -193,7 +194,6 @@
             if (target !== this) {
                 this.toggleClass('dragging', true);
             } else {
-                console.log('animate enter');
                 this.$['dropoverlay'].style.display = 'flex';
                 this._animateDragEnter();
             }
@@ -201,8 +201,7 @@
         _onDragleave (e) {
             let target = e.path ? e.path[0] : e.target;
             if (target === this) {
-                this.toggleClass('dragging', false);
-                console.log('animate leave');                
+                this.toggleClass('dragging', false);            
                 this._animateDragLeave().then(() => {
                     this.$['dropoverlay'].style.display = 'none';
                 });

@@ -508,8 +508,9 @@ Polymer({
         window.onbeforeunload = null;
     },
     _exportApp () {
-        let a = document.createElement('a'),
-            file = new Blob([localStorage.getItem(`savedApp-${this.mode.id}`)], {type: 'application/kcode'}),
+        let savedApp = this.save(),
+            a = document.createElement('a'),
+            file = new Blob([JSON.stringify(savedApp)], {type: 'application/kcode'}),
             url = URL.createObjectURL(file);
         document.body.appendChild(a);
         a.download = 'my-app.kcode';
