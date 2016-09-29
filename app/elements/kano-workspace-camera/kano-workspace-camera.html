@@ -138,7 +138,6 @@
                 this.webcam = null;
             },
             takePicture () {
-                Kano.MakeApps.PartsAPI.camera.clearFilters.apply(this);
                 if (this.webcam) {
                     this.throttle('takePicture', () => {
                         this.webcam.takePicture().then(url => {
