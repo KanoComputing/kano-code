@@ -29,7 +29,7 @@ module.exports = (gulp, $) => {
 
     function views(src) {
         return () => {
-            return babelOrCopy(src)
+            return babelOrCopy(src, { base: 'app/views/' })
             .pipe(gulp.dest('www/views'))
             .pipe($.browserSync.stream());
         };

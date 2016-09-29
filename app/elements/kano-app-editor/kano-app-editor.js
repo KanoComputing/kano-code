@@ -508,12 +508,15 @@ Polymer({
         window.onbeforeunload = null;
     },
     _exportApp () {
-        let a = document.createElement('a');
+        let a = document.createElement('a'),
+            file = new Blob([localStorage.getItem(`savedApp-${this.mode.id}`)], {type: 'application/kcode'}),
+            url = URL.createObjectURL(file);
         document.body.appendChild(a);
-        a.download = 'my-app.mapps';
-        a.href = "data:application/mapps;base64," + btoa(localStorage.getItem(`savedApp-${this.mode.id}`));
+        a.download = 'my-app.kcode';
+        a.href = url;
         a.click();
         document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     },
     _importApp () {
         this.fileInput = document.createElement('input');
