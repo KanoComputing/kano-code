@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="./import.html">
 <link rel="import" href="../kano-blockly-omnibox/kano-blockly-omnibox.html">
 
@@ -153,6 +154,7 @@
               <button dialog-confirm>Confirm</button>
           </div>
         </paper-dialog>
+        <iron-a11y-keys keys="crtl+f meta+f" on-keys-pressed="_openOmnibox" target="[[target]]"></iron-a11y-keys>
     </template>
 </dom-module>
 
@@ -186,6 +188,7 @@
          * Inject blockly to the workspace div
          */
         attached () {
+            this.target = document.body;
             this.visible = false;
             this.workspace = Blockly.inject(this.$.workspace, {
                 toolbox: this.toolboxXml,
@@ -218,13 +221,6 @@
                     }
                 }
             });
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'f' && e.metaKey) {
-                    this._openOmnibox();
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-            });
         },
         detached () {
             this.workspace.dispose();
@@ -245,7 +241,11 @@
                 this.$['omnibox-wrapper'].style.display = 'none';
             });
         },
-        _openOmnibox () {
+        _openOmnibox (e) {
+            if (e.detail && e.detail.keyboardEvent) {
+                e.detail.keyboardEvent.preventDefault();
+                e.detail.keyboardEvent.stopPropagation();
+            }
             Blockly.ContextMenu.hide();
             this._omniboxOpened = true;
             this.$['omnibox-wrapper'].style.display = 'flex';

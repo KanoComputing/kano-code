@@ -1,6 +1,7 @@
 <script src="../../bower_components/interact/interact.js"></script>
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
 <link rel="import" href="../kano-sidebar/kano-sidebar.html">
 <link rel="import" href="../kano-workspace/kano-workspace.html">
@@ -366,6 +367,11 @@
                 <button dialog-dismiss class="cancel">Cancel</button>
             </div>
         </paper-dialog>
+        <iron-signals on-iron-signal-export-app="_exportApp">
+        <iron-signals on-iron-signal-import-app="_importApp">
+        <iron-signals on-iron-signal-reset-workspace="reset">
+        <iron-a11y-keys target="[[target]]" keys="alt+p" on-keys-pressed="toggleParts"></iron-a11y-keys>
+        <iron-a11y-keys target="[[target]]" keys="cmd+shift+s ctrl+shift+s" on-keys-pressed="share"></iron-a11y-keys>
     </template>
 </dom-module>
 
