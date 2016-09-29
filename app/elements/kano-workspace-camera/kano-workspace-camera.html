@@ -213,7 +213,7 @@
                 this._stopWebcam();
             },
             renderBlank () {
-                ctx = this.$.canvas.getContext('2d');
+                let ctx = this.$.canvas.getContext('2d');
                 ctx.fillStyle = '#ffffff';
                 ctx.clearRect(0, 0, this.$.canvas.width, this.$.canvas.height);
             },
