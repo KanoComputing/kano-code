@@ -50,7 +50,11 @@
                     this.set('model.rotation', savedState.rotation);
                     this.set('model.scale', savedState.scale);
                     this.set('model.visible', savedState.visible);
-                    this.set('model.userProperties', savedState.userProperties);
+                    Object.keys(savedState.userProperties).forEach((propName) => {
+                        if (this.model.nonvolatileProperties.indexOf(propName) < 0) {
+                            this.set('model.userProperties.' + propName, savedState.userProperties[propName]);
+                        }
+                    });
                     this.set('model.userStyle', savedState.userStyle);
                 }
                 this.isRunning = false;
