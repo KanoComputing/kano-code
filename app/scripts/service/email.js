@@ -1,5 +1,3 @@
-import config from '../config';
-
 let email;
 
 export default email = {
@@ -18,7 +16,7 @@ export default email = {
             }
         };
 
-        return fetch(config.API_URL + '/mail', {
+        return fetch(Kano.MakeApps.config.API_URL + '/mail', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
