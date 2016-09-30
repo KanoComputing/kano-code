@@ -492,9 +492,11 @@ Polymer({
         });
         this.bindEvents();
 
-        window.onbeforeunload = () => {
-            return 'Any unsaved changes to your app will be lost. Continue?';
-        };
+        if (!window.navigator.userAgent.match("Electron")) {
+            window.onbeforeunload = () => {
+                return 'Any unsaved changes to your app will be lost. Continue?';
+            }
+        }
     },
     detached () {
         Kano.MakeApps.Parts.clear();
