@@ -40,14 +40,20 @@
                         vendorName = winNav.vendor,
                         isOpera = winNav.userAgent.indexOf("OPR") > -1,
                         isIEedge = winNav.userAgent.indexOf("Edge") > -1,
-                        isIOSChrome = winNav.userAgent.match("CriOS");
+                        isIOSChrome = winNav.userAgent.match("CriOS"),
+                        isElectron = winNav.userAgent.match("Electron");
 
-                    if((isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) || ClientUtil.isPi()) {
-                        // Do not show
+                    if (isElectron) {
+                        // Don't suggest Chrome and don't put on alert window
+                    }
+                    else if((isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) || ClientUtil.isPi()) {
+                        this._onCloseAlert();
                     } else if(isIOSChrome){
                         this._promptToTryChrome();
-                    } else { 
+                        this._onCloseAlert();
+                    } else {
                         this._promptToTryChrome();
+                        this._onCloseAlert();
                     }
                 }
             },
@@ -65,6 +71,11 @@
             _closeChromeToast () {
                 this.$.toast.close();
                 localStorage.setItem('no-chrome', Date.now());
+            },
+            _onCloseAlert () {
+                window.onbeforeunload = () => {
+                    return 'Any unsaved changes to your app will be lost. Continue?';
+                };
             }
         });
     </script>
