@@ -19,7 +19,7 @@
     userAgent = window.navigator.userAgent;
     isPi = userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1;
 
-    if (isCore && document.referrer === "") {
+    if (isCore && location.pathname === '/') {
         location.href = 'https://world.kano.me/projects';
         return;
     }
