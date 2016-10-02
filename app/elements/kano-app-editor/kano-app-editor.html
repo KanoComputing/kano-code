@@ -319,7 +319,7 @@
                             on-change="_proxyChange"
                             default-categories="{{defaultCategories}}"></kano-root-view>
                         <button type="button" class="share-button" on-tap="share" id="share-button" hidden$="[[!showShareButton]]">Share App</button>
-                        <content></content>
+                        <slot></slot>
                     </div>
                     <div class="drawer animatable" drawer id="drawer">
                         <iron-pages selected="{{drawerPage}}" attr-for-selected="id" class="drawer-content">

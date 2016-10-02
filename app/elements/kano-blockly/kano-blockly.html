@@ -22,48 +22,48 @@
             @apply(--kano-crossed-background);
         }
 
-        .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"]), ::content .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"]) {
+        .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"]), ::slotted(* .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"])) {
             display: none;
         }
 
-        .blocklyEditableText>rect, ::content .blocklyEditableText>rect {
+        .blocklyEditableText>rect, ::slotted(*.blocklyEditableText>rect) {
             fill: white;
             fill-opacity: 0.6;
         }
 
         .blocklyPathDark,
         .blocklyPathLight,
-        ::content .blocklyPathDark,
-        ::content .blocklyPathLight {
+        ::slotted(* .blocklyPathDark),
+        ::slotted(* .blocklyPathLight) {
             fill: transparent !important;
             stroke-width: 0px !important;
         }
-        .blocklySelected > .blocklyPath, ::content .blocklySelected > .blocklyPath {
+        .blocklySelected > .blocklyPath, ::slotted(* .blocklySelected > .blocklyPath) {
             stroke-width: 1px !important;
             stroke: rgba(0, 0, 0, 0.5) !important;
             stroke-linejoin: round !important;
         }
-        .blocklyHighlightedConnectionPath, ::content .blocklyHighlightedConnectionPath {
+        .blocklyHighlightedConnectionPath, ::slotted(* .blocklyHighlightedConnectionPath) {
             stroke-width: 2px !important;
         }
-        text.blocklyText, ::content text.blocklyText {
+        text.blocklyText, ::slotted(* text.blocklyText) {
             font-family: bariol;
             font-size: 1em;
         }
-        .blocklyEditableText:hover > rect, ::content .blocklyEditableText:hover > rect {
+        .blocklyEditableText:hover > rect, ::slotted(* .blocklyEditableText:hover > rect) {
             stroke-width: 1px !important;
         }
-        .blocklyEditableText .blocklyText, ::content .blocklyEditableText .blocklyText {
+        .blocklyEditableText .blocklyText, ::slotted(* .blocklyEditableText .blocklyText) {
             font-size: 1em !important;
         }
-        div.blocklyTreeRoot, ::content div.blocklyTreeRoot {
+        div.blocklyTreeRoot, ::slotted(* div.blocklyTreeRoot) {
             padding: 0px;
         }
-        span.blocklyTreeLabel, ::content span.blocklyTreeLabel {
+        span.blocklyTreeLabel, ::slotted(* span.blocklyTreeLabel) {
             font-family: bariol;
             font-size: 14px;
         }
-        div.blocklyTreeRow, ::content div.blocklyTreeRow {
+        div.blocklyTreeRow, ::slotted(* div.blocklyTreeRow) {
             position: relative;
             height: auto !important;
             line-height: 20px !important;
@@ -74,8 +74,8 @@
         }
         div.blocklyTreeRow:hover,
         span.blocklyTreeLabel:hover,
-        ::content div.blocklyTreeRow:hover,
-        ::content span.blocklyTreeLabel:hover {
+        ::slotted(* div.blocklyTreeRow:hover),
+        ::slotted(* span.blocklyTreeLabel:hover) {
             cursor: pointer;
         }
         div.blocklyTriangle {
@@ -88,22 +88,22 @@
             border-right-width: 10px;
             border-right-color: #E8E8E8;
         }
-        span.blocklyTreeIcon, ::content span.blocklyTreeIcon {
+        span.blocklyTreeIcon, ::slotted(* span.blocklyTreeIcon) {
             width: 0px;
         }
-        div.blocklyToolboxDiv, ::content div.blocklyToolboxDiv {
+        div.blocklyToolboxDiv, ::slotted(* div.blocklyToolboxDiv) {
             background-color: transparent;
             position: absolute;
         }
-        div.goog-tree-item, ::content div.goog-tree-item {
+        div.goog-tree-item, ::slotted(* div.goog-tree-item) {
             border: 0px;
             visibility: hidden;
         }
-        path.blocklyFlyoutBackground, ::content path.blocklyFlyoutBackground {
+        path.blocklyFlyoutBackground, ::slotted(* path.blocklyFlyoutBackground) {
             fill: #E8E8E8;
             fill-opacity: 1;
         }
-        rect.blocklyMainBackground, ::content rect.blocklyMainBackground {
+        rect.blocklyMainBackground, ::slotted(* rect.blocklyMainBackground) {
             opacity: 0 !important;
         }
         .buttons button {

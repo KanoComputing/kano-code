@@ -9,7 +9,7 @@
             width: 100%;
             height: 100%;
         }
-        :host ::content>* {
+        :host ::slotted(*) {
             position: absolute;
             top: 0px;
             left: 0px
@@ -33,7 +33,7 @@
         <button on-tap="_triggerShutterEvent">Shutter</button>
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
         <div class="content">
-            <content></content>
+            <slot></slot>
         </div>
     </template>
     <script>

@@ -107,10 +107,10 @@
             </div>
             <input type="range" name="name" value="{{angle::input}}" min="0" max="360">
             <kano-arrow source="[[source]]" target="[[target]]">
-                <button type="button" name="button" class="arrow-image">I am an arrow</button>
+                <button type="button" name="button" slot="arrow-image">I am an arrow</button>
             </kano-arrow>
             <kano-arrow target="[[target2]]" angle="[[angle]]">
-                <img src="http://simpleicon.com/wp-content/uploads/arrow-31.svg" alt="" class="arrow-image" width="70"/>
+                <img src="http://simpleicon.com/wp-content/uploads/arrow-31.svg" alt="" slot="arrow-image" width="70"/>
             </kano-arrow>
         </template>
         <script>
