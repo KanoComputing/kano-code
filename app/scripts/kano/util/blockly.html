@@ -1,0 +1,17 @@
+<script>
+    (function (Kano) {
+        var Blockly = {};
+        Kano.Util = Kano.Util || {};
+        Kano.Util.Blockly = Blockly;
+
+        Blockly.updateBlockColour = function (def, colour) {
+            let oldInit = def.init;
+            def.init = function () {
+                var r = oldInit.apply(this, arguments);
+                this.setColour(colour);
+                return r;
+            };
+        };
+
+    })(window.Kano = window.Kano || {});    
+</script>

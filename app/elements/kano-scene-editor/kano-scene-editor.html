@@ -32,13 +32,14 @@
                             step="{{currentStep}}"
                             started="[[scene.started]]">
           <kano-app-editor id="editor"
+                            added-parts="{{addedParts}}"
                             parts="[[computeParts(scene.*, remix)]]"
                             default-categories="[[computeCategories(scene.*, remix)]]"
                             class="editor"
                             running="{{running}}"
                             title="[[storyName]]"
                             code="{{code}}"
-                            mode="[[mode]]"
+                            mode="[[_computeMode(mode, remix)]]"
                             on-blockly-ready="_blocklyReady">
               <kano-challenge-progress id="challenge-progress" progress="[[progress]]" title="[[storyName]]" next-challenge="[[nextStory.id]]" on-share-app="shareApp" remix-mode="[[remix]]"></kano-challenge-progress>
           </kano-app-editor>
@@ -78,13 +79,65 @@
             },
             extensions: {
                 type: Array
+            },
+            addedParts: {
+                type: Array
+            },
+            remix: {
+                type: Boolean,
+                observer: '_remixChanged'
             }
         },
         observers: [
             'endedChanged(scene.ended)',
             '_sceneChanged(scene)',
-            '_sceneStarted(scene.started)'
+            '_sceneStarted(scene.started)',
+            '_addedPartsChanged(addedParts.splices)'
         ],
+        _remixChanged (remix) {
+            if (remix) {
+                // Look for the previously removed blocks in the addedParts
+                this.addedParts.forEach((part, i) => {
+                    // Some blocks were removed, we need to add them back
+                    if (part.removedBlocks) {
+                        // Go through all the removed blocks and inject them back in the blocks array
+                        Object.keys(part.removedBlocks).forEach(index => {
+                            this.splice(`addedParts.${i}.blocks`, index, 0, part.removedBlocks[index]);
+                        });
+                        delete part.removedBlocks;
+                    }
+                });
+            }
+        },
+        /**
+         * Observes the `addedParts` array. Goes through the added splice and removes the blocks from a part if needed.
+         * Stores the removed blocks in a `removedBlocks` object for future re-injection 
+         */
+        _addedPartsChanged (e) {
+            if (!e || this.remix || !this.scene.filterBlocks) {
+                return;
+            }
+            e.indexSplices.forEach(splice => {
+                splice.object.forEach(part => {
+                    Object.keys(this.scene.filterBlocks).forEach(key => {
+                        if (!part.type === key) {
+                            return;
+                        }
+                        part.blocks = part.blocks.filter((block, index) => {
+                            let definition = block.block(part),
+                                remove = this.scene.filterBlocks[key].indexOf(definition.id) === -1;
+                            // We're about to remove the block from the part. Save it under another object to
+                            // be able to inject it back later
+                            if (remove) {
+                                part.removedBlocks = part.removedBlocks || {};
+                                part.removedBlocks[index] = block;
+                            }
+                            return !remove;
+                        });
+                    });
+                });
+            });
+        },
         _sceneStarted (started) {
             if (started) {
                 this.$['challenge-progress'].animateIn();
@@ -150,19 +203,55 @@
                 return Kano.MakeApps.Parts.list.filter(part => this.scene.parts.indexOf(part.type) !== -1);
             }
         },
-        computeCategories (e) {
-            let cats = {};
+        /**
+         * Returns the categories that will be used in this challenge. Takes care of filtering the
+         * categories and blocks that will not be used. Resets everything when the users enters remix mode
+         */
+        computeCategories () {
+            let cats = {},
+                cat;
             if (this.remix) {
                 cats = Kano.MakeApps.Blockly.categories;
             } else {
                 this.scene.modules.forEach(id => {
-                    cats[id] = Kano.MakeApps.Blockly.categories[id];
+                    // Clone the object, because we might change its blocks
+                    cats[id] = Object.assign({}, Kano.MakeApps.Blockly.categories[id]);
                 });
-                cats.events = Kano.MakeApps.Blockly.categories.events;
+                cats.events = Object.assign({}, Kano.MakeApps.Blockly.categories.events);
+
+                // Do not filter blocks if the list is not defined
+                if (this.scene.filterBlocks) {
+                    // Remove the excluded blocks from the categories
+                    Object.keys(this.scene.filterBlocks).forEach(catId => {
+                        cat = cats[catId];
+                        if (!cat) {
+                            return;
+                        }
+                        cat.blocks = cat.blocks.filter(block => this.scene.filterBlocks[catId].indexOf(block.id) !== -1);
+                    });
+                }
             }
 
-
             return cats;
+        },
+        _computeMode () {
+            let mode = this.mode;
+            if (this.remix) {
+                if (mode.originalBlocks) {
+                    mode.blocks = mode.originalBlocks;
+                    delete mode.originalBlocks;
+                }
+            } else {
+                let whitelist = this.scene.filterBlocks[mode.id];
+                if (whitelist) {
+                    mode.originalBlocks = mode.blocks;
+                    mode.blocks = mode.blocks.filter(block => {
+                        let definition = block.block(mode);
+                        return whitelist.indexOf(definition.id) !== -1;
+                    });
+                }
+            }
+            return mode;
         },
         saveApp (e) {
             let id = e.detail.id || 'current',

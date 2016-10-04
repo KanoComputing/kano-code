@@ -103,7 +103,7 @@
         animateLoader();
         if (!webComponentsSupported) {
             wcPoly = document.createElement('script');
-            wcPoly.src = '/assets/vendor/webcomponentsjs/webcomponents-lite.min.js';
+            wcPoly.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
             wcPoly.onload = lazyLoadElements;
             document.head.appendChild(wcPoly);
         } else {

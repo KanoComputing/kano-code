@@ -1,4 +1,8 @@
-<link rel="import" href="../../elements/demo-bundle.html">
+<link rel="import" href="../../scripts/kano/util/router.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
+
 <dom-module id="kano-view-demo">
     <style>
         :host {
@@ -140,7 +144,7 @@
                 });
         },
         _getMode (context) {
-            let modeFromQs = window.RouterUtil.parseQsParam(this.context.querystring, 'mode');
+            let modeFromQs = Kano.Util.Router.parseQsParam(this.context.querystring, 'mode');
             return modeFromQs ? modeFromQs : 'normal';
         },
     });

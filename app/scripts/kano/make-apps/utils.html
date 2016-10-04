@@ -1,0 +1,96 @@
+<script>
+    (function (Kano) {
+        var Utils = {};
+        Kano.MakeApps = Kano.MakeApps || {};
+        Kano.MakeApps.Utils = Utils;
+
+        Utils.loadApp = () => {
+            let i = document.createElement('input');
+            i.setAttribute('type', 'file');
+            i.style.position = 'fixed';
+            i.style.top = i.style.left = '0px';
+            i.addEventListener('change', function (evt) {
+                let f = evt.target.files[0];
+                if (f) {
+                    let r = new FileReader();
+                    r.onload = function (e) {
+                        // Read the mode
+                        let app = JSON.parse(e.target.result);
+                        localStorage.setItem('previousApp', localStorage.getItem('savedApp'));
+                        // Save the app in the right localstorage slot
+                        localStorage.setItem(`savedApp-${app.mode}`, e.target.result);
+                    };
+                    r.readAsText(f);
+                    document.body.removeChild(i);
+                    location.reload();
+                }
+            });
+            document.body.appendChild(i);
+        };
+
+        Utils.saveApp = () => {
+            let a = document.createElement('a');
+            document.body.appendChild(a);
+            a.download = 'my-app.mapps';
+            a.href = "data:application/mapps;base64," + btoa(localStorage.getItem('savedApp'));
+            a.click();
+            document.body.removeChild(a);
+        };
+
+        /**
+         * Fetch a part API file from the part type and prefix
+         */
+        function fetchPartAPI(prefix, partType) {
+            return fetch(`/scripts/kano/make-apps/behaviors/${prefix}-${partType}-behavior.js`)
+                .then(r => {
+                    if (!r.ok) {
+                        return Promise.reject();
+                    }
+                    return r.text();
+                }).catch(e => {
+                    
+                });
+        }
+
+        Utils.sendToKit = (p, app) => {
+            // Create a body object containing the app for the program
+            let program = {
+                parts: app.parts,
+                code: app.code.snapshot.javascript,
+                mode: app.mode
+            },
+                headers = new Headers(),
+                getPartsAPICode = fetch('/scripts/kano/make-apps/parts-api/parts-api.js')
+                    .then(r => {
+                        if (!r.ok) {
+                            return Promise.reject();
+                        }
+                        return r.text();
+                    }),
+
+                getAppModulesCode = fetch('/scripts/kano/app-modules/index.js')
+                    .then(r => {
+                        if (!r.ok) {
+                            return Promise.reject();
+                        }
+                        return r.text();
+                    }),
+
+                promises = [getPartsAPICode, getAppModulesCode];
+
+            // Get the parts API code bundle that contains the whole parts definition
+            Promise.all(promises).then(codes => {
+                    program.partsAPI = codes[0];
+                    program.appModules = codes[1];
+                    headers.set('Content-Type', 'application/json');
+                    // Send the program to the kit
+                    return fetch(`http://localhost:3000/program/${p}`, {
+                        method: 'POST',
+                        headers,
+                        body: JSON.stringify({ program })
+                    });
+                });
+        };
+
+    })(window.Kano = window.Kano || {});
+</script>

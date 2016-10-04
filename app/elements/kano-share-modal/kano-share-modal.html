@@ -355,7 +355,7 @@
                     </div>
 
                     <div class="button-container">
-                        <button type="button" name="button" class="share normal-button" on-tap="_shareOnKW"><img class="button-img" src="../../assets/kano-world-planet.svg" alt="" /><span>Share on Kano World</span></button>
+                        <button type="button" name="button" class="share normal-button" on-tap="_shareOnKW"><img class="button-img" src="/assets/kano-world-planet.svg" alt="" /><span>Share on Kano World</span></button>
                     </div>
 
                     <div class="button-container generate-url">
@@ -369,10 +369,10 @@
                         </div>
                         <div class="composed-button" hidden$="[[!shareInfo.slug]]">
                             <input type="text" id="shareurl" value="{{playUrl(shareInfo.slug)}}">
-                            <button on-tap="copyToClipboard" type="button"><img src="../../assets/get-share-link.svg"/> <span>copy</span></button>
+                            <button on-tap="copyToClipboard" type="button"><img src="/assets/get-share-link.svg"/> <span>copy</span></button>
                         </div>
                         <div class="generate-url-container">
-                            <button hidden$="[[shareInfo.slug]]" disabled$="[[loading]]" on-tap="_socialShareLink" class="share-button right" type="button"><img src="../../assets/get-share-link.svg"/> <span>Get share link</span></button>
+                            <button hidden$="[[shareInfo.slug]]" disabled$="[[loading]]" on-tap="_socialShareLink" class="share-button right" type="button"><img src="/assets/get-share-link.svg"/> <span>Get share link</span></button>
                             <div class="loading-overlay" hidden$="[[!loading]]">
                                 <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
                             </div>

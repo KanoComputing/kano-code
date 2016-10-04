@@ -1,8 +1,24 @@
 'use strict';
 
-let getImports = require('./get-imports');
+const shards = require('./shards');
 
 module.exports = (gulp, $) => {
+
+    gulp.task('shards', () => {
+        return shards.build({
+            endpoints: [
+                'elements/elements.html',
+                'views/kano-view-editor/kano-view-editor.html',
+                'views/kano-view-story/kano-view-story.html',
+                'views/kano-view-tutorial/kano-view-tutorial.html',
+                'views/kano-view-demo/kano-view-demo.html',
+                'views/kano-view-flags/kano-view-flags.html'
+            ],
+            shared_import: 'elements/shared.html',
+            root: '.tmp/app',
+            dest: 'www'
+        });
+    });
 
     gulp.task('serve-doc', () => {
         return $.connect.server({
@@ -19,93 +35,43 @@ module.exports = (gulp, $) => {
         });
     });
 
-    // For a build with cordova, add this to html replace
-    // <meta http-equiv="Content-Security-Policy" content="media-src *">
-    gulp.task('js', ['babel', 'app', 'polyfill', 'scripts'], () => {
-        return gulp.src('./.tmp/app/elements/elements.html')
-            .pipe($.utils.vulcanize({
-                inlineScripts: true,
-                inlineCss: true,
-                stripComments: true
-            }))
+    function notBowerComponentJs(file) {
+        let needTranspile = file.relative.split('.').pop() === 'js' &&
+            ((file.relative.indexOf('bower_components') === -1 &&
+            file.relative.indexOf('assets/vendor/') === -1) ||
+            file.relative.indexOf('kano-circle-progress') !== -1);
+        return needTranspile;
+    }
+
+    gulp.task('copy-all', () => {
+        return gulp.src('app/**/*', { base: 'app' })
+            .pipe($.if('*.html', $.crisper({ scriptInHead: false })))
+            .pipe($.if('*.html', $.utils.htmlAutoprefixerStream()))
+            .pipe($.if(notBowerComponentJs, $.babel({ presets: ['es2015'] })))
+            .pipe(gulp.dest('.tmp/app'));
+    });
+
+    gulp.task('split', () => {
+        gulp.src('www/**/*.html', { base: 'www' })
             .pipe($.crisper({ scriptInHead: false }))
-            .pipe(gulp.dest('www/elements'));
+            .pipe(gulp.dest('www'));
     });
 
-    gulp.task('bundles', ['copy', 'babel', 'parts-module', 'app-modules', 'kano-canvas-api', 'scripts', 'parts-api'], () => {
-        return getImports('./app/elements/elements.html').then((common) => {
-            return new Promise((resolve, reject) => {
-                gulp.src(['.tmp/app/elements/*-bundle.html', '!.tmp/app/elements/story-bundle.html'])
-                    .pipe($.utils.vulcanize({
-                        inlineScripts: true,
-                        inlineCss: true,
-                        stripExcludes: common,
-                        stripComments: true
-                    }))
-                    .pipe($.crisper({ scriptInHead: false }))
-                    .on('error', reject)
-                    .pipe(gulp.dest('www/elements'))
-                    .on('end', resolve);
-            });
-        }).catch($.utils.notifyError);
-    });
-
-    // Processes scripts that don't need any browserification
-    gulp.task('scripts', () => {
-        return gulp.src('app/scripts/kano/**/*', { base: 'app' })
-            .pipe($.if('*.html', $.crisper({ scriptInHead: false })))
-            .pipe($.if('*.js', $.babel({ presets: ['es2015'] })))
-            .pipe(gulp.dest('.tmp/app'));
-    });
-
-    gulp.task('story-bundle', ['bundles', 'scripts'], () => {
-        return Promise.all([getImports('./app/elements/elements.html'), getImports('./app/elements/editor-bundle.html')])
-            .then((commons) => {
-                return commons.reduce((acc, common) => {
-                    return acc.concat(common);
-                }, []);
-            })
-            .then((common) => {
-                return new Promise((resolve, reject) => {
-                    gulp.src(['.tmp/app/elements/story-bundle.html'])
-                        .pipe($.utils.vulcanize({
-                            inlineScripts: true,
-                            inlineCss: true,
-                            stripExcludes: common,
-                            stripComments: true
-                        }))
-                        .pipe($.crisper({ scriptInHead: false }))
-                        .on('error', reject)
-                        .pipe(gulp.dest('www/elements'))
-                        .on('end', resolve);
-                });
-            }).catch($.utils.notifyError);
-    });
-
-    gulp.task('babel', ['copy'], () => {
-        return gulp.src(['app/elements/**/*.{js,html,css}', 'app/bower_components/kano-*/**/*.{html,js}'], { base: 'app' })
-            .pipe($.if('*.html', $.crisper({ scriptInHead: false })))
-            .pipe($.if('*.js', $.babel({ presets: ['es2015'] })))
-            .pipe(gulp.dest('.tmp/app'));
-    });
-
-    gulp.task('copy', ['copy-index'], () => {
-        return gulp.src([
-                'app/bower_components/**/*',
-                'app/assets/vendor/google-blockly/blockly_compressed.js',
-                'app/assets/vendor/google-blockly/blocks_compressed.js',
-                'app/assets/vendor/google-blockly/javascript_compressed.js',
-                'app/assets/vendor/google-blockly/msg/js/en.js',
-                'app/scripts/util/dom.js',
-                'app/scripts/util/client.js',
-                'app/scripts/util/router.js',
-                'app/loading-share.html'
-            ], { base: 'app'})
-            .pipe(gulp.dest('.tmp/app'));
+    gulp.task('build', () => {
+        return $.runSequence('copy-all',
+            ['parts-module', 'kano-canvas-api', 'app'],
+            'shards',
+            'split',
+            ['copy-index', 'blockly-media', 'assets', 'style', 'workers'],
+            'sw');
     });
 
     gulp.task('copy-index', () => {
-        return gulp.src(['app/index.html', 'app/scripts/index.js', 'app/assets/vendor/cache-polyfill/cache-polyfill.js'], { base: 'app' })
+        return gulp.src(['app/index.html',
+                        'app/scripts/index.js',
+                        'app/assets/vendor/cache-polyfill/cache-polyfill.js',
+                        'app/bower_components/webcomponentsjs/webcomponents-lite.min.js'
+                        ], { base: 'app' })
             .pipe($.if('index.html', $.htmlReplace($.utils.getHtmlReplaceOptions())))
             .pipe(gulp.dest('www'));
     });
@@ -117,7 +83,7 @@ module.exports = (gulp, $) => {
             .pipe(gulp.dest('www'));
     });
 
-    gulp.task('assets', ['scenes', 'blockly-media'], () => {
+    gulp.task('assets', () => {
         return gulp.src([
             'app/assets/**/*',
             'app/manifest.json',
@@ -125,40 +91,6 @@ module.exports = (gulp, $) => {
             '!app/assets/vendor/**/*'
         ], { base: 'app' })
             .pipe(gulp.dest('www'));
-    });
-
-    gulp.task('views', ['copy'], () => {
-        return gulp.src('app/views/**/*')
-            .pipe($.crisper({ scriptInHead: false }))
-            .pipe($.if('*.html', $.utils.htmlAutoprefixerStream()))
-            .pipe($.if('*.js', $.babel({ presets: ['es2015'] })))
-            .pipe(gulp.dest('www/views'));
-    });
-
-    gulp.task('scenes', ['copy', 'scripts'], () => {
-        // The core elements and the elements already present in the view are removed
-        return Promise.all([getImports('./app/elements/elements.html'), getImports('./app/views/kano-view-story/kano-view-story.html')])
-            .then((commons) => {
-                return commons.reduce((acc, common) => {
-                    return acc.concat(common);
-                }, []);
-            }).then((common) => {
-                return new Promise((resolve, reject) => {
-                    gulp.src('app/assets/stories/**/*.html')
-                        .pipe($.utils.vulcanize({
-                            inlineScripts: true,
-                            inlineCss: true,
-                            stripExcludes: common,
-                            stripComments: true
-                        }))
-                        .pipe($.crisper({ scriptInHead: false }))
-                        .pipe($.if('*.js', $.babel({ presets: ['es2015'] })))
-                        .pipe($.if('*.html', $.utils.htmlAutoprefixerStream()))
-                        .on('error', reject)
-                        .pipe(gulp.dest('www/assets/stories'))
-                        .on('end', resolve);
-                });
-            }).catch($.utils.notifyError);
     });
 
     gulp.task('style', () => {
@@ -180,8 +112,5 @@ module.exports = (gulp, $) => {
             .pipe(gulp.dest('www'));
     });
 
-    gulp.task('build', () => {
-        return $.runSequence(['views', 'js', 'style', 'assets', 'bundles', 'story-bundle', 'workers'], 'sw');
-    });
     gulp.task('default', ['build']);
 };

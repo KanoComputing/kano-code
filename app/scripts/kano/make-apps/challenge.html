@@ -11,6 +11,7 @@
             this.data.parts = [];
             this.data.modules = [];
             this.data.variables = [];
+            this.data.filterBlocks = {};
 
             this.appParts = {};
             this.partsIds = {};
@@ -361,6 +362,12 @@
                     type: blockLocation,
                     id: blockChallengeId
                 };
+            }
+
+            // Adds the block to the whitelist
+            this.data.filterBlocks[blockType.category] = this.data.filterBlocks[blockType.category] || [];
+            if (this.data.filterBlocks[blockType.category].indexOf(blockType.block) === -1) {
+                this.data.filterBlocks[blockType.category].push(blockType.block)
             }
 
             categoryLabel = this.translate('category', blockType.category);

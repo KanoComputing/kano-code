@@ -15,7 +15,9 @@ if (window.CustomBlocklyMsg) {
     Object.assign(Blockly.Msg, window.CustomBlocklyMsg);
 }
 
-Blockly.isAnimationsDisabled = Kano.MakeApps.config.PERF_SAFE;
+Blockly.isAnimationsDisabled = function () {
+    return Kano.MakeApps.config.PERF_SAFE;
+};
 
 function lightenColor (hex, lum) {
 
@@ -289,7 +291,7 @@ Blockly.Flyout.prototype.hide = function() {
   var translate = this.svgGroup_.style.webkitTransform || this.svgGroup_.style.transform;
   var origin = this.trianglePos_;
   this.svgGroup_.style.transformOrigin = `left ${origin}px`;
-  if (Blockly.isAnimationsDisabled) {
+  if (Blockly.isAnimationsDisabled()) {
       this.svgGroup_.style.display = 'none';
   } else {
       this.animation = this.svgGroup_.animate([{
@@ -393,7 +395,7 @@ Blockly.Flyout.prototype.show = function(xmlList) {
   if (this.animation) {
       this.animation.cancel();
   }
-  if (!Blockly.isAnimationsDisabled) {
+  if (!Blockly.isAnimationsDisabled()) {
       this.animation = this.svgGroup_.animate([{
           transform: `${translate} scale(0.5)`,
           opacity: 0

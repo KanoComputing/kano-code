@@ -1,7 +1,15 @@
-<link rel="import" href="../../elements/editor-bundle.html">
-<link rel="import" href="../../elements/share-bundle.html">
-<link rel="import" href="../../elements/story-bundle.html">
-<link rel="import" href="../../elements/run-bundle.html">
+<link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
+<link rel="import" href="../../scripts/kano/make-apps/utils.html">
+<link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
+<link rel="import" href="../../scripts/kano/util/router.html">
+<link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
+<link rel="import" href="../../scripts/kano/app-modules/index.html">
+<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
+<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
+<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
+<link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
+<link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
+
 <dom-module id="kano-view-story">
     <style>
         :host {
@@ -118,8 +126,8 @@
                 .then((scene) => {
                     this.set('scene', scene);
                     this.set('scene.modeConfig', {
-                        HOST: window.RouterUtil.parseQsParam(this.context.querystring, 'host'),
-                        PORT: window.RouterUtil.parseQsParam(this.context.querystring, 'port')
+                        HOST: Kano.Util.Router.parseQsParam(this.context.querystring, 'host'),
+                        PORT: Kano.Util.Router.parseQsParam(this.context.querystring, 'port')
                     });
                 });
         },

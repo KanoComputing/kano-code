@@ -1,6 +1,16 @@
-<link rel="import" href="../../elements/editor-bundle.html">
-<link rel="import" href="../../elements/share-bundle.html">
-<link rel="import" href="../../elements/run-bundle.html">
+<link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
+<link rel="import" href="../../scripts/kano/make-apps/utils.html">
+<link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
+<link rel="import" href="../../scripts/kano/util/router.html">
+<link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
+<link rel="import" href="../../scripts/kano/app-modules/index.html">
+
+<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
+<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
+
+<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
+
 <dom-module id="kano-view-editor">
     <style>
     :host {
@@ -357,7 +367,7 @@
             }
         },
         _getMode (context) {
-            var modeFromQs = window.RouterUtil.parseQsParam(this.context.querystring, 'mode');
+            var modeFromQs = Kano.Util.Router.parseQsParam(this.context.querystring, 'mode');
             return modeFromQs ? modeFromQs : 'normal';
         },
         ready () {
@@ -368,8 +378,8 @@
             this.editor.addEventListener('change', this.save.bind(this));
             this.modal = this.$['share-modal'];
 
-            Kano.MakeApps.config.HOST = window.RouterUtil.parseQsParam(this.context.querystring, 'host') || Kano.MakeApps.config.HOST;
-            Kano.MakeApps.config.PORT = window.RouterUtil.parseQsParam(this.context.querystring, 'port') || Kano.MakeApps.config.PORT;
+            Kano.MakeApps.config.HOST = Kano.Util.Router.parseQsParam(this.context.querystring, 'host') || Kano.MakeApps.config.HOST;
+            Kano.MakeApps.config.PORT = Kano.Util.Router.parseQsParam(this.context.querystring, 'port') || Kano.MakeApps.config.PORT;
 
             hardwareAPI.config(Kano.MakeApps.config);
 
