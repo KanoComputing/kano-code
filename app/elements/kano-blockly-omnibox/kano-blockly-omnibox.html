@@ -1,5 +1,4 @@
 <link rel="import" href="../kano-blockly-flyout/kano-blockly-flyout.html">
-<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <dom-module id="kano-blockly-omnibox">
     <template>
         <style>
@@ -58,9 +57,6 @@
             <kano-blockly-flyout toolbox="[[resultToolbox]]" target-workspace="[[targetWorkspace]]" on-block-created="_blockCreated"></kano-blockly-flyout>
         </div>
         <div class="extra"></div>
-        
-        <iron-a11y-keys target="[[target]]" keys="esc" on-keys-pressed="_onEscPressed"></iron-a11y-keys>
-        
     </template>
     <script>
         Polymer({
@@ -76,9 +72,6 @@
             },
             attached () {
                 this.target = document.body;
-            },
-            _onEscPressed () {
-                this.fire('close');
             },
             _blockCreated () {
                 this.fire('close');

@@ -111,14 +111,15 @@
             @apply(--kano-button);
             background-color: var(--color-green, green);
         }
-        input {
+        .container input {
             @apply(--kano-input);
             width: 100%;
             border: 2px solid var(--color-lightgrey, grey);;
             padding: 5px;
             font-size: 17px;
+            box-sizing: border-box
         }
-        input:focus {
+        .container input:focus {
             outline: none;
             border: 2px solid var(--color-orange, orange);
         }
@@ -136,8 +137,9 @@
             height: 100%;
             @apply(--layout-vertical);
             @apply(--layout-center);
-            @apply(--layout-center-justified);
             display: none;
+            /* 150px is half the max size of the flyout */
+            padding-top: calc(50% - 150px);
         }
     </style>
     <template>
@@ -145,16 +147,18 @@
         <div class="omnibox-wrapper" id="omnibox-wrapper" on-tap="_omniboxWrapperTapped">
             <kano-blockly-omnibox id="omnibox" on-close="_closeOmnibox"></kano-blockly-omnibox>
         </div>
-        <paper-dialog id="var-modal" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
-          <h2>[[modalText]]</h2>
-          <div class="container">
-              <input type="text" name="name" value="{{modalInput::input}}" on-keyup="_modalInputKeyup">
-          </div>
-          <div class="buttons">
-              <button dialog-confirm>Confirm</button>
-          </div>
+        <paper-dialog id="var-modal" entry-animation="scale-up-animation" exit-animation="fade-out-animation" on-iron-overlay-opened="_focusOnInput">
+            <h2>[[modalText]]</h2>
+            <div class="container">
+                <input id="var-input" type="text" name="name" value="{{modalInput::input}}">
+            </div>
+            <div class="buttons">
+                <button dialog-confirm>Confirm</button>
+            </div>
+            <iron-a11y-keys keys="esc" on-keys-pressed="_closeVarModal" target="[[varModal]]"></iron-a11y-keys>
         </paper-dialog>
-        <iron-a11y-keys keys="crtl+f meta+f" on-keys-pressed="_openOmnibox" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="meta+f" on-keys-pressed="_openOmnibox" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="esc" on-keys-pressed="_closeOmnibox" target="[[target]]"></iron-a11y-keys>
     </template>
 </dom-module>
 
@@ -188,6 +192,7 @@
          * Inject blockly to the workspace div
          */
         attached () {
+            this.varModal = this.$['var-modal'];
             this.target = document.body;
             this.visible = false;
             this.workspace = Blockly.inject(this.$.workspace, {
@@ -225,9 +230,13 @@
         detached () {
             this.workspace.dispose();
         },
-        _closeOmnibox () {
+        _closeOmnibox (e) {
             if (!this._omniboxOpened) {
                 return;
+            }
+            if (e && e.detail.keyboardEvent) {
+                e.detail.keyboardEvent.stopPropagation();
+                e.detail.keyboardEvent.preventDefault();
             }
             this._omniboxOpened = false;
             this.$.omnibox.animate([{
@@ -288,10 +297,13 @@
                 modal.open();
             });
         },
-        _modalInputKeyup (e) {
-            if (e.keyCode === 13) {
-                this.$['var-modal'].close();
-            }
+        _focusOnInput () {
+            this.$['var-input'].focus();
+        },
+        _closeVarModal (e) {
+            this.$['var-modal'].cancel();
+            e.stopPropagation();
+            e.preventDefault();
         },
         /**
          * Triggers the resize event on the window
