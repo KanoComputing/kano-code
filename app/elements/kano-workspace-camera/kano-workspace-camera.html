@@ -219,14 +219,14 @@
             },
             renderOnCanvas (ctx, util, scaleFactor) {
                 return new Promise((resolve, reject) => {
-                    let onRenderingDone = () => {
-                        this.removeEventListener('rendering-done', onRenderingDone);
-                        ctx.putImageData(this.canvas.getContext('2d').getImageData(0, 0, this.canvas.width, this.canvas.height), 0, 0);
+                    let img = new Image(),
+                        randomIndex = Math.floor(Math.random() * 3);
+                    img.onload = () => {
+                        ctx.drawImage(img, 0, 0, ctx.canvas.width, ctx.canvas.height);
                         resolve();
-                    },
-                        randomIndex = Math.floor(Math.random() * 40);
-                    this._paintFrame(`/assets/mode/camera/placeholder_${randomIndex}.jpeg`);
-                    this.addEventListener('rendering-done', onRenderingDone);
+                    }
+                    img.onerror = reject;
+                    img.src = `/assets/mode/camera/placeholder_${randomIndex}.jpg`;
                 });
             },
             _triggerShutterEvent () {
