@@ -108,7 +108,11 @@ Example:
     </style>
     <template>
         <paper-drawer-panel id="drawer" force-narrow disable-edge-swipe disable-swipe>
-            <kano-side-menu drawer user="[[user]]" on-toggle-menu="toggleMenu" offline="[[offline]]" on-login="_login"></kano-side-menu>
+            <kano-side-menu drawer user="[[user]]"
+                            on-toggle-menu="toggleMenu"
+                            offline="[[offline]]"
+                            on-login="_login"
+                            world-url="[[worldUrl]]"></kano-side-menu>
             <kano-routing main id="router" ctx="{{ctx}}" name="app" on-toggle-menu="toggleMenu" user="[[user]]" on-login="_login" page="{{route}}"></kano-routing>
         </paper-drawer-panel>
         <paper-dialog id="auth-modal" class="auth-modal" with-backdrop>
@@ -164,6 +168,7 @@ Example:
         ready () {
             this.editor = null;
             this.offline = Kano.MakeApps.config.TARGET === 'osonline' && ClientUtil.isPi();
+            this.worldUrl = Kano.MakeApps.config.WORLD_URL;
             this.$['auth-modal'].animationConfig = {
                 entry: [{
                     name: 'transform-animation',
@@ -282,9 +287,18 @@ Example:
             this._updateProfile();
             this._updateNotifications();
         },
-        toggleMenu () {
+        toggleMenu (e) {
+            let state = e.detail;
             this.editor = document.getElementById('editor');
-            this.$.drawer.togglePanel();
+            if (typeof state !== 'undefined') {
+                if (state) {
+                    this.$.drawer.openDrawer();
+                } else {
+                    this.$.drawer.closeDrawer();
+                }
+            } else {
+                this.$.drawer.togglePanel();
+            }
         },
         _startNotificationsPolling () {
             this._pollingIntervalId = setInterval(this._updateNotifications.bind(this), 30000);

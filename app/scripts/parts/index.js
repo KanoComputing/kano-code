@@ -41,10 +41,11 @@ partTypes = {
 module.exports = Parts = {
     list: [Button, Box, TextInput, Text, Map, ISS, Weather, Share,
            Sticker, ScrollingText, RSS, Sports, Speaker, Microphone, Clock,
-           ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer,
            LightRectangle, LightCircle, LightFrame, LightAnimation, LightAnimationDisplay,
            PictureList, Slider],
-    experiments: {},
+    experiments: {
+        'dongles': [ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer]
+    },
     create (model, size) {
         return new partTypes[model.partType](model, size);
     },

@@ -179,7 +179,6 @@ function build(opts) {
         .then(commonDeps => vulcanizeSharedImport(opts))
         .then(r => {
             rimraf.sync(opts.workdir);
-            console.log(r);
         });
 }
 

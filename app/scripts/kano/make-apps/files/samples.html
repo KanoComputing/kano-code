@@ -68,7 +68,7 @@
         Kano.MakeApps.Files.generators = Kano.MakeApps.Files.generators || {};
 
         Kano.MakeApps.Files.generators.samples = function (sample) {
-            return `/assets/audio/samples/${sample}.wav`;
+            return `${Kano.MakeApps.config.KANO_CODE_URL}/assets/audio/samples/${sample}.wav`;
         };
 
     })(window.Kano = window.Kano || {});

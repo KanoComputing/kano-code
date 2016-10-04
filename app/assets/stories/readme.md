@@ -236,6 +236,12 @@ Here is how the JSON file can look like:
     "mode": "normal",
     "parts": ["map", "iss"],
     "modules": ["control", "operators", "variables"],
+    "filterBlocks": {
+        "color": ["random_colour"],
+        "normal": ["set_background_color"],
+        "button": ["get_label"]
+    },
+    "defaultApp": "{...}",
     "steps": ["..."]
 }
 ```
@@ -243,6 +249,7 @@ Here is how the JSON file can look like:
  - `mode`: Which mode to set the editor to (normal, lightboard, camera...)
  - `parts`: An array containing the parts you want to be available from the `add parts` menu
  - `modules`: An array containing the default categories listed in the blocks view. available are: (`controls`, `operators`, `variables`, `background`). The `events` category is here by default
+ - `filterBlocks`: A set of whitelist for the blocks of a category, part or mode. If no set, every blocks will be included, otherwise, only the blocks defined in the array will appear.
  - `steps`: This array contain objects defining each step of the scene and is the most complicated
  - `defaultApp`: A stringified app from Kano Code that will be loaded at the beginning. Use this to load default parts and blocks
 

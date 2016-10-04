@@ -252,7 +252,11 @@ Polymer({
 
         return savedApp;
     },
-    share () {
+    share (e) {
+        if (e && e.detail && e.detail.keyboardEvent) {
+            e.detail.keyboardEvent.preventDefault();
+            e.detail.keyboardEvent.stopPropagation();
+        }
         this.fire('share', {
             app: this.save(false, false),
             workspaceInfo: JSON.stringify(this.save()),
@@ -436,7 +440,6 @@ Polymer({
         let sidebar = this.$.drawer;
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
         this.panelStateChanged = this.panelStateChanged.bind(this);
-        document.addEventListener('reset-workspace', this.reset);
 
         this.$.workspace.addEventListener('viewport-resize', this.updateWorkspaceRect);
         if (sidebar.classList.contains('animatable')) {
@@ -448,7 +451,6 @@ Polymer({
     detachEvents () {
         let sidebar = this.$.drawer;
         this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
-        document.addEventListener('reset-workspace', this.reset);
         if (sidebar.classList.contains('animatable')) {
             sidebar.removeEventListener('transitionend', this.panelStateChanged);
         } else {
@@ -461,8 +463,11 @@ Polymer({
             running: 'M 2,18 6,18 6,2 2,2 z M 11,18 15,18 15,2 11,2 z'
         };
         this.reset = this.reset.bind(this);
+        this._exportApp = this._exportApp.bind(this);
+        this._importApp = this._importApp.bind(this);
     },
     attached () {
+        this.target = document.body;
         this.title = this.title ? "My " + this.title.toLowerCase() : "Kano Code";
 
         this.partEditorOpened = false;
@@ -503,6 +508,40 @@ Polymer({
         this.detachEvents();
 
         window.onbeforeunload = null;
+    },
+    _exportApp () {
+        let savedApp = this.save(),
+            a = document.createElement('a'),
+            file = new Blob([JSON.stringify(savedApp)], {type: 'application/kcode'}),
+            url = URL.createObjectURL(file);
+        document.body.appendChild(a);
+        a.download = 'my-app.kcode';
+        a.href = url;
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    },
+    _importApp () {
+        this.fileInput = document.createElement('input');
+        this.fileInput.setAttribute('type', 'file');
+        this.fileInput.style.display = 'none';
+        this.fileInput.addEventListener('change', (evt) => {
+            let f = evt.target.files[0];
+            if (f) {
+                let r = new FileReader();
+                r.onload = (e) => {
+                    // Read the mode
+                    let app = JSON.parse(e.target.result);
+                    this.set('mode', Kano.MakeApps.Mode.modes[app.mode]);
+                    Kano.MakeApps.Parts.clear();
+                    this.load(app, Kano.MakeApps.Parts.list);
+                };
+                r.readAsText(f);
+                document.body.removeChild(this.fileInput);
+            }
+        });
+        document.body.appendChild(this.fileInput);
+        this.fileInput.click();
     },
     updateWorkspaceRect (e) {
         this.set('workspaceRect', e.detail);
