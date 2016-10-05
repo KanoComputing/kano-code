@@ -1,5 +1,10 @@
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
 <link rel="import" href="../behaviors/kano-cover-generator-behavior.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
+<link rel="import" href="../kano-workspace-lightboard/kano-workspace-lightboard.html">
+<link rel="import" href="../kano-workspace-camera/kano-workspace-camera.html">
+<link rel="import" href="../ui/kano-ui/kano-ui.html">
 
 <dom-module id="kano-workspace">
     <style>
@@ -12,13 +17,23 @@
     :host .content {
         position: relative;
         @apply(--layout-flex);
+        transition: background linear 150ms;
     }
     :host.running .content {
         --kano-ui-viewport: {
             border: none;
         };
     }
-    :host ::content #dropzone {
+    :host(.fullscreen) .content {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    :host ::slotted(#dropzone) {
         margin: auto;
         position: relative;
     }
@@ -60,6 +75,15 @@
             <h3 class="made-with-kano">made with Kano</h3>
         </kano-ui-viewport>
         <array-selector id="selector" items="{{parts}}" selected="{{selected}}"></array-selector>
+        <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="alt+t" on-keys-pressed="toggleEditableLayout" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="esc" on-keys-pressed="_cancel" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="tab" on-keys-pressed="_selectNextPart" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="shift+tab" on-keys-pressed="_selectPrevPart" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="shift+left left" on-keys-pressed="_moveLeft" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="shift+right right" on-keys-pressed="_moveRight" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="shift+up up" on-keys-pressed="_moveUp" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="shift+down down" on-keys-pressed="_moveDown" target="[[target]]"></iron-a11y-keys>
     </template>
 </dom-module>
 
@@ -86,6 +110,7 @@
             },
             selected: {
                 type: Object,
+                observer: '_selectedChanged',
                 notify: true
             },
             internalSelection: {
@@ -123,8 +148,78 @@
             this.devices = {};
             this.devices.get = this._getPartById.bind(this);
         },
-        toggleEditableLayout () {
-            this.set('editableLayout', !this.editableLayout);
+        attached () {
+            this.target = document.body;
+        },
+        _toggleFullscreen () {
+            this.toggleClass('fullscreen');
+            this.$.content.resizeView();
+        },
+        _moveLeft (e) {
+            this._movePart('left', e.detail.keyboardEvent.shiftKey);
+        },
+        _moveRight (e) {
+            this._movePart('right', e.detail.keyboardEvent.shiftKey);
+        },
+        _moveUp (e) {
+            this._movePart('up', e.detail.keyboardEvent.shiftKey);
+        },
+        _moveDown (e) {
+            this._movePart('down', e.detail.keyboardEvent.shiftKey);
+        },
+        _movePart (dir, shift) {
+            let movement, axis, partElem, x, y;
+            if (!this.selected || !this.dropzone) {
+                return;
+            }
+            movement = (dir === 'right' || dir === 'down') ? 1 : -1;
+            if (shift) {
+                movement *= 10;
+            }
+            x = (dir === 'right' || dir === 'left') ? movement : 0;
+            y = (dir === 'up' || dir === 'down') ? movement : 0;
+            partElem = this.dropzone.querySelector(`#${this.selected.id}`);
+            partElem.move(x, y);
+        },
+        _cancel () {
+            if (this.editableLayout) {
+                this.toggleEditableLayout(false);
+            }
+        },
+        _selectNextPart (e) {
+            if (this.editableLayout) {
+                let selectedIndex = this.parts.indexOf(this.selected),
+                    nextPartIndex;
+                if (this.parts.length) {
+                    nextPartIndex = selectedIndex + 1;
+                    if (nextPartIndex >= this.parts.length) {
+                        nextPartIndex = 0;
+                    }
+                    this.clearSelection();
+                    this.$.selector.select(this.parts[nextPartIndex]);
+                }
+                e.detail.keyboardEvent.preventDefault();
+                e.detail.keyboardEvent.stopPropagation();
+            }
+        },
+        _selectPrevPart (e) {
+            if (this.editableLayout) {
+                let selectedIndex = this.parts.indexOf(this.selected),
+                    prevPartIndex;
+                if (this.parts.length) {
+                    if (selectedIndex <= -1) {
+                        selectedIndex = this.parts.length;
+                    }
+                    prevPartIndex = selectedIndex - 1;
+                    this.clearSelection();
+                    this.$.selector.select(this.parts[prevPartIndex]);
+                }
+                e.detail.keyboardEvent.preventDefault();
+                e.detail.keyboardEvent.stopPropagation();
+            }
+        },
+        toggleEditableLayout (value) {
+            this.set('editableLayout', typeof value === 'boolean' ? !this.editableLayout : value);
             if (this.editableLayout) {
                 this.prevRunningState = this.running;
                 this.set('running', false);
@@ -163,6 +258,7 @@
             }
 
             newDropzone.setAttribute('id', this.mode.id);
+            newDropzone.setAttribute('class', 'dropzone');
             newDropzone.setAttribute('width', this.mode.workspace.viewport.width);
             newDropzone.setAttribute('height', this.mode.workspace.viewport.height);
 
@@ -218,7 +314,14 @@
             }
             this.clearSelection();
             this.$.selector.select(e.detail.model);
-            this.toggleClass('selected', true, e.detail);
+        },
+        _selectedChanged (part) {
+            let partElement;
+            if (!this.dropzone || !part) {
+                return;
+            }
+            partElement = this.dropzone.querySelector(`#${part.id}`);
+            this.toggleClass('selected', true, partElement);
             this.fire('open-settings');
         },
         partsChanged (e) {

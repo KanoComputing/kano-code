@@ -48,6 +48,7 @@ export default class Part {
         this.codes = {};
         this.userStyle = Object.assign({}, opts.userStyle);
         this.userProperties = Object.assign({}, opts.userProperties);
+        this.nonvolatileProperties = Array.isArray(opts.nonvolatileProperties) ? opts.nonvolatileProperties : [];
         this.removable = typeof opts.removable === 'undefined' ? true : opts.removable;
     }
     getUniqueName (value, inc=0) {

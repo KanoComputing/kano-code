@@ -1,8 +1,15 @@
-<link rel="import" href="../../elements/editor-bundle.html">
-<link rel="import" href="../../elements/share-bundle.html">
-<link rel="import" href="../../elements/story-bundle.html">
-<link rel="import" href="../../elements/tutorial-bundle.html">
-<link rel="import" href="../../elements/run-bundle.html">
+<link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
+<link rel="import" href="../../scripts/kano/make-apps/utils.html">
+<link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
+<link rel="import" href="../../scripts/kano/util/router.html">
+<link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
+<link rel="import" href="../../scripts/kano/make-apps/challenge.html">
+<link rel="import" href="../../scripts/kano/app-modules/index.html">
+<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
+<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
+<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
+<link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
+<link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
 
 <dom-module id="kano-view-tutorial">
     <style>
@@ -118,7 +125,7 @@
             this.mode = Kano.MakeApps.Mode.modes[this._getMode(this.context)];
         },
         attached () {
-            let editor = window.RouterUtil.parseQsParam(this.context.querystring, 'editor');
+            let editor = Kano.Util.Router.parseQsParam(this.context.querystring, 'editor');
             this.modal = this.$['share-modal'];
             this.$['start-modal'].open();
             this.selectedStartPage = 'loading';
@@ -158,7 +165,7 @@
             };
         },
         _getMode (context) {
-            let modeFromQs = window.RouterUtil.parseQsParam(this.context.querystring, 'mode');
+            let modeFromQs = Kano.Util.Router.parseQsParam(this.context.querystring, 'mode');
             return modeFromQs ? modeFromQs : 'normal';
         },
         _startTutorial () {

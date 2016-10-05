@@ -26,6 +26,9 @@ export default sticker = {
         }],
         style: []
     },
+    nonvolatileProperties: [
+        'src', 'size'
+    ],
     userProperties: {
         size: 100
     },

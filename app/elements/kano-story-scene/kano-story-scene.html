@@ -125,8 +125,8 @@
             if (!this.beforeDone && this.scene.overlay_before) {
                 this.beforeDone = true;
                 started = true;
-            } else if (this.scene.overlay_after) {
-                if (this.scene.show_remix_options) {
+            } else {
+                if (this.scene.overlay_after && this.scene.show_remix_options) {
                     this.set('sceneData.ended', true);
                 }
                 this.fire('scene-done');

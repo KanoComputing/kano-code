@@ -9,11 +9,15 @@
         Prism = {
             transform (ctx, image, width, height, imageWidth, imageHeight, slices, zoom, offsetRotation, offsetScale, offsetX, offsetY) {
                 let step = 2 * Math.PI / slices,
-                    radius = Math.min(width, height) / 2,
+                    radius = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / 2,
                     scale = zoom * (radius / Math.min(imageWidth, imageHeight)),
                     cx = imageWidth / 2,
                     centerX = width / 2 - radius,
                     centerY = height / 2 - radius;
+                if (slices === 0) {
+                    ctx.drawImage(image, 0, 0, width, height);
+                    return;
+                }
                 // Image could be in a broken state
                 try {
                     ctx.fillStyle = ctx.createPattern(image, 'repeat');

@@ -6,6 +6,6 @@ module.exports = (gulp, $) => {
         canvasApi.pipe(gulp.dest('www/assets/vendor/kano-canvas-api'));
     });
     gulp.task('kano-canvas-api', () => {
-        canvasApi.pipe(gulp.dest('.tmp/app/assets/vendor/kano-canvas-api'));
+        return canvasApi.pipe(gulp.dest('.tmp/app/assets/vendor/kano-canvas-api'));
     });
 };

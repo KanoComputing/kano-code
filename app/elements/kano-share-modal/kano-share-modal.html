@@ -355,7 +355,7 @@
                     </div>
 
                     <div class="button-container">
-                        <button type="button" name="button" class="share normal-button" on-tap="_shareOnKW"><img class="button-img" src="../../assets/kano-world-planet.svg" alt="" /><span>Share on Kano World</span></button>
+                        <button type="button" name="button" class="share normal-button" on-tap="_shareOnKW"><img class="button-img" src="/assets/kano-world-planet.svg" alt="" /><span>Share on Kano World</span></button>
                     </div>
 
                     <div class="button-container generate-url">
@@ -369,10 +369,10 @@
                         </div>
                         <div class="composed-button" hidden$="[[!shareInfo.slug]]">
                             <input type="text" id="shareurl" value="{{playUrl(shareInfo.slug)}}">
-                            <button on-tap="copyToClipboard" type="button"><img src="../../assets/get-share-link.svg"/> <span>copy</span></button>
+                            <button on-tap="copyToClipboard" type="button"><img src="/assets/get-share-link.svg"/> <span>copy</span></button>
                         </div>
                         <div class="generate-url-container">
-                            <button hidden$="[[shareInfo.slug]]" disabled$="[[loading]]" on-tap="_socialShareLink" class="share-button right" type="button"><img src="../../assets/get-share-link.svg"/> <span>Get share link</span></button>
+                            <button hidden$="[[shareInfo.slug]]" disabled$="[[loading]]" on-tap="_socialShareLink" class="share-button right" type="button"><img src="/assets/get-share-link.svg"/> <span>Get share link</span></button>
                             <div class="loading-overlay" hidden$="[[!loading]]">
                                 <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
                             </div>
@@ -493,7 +493,8 @@
                 width: 550,
                 height: 285,
                 generateUrl (url, title) {
-                    return `https://twitter.com/intent/tweet?source=${encodeURIComponent(url)}&text=${encodeURIComponent(title + ' ' + url)}`;
+                    let text = `I just coded ${title} with @TeamKano – check it out: ${url}`;
+                    return `https://twitter.com/intent/tweet?source=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
                 }
             }
         },
@@ -526,6 +527,7 @@
             // Force a change on the src to reload the app from the beginning
             appPreview.src = null;
             appPreview.src = this.shareInfo.app.src;
+            this.firstRender = false;
         },
         _onAppReady () {
             if (this.firstRender) {
@@ -585,7 +587,7 @@
                     this.fire('cover-generated');
                     // Reset UI for potential future gif-creation
                     this.recording = false;
-                    this.firstRender = false;
+                    this.firstRender = true;
                 });
             }
         },
@@ -632,10 +634,20 @@
         },
         _preparePopup (loading) {
             let socialConfig = this.socialConfigs[this.socialTarget],
-                winTop = (screen.height / 2) - (socialConfig.height / 2),
-                winLeft = (screen.width / 2) - (socialConfig.width / 2),
+                //split screen scenario
+                dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left,
+                dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top,
+
+                width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width,
+                height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height,
+
+                winLeft = ((width / 2) - (socialConfig.width / 2)) + dualScreenLeft,
+                winTop = ((height / 2) - (socialConfig.height / 2)) + dualScreenTop,
+
                 url = loading ? `${location.protocol}//${location.host}/loading-share.html` : '';
-            this.popup = window.open(url, 'sharer', `top=${winTop},left=${winLeft},toolbar=0,status=0,width=${socialConfig.width},height=${socialConfig.height}`);
+
+            this.popup = window.open("", 'sharer', `top=${winTop},left=${winLeft},toolbar=0,status=0,width=${socialConfig.width},height=${socialConfig.height}`);
+            this.popup.document.write("<p>Fetching your link...</p>")
         },
         isKitAvailable () {
             if (this.shareInfo.mode) {

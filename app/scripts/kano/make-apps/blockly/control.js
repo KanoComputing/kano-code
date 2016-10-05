@@ -186,7 +186,7 @@
         };
 
         category.blocks.forEach((category) => {
-            Kano.BlocklyUtil.updateBlockColour(Blockly.Blocks[category.id], COLOUR);
+            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOUR);
         });
     };
     let category = Kano.MakeApps.Blockly.Defaults.createCategory({

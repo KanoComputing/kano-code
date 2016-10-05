@@ -51,7 +51,7 @@ module.exports = (gulp, $) => {
 
     function generateAppcacheManifest(manifest, handleFetch) {
         var src = handleFetch ? STATIC_FILE_GLOB : [];
-        return gulp.src(src)
+        return gulp.src(src, { base: 'www' })
             .pipe($.manifest({
                 hash: true,
                 nextwork: ['*'],

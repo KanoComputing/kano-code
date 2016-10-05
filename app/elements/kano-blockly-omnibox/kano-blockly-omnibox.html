@@ -1,4 +1,4 @@
-<link rel="import" type="" href="../kano-blockly-flyout/kano-blockly-flyout.html">
+<link rel="import" href="../kano-blockly-flyout/kano-blockly-flyout.html">
 <dom-module id="kano-blockly-omnibox">
     <template>
         <style>
@@ -70,19 +70,8 @@
                     type: Object
                 }
             },
-            ready () {
-                this._onKeyDown = this._onKeyDown.bind(this);
-            },
             attached () {
-                window.addEventListener('keydown', this._onKeyDown);
-            },
-            detached () {
-                window.removeEventListener('keydown', this._onKeyDown);
-            },
-            _onKeyDown (e) {
-                if (e.keyCode === 27) {
-                    this.fire('close');
-                }
+                this.target = document.body;
             },
             _blockCreated () {
                 this.fire('close');

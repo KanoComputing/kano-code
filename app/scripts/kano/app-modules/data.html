@@ -196,7 +196,7 @@
                                     init = {"status" : r.status, "statusText" : r.statusText},
                                     response;
 
-                                if (d.success) {
+                                if (d.success && d.value) {
                                     s = JSON.stringify(d.value);
                                 } else {
                                     console.error('Failed to retrieve data');

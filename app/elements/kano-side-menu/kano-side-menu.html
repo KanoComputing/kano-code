@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 
 <dom-module id="kano-side-menu">
     <style>
@@ -115,6 +116,24 @@
                 </a>
             </li>
             <li>
+                <a on-tap="_exportApp">
+                    <iron-image class="icon" src="/assets/icons/export.png" sizing="contain"></iron-image>
+                    <div class="label">Export</div>
+                </a>
+            </li>
+            <li>
+                <a on-tap="_importApp">
+                    <iron-image class="icon" src="/assets/icons/import.png" sizing="contain"></iron-image>
+                    <div class="label">Import</div>
+                </a>
+            </li>
+            <li>
+                <a href$="[[worldUrl]]/projects" on-tap="backToProjects">
+                    <iron-image class="icon" src="/assets/icons/projects.png" sizing="contain"></iron-image>
+                    <div class="label">Back to Projects</div>
+                </a>
+            </li>
+            <li>
                 <a href="https://insights.hotjar.com/s?siteId=119134&surveyId=9857" target="_blank">
                     <iron-image class="icon" src="/assets/icons/feedback.png" sizing="contain"></iron-image>
                     <div class="label">
@@ -129,6 +148,9 @@
                 </a>
             </li>
         </ul>
+        <iron-a11y-keys keys="ctrl+s meta+s" on-keys-pressed="_exportApp" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="ctrl+o meta+o" on-keys-pressed="_importApp" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="alt+d" on-keys-pressed="resetWorkspace" target="[[target]]"></iron-a11y-keys>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -148,7 +170,14 @@
             offline: {
                 type: Boolean,
                 value: false
+            },
+            worldUrl: {
+                type: String,
+                value: '//world.kano.me'
             }
+        },
+        attached () {
+            this.target = document.body;
         },
         login () {
             this.fire('login');
@@ -159,6 +188,24 @@
         // Hack to make the app work on safari
         getUserAvatar (avatar) {
             return avatar || '';
+        },
+        _exportApp (e) {
+            let keyboardEvent = e.detail.keyboardEvent;
+            if (keyboardEvent) {
+                keyboardEvent.stopPropagation();
+                keyboardEvent.preventDefault();
+            }
+            this.fire('iron-signal', { name: 'export-app' });
+            this.fire('toggle-menu', false);
+        },
+        _importApp (e) {
+            let keyboardEvent = e.detail.keyboardEvent;
+            if (keyboardEvent) {
+                keyboardEvent.stopPropagation();
+                keyboardEvent.preventDefault();
+            }
+            this.fire('iron-signal', { name: 'import-app' });
+            this.fire('toggle-menu', false);
         },
         userChanged (newValue, old) {
             if (newValue) {
@@ -186,11 +233,8 @@
             e.stopPropagation();
         },
         resetWorkspace () {
-            this.fire('reset-workspace');
-            this.fire('toggle-menu');
-        },
-        backToProjects () {
-            this.fire('toggle-menu');
+            this.fire('iron-signal', { name: 'reset-workspace' });
+            this.fire('toggle-menu', false);
         },
         /* FIXME: This was copied out of Kano World. We need to put this
                   functionality into the API. */

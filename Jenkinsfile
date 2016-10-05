@@ -64,9 +64,8 @@ node {
                 sh "rm -rf ${report_folder}"
                 sh "mkdir ${report_folder}"
                 
-                timeout(time: 20000, unit: 'MILLISECONDS') {
-                    sh "xvfb-run  --auto-servernum lighthouse ${deployed_url} --output html --output-path=${report_folder}${report_file} --quiet"
-                }
+                sh "timeout 20000 xvfb-run  --auto-servernum lighthouse ${deployed_url} --output html --output-path=${report_folder}${report_file} --quiet || echo 'Lighthouse timedout'"
+                
                 publishHTML (target: [
                     keepAll: true,
                     reportDir: report_folder,

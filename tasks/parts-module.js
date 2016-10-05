@@ -1,7 +1,6 @@
 'use strict';
 module.exports = (gulp, $) => {
-    let bundler = $.browserify('app/scripts/parts/index.js', { standalone: 'Kano.MakeApps.Parts' })
-            .transform($.babelify.configure({ presets: ['es2015'] }));
+    let bundler = $.browserify('app/scripts/parts/index.js', { standalone: 'Kano.MakeApps.Parts' });
 
     function bundle(target, refresh) {
         return () => {

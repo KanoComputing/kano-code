@@ -172,7 +172,7 @@
         Kano.MakeApps.Files.generators = Kano.MakeApps.Files.generators || {};
 
         Kano.MakeApps.Files.generators.stickers = function (set, sticker) {
-            return `/assets/part/stickers/${set}/${sticker}.svg`;
+            return `${Kano.MakeApps.config.KANO_CODE_URL}/assets/part/stickers/${set}/${sticker}.svg`;
         };
 
     })(window.Kano = window.Kano || {});
