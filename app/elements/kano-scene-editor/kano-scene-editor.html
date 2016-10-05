@@ -46,7 +46,7 @@
                             added-parts="{{addedParts}}"
                             parts="[[computeParts(scene.*, remix)]]"
                             default-categories="[[computeCategories(scene.*, remix)]]"
-                            class="editor"
+                            slot="editor"
                             running="{{running}}"
                             title="[[storyName]]"
                             code="{{code}}"
@@ -265,7 +265,7 @@
                     mode.blocks = mode.originalBlocks;
                     delete mode.originalBlocks;
                 }
-            } else {
+            } else if (this.scene.filterBlocks) {
                 let whitelist = this.scene.filterBlocks[mode.id];
                 if (whitelist) {
                     mode.originalBlocks = mode.blocks;

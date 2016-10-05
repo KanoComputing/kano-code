@@ -9,11 +9,13 @@ let gulp = require('gulp'),
     source = require('vinyl-source-stream'),
     es = require('event-stream'),
     htmlAutoprefixer = require("html-autoprefixer"),
-    config = require('./app/scripts/config').getConfig(process.env.NODE_ENV,
-                                                     process.env.TARGET),
     browserSync = require('browser-sync').create(),
     historyApiFallback = require('connect-history-api-fallback'),
     runSequence = require('run-sequence'),
+    configs = require('./config.json'),
+    env = process.env.NODE_ENV || 'development',
+    target = process.env.TARGET || 'web',
+    config = Object.assign(configs.COMMON, configs.TARGET[target], configs.ENV[env], { ENV: env,  TARGET: target }),
     bundler,
     utils;
 
@@ -51,14 +53,11 @@ utils = {
         });
     },
     getEnvVars () {
-        var code = '';
-        if (process.env.NODE_ENV) {
-            code += "window.ENV = '" + process.env.NODE_ENV + "';\n";
-        }
+        let code = '';
 
-        if (process.env.TARGET) {
-            code += "window.TARGET = '" + process.env.TARGET + "';\n";
-        }
+        code += `window.Kano = window.Kano || {};`;
+        code += `window.Kano.MakeApps = window.Kano.MakeApps || {};`;
+        code += `window.Kano.MakeApps.config = ${JSON.stringify(config)};`;
 
         return code;
     },

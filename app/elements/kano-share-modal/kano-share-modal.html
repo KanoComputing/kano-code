@@ -493,7 +493,8 @@
                 width: 550,
                 height: 285,
                 generateUrl (url, title) {
-                    return `https://twitter.com/intent/tweet?source=${encodeURIComponent(url)}&text=${encodeURIComponent(title + ' ' + url)}`;
+                    let text = `I just coded ${title} with @TeamKano – check it out: ${url}`;
+                    return `https://twitter.com/intent/tweet?source=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`;
                 }
             }
         },

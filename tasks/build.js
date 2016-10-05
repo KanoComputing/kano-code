@@ -43,6 +43,13 @@ module.exports = (gulp, $) => {
         return needTranspile;
     }
 
+    gulp.task('external-play-bundle', () => {
+        return gulp.src('app/elements/play-bundle.html', { base: 'app' })
+            .pipe($.htmlReplace($.utils.getHtmlReplaceOptions()))
+            .pipe($.rename('external-play-bundle.html'))
+            .pipe(gulp.dest('app/elements'));
+    });
+
     gulp.task('copy-all', () => {
         return gulp.src('app/**/*', { base: 'app' })
             .pipe($.if('*.html', $.crisper({ scriptInHead: false })))
@@ -63,7 +70,8 @@ module.exports = (gulp, $) => {
             'shards',
             'split',
             ['copy-index', 'blockly-media', 'assets', 'style', 'workers'],
-            'sw');
+            'sw',
+            'external-play-bundle');
     });
 
     gulp.task('copy-index', () => {

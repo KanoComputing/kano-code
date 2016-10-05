@@ -9,7 +9,7 @@
             box-shadow: 4px 4px 5px 0 rgba(0, 0, 0, 0.14);
             border-radius: 5px;
         }
-        :host ::content > *:not(.hole) {
+        :host ::slotted(*:not(.hole)) {
             position: absolute;
             top: 0px;
             left: 0px
@@ -36,7 +36,7 @@
         <div class="actions">
             <div class="coordinates">X: {{ mousePositionX }}, Y: {{ mousePositionY }}</div>
         </div>
-        <content></content>
+        <slot></slot>
     </template>
     <script>
         /* globals Polymer, Kano */
