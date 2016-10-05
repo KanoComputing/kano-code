@@ -5,8 +5,8 @@
 <link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
 <link rel="import" href="../../scripts/kano/app-modules/index.html">
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
-<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
+<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
 
 <dom-module id="kano-view-story">
@@ -22,9 +22,26 @@
         paper-dialog {
             border-radius: 5px;
         }
+        @media screen and (max-width: 1200px) {
+            #share-modal {
+                max-width: 900px;
+            }
+        }
+        @media screen and (max-width: 960px) {
+            #share-modal {
+                max-width: 330px;
+            }
+        }
     </style>
     <template>
-        <kano-story-scene id="story-scene" scene="{{scene}}" on-scene-done="nextScene" story-name="{{story.name}}" next-story="{{story.next}}" extensions="[[story.extensions]]" on-extend-story="extendStory" on-next-story="nextStory"></kano-story-scene>
+        <kano-story-scene id="story-scene" scene="{{scene}}" on-scene-done="nextScene" story-name="{{story.name}}" next-story="{{story.next}}" extensions="[[story.extensions]]" on-extend-story="extendStory" on-next-story="nextStory" on-share="share"></kano-story-scene>
+        <paper-dialog id="share-modal" with-backdrop>
+            <kano-share-modal on-confirm="confirmShare"
+                              on-dismiss="dismissShare"
+                              share-info="{{shareInfo}}"
+                              world-url="[[config.WORLD_URL]]"
+                              is-authenticated="[[user]]"></kano-share-modal>
+      </paper-dialog>
     </template>
 </dom-module>
 
@@ -32,7 +49,7 @@
     /* globals Polymer, Kano, page */
     Polymer({
         is: 'kano-view-story',
-        behaviors: [Kano.Behaviors.ViewBehavior],
+        behaviors: [Kano.Behaviors.ViewBehavior, Kano.Behaviors.SharingBehavior],
         properties: {
             selected: {
                 type: Number,
@@ -46,6 +63,7 @@
         },
         ready () {
             let hardwareAPI = new Kano.MakeApps.HardwareAPI();
+            this.modal = this.$['share-modal'];
 
             hardwareAPI.config(Kano.MakeApps.config);
 

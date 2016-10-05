@@ -23,16 +23,6 @@
         top: 20px;
         right: 20px;
     }
-    @media screen and (max-width: 1200px) {
-        #share-modal {
-            max-width: 900px;
-        }
-    }
-    @media screen and (max-width: 960px) {
-        #share-modal {
-            max-width: 330px;
-        }
-    }
   </style>
   <template>
       <kano-app-challenge id="challenge"
@@ -65,13 +55,6 @@
                             on-power-up="powerUp"
                             on-share-app="shareApp"></kano-power-up-modal>
       </paper-dialog>
-      <paper-dialog id="share-modal" with-backdrop>
-            <kano-share-modal on-confirm="confirmShare"
-                              on-dismiss="dismissShare"
-                              share-info="{{shareInfo}}"
-                              world-url="[[config.WORLD_URL]]"
-                              is-authenticated="[[user]]"></kano-share-modal>
-      </paper-dialog>
   </template>
 </dom-module>
 <script type="text/javascript">
@@ -80,7 +63,7 @@
 
     Polymer({
         is: 'kano-scene-editor',
-        behaviors: [Kano.Behaviors.EditorViewBehavior, Kano.Behaviors.SceneComponentBehavior, Kano.Behaviors.SharingBehavior],
+        behaviors: [Kano.Behaviors.EditorViewBehavior, Kano.Behaviors.SceneComponentBehavior],
         properties: {
             storyName: {
                 type: String
@@ -115,7 +98,9 @@
         ],
         _pauseAndShare (e) {
             this.running = false;
-            this.share(e);
+            this.fire('share', e.detail);
+            e.preventDefault();
+            e.stopPropagation();
         },
         _remixChanged (remix) {
             if (remix) {
@@ -212,7 +197,6 @@
             }, 300);
         },
         attached () {
-            this.modal = this.$['share-modal'];
             this.mode = Kano.MakeApps.Mode.modes[(this.scene.mode || 'normal')];
         },
         shareApp () {
