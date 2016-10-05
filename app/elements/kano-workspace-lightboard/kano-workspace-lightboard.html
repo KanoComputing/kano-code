@@ -151,7 +151,7 @@
                 'update-shape': '_updateShape'
             },
             ready () {
-                this.set('bitmap', []);
+                this.set('bitmap', new Array(128));
             },
             attached () {
                 Kano.AppModules.getModule('lightboard').connect({
