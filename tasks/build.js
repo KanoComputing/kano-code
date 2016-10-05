@@ -69,7 +69,7 @@ module.exports = (gulp, $) => {
             ['parts-module', 'kano-canvas-api', 'app'],
             'shards',
             'split',
-            ['copy-index', 'blockly-media', 'assets', 'style', 'workers'],
+            ['copy-index', 'blockly-media', 'assets', 'workers'],
             'sw',
             'external-play-bundle');
     });
@@ -81,6 +81,8 @@ module.exports = (gulp, $) => {
                         'app/bower_components/webcomponentsjs/webcomponents-lite.min.js'
                         ], { base: 'app' })
             .pipe($.if('index.html', $.htmlReplace($.utils.getHtmlReplaceOptions())))
+            .pipe($.if('index.html', $.inlineSource()))
+            .pipe($.if('index.html', $.utils.htmlAutoprefixerStream()))
             .pipe(gulp.dest('www'));
     });
 
@@ -99,13 +101,6 @@ module.exports = (gulp, $) => {
             '!app/assets/vendor/**/*'
         ], { base: 'app' })
             .pipe(gulp.dest('www'));
-    });
-
-    gulp.task('style', () => {
-        return gulp.src('app/style/*.css')
-            .pipe($.concat('main.css'))
-            .pipe($.autoprefixer())
-            .pipe(gulp.dest('www/css'));
     });
 
     gulp.task('compress', () => {
