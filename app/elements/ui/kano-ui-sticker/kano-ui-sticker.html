@@ -10,9 +10,6 @@
     :host {
         display: inline-block;
     }
-    :host iron-image.empty {
-        @apply(--kano-empty-box);
-    }
     </style>
     <template>
         <iron-image id="image"
@@ -20,7 +17,6 @@
                     style$="[[computeImageStyle(model.userProperties.size)]]"
                     sizing="contain"
                     on-tap="tapped"
-                    class="empty"
                     loaded="{{loaded}}"></iron-image>
     </template>
 </dom-module>
@@ -31,13 +27,6 @@
     Polymer({
         is: 'kano-ui-sticker',
         behaviors: [Kano.MakeApps.PartsAPI.sticker, Kano.Behaviors.UIBehavior],
-        observers: [
-            'loadedChanged(loaded)'
-        ],
-        loadedChanged (loaded) {
-            // Check if the src is set or empty and toggle the class accordingly
-            this.toggleClass('empty', !loaded, this.$.image);
-        },
         computeImageStyle (size) {
             return `width: ${size}px; height: ${size}px;`;
         },
