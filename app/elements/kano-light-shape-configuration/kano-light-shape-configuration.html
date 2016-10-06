@@ -86,21 +86,23 @@
             }
             return 16 - parseInt(this.element.userProperties.width || this.element.userProperties.radius) + 1 || 16;
         },
-         _computeMaxY () {
-             if (!this.element || !this.element.userProperties) {
+        _computeMaxY () {
+            if (!this.element || !this.element.userProperties) {
                 return 8;
             }
             return 8 - parseInt(this.element.userProperties.height || this.element.userProperties.radius) + 1 || 8;
         },
         _positionChanged () {
             if (this.element) {
-                this.set('position.x', Math.round(this.element.position.x / 27) + 1);
-                this.set('position.y', Math.round(this.element.position.y / 27) + 1);
+                this.set('position.x', Math.round(this.element.position.x / 27));
+                this.set('position.y', Math.round(this.element.position.y / 27));
             }
         },
         _virtualPositionChanged () {
-            this.set('element.position.x', (this.position.x - 1) * 27);
-            this.set('element.position.y', (this.position.y - 1) * 27);
+            console.log(this.position);
+
+            this.set('element.position.x', (Math.round(this.position.x)) * 27);
+            this.set('element.position.y', (Math.round(this.position.y)) * 27);
         },
         computeRoundPosition () {
             let pos;
@@ -111,7 +113,7 @@
             if (!pos) {
                 return;
             }
-            this.set('roundPosition',{
+            this.set('roundPosition', {
                 x: Math.ceil(pos.x) || 0,
                 y: Math.ceil(pos.y) || 0
             });
