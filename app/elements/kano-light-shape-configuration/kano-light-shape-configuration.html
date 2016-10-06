@@ -99,8 +99,6 @@
             }
         },
         _virtualPositionChanged () {
-            console.log(this.position);
-
             this.set('element.position.x', (Math.round(this.position.x)) * 27);
             this.set('element.position.y', (Math.round(this.position.y)) * 27);
         },
