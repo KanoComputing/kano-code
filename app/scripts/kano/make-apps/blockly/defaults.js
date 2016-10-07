@@ -96,10 +96,20 @@
         },
         'in_x_time': {
             'DELAY': 1,
-            'UNIT': 'seconds'
+            'UNIT': 'seconds',
+            'validation': {
+                'min': 0,
+                'max': 20,
+                'error_message': "in_x_time ERR."
+            }
         },
         'repeat_x_times': {
-            'N': 10
+            'N': 10,
+            'validation': {
+                'min': 0,
+                'max': 20,
+                'error_message': "repeat_x_times ERR."
+            }
         },
         'unary': {
             'LEFT_HAND': 'item',
@@ -190,7 +200,12 @@
             'SPEED': 50
         },
         'set_x': {
-            'X': 0
+            'X': 0,
+            'validation': {
+                'min': 0,
+                'max': 16,
+                'error_message': "The width of the board it's 16."
+            }
         },
         'set_y': {
             'Y': 0

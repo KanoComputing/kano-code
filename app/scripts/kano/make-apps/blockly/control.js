@@ -133,7 +133,9 @@
             let statement = Blockly.JavaScript.statementToCode(block, 'DO'),
                 delay = Blockly.JavaScript.valueToCode(block, 'DELAY') || 1,
                 unit = block.getFieldValue('UNIT') || 'seconds',
-                code = `time.later(${delay}, '${unit}', function () {\n${statement}});\n`;
+                validation = Kano.MakeApps.Blockly.Defaults.values.in_x_time.validation,
+                block_id_base64 = btoa(block.id),
+                code = `var x = checkBounds(${delay}, ${validation.min}, ${validation.max}, "${block_id_base64}", "${block.type}");\ntime.later(${delay}, '${unit}', function () {\n${statement}});\n`;
             return code;
         };
         Blockly.Pseudo.in_x_time = (block) => {
@@ -170,9 +172,11 @@
             let n = Blockly.JavaScript.valueToCode(block, 'N') || 2,
                 code,
                 branch = Blockly.JavaScript.statementToCode(block, 'DO'),
-                loopVar = Blockly.JavaScript.variableDB_.getDistinctName('i', Blockly.Variables.NAME_TYPE);
+                loopVar = Blockly.JavaScript.variableDB_.getDistinctName('i', Blockly.Variables.NAME_TYPE),
+                validation = Kano.MakeApps.Blockly.Defaults.values.repeat_x_times.validation,
+                block_id_base64 = btoa(block.id);
             branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
-            code = `for (var ${loopVar} = 0; ${loopVar} < ${n}; ${loopVar}++) {\n${branch}}\n`;
+            code = `var x = checkBounds(${n}, ${validation.min}, ${validation.max}, "${block_id_base64}", "${block.type}");\nfor (var ${loopVar} = 0; ${loopVar} < x; ${loopVar}++) {\n${branch}}\n`;
             return code;
         };
         Blockly.Pseudo.repeat_x_times = (block) => {
