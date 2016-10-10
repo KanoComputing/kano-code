@@ -84,5 +84,5 @@ export default normal = {
     parts: ['clock', 'microphone', 'speaker', 'button', 'box',
                 'sticker', 'map', 'scrolling-text', 'slider',
                 'text-input', 'text', 'rss', 'sports', 'weather', 'iss',
-                'share', 'canvas']
+                'share', 'canvas', 'oscillator']
 };

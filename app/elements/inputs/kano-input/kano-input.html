@@ -11,6 +11,7 @@
 <link rel="import" href="../kano-input-image/kano-input-image.html">
 <link rel="import" href="../kano-input-font-family/kano-input-font-family.html">
 <link rel="import" href="../kano-input-light-animation/kano-input-light-animation.html">
+<link rel="import" href="../kano-input-wave/kano-input-wave.html">
 
 <dom-module id="kano-input">
     <style>
@@ -44,8 +45,9 @@
 
             input.addEventListener('value-changed', (e) => {
                 let target = e.path ? e.path[0] : e.target;
+                console.log(this.input.value);
                 if (target === this.input) {
-                    this.notifyPath('value', target.value);
+                    this.notifyPath('value', this.input.value);
                 }
             });
 

@@ -16,6 +16,7 @@ import Sticker from './sticker';
 import ScrollingText from './scrolling-text';
 import Speaker from './speaker';
 import Microphone from './microphone';
+import Oscillator from './oscillator';
 import LightRectangle from './lightboard/light-rectangle';
 import LightCircle from './lightboard/light-circle';
 import LightFrame from './lightboard/light-frame';
@@ -44,7 +45,8 @@ module.exports = Parts = {
            LightRectangle, LightCircle, LightFrame, LightAnimation, LightAnimationDisplay,
            PictureList, Slider],
     experiments: {
-        'dongles': [ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer]
+        'dongles': [ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer],
+        'oscillator': [Oscillator]
     },
     create (model, size) {
         return new partTypes[model.partType](model, size);

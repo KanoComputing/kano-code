@@ -1,0 +1,68 @@
+<link rel="import" href="../kano-ui-behavior.html">
+<link rel="import" href="../../../scripts/kano/make-apps/parts-api/oscillator.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../kano-style/part.html">
+<dom-module id="kano-part-oscillator">
+    <style is="custom-style" include="part-style"></style>
+    <style>
+    :host {
+        display: block;
+    }
+    .container {
+        position: relative;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: black;
+        overflow: hidden;
+    }
+    </style>
+    <template>
+        <div class="container">
+            <canvas id="canvas" width="70" height="70"></canvas>
+        </div>
+    </template>
+    <script type="text/javascript">
+        /* globals Polymer, Kano */
+
+        Polymer({
+            is: 'kano-part-oscillator',
+            behaviors: [Kano.MakeApps.PartsAPI.oscillator, Kano.Behaviors.UIBehavior],
+            attached () {
+                this.ctx = this.$.canvas.getContext('2d');
+                this._updateValue();
+            },
+            start () {
+                Kano.MakeApps.PartsAPI.oscillator.start.apply(this);
+                this._render();
+            },
+            _render () {
+                let x, y;
+                this.ctx.fillStyle = 'black';
+                this.ctx.clearRect(0, 0, 70, 70);
+                this.ctx.beginPath();
+                for (let i = 0; i < 140; i++) {
+                    x = i / 2;
+                    y = 35 - this.getValueAt(this.x - i + 70) * 0.4;
+                    this.ctx.lineTo(x, y);
+                    if (i === 70) {
+                        this.ctx.strokeStyle = 'green';
+                        this.ctx.stroke();
+                        this.ctx.closePath();
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, 2, 0, 2 * Math.PI, false);
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.fill();
+                        this.ctx.closePath();
+                        this.ctx.beginPath();
+                    }
+                }
+                this.ctx.strokeStyle = 'green';
+                this.ctx.stroke();
+                this.ctx.closePath();
+                
+                requestAnimationFrame(this._render.bind(this));
+            }
+        });
+    </script>
+</dom-module>
