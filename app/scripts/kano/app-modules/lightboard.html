@@ -54,33 +54,14 @@
                 return this.api.light.on(this.bitmap.slice(0));
             }
 
-            requestLightboardFrame(wait) {
-                return new Promise((resolve, reject) => {
-                    let currentTime = new Date();
-                    if (!this.lastCall || (currentTime - this.lastCall >= wait)) {
-                        this.lastCall = currentTime;
-                        resolve();
-                    } else {
-                        reject();
-                    }
-                });
-            }
-            /**
-             * Call the drawLight methods on the next event loop. Allows to do a set of actions but call the api only once
-             */
-            syncApi () {
-                this.drawLights();
-            }
-
             updateAndSync (force, cb) {
+                this.updateBitmap();
                 if (force) {
-                    this.updateBitmap();
-                    this.syncApi();
+                    this.drawLights();
                     cb(this.bitmap);
                 } else {
                     this.throttle('updateAndSync', () => {
-                        this.updateBitmap();
-                        this.syncApi();
+                        this.drawLights();
                         cb(this.bitmap);
                     }, 1000 / 20);
                 }
@@ -194,7 +175,7 @@
             _animateText (animationFrames, animationTime, speed, callback) {
                 if (animationFrames.length && this.currentAnimation === animationTime){
                     this.bitmap = animationFrames.shift();
-                    this.syncApi();
+                    this.drawLights();
                     setTimeout(() => {
                         callback(this.bitmap);
                         this._animateText(animationFrames, animationTime, speed, callback);

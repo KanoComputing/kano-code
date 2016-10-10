@@ -28,23 +28,27 @@
                 }
             }
             throttle (id, cb, delay) {
-                this.nextCall = this.nextCall || {};
-                this.waiting = this.waiting || {};
-                // Last call buffer time passed, call the method and create a buffer time
-                if (!this.nextCall[id]) {
-                    // When the time has passed, check if a call was made and if so, execute the callback
-                    this.nextCall[id] = setTimeout(() => {
-                        if (this.waiting[id]) {
-                            this.waiting[id]();
-                        }
-                        this.nextCall[id] = null;
-                    }, delay);
-                    // Execute the callback
-                    cb();
-                } else {
-                    // The last call was less than `delay` ms ago, just update the waiting call
-                    this.waiting[id] = cb; 
-                }
+                // Push the logic to next event loop iteration. This let the blocking calls to the same id stack up
+                setTimeout(() => {
+                    AppModule.nextCall = AppModule.nextCall || {};
+                    AppModule.waiting = AppModule.waiting || {};
+                    // Last call buffer time passed, call the method and create a buffer time
+                    if (!AppModule.nextCall[id]) {
+                        // When the time has passed, check if a call was made and if so, execute the callback
+                        AppModule.nextCall[id] = setTimeout(() => {
+                            AppModule.nextCall[id] = null;
+                            if (AppModule.waiting[id]) {
+                                this.throttle(id, AppModule.waiting[id], delay);
+                                AppModule.waiting[id] = null;
+                            }
+                        }, delay);
+                        // Execute the callback
+                        cb();
+                    } else {
+                        // The last call was less than `delay` ms ago, just update the waiting call
+                        AppModule.waiting[id] = cb; 
+                    }
+                });
             }
         }
 
