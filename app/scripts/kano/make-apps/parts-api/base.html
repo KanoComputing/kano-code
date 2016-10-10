@@ -147,24 +147,27 @@
                 return { h, s, l };
             },
             throttle (id, cb, delay) {
-                this.nextCall = this.nextCall || {};
-                this.waiting = this.waiting || {};
-                // Last call buffer time passed, call the method and create a buffer time
-                if (!this.nextCall[id]) {
-                    // When the time has passed, check if a call was made and if so, execute the callback
-                    this.nextCall[id] = setTimeout(() => {
-                        if (this.waiting[id]) {
-                            this.waiting[id]();
-                        }
-                        this.nextCall[id] = null;
-                        this.waiting[id] = null;
-                    }, delay);
-                    // Execute the callback
-                    cb();
-                } else {
-                    // The last call was less than `delay` ms ago, just update the waiting call
-                    this.waiting[id] = cb;
-                }
+                // Push the logic to next event loop iteration. This let the blocking calls to the same id stack up
+                setTimeout(() => {
+                    Base.nextCall = Base.nextCall || {};
+                    Base.waiting = Base.waiting || {};
+                    // Last call buffer time passed, call the method and create a buffer time
+                    if (!Base.nextCall[id]) {
+                        // When the time has passed, check if a call was made and if so, execute the callback
+                        Base.nextCall[id] = setTimeout(() => {
+                            Base.nextCall[id] = null;
+                            if (AppModule.waiting[id]) {
+                                this.throttle(id, Base.waiting[id], delay);
+                                Base.waiting[id] = null;
+                            }
+                        }, delay);
+                        // Execute the callback
+                        cb();
+                    } else {
+                        // The last call was less than `delay` ms ago, just update the waiting call
+                        Base.waiting[id] = cb; 
+                    }
+                });
             }
         };
 
