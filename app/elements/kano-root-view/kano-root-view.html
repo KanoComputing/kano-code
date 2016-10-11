@@ -71,7 +71,7 @@
                 default-blocks="[[mode.defaultBlocks]]">
         </kano-blockly>
         <iron-signals on-iron-signal-display-tooltip="displayTooltip"></iron-signals>
-        <template is="dom-repeat" items="{{tooltips}}" as="tooltip" on-dom-change="_tooltipDomChanged">
+        <template is="dom-if" if="{{tooltip.text}}">
             <kano-tooltip id$="tooltip-[[index]]"
                         target="[[tooltip.target]]"
                         position="[[tooltip.position]]"
@@ -149,8 +149,7 @@
             return options;
         },
         saveCode (e) {
-            this.computeTooltips([]);
-
+            this.tooltip = {};
             // Check if a create event follows a close-flyout event. If so, do not notify
             // of the close-flyout event
             if (e.detail.type === 'close-flyout') {
@@ -174,35 +173,6 @@
                 });
             }, 300);
         },
-        _tooltipDomChanged (e) {
-            let tooltips = Polymer.dom(this.root).querySelectorAll('kano-tooltip[bounce]'),
-                offset,
-                transform,
-                tooltip;
-            for (let i = 0; i < tooltips.length; i++) {
-                tooltip = tooltips[i];
-                offset = 70;
-                if (tooltip.position === 'top' || tooltip.position === 'bottom') {
-                    transform = 'translateY';
-                } else {
-                    transform = 'translateX';
-                }
-                if (tooltip.position === 'top' || tooltip.position === 'left') {
-                    offset *= -1;
-                }
-                tooltips[i].animate([{
-                    transform: `${transform}(${offset}px)`
-                },{
-                    transform: `${transform}(0px)`
-                },{
-                    transform: `${transform}(${offset}px)`
-                }], {
-                    duration: 40 * 25,
-                    easing: 'ease-in-out',
-                    iterations: Infinity
-                });
-            }
-        },
         _processMarkdown (text) {
             let reg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
             return text.replace(reg, (match, before, type, after) => {
@@ -214,68 +184,17 @@
                 return `<kano-blockly-block${before}type="${type}"${after}></kano-blockly-block>`;
             });
         },
-        getDeepElement (selector) {
-            let pieces,
-                element = this.editor,
-                partId,
-                piece,
-                found,
-                block;
-            if (typeof selector == 'object') {
-                if (selector.block) {
-                    block = this.editor.getBlocklyWorkspace().getBlockById(selector.block.id);
-                    return block.svgPath_;
-                } else if (selector.category) {
-                    let cat = selector.category;
-                    if (cat.part) {
-                        cat = this.stepIds[cat.part];
-                    }
-                    return this.getBlocklyWorkspace().getCategoryElementById(cat);
-                } else if (selector.flyout_block) {
-                    let type = selector.flyout_block;
-                    if (type.part) {
-                        type = `${this.stepIds[type.part]}#${type.type}`;
-                    }
-                    return this.getBlocklyWorkspace().getFlyoutBlockByType(type).svgPath_;
-                } else if (selector.root) {
-                    element = document.querySelector(selector.root);
-                    selector = selector.path;
-                } else {
-                    partId = this.stepIds[selector.part];
-                    selector = `${selector.path}.part-${partId},${partId}`;
-                }
-            }
-            if (selector === 'blockly-bin') {
-                return this.getBlocklyWorkspace().svgGroup_.querySelector('.blocklyTrash');
-            }
-            pieces = selector.split('.');
-            for (let i = 0, len = pieces.length; i < len; i++) {
-                piece = pieces[i].split(',').join(',#');
-                if (element.root) {
-                    found = element.root.querySelector(`#${piece}`);
-                }
-                if (!found) {
-                    found = element.querySelector(`#${piece}`);
-                }
-                element = found;
-            }
-            return element;
-        },
-        computeTooltips (tooltips) {
-            this.set('tooltips', []);
-            this.debounce('computeTooltips', () => {
-                tooltips = tooltips.map((tooltip) => {
-                    let copy = Object.assign({}, tooltip);
-                    copy.target = this.getDeepElement(tooltip.location);
-                    copy.text = this._processMarkdown(tooltip.text);
-                    copy.tracking = tooltip.tracking !== false ? true : false;
-                    return copy;
-                });
-                this.set('tooltips', tooltips);
+        computeTooltips (tooltip) {
+            this.debounce('computeTooltip', () => {
+                let copy = Object.assign({}, tooltip);
+                copy.target = this.editor.getBlocklyWorkspace().getBlockById(tooltip.location.block.id).svgPath_;
+                copy.text = this._processMarkdown(tooltip.text);
+                copy.tracking = tooltip.tracking !== false ? true : false;
+                this.set('tooltip', copy);
             }, 200);
         },
         displayTooltip (e) {
-            this.computeTooltips([{
+            this.computeTooltips({
                 "location": {
                     "block": {
                         "id": atob(e.detail.block_id)
@@ -283,7 +202,7 @@
                 },
                 "position": "top",
                 "text": Kano.MakeApps.Blockly.Defaults.values[e.detail.type].validation.error_message
-            }]);
+            });
         },
         ready () {
             this.toolboxReady = false;
