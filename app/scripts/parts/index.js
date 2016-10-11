@@ -43,10 +43,9 @@ module.exports = Parts = {
     list: [Button, Box, TextInput, Text, Map, ISS, Weather, Share,
            Sticker, ScrollingText, RSS, Sports, Speaker, Microphone, Clock,
            LightRectangle, LightCircle, LightFrame, LightAnimation, LightAnimationDisplay,
-           PictureList, Slider],
+           PictureList, Slider, Oscillator],
     experiments: {
-        'dongles': [ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer],
-        'oscillator': [Oscillator]
+        'dongles': [ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer]
     },
     create (model, size) {
         return new partTypes[model.partType](model, size);

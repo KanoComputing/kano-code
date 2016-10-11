@@ -80,5 +80,67 @@ export default microphone = {
                 return `devices.get('${part.id}').setSpeed(${speed});\n`;
             };
         }
+    }, {
+        block: (part) => {
+            return {
+                id: 'osc_get_speed',
+                message0: `${part.name}: speed`,
+                output: 'Number'
+            };
+        },
+        javascript: (part) => {
+            return () => {
+                return [`devices.get('${part.id}').getSpeed()`];
+            };
+        },
+        pseudo: (part) => {
+            return () => {
+                return [`devices.get('${part.id}').getSpeed()`];
+            };
+        }
+    }, {
+        block: (part) => {
+            return {
+                id: 'osc_set_delay',
+                message0: `${part.name}: set delay %1`,
+                args0: [{
+                    type: 'input_value',
+                    name: 'DELAY',
+                    check: 'Number'
+                }],
+                previousStatement: true,
+                nextStatement: true
+            };
+        },
+        javascript: (part) => {
+            return (block) => {
+                let delay = Blockly.JavaScript.valueToCode(block, 'DELAY') || 0;
+                return `devices.get('${part.id}').setDelay(${delay});\n`;
+            };
+        },
+        pseudo: (part) => {
+            return (block) => {
+                let delay = Blockly.Pseudo.valueToCode(block, 'DELAY') || 0;
+                return `devices.get('${part.id}').setDelay(${delay});\n`;
+            };
+        }
+    }, {
+        block: (part) => {
+            return {
+                id: 'osc_get_delay',
+                message0: `${part.name}: delay`,
+                output: 'Number'
+            };
+        },
+        javascript: (part) => {
+            return () => {
+                return [`devices.get('${part.id}').getDelay()`];
+            };
+        },
+        pseudo: (part) => {
+            return () => {
+                return [`devices.get('${part.id}').getDelay()`];
+            };
+        }
     }]
 };

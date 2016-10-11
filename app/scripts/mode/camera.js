@@ -24,7 +24,7 @@ export default Camera = {
                 'scrolling-text', 'slider', 'text-input', 'text',
                 'rss', 'sports', 'weather', 'iss', 'share', 'canvas',
                 'proximity-sensor', 'motion-sensor', 'gesture-sensor',
-                'gyro-accelerometer'],
+                'gyro-accelerometer', 'oscillator'],
     events: [{
         label: 'takes picture',
         id: 'picture-taken'

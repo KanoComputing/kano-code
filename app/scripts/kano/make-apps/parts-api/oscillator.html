@@ -31,9 +31,19 @@
             _getStep () {
                 return this.get('model.userProperties.speed') / 20;
             },
+            getSpeed () {
+                return this.get('model.userProperties.speed');
+            },
             setSpeed (s) {
                 s = Math.min(100, Math.max(0, s));
                 this.set('model.userProperties.speed', s);
+            },
+            getDelay () {
+                return this.get('model.userProperties.delay');
+            },
+            setDelay (d) {
+                s = Math.min(100, Math.max(0, d));
+                this.set('model.userProperties.delay', d);
             },
             _checkBounds () {
                 if (this.x > 100) {
