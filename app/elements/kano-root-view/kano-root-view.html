@@ -173,24 +173,13 @@
                 });
             }, 300);
         },
-        _processMarkdown (text) {
-            let reg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
-            return text.replace(reg, (match, before, type, after) => {
-                let pieces = type.split('#');
-                if (pieces.length > 1) {
-                    pieces[0] = this.stepIds[pieces[0]] || pieces[0];
-                }
-                type = pieces.join('#');
-                return `<kano-blockly-block${before}type="${type}"${after}></kano-blockly-block>`;
-            });
-        },
-        computeTooltips (tooltip) {
+        computeTooltips (arg_tooltip) {
             this.debounce('computeTooltip', () => {
-                let copy = Object.assign({}, tooltip);
-                copy.target = this.editor.getBlocklyWorkspace().getBlockById(tooltip.location.block.id).svgPath_;
-                copy.text = this._processMarkdown(tooltip.text);
-                copy.tracking = tooltip.tracking !== false ? true : false;
-                this.set('tooltip', copy);
+                this.tooltip = Object.assign({}, arg_tooltip);
+                this.tooltip.target = this.editor.getBlocklyWorkspace().getBlockById(arg_tooltip.location.block.id).svgPath_;
+                this.tooltip.text = arg_tooltip.text;
+                this.tooltip.tracking = arg_tooltip.tracking !== false ? true : false;
+                this.set('tooltip', this.tooltip);
             }, 200);
         },
         displayTooltip (e) {
