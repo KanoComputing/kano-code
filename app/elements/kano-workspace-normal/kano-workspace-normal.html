@@ -68,11 +68,16 @@
             getBackgroundColor () {
                 return this.style.backgroundColor;
             },
+            setTransparency (value) {
+                let alpha = Math.min(Math.max(0, value), 100) / 100;
+                this.ctx.globalAlpha = alpha;
+            },
             start () {
                 this.reset();
             },
             reset () {
                 this.ctx = this.$.canvas.getContext('2d');
+                this.ctx.globalAlpha = 1;
                 this.modules = new Kano.CanvasAPI({
                     ctx: this.ctx,
                     width: this.width,

@@ -15,7 +15,7 @@
     /**
      * Redirects to the projects page on the Core Kit™ on first landing
      */
-    isCore = window.TARGET === 'osonline';
+    isCore = window.Kano.MakeApps.config.TARGET === 'osonline';
     userAgent = window.navigator.userAgent;
     isPi = userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1;
 

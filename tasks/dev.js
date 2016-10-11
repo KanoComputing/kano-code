@@ -37,10 +37,9 @@ module.exports = (gulp, $) => {
 
     function styles(src) {
         return () => {
-            return gulp.src(src)
-            .pipe($.concat('main.css'))
+            return gulp.src(src, { base: 'app' })
             .pipe($.autoprefixer())
-            .pipe(gulp.dest('www/css'))
+            .pipe(gulp.dest('www'))
             .pipe($.browserSync.stream());
         };
     }

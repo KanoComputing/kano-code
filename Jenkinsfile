@@ -3,7 +3,7 @@ node {
     stage('check environment') {
         if (env.BRANCH_NAME=="master" || env.BRANCH_NAME=="jenkins") {
             env.DEV_ENV = "staging"
-        } else if (env.BRANCH_NAME=="prod") {
+        } else if (env.BRANCH_NAME=="prod" || env.BRANCH_NAME=="pre-release") {
             env.DEV_ENV = "production"
         }
         env.NODE_ENV = "${env.DEV_ENV}"
@@ -43,6 +43,8 @@ node {
             echo 'deploy skipped'
         } else if (env.NODE_ENV=="staging") {
             deploy_staging()
+        } else if (env.BRANCH_NAME=="pre-release") {
+            deploy_pre_release()
         } else if (env.NODE_ENV=="production") {
             deploy_prod()
         }
@@ -85,6 +87,10 @@ node {
 
 def deploy_staging() {
     sh 'aws s3 sync ./www s3://make-apps-staging-site.kano.me --region eu-west-1 --cache-control "max-age=600"'
+}
+
+def deploy_pre_release() {
+    sh 'aws s3 sync ./www s3://apps-pre-release.kano.me --region eu-west-1 --cache-control "max-age=600"'
 }
 
 def deploy_prod() {

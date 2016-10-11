@@ -27,11 +27,11 @@
                 return this.appModules.getModule('lightboard').turnOff(light, this.render.bind(this));
             },
             text (text, color, backgroundColor) {
-                return this.appModules.getModule('lightboard').text(text, color, backgroundColor, this.render.bind(this));
+                return this.appModules.getModule('lightboard').text(text.toString(), color, backgroundColor, this.render.bind(this));
             },
             render () {},
             scroll (text, color, backgroundColor, speed) {
-                return this.appModules.getModule('lightboard').scroll(text, color, backgroundColor, speed, this.render.bind(this));
+                return this.appModules.getModule('lightboard').scroll(text.toString(), color, backgroundColor, speed, this.render.bind(this));
             },
             _propagateButtonEvent (data) {
                 this.fire("lightboard-" + data['button-id']);
