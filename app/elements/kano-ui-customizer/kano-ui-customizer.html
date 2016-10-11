@@ -54,6 +54,10 @@
             }
         },
         propertyChanged (e) {
+            let target = e.path ? e.path[0] : e.target;
+            if (target.tagName !== 'KANO-INPUT') {
+                return;
+            }
             let propertyName = e.model.get('property.key');
             if (typeof(e.detail.value) == 'number') {
                 if (propertyName == 'width' || propertyName == 'height') {

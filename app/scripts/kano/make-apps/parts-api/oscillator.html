@@ -14,9 +14,11 @@
                     this._updateValue();
                 }
             },
+            getX () {
+                return parseInt(this.get('model.userProperties.delay')) + this.x;
+            },
             _updateValue () {
                 this.timeout = setTimeout(() => {
-
                     this.x += this._getStep();
                     this._checkBounds();
                     this._updateValue();
@@ -29,34 +31,44 @@
             _getStep () {
                 return this.get('model.userProperties.speed') / 20;
             },
-            tick () {
-                this.x++;
-                this._checkBounds();
+            setSpeed (s) {
+                s = Math.min(100, Math.max(0, s));
+                this.set('model.userProperties.speed', s);
             },
             _checkBounds () {
                 if (this.x > 100) {
-                    this.x = 100 - this.x;
+                    this.x = 101 - this.x;
                 } else if (this.x < 0) {
-                    this.x = 100 + this.x;
+                    this.x = 101 + this.x;
                 }
             },
             getValue () {
                 return this.getValueAt(this.x);
             },
             getValueAt (x) {
-                let wave = this.get('model.userProperties.wave');
+                let wave = this.get('model.userProperties.wave'),
+                    xWithOffset = parseInt(this.get('model.userProperties.delay')) + x;
                 if (this.waves[wave]) {
-                    return this.waves[wave](x);
+                    return this.waves[wave](xWithOffset);
                 }
-                return this.waves.sine(x);
+                return this.waves.sine(xWithOffset);
             },
             waves: {
-                linear (x) {
-                    return x;
-                },
                 sine (x) {
                     let angle = ((x * 3.6) * Math.PI) / 180;
-                    return (Math.sin(angle) * 100) / 2;
+                    // Normalize to a range of 0 - 100
+                    return ((Math.sin(angle) * 100) / 2) + 50;
+                },
+                square (x) {
+                    x = x % 100;
+                    return x > 50 ? 100 : 0;
+                },
+                sawtooth (x) {
+                    return x % 100;
+                },
+                triangle (x) {
+                    x = x % 100;
+                    return x > 50 ? 100 - x : x;
                 }
             }
         };

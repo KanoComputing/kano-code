@@ -5,7 +5,7 @@ export default microphone = {
     type: 'oscillator',
     label: 'Osc',
     component: 'kano-part-oscillator',
-    image: '/assets/part/microphone.svg',
+    image: '/assets/part/osc.svg',
     colour: '#FFB347',
     customizable: {
         properties: [{
@@ -18,18 +18,26 @@ export default microphone = {
             type: 'range',
             min: 0,
             max: 100
+        }, {
+            key: 'delay',
+            label: 'Delay',
+            type: 'range',
+            min: 0,
+            max: 100
         }],
         style: []
     },
     userProperties: {
         wave: 'sine',
-        speed: 50
+        speed: 50,
+        delay: 0
     },
     showDefaultConfiguration: false,
+    excludeDefaultBlocks: true,
     blocks: [{
         block: (part) => {
             return {
-                id: 'get_value',
+                id: 'osc_get_value',
                 message0: `${part.name}: value`,
                 output: 'Number'
             };
@@ -49,20 +57,27 @@ export default microphone = {
     }, {
         block: (part) => {
             return {
-                id: 'tick',
-                message0: `${part.name}: tick`,
+                id: 'osc_set_speed',
+                message0: `${part.name}: set speed %1`,
+                args0: [{
+                    type: 'input_value',
+                    name: 'SPEED',
+                    check: 'Number'
+                }],
                 previousStatement: true,
                 nextStatement: true
             };
         },
         javascript: (part) => {
             return (block) => {
-                return `devices.get('${part.id}').tick();\n`;
+                let speed = Blockly.JavaScript.valueToCode(block, 'SPEED') || 50;
+                return `devices.get('${part.id}').setSpeed(${speed});\n`;
             };
         },
         pseudo: (part) => {
             return (block) => {
-                return `devices.get('${part.id}').tick();\n`;
+                let speed = Blockly.Pseudo.valueToCode(block, 'SPEED') || 50;
+                return `devices.get('${part.id}').setSpeed(${speed});\n`;
             };
         }
     }]

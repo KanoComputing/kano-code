@@ -7,14 +7,15 @@
     <style>
     :host {
         display: block;
-        text-align: left;
     }
     </style>
     <template>
         <paper-dropdown-menu id="dropdown" noink no-animations label="[[label]]">
-            <paper-listbox class="dropdown-content" selected="{{value}}" attr-for-selected="value">
-                <paper-item value="linear">Linear</paper-item>
-                <paper-item value="sine">Sine</paper-item>
+            <paper-listbox class="dropdown-content" selected="{{value}}" attr-for-selected="key" fallback-selection="linear">
+                <paper-item role="menuitem" key="sine">Sine</paper-item>
+                <paper-item role="menuitem" key="square">Square</paper-item>
+                <paper-item role="menuitem" key="sawtooth">Sawtooth</paper-item>
+                <paper-item role="menuitem" key="triangle">Triangle</paper-item>
             </paper-listbox>
         </paper-dropdown-menu>
     </template>
@@ -29,13 +30,7 @@
             'valueChanged(value)'
         ],
         valueChanged () {
-            console.log(this.value);
             this.fire('change');
-        },
-        _stopValuePropagation (e) {
-            console.log(e.target);
-            e.preventDefault();
-            e.stopPropagation();
         }
     });
 </script>
