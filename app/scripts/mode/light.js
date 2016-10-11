@@ -192,8 +192,7 @@ export default light = {
                 message0: 'Lights: show text %1 color %2 background %3',
                 args0: [{
                     type: "input_value",
-                    name: "TEXT",
-                    check: 'String'
+                    name: "TEXT"
                 },{
                     type: "input_value",
                     name: "COLOR",
