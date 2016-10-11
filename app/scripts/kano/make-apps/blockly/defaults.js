@@ -99,16 +99,16 @@
             'UNIT': 'seconds',
             'validation': {
                 'min': 0,
-                'max': 20,
-                'error_message': "in_x_time ERR."
+                'max': 200000,
+                'error_message': "200000 it's the maximum value."
             }
         },
         'repeat_x_times': {
             'N': 10,
             'validation': {
                 'min': 0,
-                'max': 20,
-                'error_message': "repeat_x_times ERR."
+                'max': 100000,
+                'error_message': "100000 it's the maximum value."
             }
         },
         'unary': {

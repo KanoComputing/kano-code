@@ -149,6 +149,8 @@
             return options;
         },
         saveCode (e) {
+            this.computeTooltips([]);
+
             // Check if a create event follows a close-flyout event. If so, do not notify
             // of the close-flyout event
             if (e.detail.type === 'close-flyout') {
@@ -221,10 +223,7 @@
                 block;
             if (typeof selector == 'object') {
                 if (selector.block) {
-                    block = this.getTargetBlock(selector.block);
-                    if (selector.block.inputName) {
-                        return this.getTargetBlockInput(selector.block);
-                    }
+                    block = this.editor.getBlocklyWorkspace().getBlockById(selector.block.id);
                     return block.svgPath_;
                 } else if (selector.category) {
                     let cat = selector.category;

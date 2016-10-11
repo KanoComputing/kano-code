@@ -36,7 +36,6 @@
                 moduleNames.push('devices');
                 moduleImports.push(`${prefix}.getModule('parts')`);
 
-                // TODO: This should be refactored and improved.
                 let customCode = `function checkBounds (val, min_value, max_value, id, type) {\n  var return_value = Math.min(max_value, Math.max(min_value, parseInt(val)));\n  if (val !== return_value) {\n    outOfRangeCallback(id, type);\n  }\n  return return_value;\n};`;
                 return `(function (${moduleNames.join(', ')}) {\n${customCode}\n${code}\nglobal.emit('start');\n})(${moduleImports.join(', ')});\n`;
             }

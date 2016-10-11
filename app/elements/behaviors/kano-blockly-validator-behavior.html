@@ -221,9 +221,7 @@
             if (typeof selector === 'string') {
                 block = this.editor.getBlocklyWorkspace().getBlockById(this.blockIds[selector]);
             } else if (selector.id) {
-                // TODO This might break things, double check before PR!
-                // block = this.editor.getBlocklyWorkspace().getBlockById(this.blockIds[selector.id]);
-                block = this.editor.getBlocklyWorkspace().getBlockById(selector.id);
+                block = this.editor.getBlocklyWorkspace().getBlockById(this.blockIds[selector.id]);
             } else if (selector.rawId) {
                 block = this.editor.getBlocklyWorkspace().getBlockById(selector.rawId);
             }
