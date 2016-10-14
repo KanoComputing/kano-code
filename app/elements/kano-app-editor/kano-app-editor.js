@@ -376,7 +376,6 @@ Polymer({
             Kano.MakeApps.Blockly.removeLookupString(id);
         });
         this.splice('addedParts', index, 1);
-        this.$.partsPanel.closeDrawer();
         this.$.workspace.clearSelection();
     },
     onPartReady (e) {
