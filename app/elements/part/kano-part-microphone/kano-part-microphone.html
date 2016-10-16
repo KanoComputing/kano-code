@@ -2,12 +2,13 @@
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/base.html">
 <link rel="import" href="../../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../kano-style/part.html">
 <dom-module id="kano-part-microphone">
-    <style is="custom-style" include="part-style"></style>
     <style>
     :host {
         display: block;
+    }
+    :host(.selected) .image {
+        border-color: var(--color-orange);
     }
     .container {
         position: relative;
@@ -40,6 +41,8 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
+        border: 2px solid transparent;
+        box-sizing: border-box;
         @apply(--shadow-elevation-2dp);
     }
     .data {

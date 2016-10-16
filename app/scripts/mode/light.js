@@ -9,7 +9,8 @@ export default light = {
     parts: ['clock', 'microphone', 'speaker', 'light-animation-display',
                 'light-animation', 'light-circle', 'light-frame', 'light-rectangle',
                 'rss', 'sports', 'weather', 'iss', 'share', 'proximity-sensor',
-                'motion-sensor', 'gesture-sensor', 'gyro-accelerometer'],
+                'motion-sensor', 'gesture-sensor', 'gyro-accelerometer',
+                'oscillator'],
     workspace: {
         viewport: {
             width: 466,

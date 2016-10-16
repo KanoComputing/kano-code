@@ -1,8 +1,6 @@
 <link rel="import" href="../../kano-data-visualizer/kano-data-visualizer.html">
-<link rel="import" href="../../kano-style/part.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/data.html">
 <dom-module id="kano-part-data">
-    <style is="custom-style" include="part-style"></style>
     <style>
     :host {
         display: block;
@@ -26,6 +24,12 @@
         left: 0px;
         right: 0px;
         bottom: 0px;
+    }
+    kano-ui-item {
+        border: 2px solid transparent;
+    }
+    :host(.selected) kano-ui-item {
+        border-color: var(--color-orange);
     }
     </style>
     <template>

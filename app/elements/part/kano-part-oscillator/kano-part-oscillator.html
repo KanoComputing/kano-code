@@ -1,0 +1,127 @@
+<link rel="import" href="../kano-ui-behavior.html">
+<link rel="import" href="../../../scripts/kano/make-apps/parts-api/oscillator.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../kano-style/part.html">
+<dom-module id="kano-part-oscillator">
+    <style>
+    @keyframes slide-in-up {
+        from {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+    }
+    @keyframes jump-in {
+        from {
+            transform: scale(0);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+    :host {
+        display: block;
+        position: relative;
+    }
+    :host(.selected) .container {
+        border-color: var(--color-orange);
+    }
+    .container {
+        position: relative;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: black;
+        overflow: hidden;
+        border: 2px solid transparent;
+        animation: jump-in 150ms cubic-bezier(0.2, 0, 0.13, 1.5);
+        animation-fill-mode: forwards;
+        opacity: 0;
+    }
+    .data-box {
+        animation: slide-in-up 250ms cubic-bezier(0.2, 0, 0.13, 1.5) 170ms;
+        animation-fill-mode: forwards;
+        opacity: 0;
+        position: absolute;
+        top: -16px;
+        height: 14px;
+        width: 26px;
+        left: calc(50% - 13px);
+        background-color: #323232;
+        border-radius: 2px;
+        color: white;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 10px;
+        box-sizing: border-box;
+        padding-top: 1px;
+    }
+    </style>
+    <template>
+        <div class="data-box">[[yValue]]</div>
+        <div class="container">
+            <canvas id="canvas" width="70" height="70"></canvas>
+        </div>
+    </template>
+    <script type="text/javascript">
+        /* globals Polymer, Kano */
+
+        Polymer({
+            is: 'kano-part-oscillator',
+            behaviors: [Kano.MakeApps.PartsAPI.oscillator, Kano.Behaviors.UIBehavior],
+            attached () {
+                this.ctx = this.$.canvas.getContext('2d');
+                this.x = 0;
+                this._updateValue();
+                this._render();
+            },
+            detached () {
+                cancelAnimationFrame(this._nextFrameId);
+            },
+            start () {
+                Kano.MakeApps.PartsAPI.oscillator.start.apply(this);
+            },
+            _render (timestamp) {
+                let yScale = 0.5,
+                    x, y;
+                this.ctx.fillStyle = 'black';
+                this.ctx.clearRect(0, 0, 70, 70);
+                this.ctx.beginPath();
+                for (let i = 0; i < 140; i++) {
+                    x = i / 2;
+                    y = 70 - this.getValueAt(this.x - i + 170) * 0.7;
+                    y *= yScale;
+                    y += (70 - (70 * yScale)) / 2;
+                    this.ctx.lineTo(x, y);
+                    if (i === 70) {
+                        this.ctx.strokeStyle = '#57ff86';
+                        this.ctx.stroke();
+                        this.ctx.closePath();
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, 2, 0, 2 * Math.PI, false);
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.fill();
+                        this.ctx.closePath();
+                        this.ctx.beginPath();
+                    }
+                }
+                this.ctx.strokeStyle = '#57ff86';
+                this.ctx.stroke();
+                this.ctx.closePath();
+
+                if (!this.prevTimestamp || timestamp - this.prevTimestamp > 100) {
+                    this.prevTimestamp = timestamp;
+                    this.set('yValue', Math.round(this.getValue()));
+                }
+
+                
+                this._nextFrameId = requestAnimationFrame(this._render.bind(this));
+            }
+        });
+    </script>
+</dom-module>

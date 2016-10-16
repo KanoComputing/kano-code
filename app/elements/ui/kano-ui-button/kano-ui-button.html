@@ -2,10 +2,8 @@
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/base.html">
 <link rel="import" href="../../kano-style/button.html">
 <link rel="import" href="../../kano-style/typography.html">
-<link rel="import" href="../../kano-style/part.html">
 
 <dom-module id="kano-ui-button">
-    <style is="custom-style" include="part-style"></style>
     <style>
     :host {
         display: inline-block;
@@ -13,6 +11,10 @@
     :host button {
         @apply(--kano-button);
         background: var(--color-green);
+        border: 2px solid transparent;
+    }
+    :host(.selected) button {
+        border-color: var(--color-orange);
     }
     </style>
     <template>

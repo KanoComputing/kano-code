@@ -16,6 +16,7 @@ import Sticker from './sticker';
 import ScrollingText from './scrolling-text';
 import Speaker from './speaker';
 import Microphone from './microphone';
+import Oscillator from './oscillator';
 import LightRectangle from './lightboard/light-rectangle';
 import LightCircle from './lightboard/light-circle';
 import LightFrame from './lightboard/light-frame';
@@ -42,7 +43,7 @@ module.exports = Parts = {
     list: [Button, Box, TextInput, Text, Map, ISS, Weather, Share,
            Sticker, ScrollingText, RSS, Sports, Speaker, Microphone, Clock,
            LightRectangle, LightCircle, LightFrame, LightAnimation, LightAnimationDisplay,
-           PictureList, Slider],
+           PictureList, Slider, Oscillator],
     experiments: {
         'dongles': [ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer]
     },

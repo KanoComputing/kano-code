@@ -11,6 +11,7 @@
 <link rel="import" href="../kano-input-image/kano-input-image.html">
 <link rel="import" href="../kano-input-font-family/kano-input-font-family.html">
 <link rel="import" href="../kano-input-light-animation/kano-input-light-animation.html">
+<link rel="import" href="../kano-input-wave/kano-input-wave.html">
 
 <dom-module id="kano-input">
     <style>
@@ -27,41 +28,38 @@
 
     Polymer({
         is: 'kano-input',
-        behaviors: [Kano.Behaviors.Input, Kano.Behaviors.AppEditorBehavior],
+        behaviors: [Polymer.Templatizer, Kano.Behaviors.Input, Kano.Behaviors.AppEditorBehavior],
         observers: [
             '_typeChanged(type)',
             '_valueChanged(value)'
         ],
+        _instanceProps: {
+            value: true
+        },
         _typeChanged () {
-            let input = document.createElement(this._getTagName()),
+            let inputTagName = this._getTagName(),
                 root = Polymer.dom(this.root);
-            input.value   = this.value;
-            input.label   = this.label;
-            input.symbol  = this.symbol;
-            input.min     = this.min;
-            input.max     = this.max;
-            input.options = this.options;
+            let template = document.createElement('template');
+            template.innerHTML = `<${inputTagName} value="{{value}}" label="[[label]]" symbol="[[symbol]]" min="[[min]]" max="[[max]]" options="[[options]]"></${inputTagName}>`;
 
-            input.addEventListener('value-changed', (e) => {
-                let target = e.path ? e.path[0] : e.target;
-                if (target === this.input) {
-                    this.notifyPath('value', target.value);
-                }
+            this.templatize(template);
+
+            this.instance = this.stamp({
+                label: this.label,
+                symbol: this.symbol,
+                min: this.min,
+                max: this.max,
+                options: this.options
             });
 
-            input.addEventListener('click', (e) => {
-                this.notifyChange('settings-interaction', {setting: this.type});
-            });
-
-            this.input = input;
-            while (root.firstChild) {
-                root.removeChild(root.firstChild);
-            }
-            root.appendChild(this.input);
+            Polymer.dom(this.root).appendChild(this.instance.root);
+        },
+        _forwardInstanceProp (inst, prop, value) {
+            this.set(prop, value);
         },
         _valueChanged () {
-            if (this.input) {
-                this.input.value = this.value;
+            if (this.instance) {
+                this.instance.set('value', this.value);
             }
         },
         _getTagName () {
