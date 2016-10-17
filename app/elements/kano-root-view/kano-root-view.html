@@ -20,42 +20,28 @@
     :host .tooltip-content {
         @apply(--layout-vertical);
         @apply(--layout-center);
-    }
-    :host .tooltip-content button {
-        margin-top: 10px;
-        background-color: white;
-        color: #435055;
-        text-shadow: none;
+        color: #911515;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 18px;
+        padding: 15px 20px;
+        background-color: #E2E2E2;
+        border-radius: 3px;
     }
     kano-tooltip {
         z-index: 101;
-        --kano-tooltip-background-color: var(--tooltip-color);
-        --kano-tooltip-border-color: white;
-        --kano-tooltip-border-width: 1px;
-        color: white;
-        --kano-tooltip: {
-            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
-            padding: 18px 26px 20px;
-            font-size: 20px;
-            line-height: 25px;
-        };
         --kano-tooltip-caret: {
             box-shadow: 0px 0px 0px 0px;
         };
     }
+
+    :host .tooltip{
+        /*border-top-color: #E2E2E2 !important;*/
+        background-color: red !important;
+    }
     kano-tooltip[position="top"] {
         --kano-tooltip-caret: {
             box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.25);
-        };
-    }
-    kano-tooltip[position="left"] {
-        --kano-tooltip-caret: {
-            box-shadow: 2px 0px 0px 0px rgba(0, 0, 0, 0.25);
-        };
-    }
-    kano-tooltip[position="right"] {
-        --kano-tooltip-caret: {
-            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
         };
     }
     .tooltip-text kano-blockly-block {
@@ -77,6 +63,7 @@
                         position="[[tooltip.position]]"
                         z-index="[[tooltip.zIndex]]"
                         tracking="[[tooltip.tracking]]"
+                        warning="true"
                         bounce$="[[tooltip.bounce]]">
                 <div class="tooltip-content">
                     <div class="tooltip-text">
@@ -84,7 +71,6 @@
                             <div class="markdown-html"></div>
                         </marked-element>
                     </div>
-                    <button type="button" on-tap="nextStep" hidden$="[[!tooltip.next_button]]">Next</button>
                 </div>
             </kano-tooltip>
         </template>

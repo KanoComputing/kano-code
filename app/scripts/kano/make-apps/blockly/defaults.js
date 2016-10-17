@@ -100,7 +100,7 @@
             'validation': {
                 'min': 0,
                 'max': 200000,
-                'error_message': "Keep this value between 0 and 200000."
+                'error_message': "Too big! This number needs <br> to be between 1 and 200000."
             }
         },
         'repeat_x_times': {
@@ -108,7 +108,7 @@
             'validation': {
                 'min': 0,
                 'max': 100000,
-                'error_message': "Keep this value between 0 and 100000."
+                'error_message': "Too big! This number needs <br> to be between 1 and 100000."
             }
         },
         'unary': {
