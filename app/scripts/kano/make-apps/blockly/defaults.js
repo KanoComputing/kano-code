@@ -204,7 +204,7 @@
             'validation': {
                 'min': 0,
                 'max': 16,
-                'error_message': "The width of the board it's 16."
+                'error_message': "The width of the board is 16."
             }
         },
         'set_y': {
