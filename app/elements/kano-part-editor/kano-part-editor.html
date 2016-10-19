@@ -14,14 +14,35 @@
         border-radius: 6px;
         @apply(--layout-vertical);
     }
-    :host iron-lazy-pages {
+    :host(.is-scrolled) #config-panel-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: lightgrey;
+    }
+    :host(.can-scroll:not(.scrolled-to-bottom)) #config-panel-container::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: lightgrey;
+    }
+    #config-panel-container {
         @apply(--layout-flex);
         @apply(--layout-vertical);
+        width: 100%;
+        position: relative;
+        margin-bottom: 24px;
     }
     kano-light-animation-editor {
         overflow-x: hidden;
     }
-    iron-lazy-pages>*:not(template) {
+    #config-panel-container>* {
         overflow-y: auto;
         height: 100%;
         @apply(--layout-flex);
@@ -38,6 +59,10 @@
         margin-left: 15px;
         border-bottom: 1px dotted var(--color-black, black);
     }
+    :host #element-name-editor:focus {
+        outline: none;
+        border-bottom-color: var(--color-orange, orange);
+    }
     :host .icon {
         cursor: pointer;
     }
@@ -50,61 +75,88 @@
     }
     </style>
     <template>
-          <div class="title-bar">
-              <div class="element-name-editor">
-                  <input id="element-name-editor" type="text" value="{{selected.name::keyup}}"
-                    on-keydown="enterQuitsInput">
-                <label class="icon" for="element-name-editor">
-                    <iron-icon id="edit-icon" src="/assets/icons/layout-edit-icon.png"></iron-icon>
-                </label>
-              </div>
+        <div class="title-bar">
+            <div class="element-name-editor">
+                <input id="element-name-editor" type="text" value="{{selected.name::keyup}}"
+                on-keydown="enterQuitsInput">
+            <label class="icon" for="element-name-editor">
+                <iron-icon id="edit-icon" src="/assets/icons/layout-edit-icon.png"></iron-icon>
+            </label>
+            </div>
 
-              <label class="icon delete-button" on-tap="_deletePart">delete
-                  <iron-icon  src="/assets/icons/layout-bin-icon.png"></iron-icon>
-              </label>
-          </div>
-
-        <iron-lazy-pages selected="[[configPanel]]" attr-for-selected="name" restamp>
-            <template is="iron-lazy-page" name="ui">
-                <kano-ui-editor id="ui-editor" mode="[[mode]]" selected="{{selected}}"></kano-ui-editor>
-            </template>
-            <template is="iron-lazy-page" name="data">
-                <kano-data-editor id="data-editor" selected="{{selected}}"></kano-data-editor>
-            </template>
-            <template is="iron-lazy-page" name="light-frame">
-                <kano-light-frame-editor id="frame-editor" selected="{{selected}}"></kano-light-frame-editor>
-            </template>
-            <template is="iron-lazy-page" name="light-animation">
-                <kano-light-animation-editor id="animation-editor" selected="{{selected}}"></kano-light-animation-editor>
-            </template>
-            <template is="iron-lazy-page" name="light-shape">
-                <kano-light-shape-configuration id="light-shape-editor" element="{{selected}}"></kano-light-shape-configuration>
-            </template>
-            <template is="iron-lazy-page" name="empty">
-                <div></div>
-            </template>
-        </iron-lazy-pages>
+            <label class="icon delete-button" on-tap="_deletePart">delete
+                <iron-icon  src="/assets/icons/layout-bin-icon.png"></iron-icon>
+            </label>
+        </div>
+        <div id="config-panel-container"></div>
     </template>
 </dom-module>
 <script type="text/javascript">
     /* globals Polymer */
     Polymer({
         is: 'kano-part-editor',
+        behaviors: [Polymer.Templatizer],
         properties: {
             selected: {
                 type: Object,
                 notify: true
             },
-            configPanel: {
-                type: String,
-                computed: '_computeConfigPanel(selected.configPanel)'
-            },
             mode: {
                 type: Object
             }
         },
-        _computeConfigPanel (panel) {
-            return panel || 'empty';
+        _instanceProps: {
+            selected: true
+        },
+        observers: [
+            '_configPanelChanged(selected.configPanel)',
+            '_selectedChanged(selected.*)'
+        ],
+        _configPanelChanged (panel) {
+            let tagName = panel || 'div',
+                container = Polymer.dom(this.$['config-panel-container']),
+                template = document.createElement('template');
+
+            template.innerHTML = `<${tagName} id="${tagName.replace('kano-', '')}" mode="[[mode]]" selected="{{selected}}" element="{{selected}}"></${tagName}>`
+
+            this.templatize(template);
+            this.instance = this.stamp({
+                mode: this.mode,
+                selected: this.selected
+            });
+
+            this.scrollTarget = this.instance.root.firstChild;
+
+            // Listen to scroll events on the part-editor to append the top/bottom divider
+            this.scrollTarget.addEventListener('scroll', this._onScroll.bind(this));
+
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+
+            container.appendChild(this.instance.root);
+
+            // Compute the scroll state next to remove the dividers from the eventual previous editor
+            requestAnimationFrame(this._onScroll.bind(this));
+        },
+        _onScroll () {
+            let target = this.scrollTarget;
+
+            this.toggleClass('can-scroll', target.offsetHeight < target.scrollHeight);
+            this.toggleClass('is-scrolled', target.scrollTop > 0);
+            this.toggleClass('scrolled-to-bottom', target.scrollTop + target.offsetHeight >= target.scrollHeight);
+        },
+        _forwardInstancePath (inst, path, value) {
+            this.set(path, value);
+            this._parentProps = {};
+        },
+        _forwardInstanceProp (inst, prop, value) {
+            this.set(prop, value);
+        },
+        _selectedChanged(e) {
+            if (this.instance) {
+                this.instance.set(e.path, e.value);
+            }
         },
         _deletePart () {
             this.fire('delete-part', this.selected);

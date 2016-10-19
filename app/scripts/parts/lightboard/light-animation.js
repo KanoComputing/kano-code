@@ -9,7 +9,7 @@ export default lightAnimation = {
     colour: '#FFB347',
     component: 'kano-part-light-animation',
     restrict: 'workspace',
-    configPanel: 'light-animation',
+    configPanel: 'kano-light-animation-editor',
     customizable: {
         properties: [{
             key: 'width',

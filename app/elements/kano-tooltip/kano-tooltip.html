@@ -184,6 +184,10 @@
             warning: {
                 type: String,
                 value: false
+            },
+            autoClose: {
+                type: Boolean,
+                value: false
             }
         },
         observers: [
@@ -194,15 +198,34 @@
                 this.updatePosition();
             });
             observer.observe(this, { childList: true, subtree: true, characterData: true });
+            this._onClickEvent = this._onClickEvent.bind(this);
+            document.addEventListener('click', this._onClickEvent);
+            document.addEventListener('touchend', this._onClickEvent);
         },
         detached () {
             window.removeEventListener('resize', this.updatePosition.bind(this));
+            document.removeEventListener('click', this._onClickEvent);
+            document.removeEventListener('touchend', this._onClickEvent);
 
             if (this.targetTracker) {
                 clearInterval(this.targetTracker);
             }
         },
+        _onClickEvent (e) {
+            let target = e.path ? e.path[0] : e.target;
+            if (this.autoClose && this.opened) {
+                // Go up the dom to check if the event originated from inside the tooltip or not
+                while (target !== this && target !== document.body) {
+                    target = target.parentNode || target.host;
+                }
+                if (target !== this) {
+                    this.close();
+                }
+            }
+
+        },
         updatePosition () {
+            this.positionWillChange = true;
             this.debounce('updatePosition', () => {
                 let target = this.target,
                     tooltip,
@@ -222,13 +245,13 @@
                     'width' in target && 'height' in target) {
                     tRect = target;
                 } else {
-                    tRect = target.getBoundingClientRect()
+                    tRect = target.getBoundingClientRect();
                 }
 
                 style = this.style;
                 tooltip = this.$.tooltip;
                 tooltipStyle = tooltip.style;
-                rect = tooltip.getBoundingClientRect();
+                rect = this.getBoundingClientRect();
 
                 widthCenter = tRect.left + (tRect.width / 2) - (rect.width / 2);
                 heightCenter = tRect.top + (tRect.height / 2) - (rect.height / 2);
@@ -253,51 +276,61 @@
                     style['z-index'] = this.zIndex;
                 }
 
+                this.positionWillChange = false;
                 this.open();
             }, 10);
         },
         open () {
-            let style = this.style;
-            style.visibility = 'visible';
+            // Let an eventual click event triggering the open go the the click handler
+            setTimeout(() => {
+                let style = this.style;
+                // Still recomputing the position, let it finish, it will open automatically at the end
+                if (this.positionWillChange) {
+                    return;
+                }
+                style.visibility = 'visible';
 
-            if (this.noAnimations || this.alreadyAnimated) {
-                return;
-            }
-            style.transition = 'none';
-            style.transform = 'scale(0.5)';
-            style.opacity = '0';
-
-            this.getBoundingClientRect();
-            style.transition = 'all cubic-bezier(0.2, 0, 0.13, 1.5) 150ms';
-            style.transform = 'scale(1)';
-            style.opacity = '1';
-            this.alreadyAnimated = true;
+                if (this.noAnimations || this.alreadyAnimated) {
+                    return;
+                }
+                this.animate([{
+                    opacity: 0,
+                    transform: 'scale(0.5)'
+                }, {
+                    opacity: 1,
+                    transform: 'scale(1)'
+                }], {
+                    easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
+                    duration: 150,
+                    fill: 'forwards'
+                });
+                this.opened = true;
+                this.alreadyAnimated = true;
+            });
         },
         close () {
             let style = this.style;
 
+            this.opened = false;
+
             if (this.noAnimations) {
                 return this.onCloseAnimationEnd();
             }
-            this.addEventListener('transitionend', this.onCloseAnimationEnd);
-
-            style.transition = 'none';
-            style.transform = 'scale(1)';
-            style.opacity = '1';
-
-            this.getBoundingClientRect();
-            style.transition = 'all cubic-bezier(0.2, 0, 0.13, 1.5) 150ms';
-            style.transform = 'scale(0.5)';
-            style.opacity = '0';
+            this.animate([{
+                opacity: 1,
+                transform: 'scale(1)'
+            }, {
+                opacity: 0,
+                transform: 'scale(0.5)'
+            }], {
+                easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
+                duration: 150
+            }).onfinish = this.onCloseAnimationEnd.bind(this);
         },
         onCloseAnimationEnd () {
             let style = this.style;
-            if (!this.noAnimations) {
-                this.removeEventListener('transitionend', this.onCloseAnimationEnd);
-            }
             this.alreadyAnimated = false;
             style.visibility = 'hidden';
-            style.transform = 'scale(1)';
         },
         setupTargetTracking () {
             let target = this.target;

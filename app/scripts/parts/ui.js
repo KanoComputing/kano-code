@@ -75,7 +75,7 @@ export default class UI extends Part {
         this.visible = opts.visible || true;
         // Each UI part has its specific component to render on the screen
         this.tagName = opts.component || `kano-ui-${this.type}`;
-        this.configPanel = opts.configPanel || 'ui';
+        this.configPanel = opts.configPanel || 'kano-ui-editor';
         this.excludeDefaultBlocks = typeof opts.excludeDefaultBlocks === 'undefined' ? false : opts.excludeDefaultBlocks;
         this.showDefaultConfiguration = typeof opts.showDefaultConfiguration === 'undefined' ? true : opts.showDefaultConfiguration;
 

@@ -1,24 +1,28 @@
 <link rel="import" href="../behaviors.html">
+<link rel="import" href="../../kano-slider/kano-slider.html">
 <link rel="import" href="../../kano-style/input.html">
 
 <dom-module id="kano-input-range">
     <style is="custom-style" include="input-range"></style>
     <style>
-    :host label {
-        @apply(--kano-settings-label);
-        bottom: 11px;
-    }
-    :host .inputs {
-        @apply(--kano-settings-container);
-    }
-    kano-slider {
-        width: 95%;
-        --paper-slider-height: 3px;
-        --paper-progress-active-color: #435055;
-        --paper-slider-knob-color: #435055;
-        --paper-slider-pin-color: #435055;
-        --paper-slider-knob-start-color: #435055;
-    }
+        :host {
+            display: block;
+        }
+        :host label {
+            @apply(--kano-settings-label);
+            bottom: 11px;
+        }
+        :host .inputs {
+            @apply(--kano-settings-container);
+        }
+        kano-slider {
+            width: 95%;
+            --paper-slider-height: 3px;
+            --paper-progress-active-color: #435055;
+            --paper-slider-knob-color: #435055;
+            --paper-slider-pin-color: #435055;
+            --paper-slider-knob-start-color: #435055;
+        }
     </style>
     <template>
         <label>{{label}}</label>

@@ -22,7 +22,7 @@ export default class Data extends Part {
             getValueOptions;
         this.partType = 'data';
         this.tagName = opts.component || 'kano-part-data';
-        this.configPanel = opts.configPanel || 'data';
+        this.configPanel = opts.configPanel || 'kano-data-editor';
         this.dataType = opts.dataType || 'object';
         this.dataLength = opts.dataLength || 1;
         this.parameters = opts.parameters || [];

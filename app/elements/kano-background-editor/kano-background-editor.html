@@ -19,10 +19,16 @@
     }
     </style>
     <template>
-        <div name="background" class="background" id="background">
-            <kano-ui-customizer id="background_style" customizable="{{backgroundOptions}}" user-values="{{background.userStyle}}"></kano-ui-customizer>
-        </div>
+        <template is="dom-if" if="{{isNormalMode}}">
+            <div name="background" class="background" id="background">
+                <kano-ui-customizer id="background_style" customizable="{{backgroundOptions}}" user-values="{{background.userStyle}}"></kano-ui-customizer>
+            </div>
+        </template>
+        <template is="dom-if" if="{{!isNormalMode}}">
+            <h3>Select a part to change its settings.</h3>
+        </template>
     </template>
+
 </dom-module>
 <script type="text/javascript">
     /* globals Polymer */
@@ -37,8 +43,20 @@
                         name: 'My app',
                         userStyle: {}
                     };
-                },
+                }
+            },
+            mode: {
+                type: Object,
+                observer: '_modeChanged'
+            },
+            isNormalMode: {
+                type: Boolean,
                 notify: true
+            }
+        },
+        _modeChanged (newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.isNormalMode = (newValue === 'normal');
             }
         },
         attached () {

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="import" href="./kano-light-animation-editor.html" async>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <template is="dom-bind" id="bind">
+            <kano-light-animation-editor selected="{{selected}}"></kano-light-animation-editor>
+        </template>
+        <script>
+            window.Polymer = {
+                dom: 'shadow'
+            }
+            var bind = document.getElementById('bind');
+
+            bind.selected = {
+                userProperties: {
+                    speed: 7,
+                    width: 16,
+                    height: 8,
+                    bitmaps: [[]]
+                }
+            }
+        </script>
+    </body>
+</html>

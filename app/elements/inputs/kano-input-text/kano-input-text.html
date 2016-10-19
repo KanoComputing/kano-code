@@ -1,3 +1,4 @@
+<link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../behaviors.html">
 
 <dom-module id="kano-input-text">
@@ -8,16 +9,15 @@
     :host .inputs {
         @apply(--kano-settings-container);
     }
-    :host input {
-        @apply(--kano-light-input);
+    paper-input {
+        text-align: left;
         width: 87%;
+        --paper-input-container-focus-color: var(--color-orange, orange);
     }
     </style>
     <template>
-        <label>{{label}}</label>
         <div class="inputs">
-          <input type="text" value="{{value::keyup}}"
-              on-keydown="enterQuitsInput">
+          <paper-input value="{{value}}" label="[[label]]" on-keydown="enterQuitsInput"></paper-input>
         </div>
     </template>
 </dom-module>

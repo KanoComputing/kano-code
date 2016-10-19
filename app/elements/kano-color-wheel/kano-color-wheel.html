@@ -1,35 +1,8 @@
-<link rel="import" href="../kano-tooltip/kano-tooltip.html">
-<dom-module id="kano-color-picker">
+<dom-module id="kano-color-wheel">
     <style>
     :host {
         display: block;
         position: relative;
-    }
-    .preview {
-        width: 52px;
-        height: 26px;
-        border-radius: 3px;
-        border: solid 1px #5f5f5f;
-        cursor: pointer;
-    }
-    .tooltip {
-        position: absolute;
-        z-index: 101;
-        left: 64px;
-        top: -153px;
-        --kano-tooltip-background-color: #e7e7e7;
-        --kano-tooltip-border-color: #9b9b9b;
-        --kano-tooltip-border-width: 1px;
-        --kano-tooltip: {
-            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
-            font-size: 20px;
-            line-height: 25px;
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-        };
-        --kano-tooltip-caret: {
-            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
-        };
     }
     #canvas {
         border-radius: 50%;
@@ -54,48 +27,14 @@
         opacity: 1;
         transform: scale(1);
     }
-    .palette {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        @apply(--layout-center-justified);
-        padding-bottom: 36px;
-        min-height: 50px;
-        max-width: 200px;
-    }
-    .palette-item {
-        width: 21px;
-        height: 21px;
-        border-radius: 3px;
-        border: solid 1px #5f5f5f;
-        margin: 2px;
-    }
-    .close {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        color: rgba(0, 0, 0, 0.55);
-        border: 0px;
-        background-color: transparent;
-        font-size: 20px;
-        cursor: pointer;
-    }
     </style>
     <template>
-        <kano-tooltip class="tooltip" position="right" id="tooltip">
-            <canvas id="canvas"></canvas>
-            <div class="palette">
-                <template is="dom-repeat" items="[[palette]]" as="color">
-                    <div class="palette-item" style$="[[_computePreviewStyle(color)]]" on-tap="_paletteItemTap"></div>
-                </template>
-            </div>
-            <div id="magn" class="magn" style$="[[_computePreviewStyle(magnColor)]]"></div>
-            <button type="button" name="button" class="close" on-tap="_close">&times;</button>
-        </kano-tooltip>
-        <div class="preview" id="preview" style$="[[_computePreviewStyle(value)]]" on-tap="_onPreviewTap"></div>
+        <canvas id="canvas"></canvas>
+        <div id="magn" class="magn"></div>
     </template>
     <script type="text/javascript">
         Polymer({
-            is: 'kano-color-picker',
+            is: 'kano-color-wheel',
             properties: {
                 value: {
                     type: String,
@@ -108,23 +47,25 @@
                     }
                 }
             },
-            ready () {
-                this.$.canvas.addEventListener('click', this._onClick.bind(this));
-                this.$.canvas.addEventListener('mousemove', this._onMouseMove.bind(this));
-                this.$.canvas.addEventListener('mouseout', this._onMouseOut.bind(this));
-                this.$.canvas.addEventListener('mouseover', this._onMouseOver.bind(this));
+            attached () {
+                this._onClick = this._onClick.bind(this);
+                this._onMouseMove = this._onMouseMove.bind(this);
+                this._onMouseOut = this._onMouseOut.bind(this);
+                this._onMouseOver = this._onMouseOver.bind(this);
+                this.$.canvas.addEventListener('click', this._onClick);
+                this.$.canvas.addEventListener('mousemove', this._onMouseMove);
+                this.$.canvas.addEventListener('mouseout', this._onMouseOut);
+                this.$.canvas.addEventListener('mouseover', this._onMouseOver);
+                this._drawWheel(this.$.canvas, 170);
             },
-            _paletteItemTap (e) {
-                let color = e.model.get('color');
-                this.set('value', color);
-                this._close();
+            detached () {
+                this.$.canvas.removeEventListener('click', this._onClick);
+                this.$.canvas.removeEventListener('mousemove', this._onMouseMove);
+                this.$.canvas.removeEventListener('mouseout', this._onMouseOut);
+                this.$.canvas.removeEventListener('mouseover', this._onMouseOver);
             },
             _onClick () {
                 this.set('value', this.magnColor);
-                this._close();
-            },
-            _close () {
-                this.$.tooltip.close();
             },
             _onMouseOut () {
                 this._isMouseOver = false;
@@ -175,6 +116,7 @@
             },
             _onMouseMove (e) {
                 if (this._isMouseOver) {
+                    this.wheelRect = this.$.canvas.getBoundingClientRect();
                     let x = e.x - this.wheelRect.left,
                         y = e.y - this.wheelRect.top,
                         r = (170 - 2) / 2,
@@ -195,14 +137,8 @@
                     this.set('magnColor', rgbValue);
                     this.$.magn.style.top = `${y - 80}px`;
                     this.$.magn.style.left = `${x}px`;
+                    this.$.magn.style.background = rgbValue;
                 }
-            },
-            _computePreviewStyle (value) {
-                return `background-color: ${value};`;
-            },
-            _onPreviewTap () {
-                this._drawWheel(this.$.canvas, 170);
-                this.$.tooltip.open();
             },
             _drawWheel (canvas, size) {
                 var r = (size - 2) / 2,
@@ -222,7 +158,6 @@
                         ctx.fillRect(r + x, r + y, 2, 2);
                     }
                 }
-                this.wheelRect = canvas.getBoundingClientRect();
             }
         });
     </script>

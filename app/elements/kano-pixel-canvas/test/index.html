@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../bower_components/web-component-tester/browser.js"></script>
+        <link rel="import" href="../kano-pixel-canvas.html">
+        <link rel="import" href="../../../bower_components/iron-test-helpers/mock-interactions.html">
+    </head>
+    <body>
+        <test-fixture id="default">
+            <template>
+                <kano-pixel-canvas width="16" height="8"></kano-pixel-canvas>
+            </template>
+        </test-fixture>
+        <test-fixture id="penType">
+            <template>
+                <kano-pixel-canvas width="16" height="8"></kano-pixel-canvas>
+            </template>
+        </test-fixture>
+        <test-fixture id="touch">
+            <template>
+                <kano-pixel-canvas width="16" height="8"></kano-pixel-canvas>
+            </template>
+        </test-fixture>
+        <script>
+
+            function createBitmap (n) {
+                let bm = [];
+                for (let i = 0; i < n; i++) {
+                    bm.push('#ffffff');
+                }
+                return bm;
+            }
+
+            function dispatchEvent(node, name, detail) {
+                detail = detail || {};
+                var event = new Event(name, { bubbles: true });
+                Object.assign(event, detail);
+                node.dispatchEvent(event);
+            }
+
+            function listenOnce (el, event, cb) {
+                let onEvent = function (e) {
+                    el.removeEventListener(event, onEvent);
+                    cb(e);
+                }
+                el.addEventListener(event, onEvent);
+            }
+
+            /* globals suite, test, assert, setup, fixture */
+            suite('<kano-pixel-canvas> default', () => {
+                let canvas;
+                setup((done) => {
+                    canvas = fixture('default');
+                    listenOnce(canvas, 'dom-change', () => {
+                        done();
+                    });
+                    canvas.bitmap = createBitmap(128);
+                });
+                test('Draw in black by default', () => {
+                    assert.equal(canvas.penType, 'draw');
+                    assert.equal(canvas.penColor, '#000000');
+                });
+                test('Generates the right number of pixels', () => {
+                    let pixels = Polymer.dom(canvas.root).querySelectorAll('.pixel');
+                    assert.equal(128, pixels.length);
+                });
+            });
+
+            suite('<kano-pixel-canvas> penType', () => {
+                let canvas;
+                setup((done) => {
+                    canvas = fixture('penType');
+                    listenOnce(canvas, 'dom-change', () => {
+                        done();
+                    });
+                    canvas.bitmap = createBitmap(128);
+                });
+                test('Changes only one pixel in draw mode', () => {
+                    let randomPixel = Math.floor(Math.random() * 128),
+                        pixels, pixel;
+                    canvas.penType = 'draw';
+                    canvas.penColor = '#ff0000';
+                    pixels = Polymer.dom(canvas.root).querySelectorAll('.pixel');
+                    pixel = pixels[randomPixel];
+
+                    MockInteractions.track(pixel, 5, 0);
+
+                    assert.equal(canvas.bitmap[randomPixel], canvas.penColor);
+
+                    dispatchEvent(canvas, 'mousedown', { button: 2 });
+                    dispatchEvent(pixel, 'mouseover', { button: 2 });
+                    dispatchEvent(canvas, 'mouseup', { button: 2 });
+
+                    assert.equal(canvas.bitmap[randomPixel], '#000000');
+                });
+                test('Changes every pixels in fill mode', () => {
+                    let randomPixel = Math.floor(Math.random() * 128),
+                        pixels, pixel;
+                    canvas.penType = 'fill';
+                    canvas.penColor = '#ff0000';
+                    pixels = Polymer.dom(canvas.root).querySelectorAll('.pixel');
+                    pixel = pixels[randomPixel];
+
+                    MockInteractions.track(pixel, 5, 0);
+
+                    canvas.bitmap.forEach(color => {
+                        assert.equal(color, canvas.penColor);
+                    });
+
+                    dispatchEvent(canvas, 'mousedown', { button: 2 });
+                    dispatchEvent(pixel, 'mouseover', { button: 2 });
+                    dispatchEvent(document, 'mouseup', { button: 2 });
+
+                    canvas.bitmap.forEach(color => {
+                        assert.equal(color, '#000000');
+                    });
+                });
+                test('Undo', () => {
+                    let pixels, pixel, randomIndex, states = [], index = 0;
+
+                    function randomAction () {
+                        let prevBitmap = canvas.bitmap.slice(0);
+                        index++;
+                        pixels = Polymer.dom(canvas.root).querySelectorAll('.pixel');
+                        pixel = pixels[index];
+
+                        canvas.penType = Math.floor(Math.random() * 2) === 0 ? 'draw' : 'fill';
+                        canvas.penColor = `hsl(${Math.random() * 260}, 100%, 100%)`;
+
+                        MockInteractions.track(pixel, 5, 0);
+
+                        states.push(prevBitmap);
+                    }
+
+                    // Do 6 ransom actions
+                    while(states.length !== 6) {
+                        randomAction();
+                    }
+
+                    // Undo 6 times
+                    for (let i = 5; i >= 0; i--) {
+                        canvas.undo();
+                        // The last undo must do nothing since the history size is 5
+                        if (i === 0) {
+                            assert.deepEqual(states[1], canvas.bitmap);
+                        } else {
+                            assert.deepEqual(states[i], canvas.bitmap);
+                        }
+                    }
+                });
+            });
+
+        </script>
+    </body>
+</html>

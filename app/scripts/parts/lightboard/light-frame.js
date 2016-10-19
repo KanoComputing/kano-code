@@ -9,7 +9,7 @@ export default lightFrame = {
     component: 'kano-part-light-frame',
     restrict: 'workspace',
     blocks: [],
-    configPanel: 'light-frame',
+    configPanel: 'kano-light-frame-editor',
     customizable: {
         properties: [{
             key: 'width',

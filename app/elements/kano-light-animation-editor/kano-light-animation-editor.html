@@ -1,5 +1,9 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../inputs/kano-input-range/kano-input-range.html">
 <link rel="import" href="../kano-pixel-animation-editor/kano-pixel-animation-editor.html">
+<link rel="import" href="../kano-style/typography.html">
+<link rel="import" href="../kano-style/button.html">
 
 <dom-module id="kano-light-animation-editor">
     <style>
@@ -18,15 +22,79 @@
     kano-input-range {
         width: 100%;
     }
+    .fullscreen-config {
+        background: white;
+        display: none;
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        margin-top: 0px;
+        transform-origin: 0 0;
+    }
+    .fullscreen-config.open {
+        display: block;
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+    }
+    #config-content {
+        @apply(--layout-flex);
+        @apply(--layout-horizontal);
+    }
+    .divider {
+        width: 2px;
+        background: grey;
+    }
+    .properties, .paint-space {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        padding-top: 32px;
+        position: relative;
+    }
+    .close-button {
+        @apply(--kano-button);
+        background-color: var(--color-green, green);
+        position: absolute;
+        top: 24px;
+        right: 24px;
+    }
+    .paint-space .editor {
+        background-color: #dfdfdf;
+        border-radius: 3px;
+        box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+    }
+    button {
+        @apply(--kano-button);
+    }
     </style>
     <template>
         <div class="content">
-            <kano-input-range value="{{selected.userProperties.width}}" label="Width" min="1" max="16"></kano-input-range>
-            <kano-input-range value="{{selected.userProperties.height}}" label="Height" min="1" max="8"></kano-input-range>
-            <kano-pixel-animation-editor width="{{selected.userProperties.width}}"
-                                         height="{{selected.userProperties.height}}"
-                                         bitmaps="{{selected.userProperties.bitmaps}}"
-                                         speed="{{selected.userProperties.speed}}"></kano-pixel-animation-editor>
+            <div class="preview">
+                <kano-bitmap-renderer width="[[selected.userProperties.width]]" height="[[selected.userProperties.height]]" pixel-size="24" bitmap="[[preview]]"></kano-bitmap-renderer>
+            </div>
+            <button type="button" on-tap="_openConfig">Change Animation</button>
+            <div class="fullscreen-config" id="config">
+                <div id="config-content">
+                    <div class="properties">
+                        <kano-input-range value="{{selected.userProperties.width}}" label="Width" min="1" max="16"></kano-input-range>
+                        <kano-input-range value="{{selected.userProperties.height}}" label="Height" min="1" max="8"></kano-input-range>
+                        <kano-input-range value="{{selected.userProperties.speed}}" label="Frame rate" min="1" max="30" symbol="fps"></kano-input-range>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="paint-space">
+                        <button on-tap="_closeConfig" class="close-button">Close</button>
+                        <div class="editor">
+                            <kano-pixel-animation-editor width="[[selected.userProperties.width]]"
+                                                height="[[selected.userProperties.height]]"
+                                                speed="[[selected.userProperties.speed]]"
+                                                bitmaps="{{selected.userProperties.bitmaps}}"></kano-pixel-animation-editor>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </template>
 </dom-module>
@@ -41,6 +109,72 @@
                 type: Object,
                 notify: true
             }
+        },
+        attached () {
+            this.previewIndex = 0;
+            this._updatePreview();
+        },
+        _updatePreview () {
+            let bitmaps = this.get('selected.userProperties.bitmaps'),
+                speed = this.get('selected.userProperties.speed');
+            if (bitmaps) {
+                this.preview = bitmaps[this.previewIndex];
+                this.previewIndex++;
+                if (this.previewIndex > bitmaps.length - 1) {
+                    this.previewIndex = 0;
+                }
+            }
+            this.timeoutId = setTimeout(this._updatePreview.bind(this), 1000 / speed);
+        },
+        _openConfig () {
+            let originalRect = this.getBoundingClientRect(),
+                content = this.$['config-content'],
+                scaleX, tx;
+            this.toggleClass('open', true, this.$.config);
+            scaleX = originalRect.width / window.innerWidth;
+            tx = originalRect.left;
+
+            this.$.config.animate([{
+                transform: `translate(${tx}px, 0px) scale(${scaleX}, 1)`
+            },{
+                transform: 'translate(0px, 0px) scale(1, 1)'
+            }], {
+                duration: 200,
+                easing: 'ease-in-out'
+            });
+            content.animate([{
+                opacity: 0
+            }, {
+                opacity: 1
+            }], {
+                duration: 150
+            });
+        },
+        _closeConfig () {
+            let originalRect = this.getBoundingClientRect(),
+                content = this.$['config-content'],
+                scaleX, tx;
+            scaleX = originalRect.width / window.innerWidth;
+            tx = originalRect.left;
+
+            this.$.config.animate([{
+                transform: 'translate(0px, 0px) scale(1, 1)'
+            },{
+                transform: `translate(${tx}px, 0px) scale(${scaleX}, 1)`
+            }], {
+                duration: 200,
+                easing: 'ease-in-out'
+            }).onfinish = () => {
+                this.toggleClass('open', false, this.$.config);
+            };
+            content.animate([{
+                opacity: 1
+            }, {
+                opacity: 0
+            }], {
+                duration: 150,
+                delay: 50
+            });
         }
     });
 </script>

@@ -84,7 +84,7 @@ Polymer({
             type: String
         },
         mode: {
-            type: String
+            type: Object
         }
     },
     observers: [
@@ -345,8 +345,15 @@ Polymer({
         } else {
             this.drawerPage = 'sidebar';
             this.drawerWidth = '80%';
-            this.$.partsPanel.openDrawer();
+            this._openDrawer();
         }
+    },
+    _openDrawer () {
+        // HACK. Removes the will-change transform from the drawer inside the paper-drawer-panel shadow dom because
+        // it creates a new stacking context and prevent children using position: fixed to refer to the viewport
+        let drawer = Polymer.dom(this.$.partsPanel.root).querySelector('#drawer');
+        this.$.partsPanel.openDrawer();
+        drawer.style.willChange = 'initial';
     },
     onPartSettings () {
         // No part selected, show the background editor
@@ -356,12 +363,12 @@ Polymer({
             } else {
                 this.drawerPage = 'background-editor';
                 this.drawerWidth = '60%';
-                this.$.partsPanel.openDrawer();
+                this._openDrawer();
             }
         } else {
             this.drawerPage = 'part-editor';
             this.drawerWidth = '60%';
-            this.$.partsPanel.openDrawer();
+            this._openDrawer();
             this.notifyChange('open-part-settings', { part: this.selected });
         }
     },

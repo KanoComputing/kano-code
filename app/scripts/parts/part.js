@@ -87,7 +87,6 @@ export default class Part {
         plain.nonvolatileProperties = this.nonvolatileProperties;
         plain.position = this.position;
         plain.partType = this.partType;
-        plain.configPanel = this.configPanel;
         return plain;
     }
 }

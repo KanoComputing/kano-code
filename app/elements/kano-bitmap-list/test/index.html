@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../bower_components/web-component-tester/browser.js"></script>
+        <link rel="import" href="../kano-bitmap-list.html">
+    </head>
+    <body>
+        <test-fixture id="default">
+            <template>
+                <kano-bitmap-list width="16" height="8"></kano-bitmap-list>
+            </template>
+        </test-fixture>
+
+        <test-fixture id="selected">
+            <template>
+                <kano-bitmap-list width="16" height="8"></kano-bitmap-list>
+            </template>
+        </test-fixture>
+
+        <test-fixture id="addFrame">
+            <template>
+                <kano-bitmap-list width="16" height="8"></kano-bitmap-list>
+            </template>
+        </test-fixture>
+        <script>
+
+            function createFrames (n) {
+                let frames = [];
+                for (let i = 0; i < n; i++) {
+                    let newFrame = [],
+                        color = `hsl(${i * 40}, 80%, 80%)`;
+                    for (let index = 0; index < 128; index++) {
+                        newFrame.push(color);
+                    }
+                    frames.push(newFrame);
+                }
+                return frames;
+            }
+            /* globals suite, test, assert, setup, fixture */
+            suite('<kano-bitmap-list> default', () => {
+                let list;
+                setup(() => {
+                    list = fixture('default');
+                    list.bitmaps = createFrames(5);
+                });
+                test('`selected` is the first bitmap by default', () => {
+                    assert.deepEqual(list.selected, list.bitmaps[0], 'Selected is not the first bitmap by default');
+                });
+            });
+
+            suite('<kano-bitmap-list> selected', () => {
+                let list;
+                setup(() => {
+                    list = fixture('selected');
+                    list.bitmaps = createFrames(5);
+                });
+                test('`selected` is a copy of the selected bitmap', () => {
+                    list.bitmaps.forEach(bitmap => {
+                        assert(bitmap !== list.selected, 'The selected attribute is a reference to a bitmap');
+                    });
+                });
+                test('.select effectively update `selected`', () => {
+                    let prevSelected = list.selected.slice(0),
+                        prevIndex = list.selectedIndex;
+                    list.select(list.bitmaps[2]);
+                    assert.notEqual(prevIndex, list.selectedIndex);
+                    assert.notDeepEqual(prevSelected, list.selected);
+                    assert.deepEqual(list.selected, list.bitmaps[2]);
+                });
+                test('Updating `selected` updates the matching bitmap', () => {
+                    let index = list.selectedIndex,
+                        randomPixel = Math.floor(Math.random() * 128);
+                    assert.equal(list.bitmaps[index][randomPixel], list.selected[randomPixel]);
+                    list.splice('selected', randomPixel, 1, '#ff0000');
+                    assert.equal(list.bitmaps[index][randomPixel], list.selected[randomPixel]);
+                });
+            });
+
+            suite('<kano-bitmap-list> addFrame', () => {
+                let list;
+                setup(() => {
+                    list = fixture('addFrame');
+                    list.bitmaps = createFrames(5);
+                });
+                test('addFrame selects a new frame', () => {
+                    let prevIndex = list.selectedIndex,
+                        newIndex;
+                    list.addFrame();
+                    newIndex = list.selectedIndex;
+                    assert(newIndex === prevIndex + 1, '`selectedIndex` did\'nt increment after creating a new frame');
+                });
+                test('addFrame copies the previous frame', () => {
+                    let prevFrame = list.selected.slice(0),
+                        newFrame;
+                    
+                    list.addFrame();
+                    newFrame = list.selected.slice(0);
+                    assert.deepEqual(prevFrame, newFrame, 'The newly created frame is not a copy of the previouslt selected frame');
+                });
+            });
+        </script>
+    </body>
+</html>

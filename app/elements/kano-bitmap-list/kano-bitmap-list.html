@@ -1,0 +1,213 @@
+<link rel="import" type="" href="../../bower_components/polymer/polymer.html">
+<link rel="import" type="" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" type="" href="../../bower_components/Sortable/Sortable.html">
+<link rel="import" type="" href="../kano-bitmap-renderer/kano-bitmap-renderer.html">
+<!--
+
+@group Kano Elements
+@hero hero.svg
+@demo ./demo/index.html
+-->
+<dom-module id="kano-bitmap-list">
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+            }
+            .frames {
+                overflow-x: auto;
+            }
+            sortable-js {
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+                padding: 11px 4px;
+                overflow-x: auto;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+            kano-bitmap-renderer {
+                cursor: pointer;
+                border: 1px solid white;
+                border-radius: 3px;
+                background: grey;
+                margin-left: -2px;
+                @apply(--shadow-elevation-2dp);
+                --kano-bitmap-renderer-canvas: {
+                    border-radius: 3px;
+                };
+            }
+            .sortable-item.sortable-ghost {
+                opacity: 0.45;
+            }
+            .sortable-item:nth-child(odd) kano-bitmap-renderer {
+                transform: rotate(-1deg);
+            }
+            .sortable-item:nth-child(even) kano-bitmap-renderer {
+                transform: rotate(1deg);
+            }
+            kano-bitmap-renderer.selected {
+                border-color: var(--color-orange, orange);
+            }
+            .bin {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 75px;
+                min-width: 150px;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                @apply(--layout-center-justified);
+                display: none;
+                background-image: url(/assets/icons/layout-bin-icon.png);
+                background-size: 40px 40px;
+                background-position: center center;
+                background-repeat: no-repeat;
+                overflow: visible;
+            }
+            .bin-list {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <sortable-js group="frames" animation="150" class="bin" id="bin"></sortable-js>
+        <sortable-js class="frames" group="frames" animation="150" on-start="_sortStarted" on-end="_sortEnd" on-remove="_sortRemove">
+            <template is="dom-repeat" items="[[bitmaps]]" as="bm" id="repeat">
+                <div class="sortable-item">
+                    <kano-bitmap-renderer width="[[width]]"
+                                        height="[[height]]"
+                                        spacing="1"
+                                        pixel-size="5"
+                                        bitmap="[[bm]]"
+                                        on-tap="_selectFrame"
+                                        class$="[[_computeFrameSelectedClass(index, selectedIndex)]]"></kano-bitmap-renderer>
+                </div>
+            </template>
+        </sortable-js>
+    </template>
+    <script>
+        Polymer({
+            is: 'kano-bitmap-list',
+            properties: {
+                bitmaps: {
+                    type: Array,
+                    value: () => {
+                        return [[]];
+                    },
+                    notify: true
+                },
+                selected: {
+                    type: Array,
+                    notify: true
+                },
+                width: {
+                    type: Number,
+                    value: 1
+                },
+                height: {
+                    type: Number,
+                    value: 1
+                }
+            },
+            observers: [
+                '_selectedChanged(selected.*)',
+                '_bitmapsChanged(bitmaps.splices)'
+            ],
+            _selectedChanged (e) {
+                let index = this.selectedIndex,
+                    splices;
+
+                if (e.path === 'selected.splices') {
+                    splices = e.value;
+                    splices.indexSplices.forEach(splice => {
+                        this.splice(`bitmaps.${index}`, splice.index, 1, this.selected[splice.index]);
+                    });
+                } else if (e.path === 'selected' && e.value) {
+                    this.select(e.value);
+                }
+            },
+            _sortStarted (e) {
+                if (e.detail) {
+                    this.$.bin.style.display = 'flex';
+                    this.$.bin.animate([{
+                        opacity: 0,
+                        transform: 'translateY(0%)'
+                    }, {
+                        opacity: 1,
+                        transform: 'translateY(-100%)'
+                    }], {
+                        duration: 150,
+                        fill: 'forwards'
+                    });
+                    this._select(e.detail.item.children[0]);
+                }
+            },
+            _sortEnd (e) {
+                if (e.detail) {
+                    this.selectedIndex = e.detail.newIndex;
+                    this.selected = this.bitmaps[this.selectedIndex].slice(0);
+                    this.$.bin.animate([{
+                        opacity: 1,
+                        transform: 'translateY(-100%)'
+                    }, {
+                        opacity: 0,
+                        transform: 'translateY(0%)'
+                    }], {
+                        duration: 150,
+                        fill: 'forwards'
+                    }).onfinish = () => {
+                        this.$.bin.style.display = 'none';
+                    }
+                }
+            },
+            _sortRemove (e) {
+                if (e.detail) {
+                    this.selectedIndex = e.detail.newIndex;
+                    this.set('selected', this.bitmaps[this.selectedIndex].slice(0));
+                }
+            },
+            _selectFrame (e) {
+                let event = Polymer.dom(e);
+                this._select(event.localTarget);
+            },
+            _select (target) {
+                let model = this.$.repeat.modelForElement(target),
+                    bitmap = model.get('bm');
+                this.selected = bitmap.slice(0);
+                this.selectedIndex = this.bitmaps.indexOf(bitmap);
+            },
+            select (item) {
+                let index = this.bitmaps.indexOf(item);
+                if (index >= 0) {
+                    this.selectedIndex = index;
+                    this.set('selected', this.bitmaps[this.selectedIndex].slice(0));
+                }
+            },
+            _computeFrameSelectedClass (index, selectedIndex) {
+                return index === selectedIndex ? 'selected' : '';
+            },
+            _bitmapsChanged () {
+                if (this.bitmaps.length === 0) {
+                    this.set('bitmaps', [[]]);
+                }
+                this.selectedIndex = 0;
+                this.selected = this.bitmaps[0].slice(0);
+            },
+            addFrame () {
+                let copy;
+                if (!this.bitmaps.length) {
+                    copy = [];
+                    for (let i = 0; i < this.width * this.height; i++) {
+                        copy.push('#000000');
+                    }
+                } else {
+                    copy = this.bitmaps[this.selectedIndex].slice(0);
+                }
+                this.splice('bitmaps', this.selectedIndex, 0, copy);
+                this.selectedIndex = this.selectedIndex + 1;
+                this.set('selected', copy.slice(0));
+            }
+        });
+    </script>
+</dom-module>

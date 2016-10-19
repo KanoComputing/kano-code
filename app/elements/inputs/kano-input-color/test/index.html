@@ -13,14 +13,44 @@
             </template>
         </test-fixture>
         <script>
+
+            function listenOnce (el, event, cb) {
+                let onEvent = function (e) {
+                    el.removeEventListener(event, onEvent);
+                    cb(e);
+                }
+                el.addEventListener(event, onEvent);
+            }
+
+            function dispatchEvent(node, name, detail) {
+                detail = detail || {};
+                var event = new Event(name, { bubbles: true });
+                Object.assign(event, detail);
+                node.dispatchEvent(event);
+            }
+
             /* globals suite, test, assert, setup, fixture */
             suite('<kano-input-color>', () => {
                 let input;
-                setup(() => {
+                setup((done) => {
                     input = fixture('default');
+                    listenOnce(input, 'dom-change', () => {
+                        done();
+                    })
                 });
                 test('is white by default', () => {
                     assert.isTrue(input.value === '#F5F5F5');
+                });
+                test('changes value on click', () => {
+                    let colors = Polymer.dom(input.root).querySelectorAll('.color'),
+                        rnd = Math.floor(Math.random() * colors.length),
+                        el = colors[rnd],
+                        template = Polymer.dom(input.root).querySelector('template[is="dom-repeat"]');
+
+                    dispatchEvent(el, 'click');
+
+                    assert.equal(input.value, template.itemForElement(el));
+                    
                 });
             });
         </script>

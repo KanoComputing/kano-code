@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../kano-pixel-canvas.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            kano-pixel-canvas {
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>Simple draw mode with black pencil</h3>
+            <demo-snippet>
+                <template>
+                    <kano-pixel-canvas id="canvas" width="16" height="8" pen-type="draw" pen-color="black"></kano-pixel-canvas>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let canvas = document.querySelector('#canvas');
+
+                            canvas.bitmap = createBitmap(128);
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+
+            <h3>Fill mode in red</h3>
+            <demo-snippet>
+                <template>
+                    <kano-pixel-canvas id="canvas-2" width="8" height="8" pen-type="fill" pen-color="red"></kano-pixel-canvas>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let canvas = document.querySelector('#canvas-2');
+
+                            canvas.bitmap = createBitmap(8 * 8);
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+        <script>
+            function createBitmap (n) {
+                let bm = [];
+                for (let i = 0; i < n; i++) {
+                    bm.push('#ffffff');
+                }
+                return bm;
+            }
+        </script>
+    </body>
+</html>

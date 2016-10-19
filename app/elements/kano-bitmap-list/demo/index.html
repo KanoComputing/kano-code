@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/paper-button/paper-button.html">
+        <link rel="import" href="../kano-bitmap-list.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            kano-bitmap-list {
+                max-width: 600px;
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>Frame list</h3>
+            <demo-snippet>
+                <template>
+                    <kano-bitmap-list id="list" width="16" height="8"></kano-bitmap-list>
+                    <paper-button id="button" raised>Add frame</paper-button>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            var list = document.querySelector('#list'),
+                                button = document.querySelector('#button');
+
+                            button.addEventListener('click', () => {
+                                addFrame();
+                            });
+
+                            list.bitmaps = [];
+
+                            addFrame();
+
+                            function addFrame() {
+                                list.push('bitmaps', newFrame());
+                            }
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+        <script>
+            let i = 0;
+            function newFrame () {
+                let frame = [],
+                    color = `hsl(${i * 40}, 80%, 80%)`;
+                for (let i = 0; i < 16 * 8; i++) {
+                    frame.push(color);
+                }
+                i++;
+                return frame;
+            }
+        </script>
+    </body>
+</html>

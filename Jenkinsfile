@@ -43,6 +43,7 @@ node {
             echo 'deploy skipped'
         } else if (env.NODE_ENV=="staging") {
             deploy_staging()
+            deploy_doc()
         } else if (env.BRANCH_NAME=="pre-release") {
             deploy_pre_release()
         } else if (env.NODE_ENV=="production") {
@@ -85,21 +86,26 @@ node {
     }
 }
 
+def deploy_doc() {
+    sh 'gulp doc'
+    sh 'aws s3 sync ./www-doc s3://make-apps-doc --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
+}
+
 def deploy_staging() {
-    sh 'aws s3 sync ./www s3://make-apps-staging-site.kano.me --region eu-west-1 --cache-control "max-age=600"'
+    sh 'aws s3 sync ./www s3://make-apps-staging-site.kano.me --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
 }
 
 def deploy_pre_release() {
-    sh 'aws s3 sync ./www s3://apps-pre-release.kano.me --region eu-west-1 --cache-control "max-age=600"'
+    sh 'aws s3 sync ./www s3://apps-pre-release.kano.me --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
 }
 
 def deploy_prod() {
-    sh 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600"'
+    sh 'aws s3 sync ./www s3://make-apps-prod-site.kano.me --region us-west-1 --cache-control "max-age=600" --only-show-errors'
     // Rebuild the config of the index with the kit's target env
     env.TARGET = "osonline"
     sh 'gulp copy-index'
     // Upload the modified version to the kit's bucket
-    sh 'aws s3 sync ./www s3://make-apps-kit-site.kano.me --region eu-west-1 --cache-control "max-age=600"'
+    sh 'aws s3 sync ./www s3://make-apps-kit-site.kano.me --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
 }
 
 def getVersion() {

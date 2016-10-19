@@ -35,11 +35,20 @@ module.exports = (gulp, $) => {
         });
     });
 
-    function notBowerComponentJs(file) {
-        let needTranspile = file.relative.split('.').pop() === 'js' &&
-            ((file.relative.indexOf('bower_components') === -1 &&
+    function notBowerComponent(file) {
+        let needTranspile = ((file.relative.indexOf('bower_components') === -1 &&
             file.relative.indexOf('assets/vendor/') === -1) ||
             file.relative.indexOf('kano-circle-progress') !== -1);
+        return needTranspile;
+    }
+
+    function notBowerComponentJs(file) {
+        let needTranspile = file.relative.split('.').pop() === 'js' && notBowerComponent(file);
+        return needTranspile;
+    }
+
+    function notBowerComponentHtml(file) {
+        let needTranspile = file.relative.split('.').pop() === 'html' && notBowerComponent(file);
         return needTranspile;
     }
 
@@ -52,7 +61,7 @@ module.exports = (gulp, $) => {
 
     gulp.task('copy-all', () => {
         return gulp.src('app/**/*', { base: 'app' })
-            .pipe($.if('*.html', $.crisper({ scriptInHead: false })))
+            .pipe($.if(notBowerComponentHtml, $.crisper({ scriptInHead: false })))
             .pipe($.if('*.html', $.utils.htmlAutoprefixerStream()))
             .pipe($.if(notBowerComponentJs, $.babel({ presets: ['es2015'] })))
             .pipe(gulp.dest('.tmp/app'));

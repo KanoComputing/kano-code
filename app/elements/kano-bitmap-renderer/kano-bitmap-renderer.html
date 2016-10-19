@@ -29,9 +29,9 @@
                     }
                 }
             },
-            observers: [
-                '_renderCanvas(width, height, pixelSize, bitmap.*)'
-            ],
+            attached () {
+                this._renderCanvas();
+            },
             _canvasSize (size, pixelSize, spacing) {
                 return size * pixelSize + (size * (spacing * 2));
             },
@@ -46,6 +46,7 @@
                     ctx.fillStyle = this.bitmap[i];
                     ctx.fillRect(x, y, this.pixelSize, this.pixelSize);
                 }
+                this._animationFrameId = requestAnimationFrame(this._renderCanvas.bind(this));
             }
         });
     </script>
