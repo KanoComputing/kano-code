@@ -1,3 +1,4 @@
+<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <script src="../../scripts/kano/vm.js"></script>
 <script type="text/javascript">
 
@@ -18,6 +19,9 @@
         _registerBlockly () {
             Kano.MakeApps.Blockly.register(window.Blockly);
         },
+        _outOfRangeError (id, type) {
+            this.fire('iron-signal', {name: 'display-tooltip', data: {"block_id": id, "type": type}});
+        },
         _runningChanged (running) {
             this.debounce('runningChanged', () => {
                 if (running) {
@@ -35,6 +39,8 @@
                     Kano.AppModules.loadParts(parts);
                     // Generate the code
                     appCode = Kano.AppModules.createAppCode('AppModules', this.code.snapshot.javascript);
+
+                    Kano.AppModules.getModule('checkBounds').onError = this._outOfRangeError.bind(this);
 
                     // Prepare a sandbox exposing AppModules
                     vm = new Kano.VM({ AppModules: Kano.AppModules });

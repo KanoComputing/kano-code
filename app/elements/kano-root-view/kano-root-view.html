@@ -1,5 +1,9 @@
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-validator-behavior.html">
+<link rel="import" href="../behaviors/kano-blockly-validator-behavior.html">
+<link rel="import" href="../kano-tooltip/kano-tooltip.html">
 <link rel="import" href="../kano-blockly/kano-blockly.html">
+<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 
 <dom-module id="kano-root-view">
     <style>
@@ -7,17 +11,69 @@
         display: block;
         @apply(--layout-vertical);
         background-color: var(--color-grey-darker, grey);
+        --tooltip-color: #21596F;
     }
     :host kano-blockly,
     :host kano-code-editor {
         @apply(--layout-flex);
+    }
+    :host .tooltip-content {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        color: #911515;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 18px;
+        padding: 15px 20px;
+        background-color: #E2E2E2;
+        border-radius: 3px;
+    }
+    kano-tooltip {
+        z-index: 101;
+        --kano-tooltip-caret: {
+            box-shadow: 0px 0px 0px 0px;
+        };
+    }
+
+    :host .tooltip{
+        /*border-top-color: #E2E2E2 !important;*/
+        background-color: red !important;
+    }
+    kano-tooltip[position="top"] {
+        --kano-tooltip-caret: {
+            box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.25);
+        };
+    }
+    .tooltip-text kano-blockly-block {
+        line-height: 0px;
+        vertical-align: middle;
+        display: inline-block;
     }
     </style>
     <template>
         <kano-blockly id="code-editor"
                 toolbox="[[toolbox]]"
                 on-change="saveCode"
-                default-blocks="[[mode.defaultBlocks]]"></kano-blockly>
+                default-blocks="[[mode.defaultBlocks]]">
+        </kano-blockly>
+        <iron-signals on-iron-signal-display-tooltip="displayTooltip"></iron-signals>
+        <template is="dom-if" if="{{tooltip.text}}">
+            <kano-tooltip id$="tooltip-[[index]]"
+                        target="[[tooltip.target]]"
+                        position="[[tooltip.position]]"
+                        z-index="[[tooltip.zIndex]]"
+                        tracking="[[tooltip.tracking]]"
+                        warning="true"
+                        bounce$="[[tooltip.bounce]]">
+                <div class="tooltip-content">
+                    <div class="tooltip-text">
+                        <marked-element markdown="[[tooltip.text]]">
+                            <div class="markdown-html"></div>
+                        </marked-element>
+                    </div>
+                </div>
+            </kano-tooltip>
+        </template>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -25,7 +81,7 @@
 
     Polymer({
         is: 'kano-root-view',
-        behaviors: [Kano.Behaviors.AppEditorBehavior],
+        behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.BlocklyValidatorBehavior],
         properties: {
             parts: {
                 type: Array,
@@ -33,6 +89,10 @@
             },
             toolbox: {
                 type: Array
+            },
+            tooltips: {
+                type: Object,
+                notify: true
             },
             defaultCategories: {
                 type: Object
@@ -75,6 +135,7 @@
             return options;
         },
         saveCode (e) {
+            this.tooltip = {};
             // Check if a create event follows a close-flyout event. If so, do not notify
             // of the close-flyout event
             if (e.detail.type === 'close-flyout') {
@@ -98,8 +159,31 @@
                 });
             }, 300);
         },
+        computeTooltips (arg_tooltip) {
+            this.debounce('computeTooltip', () => {
+                this.tooltip = Object.assign({}, arg_tooltip);
+                this.tooltip.target = this.editor.getBlocklyWorkspace().getBlockById(arg_tooltip.location.block.id).svgPath_;
+                this.tooltip.text = arg_tooltip.text;
+                this.tooltip.tracking = arg_tooltip.tracking !== false ? true : false;
+                this.set('tooltip', this.tooltip);
+            }, 200);
+        },
+        displayTooltip (e) {
+            this.computeTooltips({
+                "location": {
+                    "block": {
+                        "id": atob(e.detail.block_id)
+                    }
+                },
+                "position": "top",
+                "text": Kano.MakeApps.Blockly.Defaults.values[e.detail.type].validation.error_message
+            });
+        },
         ready () {
             this.toolboxReady = false;
+
+            this.editor = this.$['code-editor'];
+            this.editor.getBlocklyWorkspace = this.editor.getWorkspace;
         },
         defaultCategoriesLoaded (newVal, oldVal) {
             if (!newVal) {

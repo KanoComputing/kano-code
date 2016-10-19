@@ -96,10 +96,20 @@
         },
         'in_x_time': {
             'DELAY': 1,
-            'UNIT': 'seconds'
+            'UNIT': 'seconds',
+            'validation': {
+                'min': 0,
+                'max': 200000,
+                'error_message': "Too big! This number needs <br> to be between 1 and 200000."
+            }
         },
         'repeat_x_times': {
-            'N': 10
+            'N': 10,
+            'validation': {
+                'min': 0,
+                'max': 100000,
+                'error_message': "Too big! This number needs <br> to be between 1 and 100000."
+            }
         },
         'unary': {
             'LEFT_HAND': 'item',
@@ -190,7 +200,12 @@
             'SPEED': 50
         },
         'set_x': {
-            'X': 0
+            'X': 0,
+            'validation': {
+                'min': 0,
+                'max': 16,
+                'error_message': "The width of the board is 16."
+            }
         },
         'set_y': {
             'Y': 0
