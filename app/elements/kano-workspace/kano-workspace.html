@@ -1,4 +1,5 @@
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-sound-player-behavior.html">
 <link rel="import" href="../behaviors/kano-cover-generator-behavior.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
@@ -91,7 +92,7 @@
     /* globals Polymer, Kano */
     Polymer({
         is: 'kano-workspace',
-        behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.CoverGeneratorBehavior],
+        behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.CoverGeneratorBehavior, Kano.Behaviors.SoundPlayerBehavior],
         properties: {
             parts: {
                 type: Array,
@@ -150,6 +151,10 @@
         },
         attached () {
             this.target = document.body;
+            // Enable pop on drop part only after initialisation
+            this.async(() => {
+                this.soundReady = true;
+            }, 500);
         },
         _editableLayoutTapped () {
             this.toggleEditableLayout();
@@ -406,6 +411,9 @@
             element.model = model;
             this.elements[key] = element;
             this.dropzone.appendChild(element);
+            if (this.soundReady) {
+                this.playSound('/assets/audio/sounds/pop.wav');
+            }
         },
         removePart (key) {
             let element = this.elements[key];

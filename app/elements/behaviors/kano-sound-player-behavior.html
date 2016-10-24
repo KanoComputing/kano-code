@@ -1,0 +1,48 @@
+<script type="text/javascript">
+
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    let cache = {},
+        ctx;
+
+    if (window.AudioContext) {
+        ctx = new AudioContext();
+    }
+
+    window.Kano = window.Kano || {};
+
+    window.Kano.Behaviors = window.Kano.Behaviors || {};
+
+    // @polymerBehavior
+    window.Kano.Behaviors.SoundPlayerBehavior = {
+        playSound (url) {
+            if (!ctx) {
+                return;
+            }
+            this._loadSound(url)
+                .then(buffer => {
+                    let source = ctx.createBufferSource();
+                    source.buffer = buffer;
+                    source.connect(ctx.destination);
+                    source.start(ctx.currentTime);
+                });
+        },
+        _loadSound (url) {
+            if (cache[url]) {
+                return Promise.resolve(cache[url]);
+            } else {
+                return fetch(url)
+                    .then(res => res.arrayBuffer())
+                    .then(data => {
+                        return new Promise((resolve, reject) => {
+                            ctx.decodeAudioData(data, (buffer) => {
+                                cache[url] = buffer;
+                                return resolve(buffer);
+                            });
+                        });
+                    });
+            }
+        }
+    };
+
+</script>
