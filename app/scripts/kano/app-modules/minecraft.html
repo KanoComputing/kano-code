@@ -1,0 +1,27 @@
+<link rel="import" href="./app-module.html">
+<script>
+    (function (Kano) {
+
+        class MinecraftModule extends Kano.AppModules.AppModule {
+
+            constructor () {
+                super();
+
+                this.addMethod('setBlocks', '_setBlocks');
+            }
+
+            /*
+             * @param position Array Coordrinates where to place the block [x,y,z]
+             * @param size Array     The size of the block created [x,y,z]
+             * @param type String    Type of material for the block
+             */
+            _setBlocks (position, size, type) {
+                // TODO implement this using QWebChannel
+                console.log(`BLOCK [${type}] pos(${position.x}, ${position.y}, ${position.z}) size(${size.x}, ${size.y}, ${size.z})`);
+            }
+        }
+
+        Kano.AppModules.modules['minecraft'] = new MinecraftModule();
+
+    })(window.Kano = window.Kano || {});
+</script>

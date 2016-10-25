@@ -1,0 +1,84 @@
+<script>
+    Blockly.Blocks.minecraft_set_blocks = {
+        init: function () {
+            let json = {
+                "type": "set_blocks",
+                "message0": "Set Blocks %1 Position %2 Size %3 Type %4",
+                "args0": [
+                    {
+                        "type": "input_dummy"
+                    },
+                    {
+                        "type": "input_value",
+                        "name": "POSITION",
+                        "check": "Array"
+                    },
+                    {
+                        "type": "input_value",
+                        "name": "SIZE",
+                        "check": "Array"
+                    },
+                    {
+                        "type": "input_value",
+                        "name": "TYPE",
+                        "check": "String"
+                    }
+                ],
+                "inputsInline": false,
+                "previousStatement": null,
+                "nextStatement": null,
+                "colour": 30
+            };
+        }
+    };
+
+    Blockly.JavaScript.minecraft_set_blocks = (block) => {
+        let vpos = Blockly.JavaScript.valueToCode(block, 'POSITION', Blockly.JavaScript.ORDER_ATOMIC),
+            vsize = Blockly.JavaScript.valueToCode(block, 'SIZE', Blockly.JavaScript.ORDER_ATOMIC),
+            type = Blockly.JavaScript.valueToCode(block, 'TYPE', Blockly.JavaScript.ORDER_ATOMIC),
+
+            pos = `[${vpos.x}, ${vpos.y}, ${vpos.z}]`,
+            size = `[${vsize.x}, ${vsize.y}, ${vsize.z}]`,
+            code = `minecraft.setBlocks(${pos}, ${size}, ${type});\n`;
+
+        return code;
+    };
+
+    Blockly.Blocks.minecraft_coordinates = {
+        init: function () {
+            let json = {
+                "type": "minecraft_coodrinates",
+                "message0": "x %1 y %2 z %3",
+                "args0": [
+                    {
+                        "type": "input_value",
+                        "name": "X",
+                        "check": "Number"
+                    },
+                    {
+                        "type": "input_value",
+                        "name": "Y",
+                        "check": "Number"
+                    },
+                    {
+                        "type": "input_value",
+                        "name": "Z",
+                        "check": "Number"
+                    }
+                ],
+                "inputsInline": true,
+                "output": "Array",
+                "colour": 120
+            };
+        }
+    };
+
+    Blockly.JavaScript.minecraft_coordinates = (block) => {
+        let x = Blockly.JavaScript.valueToCode(block, 'X', Blockly.JavaScript.ORDER_ATOMIC),
+            y = Blockly.JavaScript.valueToCode(block, 'Y', Blockly.JavaScript.ORDER_ATOMIC),
+            z = Blockly.JavaScript.valueToCode(block, 'Z', Blockly.JavaScript.ORDER_ATOMIC),
+
+            code = `[${x}, ${y}, ${z}]`;
+        return [code, Blockly.JavaScript.ORDER_ATOMIC];
+    };
+</script>

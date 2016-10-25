@@ -1,12 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../kano-blockly/kano-blocky.html">
 
-<link rel="import" href="./blocks/character.html">
+<link rel="import" href="./blocks/set-blocks.html">
 
 <dom-module id="kano-minecraft">
     <template>
         <style>
-        
+
         </style>
     </template>
     <kano-blocky toolbox="[[toolbox]]"></kano-blocky>
@@ -15,8 +15,15 @@
             is: 'kano-minecraft',
             attached () {
                 this.toolbox = [{
-
-                }]
+                    name: 'Minecraft',
+                    id: 'minecraft',
+                    colour: '#70B046',
+                    blocks: [{
+                        id: 'minecraft_set_blocks'
+                    },{
+                        id: 'minecraft_coordinates'
+                    }]
+                }];
             }
         });
     </script>
