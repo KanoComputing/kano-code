@@ -162,14 +162,10 @@ Blockly.isTargetInput_ = function(e) {
 
 Blockly.Variables.variablesDB = {};
 
-/**
- * Find all user-created variables.
- * @param {!Blockly.Block|!Blockly.Workspace} root Root block or workspace.
- * @return {!Array.<string>} Array of variable names.
- */
-Blockly.Variables.allVariables = function(root) {
+
+Blockly.Variables.allUsedVariables = function(root) {
   var blocks;
-  if (root.getDescendants) {
+  if (root instanceof Blockly.Block) {
     // Root is Block.
     blocks = root.getDescendants();
   } else if (root.getAllBlocks) {
@@ -180,13 +176,15 @@ Blockly.Variables.allVariables = function(root) {
   }
   var variableHash = Object.create(null);
   // Iterate through every block and add each variable to the hash.
-  for (var i = 0; i < blocks.length; i++) {
-    var blockVariables = blocks[i].getVars();
-    for (var j = 0; j < blockVariables.length; j++) {
-      var varName = blockVariables[j];
-      // Variable name may be null if the block is only half-built.
-      if (varName) {
-        variableHash[varName.toLowerCase()] = varName;
+  for (var x = 0; x < blocks.length; x++) {
+    var blockVariables = blocks[x].getVars();
+    if (blockVariables) {
+      for (var y = 0; y < blockVariables.length; y++) {
+        var varName = blockVariables[y];
+        // Variable name may be null if the block is only half-built.
+        if (varName) {
+          variableHash[varName.toLowerCase()] = varName;
+        }
       }
     }
   }
