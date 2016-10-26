@@ -24,7 +24,10 @@
         Polymer({
             is: 'kano-value-preview',
             attached () {
-                let value = this.innerHTML,
+                this._render();
+            },
+            _render () {
+                let value = this.textContent,
                     container;
                 if (HEX_COLOR_REGEXP.test(value)) {
                     container = document.createElement('div');
@@ -32,6 +35,7 @@
                     container.className = 'color-value';
                     Polymer.dom(this.root).appendChild(container);
                     this.innerHTML = '';
+                    this.toggleClass('simple-value', false);
                 } else {
                     this.toggleClass('simple-value', true);
                 }
