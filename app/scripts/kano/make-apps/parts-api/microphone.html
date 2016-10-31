@@ -1,0 +1,28 @@
+<link rel="import" href="./base.html">
+<script>
+    (function (Kano) {
+        let Microphone, PartsAPI;
+
+        Kano.MakeApps = Kano.MakeApps || {};
+        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+
+        Microphone = {
+            start () {
+                this.volume = Kano.AppModules.getModule('mic').volume;
+            },
+            stop () {
+                Kano.AppModules.getModule('mic').removeListener('microphone:threshold');
+            },
+            onVolumeThreshold (value, over, callback) {
+                Kano.AppModules.getModule('mic').on(`microphone:threshold:${value}`, function (e) {
+                    callback();
+                });
+            },
+            getVolume () {
+                return Kano.AppModules.getModule('mic').volume();
+            }
+        };
+
+        PartsAPI['microphone'] = Object.assign({}, PartsAPI.Base, Microphone);
+    })(window.Kano = window.Kano || {});
+</script>

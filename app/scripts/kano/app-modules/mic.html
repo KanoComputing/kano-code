@@ -1,0 +1,38 @@
+<link rel="import" href="./app-module.html">
+<script>
+    (function (Kano) {
+
+        class MicModule extends Kano.AppModules.AppModule {
+            constructor () {
+                super();
+                this.addMethod('getAudioStream', '_getAudioStream');
+                this.addMethod('on', '_on');
+                this.addMethod('removeListener', '_removeListener');
+                this.addMethod('volume', '_volume');
+            }
+
+            _getAudioStream () {
+                return this.api.microphone.getAudioStream();
+            }
+
+            _volume () {
+                return this.api.microphone.getVolume();
+            }
+
+            _on () {
+                this.api.on.apply(this.api, arguments);
+            }
+
+            _removeListener () {
+                this.api.removeListener.apply(this.api, arguments);
+            }
+
+            config (opts) {
+                this.api = opts.hardwareAPI;
+            }
+        }
+
+        Kano.AppModules.modules['mic'] = new MicModule();
+
+    })(window.Kano = window.Kano || {});
+</script>
