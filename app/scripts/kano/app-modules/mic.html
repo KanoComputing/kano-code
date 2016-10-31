@@ -8,14 +8,14 @@
                 this.addMethod('getAudioStream', '_getAudioStream');
                 this.addMethod('on', '_on');
                 this.addMethod('removeListener', '_removeListener');
-                this.addMethod('volume', '_volume');
+                this.addMethod('getVolume', '_getVolume');
             }
 
             _getAudioStream () {
                 return this.api.microphone.getAudioStream();
             }
 
-            _volume () {
+            _getVolume () {
                 return this.api.microphone.getVolume();
             }
 

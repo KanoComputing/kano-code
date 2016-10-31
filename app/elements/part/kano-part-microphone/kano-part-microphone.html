@@ -249,6 +249,9 @@
                 threshold.bottom = Math.max(2.5, threshold.value - 2.5);
                 this.thresholds.push(threshold);
             },
+            getvolume () {
+                return this.volume
+            },
             reset () {
                 this.thresholds = [];
             },

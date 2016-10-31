@@ -23,14 +23,14 @@ export default microphone = {
         javascript: (part) => {
             return (block) => {
                 let type = block.getFieldValue('TYPE'),
-                    code = `devices.get('${part.id}').${type}()`;
+                    code = `devices.get('${part.id}').get${type}()`;
                 return [code];
             };
         },
         pseudo: (part) => {
             return (block) => {
                 let type = block.getFieldValue('TYPE'),
-                    code = `devices.get('${part.id}').${type}()`;
+                    code = `devices.get('${part.id}').get${type}()`;
                 return [code];
             };
         }
