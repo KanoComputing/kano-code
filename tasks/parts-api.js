@@ -11,7 +11,12 @@ module.exports = (gulp, $) => {
      * No need to babelify here, this code will be sent to a node environment
      */
     gulp.task('parts-api', () => {
-        processModule().pipe($.if('*.js', gulp.dest('www')));
+        let stream = gulp.src('app/scripts/kano/make-apps/parts-api/parts-api.html', { base: 'app' })
+            .pipe($.vulcanize())
+            .pipe($.if('*.html', $.crisper({ scriptInHead: false })))
+            .pipe($.if('*.js', $.babel({ presets: ['es2015'], sourceMaps: $.debug ? 'inline' : false })))
+            .pipe($.if('*.js', gulp.dest('www')));
+
     });
 
     gulp.task('parts-api-watch', () => {
