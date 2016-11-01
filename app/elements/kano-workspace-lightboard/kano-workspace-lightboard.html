@@ -4,6 +4,7 @@
 <dom-module id="kano-workspace-lightboard">
     <style>
         :host {
+            margin-top: -35px;
             display: block;
             width: 100%;
             height: 100%;
@@ -23,9 +24,6 @@
             top: 0px;
             left: 0px;
         }
-        iron-image, #led-matrix {
-            margin-top: -35px;
-        }
         .btn {
             position: absolute;
             width: 36px;
@@ -40,11 +38,11 @@
             @apply(--shadow-elevation-2dp);
         }
         .btn.a {
-            top: 227px;
+            top: 262px;
             left: 365px;
         }
         .btn.b {
-            top: 227px;
+            top: 262px;
             left: 411px;
         }
         .joystick {
@@ -53,7 +51,7 @@
             height: 36px;
             border-radius: 50%;
             cursor: pointer;
-            top: 228px;
+            top: 263px;
             left: 21px;
             background-color: #4c4f55;
             transition: transform cubic-bezier(0.2, 0, 0.13, 1.5) 150ms;

@@ -1,0 +1,185 @@
+<link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
+
+<dom-module id="kano-workspace-toolbar">
+    <style>
+        :host {
+            display: block;
+        }
+        :host .panel {
+            margin-top: 5px;
+            background-color: #19111C;
+            border-radius: 5px;
+            padding: 4px 4px;
+
+            display: flex;
+            flex-direction: row;
+
+            align-items: center;
+            justify-content: center;
+
+            color: white;
+        }
+        :host .panel .fullscreen,
+        :host .panel .pause {
+            border-right: 2px solid #563263;
+        }
+        :host .mouse-position,
+        :host .panel .icon img,
+        :host .panel kano-animated-svg {
+            margin: 8px 16px;
+        }
+        .icon kano-animated-svg {
+            width: 17px;
+            height: 21px;
+
+            --kano-animated-path: {
+                fill: white;
+                stroke: white;
+                stroke-width: 2px;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                transition: all ease-in-out 200ms;
+            }
+        }
+        :host .panel .icon:hover {
+            transition: opacity .3s ease;
+            opacity: 0.8;
+            cursor: pointer;
+        }
+        :host .panel .icon {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+            transition: background-color .3s ease;
+        }
+        :host .panel .spacer {
+            flex: 1;
+        }
+        :host .buttons {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 5px;
+        }
+        .buttons button {
+            @apply(--kano-button);
+            background-color: var(--color-green, green);
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color .3s ease;
+        }
+        .buttons button span.x {
+            display: none;
+        }
+        .buttons button.open span.x {
+            display: inline-block;
+            transform: translate(0px, -2px);
+        }
+        .buttons button:last-child {
+            margin-right: 0px;
+        }
+        .buttons button:hover,
+        .buttons button.open {
+            background-color: var(--color-lighter-green, green);
+        }
+    </style>
+    <template>
+        <div class="panel">
+            <div class="mouse-position" hidden$="{{mousePositionHidden(showMousePosition)}}">
+                x: {{mouseX}}, y: {{mouseY}}
+            </div>
+            <div class="spacer"></div>
+            <div class="fullscreen icon" on-tap="fullscreenClicked">
+                <img src="/assets/icons/fullscreen-icon.svg" alt="Fullscreen mode" />
+            </div>
+            <div class="pause icon" on-tap="pauseClicked">
+                <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}">
+                </kano-animated-svg>
+            </div>
+            <div class="reset icon" on-tap="resetClicked">
+                <img src="/assets/icons/reset-icon.svg" alt="Reset app" />
+            </div>
+        </div>
+        <div class="buttons" style$="[[_computeEditingButtonStyle(mode.workspace.viewport.height)]]">
+            <button class$="{{_applyButtonClass(editableLayout)}}" on-tap="_editLayoutClicked">
+                        <span>[[_computeEditingButtonLabel(editableLayout)]]</span>
+                        <span class="x">&nbsp;&times;</span>
+            </button>
+            <button class$="{{_applyButtonClass(partsMenuOpen)}}" on-tap="_togglePartsMenu">
+                <span>{{_computePartsMenuButtonLabel(partsMenuOpen)}}</span>
+                <span class="x">&nbsp;&times;</span>
+            </button>
+        </div>
+
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    /* globals Polymer, Kano */
+    Polymer({
+        is: 'kano-workspace-toolbar',
+        properties: {
+            mouseX: {
+                type: Number
+            },
+            mouseY: {
+                type: Number
+            },
+            showMousePosition: {
+                type: Boolean
+            },
+            running: {
+                type: Boolean
+            },
+            editableLayout: {
+                type: Boolean
+            },
+            partsMenuOpen: {
+                type: Boolean
+            }
+        },
+        ready () {
+            this.showMousePosition = false;
+
+            this.makeButtonIconPaths = {
+                stopped: 'M 4,18 10.5,14 10.5,6 4,2 z M 10.5,14 17,10 17,10 10.5,6 z',
+                running: 'M 2,18 6,18 6,2 2,2 z M 11,18 15,18 15,2 11,2 z'
+            };
+
+        },
+        attached () {
+        },
+        mousePositionHidden (show) {
+            return !show;
+        },
+        fullscreenClicked (e) {
+            this.fire('fullscreen-button-clicked');
+        },
+        pauseClicked (e) {
+            this.fire('run-button-clicked');
+        },
+        resetClicked (e) {
+            this.fire('reset-button-clicked');
+        },
+        _getRunningStatus (running) {
+            return running ? 'running' : 'stopped';
+        },
+        _computeEditingButtonLabel (editableLayout) {
+            return editableLayout ? 'Done' : 'Edit Layout';
+        },
+        _editLayoutClicked () {
+            this.fire('edit-layout-button-clicked');
+        },
+        _togglePartsMenu () {
+            this.fire('toggle-parts-menu');
+        },
+        _computePartsMenuButtonLabel (open) {
+            return open ? 'close' : 'add parts';
+        },
+        _applyButtonClass (open) {
+            return open ? 'open' : '';
+        }
+    });
+</script>

@@ -95,94 +95,6 @@
         top: 20px;
         right: 20px;
     }
-    :host .menu {
-        position: absolute;
-        top: 10px;
-        left: 10px;
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-        @apply(--kano-icon-button);
-        cursor: pointer;
-    }
-    :host .menu iron-image {
-        width: 25px;
-        height: 25px;
-    }
-    :host .parts-toggle {
-        position: absolute;
-        @apply(--layout-horizontal);
-        right: 5px;
-        bottom: 20px;
-    }
-    :host .parts-toggle label {
-        margin: auto 0;
-        display: block;
-        color: #a4a4a4;
-    }
-    :host .parts-toggle button span {
-        font-size: 60px;
-        transform: translate(0px, -8px) rotate(0deg);
-        text-shadow: 1px 1px 0 #57b40c;
-        transition: 0.3s;
-
-        display: block;
-        margin: auto 10px;
-    }
-    :host .parts-toggle.open button span {
-        transform: translate(6px, -6px) rotate(45deg);
-    }
-    :host .parts-toggle.open button {
-        background: var(--color-green);
-    }
-    :host .make-button,
-    :host .parts-toggle button {
-        @apply(--kano-round-button);
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-        box-shadow: none;
-        margin: auto 10px;
-        width: 70px;
-        height: 70px;
-    }
-    :host .parts-toggle button {
-        background: var(--color-green);
-        border: 4px solid #57b40c;
-    }
-    :host .make-button.stopped {
-        border: 4px solid #fb592b;
-        background: #fc823f;
-    }
-    :host .make-button.running {
-        border: 4px solid #e63533;
-        background: var(--color-red, red);
-    }
-    :host .make-button {
-        position: absolute;
-        top: 10px;
-        right: 5px;
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-    }
-    .make-button kano-animated-svg {
-        @apply(--layout-flex);
-        width: 17px;
-        height: 21px;
-        /* Firefox centering */
-        margin: 0 auto;
-        -webkit-filter: drop-shadow(0px 2px 0px rgba(0, 0, 0, 0.25));
-        filter: drop-shadow(0px 2px 0px rgba(0, 0, 0, 0.25));
-        --kano-animated-path: {
-            fill: white;
-            stroke: white;
-            stroke-width: 2px;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: all ease-in-out 200ms;
-        }
-    }
     :host .drawer {
         position: relative;
         @apply(--layout-vertical);
@@ -213,17 +125,6 @@
         font-size: 25px;
         font-weight: 500;
         transform: translate(0px, -3px);
-    }
-    :host h1#app-title {
-        position: absolute;
-        top: 14px;
-        left: 55px;
-        color: var(--color-white, white);
-        margin: 0;
-        font-size: 18px;
-    }
-    :host .elevate {
-        z-index: 101;
     }
     :host .hidden {
         visibility: hidden;
@@ -268,37 +169,25 @@
                 </div>
                 <kano-workspace id="workspace"
                                 class="visible-when-running"
-                                on-ui-ready="workspaceUiReady"
                                 parts="{{addedParts}}"
                                 selected="{{selected}}"
-                                on-open-settings="onPartSettings"
-                                on-close-settings="closeSettings"
-                                on-change="_proxyChange"
                                 running="{{running}}"
                                 editable-layout="{{editableLayout}}"
                                 code="[[code]]"
                                 mode="[[mode]]"
-                                background="[[background.userStyle.background]]"></kano-workspace>
-                <div class$="parts-toggle {{applyOpenClass(partsPanelState, drawerPage)}}">
-                    <label>{{partsMenuLabel(partsPanelState, drawerPage)}}</label>
-                    <button type="button" class="parts-button" on-tap="toggleParts" id="add-part-button">
-                        <span>+</span>
-                    </button>
-                </div>
-                <button class="menu"
-                        type="button"
-                        on-tap="toggleMenu"
-                        id="toggle-menu-button">
-                    <iron-image src="/assets/icons/menu.png" sizing="contain"></iron-image>
-                </button>
-                <h1 id="app-title">{{title}}</h1>
-                <button type="button"
-                    class$="make-button visible-when-running [[getMakeButtonClass(running, editableLayout)]]"
-                    on-tap="_runButtonClicked"
-                    id="make-button">
-                    <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}">
-                    </kano-animated-svg>
-                </button>
+                                background="[[background.userStyle.background]]"
+                                parts-menu-open="[[partsMenuOpen]]"
+                                title="[[title]]"
+                                show-save-button="[[showShareButton]]"
+                                on-ui-ready="workspaceUiReady"
+                                on-open-settings="onPartSettings"
+                                on-close-settings="closeSettings"
+                                on-change="_proxyChange"
+                                on-run-button-clicked="_runButtonClicked"
+                                on-reset-app-state="_resetAppState"
+                                on-toggle-parts-menu="toggleParts"
+                                on-settings-button-clicked="toggleMenu"
+                                on-save-button-clicked="share"></kano-workspace>
             </div>
             <div id="resize" on-mousedown="resizeWorkspace" class="visible-when-running">
                 <div class="handle"></div>
@@ -319,7 +208,7 @@
                             mode="[[mode]]"
                             on-change="_proxyChange"
                             default-categories="{{defaultCategories}}"></kano-root-view>
-                        <button type="button" class="share-button" on-tap="share" id="share-button" hidden$="[[!showShareButton]]">Share App</button>
+                        <!-- <button type="button" class="share-button" on-tap="share" id="share-button">Share App</button> -->
                         <slot></slot>
                     </div>
                     <div class="drawer animatable" drawer id="drawer">

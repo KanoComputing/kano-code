@@ -17,25 +17,9 @@
         canvas {
             border-radius: 5px;
         }
-
-        :host .actions {
-            position: absolute;
-            top: 100%;
-        }
-        :host .actions .coordinates {
-            background-color: #222D33;
-            border-radius: 6px;
-            margin-top: 8px;
-            color: white;
-            display: inline-block;
-            padding: 8px 12px;
-        }
     </style>
     <template>
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
-        <div class="actions">
-            <div class="coordinates">X: {{ mousePositionX }}, Y: {{ mousePositionY }}</div>
-        </div>
         <slot></slot>
     </template>
     <script>
@@ -44,7 +28,17 @@
             is: 'kano-workspace-normal',
             behaviors: [Kano.Behaviors.WorkspaceBehavior],
             properties: {
-                autoStart: Boolean
+                autoStart: Boolean,
+                mousePositionX: {
+                    type: Number,
+                    value: 250,
+                    notify: true
+                },
+                mousePositionY: {
+                    type: Number,
+                    value: 250,
+                    notify: true
+                }
             },
             ready () {
                 this.mousePositionX = 250;

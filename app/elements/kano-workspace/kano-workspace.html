@@ -4,6 +4,8 @@
 <link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
 <link rel="import" href="../kano-workspace-lightboard/kano-workspace-lightboard.html">
 <link rel="import" href="../kano-workspace-camera/kano-workspace-camera.html">
+<link rel="import" href="../kano-workspace-toolbar/kano-workspace-toolbar.html">
+<link rel="import" href="../kano-workspace-head/kano-workspace-head.html">
 <link rel="import" href="../ui/kano-ui/kano-ui.html">
 
 <dom-module id="kano-workspace">
@@ -42,38 +44,63 @@
         color: #B3B3B3;
         pointer-events: none;
     }
-    .edit-layout-button {
-        @apply(--kano-button);
-        background-color: var(--color-green, green);
-        position: absolute;
-        right: 0px;
-        z-index: -1;
-    }
     #workspace-placeholder {
         height: 100%;
     }
+    :host kano-workspace-head {
+        position: absolute;
+        width: 100%;
+    }
+    :host .fullscreen-close {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        color: white;
+        background-color: transparent;
+        z-index: 101;
+        border: none;
+        width: 56px;
+        height: 56px;
+        font-size: 50px;
+        outline: none;
+        cursor: pointer;
+    }
+    :host .fullscreen-close div {
+        transition: all 0.3s ease;
+        transform: translate(0, -7px);
+    }
+    :host .fullscreen-close div:hover {
+        transform: translate(0, -9px);
+        color: #eaeaea;
+    }
     </style>
     <template>
+        <button class="fullscreen-close" hidden$="[[!fullscreen]]" on-tap="_toggleFullscreen">
+            <div>&times;</div>
+        </button>
         <kano-ui-viewport mode="scaled"
                     view-width="[[mode.workspace.viewport.width]]"
                     view-height="[[mode.workspace.viewport.height]]"
                     class="content"
                     id="content"
                     on-tap="onTap">
-            <button type="button"
-                    name="button"
-                    class="edit-layout-button"
-                    on-tap="_editableLayoutTapped"
-                    style$="[[_computeEditingButtonStyle(mode.workspace.viewport.height)]]">
-                        <span>[[_computeEditingButtonLabel(editableLayout)]]</span>
-                        <span hidden$="[[!editableLayout]]">&times;</span>
-                    </button>
             <!-- The variable workspace component will be inserted here -->
             <div id="workspace-placeholder">
 
             </div>
-            <h3 class="made-with-kano">made with Kano</h3>
+            <kano-workspace-toolbar
+                show-mouse-position="{{showMousePosition}}"
+                mouse-x="[[mouseX]]"
+                mouse-y="[[mouseY]]"
+                running="[[running]]"
+                editable-layout="[[editableLayout]]"
+                parts-menu-open="[[partsMenuOpen]]"
+                on-pause-run-button-clicked="_runButtonClicked"
+                on-fullscreen-button-clicked="_toggleFullscreen"
+                on-reset-button-clicked="_resetAppState"
+                on-edit-layout-button-clicked="_editLayoutClicked"></kano-workspace-toolbar>
         </kano-ui-viewport>
+        <kano-workspace-head title="[[title]]" show-save-button="{{showSaveButton}}"></kano-workspace-head>
         <array-selector id="selector" items="{{parts}}" selected="{{selected}}"></array-selector>
         <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="alt+t" on-keys-pressed="_onAltT" target="[[target]]"></iron-a11y-keys>
@@ -126,6 +153,15 @@
             },
             background: {
                 type: String
+            },
+            partsMenuOpen: {
+                type: Boolean
+            },
+            title: {
+                type: String
+            },
+            showSaveButton: {
+                type: Boolean
             }
         },
         observers: [
@@ -147,11 +183,17 @@
             };
             this.devices = {};
             this.devices.get = this._getPartById.bind(this);
+
+            this.showMousePosition = false;
+            this.mouseX = 250;
+            this.mouseY = 250;
+
+            this.fullscreen = false;
         },
         attached () {
             this.target = document.body;
         },
-        _editableLayoutTapped () {
+        _editLayoutClicked () {
             this.toggleEditableLayout();
         },
         _onAltT () {
@@ -160,6 +202,7 @@
         _toggleFullscreen () {
             this.toggleClass('fullscreen');
             this.$.content.resizeView();
+            this.fullscreen = !this.fullscreen;
         },
         _moveLeft (e) {
             this._movePart('left', e.detail.keyboardEvent.shiftKey);
@@ -233,12 +276,6 @@
                 this.fire('close-settings');
             }
         },
-        _computeEditingButtonStyle (height) {
-            return `top: ${height}px`;
-        },
-        _computeEditingButtonLabel (editableLayout) {
-            return editableLayout ? 'Done' : 'Edit Layout';
-        },
         _getPartById (id) {
             if (id === this.dropzone.getAttribute('id') || id === 'dropzone') {
                 return this.dropzone;
@@ -266,6 +303,10 @@
             newDropzone.setAttribute('width', this.mode.workspace.viewport.width);
             newDropzone.setAttribute('height', this.mode.workspace.viewport.height);
 
+            newDropzone.addEventListener('mouse-position-x-changed', this.mouseXChanged.bind(this));
+            newDropzone.addEventListener('mouse-position-y-changed', this.mouseYChanged.bind(this));
+            this.showMousePosition = mode.id === 'normal';
+
             if (newDropzone.setBackgroundColor) {
                 newDropzone.setBackgroundColor(this.background);
             }
@@ -282,6 +323,12 @@
             this.parts.forEach((model, index) => {
                 this.insertPart(`#${index}`);
             });
+        },
+        mouseXChanged (e) {
+            this.mouseX = e.detail.value;
+        },
+        mouseYChanged (e) {
+            this.mouseY = e.detail.value;
         },
         onTap (e) {
             let target;
@@ -459,6 +506,12 @@
         },
         reset () {
             this.dropzone.clear();
+        },
+        _runButtonClicked () {
+            this.fire('run-button-clicked');
+        },
+        _resetAppState () {
+            this.fire('reset-app-state');
         }
     });
 </script>

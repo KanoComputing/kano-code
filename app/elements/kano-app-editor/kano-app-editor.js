@@ -85,6 +85,11 @@ Polymer({
         },
         mode: {
             type: Object
+        },
+        partsMenuOpen: {
+            type: Boolean,
+            value: false,
+            computed: 'isPartsMenuOpen(partsPanelState, drawerPage)'
         }
     },
     observers: [
@@ -464,10 +469,6 @@ Polymer({
         }
     },
     ready () {
-        this.makeButtonIconPaths = {
-            stopped: 'M 4,18 10.5,14 10.5,6 4,2 z M 10.5,14 17,10 17,10 10.5,6 z',
-            running: 'M 2,18 6,18 6,2 2,2 z M 11,18 15,18 15,2 11,2 z'
-        };
         this.reset = this.reset.bind(this);
         this._exportApp = this._exportApp.bind(this);
         this._importApp = this._importApp.bind(this);
@@ -599,9 +600,6 @@ Polymer({
     _runButtonClicked () {
         this.toggleRunning();
     },
-    /**
-     * Toggle the running state of the current app
-     */
     toggleRunning (state) {
         this.running = typeof state === 'undefined' ? !this.running : state;
     },
@@ -663,10 +661,6 @@ Polymer({
             classes.push('editable-layout');
         }
         return classes.join(' ');
-    },
-
-    applyElevateClass () {
-        return this.running ? 'elevate' : '';
     },
 
     applyHiddenClass () {
@@ -736,7 +730,6 @@ Polymer({
         this.notifyChange('running', {
             value: this.running
         });
-        // Removes the elevate class only after the animation
         if (!this.running) {
             this._enableDrag();
         } else {
@@ -749,13 +742,17 @@ Polymer({
     getBlocklyWorkspace () {
         return this.$['root-view'].getBlocklyWorkspace();
     },
-    partsMenuLabel () {
-        return this.partsPanelState === 'drawer' && this.drawerPage === 'sidebar' ? 'close' : 'add part';
-    },
-    applyOpenClass () {
-        return this.partsPanelState === 'drawer' && this.drawerPage === 'sidebar' ? 'open' : '';
+    isPartsMenuOpen () {
+        return this.partsPanelState === 'drawer' && this.drawerPage === 'sidebar';
     },
     getWorkspace () {
         return this.$.workspace;
+    },
+    _resetAppState () {
+        this.running = false;
+
+        setTimeout(() => {
+            this.running = true;
+        }, 0);
     }
 });

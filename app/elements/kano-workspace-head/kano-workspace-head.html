@@ -1,0 +1,120 @@
+<dom-module id="kano-workspace-head">
+    <style>
+        :host .head-controls {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-right: 25px;
+            margin-top: 5px;
+        }
+        :host .progress-bar {
+            height: 56px;
+            border-radius: 28px;
+            position: relative;
+
+            color: white;
+            background-color: black;
+            margin-right: 10px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            min-width: 200px;
+        }
+        .progress-bar .progress-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+            border-radius: 28px;
+            overflow: hidden;
+        }
+        .progress-bar .progress {
+            background-color: var(--color-orange);
+
+            height: 100%;
+            border-radius: 3px
+        }
+        .progress-bar h1 {
+            font-size: 18px;
+            margin: 0px 25px;
+            position: relative;
+        }
+        :host .head-controls button {
+            height: 56px;
+            width: 56px;
+            border-radius: 50%;
+            border: none;
+            color: white;
+            background-color: black;
+            margin-right: 10px;
+            font-family: 'bariol';
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            outline: none;
+            padding: 0px;
+        }
+        :host .head-controls button:last-child {
+            margin-right: 0px;
+        }
+        :host .head-controls button:hover {
+            transition: background-color .3s ease;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        :host .settings img {
+            transition: all 0.3s ease;
+            transform: rotate(0deg);
+        }
+        :host .settings:hover img {
+            transform: rotate(30deg);
+        }
+    </style>
+    <template>
+        <div class="head-controls">
+            <div class="progress-bar" hidden$="{{!title}}">
+                <div class="progress-wrap">
+                    <div class="progress" style$="{{_computeProgressStyle(progress)}}"></div>
+                </div>
+                <h1 class="title">
+                    [[title]]
+                </h1>
+            </div>
+            <button class="save" on-tap="_saveButtonClicked" hidden$="[[!showSaveButton]]">Save</button>
+            <button class="settings" on-tap="_settingsButtonClicked">
+                <img src="/assets/icons/settings-icon.svg" alt="Settings"/>
+            </button>
+        </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    /* globals Polymer, Kano */
+    Polymer({
+        is: 'kano-workspace-head',
+        properties: {
+            title: {
+                type: String
+            },
+            progress: {
+                type: Number,
+                value: 0
+            },
+            showSaveButton: {
+                type: Boolean
+            }
+        },
+        _saveButtonClicked () {
+            this.fire('save-button-clicked');
+        },
+        _settingsButtonClicked () {
+            this.fire('settings-button-clicked');
+        },
+        _computeProgressStyle (progress) {
+            return `width: ${progress * 100}%`;
+        }
+    });
+</script>
