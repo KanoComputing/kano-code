@@ -27,6 +27,7 @@ export default class Data extends Part {
         this.dataLength = opts.dataLength || 1;
         this.parameters = opts.parameters || [];
         this.excludeBlocks = opts.excludeBlocks || [];
+        this.excludeEvents = opts.excludeEvents || [];
         this.config = opts.config || this.parameters.reduce((acc, param) => {
             acc[param.key] = param.value;
             return acc;
@@ -44,10 +45,12 @@ export default class Data extends Part {
         this.refreshFreq = opts.refreshFreq || 5;
         this.minRefreshFreq = opts.minRefreshFreq || 5;
         this.method = opts.method;
-        this.events = [{
-            label: 'updated',
-            id: 'update'
-        }];
+        if (this.excludeEvents.indexOf('update') === -1) {
+            this.events = [{
+                label: 'updated',
+                id: 'update'
+            }];
+        }
         if (this.excludeBlocks.indexOf('refresh') === -1) {
             this.blocks.push({
                 block: (part) => {

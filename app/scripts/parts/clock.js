@@ -7,6 +7,7 @@ export default clock = {
     image: '/assets/part/clock.svg',
     component: 'kano-part-clock',
     excludeBlocks: ['refresh'],
+    excludeEvents: ['update'],
     method: 'clock.noop',
     configPanel: 'disabled',
     blocks: [{
