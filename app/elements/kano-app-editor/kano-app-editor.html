@@ -19,10 +19,10 @@
         @apply(--layout-vertical);
     }
     :host section {
-        @apply(--layout-horizontal);
+        @apply(--layout-horizontal-reverse);
         @apply(--layout-flex);
     }
-    :host section #right-panel {
+    :host section #blocks-panel {
         position: relative;
         @apply(--layout-flex);
         @apply(--layout-vertical);
@@ -31,7 +31,7 @@
         max-width: 62%;
         width: 62%;
     }
-    :host section #left-panel {
+    :host section #workspace-panel {
         position: relative;
         @apply(--layout-vertical);
         @apply(--kano-box-shadow);
@@ -39,7 +39,7 @@
         max-width: 62%;
         background-color: var(--color-dark, black);
     }
-    :host #left-panel kano-workspace {
+    :host #workspace-panel kano-workspace {
         @apply(--layout-flex);
         padding: 10px;
     }
@@ -64,7 +64,6 @@
         border: 2px solid #616161;
         border-radius: 5px;
         top: calc(50% - 19px);
-        left: -8px;
         box-sizing: border-box;
     }
     :host #resize .handle::before,
@@ -156,7 +155,7 @@
     </style>
     <template>
         <section id="section" on-mousemove="mouseMoved" on-mouseup="completedResizing">
-            <div class="ui-edition" id="left-panel">
+            <div class="ui-edition" id="workspace-panel">
                 <div class="pause-overlay" hidden$="[[_isPauseOverlayHidden(running, editableLayout)]]">
                     <iron-image src="/assets/icons/play-btn-overlay.svg" sizing="contain" on-tap="_runButtonClicked"></iron-image>
                 </div>
@@ -186,12 +185,13 @@
             <div id="resize" on-mousedown="resizeWorkspace" class="visible-when-running">
                 <div class="handle"></div>
             </div>
-            <div name="code" class="editor" id="right-panel">
+            <div name="code" class="editor" id="blocks-panel">
                 <paper-drawer-panel
                     id="partsPanel"
                     force-narrow
                     disable-edge-swipe
                     disable-swipe
+                    right-drawer
                     selected="{{partsPanelState}}"
                     drawer-width="{{drawerWidth}}">
                     <div main>

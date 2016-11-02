@@ -484,7 +484,7 @@ Polymer({
         this.partEditorOpened = false;
         this.backgroundEditorOpened = false;
 
-        interact(this.$['left-panel']).dropzone({
+        interact(this.$['workspace-panel']).dropzone({
             // TODO rename to kano-part-item
             accept: 'kano-ui-item:not([instance])',
             ondrop: (e) => {
@@ -633,7 +633,7 @@ Polymer({
             if (!draggable.model) {
                 return;
             }
-            restrictEl = draggable.model.restrict === 'workspace' ? this.$.workspace.getViewport().getRestrictElement() : this.$['left-panel'];
+            restrictEl = draggable.model.restrict === 'workspace' ? this.$.workspace.getViewport().getRestrictElement() : this.$['workspace-panel'];
             interact(draggable).draggable({
                 onmove: this.getDragMoveListener(true),
                 onend: (e) => {
@@ -714,18 +714,17 @@ Polymer({
      * Mouse moved handler
      */
     mouseMoved (e) {
-        let leftPanel = this.$['left-panel'],
+        let workspacePanel = this.$['workspace-panel'],
             container = this.$.section,
-            offsetLeftPanel;
+            offsetPanel;
 
         if (!this.isResizing) {
             return;
         }
         this.pauseEvent(e);
 
-        offsetLeftPanel = e.clientX - container.getBoundingClientRect().left;
-        offsetLeftPanel = offsetLeftPanel;
-        leftPanel.style.width = `${offsetLeftPanel}px`;
+        offsetPanel = container.getBoundingClientRect().right - e.clientX;
+        workspacePanel.style.width = `${offsetPanel}px`;
 
         //We need to trigger the resize of the kano-ui-workspace and the blockly workspace
         window.dispatchEvent(new Event('resize'));
