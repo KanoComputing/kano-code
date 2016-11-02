@@ -88,13 +88,6 @@
         @apply(--layout-vertical);
         @apply(--layout-flex);
     }
-    :host .share-button {
-        @apply(--kano-button);
-        background-color: var(--color-orange, orange);
-        position: absolute;
-        top: 20px;
-        right: 20px;
-    }
     :host .drawer {
         position: relative;
         @apply(--layout-vertical);
@@ -208,7 +201,6 @@
                             mode="[[mode]]"
                             on-change="_proxyChange"
                             default-categories="{{defaultCategories}}"></kano-root-view>
-                        <!-- <button type="button" class="share-button" on-tap="share" id="share-button">Share App</button> -->
                         <slot></slot>
                     </div>
                     <div class="drawer animatable" drawer id="drawer">
