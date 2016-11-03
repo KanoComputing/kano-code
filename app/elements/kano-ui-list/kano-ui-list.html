@@ -15,12 +15,6 @@
         @apply(--layout-start-justified);
         overflow-y: auto;
     }
-    :host .categoryHead {
-        border-top: 1px solid #979797;
-        text-align: right;
-        padding-top: 5px;
-        font-weight: 600;
-    }
     :host kano-ui-item {
         --kano-ui-item-color: var(--color-white, white);
         margin: 10px;
@@ -39,7 +33,6 @@
     <template>
         <array-selector id="selector" items="{{items}}" selected="{{selected}}" multi toggle></array-selector>
         <template is="dom-repeat" items="{{_usedCategories(categories, items)}}" as="cat">
-            <div class="categoryHead">{{cat.title}}</div>
             <div class="category">
                 <template is="dom-repeat" items="{{items}}" filter="[[cat.partType]]Filter" observe="partType">
                     <div class="part">

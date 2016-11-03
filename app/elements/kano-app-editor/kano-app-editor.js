@@ -68,10 +68,6 @@ Polymer({
         selectedParts: {
             type: Array
         },
-        showShareButton: {
-            type: Boolean,
-            value: false
-        },
         drawerPage: {
             type: String,
             value: 'sidebar'
@@ -79,9 +75,6 @@ Polymer({
         drawerWidth: {
             type: String,
             value: '80%'
-        },
-        title: {
-            type: String
         },
         mode: {
             type: Object
@@ -91,9 +84,9 @@ Polymer({
             value: false,
             computed: 'isPartsMenuOpen(partsPanelState, drawerPage)'
         },
-        progress: {
-            type: Number,
-            value: 0
+        challengeState: {
+            type: Object,
+            value: null
         }
     },
     observers: [
@@ -479,7 +472,6 @@ Polymer({
     },
     attached () {
         this.target = document.body;
-        this.title = this.title ? "My " + this.title.toLowerCase() : "Kano Code";
 
         this.partEditorOpened = false;
         this.backgroundEditorOpened = false;

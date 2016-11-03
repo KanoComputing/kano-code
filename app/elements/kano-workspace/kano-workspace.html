@@ -49,7 +49,7 @@
     }
     :host kano-workspace-head {
         position: absolute;
-        width: 100%;
+        right: 0px;
     }
     :host .fullscreen-close {
         position: fixed;
@@ -100,10 +100,7 @@
                 on-reset-button-clicked="_resetAppState"
                 on-edit-layout-button-clicked="_editLayoutClicked"></kano-workspace-toolbar>
         </kano-ui-viewport>
-        <kano-workspace-head
-            title="[[title]]"
-            show-save-button="{{showSaveButton}}"
-            progress="[[progress]]"></kano-workspace-head>
+        <kano-workspace-head challenge-state="[[challengeState]]"></kano-workspace-head>
         <array-selector id="selector" items="{{parts}}" selected="{{selected}}"></array-selector>
         <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="alt+t" on-keys-pressed="_onAltT" target="[[target]]"></iron-a11y-keys>
@@ -160,14 +157,8 @@
             partsMenuOpen: {
                 type: Boolean
             },
-            title: {
-                type: String
-            },
-            showSaveButton: {
-                type: Boolean
-            },
-            progress: {
-                type: Number
+            challengeState: {
+                type: Object
             }
         },
         observers: [

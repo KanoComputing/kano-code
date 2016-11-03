@@ -4,7 +4,6 @@
 <link rel="import" href="../kano-power-up-modal/kano-power-up-modal.html">
 <link rel="import" href="../kano-app-challenge/kano-app-challenge.html">
 <link rel="import" href="../kano-app-editor/kano-app-editor.html">
-<link rel="import" href="../kano-challenge-progress/kano-challenge-progress.html">
 <link rel="import" href="../kano-share-modal/kano-share-modal.html">
 <dom-module id="kano-scene-editor">
   <style>
@@ -38,13 +37,11 @@
                             default-categories="[[computeCategories(scene.*, remix)]]"
                             slot="editor"
                             running="{{running}}"
-                            title="[[storyName]]"
                             code="{{code}}"
                             mode="[[_computeMode(mode, remix)]]"
                             on-blockly-ready="_blocklyReady"
                             on-share="_pauseAndShare"
-                            progress="[[progress]]">
-              <kano-challenge-progress id="challenge-progress" progress="[[progress]]" title="[[storyName]]" next-challenge="[[nextStory.id]]" on-share-app="shareApp" remix-mode="[[remix]]"></kano-challenge-progress>
+                            challenge-state="[[challengeState]]">
           </kano-app-editor>
       </kano-app-challenge>
       <kano-power-up-modal id="challenge-completed"
@@ -70,11 +67,18 @@
                 type: String
             },
             nextStory: {
-                type: String
+                type: Object
             },
             currentStep: {
                 type: Number,
                 value: 0
+            },
+            challengeState: {
+                type: Object,
+                computed: 'computeChallengeStatus(progress, storyName, nextStory.id, scene.*)'
+            },
+            scene: {
+                type: Object
             },
             progress: {
                 type: Number,
@@ -94,7 +98,6 @@
         observers: [
             'endedChanged(scene.ended)',
             '_sceneChanged(scene)',
-            '_sceneStarted(scene.started)',
             '_addedPartsChanged(addedParts.splices)'
         ],
         _pauseAndShare (e) {
@@ -147,11 +150,6 @@
                 });
             });
         },
-        _sceneStarted (started) {
-            if (started) {
-                this.$['challenge-progress'].animateIn();
-            }
-        },
         _blocklyReady (scene) {
             this._loadVariables();
             this.async(() => {
@@ -185,6 +183,14 @@
         },
         computeProgress (currentStep, scene) {
             return (currentStep + 1) / scene.steps.length;
+        },
+        computeChallengeStatus (progress, title, next, scene) {
+            return {
+                progress: progress,
+                title: title,
+                started: this.scene.started,
+                ended: this.scene.ended
+            };
         },
         ready () {
             this.remix = false;
