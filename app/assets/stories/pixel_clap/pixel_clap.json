@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "We'll start by adding parts to our app.<br>Open the parts drawer by clicking here."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -40,7 +40,7 @@
 	                    "path": "workspace",
 	                    "part": "part_0"
 	                },
-					"position": "right",
+					"position": "left",
 					"text": "This part measures how loud you are!<br>It represents the volume as a number<br>Make a noise to see it change!",
 					"next_button": true
 				}
@@ -49,7 +49,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "All the parts are here, let's code!<br>Close the drawer."
 				}
@@ -66,7 +66,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Mic tray"
 				}
 			],
@@ -87,7 +87,7 @@
 							"type": "threshold"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block runs some code when things get loud<br>Drag it in"
 				}
 			],
@@ -98,7 +98,7 @@
 						"type": "threshold"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -140,7 +140,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to turn on all the lights!<br>Open this tray"
 				}
 			],
@@ -196,7 +196,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -253,7 +253,7 @@
 					"location": {
 						"category": "color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we will pick the color of our flash"
 				}
 			],
@@ -332,7 +332,7 @@
 					"location": {
 						"category": "control"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We don't want our flash to last forever...<br>Open the Control tray to find a block that can help"
 				}
 			],
@@ -348,7 +348,7 @@
 					"location": {
 						"flyout_block": "in_x_time"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block will trigger some code after a delay<br>Drag it in"
 				}
 			],
@@ -356,7 +356,7 @@
 				"target": {
 					"flyout_block": "in_x_time"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -443,7 +443,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We want to turn off <em>all</em> the lights after 100ms<br>Open this tray"
 				}
 			],
@@ -499,7 +499,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -552,8 +552,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Ready for some flashes?<br><b>Clap</b> to make some noise!",
 					"next_button": true
 				}
