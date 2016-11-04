@@ -75,7 +75,7 @@
             },
             challengeState: {
                 type: Object,
-                computed: 'computeChallengeStatus(progress, storyName, nextStory.id, scene.*)'
+                computed: 'computeChallengeStatus(progress, storyName, scene.*)'
             },
             scene: {
                 type: Object
@@ -184,7 +184,7 @@
         computeProgress (currentStep, scene) {
             return (currentStep + 1) / scene.steps.length;
         },
-        computeChallengeStatus (progress, title, next, scene) {
+        computeChallengeStatus (progress, title, scene) {
             return {
                 progress: progress,
                 title: title,

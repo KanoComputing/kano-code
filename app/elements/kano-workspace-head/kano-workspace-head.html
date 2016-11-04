@@ -115,17 +115,13 @@
             }
         },
         observers: [
-            '_challengeStarted(challengeState.*, componentReady)'
+            '_challengeStarted(challengeState.*)'
         ],
         ready () {
             this.started = false;
-            this.componentReady = false;
-        },
-        attached () {
-            this.componentReady = true;
         },
         _challengeStarted () {
-            if (this.componentReady && !this.started && this.challengeState && this.challengeState.started) {
+            if (!this.started && this.challengeState && this.challengeState.started) {
                 let progressBar = this.$['progress-bar'];
                 this.started = true;
 
