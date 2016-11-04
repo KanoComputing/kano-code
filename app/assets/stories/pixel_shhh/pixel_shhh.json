@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "To get started we need your microphone!<br>Click here to add it"
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Now we can start coding.<br>Hit that button"
 				}
@@ -53,7 +53,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We need a block that tells us when things get noisy...<br>Open the Mic tray"
 				}
 			],
@@ -74,7 +74,7 @@
 							"type": "threshold"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block does the trick! Drag it in"
 				}
 			],
@@ -85,7 +85,7 @@
 						"type": "threshold"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -152,7 +152,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "When things get loud let's tell everyone to shhhh!<br>Open this tray"
 				}
 			],
@@ -168,7 +168,7 @@
 					"location": {
 						"flyout_block": "lightboard#light_scroll_text"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block helps us send the message"
 				}
 			],
@@ -176,7 +176,7 @@
 				"target": {
 					"flyout_block": "lightboard#light_scroll_text"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -197,7 +197,7 @@
 							"rawId": "R:-y0,*w~/tisXB3)7#C"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drop it inside the mic block<br>This makes it run when things get loud"
 				}
 			],
@@ -229,7 +229,7 @@
 					"location": {
 						"category": "variables"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to write our message..."
 				}
 			],
@@ -352,8 +352,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Try to stay quiet. What happens if you make too much noise?<br>Try to remix by making the text go faster!",
 					"next_button": true
 				}
