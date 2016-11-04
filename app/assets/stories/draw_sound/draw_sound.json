@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "First grab a microphone to hear the sound around you."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Close the drawer."
 				}
@@ -51,7 +51,7 @@
 					"location": {
 						"category": "normal"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Let's start drawing!<br>Open this tray"
 				}
 			],
@@ -67,7 +67,7 @@
 					"location": {
 						"flyout_block": "normal#move_to"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block sets where the drawing pen is. Grab one."
 				}
 			],
@@ -75,7 +75,7 @@
 				"target": {
 					"flyout_block": "normal#move_to"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -166,7 +166,7 @@
 					"location": {
 						"category": "normal"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Want to pick the colors we use?"
 				}
 			],
@@ -182,7 +182,7 @@
 					"location": {
 						"flyout_block": "normal#color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block picks the color of the inside of our shapes<br>This is called the fill color"
 				}
 			],
@@ -190,7 +190,7 @@
 				"target": {
 					"flyout_block": "normal#color"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -229,7 +229,7 @@
 					"location": {
 						"category": "color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to pick the color itself..."
 				}
 			],
@@ -244,7 +244,7 @@
 				"target": {
 					"flyout_block": "colour_picker"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -307,7 +307,7 @@
 					"location": {
 						"category": "normal"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we need to set the color of the shapes edge<br>This is called the <em>stroke</em>"
 				}
 			],
@@ -322,7 +322,7 @@
 				"target": {
 					"flyout_block": "normal#stroke"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -361,7 +361,7 @@
 					"location": {
 						"category": "color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Color tray"
 				}
 			],
@@ -376,7 +376,7 @@
 				"target": {
 					"flyout_block": "colour_picker"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -417,7 +417,7 @@
 					"location": {
 						"category": "control"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Great colors!<br>Now let's start drawing.<br>To start we need a <em>loop</em>"
 				}
 			],
@@ -433,7 +433,7 @@
 					"location": {
 						"flyout_block": "every_x_seconds"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We will put our drawing code inside of this loop"
 				}
 			],
@@ -441,7 +441,7 @@
 				"target": {
 					"flyout_block": "every_x_seconds"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -503,7 +503,7 @@
 					"location": {
 						"category": "normal"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now we will add code inside our loop"
 				}
 			],
@@ -519,7 +519,7 @@
 					"location": {
 						"flyout_block": "normal#move"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block will <em>move</em> our drawing pen"
 				}
 			],
@@ -527,7 +527,7 @@
 				"target": {
 					"flyout_block": "normal#move"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -548,7 +548,7 @@
 							"rawId": ",-.2dTGy/KR*tv1Vz?@0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drop it inside the loop"
 				}
 			],
@@ -630,7 +630,7 @@
 					"location": {
 						"category": "normal"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Time to pick our shape!<br>We want an ellipse"
 				}
 			],
@@ -645,7 +645,7 @@
 				"target": {
 					"flyout_block": "normal#ellipse"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -711,7 +711,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Finally, we will control its height using<br>data from our mic!"
 				}
 			],
@@ -732,7 +732,7 @@
 							"type": "get_volume"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block gives us the mic's volume"
 				}
 			],
@@ -743,7 +743,7 @@
 						"type": "get_volume"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -765,7 +765,7 @@
 							"rawId": "rDUmTEBLgb]W]Rt%p:a."
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Let's control the shape's height using sound!<br>It will be tall when its loud..."
 				}
 			],
@@ -794,8 +794,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Say something and see what shapes the sound can make!<br>Try remixing it by changing the colors and making it go at different speeds!",
 					"next_button": true
 				}
