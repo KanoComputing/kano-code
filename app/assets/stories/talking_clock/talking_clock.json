@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "You're going to use code to connect a microphone, a speaker, and a clock."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-speaker",
 			"arrow": {
 				"source": "sidebar.parts.part-speaker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -65,7 +65,7 @@
 			"highlight": "sidebar.parts.part-clock",
 			"arrow": {
 				"source": "sidebar.parts.part-clock",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -78,7 +78,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Close the drawer"
 				}
@@ -95,7 +95,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We want to make the computer talk when we clap<br>Open the Mic tray"
 				}
 			],
@@ -116,7 +116,7 @@
 							"type": "threshold"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block will trigger some commands<br>when there is a loud noise"
 				}
 			],
@@ -127,7 +127,7 @@
 						"type": "threshold"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -196,7 +196,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to tell the computer to speak!<br>Open the Speaker tray"
 				}
 			],
@@ -217,7 +217,7 @@
 							"type": "say"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block tells the computer to talk!"
 				}
 			],
@@ -228,7 +228,7 @@
 						"type": "say"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -250,7 +250,7 @@
 							"rawId": "`f37(i,jdKPbij6gFV%R"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drop inside of here so that it runs after we clap"
 				}
 			],
@@ -284,7 +284,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to get the time<br>Open the Clock tray"
 				}
 			],
@@ -305,7 +305,7 @@
 							"type": "get_formatted_time"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This grabs data from the clock"
 				}
 			],
@@ -316,7 +316,7 @@
 						"type": "get_formatted_time"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -338,7 +338,7 @@
 							"rawId": "blDFeEs^*48a7%AX)Z_;"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drop it here to tell the computer what to say"
 				}
 			],
@@ -390,8 +390,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Clap your hands!",
 					"next_button": true
 				}
