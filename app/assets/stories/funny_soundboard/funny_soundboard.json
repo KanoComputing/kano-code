@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "You're going to build a funny soundboard!<br/>Start with three buttons and the speaker part."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-button",
 			"arrow": {
 				"source": "sidebar.parts.part-button",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-button",
 			"arrow": {
 				"source": "sidebar.parts.part-button",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -65,7 +65,7 @@
 			"highlight": "sidebar.parts.part-button",
 			"arrow": {
 				"source": "sidebar.parts.part-button",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -86,7 +86,7 @@
 			"highlight": "sidebar.parts.part-speaker",
 			"arrow": {
 				"source": "sidebar.parts.part-speaker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -99,7 +99,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Close the parts menu to start coding."
 				}
@@ -139,7 +139,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "When it is clicked let's make a sound!<br>Open the Speaker tray"
 				}
 			],
@@ -160,7 +160,7 @@
 							"type": "speaker_play"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block tells the speaker to play something.<br>Drag it in."
 				}
 			],
@@ -171,7 +171,7 @@
 						"type": "speaker_play"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -193,7 +193,7 @@
 							"rawId": "default_part_event_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Putting it here will trigger it when<br>the button is clicked"
 				}
 			],
@@ -227,7 +227,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we need to pick a sound to play"
 				}
 			],
@@ -248,7 +248,7 @@
 							"type": "speaker_sample"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag in this block that lets us pick a sound"
 				}
 			],
@@ -259,7 +259,7 @@
 						"type": "speaker_sample"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -347,7 +347,7 @@
                     "path": "workspace",
                     "part": "part_0"
                 },
-                "position": "right",
+                "position": "left",
                 "next_button": true,
                 "text": "Click on the green button to hear the crow sound!"
             }]
@@ -358,7 +358,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Nice! Now let's add sound to the next button.<br>Open the Events tray"
 				}
 			],
@@ -374,7 +374,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "To start we need a new event block to add our code to"
 				}
 			],
@@ -382,7 +382,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -397,8 +397,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -441,7 +441,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to add the sound..."
 				}
 			],
@@ -461,7 +461,7 @@
 						"type": "speaker_play"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -505,7 +505,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Speaker tray"
 				}
 			],
@@ -525,7 +525,7 @@
 						"type": "speaker_sample"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -613,7 +613,7 @@
                     "path": "workspace",
                     "part": "part_1"
                 },
-                "position": "right",
+                "position": "left",
                 "next_button": true,
                 "text": "Click on the green button to hear the bell sound!"
             }]
@@ -624,7 +624,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Ding! Last part: let's add sound to the third button.<br>Open the Events tray"
 				}
 			],
@@ -640,7 +640,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag out the event"
 				}
 			],
@@ -648,7 +648,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -663,8 +663,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -707,7 +707,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Speaker tray"
 				}
 			],
@@ -727,7 +727,7 @@
 						"type": "speaker_play"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -771,7 +771,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Speaker tray"
 				}
 			],
@@ -791,7 +791,7 @@
 						"type": "speaker_sample"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
