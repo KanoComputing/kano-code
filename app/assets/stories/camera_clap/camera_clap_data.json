@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "This app will listen for sounds.<br />Add the microphone part."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Close the drawer"
 				}
@@ -76,7 +76,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Mic tray"
 				}
 			],
@@ -97,7 +97,7 @@
 							"type": "threshold"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Grab one of these<br /><kano-blockly-block type=\"part_0#threshold\"></kano-blockly-block>"
 				}
 			],
@@ -108,7 +108,7 @@
 						"type": "threshold"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -130,7 +130,7 @@
 							"rawId": "default_event_part_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -187,7 +187,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -203,7 +203,7 @@
 					"location": {
 						"flyout_block": "camera#take_picture"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"camera#take_picture\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -211,7 +211,7 @@
 				"target": {
 					"flyout_block": "camera#take_picture"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -232,7 +232,7 @@
 							"rawId": "7m{v5b*1Fr3!v2Mh^/jF"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -261,8 +261,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Clap your hands to take a photo!",
 					"next_button": true
 				}
