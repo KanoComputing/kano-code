@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "This app needs a map<br />and the Space Station data parts"
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-map",
 			"arrow": {
 				"source": "sidebar.parts.part-map",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-iss",
 			"arrow": {
 				"source": "sidebar.parts.part-iss",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -57,7 +57,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "That's all the parts!<br />Close the drawer to start coding."
 				}
@@ -72,7 +72,7 @@
 					"location": {
 						"category": "control"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We want to grab data every second.<br>Open the Control tray so we can get a <em>loop</em>"
 				}
 			],
@@ -88,7 +88,7 @@
 					"location": {
 						"flyout_block": "every_x_seconds"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag in this <em>loop</em>"
 				}
 			],
@@ -96,7 +96,7 @@
 				"target": {
 					"flyout_block": "every_x_seconds"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -116,7 +116,7 @@
 							"rawId": "default_part_event_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it here so the loop is triggered when the app starts"
 				}
 			],
@@ -148,7 +148,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we need to refresh the data<br>The code to control it is in the ISS tray"
 				}
 			],
@@ -169,7 +169,7 @@
 							"type": "refresh"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag in this block to refresh the data"
 				}
 			],
@@ -180,7 +180,7 @@
 						"type": "refresh"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -201,7 +201,7 @@
 							"id": "block_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drop it inside the loop so it runs every second"
 				}
 			],
@@ -229,7 +229,7 @@
                     "path": "workspace",
                     "part": "part_1"
                 },
-                "position": "right",
+                "position": "left",
                 "next_button": true,
                 "text": "You've made the data refresh every second."
             }]
@@ -240,7 +240,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Finally let's update the map when the data is updated<br>Open the Events tray"
 				}
 			],
@@ -256,7 +256,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag in this block to trigger the map update"
 				}
 			],
@@ -279,8 +279,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -319,7 +319,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to tell the map to move..."
 				}
 			],
@@ -360,7 +360,7 @@
 							"id": "block_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drop it inside the event so it triggers<br>when the latest data arrives"
 				}
 			],
@@ -390,7 +390,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we want to move it to the ISS's position<br>Let's grab the data from the ISS tray"
 				}
 			],
@@ -411,7 +411,7 @@
 							"type": "get_value"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag out the latitude block"
 				}
 			],
@@ -422,7 +422,7 @@
 						"type": "get_value"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -443,7 +443,7 @@
 							"id": "block_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Move the map's latitude to the ISS's latitude"
 				}
 			],
@@ -473,7 +473,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the ISS tray again"
 				}
 			],
@@ -494,7 +494,7 @@
 							"type": "get_value"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Let’s grab another of those blocks: <br /><kano-blockly-block type=\"part_1#get_value\"></kano-blockly-block>"
 				}
 			],
@@ -505,7 +505,7 @@
 						"type": "get_value"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -526,7 +526,7 @@
 							"id": "block_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Plug it in here"
 				}
 			],
@@ -570,8 +570,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "<strong>You did it!</strong> The space station is 400km<br />above the marker. You can make the map bigger<br />by clicking 'edit layout', then clicking on the map.",
 					"next_button": true
 				}
