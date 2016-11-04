@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Let's add loads of stickers to your photo!"
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-sticker",
 			"arrow": {
 				"source": "sidebar.parts.part-sticker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-sticker",
 			"arrow": {
 				"source": "sidebar.parts.part-sticker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -65,7 +65,7 @@
 			"highlight": "sidebar.parts.part-sticker",
 			"arrow": {
 				"source": "sidebar.parts.part-sticker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -86,7 +86,7 @@
 			"highlight": "sidebar.parts.part-sticker",
 			"arrow": {
 				"source": "sidebar.parts.part-sticker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -99,7 +99,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "You can add more stickers later. Let's control these ones with code."
 				}
@@ -114,7 +114,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Events tray"
 				}
 			],
@@ -130,7 +130,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -138,7 +138,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -153,8 +153,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -174,7 +174,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker tray"
 				}
 			],
@@ -195,7 +195,7 @@
 							"type": "set_sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#set_sticker\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -206,7 +206,7 @@
 						"type": "set_sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -228,7 +228,7 @@
 							"rawId": "b`9qe4MAna3sfS%~D7mv"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -262,7 +262,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker tray"
 				}
 			],
@@ -283,7 +283,7 @@
 							"type": "sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block> lets you pick any sticker picture."
 				}
 			],
@@ -294,7 +294,7 @@
 						"type": "sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -316,7 +316,7 @@
 							"rawId": "^#22-^:gBKAI+ra@`;wV"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -373,7 +373,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker 1 tray"
 				}
 			],
@@ -394,7 +394,7 @@
 							"type": "set_sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Grab a block to set the next sticker<br /><kano-blockly-block type=\"part_1#set_sticker\"></kano-blockly-block>"
 				}
 			],
@@ -405,7 +405,7 @@
 						"type": "set_sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -427,7 +427,7 @@
 							"rawId": "^#22-^:gBKAI+ra@`;wV"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Add it here"
 				}
 			],
@@ -459,7 +459,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker tray"
 				}
 			],
@@ -480,7 +480,7 @@
 							"type": "sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Another of these <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block>"
 				}
 			],
@@ -491,7 +491,7 @@
 						"type": "sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -513,7 +513,7 @@
 							"rawId": "zZHzjc7te1-bTbNIAsTg"
 						}
 					},
-					"position": "left"
+					"position": "right"
 				}
 			],
 			"validation": {
@@ -592,7 +592,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker 2 tray"
 				}
 			],
@@ -613,7 +613,7 @@
 							"type": "set_sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_2#set_sticker\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -624,7 +624,7 @@
 						"type": "set_sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -646,7 +646,7 @@
 							"rawId": "zZHzjc7te1-bTbNIAsTg"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -678,7 +678,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker tray"
 				}
 			],
@@ -699,7 +699,7 @@
 							"type": "sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -710,7 +710,7 @@
 						"type": "sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -732,7 +732,7 @@
 							"rawId": "3H9bw-Te`z;KmTJ;][-)"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -812,7 +812,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker 3 tray"
 				}
 			],
@@ -833,7 +833,7 @@
 							"type": "set_sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_3#set_sticker\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -844,7 +844,7 @@
 						"type": "set_sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -866,7 +866,7 @@
 							"rawId": "3H9bw-Te`z;KmTJ;][-)"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -898,7 +898,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker tray"
 				}
 			],
@@ -919,7 +919,7 @@
 							"type": "sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#sticker\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -930,7 +930,7 @@
 						"type": "sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -952,7 +952,7 @@
 							"rawId": "TEh93gR#!~`2:%v^+[}a"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -1027,9 +1027,9 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
-					"text": "Now the fun part! Press the shutter button, then click 'EDIT LAYOUT' and move, scale, and rotate the parts to fit your face. How big a crown do you think you need? When you're done, add more stickers!",
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "Now the fun part! Press the shutter button, then click 'EDIT LAYOUT' and move, scale, and rotate the parts to fit your face. <br> How big a crown do you think you need? When you're done, add more stickers!",
 					"next_button": true
 				}
 			]
