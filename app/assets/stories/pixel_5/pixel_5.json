@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "To build the interface of the app, we need parts<br>Open the parts drawer by clicking here."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-speaker",
 			"arrow": {
 				"source": "sidebar.parts.part-speaker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "All the parts are here, let's code!<br>Hit that button"
 				}
@@ -51,7 +51,7 @@
 					"location": {
 						"category": "control"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "First we will turn on random lights just like last time"
 				}
 			],
@@ -66,7 +66,7 @@
 				"target": {
 					"flyout_block": "every_x_seconds"
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -105,7 +105,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now let's turn on some lights"
 				}
 			],
@@ -157,7 +157,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next, turn on a single light..."
 				}
 			],
@@ -172,7 +172,7 @@
 				"target": {
 					"flyout_block": "lightboard#light_x_y"
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -209,7 +209,7 @@
 					"location": {
 						"category": "math"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now for the random numbers..."
 				}
 			],
@@ -220,12 +220,12 @@
 			}
 		},
 		{
-			
+
 			"arrow": {
 				"target": {
 					"flyout_block": "math_random"
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -238,7 +238,7 @@
 			}
 		},
 		{
-			
+
 			"validation": {
 				"blockly": {
 					"connect": {
@@ -266,7 +266,7 @@
 							"shadow": "MAX"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Change to <kano-value-preview><span>15</span></kano-value-preview>"
 				}
 			],
@@ -288,7 +288,7 @@
 					"location": {
 						"category": "math"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "I promise the fun part is coming..."
 				}
 			],
@@ -303,7 +303,7 @@
 				"target": {
 					"flyout_block": "math_random"
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -365,7 +365,7 @@
 					"location": {
 						"category": "color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Finally add the color"
 				}
 			],
@@ -380,7 +380,7 @@
 				"target": {
 					"flyout_block": "random_colour"
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -419,7 +419,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now let's make a sound when we add a light!<br>Open the Speaker tray"
 				}
 			],
@@ -440,7 +440,7 @@
 							"type": "speaker_play"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Let's command our speaker to play a sound with this block"
 				}
 			],
@@ -451,7 +451,7 @@
 						"type": "speaker_play"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -470,7 +470,7 @@
 					"location": {
 						"block": "block_1"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Put it after the command to turn the light on...<br>It'll run right afterwards"
 				}
 			],
@@ -499,7 +499,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now let's pick what sound we want it to play"
 				}
 			],
@@ -519,7 +519,7 @@
 						"type": "speaker_sample"
 					}
 				},
-				"angle": 315,
+				"angle": 0,
 				"size": 80
 			},
 			"validation": {
@@ -592,8 +592,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Ah, that's better! You've leveled up!<br>Now that you've learned the basics,<br> you're ready to do amazing things you've never<br> even dreamed of.<br><br><b>Let's go!</b>",
 					"next_button": true
 				}
