@@ -103,11 +103,11 @@
             </div>
         </div>
         <div class="buttons" style$="[[_computeEditingButtonStyle(mode.workspace.viewport.height)]]">
-            <button class$="{{_applyButtonClass(partsMenuOpen)}}" on-tap="_togglePartsMenu">
+            <button id="add-part-button" class$="{{_applyButtonClass(partsMenuOpen)}}" on-tap="_togglePartsMenu">
                 <span>{{_computePartsMenuButtonLabel(partsMenuOpen)}}</span>
                 <span class="x">&nbsp;&times;</span>
             </button>
-            <button class$="{{_applyButtonClass(editableLayout)}}" on-tap="_editLayoutClicked">
+            <button id="edit-layout-button" class$="{{_applyButtonClass(editableLayout)}}" on-tap="_editLayoutClicked">
                 <span>[[_computeEditingButtonLabel(editableLayout)]]</span>
                 <span class="x">&nbsp;&times;</span>
             </button>

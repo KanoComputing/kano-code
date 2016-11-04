@@ -99,7 +99,7 @@
             if (app.parts.length) {
                 this.data.steps.push({
                     "tooltips": [{
-                        "location": "add-part-button",
+                        "location": "workspace.toolbar.add-part-button",
                         "position": "top",
                         "text": Kano.MakeApps.CopyManager.get('add-parts') + "<br>" + Kano.MakeApps.CopyManager.get('open-parts-drawer')
                     }],
@@ -138,7 +138,7 @@
             if (app.parts.length) {
                 this.data.steps.push({
                     "tooltips": [{
-                        "location": "add-part-button",
+                        "location": "workspace.toolbar.add-part-button",
                         "position": "top",
                         "text": Kano.MakeApps.CopyManager.get('start-code') + "<br>" + Kano.MakeApps.CopyManager.get('close-parts-drawer')
                     }],
@@ -241,7 +241,7 @@
         };
 
         /**
-         * Generate the steps matching a `field` node in a Blockly XML tree 
+         * Generate the steps matching a `field` node in a Blockly XML tree
          */
         Challenge.prototype.fieldToSteps = function (node, fieldDefault) {
             let parent = node.parentNode,
@@ -310,7 +310,7 @@
         };
 
         /**
-         * Generate the steps matching a `block` node in a Blockly XML tree 
+         * Generate the steps matching a `block` node in a Blockly XML tree
          */
         Challenge.prototype.blockToSteps = function (node) {
             // Defines the location of the toolbox category. Can be the category itself or from a previously added part
@@ -483,7 +483,7 @@
         };
 
         /**
-         * Generate the steps matching a `value` node in a Blockly XML tree 
+         * Generate the steps matching a `value` node in a Blockly XML tree
          */
         Challenge.prototype.valueToSteps = function (node) {
             let steps = [],
