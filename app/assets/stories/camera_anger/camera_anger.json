@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "We'll start by adding parts to our app.<br>Click here to see all the parts."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "All the parts are here, let's code!<br>Hit that button"
 				}
@@ -51,7 +51,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Events tray"
 				}
 			],
@@ -67,7 +67,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -75,7 +75,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -90,7 +90,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
+					"location": "blocks-panel",
 					"position": "left",
 					"text": "Drop the block anywhere on your code space"
 				}
@@ -109,7 +109,7 @@
 					"location": {
 						"category": "control"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Control tray"
 				}
 			],
@@ -125,7 +125,7 @@
 					"location": {
 						"flyout_block": "every_x_seconds"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -133,7 +133,7 @@
 				"target": {
 					"flyout_block": "every_x_seconds"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -154,7 +154,7 @@
 							"rawId": "HO1nUkbFoBI8Uc@3cWwu"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -209,7 +209,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -225,7 +225,7 @@
 					"location": {
 						"flyout_block": "camera#filter_clear"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"camera#filter_clear\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -233,7 +233,7 @@
 				"target": {
 					"flyout_block": "camera#filter_clear"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -254,7 +254,7 @@
 							"rawId": "!)KqK}sgy[=^S)z6tZ}1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -286,7 +286,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -302,7 +302,7 @@
 					"location": {
 						"flyout_block": "camera#filter_colorize"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"camera#filter_colorize\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -310,7 +310,7 @@
 				"target": {
 					"flyout_block": "camera#filter_colorize"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -331,7 +331,7 @@
 							"rawId": "MjlRccAFz3ZawWwLqjrL"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -363,7 +363,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the mic tray"
 				}
 			],
@@ -384,7 +384,7 @@
 							"type": "get_volume"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#get_volume\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -395,7 +395,7 @@
 						"type": "get_volume"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -417,7 +417,7 @@
 							"rawId": "wOst@{Q!Resm,H]`y2SR"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -446,8 +446,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Make your best Hulk face, then press the shutter to take a photo.<br />Make some noise. So angry!",
 					"next_button": true
 				}
