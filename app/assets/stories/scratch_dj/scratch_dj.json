@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "To start our project we need to add some parts!<br>Click here"
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-sticker",
 			"arrow": {
 				"source": "sidebar.parts.part-sticker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-sticker",
 			"arrow": {
 				"source": "sidebar.parts.part-sticker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -65,7 +65,7 @@
 			"highlight": "sidebar.parts.part-speaker",
 			"arrow": {
 				"source": "sidebar.parts.part-speaker",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -78,7 +78,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Now we can start coding.<br>Close the drawer."
 				}
@@ -95,7 +95,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker tray"
 				}
 			],
@@ -116,7 +116,7 @@
 							"type": "set_sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Our first sticker will trigger some tunes.<br>Let's change it to look like a music note!<br>Drag the <kano-blockly-block type=\"part_0#set_sticker\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -127,7 +127,7 @@
 						"type": "set_sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -171,7 +171,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker tray"
 				}
 			],
@@ -192,7 +192,7 @@
 							"type": "sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block will help us select the new sticker"
 				}
 			],
@@ -203,7 +203,7 @@
 						"type": "sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -225,7 +225,7 @@
 							"rawId": "wh_rVK8#~y;_TlzYqy|#"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -305,7 +305,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "The second sticker will stop the sounds...<br>so we want a lightning bolt sticker<br>Open the Sticker 1 tray"
 				}
 			],
@@ -326,7 +326,7 @@
 							"type": "set_sticker"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block will change the sticker"
 				}
 			],
@@ -337,7 +337,7 @@
 						"type": "set_sticker"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -380,7 +380,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Sticker 1 tray"
 				}
 			],
@@ -488,7 +488,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we want to do something when the<br>music note is clicked.<br>Open the Events tray"
 				}
 			],
@@ -504,7 +504,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This event block is what we need"
 				}
 			],
@@ -512,7 +512,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -527,8 +527,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -571,7 +571,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "<b>When the speaker is clicked</b>, let's play a loop!<br>Open the Speaker tray"
 				}
 			],
@@ -592,7 +592,7 @@
 							"type": "speaker_loop"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block starts a loop"
 				}
 			],
@@ -603,7 +603,7 @@
 						"type": "speaker_loop"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -648,7 +648,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now to pick the tune..."
 				}
 			],
@@ -668,7 +668,7 @@
 						"type": "speaker_sample"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -756,7 +756,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now let's stop the beat when we click the second sticker"
 				}
 			],
@@ -772,7 +772,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This will trigger the code"
 				}
 			],
@@ -780,7 +780,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -795,8 +795,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -839,7 +839,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "<b>When Sticker 1 is clicked</b>,<br>let's stop the sound from the speaker"
 				}
 			],
@@ -860,7 +860,7 @@
 							"type": "speaker_stop"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This one stops whatever is playing"
 				}
 			],
@@ -871,7 +871,7 @@
 						"type": "speaker_stop"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -915,7 +915,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "To spice it up, let's add a cool sound effect"
 				}
 			],
@@ -936,7 +936,7 @@
 							"type": "speaker_play"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Let's play something cool..."
 				}
 			],
@@ -947,7 +947,7 @@
 						"type": "speaker_play"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -989,7 +989,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Speaker tray"
 				}
 			],
@@ -1094,8 +1094,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "<b>Click the music note</b> to some jams...<br>and <b>click the lightning bolt</b> to stop the music like a DJ!",
 					"next_button": true
 				}
