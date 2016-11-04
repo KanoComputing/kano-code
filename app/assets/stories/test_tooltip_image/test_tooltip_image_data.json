@@ -3,9 +3,9 @@
     "modules": ["control", "operators", "variables"],
     "steps": [{
         "tooltips": [{
-            "location": "left-panel",
+            "location": "workspace-panel",
             "text": "Open the parts <kano-blockly-block type=\"text\"></kano-blockly-block> sidebar",
-            "position": "right"
+            "position": "left"
         }],
         "validation": {
             "open-parts": true
@@ -18,7 +18,7 @@
         }],
         "arrow": {
             "source": "sidebar.parts.part-button",
-            "target": "left-panel",
+            "target": "workspace-panel",
             "size": 120
         },
         "validation": {
@@ -31,16 +31,16 @@
         "tooltips": [{
             "location": "sidebar",
             "text": "Close the parts sidebar",
-            "position": "right"
+            "position": "left"
         }],
         "validation": {
             "close-parts": true
         }
     },{
         "tooltips": [{
-            "location": "left-panel",
+            "location": "workspace-panel",
             "text": "Hurr Durr Durr <kano-blockly-block type=\"button_1#set_background_colour\"></kano-blockly-block>",
-            "position": "right"
+            "position": "left"
         }],
         "validation": {
             "open-parts": true
