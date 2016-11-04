@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "You're going to program the pixel kit to react to sound.<br />Start by adding the microphone part."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "All the parts are here, let's code!<br>Hit that button"
 				}
@@ -51,7 +51,7 @@
 					"location": {
 						"category": "control"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We want our code to update so we need a loop..."
 				}
 			],
@@ -130,7 +130,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we need to turn on all the lights!<br>Open the lightboard tray"
 				}
 			],
@@ -146,7 +146,7 @@
 					"location": {
 						"flyout_block": "lightboard#turn_on"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This one turns on the lights"
 				}
 			],
@@ -154,7 +154,7 @@
 				"target": {
 					"flyout_block": "lightboard#turn_on"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -195,7 +195,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now we need to tell it which lights to turn on..."
 				}
 			],
@@ -211,7 +211,7 @@
 					"location": {
 						"flyout_block": "lightboard#lights_all"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We want all of them!"
 				}
 			],
@@ -219,7 +219,7 @@
 				"target": {
 					"flyout_block": "lightboard#lights_all"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -260,7 +260,7 @@
 					"location": {
 						"category": "color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Want to make cool colors?<br>Open the Color tray"
 				}
 			],
@@ -276,7 +276,7 @@
 					"location": {
 						"flyout_block": "create_color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block lets us generate custom colors"
 				}
 			],
@@ -284,7 +284,7 @@
 				"target": {
 					"flyout_block": "create_color"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -350,7 +350,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "We can control the lights using sound...<br>Open the Mic tray"
 				}
 			],
@@ -371,7 +371,7 @@
 							"type": "get_volume"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This gives us access to data from the microphone"
 				}
 			],
@@ -382,7 +382,7 @@
 						"type": "get_volume"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -404,7 +404,7 @@
 							"rawId": "08LDwQ=9Sf:K*!=Tw8d+"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Here we will control the shade of the color (known as <em>hue</em>) using mic data"
 				}
 			],
@@ -461,7 +461,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now let's control the darkness of the color with<br>more microphone data"
 				}
 			],
@@ -503,7 +503,7 @@
 							"rawId": "08LDwQ=9Sf:K*!=Tw8d+"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Here we can use it to control the<br> darkness (aka <em>value</em>) of the color"
 				}
 			],
@@ -532,8 +532,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Play some music to see what the lights do!",
 					"next_button": true
 				}
