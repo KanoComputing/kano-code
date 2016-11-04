@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Start by adding a clock and a microphone part"
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-clock",
 			"arrow": {
 				"source": "sidebar.parts.part-clock",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -57,7 +57,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Close the parts tray"
 				}
@@ -74,7 +74,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "The microphone code lives in here.<br />Open it."
 				}
 			],
@@ -95,7 +95,7 @@
 							"type": "threshold"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "<kano-blockly-block type=\"part_0#threshold\"></kano-blockly-block><br />This block let's you use sound to trigger your code. Grab it."
 				}
 			],
@@ -106,7 +106,7 @@
 						"type": "threshold"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -128,7 +128,7 @@
 							"rawId": "default_part_event_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to your event"
 				}
 			],
@@ -185,7 +185,7 @@
 					"location": {
 						"category": "lightboard"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the lightboard tray"
 				}
 			],
@@ -201,7 +201,7 @@
 					"location": {
 						"flyout_block": "lightboard#light_scroll_text"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "<kano-blockly-block type=\"lightboard#light_scroll_text\"></kano-blockly-block><br />You can use this block to write with lights. Grab it!"
 				}
 			],
@@ -209,7 +209,7 @@
 				"target": {
 					"flyout_block": "lightboard#light_scroll_text"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -230,7 +230,7 @@
 							"rawId": "V%%h=68v]f5}eB;gei}6"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it in your microphone trigger"
 				}
 			],
@@ -264,7 +264,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next open the clock tray"
 				}
 			],
@@ -285,7 +285,7 @@
 							"type": "get_formatted_time"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag one of these blocks <kano-blockly-block type=\"part_1#get_formatted_time\"></kano-blockly-block> to your code"
 				}
 			],
@@ -296,7 +296,7 @@
 						"type": "get_formatted_time"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -318,7 +318,7 @@
 							"rawId": "eFYU(JMc%vGDEVz);V5{"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to the scroll text input"
 				}
 			],
@@ -377,7 +377,7 @@
 							"id": "block_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Change 'speed' to 90"
 				}
 			],
@@ -396,8 +396,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Clap your hands to see the time!<br />Can you speed it up?",
 					"next_button": true
 				}
