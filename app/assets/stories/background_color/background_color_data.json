@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "This app needs a button we can press.<br />Buttons and parts are contained in here.<br />Click to open."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-button",
 			"arrow": {
 				"source": "sidebar.parts.part-button",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Now close the drawer by clicking here."
 				}
@@ -51,7 +51,7 @@
 					"location": {
 						"category": "normal"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the background tray"
 				}
 			],
@@ -67,7 +67,7 @@
 					"location": {
 						"flyout_block": "normal#set_background_color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"normal#set_background_color\"></kano-blockly-block><br />block onto your code space"
 				}
 			],
@@ -75,7 +75,7 @@
 				"target": {
 					"flyout_block": "normal#set_background_color"
 				},
-				"angle": 45,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -95,7 +95,7 @@
 							"rawId": "default_part_event_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -125,7 +125,7 @@
 					"location": {
 						"category": "color"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Color tray"
 				}
 			],
@@ -141,7 +141,7 @@
 					"location": {
 						"flyout_block": "random_colour"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Grab a <kano-blockly-block type=\"random_colour\"></kano-blockly-block> block"
 				}
 			],
@@ -149,7 +149,7 @@
 				"target": {
 					"flyout_block": "random_colour"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -169,7 +169,7 @@
 							"id": "block_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Plug it into the<br />background color block"
 				}
 			],
@@ -198,7 +198,7 @@
 							"rawId": "default_part_event_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Change the event from <kano-value-preview><span>‘app starts’</span></kano-value-preview><br />to <kano-value-preview><span>‘button is clicked’</span></kano-value-preview>"
 				}
 			],
@@ -219,8 +219,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "<strong>Click the button!</strong><br />(Click, click, click)",
 					"next_button": true
 				}
