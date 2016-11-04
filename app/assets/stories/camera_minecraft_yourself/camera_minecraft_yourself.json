@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "You'll use a slider to pixelate<br />your photo. Grab one from in here."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-slider",
 			"arrow": {
 				"source": "sidebar.parts.part-slider",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Great!<br /> Now close the drawer."
 				}
@@ -65,7 +65,7 @@
 					"location": {
 						"flyout_block": "camera#take_picture"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"camera#take_picture\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -73,7 +73,7 @@
 				"target": {
 					"flyout_block": "camera#take_picture"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -94,7 +94,7 @@
 							"rawId": "default_event_part_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -126,7 +126,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Events tray"
 				}
 			],
@@ -142,7 +142,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -150,7 +150,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -165,8 +165,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -207,7 +207,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -223,7 +223,7 @@
 					"location": {
 						"flyout_block": "camera#filter_clear"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"camera#filter_clear\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -231,7 +231,7 @@
 				"target": {
 					"flyout_block": "camera#filter_clear"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -252,7 +252,7 @@
 							"rawId": "dz*CgZ}m1)6rBP-BCucT"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -284,7 +284,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -300,7 +300,7 @@
 					"location": {
 						"flyout_block": "camera#filter_pixelate"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"camera#filter_pixelate\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -308,7 +308,7 @@
 				"target": {
 					"flyout_block": "camera#filter_pixelate"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -329,7 +329,7 @@
 							"rawId": "[^EO_:7uvG!-^|?*F+cz"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -361,7 +361,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Slider tray"
 				}
 			],
@@ -382,7 +382,7 @@
 							"type": "get_value"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#get_value\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -393,7 +393,7 @@
 						"type": "get_value"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -415,7 +415,7 @@
 							"rawId": "tqZs^}NW_9shh6WvC?KH"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -444,8 +444,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Nice work. Drag the slider side-to-side to pixelate your face",
 					"next_button": true
 				}
