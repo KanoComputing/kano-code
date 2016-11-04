@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Grab some parts. Click here first."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-picture-list",
 			"arrow": {
 				"source": "sidebar.parts.part-picture-list",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-button",
 			"arrow": {
 				"source": "sidebar.parts.part-button",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -57,7 +57,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "That's all the parts. Press close."
 				}
@@ -72,7 +72,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Events tray"
 				}
 			],
@@ -88,7 +88,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -96,7 +96,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -111,8 +111,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -155,7 +155,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this one"
 				}
 			],
@@ -176,7 +176,7 @@
 							"type": "add_picture"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "<kano-blockly-block type=\"part_0#add_picture\"></kano-blockly-block>"
 				}
 			],
@@ -187,7 +187,7 @@
 						"type": "add_picture"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -209,7 +209,7 @@
 							"rawId": "=~u0T_ofY17W9epn,pL,"
 						}
 					},
-					"position": "left"
+					"position": "right"
 				}
 			],
 			"validation": {
@@ -240,7 +240,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -256,7 +256,7 @@
 					"location": {
 						"flyout_block": "camera#last_picture"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Grab one of these <kano-blockly-block type=\"camera#last_picture\"></kano-blockly-block>"
 				}
 			],
@@ -264,7 +264,7 @@
 				"target": {
 					"flyout_block": "camera#last_picture"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -285,7 +285,7 @@
 							"rawId": "1^Umx,!FlC+0UOjmp!Tp"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -317,7 +317,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Events tray"
 				}
 			],
@@ -333,7 +333,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Grab another event block"
 				}
 			],
@@ -341,7 +341,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -356,8 +356,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -400,7 +400,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Picture List tray"
 				}
 			],
@@ -421,7 +421,7 @@
 							"type": "play"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#play\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -432,7 +432,7 @@
 						"type": "play"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -454,7 +454,7 @@
 							"rawId": "ui1|s1:=nn2sJn(?P`0q"
 						}
 					},
-					"position": "left"
+					"position": "right"
 				}
 			],
 			"validation": {
@@ -487,7 +487,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Picture List tray"
 				}
 			],
@@ -508,7 +508,7 @@
 							"type": "picture_download_gif"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#picture_download_gif\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -519,7 +519,7 @@
 						"type": "picture_download_gif"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -541,7 +541,7 @@
 							"rawId": "uPaHIoP92KEn4C1ac6q)"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -568,8 +568,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Press the shutter to take a picture. Take lots.<br />Then press the button to play.",
 					"next_button": true
 				}
