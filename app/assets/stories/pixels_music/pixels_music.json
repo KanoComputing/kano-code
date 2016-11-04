@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "To build our sound meter we will need to use the microphone part<br>Click here"
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-microphone",
 			"arrow": {
 				"source": "sidebar.parts.part-microphone",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-light-rectangle",
 			"arrow": {
 				"source": "sidebar.parts.part-light-rectangle",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -57,7 +57,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "Now we can start coding.<br>Hit that button"
 				}
@@ -74,7 +74,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "To start let's set up the rectangle!<br>Open the Rectangle tray"
 				}
 			],
@@ -95,7 +95,7 @@
 							"type": "set_x"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "First we will move it to the left. Drag in this block."
 				}
 			],
@@ -106,7 +106,7 @@
 						"type": "set_x"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -128,7 +128,7 @@
 							"rawId": "default_part_event_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -162,7 +162,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Rectangle tray"
 				}
 			],
@@ -183,7 +183,7 @@
 							"type": "set_y"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Next we will move our rectangle to the top corner!<br>Drag this block to set the y position."
 				}
 			],
@@ -194,7 +194,7 @@
 						"type": "set_y"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -236,7 +236,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Rectangle tray"
 				}
 			],
@@ -257,7 +257,7 @@
 							"type": "set_height"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block will set it to be as tall as the lightboard"
 				}
 			],
@@ -268,7 +268,7 @@
 						"type": "set_height"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -333,7 +333,7 @@
 					"location": {
 						"category": "control"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Now we need a <em>loop!</em><br>pen the Control tray"
 				}
 			],
@@ -349,7 +349,7 @@
 					"location": {
 						"flyout_block": "every_x_seconds"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This loop runs the code inside of it every second"
 				}
 			],
@@ -357,7 +357,7 @@
 				"target": {
 					"flyout_block": "every_x_seconds"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -421,7 +421,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Every frame, let's update the recangle<br>Open the Rectangle tray"
 				}
 			],
@@ -442,7 +442,7 @@
 							"type": "set_width"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Let's set the width using the microphone data!<br>Drag this in to set the width"
 				}
 			],
@@ -453,7 +453,7 @@
 						"type": "set_width"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -475,7 +475,7 @@
 							"rawId": "]A,.T0BNf5#PW1n==+r6"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drop it inside the loop"
 				}
 			],
@@ -507,7 +507,7 @@
 					"location": {
 						"category": "math"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "The microphone volume is a number from 0 to 100<br>We need to make it fit on the lightboard<br>So let's divide it!<br>Open the Math tray"
 				}
 			],
@@ -523,7 +523,7 @@
 					"location": {
 						"flyout_block": "math_arithmetic"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"math_arithmetic\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -531,7 +531,7 @@
 				"target": {
 					"flyout_block": "math_arithmetic"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -552,7 +552,7 @@
 							"rawId": "8!9IeD82DB`=xi#AlGW{"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -609,7 +609,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Mic tray"
 				}
 			],
@@ -630,7 +630,7 @@
 							"type": "get_volume"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "This block tells us the microphone volume"
 				}
 			],
@@ -641,7 +641,7 @@
 						"type": "get_volume"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -683,7 +683,7 @@
 					"location": {
 						"category": "variables"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Variables tray"
 				}
 			],
@@ -698,7 +698,7 @@
 				"target": {
 					"flyout_block": "math_number"
 				},
-				"angle": 315,
+				"angle": 90,
 				"size": 80
 			},
 			"validation": {
@@ -771,8 +771,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "Brilliant! Now make some noise...<br>...and watch as the sound meter comes to life!",
 					"next_button": true
 				}
