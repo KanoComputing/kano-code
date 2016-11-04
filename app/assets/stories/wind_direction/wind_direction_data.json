@@ -4,7 +4,7 @@
     "steps": [
       {
         "tooltips": [{
-            "location": "add-part-button",
+            "location": "workspace.toolbar.add-part-button",
             "position": "top",
             "text": "This app needs two<br />parts:<br />an arrow image<br />and weather data"
         }],
@@ -19,7 +19,7 @@
         }],
         "arrow": {
             "source": "sidebar.parts.part-image",
-            "target": "left-panel",
+            "target": "workspace-panel",
             "size": 120
         },
         "validation": {
@@ -36,7 +36,7 @@
         }],
         "arrow": {
             "source": "sidebar.parts.part-weather",
-            "target": "left-panel",
+            "target": "workspace-panel",
             "size": 120
         },
         "validation": {
@@ -47,7 +47,7 @@
         }
     },{
         "tooltips": [{
-            "location": "add-part-button",
+            "location": "workspace.toolbar.add-part-button",
             "position": "top",
             "text": "Close the parts drawer"
         }],
@@ -138,7 +138,7 @@
             "location": {
                 "category": "sports"
             },
-            "position": "left",
+            "position": "right",
             "text": "Open the sports tray"
         }],
         "validation": {
@@ -171,7 +171,7 @@
             "location": {
                 "block": "default_part_event"
             },
-            "position": "left",
+            "position": "right",
             "text": "Connect it to your event block"
         }],
         "validation": {
@@ -187,7 +187,7 @@
             "location": {
                 "category": "scrolling-text"
             },
-            "position": "left",
+            "position": "right",
             "text": "Open the scroll text tray"
         }],
         "validation": {
@@ -203,7 +203,7 @@
                     "type": "scroll"
                 }
             },
-            "position": "left",
+            "position": "right",
             "text": "Drag the ‘Scroll text<br />scroll’ block onto your<br />code space"
         }],
         "validation": {
@@ -220,7 +220,7 @@
             "location": {
                 "block": "sports_for_each_1"
             },
-            "position": "left",
+            "position": "right",
             "text": "Connect the blocks"
         }],
         "validation": {
@@ -236,7 +236,7 @@
             "location": {
                 "category": "sports"
             },
-            "position": "left",
+            "position": "right",
             "text": "Open the sports<br />tray again"
         }],
         "validation": {
@@ -293,8 +293,8 @@
         }
     },{
         "tooltips": [{
-            "location": "left-panel",
-            "position": "right",
+            "location": "workspace-panel",
+            "position": "left",
             "text": "<strong>You did it!</strong><br />Your text scroller shows the latest sports news.",
             "next_button": true
         }]

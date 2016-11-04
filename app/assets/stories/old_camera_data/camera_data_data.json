@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "In this challenge you'll add the time<br> and weather to your photo.<br /> Get the parts you need by clicking here."
 				}
@@ -23,7 +23,7 @@
 			"highlight": "sidebar.parts.part-button",
 			"arrow": {
 				"source": "sidebar.parts.part-button",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -44,7 +44,7 @@
 			"highlight": "sidebar.parts.part-image",
 			"arrow": {
 				"source": "sidebar.parts.part-image",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -65,7 +65,7 @@
 			"highlight": "sidebar.parts.part-text",
 			"arrow": {
 				"source": "sidebar.parts.part-text",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -86,7 +86,7 @@
 			"highlight": "sidebar.parts.part-text",
 			"arrow": {
 				"source": "sidebar.parts.part-text",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -107,7 +107,7 @@
 			"highlight": "sidebar.parts.part-weather",
 			"arrow": {
 				"source": "sidebar.parts.part-weather",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -128,7 +128,7 @@
 			"highlight": "sidebar.parts.part-clock",
 			"arrow": {
 				"source": "sidebar.parts.part-clock",
-				"target": "left-panel",
+				"target": "workspace-panel",
 				"size": 120
 			},
 			"validation": {
@@ -141,7 +141,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "add-part-button",
+					"location": "workspace.toolbar.add-part-button",
 					"position": "top",
 					"text": "That's all we need. Close the parts tray."
 				}
@@ -181,7 +181,7 @@
 							"part": "part_0"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Code for the image is in here.<br />Click to open."
 				}
 			],
@@ -202,7 +202,7 @@
 							"type": "set_image_to"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_0#set_image_to\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -213,7 +213,7 @@
 						"type": "set_image_to"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -234,7 +234,7 @@
 							"rawId": "default_part_event_id"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to the event block"
 				}
 			],
@@ -255,7 +255,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the camera blocks tray"
 				}
 			],
@@ -271,7 +271,7 @@
 					"location": {
 						"flyout_block": "camera#last_picture"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Grab a block to show the latest picture<br/><kano-blockly-block type=\"camera#last_picture\"></kano-blockly-block>"
 				}
 			],
@@ -279,7 +279,7 @@
 				"target": {
 					"flyout_block": "camera#last_picture"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -297,7 +297,7 @@
 					"location": {
 						"block": "block_0"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -318,7 +318,7 @@
 							"part": "part_2"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Text 1 tray"
 				}
 			],
@@ -339,7 +339,7 @@
 							"type": "set_value"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_2#set_value\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -350,7 +350,7 @@
 						"type": "set_value"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -369,7 +369,7 @@
 					"location": {
 						"block": "block_0"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -390,7 +390,7 @@
 							"part": "part_4"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Clock tray"
 				}
 			],
@@ -411,7 +411,7 @@
 							"type": "get_formatted_time"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_4#get_formatted_time\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -422,7 +422,7 @@
 						"type": "get_formatted_time"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -441,7 +441,7 @@
 					"location": {
 						"block": "block_2"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -462,7 +462,7 @@
 							"part": "part_1"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Text tray"
 				}
 			],
@@ -483,7 +483,7 @@
 							"type": "set_value"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_1#set_value\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -494,7 +494,7 @@
 						"type": "set_value"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -513,7 +513,7 @@
 					"location": {
 						"block": "block_2"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -534,7 +534,7 @@
 							"part": "part_3"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open the Weather tray"
 				}
 			],
@@ -555,7 +555,7 @@
 							"type": "get_value"
 						}
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_3#get_value\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -566,7 +566,7 @@
 						"type": "get_value"
 					}
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -585,7 +585,7 @@
 					"location": {
 						"block": "block_4"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -623,7 +623,7 @@
 					"location": {
 						"category": "events"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -639,7 +639,7 @@
 					"location": {
 						"flyout_block": "part_event"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -647,7 +647,7 @@
 				"target": {
 					"flyout_block": "part_event"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -662,8 +662,8 @@
         {
 			"tooltips": [
 				{
-					"location": "right-panel",
-					"position": "left",
+					"location": "blocks-panel",
+					"position": "right",
 					"text": "Drop the block anywhere on your code space"
 				}
 			],
@@ -700,7 +700,7 @@
 					"location": {
 						"category": "camera"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Open this tray"
 				}
 			],
@@ -716,7 +716,7 @@
 					"location": {
 						"flyout_block": "camera#take_picture"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Drag the <kano-blockly-block type=\"camera#take_picture\"></kano-blockly-block> block onto your code space"
 				}
 			],
@@ -724,7 +724,7 @@
 				"target": {
 					"flyout_block": "camera#take_picture"
 				},
-				"angle": 315,
+				"angle": 120,
 				"size": 80
 			},
 			"validation": {
@@ -742,7 +742,7 @@
 					"location": {
 						"block": "block_6"
 					},
-					"position": "left",
+					"position": "right",
 					"text": "Connect it to this block"
 				}
 			],
@@ -772,8 +772,8 @@
 		{
 			"tooltips": [
 				{
-					"location": "left-panel",
-					"position": "right",
+					"location": "workspace-panel",
+					"position": "left",
 					"text": "You can now test the app",
 					"next_button": true
 				}
