@@ -505,16 +505,12 @@ Polymer({
                 return 'Any unsaved changes to your app will be lost. Continue?';
             }
         }
-
-        document.body.style.overflow = 'hidden';
     },
     detached () {
         Kano.MakeApps.Parts.clear();
         this.detachEvents();
 
         window.onbeforeunload = null;
-
-        document.body.style.overflow = undefined;
     },
     _exportApp () {
         let savedApp = this.save(),

@@ -230,9 +230,12 @@
                     }
                 }
             });
+
+            document.body.style.overflow = 'hidden';
         },
         detached () {
             this.workspace.dispose();
+            document.body.style.overflow = undefined;
         },
         _closeOmnibox (e) {
             if (!this._omniboxOpened) {
