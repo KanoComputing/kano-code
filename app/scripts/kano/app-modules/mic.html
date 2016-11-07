@@ -9,6 +9,7 @@
                 this.addMethod('on', '_on');
                 this.addMethod('removeListener', '_removeListener');
                 this.addMethod('getVolume', '_getVolume');
+                this.addMethod('getPitch', '_getPitch')
             }
 
             _getAudioStream () {
@@ -17,6 +18,10 @@
 
             _getVolume () {
                 return this.api.microphone.getVolume();
+            }
+
+            _getPitch () {
+                return this.api.microphone.getPitch();
             }
 
             _on () {
