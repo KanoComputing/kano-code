@@ -132,7 +132,7 @@
             e.indexSplices.forEach(splice => {
                 splice.object.forEach(part => {
                     Object.keys(this.scene.filterBlocks).forEach(key => {
-                        if (!part.type === key) {
+                        if (part.id !== key) {
                             return;
                         }
                         part.blocks = part.blocks.filter((block, index) => {

@@ -124,7 +124,7 @@
                     "highlight": location,
                     "arrow": {
                         "source": location,
-                        "target": "left-panel",
+                        "target": "workspace-panel",
                         "size": 120
                     },
                     "validation": {
@@ -150,8 +150,8 @@
             this.data.steps = this.data.steps.concat(this.matchDefaultBlocks(xml.children, defaultXml.children));
             this.data.steps.push({
                 "tooltips": [{
-                    "location": "left-panel",
-                    "position": "right",
+                    "location": "workspace-panel",
+                    "position": "left",
                     "text": "You can now test the app",
                     "next_button": true
                 }]
@@ -383,7 +383,7 @@
                     "location": {
                         "category": categoryLocation
                     },
-                    "position": "left",
+                    "position": "right",
                     "text": "Open " + categoryLabel + " tray"
                 }],
                 "validation": {
@@ -397,14 +397,14 @@
                     "location": {
                         "flyout_block": blockLocation
                     },
-                    "position": "left",
+                    "position": "right",
                     "text": 'Drag the <kano-blockly-block type="' + markdownType + '"></kano-blockly-block> block onto your code space'
                 }],
                 "arrow": {
                     "target": {
                         "flyout_block": blockLocation
                     },
-                    "angle": 315,
+                    "angle": 120,
                     "size": 80
                 },
                 "validation": {
@@ -460,8 +460,8 @@
                 steps.push({
                     "tooltips": [
                         {
-                            "location": "right-panel",
-                            "position": "left",
+                            "location": "blocks-panel",
+                            "position": "right",
                             "text": Kano.MakeApps.CopyManager.get('drop-codespace')
                         }
                     ],

@@ -73,7 +73,7 @@
             step.tooltips = [{
                 position: 'left',
                 text: Kano.MakeApps.CopyManager.get('wrong-block-added') + '<br>' + Kano.MakeApps.CopyManager.get('put-block-in-bin'),
-                location: 'right-panel'
+                location: 'blocks-panel'
             }];
             step.arrow = {
                 target: 'blockly-bin',
@@ -269,7 +269,7 @@
                 block = this._blocklyWorkspace.getBlockById(detail.blockId);
             detail.type = this.eventsMap[detail.type] || detail.type;
             // Ignore connect event with no parent
-            // Ignore all events from shadow blocks except `value` 
+            // Ignore all events from shadow blocks except `value`
             if (detail.type === 'connect' && !detail.newParentId ||
                 detail.type !== 'value' && (block && block.isShadow())) {
                 return;
