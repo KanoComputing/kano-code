@@ -1,16 +1,35 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
+<link rel="import" href="../kano-app-player-toolbar/kano-app-player-toolbar.html">
 <dom-module id="kano-app-player">
     <style>
         :host {
           display: flex;
           align-items: center;
-          @apply(--layout-vertical);
+          @apply(--layout-vertical-reverse);
         }
         :host .user-app {
             @apply(--layout-flex);
             @apply(--layout-self-stretch);
             height: 100%;
         }
+
+        :host(.fullscreen) {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        :host(.fullscreen) .user-app {
+            width: 90%;
+            height: 90%;
+            margin: auto;
+        }
+
         #container {
             @apply(--layout-vertical);
             @apply(--layout-flex);
@@ -22,6 +41,9 @@
         h1.error {
             color: var(--color-red, red);
         }
+        kano-app-player-toolbar {
+            width: 100%;
+        }
     </style>
     <template>
         <div id="container">
@@ -30,6 +52,12 @@
                 <div>The app just won't run, will it?</div>
             </template>
         </div>
+        <template is="dom-if" if="{{showToolbar}}">
+            <kano-app-player-toolbar running="[[running]]"
+                                     on-run-button-clicked="_toggleRunning"
+                                     on-reset-button-clicked="_reset"
+                                     on-fullscreen-button-clicked="_toggleFullscreen"></kano-app-player-toolbar>
+        </template>
     </template>
     <script type="text/javascript">
         Polymer({
@@ -45,6 +73,14 @@
                 failed: {
                     type: Boolean,
                     value:false
+                },
+                showToolbar: {
+                    type: Boolean,
+                    value: false
+                },
+                running: {
+                    type: Boolean,
+                    value: false
                 }
             },
             _srcChanged () {
@@ -92,15 +128,45 @@
                 this.async(() => {
                     this.component.$$('kano-ui-viewport').resizeView();
                 });
+
+                this.running = true;
+                this.fullscreen = false;
             },
             _onAppFileError (e) {
                 this.failed = true;
             },
+            start () {
+                if (this.component.start) {
+                    this.component.start();
+                } else {
+                    // For compatibility with old shares
+                    this.component.attached();
+                }
+                this.running = true;
+            },
             stop () {
+                this.running = false;
                 this.component.stop();
             },
             getWorkspace () {
                 return this.component.workspace;
+            },
+            _toggleRunning () {
+                if (this.running) {
+                    this.stop();
+                } else {
+                    this.start();
+                }
+            },
+            _reset () {
+                this.stop();
+
+                setTimeout(this.start.bind(this), 0);
+            },
+            _toggleFullscreen () {
+                this.toggleClass('fullscreen');
+                this.component.$$('kano-ui-viewport').resizeView();
+                this.fullscreen = !this.fullscreen;
             }
         });
     </script>

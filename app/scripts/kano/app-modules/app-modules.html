@@ -111,14 +111,17 @@
                                         this.workspace.setBackgroundColor('${background}');
                                     }
 
-                                    ${code}
-
                                     this.async(function () {
-                                        this.appModules.start();
+                                        this.start();
                                     });
                                 },
                                 detached () {
                                     this.appModules.stop();
+                                },
+                                start () {
+                                    ${code}
+
+                                    this.appModules.start();
                                 },
                                 stop () {
                                     this.appModules.stop();

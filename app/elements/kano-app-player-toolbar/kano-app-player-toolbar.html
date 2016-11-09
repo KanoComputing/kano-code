@@ -1,0 +1,108 @@
+<link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
+
+<dom-module id="kano-app-player-toolbar">
+    <style>
+        :host {
+            display: block;
+        }
+        
+        :host .panel {
+            background-color: white;
+            border-radius: 5px;
+            padding: 4px 4px;
+
+            display: flex;
+            flex-direction: row;
+
+            align-items: center;
+            justify-content: center;
+
+            color: #d0d3d9;
+        }
+        :host .panel .pause {
+            border-right: 2px solid #d0d3d9;
+        }
+        :host .panel .icon img,
+        :host .panel kano-animated-svg {
+            margin: 8px 16px;
+        }
+        .icon kano-animated-svg {
+            width: 17px;
+            height: 21px;
+
+            --kano-animated-path: {
+                fill: #d0d3d9;
+                stroke: #d0d3d9;
+                stroke-width: 2px;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                transition: all ease-in-out 200ms;
+            }
+        }
+        :host .panel .icon img:hover,
+        :host .panel .icon kano-animated-svg:hover {
+            transition: opacity .2s ease-in-out;
+            opacity: 0.5;
+        }
+        :host .panel .icon {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        :host .panel .spacer {
+            flex: 1;
+        }
+    </style>
+    <template>
+        <div class="panel">
+            <div class="pause icon" on-tap="pauseClicked">
+                <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}">
+                </kano-animated-svg>
+            </div>
+            <div class="reset icon" on-tap="resetClicked">
+                <img src="/assets/icons/reset-icon-grey.svg" alt="Reset app" />
+            </div>
+            <div class="spacer"></div>
+            <div class="fullscreen icon" on-tap="fullscreenClicked">
+                <img src="/assets/icons/fullscreen-icon-grey.svg" alt="Fullscreen mode" />
+            </div>
+        </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    /* globals Polymer, Kano */
+    Polymer({
+        is: 'kano-app-player-toolbar',
+        properties: {
+            running: {
+                type: Boolean
+            }
+        },
+        ready () {
+            this.makeButtonIconPaths = {
+                stopped: 'M 4,18 10.5,14 10.5,6 4,2 z M 10.5,14 17,10 17,10 10.5,6 z',
+                running: 'M 2,18 6,18 6,2 2,2 z M 11,18 15,18 15,2 11,2 z'
+            };
+        },
+        attached () {
+        },
+        mousePositionHidden (show) {
+            return !show;
+        },
+        fullscreenClicked (e) {
+            this.fire('fullscreen-button-clicked');
+        },
+        pauseClicked (e) {
+            this.fire('run-button-clicked');
+        },
+        resetClicked (e) {
+            this.fire('reset-button-clicked');
+        },
+        _getRunningStatus (running) {
+            return running ? 'running' : 'stopped';
+        }
+    });
+</script>
