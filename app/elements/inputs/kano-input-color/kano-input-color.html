@@ -53,7 +53,7 @@ Example:
 <script type="text/javascript">
 
     const COLORS = [
-        '#F5F5F5',  // White
+        '#FFFFFF',  // White
         '#CCCCCC',  // Light Gray
         '#7D7A73',  // Gray
         '#000000',  // Black
@@ -91,8 +91,11 @@ Example:
         _computeColor (color, value) {
             let style = `background-color: ${color};`;
             if (color === value) {
-                style += `outline: 1px dashed ${color};
+                style += `outline: 1px dashed #aaa;
                             outline-offset: 1px;`;
+            }
+            if (color === '#FFFFFF') {
+                style += `box-shadow: inset 0 0 0 1px #eee;`
             }
             return style;
         },

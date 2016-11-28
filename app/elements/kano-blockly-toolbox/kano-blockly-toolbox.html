@@ -1,0 +1,274 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../kano-blockly-flyout/kano-blockly-flyout.html">
+<link rel="import" href="../kano-style/typography.html">
+<dom-module id="kano-blockly-toolbox">
+    <template>
+        <style>
+            :host {
+                display: block;
+                padding: 18px 0px 0px 0px;
+                color: var(--kano-blockly-toolbox-color, black);
+                font-family: var(--font-body, Arial);
+                background: var(--kano-blockly-toolbox-background, white);
+                overflow-y: auto;
+                @apply --kano-blockly-toolbox;
+                /* Promoto to it's own layer is it is a prime element */
+                transform: translateZ(0);
+            }
+            .category {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                padding-left: 12px;
+                padding-right: 22px;
+                width: 100%;
+                background: transparent;
+                color: var(--kano-blockly-toolbox-color, black);
+                border: 0;
+                margin-right: 12px;
+                font-family: var(--font-body, Arial);
+                font-size: 16px;
+                cursor: pointer;
+                transition: border-color linear 100ms;
+            }
+            .category:hover {
+                background-color: var(--kano-blockly-toolbox-selected-color, #f2f2f2);;
+            }
+            .separator {
+                height: 16px;
+            }
+            .category>* {
+                pointer-events: none;
+            }
+            .category.selected {
+                background-color: var(--kano-blockly-toolbox-selected-color, #f2f2f2);
+            }
+            .category:focus {
+                outline: none;
+            }
+            @keyframes fade-in {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                }
+            }
+            #flyout {
+                position: absolute;
+                top: 0;
+                transition: border-color linear 300ms;
+                /*border-bottom: 1px solid #383838;*/
+                overflow: hidden;
+                animation: fade-in ease-out 300ms;
+                display: none;
+                margin-left: 12px;
+            }
+            .category.selected .color {
+                box-shadow: 0 0 0 1px var(--kano-blockly-toolbox-selected-color, #f2f2f2),
+                            0 0 0 2px var(--selected-color, black);
+            }
+            .color {
+                width: 12px;
+                height: 12px;
+                margin: 12px;
+                margin-left: 2px;
+                border-radius: 50%;
+                box-shadow: none;
+                transition: box-shadow linear 150ms;
+            }
+            :host([opened]) {
+                @apply --kano-blockly-toolbox-opened;
+            }
+            *[hidden] {
+                display: none !important;
+            }
+            .mask {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: inherit;
+                display: none;
+            }
+        </style>
+        <kano-blockly-flyout id="flyout"
+                            padding-left="0"
+                            toolbox="[[currentToolbox]]"
+                            target-workspace="[[targetWorkspace]]"
+                            on-block-created="_onBlockCreated"></kano-blockly-flyout>
+        <div id="mask" class="mask"></div>
+        <template is="dom-repeat" items="[[toolbox]]" as="category">
+            <button type="button" class$="category [[_computeSelectedClass(category.selected)]]" on-tap="_selectCategory" id$="category-[[category.id]]" hidden$="[[_isSeparator(category.type)]]">
+                <div class="color" style$="[[_computeColorStyle(category.colour)]]"></div>
+                <div>[[category.name]]</div>
+            </button>
+            <div class="separator" hidden$="[[!_isSeparator(category.type)]]"></div>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: 'kano-blockly-toolbox',
+            properties: {
+                targetWorkspace: {
+                    type: Object,
+                    observer: '_targetWorkspaceChanged'
+                },
+                toolbox: {
+                    type: Array
+                },
+                opened: {
+                    type: Boolean,
+                    value: false,
+                    notify: true,
+                    reflectToAttribute: true
+                },
+                autoClose: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+            _isSeparator(type) {
+                return type === 'separator';
+            },
+            _computeColorStyle (color) {
+                return `background: ${color};`;
+            },
+            _computeSelectedClass (selected) {
+                return selected ? 'selected' : '';
+            },
+            _onBlockCreated () {
+                if (this.autoClose) {
+                    this.close();
+                }
+            },
+            close () {
+                let category, categoryEl, e;
+                category = this.toolbox[this.currentSelected];
+                if (category) {
+                    categoryEl = this.$$(`#category-${category.id}`),
+                    categoryEl.style.paddingBottom = '';
+                }
+                this.style.width = '';
+                this.$.flyout.style.display = 'none';
+                this.set(`toolbox.${this.currentSelected}.selected`, false);
+                e = { type: Blockly.Events.CLOSE_FLYOUT };
+                this.currentSelected = undefined;
+                this.currentToolbox = undefined;
+                this.customStyle['--selected-color'] = null;
+                this.updateStyles();
+                if (this.targetWorkspace) {
+                    this.targetWorkspace.fireChangeListener(e);
+                }
+            },
+            _targetWorkspaceChanged (ws) {
+                if (!ws) {
+                    return;
+                }
+                ws.getParentSvg().addEventListener('click', this._targetWorkspaceClicked.bind(this));
+            },
+            _targetWorkspaceClicked () {
+                this.close();
+            },
+            _selectCategory (e) {
+                let category = e.model.get('category'),
+                    target = e.target,
+                    index = e.model.get('index');
+
+                if (category.type === 'separator') {
+                    return;
+                }
+
+                if (typeof this.currentSelected !== 'undefined') {
+                    let categoryEl = this.$$(`#category-${this.toolbox[this.currentSelected].id}`);
+                    categoryEl.style.paddingBottom = '';
+                    this.style.width = '';
+                    this.$.flyout.style.display = 'none';
+                    this.set(`toolbox.${this.currentSelected}.selected`, false);
+                }
+
+                if (this.currentSelected !== index) {
+                    let e = {
+                        type: Blockly.Events.OPEN_FLYOUT,
+                        categoryId: category.id
+                    },
+                        onSizeChanged;
+                    onSizeChanged = (e) => {
+                        let size = e.detail,
+                            categoryEl = this.$$(`#category-${category.id}`),
+                            rect = categoryEl.getBoundingClientRect(),
+                            buttons = Polymer.dom(this.root).querySelectorAll('button.category, .separator:not([hidden])'),
+                            over = false, duration;
+                        this.$.flyout.removeEventListener('size-changed', onSizeChanged);
+                        this.transform(`translate(0px, ${rect.top + rect.height}px`, this.$.flyout);
+                        categoryEl.style.paddingBottom = `${size.height}px`;
+                        this.style.width = `${size.width + 35}px`;
+                        this._scrollIfNeeded(categoryEl);
+                        this.$.mask.style.display = 'block';
+                        this.$.mask.style.top = `${rect.top + rect.height}px`;
+                        duration = size.height / 3;
+                        for (let i = 0; i < buttons.length; i++) {
+                            if (over) {
+                                buttons[i].animate({
+                                    transform: [`translate(0px, -${size.height}px`, 'translate(0px, 0px)']
+                                }, {
+                                    duration
+                                });
+                            } else if (buttons[i] === categoryEl) {
+                                over = true;
+                            }
+                        }
+                        this.$.mask.animate({
+                            transform: ['translate(0px, 0px)', `translate(0px, ${size.height}px`]
+                        }, {
+                            duration,
+                            fill: 'forwards'
+                        }).onfinish = () => {
+                            this.$.mask.style.display = 'none';
+                        };
+                    };
+                    this.$.flyout.addEventListener('size-changed', onSizeChanged);
+                    this.$.flyout.style.display = 'block';
+                    this.currentSelected = index;
+                    this.currentToolbox = category.blocks;
+                    this.set(`toolbox.${this.currentSelected}.selected`, true);
+                    this.customStyle['--selected-color'] = category.colour;
+                    this.updateStyles();
+                    this.targetWorkspace.fireChangeListener(e);
+                    this.set('opened', true);
+                } else {
+                    let e = {
+                        type: Blockly.Events.CLOSE_FLYOUT
+                    };
+                    this.currentSelected = undefined;
+                    this.currentToolbox = undefined;
+                    this.customStyle['--selected-color'] = null;
+                    this.updateStyles();
+                    if (this.targetWorkspace) {
+                        this.targetWorkspace.fireChangeListener(e);
+                    }
+                    this.set('opened', false);
+                }
+            },
+            _scrollIfNeeded (toEl) {
+                let flyout = this.$.flyout,
+                    flyoutRect, rect;
+                    rect = this.getBoundingClientRect();
+                    flyoutRect = flyout.getBoundingClientRect();
+                    if (flyoutRect.top + flyoutRect.height > rect.top + rect.height) {
+                        toEl.scrollIntoView({block: 'start', behavior: 'smooth'});
+                    }
+            },
+            getCategoryElement (id) {
+                return this.$$(`#category-${id}`);
+            },
+            getFlyoutBlock (type) {
+                let flyout = this.$$(`#flyout`);
+                if (flyout) {
+                    return flyout.getBlockByType(type);
+                }
+            }
+        });
+    </script>
+</dom-module>

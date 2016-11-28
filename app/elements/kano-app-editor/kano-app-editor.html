@@ -16,7 +16,7 @@
     :host {
         position: relative;
         display: block;
-        @apply(--layout-vertical);
+        @apply --layout-vertical;
     }
     :host section {
         @apply(--layout-horizontal-reverse);
@@ -37,7 +37,7 @@
         @apply(--kano-box-shadow);
         min-width: 38%;
         max-width: 62%;
-        background-color: var(--color-dark, black);
+        background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
     }
     :host #workspace-panel kano-workspace {
         @apply(--layout-flex);
@@ -54,7 +54,7 @@
         position: relative;
         width: 8px;
         cursor: ew-resize;
-        background-color: var(--color-dark, black);
+        background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
     }
     :host .root-view-wrapper {
         position: relative;
@@ -104,6 +104,11 @@
         background-color: var(--color-red, red);
     }
 
+    #partsPanel {
+        --paper-drawer-panel-drawer-container: {
+            box-shadow: none !important;
+        };
+    }
     </style>
     <template>
         <section id="section" on-mousemove="mouseMoved" on-mouseup="completedResizing">

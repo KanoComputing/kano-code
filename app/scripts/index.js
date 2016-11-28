@@ -179,7 +179,8 @@
 
     window.Polymer = {
         dom: 'shadow',
-        lazyRegister: false
+        lazyRegister: false,
+        useNativeCSSProperties: true
     };
 
     if ('serviceWorker' in navigator) {

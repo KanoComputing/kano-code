@@ -5,6 +5,9 @@
                 display: block;
                 overflow-y: auto;
             }
+            svg {
+                width: 0px;
+            }
             svg path.blocklyPathDark, svg path.blocklyPathLight {
                 display: none;
             }
@@ -29,94 +32,167 @@
             is: 'kano-blockly-flyout',
             properties: {
                 toolbox: {
-                    type: Object,
+                    type: Array,
                     observer: '_toolboxChanged'
                 },
                 targetWorkspace: {
                     type: Object
                 },
-                width: {
+                paddingLeft: {
                     type: Number,
-                    value: 300
+                    value: 20
+                },
+                separators: {
+                    type: Boolean,
+                    value: false
                 }
             },
             ready () {
                 this._listeners = [];
                 this._separators = [];
+                this._blockDB = {};
             },
-            _createWorskspace () {
+            attached () {
+                this._render();
+            },
+            _createWorkspace () {
                 this.ws = new Blockly.WorkspaceSvg({});
                 this.ws.isFlyout = true;
                 this.wsDom = this.ws.createDom();
-                this.$.svg.appendChild(this.wsDom);
+                this.svgGroup = Blockly.createSvgElement('g', { 'class': 'kanoBlocklyFlyout' }, null);
+                this.svgGroup.appendChild(this.wsDom);
+                this.$.svg.appendChild(this.svgGroup);
             },
             _toolboxChanged (toolbox) {
-                if (!this.ws) {
-                    this._createWorskspace();
-                }
-                this._separators.forEach(sep => {
-                    if (sep.parentNode) {
-                        sep.parentNode.removeChild(sep);
-                    }
-                });
-                this._separators = [];
                 let xmlString,
                     content,
                     xml;
+
+                toolbox = toolbox || [];
 
                 xmlString = toolbox.map(block => {
                     content = '';
                     if (block.shadow) {
                         content = Object.keys(block.shadow).map(field => `<value name="${field}">${block.shadow[field]}</value>`);
                     }
-                    return `<block type="${block.type}">${content}</block>`;
+                    return `<block type="${block.id}">${content}</block>`;
                 }).join('');
 
                 xmlString = `<xml>${xmlString}</xml>`
                     
                 xml = Blockly.Xml.textToDom(xmlString);
-                this.ws.clear();
-                this.async(() => {
-                    try {
-                        Blockly.Xml.domToWorkspace(xml, this.ws);
-                    } catch (e) {} // Ignore loading errors
-                    this._updateSvgSize();
+                this.xmlList = xml.children;
+
+                if (this.ws) {
+                    this._renderBlocks();
+                }
+            },
+            _render () {
+                this._createWorkspace();
+                if (this._separators) {
+                    this._separators.forEach(sep => {
+                        if (sep.parentNode) {
+                            sep.parentNode.removeChild(sep);
+                        }
+                    });
+                }
+                this._separators = [];
+                this._renderBlocks();
+            },
+            _updateDB () {
+                this._blockDB = {};
+                this.ws.getAllBlocks().forEach(block => {
+                    this._blockDB[block.type] = block;
                 });
             },
-            _updateSvgSize () {
-                let blocks = this.ws.getTopBlocks(),
-                    cursorX = 20 + Blockly.BlockSvg.TAB_WIDTH,
+            getBlockByType (type) {
+                return this._blockDB[type];
+            },
+            render () {
+                this._renderBlocks();
+            },
+            _renderBlocks () {
+                let cursorX = this.paddingLeft + Blockly.BlockSvg.TAB_WIDTH,
                     cursorY = 0,
-                    rect;
-                blocks.forEach((block, index) => {
-                    let allBlocks = block.getDescendants();
+                    maxWidth = 0,
+                    thisRect, rect, canvas, allBlocks, root, sep, hw;
+
+                if (!this.xmlList) {
+                    return;
+                }
+
+                this._clearOldBlocks();
+
+                this.$.svg.style.width = '500px';
+                this.$.svg.style.height = '2000px';
+
+                this.blocks = [];
+                for (let i = 0; i < this.xmlList.length; i++) {
+                    this.blocks.push(Blockly.Xml.domToBlock(this.xmlList[i], this.ws));
+                }
+
+                this.blocks.forEach(block => {
+                    hw = block.getHeightWidth();
+                    if (hw.width > maxWidth) {
+                        maxWidth = hw.width;
+                    }
+                });
+
+                maxWidth = Math.max(maxWidth + this.paddingLeft + 20, 200);
+
+                canvas = this.ws.getCanvas();
+                if (!canvas) {
+                    return;
+                }
+
+                for (let i = 0; i < this.blocks.length; i++) {
+                    let block = this.blocks[i];
+                    allBlocks = block.getDescendants();
                     allBlocks.forEach(child => {
                         child.isInFlyout = true;
                     });
-                    let root = block.getSvgRoot();
-                    block.render();
-                    var sep = Blockly.createSvgElement('rect', { height: 1, width: this.width, fill: '#37454d' }, null);
-                    sep.setAttribute('transform', `translate(0, ${cursorY})`);
-                    this._separators.push(sep);
-                    this.ws.getCanvas().insertBefore(sep, root);
+                    if (this.separators) {
+                        sep = Blockly.createSvgElement('rect', { height: 1, width: maxWidth, fill: '#37454d' }, null);
+                        sep.setAttribute('transform', `translate(0, ${cursorY})`);
+                        canvas.insertBefore(sep, root);
+                    }
 
                     cursorY += 12;
                     
-                    let hw = block.getHeightWidth();
+                    hw = block.getHeightWidth();
                     block.moveBy(cursorX, cursorY);
                     cursorY += hw.height + 12;
-                    var rect = Blockly.createSvgElement('rect', {'fill-opacity': 0}, null);
+                    rect = Blockly.createSvgElement('rect', { 'fill-opacity': 0 }, null);
+                    rect.setAttribute('x', cursorX);
+                    rect.setAttribute('y', cursorY);
+                    rect.setAttribute('width', hw.width);
+                    rect.setAttribute('height', hw.height);
                     rect.tooltip = block;
                     Blockly.Tooltip.bindMouseEvents(rect);
-                    this.ws.getCanvas().insertBefore(rect, root);
+                    root = block.getSvgRoot();
+                    canvas.insertBefore(rect, root);
                     block.flyoutRect_ = rect;
-                    this._addBlockListeners(root, block, rect)
+                    this._addBlockListeners(root, block, rect);
+                }
+                this.$.svg.style.width = maxWidth;
+                this.$.svg.style.height = cursorY + 20;
+                this.fire('size-changed', {
+                    width: maxWidth,
+                    height: cursorY + 20
                 });
-                rect = this.wsDom.getBoundingClientRect();
-                this.$.svg.style.width = 300;
-                this.$.svg.style.height = rect.height + 20;
+                this._updateDB();
+            },
+            _clearOldBlocks () {
+                let oldBlocks = this.ws.getTopBlocks(false);
+
+                oldBlocks.forEach(block => {
+                    if (block.workspace === this.ws) {
+                        block.dispose(false, false);
+                    }
+                });
             },
             _addBlockListeners (root, block, rect) {
+                this._listeners = this._listeners || [];
                 this._listeners.push(Blockly.bindEvent_(root, 'mousedown', null, this._blockMouseDown(block)));
                 this._listeners.push(Blockly.bindEvent_(rect, 'mousedown', null, this._blockMouseDown(block)));
                 this._listeners.push(Blockly.bindEvent_(root, 'mouseover', block, block.addSelect));

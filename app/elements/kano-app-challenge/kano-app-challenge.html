@@ -478,6 +478,9 @@
                 this.$.highlight.hide();
             }
         },
+        getToolbox () {
+            return this.editor.getBlocklyWorkspace().toolbox;
+        },
         getDeepElement (selector) {
             let pieces,
                 element = this.editor,
@@ -493,17 +496,22 @@
                     }
                     return block.svgPath_;
                 } else if (selector.category) {
-                    let cat = selector.category;
+                    let cat = selector.category,
+                        toolbox;
                     if (cat.part) {
                         cat = this.stepIds[cat.part];
                     }
-                    return this.editor.getBlocklyWorkspace().getCategoryElementById(cat);
+                    toolbox = this.getToolbox();
+                    return toolbox.getCategoryElement(cat);
                 } else if (selector.flyout_block) {
-                    let type = selector.flyout_block;
+                    let type = selector.flyout_block,
+                        toolbox;
                     if (type.part) {
                         type = `${this.stepIds[type.part]}#${type.type}`;
                     }
-                    return this.editor.getBlocklyWorkspace().getFlyoutBlockByType(type).svgPath_;
+                    toolbox = this.getToolbox();
+
+                    return toolbox.getFlyoutBlock(type).getSvgRoot();
                 } else if (selector.root) {
                     element = document.querySelector(selector.root);
                     selector = selector.path;

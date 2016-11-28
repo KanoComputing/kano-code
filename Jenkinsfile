@@ -25,7 +25,12 @@ node {
 
     stage('test') {
         sh "gulp build-dev"
-        sh "xvfb-run --auto-servernum gulp wct"
+        try {
+            sh "xvfb-run --auto-servernum gulp wct"
+        } catch (Exception err) {
+            slackSend color: '#ff0000', message: 'Kano Code build failed to pass tests on staging. Deploy canceled'
+            currentBuild.result = 'FAILURE'
+        }
         // Remove the test folder
         sh "rm -rf www"
     }

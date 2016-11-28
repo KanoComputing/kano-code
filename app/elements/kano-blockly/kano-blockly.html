@@ -1,10 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="./import.html">
 <link rel="import" href="../kano-blockly-omnibox/kano-blockly-omnibox.html">
+<link rel="import" href="../kano-blockly-toolbox/kano-blockly-toolbox.html">
 
 <dom-module id="kano-blockly">
     <style>
@@ -12,15 +14,39 @@
             display: block;
             position: relative;
         }
-        :host #workspace {
+        #workspace {
             position: absolute;
             top: 0px;
             bottom: 0px;
             left: 0px;
             right: 0px;
+            @apply(--layout-horizontal);
+            background-color: var(--kano-blockly-background, white);
+        }
+        #toolbox {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            box-sizing: border-box;
+            --kano-blockly-toolbox-background: var(--kano-blockly-background, white);
         }
         svg {
-            @apply(--kano-crossed-background);
+            @apply --layout-flex;
+        }
+        .gutter {
+            width: 20px;
+            color: rgb(85, 100, 109);
+            @apply(--layout-vertical);
+            padding-top: 22px;
+            padding-left: 22px;
+        }
+
+        .gutter div {
+            height: 22px;
+            font-weight: 400;
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
         }
 
         .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"]), ::slotted(* .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"])) {
@@ -143,7 +169,10 @@
         }
     </style>
     <template>
-        <div id="workspace"></div>
+        <div id="workspace">
+            <kano-blockly-toolbox id="toolbox" toolbox="[[toolbox]]" on-block-created="_onToolboxBlockCreated" auto-close></kano-blockly-toolbox>
+            <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
         <div class="omnibox-wrapper" id="omnibox-wrapper" on-tap="_omniboxWrapperTapped">
             <kano-blockly-omnibox id="omnibox" on-close="_closeOmnibox"></kano-blockly-omnibox>
         </div>
@@ -196,13 +225,16 @@
          * Inject blockly to the workspace div
          */
         attached () {
+            let options, defs;
             this.varModal = this.$['var-modal'];
             this.target = document.body;
             this.visible = false;
-            this.workspace = Blockly.inject(this.$.workspace, {
-                toolbox: this.toolboxXml,
+            options = new Blockly.Options({
                 media: '/assets/vendor/google-blockly/media/',
                 scrollbars: true,
+                trashcan: true,
+                comments: true,
+                disable: true,
                 zoom: {
                     controls: true,
                     startScale: 1.0,
@@ -211,13 +243,24 @@
                     scaleSpeed: 1.2
                 }
             });
-            this.$.omnibox.targetWorkspace = this.workspace;
-            // Oddly, panning doesn't work if the background has a fill property
-            Polymer.dom(this.root).querySelector('.blocklyMainBackground').style.fill = '';
+            defs = Blockly.createSvgElement('defs', {}, this.$.svg);
+            options.gridPattern = Blockly.createSvgElement('pattern', {'id': 'blocklyGridPattern' + String(Math.random()).substring(2), 'patternUnits': 'userSpaceOnUse'}, defs);
+            // Load CSS.
+            Blockly.Css.inject(options.hasCss, options.pathToMedia);
+            this.workspace = this._createWorkspace(this.$.svg, options);
+            this.workspace.toolbox = this.$.toolbox;
+            this._initWorkspace();
+            this.workspace.markFocused();
+            Blockly.bindEvent_(this.$.svg, 'focus', this.workspace, this.workspace.markFocused);
+            Blockly.svgResize(this.workspace);
             Polymer.dom(this.root).appendChild(Blockly.Css.styleSheet_.ownerNode.cloneNode(true));
             this.workspace.componentRoot_ = Polymer.dom(this.root);
             this.workspace.options.modalFunction = this._blocklyVarModal.bind(this);
             this.workspace.addChangeListener(this.onBlocklyChange.bind(this));
+
+            this.$.omnibox.targetWorkspace = this.workspace;
+            this.$.toolbox.targetWorkspace = this.workspace;
+
             this.async(() => {
                 this.fire('blockly-ready');
                 this.resize();
@@ -236,6 +279,56 @@
         detached () {
             this.workspace.dispose();
             document.body.style.overflow = undefined;
+        },
+        _onToolboxBlockCreated () {
+            this.$.svg.style.zIndex = 1;
+        },
+        _onToolboxEndDrag () {
+            this.$.svg.style.zIndex = '';
+        },
+        _createWorkspace (svg, options) {
+            options.parentWorkspace = null;
+            var mainWorkspace = new Blockly.WorkspaceSvg(options);
+            mainWorkspace.scale = options.zoomOptions.startScale;
+            svg.appendChild(mainWorkspace.createDom('blocklyMainBackground'));
+            // A null translation will also apply the correct initial scale.
+            mainWorkspace.translate(0, 0);
+            mainWorkspace.markFocused();
+
+            // The SVG is now fully assembled.
+            Blockly.svgResize(mainWorkspace);
+            Blockly.WidgetDiv.createDom();
+            Blockly.Tooltip.createDom();
+            return mainWorkspace;
+        },
+        _initWorkspace () {
+            let options = this.workspace.options;
+            var svg = this.workspace.getParentSvg();
+
+            // Supress the browser's context menu.
+            Blockly.bindEvent_(svg, 'contextmenu', null, (e) => {
+                if (!Blockly.isTargetInput_(e)) {
+                    e.preventDefault();
+                }
+            });
+
+            var workspaceResizeHandler = Blockly.bindEvent_(window, 'resize', null, () => {
+                Blockly.hideChaff(true);
+                Blockly.svgResize(this.workspace);
+            });
+            this.workspace.setResizeHandlerWrapper(workspaceResizeHandler);
+
+            Blockly.inject.bindDocumentEvents_();
+
+            if (options.hasScrollbars) {
+                this.workspace.scrollbar = new Blockly.ScrollbarPair(this.workspace);
+                this.workspace.scrollbar.resize();
+            }
+
+            // Load the sounds.
+            if (options.hasSounds) {
+                Blockly.inject.loadSounds_(options.pathToMedia, this.workspace);
+            }
         },
         _closeOmnibox (e) {
             if (!this._omniboxOpened) {
@@ -383,17 +476,37 @@
             if (e.type === Blockly.Events.CREATE) {
                 this.lastCreated = e.blockId;
             }
-            // If there is a move event or a click event, we check if it matches the last block created
-            if ((e.type === Blockly.Events.MOVE || e.type === Blockly.Events.UI && e.element === 'click') &&
-                this.lastCreated === e.blockId) {
-                // The block targetted by the last event matches the last created,
-                //  we trigger a drop event
-                let ev = {
-                    type: Blockly.Events.DROP_BLOCK,
-                    blockId: e.blockId
-                };
-                this.workspace.fireChangeListener(ev);
-                this.lastCreated = null;
+            if ((e.type === Blockly.Events.MOVE || e.type === Blockly.Events.UI && e.element === 'click')) {
+                let block = this.workspace.getBlockById(e.blockId),
+                    coord, dimensions, toolboxRect;
+                if (block) {
+                    coord = Blockly.getSvgXY_(block.getSvgRoot(), this.workspace);
+                    dimensions = block.getHeightWidth();
+                    toolboxRect = this.$.toolbox.getBoundingClientRect();
+
+                    if (coord.x + dimensions.width / 3 < toolboxRect.width) {
+                        // Cancel move event so that the undostack doesn't get populated
+                        Blockly.Events.disable();
+                        this.workspace.undo();
+                        Blockly.Events.enable();
+                        // Delete the block without animation
+                        block.dispose(true, false);
+                        this._onToolboxEndDrag();
+                        return;
+                    }
+                }
+                // If there is a move event or a click event, we check if it matches the last block created
+                if (this.lastCreated === e.blockId) {
+                    // The block targetted by the last event matches the last created,
+                    //  we trigger a drop event
+                    let ev = {
+                        type: Blockly.Events.DROP_BLOCK,
+                        blockId: e.blockId
+                    };
+                    this.workspace.fireChangeListener(ev);
+                    this.lastCreated = null;
+                    this._onToolboxEndDrag();
+                }
             }
             this.fire('change', e);
             if (this.codeRelatedEvents.indexOf(e.type) !== -1) {
@@ -451,7 +564,7 @@
         },
         _checkDefaultBlocks () {
             let blocks = this.workspace.getAllBlocks();
-            if (!blocks.length) {
+            if (!blocks.length && this.defaultBlocks) {
                 this._loadBlocks(this.defaultBlocks);
             }
         },
@@ -464,6 +577,9 @@
         },
         getWorkspace () {
             return this.workspace;
+        },
+        getToolbox () {
+            return this.$.toolbox;
         }
     });
 </script>

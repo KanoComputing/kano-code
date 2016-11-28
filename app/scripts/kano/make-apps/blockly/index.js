@@ -90,7 +90,7 @@
         }, [])
         .map(key => {
             return {
-                type: key,
+                id: key,
                 shadow: this.Defaults.shadowMap[key]
             };
         });

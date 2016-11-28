@@ -7,7 +7,7 @@
         }
         :host .panel {
             margin-top: 5px;
-            background-color: #19111C;
+            background-color: #484848;
             border-radius: 5px;
             padding: 4px 4px;
 
@@ -21,7 +21,7 @@
         }
         :host .panel .fullscreen,
         :host .panel .pause {
-            border-right: 2px solid #563263;
+            border-right: 2px solid #eee;
         }
         :host .mouse-position,
         :host .panel .icon img,
@@ -30,7 +30,7 @@
         }
         .icon kano-animated-svg {
             width: 17px;
-            height: 21px;
+            height: 17px;
 
             --kano-animated-path: {
                 fill: white;
@@ -65,7 +65,7 @@
         }
         .buttons button {
             @apply(--kano-button);
-            background-color: var(--color-green, green);
+            background-color: var(--color-orange, orange);
             cursor: pointer;
             margin-right: 5px;
             transition: background-color .3s ease;
@@ -82,7 +82,7 @@
         }
         .buttons button:hover,
         .buttons button.open {
-            background-color: var(--color-lighter-green, green);
+            background-color: var(--color-lighter-orange, orange);
         }
     </style>
     <template>

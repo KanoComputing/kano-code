@@ -13,6 +13,7 @@
 <link rel="import" href="../kano-routing/kano-routing.html">
 <link rel="import" href="../kano-ui-item/kano-ui-item.html">
 <link rel="import" href="../kano-style/kano-style.html">
+<link rel="import" href="../kano-style/themes/light.html">
 <link rel="import" href="../kano-auth/kano-auth.html">
 <link rel="import" href="../kano-side-menu/kano-side-menu.html">
 <link rel="import" href="../behaviors/kano-modal-animator-behavior.html">
@@ -37,11 +38,14 @@ Example:
     :host button {
         font-family: Bariol;
     }
-    :host paper-drawer-panel {
+    #drawer {
         @apply(--layout-vertical);
         @apply(--layout-flex);
         --paper-drawer-panel-main-container: {
             @apply(--layout-flex);
+        };
+        --paper-drawer-panel-drawer-container: {
+            box-shadow: none !important;
         };
         overflow-y: scroll;
     }

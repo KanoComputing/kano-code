@@ -2,6 +2,7 @@
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../behaviors.html">
+<link rel="import" href="../../kano-style/typography.html">
 <!--
 
 `kano-input-color` Dislpay a choice of fonts and allows the selection of one of them
@@ -25,6 +26,16 @@ Example:
     :host paper-dropdown-menu {
         position: relative;
         left: 17px;
+    }
+    paper-dropdown-menu {
+        --paper-input-container-input: {
+            font-family: var(--font-body, Arial);
+        };
+    }
+    paper-item {
+        --paper-item: {
+            font-family: var(--font-body, Arial);
+        };
     }
     </style>
     <template>

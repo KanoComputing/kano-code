@@ -54,7 +54,10 @@
             <input id="input" type="text" value="{{query::input}}">
         </div>
         <div class="flyout">
-            <kano-blockly-flyout toolbox="[[resultToolbox]]" target-workspace="[[targetWorkspace]]" on-block-created="_blockCreated"></kano-blockly-flyout>
+            <kano-blockly-flyout toolbox="[[resultToolbox]]"
+                                target-workspace="[[targetWorkspace]]"
+                                on-block-created="_blockCreated"
+                                separators></kano-blockly-flyout>
         </div>
         <div class="extra"></div>
     </template>

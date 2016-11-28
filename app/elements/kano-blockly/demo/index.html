@@ -1,0 +1,134 @@
+<!doctype html>
+<html>
+    <head>
+        <title>kano-blockly demo</title>
+
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../kano-blockly.html">
+        <link rel="import" href="../../kano-style/themes/light.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+            .centered {
+                max-width: 600px;
+            }
+            demo-snippet {
+                --demo-snippet-demo: {
+                    padding: 0px;
+                    min-height: 200px;
+                };
+            }
+            kano-blockly {
+                min-height: 300px;
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container centered">
+            <h3>Deault style</h3>
+            <demo-snippet>
+                <template>
+                    <kano-blockly id="demo-1" toolbox="[[toolbox]]"></kano-blockly>
+                    <script>
+                    document.addEventListener('WebComponentsReady', () => {
+                        let blockly = document.querySelector('#demo-1');
+                        blockly.toolbox = TOOLBOX;
+                    });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+        <script>
+            Blockly.FieldCustom = function (value, opt_validator) {
+                Blockly.FieldCustom.superClass_.constructor.call(this, value, opt_validator);
+                //this.setText(Blockly.Field.NBSP + Blockly.Field.NBSP + Blockly.Field.NBSP);
+            };
+            goog.inherits(Blockly.FieldCustom, Blockly.Field);
+
+            Blockly.FieldCustom.prototype.showEditor_ = function () {
+                Blockly.WidgetDiv.show(this, this.sourceBlock_.RTL, Blockly.FieldCustom.widgetDispose_);
+
+                // Position the palette to line up with the field.
+                // Record windowSize and scrollOffset before adding the palette.
+                var windowSize = goog.dom.getViewportSize();
+                var scrollOffset = goog.style.getViewportPageOffset(document);
+                var xy = this.getAbsoluteXY_();
+                var borderBBox = this.getScaledBBox_();
+                var div = Blockly.WidgetDiv.DIV;
+                
+                var customEl = document.createElement('span');
+                customEl.innerText = this.getValue();
+
+                customEl.addEventListener('click', function () {
+                    this.setValue(Number(this.getValue()) + 1);
+                    customEl.innerText = this.getValue();
+                }.bind(this));
+
+                div.appendChild(customEl);
+
+                var size = customEl.getBoundingClientRect();
+
+                // Flip the palette vertically if off the bottom.
+                if (xy.y + size.height + borderBBox.height >= windowSize.height + scrollOffset.y) {
+                    xy.y -= size.height - 1;
+                } else {
+                    xy.y += borderBBox.height - 1;
+                }
+                if (this.sourceBlock_.RTL) {
+                    xy.x += borderBBox.width;
+                    xy.x -= size.width;
+                    // Don't go offscreen left.
+                    if (xy.x < scrollOffset.x) {
+                        xy.x = scrollOffset.x;
+                    }
+                } else {
+                    // Don't go offscreen right.
+                    if (xy.x > windowSize.width + scrollOffset.x - size.width) {
+                        xy.x = windowSize.width + scrollOffset.x - size.width;
+                    }
+                }
+                Blockly.WidgetDiv.position(xy.x, xy.y, windowSize, scrollOffset, this.sourceBlock_.RTL);
+            };
+
+            Blockly.Blocks.custom_input_test = {
+                init: function () {
+                    this.appendDummyInput()
+                        .appendField(new Blockly.FieldCustom(1));
+                }
+            };
+            const TOOLBOX = [{
+                name: 'Control',
+                id: 'control',
+                colour: 'green',
+                blocks: [{
+                    id: 'controls_if'
+                },{
+                    id: 'logic_compare'
+                },{
+                    id: 'logic_operation'
+                },{
+                    id: 'logic_negate'
+                },{
+                    id: 'logic_boolean'
+                }]
+            },{
+                name: 'Math',
+                colour: 'red',
+                blocks: [{
+                    id: 'math_number'
+                }]
+            }, {
+                id: 'custom',
+                name: 'Custom',
+                blocks: [{
+                    id: 'custom_input_test'
+                }]
+            }];
+        </script>
+    </body>
+</html>

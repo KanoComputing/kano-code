@@ -2,12 +2,23 @@
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../behaviors.html">
+<link rel="import" href="../../kano-style/typography.html">
 
 <dom-module id="kano-input-list">
     <style>
     :host {
         display: block;
         text-align: left;
+    }
+    paper-dropdown-menu {
+        --paper-input-container-input: {
+            font-family: var(--font-body, Arial);
+        };
+    }
+    paper-item {
+        --paper-item: {
+            font-family: var(--font-body, Arial);
+        };
     }
     </style>
     <template>

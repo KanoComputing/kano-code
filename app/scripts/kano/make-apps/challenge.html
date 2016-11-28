@@ -23,7 +23,21 @@
 
         Challenge.categoryMap = Kano.MakeApps.Blockly.Defaults.categoryMap;
 
-        Challenge.fieldDefaults = Kano.MakeApps.Blockly.Defaults.values;
+        Challenge.fieldDefaults = {};
+
+        let block;
+
+        Object.keys(Kano.MakeApps.Blockly.Defaults.values).forEach(blockId => {
+            Challenge.fieldDefaults[blockId] = {};
+            block = Kano.MakeApps.Blockly.Defaults.values[blockId];
+            Object.keys(block).forEach(fieldId => {
+                if (block[fieldId].default) {
+                    Challenge.fieldDefaults[blockId][fieldId] = block[fieldId].default;
+                } else {
+                    Challenge.fieldDefaults[blockId][fieldId] = block[fieldId];
+                }
+            });
+        });
 
         Challenge.labels = Kano.MakeApps.Blockly.Defaults.labels;
 
@@ -240,6 +254,34 @@
             return steps;
         };
 
+        Challenge.prototype.parseComment = function (node) {
+            let commentNode = node.getElementsByTagName('comment')[0],
+                data = {},
+                lines, pieces, property, args;
+            if (commentNode) {
+                // Matches line return outside of quotes
+                lines = commentNode.innerText.split(/\n(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+                lines.forEach(line => {
+                    // Space outside of quotes
+                    pieces = line.split(/\s(?=(?:[^"]*"[^"]*")*[^"]*$)/);
+                    if (pieces[0]) {
+                        property = pieces.shift();
+                        property = property.replace('@', '');
+                        args = pieces.map(piece => {
+                            let m = piece.match(/^"(.+)"$/);
+                            if (m) {
+                                return m[1];
+                            }
+                            return piece;
+                        });
+                        data[property] = args;
+                    }
+                });
+            }
+
+            return data;
+        };
+
         /**
          * Generate the steps matching a `field` node in a Blockly XML tree
          */
@@ -250,7 +292,17 @@
                 steps = [],
                 fieldValue,
                 inputName,
-                fieldName;
+                fieldName, commentData;
+
+            commentData = this.parseComment(parent);
+
+            if (commentData.tooltipText) {
+                commentData.tooltipText = commentData.tooltipText[0];
+            }
+
+            if (commentData.freeWill) {
+                commentData.freeWill = commentData.freeWill[0];
+            }
 
             if (parentBlockType.block === 'variables_set' && this.data.variables.indexOf(node.firstChild.nodeValue) === -1) {
                 this.data.variables.push(node.firstChild.nodeValue);
@@ -274,7 +326,8 @@
                 // Loose check of the value
                 if (node.firstChild.nodeValue != fieldDefault) {
                     let challengeId = parent.getAttribute('challengeId'),
-                        rawId = parent.getAttribute('id');
+                        rawId = parent.getAttribute('id'),
+                        tooltipText;
                     let selector = {
                         shadow: inputName
                     },
@@ -285,6 +338,7 @@
                         selector.rawId = rawId;
                     }
                     fieldValue = this.translate('field', node.firstChild.nodeValue);
+                    tooltipText = commentData.tooltipText || 'Change to <kano-value-preview><span>' + fieldValue + '</span></kano-value-preview>';
                     // Add a `change value` step to get the right value
                     step = {
                         "tooltips": [{
@@ -292,17 +346,19 @@
                                 "block": selector
                             },
                             "position": "top",
-                            "text": 'Change to <kano-value-preview><span>' + fieldValue + '</span></kano-value-preview>'
+                            "text": tooltipText
                         }],
                         "validation": {
                             "blockly": {
                                 "value": {
-                                    "target": selector,
-                                    "value": node.firstChild.nodeValue
+                                    "target": selector
                                 }
                             }
                         }
                     };
+                    if (commentData.freeWill !== fieldName) {
+                        step.validation.blockly.value.value = node.firstChild.nodeValue;
+                    }
                     steps.push(step);
                 }
                 return steps;
@@ -325,7 +381,22 @@
                 markdownType,
                 creationType,
                 categoryLabel,
-                inputName;
+                inputName,
+                commentData;
+
+            commentData = this.parseComment(node);
+
+            if (commentData.openTrayText) {
+                commentData.openTrayText = commentData.openTrayText[0].replace('\n', '<br>');
+            }
+
+            if (commentData.createText) {
+                commentData.createText = commentData.createText[0].replace('\n', '<br>');
+            }
+
+            if (commentData.connectText) {
+                commentData.connectText = commentData.connectText[0].replace('\n', '<br>');
+            }
 
             node.setAttribute('challengeId', blockChallengeId);
 
@@ -378,13 +449,17 @@
                 categoryLabel = "this";
             }
 
+            if (commentData.createText) {
+                commentData.createText = commentData.createText.replace(/\$blockPreview/g, `<kano-blockly-block type="${markdownType}"></kano-blockly-block>`);
+            }
+
             steps.push({
                 "tooltips": [{
                     "location": {
                         "category": categoryLocation
                     },
                     "position": "right",
-                    "text": "Open " + categoryLabel + " tray"
+                    "text": commentData.openTrayText || "Open " + categoryLabel + " tray"
                 }],
                 "validation": {
                     "blockly": {
@@ -398,7 +473,7 @@
                         "flyout_block": blockLocation
                     },
                     "position": "right",
-                    "text": 'Drag the <kano-blockly-block type="' + markdownType + '"></kano-blockly-block> block onto your code space'
+                    "text": commentData.createText || 'Drag the <kano-blockly-block type="' + markdownType + '"></kano-blockly-block> block onto your code space'
                 }],
                 "arrow": {
                     "target": {
@@ -431,7 +506,7 @@
                             }
                         },
                         "position": "left",
-                        "text": Kano.MakeApps.CopyManager.get('connect-blocks')
+                        "text": commentData.connectText || Kano.MakeApps.CopyManager.get('connect-blocks')
                     }],
                     "validation": {
                         "blockly": {

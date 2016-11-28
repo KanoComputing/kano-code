@@ -34,6 +34,12 @@
                         }
                         break;
                     }
+                    case 'object': {
+                        if (values[input].shadow) {
+                            shadow[input] = values[input].shadow;
+                        }
+                        break;
+                    }
                     default: {
                         break;
                     }

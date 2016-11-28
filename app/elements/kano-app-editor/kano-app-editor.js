@@ -4,7 +4,7 @@ function getDefaultBackground() {
     return {
         name: 'My app',
         userStyle: {
-            background: '#F5F5F5'
+            background: '#ffffff'
         }
     };
 }
@@ -733,6 +733,9 @@ Polymer({
             this.set('editableLayout', false);
             this.closeDrawer();
         }
+    },
+    getBlockly () {
+        return this.$['root-view'].getBlockly();
     },
     getBlocklyWorkspace () {
         return this.$['root-view'].getBlocklyWorkspace();

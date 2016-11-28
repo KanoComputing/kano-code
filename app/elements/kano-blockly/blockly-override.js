@@ -69,11 +69,6 @@ function rgbToHex(r,g,b){
     })(bin.toString(16).toUpperCase())
 }
 
-var injectMethods = {
-    bindDocumentEvents_: Blockly.inject.bindDocumentEvents_,
-    loadSounds_: Blockly.inject.loadSounds_,
-};
-
 /**
  * Sets the state or property of an element.
  * @param {!Element} element DOM node where we set state.
@@ -113,36 +108,6 @@ goog.a11y.aria.setState = function(element, stateName, value) {
   }
 };
 
-
-/**
- * Inject a Blockly editor into the specified container element (usually a div).
- * @param {!Element|string} container Containing element, or its ID,
- *     or a CSS selector.
- * @param {Object=} opt_options Optional dictionary of options.
- * @return {!Blockly.Workspace} Newly created main workspace.
- */
-Blockly.inject = function(container, opt_options) {
-  if (goog.isString(container)) {
-    container = document.getElementById(container) ||
-        document.querySelector(container);
-  }
-  // Verify that the container is in document.
-  // No relevant using shadow dom
-  /*if (!goog.dom.contains(document, container)) {
-    throw 'Error: container is not in current document.';
-  }*/
-  var options = new Blockly.Options(opt_options || {});
-  var svg = Blockly.createDom_(container, options);
-  var workspace = Blockly.createMainWorkspace_(svg, options);
-  Blockly.init_(workspace);
-  workspace.markFocused();
-  Blockly.bindEvent_(svg, 'focus', workspace, workspace.markFocused);
-  Blockly.svgResize(workspace);
-  return workspace;
-};
-
-Blockly.inject.bindDocumentEvents_ = injectMethods.bindDocumentEvents_;
-Blockly.inject.loadSounds_ = injectMethods.loadSounds_;
 
 /**
  * Is this event targeting a text input widget?
@@ -238,377 +203,19 @@ Blockly.getSvgXY_ = function(element, workspace) {
   return new goog.math.Coordinate(x, y);
 };
 
-Blockly.Flyout.blocks = {};
-Blockly.Workspace.prototype.getFlyoutBlockByType = (type) => {
-    return Blockly.Flyout.blocks[type];
-};
-
 /**
- * Hide and empty the flyout.
+ * Move the zoom controls to the bottom-right corner.
  */
-Blockly.Flyout.prototype.hide = function() {
-  if (!this.isVisible()) {
+Blockly.ZoomControls.prototype.position = function() {
+  var metrics = this.workspace_.getMetrics();
+  if (!metrics) {
+    // There are no metrics available (workspace is probably not visible).
     return;
   }
-  if (this.animation) {
-      this.animation.cancel();
-  }
-  var translate = this.svgGroup_.style.webkitTransform || this.svgGroup_.style.transform;
-  var origin = this.trianglePos_;
-  this.svgGroup_.style.transformOrigin = `left ${origin}px`;
-  if (Blockly.isAnimationsDisabled()) {
-      this.svgGroup_.style.display = 'none';
-  } else {
-      this.animation = this.svgGroup_.animate([{
-          transform: `${translate} scale(1)`,
-          webkitTransform: `${translate} scale(1)`,
-          opacity: 1
-      },{
-          transform: `${translate} scale(0.5)`,
-          webkitTransform: `${translate} scale(0.5)`,
-          opacity: 0
-      }], {
-          duration: 200,
-          easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)'
-      });
-      this.animation.finished.then(() => {
-          this.svgGroup_.style.display = 'none';
-      }).catch(() => {
-          return;
-      });
-  }
-  // Delete all the event listeners.
-  for (var x = 0, listen; listen = this.listeners_[x]; x++) {
-    Blockly.unbindEvent_(listen);
-  }
-  this.listeners_.length = 0;
-  if (this.reflowWrapper_) {
-    this.workspace_.removeChangeListener(this.reflowWrapper_);
-    this.reflowWrapper_ = null;
-  }
-  // Do NOT delete the blocks here.  Wait until Flyout.show.
-  // https://neil.fraser.name/news/2014/08/09/
-};
+  this.left_ = metrics.viewWidth + metrics.absoluteLeft - this.WIDTH_ - this.MARGIN_SIDE_ - Blockly.Scrollbar.scrollbarThickness;
 
-/**
- * Show and populate the flyout.
- * @param {!Array|string} xmlList List of blocks to show.
- *     Variables and procedures have a custom set of blocks.
- */
-Blockly.Flyout.prototype.show = function(xmlList) {
-  this.hide();
-  this.clearOldBlocks_();
-
-  if (xmlList == Blockly.Variables.NAME_TYPE) {
-    // Special category for variables.
-    xmlList =
-        Blockly.Variables.flyoutCategory(this.workspace_.targetWorkspace);
-  } else if (xmlList == Blockly.Procedures.NAME_TYPE) {
-    // Special category for procedures.
-    xmlList =
-        Blockly.Procedures.flyoutCategory(this.workspace_.targetWorkspace);
-  }
-
-  this.svgGroup_.style.display = 'block';
-  // Create the blocks to be shown in this flyout.
-  var contents = [];
-  var gaps = [];
-  this.permanentlyDisabled_.length = 0;
-  for (var i = 0, xml; xml = xmlList[i]; i++) {
-    var tagName = xml.tagName.toUpperCase();
-    var default_gap = this.horizontalLayout_ ? this.GAP_X : this.GAP_Y;
-    if (tagName == 'BLOCK') {
-      var curBlock = Blockly.Xml.domToBlock(xml, this.workspace_);
-      if (curBlock.disabled) {
-        // Record blocks that were initially disabled.
-        // Do not enable these blocks as a result of capacity filtering.
-        this.permanentlyDisabled_.push(curBlock);
-      }
-      contents.push({ type: 'block', block: curBlock });
-      // CUTSOM CODE
-      Blockly.Flyout.blocks[curBlock.type] = curBlock;
-      // END CUSTOM CODE
-      var gap = parseInt(xml.getAttribute('gap'), 10);
-      gaps.push(isNaN(gap) ? default_gap : gap);
-    } else if (tagName === 'SEP') {
-        // Change the gap between two blocks.
-        // <sep gap="36"></sep>
-        // The default gap is 24, can be set larger or smaller.
-        // This overwrites the gap attribute on the previous block.
-        // Note that a deprecated method is to add a gap to a block.
-        // <block type="math_arithmetic" gap="8"></block>
-        var newGap = parseInt(xml.getAttribute('gap'), 10);
-        // Ignore gaps before the first block.
-        if (!isNaN(newGap) && gaps.length > 0) {
-            gaps[gaps.length - 1] = newGap;
-        } else {
-            gaps.push(default_gap);
-        }
-    } else if (tagName == 'BUTTON') {
-        var label = xml.getAttribute('text');
-        var curButton = new Blockly.FlyoutButton(this.workspace_,
-            this.targetWorkspace_, label);
-        contents.push({type: 'button', button: curButton});
-        gaps.push(default_gap);
-    }
-  }
-
-  this.layout_(contents, gaps);
-
-  // IE 11 is an incompetent browser that fails to fire mouseout events.
-  // When the mouse is over the background, deselect all blocks.
-  var deselectAll = function() {
-    var topBlocks = this.workspace_.getTopBlocks(false);
-    for (var i = 0, block; block = topBlocks[i]; i++) {
-      block.removeSelect();
-    }
-  };
-
-  this.listeners_.push(Blockly.bindEvent_(this.svgBackground_, 'mouseover',
-      this, deselectAll));
-
-  if (this.horizontalLayout_) {
-    this.height_ = 0;
-  } else {
-    this.width_ = 0;
-  }
-  this.reflow();
-
-  this.filterForCapacity_();
-
-  // Correctly position the flyout's scrollbar when it opens.
-  this.position();
-
-  // CUSTOM CODE
-  var translate = this.svgGroup_.style.webkitTransform || this.svgGroup_.style.transform;
-  var origin = this.trianglePos_;
-  this.svgGroup_.style.transformOrigin = `left ${origin}px`;
-  if (this.animation) {
-      this.animation.cancel();
-  }
-  if (!Blockly.isAnimationsDisabled()) {
-      this.animation = this.svgGroup_.animate([{
-          transform: `${translate} scale(0.5)`,
-          opacity: 0
-      }, {
-          transform: `${translate} scale(1)`,
-          opacity: 1
-      }], {
-          duration: 200,
-          easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)'
-      });
-  }
-
-  // END CUSTOM CODE
-
-  this.reflowWrapper_ = this.reflow.bind(this);
-  this.workspace_.addChangeListener(this.reflowWrapper_);
-};
-
-/**
- * Move the toolbox to the edge of the workspace.
- */
-Blockly.Flyout.prototype.position = function () {
-    var toolbox, selectedItem, rowElement, containerRect, rect, metrics, m,
-        height, middle, toolboxRect, offsetLeft, top;
-    if (!this.isVisible()) {
-        return;
-    }
-    if (!this.clipPath) {
-        var defs = document.createElementNS(Blockly.SVG_NS, "defs");
-        var path = document.createElementNS(Blockly.SVG_NS, "path");
-        this.clipPath = document.createElementNS(Blockly.SVG_NS, "clipPath");
-        this.clipPath.setAttributeNS(null, 'id', 'flyoutClipPath');
-        this.clipPath.appendChild(path);
-        this.clipPath.path = path;
-        defs.appendChild(this.clipPath);
-        this.svgGroup_.appendChild(defs);
-        this.svgGroup_.style.clipPath = 'url(' + location.href + '#flyoutClipPath)';
-    }
-
-    metrics = this.targetWorkspace_.getMetrics();
-    m = this.workspace_.getMetrics();
-    height = m.contentHeight + 20;
-
-    if (this.targetWorkspace_.toolbox_) {
-        toolbox = this.targetWorkspace_.toolbox_;
-        selectedItem = toolbox.selectedItem_;
-
-        rowElement = selectedItem.getRowElement();
-        containerRect = toolbox.HtmlDiv.getBoundingClientRect();
-        rect = rowElement.getBoundingClientRect();
-        middle = rect.top - containerRect.top + (rect.height / 2);
-        this.trianglePos_ = middle - this.top_;
-
-        toolboxRect = toolbox.HtmlDiv.getBoundingClientRect();
-        offsetLeft = toolboxRect.width + 30;
-    } else {
-        middle = 0;
-        offsetLeft = 2;
-    }
-    if (!metrics) {
-        // Hidden components will return null.
-        return;
-    }
-    var edgeWidth = this.width_ - this.CORNER_RADIUS + 10;
-    if (this.RTL) {
-        edgeWidth *= -1;
-    }
-    height = Math.min(metrics.viewHeight - 40, Math.max(0, height));
-
-    top = middle - height / 2;
-
-    if (top + height > (metrics.viewHeight - 20)) {
-        top = (metrics.viewHeight - 20) - height;
-    }
-
-    this.top_ = Math.max(top, 20);
-
-    var path = ['M ' + (this.RTL ? this.width_ : 0) + ',0'];
-    path.push('a', this.CORNER_RADIUS, this.CORNER_RADIUS, 0, 0, 1, this.CORNER_RADIUS, -this.CORNER_RADIUS);
-    path.push('h', edgeWidth);
-    path.push('a', this.CORNER_RADIUS, this.CORNER_RADIUS, 0, 0, 1, this.CORNER_RADIUS, this.CORNER_RADIUS);
-    path.push('v', height);
-    path.push('a', this.CORNER_RADIUS, this.CORNER_RADIUS, 0, 0, 1, -this.CORNER_RADIUS, this.CORNER_RADIUS);
-    path.push('h', -edgeWidth);
-    path.push('a', this.CORNER_RADIUS, this.CORNER_RADIUS, 0, 0, 1, -this.CORNER_RADIUS, -this.CORNER_RADIUS);
-    if (this.targetWorkspace_.toolbox_ && this.trianglePos_) {
-        path.push('v', -(height - this.trianglePos_ - 12));
-        path.push('l', -10, -12);
-        path.push('l', 10, -12);
-    }
-    path.push('z');
-    this.svgBackground_.setAttribute('d', path.join(' '));
-
-    this.svgGroup_.style.webkitTransform =
-    this.svgGroup_.style.transform =
-        `translate(${offsetLeft}px, ${this.top_}px)`;
-
-    this.svgGroup_.setAttribute('transform', `translate(${offsetLeft}, ${this.top_})`);
-
-    this.clipPath.path.setAttributeNS(null, 'd', path.join(' '));
-
-    // Record the height for Blockly.Flyout.getMetrics_.
-    this.height_ = height;
-
-    // Update the scrollbar (if one exists).
-    if (this.scrollbar_) {
-        this.scrollbar_.resize();
-    }
-};
-
-/**
- * Initializes the toolbox.
- */
-Blockly.Toolbox.prototype.init = function() {
-  var workspace = this.workspace_,
-    svg = workspace.getParentSvg(),
-    container = svg.parentNode;
-
-  // Create an HTML container for the Toolbox menu.
-  this.HtmlDiv = goog.dom.createDom('div', 'blocklyToolboxDiv');
-  this.HtmlDiv.setAttribute('dir', workspace.RTL ? 'RTL' : 'LTR');
-  container.appendChild(this.HtmlDiv);
-
-  // Clicking on toolbar closes popups.
-  Blockly.bindEvent_(this.HtmlDiv, 'mousedown', this,
-      function(e) {
-        if (Blockly.isRightButton(e) || e.target == this.HtmlDiv) {
-          // Close flyout.
-          Blockly.hideChaff(false);
-        } else {
-          // Just close popups.
-          Blockly.hideChaff(true);
-        }
-      });
-  var workspaceOptions = {
-    disabledPatternId: workspace.options.disabledPatternId,
-    parentWorkspace: workspace,
-    RTL: workspace.RTL,
-    horizontalLayout: workspace.horizontalLayout,
-    toolboxPosition: workspace.options.toolboxPosition
-  };
-  /**
-   * @type {!Blockly.Flyout}
-   * @private
-   */
-  this.flyout_ = new Blockly.Flyout(workspaceOptions);
-  goog.dom.insertSiblingAfter(this.flyout_.createDom(), workspace.svgGroup_);
-  this.flyout_.init(workspace);
-
-  this.config_['cleardotPath'] = workspace.options.pathToMedia + '1x1.gif';
-  this.config_['cssCollapsedFolderIcon'] =
-      'blocklyTreeIconClosed' + (workspace.RTL ? 'Rtl' : 'Ltr');
-  var tree = new Blockly.Toolbox.TreeControl(this, this.config_);
-  this.tree_ = tree;
-  tree.setShowRootNode(false);
-  tree.setShowLines(false);
-  tree.setShowExpandIcons(false);
-  tree.setSelectedItem(null);
-  this.populate_(workspace.options.languageTree);
-  tree.render(this.HtmlDiv);
-  this.addColour_();
-  this.HtmlDiv.addEventListener('scroll', (e) => {
-      this.flyout_.position();
-  });
-  this.position();
-};
-
-/**
- * Move the toolbox to the edge.
- */
-Blockly.Toolbox.prototype.position = function() {
-    var treeDiv = this.HtmlDiv;
-    if (!treeDiv) {
-        // Not initialized yet.
-        return;
-    }
-    var svg = this.workspace_.getParentSvg();
-    var svgPosition = goog.style.getPageOffset(svg);
-    var svgSize = Blockly.svgSize(svg);
-    if (this.workspace_.RTL) {
-        treeDiv.style.left =
-            (svgPosition.x + svgSize.width - treeDiv.offsetWidth) + 'px';
-    } else {
-        treeDiv.style.left = svgPosition.x + 'px';
-    }
-    treeDiv.style.top = '0px';
-    treeDiv.style.left = '20px';
-    treeDiv.style.paddingTop = '20px';
-    treeDiv.style.paddingBottom = '20px';
-    treeDiv.style.boxSizing = 'border-box';
-    treeDiv.style.width = '110px';
-    treeDiv.style.maxHeight = '100%';
-    this.width = treeDiv.offsetWidth;
-    if (!this.workspace_.RTL) {
-        // For some reason the LTR toolbox now reports as 1px too wide.
-        this.width -= 1;
-    }
-    this.flyout_.position();
-};
-Blockly.Toolbox.prototype.addColour_ = function(opt_tree) {
-    var tree = opt_tree || this.tree_;
-    var children = tree.getChildren();
-    var next, previous;
-    for (var i = 0, child; child = children[i]; i++) {
-        var element = child.getRowElement();
-        if (element) {
-            if (element.classList.contains('blocklyTreeRow')) {
-                next = element.parentNode.nextSibling;
-                previous = element.parentNode.previousSibling;
-                if (!next || next.classList.contains('goog-tree-item') || next.getAttribute('role') !== "treeitem") {
-                    element.style.borderBottomLeftRadius = '8px';
-                    element.style.borderBottomRightRadius = '8px';
-                }
-                if (!previous || previous.classList.contains('goog-tree-item') || previous.getAttribute('role') !== "treeitem") {
-                    element.style.borderTopLeftRadius = '8px';
-                    element.style.borderTopRightRadius = '8px';
-                }
-            }
-            element.style.background = (child.hexColour || '#ddd');
-        }
-        this.addColour_(child);
-    }
+  this.top_ = 0;
+  this.svgGroup_.setAttribute('transform', 'translate(' + this.left_ + ',' + this.top_ + ')');
 };
 
 Blockly.Block.colourCache = {};
@@ -647,160 +254,6 @@ Blockly.Block.prototype.setColour = function(colour) {
 Blockly.Events.DROP_BLOCK = 'drop-block';
 Blockly.Events.OPEN_FLYOUT = 'open-flyout';
 Blockly.Events.CLOSE_FLYOUT = 'close-flyout';
-
-/**
- * Display/hide the flyout when an item is selected.
- * @param {goog.ui.tree.BaseNode} node The item to select.
- * @override
- */
-Blockly.Toolbox.TreeControl.prototype.setSelectedItem = function(node) {
-    var toolbox = this.toolbox_,
-        hexColour,
-        containerRect,
-        rect,
-        rowElement;
-    if (node == this.selectedItem_ || node == toolbox.tree_) {
-        return;
-    }
-    if (toolbox.lastCategory_) {
-
-    }
-    if (node) {
-        toolbox.selectedItem_ = node;
-        rowElement = node.getRowElement();
-        hexColour = node.hexColour || '#57e';
-        containerRect = toolbox.HtmlDiv.getBoundingClientRect();
-        rect = rowElement.getBoundingClientRect();
-        rowElement.style.background = hexColour;
-        rowElement.className += ' selected';
-
-        // Add colours to child nodes which may have been collapsed and thus
-        // not rendered.
-        toolbox.addColour_(node);
-        let e = {
-            type: Blockly.Events.OPEN_FLYOUT,
-            categoryId: node.categoryId
-        };
-        toolbox.workspace_.fireChangeListener(e);
-    }
-    goog.ui.tree.TreeControl.prototype.setSelectedItem.call(this, node);
-    if (node && node.blocks && node.blocks.length) {
-        toolbox.flyout_.show(node.blocks);
-        // Scroll the flyout to the top if the category has changed.
-        if (toolbox.lastCategory_ != node) {
-            toolbox.flyout_.scrollToStart();
-        }
-    } else {
-        let e = {
-            type: Blockly.Events.CLOSE_FLYOUT
-        };
-        toolbox.workspace_.fireChangeListener(e);
-        // Hide the flyout.
-        toolbox.flyout_.hide();
-    }
-    if (node) {
-        toolbox.lastCategory_ = node;
-    }
-};
-
-Blockly.Toolbox.CategoryElements = {};
-
-Blockly.Workspace.prototype.getCategoryElementById = (id) => {
-    return Blockly.Toolbox.CategoryElements[id];
-};
-
-/**
- * Fill the toolbox with categories and blocks.
- * @param {Node} newTree DOM tree of blocks, or null.
- * @private
- */
-Blockly.Toolbox.prototype.populate_ = function(newTree) {
-  var rootOut = this.tree_;
-  rootOut.removeChildren();  // Delete any existing content.
-  rootOut.blocks = [];
-  var hasColours = false;
-  function syncTrees(treeIn, treeOut) {
-    var lastElement = null;
-    for (var i = 0, childIn; childIn = treeIn.childNodes[i]; i++) {
-      if (!childIn.tagName) {
-        // Skip over text.
-        continue;
-      }
-      switch (childIn.tagName.toUpperCase()) {
-        case 'CATEGORY':
-          var childOut = rootOut.createNode(childIn.getAttribute('name').toLowerCase()),
-            catId = childIn.getAttribute('id');
-          childOut.blocks = [];
-          childOut.categoryId = catId;
-          treeOut.add(childOut);
-          Blockly.Toolbox.CategoryElements[catId] = childOut.getRowElement();
-          var custom = childIn.getAttribute('custom');
-          if (custom) {
-            // Variables and procedures are special dynamic categories.
-            childOut.blocks = custom;
-          } else {
-            syncTrees(childIn, childOut);
-          }
-          var colour = childIn.getAttribute('colour');
-          if (goog.isString(colour)) {
-            if (colour.match(/^#[0-9a-fA-F]{6}$/)) {
-              childOut.hexColour = colour;
-            } else {
-              childOut.hexColour = Blockly.hueToRgb(colour);
-            }
-            hasColours = true;
-          } else {
-            childOut.hexColour = '';
-          }
-          if (childIn.getAttribute('expanded') == 'true') {
-            if (childOut.blocks.length) {
-              rootOut.setSelectedItem(childOut);
-            }
-            childOut.setExpanded(true);
-          } else {
-            childOut.setExpanded(false);
-          }
-          lastElement = childIn;
-          break;
-        case 'SEP':
-          if (lastElement) {
-            if (lastElement.tagName.toUpperCase() == 'CATEGORY') {
-              // Separator between two categories.
-              // <sep></sep>
-              treeOut.add(new Blockly.Toolbox.TreeSeparator());
-            } else {
-              // Change the gap between two blocks.
-              // <sep gap="36"></sep>
-              // The default gap is 24, can be set larger or smaller.
-              // Note that a deprecated method is to add a gap to a block.
-              // <block type="math_arithmetic" gap="8"></block>
-              var newGap = parseFloat(childIn.getAttribute('gap'));
-              if (!isNaN(newGap)) {
-                var oldGap = parseFloat(lastElement.getAttribute('gap'));
-                var gap = isNaN(oldGap) ? newGap : oldGap + newGap;
-                lastElement.setAttribute('gap', gap);
-              }
-            }
-          }
-          break;
-        case 'BLOCK':
-        case 'SHADOW':
-          treeOut.blocks.push(childIn);
-          lastElement = childIn;
-          break;
-      }
-    }
-  }
-  syncTrees(newTree, this.tree_);
-  this.hasColours_ = hasColours;
-
-  if (rootOut.blocks.length) {
-    throw 'Toolbox cannot have both blocks and categories in the root level.';
-  }
-
-  // Fire a resize event since the toolbox may have changed width and height.
-  Blockly.resizeSvgContents(this.workspace_);
-};
 
 /**
  * Overrides Blockly color computation to use HEX colors instead of
@@ -852,7 +305,7 @@ Blockly.BlockSvg.NOTCH_WIDTH = 30;
  * Rounded corner radius.
  * @const
  */
-Blockly.BlockSvg.CORNER_RADIUS = 4;
+Blockly.BlockSvg.CORNER_RADIUS = 3;
 /**
  * Do blocks with no previous or output connections have a 'hat' on top?
  * @const
@@ -1139,6 +592,40 @@ Blockly.BlockSvg.prototype.renderDrawLeft_ =
       });
 
       return this.svgGroup_;
+    };
+
+    /**
+     * Move the zoom controls to the bottom-right corner.
+     */
+    Blockly.ZoomControls.prototype.position = function() {
+        var metrics = this.workspace_.getMetrics();
+        if (!metrics) {
+            // There are no metrics available (workspace is probably not visible).
+            return;
+        }
+        if (this.workspace_.RTL) {
+            this.left_ = this.MARGIN_SIDE_ + Blockly.Scrollbar.scrollbarThickness;
+            if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_LEFT) {
+            this.left_ += metrics.flyoutWidth;
+            if (this.workspace_.toolbox_) {
+                this.left_ += metrics.absoluteLeft;
+            }
+            }
+        } else {
+            this.left_ = metrics.viewWidth + metrics.absoluteLeft -
+                this.WIDTH_ - this.MARGIN_SIDE_ - Blockly.Scrollbar.scrollbarThickness;
+
+            if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_RIGHT) {
+            this.left_ -= metrics.flyoutWidth;
+            }
+        }
+        this.top_ = metrics.viewHeight + metrics.absoluteTop -
+            this.HEIGHT_ - this.bottom_;
+        if (metrics.toolboxPosition == Blockly.TOOLBOX_AT_BOTTOM) {
+            this.top_ -= metrics.flyoutHeight;
+        }
+        this.svgGroup_.setAttribute('transform',
+            'translate(' + this.left_ + ',' + this.top_ + ')');
     };
 
 

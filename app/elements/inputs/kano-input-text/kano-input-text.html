@@ -1,5 +1,6 @@
 <link rel="import" href="../../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../behaviors.html">
+<link rel="import" href="../../kano-style/typography.html">
 
 <dom-module id="kano-input-text">
     <style>
@@ -13,6 +14,12 @@
         text-align: left;
         width: 87%;
         --paper-input-container-focus-color: var(--color-orange, orange);
+        --paper-input-container-input: {
+            font-family: var(--font-body, Arial);
+        };
+        --paper-input-container-label: {
+            font-family: var(--font-body, Arial);
+        };
     }
     </style>
     <template>
