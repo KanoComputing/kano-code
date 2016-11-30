@@ -128,7 +128,7 @@
                 on-pause-run-button-clicked="_runButtonClicked"
                 on-fullscreen-button-clicked="_toggleFullscreen"
                 on-reset-button-clicked="_resetAppState"
-                on-edit-layout-button-clicked="_editLayoutClicked"></kano-workspace-toolbar>
+                on-edit-layout-button-clicked="_editLayoutClicked" hidden$="{{noControls}}"></kano-workspace-toolbar>
         </kano-ui-viewport>
         <kano-workspace-head challenge-state="[[challengeState]]"></kano-workspace-head>
         <array-selector id="selector" items="{{parts}}" selected="{{selected}}"></array-selector>
@@ -195,14 +195,22 @@
             },
             challengeState: {
                 type: Object
+            },
+            noControls: {
+                type: Boolean,
+                value: false
             }
         },
         observers: [
             'partsChanged(parts.*)',
-            'backgroundChanged(background)'
+            'backgroundChanged(background)',
+            '_computeMode(mode)'
         ],
         listeners: {
             'part-tapped': 'onPartTapped'
+        },
+        _computeMode (mode){
+            this.noControls = (mode.id === "simple") ? true : false
         },
         ready () {
             this.elements = {};

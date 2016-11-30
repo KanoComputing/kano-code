@@ -27,7 +27,9 @@
             added-parts="{{addedParts}}"
             default-categories="[[defaultCategories]]"
             mode="[[mode]]"
-            banner="[[banner]]"></kano-app-editor>
+            banner="[[banner]]"
+            challenge-state="{{challengeState}}"
+            on-blockly-ready="_onBlocklyReady"></kano-app-editor>
     </template>
 </dom-module>
 
@@ -55,7 +57,23 @@
             },
             banner: {
                 type: Object
+            },
+            // added challenge progress
+            challengeState: {
+                type: Object,
+                value: {
+                    progress: 0.4,
+                    title: "Great Simple Mode",
+                    nextStory: true,
+                    started: true,
+                    ended: false
+                }
             }
+        },
+        _onBlocklyReady(e){
+            let target = e.path ? e.path[0] : e.target;
+            var workspace = target.getWorkspace();
+            workspace.toolbox.style = "display:none;";
         },
         attached () {
         },
@@ -73,7 +91,6 @@
 
             this.set('defaultCategories', {});
             this.parts = [];
-            console.log(this.defaultCategories, this.parts);
         },
         ready () {
             let hardwareAPI = new Kano.MakeApps.HardwareAPI();
