@@ -41,6 +41,8 @@
             },
             javascript: (ui) => {
                 return function (block) {
+                    // set block not able to delete
+                    block.setDeletable(false);
                     return `devices.get('${ui.id}').reset();`;
                 };
             },
@@ -61,6 +63,8 @@
             },
             javascript: (ui) => {
                 return function (block) {
+                     // set block not able to delete
+                    block.setDeletable(false);
                     let alpha = Blockly.JavaScript.valueToCode(block, 'ALPHA');
                     return `devices.get('${ui.id}').setTransparency(${alpha});`;
                 };
