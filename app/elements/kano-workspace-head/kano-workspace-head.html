@@ -154,7 +154,7 @@
         _computeTitle () {
             if (this.challengeState) {
                 if (this.challengeState.ended) {
-                    return 'Go to next story';
+                    return this.challengeState.nextStory ? 'Go to next story' : "Pick next project";
                 } else {
                     return this.challengeState.title;
                 }

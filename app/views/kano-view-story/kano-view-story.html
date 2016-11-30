@@ -137,6 +137,7 @@
         nextStory (e) {
             let storyId;
             if (!this.story.next) {
+                location.href = Kano.MakeApps.config.WORLD_URL + "/projects";
                 return;
             }
             storyId = this.story.next.id;
