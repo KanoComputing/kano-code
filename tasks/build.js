@@ -12,6 +12,7 @@ module.exports = (gulp, $) => {
                 'views/kano-view-story/kano-view-story.html',
                 'views/kano-view-tutorial/kano-view-tutorial.html',
                 'views/kano-view-demo/kano-view-demo.html',
+                'views/kano-view-onboarding/kano-view-onboarding.html',
                 'views/kano-view-flags/kano-view-flags.html'
             ],
             shared_import: 'elements/shared.html',

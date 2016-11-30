@@ -1,0 +1,516 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../kano-tooltip/kano-tooltip.html">
+<link rel="import" href="../kano-arrow/kano-arrow.html">
+<link rel="import" href="../kano-blockly-block/kano-blockly-block.html">
+<link rel="import" href="../kano-highlight/kano-highlight.html">
+<link rel="import" href="../kano-value-preview/kano-value-preview.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+<link rel="import" href="../behaviors/kano-blockly-validator-behavior.html">
+<link rel="import" href="../kano-style/typography.html">
+<dom-module id="kano-challenge-ui">
+    <style>
+    :host {
+        display: block;
+        @apply(--layout-vertical);
+        --tooltip-color: #21596F;
+    }
+    :host .instruction-overlay {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        padding: 5px;
+    }
+    :host button {
+        @apply(--kano-button);
+        background-color: var(--color-green, green);
+        margin-left: 10px;
+    }
+    :host #modal {
+        border-radius: 4px;
+    }
+    :host .modal-content {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+        font-family: var(--font-body, Arial);
+        font-weight: 500;
+        font-size: 1.4em;
+        color: black;
+    }
+    :host .modal-content button {
+        @apply(--kano-button);
+        margin-top: 15px;
+        color: #435055;
+    }
+    :host .tooltip-content {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+    }
+    :host .tooltip-content button,
+    :host .banner-content button {
+        margin-top: 10px;
+        background-color: white;
+        color: #435055;
+        text-shadow: none;
+    }
+    :host .banner-content {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+    }
+    :host .banner-content button {
+        margin: auto 10px;
+    }
+    kano-tooltip {
+        z-index: 101;
+        --kano-tooltip-background-color: var(--tooltip-color);
+        --kano-tooltip-border-color: white;
+        --kano-tooltip-border-width: 1px;
+        color: white;
+        font-family: var(--font-body);
+        --kano-tooltip: {
+            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
+            padding: 18px 26px 20px;
+            font-size: 20px;
+            line-height: 25px;
+        };
+        --kano-tooltip-caret: {
+            box-shadow: 0px 0px 0px 0px;
+        };
+    }
+    kano-tooltip[position="top"] {
+        --kano-tooltip-caret: {
+            box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.25);
+        };
+    }
+    kano-tooltip[position="left"] {
+        --kano-tooltip-caret: {
+            box-shadow: 2px 0px 0px 0px rgba(0, 0, 0, 0.25);
+        };
+    }
+    kano-tooltip[position="right"] {
+        --kano-tooltip-caret: {
+            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
+        };
+    }
+    .tooltip-text kano-blockly-block {
+        line-height: 0px;
+        vertical-align: middle;
+        display: inline-block;
+    }
+    </style>
+    <template>
+        <slot name="editor" id="content"></slot>
+        <kano-highlight id="highlight" x="[[highlight.x]]" y="[[highlight.y]]" width="[[highlight.width]]" height="[[highlight.height]]"></kano-highlight>
+        <kano-arrow source="[[arrow.source]]" target="[[arrow.target]]" angle="[[arrow.angle]]" id="arrow">
+            <iron-image slot="arrow-image" src="/assets/icons/blue-arrow.svg" width="[[arrow.size]]" height="[[arrow.size]]" sizing="contain"></iron-image>
+        </kano-arrow>
+        <template is="dom-repeat" items="{{tooltips}}" as="tooltip" on-dom-change="_tooltipDomChanged">
+            <kano-tooltip id$="tooltip-[[index]]"
+                          target="[[tooltip.target]]"
+                          position="[[tooltip.position]]"
+                          z-index="[[tooltip.zIndex]]"
+                          tracking="[[tooltip.tracking]]"
+                          bounce$="[[tooltip.bounce]]">
+                <div class="tooltip-content">
+                    <div class="tooltip-text">
+                        <marked-element markdown="[[tooltip.text]]">
+                            <div class="markdown-html"></div>
+                        </marked-element>
+                    </div>
+                    <button type="button" on-tap="_nextStep" hidden$="[[!tooltip.next_button]]">Next</button>
+                </div>
+            </kano-tooltip>
+        </template>
+        <template is="dom-if" if="{{banner}}">
+            <kano-tooltip position="float" target="{{blocksPanel}}" track-target>
+                <div class="banner-content">
+                    <div class="banner-text">
+                        <marked-element markdown="[[banner.text]]">
+                            <div class="markdown-html"></div>
+                        </marked-element>
+                    </div>
+                    <button type="button" on-tap="showHints" hidden$="{{!banner.hint_button}}">Hint</button>
+                    <button type="button" on-tap="_nextStep" hidden$="{{!banner.next_button}}">Next</button>
+                </div>
+            </kano-tooltip>
+        </template>
+        <paper-dialog id="modal" modal>
+            <div class="modal-content">
+                <div class="text">
+                    <marked-element markdown="[[selectedStep.modal.text]]">
+                        <div class="markdown-html"></div>
+                    </marked-element>
+                </div>
+                <button type="button" on-tap="_nextStep">Next</button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    /* globals Polymer, Kano */
+
+    Polymer({
+        is: 'kano-challenge-ui',
+        behaviors: [Kano.Behaviors.AppElementRegistryBehavior],
+        properties: {
+            tooltips: {
+                type: Array
+            },
+            step: {
+                type: Object
+            },
+            arrow: {
+                type: Object
+            },
+            state: {
+                type: Object,
+                value: () => {
+                    return {
+                        hints: {
+                            enabled: true
+                        }
+                    };
+                }
+            },
+            banner: {
+                type: Object,
+                value: null
+            }
+        },
+        observers: [
+            'stepChanged(step, state.*)'
+        ],
+        listeners: {
+            'change': '_editorChanged'
+        },
+        _editorChanged (e) {
+            // Store current step object
+            let step = this.selectedStep,
+                detail = e.detail;
+
+            if (!step || this.done) {
+                return;
+            }
+            if (this.tooltips && detail.type === 'blockly' && detail.event.type === 'move') {
+                this.updateTooltips();
+            }
+        },
+        computeSelectedStep () {
+            return this.steps[this.step];
+        },
+        /**
+         * Find the blockly element and listens to the change event
+         */
+        ready () {
+            this.modal = this.$.modal;
+            this.highlight = {};
+        },
+        attached () {
+            this.isAttached = true;
+            this.fire('attached');
+            this.editor = Polymer.dom(this.$.content).getDistributedNodes()[0];
+            this.updateTooltips = this.updateTooltips.bind(this);
+            this.addEventListener('mousewheel', this.updateTooltips, true);
+            window.addEventListener('resize', this.updateTooltips);
+        },
+        detached () {
+            this.removeEventListener('mousewheel', this.updateTooltips);
+            window.removeEventListener('resize', this.updateTooltips);
+        },
+        getToolbox () {
+            return this.editor.getBlocklyWorkspace().toolbox;
+        },
+        _nextStep () {
+            this.fire('next-step');
+        },
+        computeTooltips (step) {
+            this.set('tooltips', []);
+            this.debounce('computeTooltips', () => {
+                /* With hints disabled, only show tooltips for injected steps */
+                if (!this.state.hints.enabled && !step.injected) {
+                    this.tooltips = [];
+                    return;
+                }
+
+                let tooltips = step.tooltips || [];
+                tooltips = tooltips.map((tooltip) => {
+                    let copy = Object.assign({}, tooltip);
+                    copy.target = this._getTargetElement(tooltip.location);
+                    copy.text = tooltip.text;
+                    copy.tracking = tooltip.tracking !== false ? true : false;
+                    return copy;
+                });
+
+                this.set('tooltips', tooltips);
+            }, 200);
+        },
+        _tooltipDomChanged (e) {
+            let tooltips = Polymer.dom(this.root).querySelectorAll('kano-tooltip[bounce]'),
+                offset,
+                transform,
+                tooltip;
+            for (let i = 0; i < tooltips.length; i++) {
+                tooltip = tooltips[i];
+                offset = 70;
+                if (tooltip.position === 'top' || tooltip.position === 'bottom') {
+                    transform = 'translateY';
+                } else {
+                    transform = 'translateX';
+                }
+                if (tooltip.position === 'top' || tooltip.position === 'left') {
+                    offset *= -1;
+                }
+                tooltips[i].animate([{
+                    transform: `${transform}(${offset}px)`
+                },{
+                    transform: `${transform}(0px)`
+                },{
+                    transform: `${transform}(${offset}px)`
+                }], {
+                    duration: 40 * 25,
+                    easing: 'ease-in-out',
+                    iterations: Infinity
+                });
+            }
+        },
+        computeArrow (step) {
+            let source, target;
+
+            if (!step || !step.arrow || (!this.state.hints.enabled && !step.injected)) {
+                this.$.arrow.hide();
+                this.arrow = {};
+                return;
+            }
+            this.async(() => {
+                if (step.arrow.source) {
+                    source = this._getTargetElement(step.arrow.source);
+                    if ('getBoundingClientRect' in source) {
+                        source = source.getBoundingClientRect();
+                    }
+                }
+                target = this._getTargetElement(step.arrow.target);
+                if ('getBoundingClientRect' in target) {
+                    target = target.getBoundingClientRect();
+                }
+                this.set('arrow', {
+                    source,
+                    target,
+                    size: step.arrow.size || 70,
+                    angle: step.arrow.angle || 0
+                });
+            }, 300);
+        },
+        stepChanged () {
+            let step;
+            // Prevent the loading of the saved app before the store is initialized
+            if (!this.isAttached) {
+                this.addEventListener('attached', this.stepChanged.bind(this));
+                return;
+            }
+            this.debounce('stepChanged', () => {
+                step = this.step;
+                if (!step) {
+                    this.tooltips = [];
+                    this.arrow = {};
+                    this.modal.close();
+                    this.banner = null;
+                    this.$.highlight.hide();
+                    return;
+                }
+                if (step.load_app) {
+                    this.fire('load', step.load_app);
+                }
+                if (step.save_app) {
+                    this.fire('save', {
+                        id: step.save_app,
+                        stepIds: this.stepIds,
+                        blockIds: this.blockIds
+                    });
+                }
+                if (step.save_to_storage) {
+                    this.fire('save-to-storage');
+                }
+                this.modal.close();
+                if (step.modal) {
+                    step.modal.text = step.modal.text;
+                    this.modal.open();
+                }
+
+                if (step['set-state']) {
+                    this.set('state', Object.assign(this.state, step['set-state']));
+                    this._nextStep();
+                    return;
+                }
+
+                this.computeTooltips(step);
+                this.computeBanner(step);
+                this.computeArrow(step);
+                this.computeHighlight(step);
+                this.computePhantomBlock(step);
+            }, 10);
+        },
+        computeBanner (step) {
+            if (this.state.hints.enabled) {
+                if (step.banner) {
+                    this.banner = this.banner || {};
+                    this.set('banner.text', step.banner.text);
+                    this.set('banner.next_button', step.banner.next_button);
+                    this.set('banner.hint_button', false);
+                } else {
+                    this.banner = null;
+                }
+            } else {
+                let bannerProps = this.state.hints['disabled-banner'];
+                if (bannerProps) {
+                    this.banner = this.banner || {};
+                    this.set('banner.text', bannerProps.text);
+                    this.set('banner.hint_button', bannerProps.hint_button);
+                    this.set('banner.next_button', false);
+                } else {
+                    this.banner = null;
+                }
+            }
+        },
+        computePhantomBlock (step) {
+            let phantom_block = step.phantom_block,
+                connection,
+                target,
+                host;
+            if (!phantom_block ||
+                !phantom_block.location ||
+                !Blockly.selected) {
+                Blockly.removePhantomBlock();
+                return;
+            }
+            host = this.getTargetBlock(phantom_block.location.block);
+            if (!phantom_block.target) {
+                connection = host.nextConnection;
+            } else {
+                for (let i = 0; i < host.inputList.length; i++) {
+                    if (host.inputList[i].name === phantom_block.target) {
+                        connection = host.inputList[i].connection;
+                        break;
+                    }
+                }
+            }
+            target = Blockly.selected;
+            if (!connection) {
+                return;
+            }
+            this.async(() => {
+                Blockly.setPhantomBlock(connection, target);
+            });
+        },
+        computeHighlight (step) {
+            if (step.highlight) {
+                let highlightString = JSON.stringify(step.highlight);
+                if (highlightString !== this.previousHighlight) {
+                    this.$.highlight.hide();
+                    this.debounce('highlight', () => {
+                        this.focusOn(step.highlight);
+                        this.$.highlight.show();
+                    }, 200);
+                    this.previousHighlight = JSON.stringify(step.highlight);
+                }
+            } else {
+                this.$.highlight.hide();
+            }
+        },
+        focusOn (selector) {
+            let target = this._getTargetElement(selector);
+            target = target.getBoundingClientRect();
+            this.set('highlight.x', target.left);
+            this.set('highlight.y', target.top);
+            this.set('highlight.width', target.width);
+            this.set('highlight.height', target.height);
+            this.$.highlight.show();
+        },
+        _getTargetElement (selector) {
+            let element = this.editor,
+                partId,
+                block;
+            console.log(selector);
+            if (typeof selector == 'object') {
+                if (selector.block) {
+                    block = this.getTargetBlock(selector.block);
+                    if (selector.block.inputName) {
+                        return this.getTargetBlockInput(selector.block);
+                    }
+                    return block.svgPath_;
+                } else if (selector.category) {
+                    let toolbox = this._getElement('blockly-toolbox');
+                    return toolbox.getCategoryElement(selector.category);
+                } else if (selector.flyout_block) {
+                    let toolbox = this._getElement('blockly-toolbox');
+
+                    return toolbox.getFlyoutBlock(selector.flyout_block).getSvgRoot();
+                } else if (selector.root) {
+                    element = document.querySelector(selector.root);
+                    selector = selector.path;
+                }
+            }
+            return this._getElement(selector);
+        },
+        updateTooltips () {
+            this.debounce('updateTooltips', () => {
+                if (this.tooltips) {
+                    for (let i = 0; i < this.tooltips.length; i++) {
+                        if (this.$$(`#tooltip-${i}`).tracking) {
+                            this.$$(`#tooltip-${i}`).updatePosition();
+                        }
+                    }
+                }
+                this.computeArrow(this.step);
+                this.$$('kano-arrow').updatePosition();
+            }, 100);
+        },
+        showHints () {
+            this.set('state.hints', {enabled: true});
+        },
+        getTargetBlock (selector) {
+            let block = this.editor.getBlocklyWorkspace().getBlockById(selector.id);
+            if (selector.shadow) {
+                block = block.getInput(selector.shadow).connection.targetBlock();
+            }
+            return block;
+        },
+        getTargetBlockInput (selector) {
+            let block = this.getTargetBlock(selector),
+                connection,
+                blockRect,
+                blockPos,
+                inputRelPos,
+                pos;
+
+            if (selector.inputName) {
+                connection = block.getInput(selector.inputName).connection;
+            } else {
+                connection = block.nextConnection;
+            }
+            blockRect = block.svgPath_.getBoundingClientRect();
+            blockPos = block.getRelativeToSurfaceXY();
+            inputRelPos = {
+                x: connection.x_ - blockPos.x,
+                y: connection.y_ - blockPos.y
+            };
+            pos = {};
+
+            pos.left = blockRect.left + inputRelPos.x;
+            pos.top = blockRect.top + inputRelPos.y;
+
+            pos.right = blockRect.right + blockRect.width - inputRelPos.x;
+            pos.bottom = blockRect.bottom + blockRect.height - inputRelPos.y;
+
+            pos.width = 1;
+            pos.height = 1;
+
+            return pos;
+
+        }
+    });
+</script>

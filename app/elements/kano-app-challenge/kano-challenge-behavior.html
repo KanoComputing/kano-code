@@ -1,0 +1,142 @@
+<script type="text/javascript">
+
+    window.Kano = window.Kano || {};
+
+    window.Kano.Behaviors = window.Kano.Behaviors || {};
+    
+    window.Kano.Behaviors.ChallengeBehavior = {
+        properties: {
+            steps: {
+                type: Object
+            },
+            step: {
+                type: Number,
+                value: 0
+            },
+            selectedStep: {
+                type: Object,
+                computed: 'computeSelectedStep(steps, step, started)'
+            },
+            started: {
+                type: Boolean,
+                value: false
+            }
+        },
+        computeSelectedStep () {
+            let selectedStep;
+            if (!this.started) {
+                return null;
+            }
+            selectedStep = this.steps[this.step];
+
+            if (!selectedStep) {
+                return null;
+            }
+
+            if (selectedStep.tooltips) {
+                selectedStep.tooltips = selectedStep.tooltips.map(tooltip => {
+                    tooltip.location = this.processLocation(tooltip.location);
+                    tooltip.text = this._processMarkdown(tooltip.text || '');
+                    return tooltip;
+                });
+            }
+            if (selectedStep.arrow) {
+                selectedStep.arrow.source = this.processLocation(selectedStep.arrow.source);
+                selectedStep.arrow.target = this.processLocation(selectedStep.arrow.target);
+            }
+            selectedStep.highlight = this.processLocation(selectedStep.highlight);
+            if (selectedStep.phantom_block) {
+                selectedStep.phantom_block.location = this.processLocation(selectedStep.phantom_block.location);
+            }
+            if (selectedStep.modal) {
+                selectedStep.modal.text = this._processMarkdown(selectedStep.modal.text);
+            }
+            return selectedStep;
+        },
+        /**
+         * Changes the location to adapt to the current context 
+         */
+        processLocation (location) {
+            if (typeof location == 'object') {
+                if (location.category) {
+                    let cat = location.category;
+                    if (cat.part) {
+                        location.category = this.stepIds[cat.part];
+                    }
+                } else if (location.flyout_block) {
+                    let type = location.flyout_block;
+                    if (type.part) {
+                        location.flyout_block = `${this.stepIds[type.part]}#${type.type}`;
+                    }
+                } else if (location.path && location.part) {
+                    location = `${location.path}-part-${this.stepIds[location.part]}`;
+                } else if (location.part) {
+                    location.part = this.stepIds[location.part];
+                } else if (location.block) {
+                    if (typeof location.block === 'string') {
+                        location.block = {
+                            id: this.blockIds[location.block]
+                        };
+                    } else if (location.block.id) {
+                        location.block.id = this.blockIds[location.block.id];
+                    } else if (location.block.rawId) {
+                        location.block.id = location.block.rawId;
+                    }
+                }
+            }
+            return location;
+        },
+        _processMarkdown (text) {
+            let reg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
+            return text.replace(reg, (match, before, type, after) => {
+                let pieces = type.split('#');
+                if (pieces.length > 1) {
+                    pieces[0] = this.stepIds[pieces[0]] || pieces[0];
+                }
+                type = pieces.join('#');
+                return `<kano-blockly-block${before}type="${type}"${after}></kano-blockly-block>`;
+            });
+        },
+        /**
+         * Move to the next step or set the challenge as done
+         */
+        nextStep () {
+            // The current step was injected, we remove it form the array
+            if (this.selectedStep.injected) {
+                this.splice('steps', this.steps.indexOf(this.selectedStep), 1);
+                this.stepChanged();
+            } else {
+                if (this.step < this.steps.length - 1) {
+                    this.step++;
+                } else {
+                    this.set('done', true);
+                    this.fire('scene-done');
+                }
+            }
+        },
+        stepChanged () {
+            this.selectedStep = this.computeSelectedStep();
+        },
+        _prevStep () {
+            if (this.step > 0) {
+                this.step--;
+            }
+        },
+        _goToStep (index) {
+            this.set('step', index);
+        },
+        _injectStep (step, offset) {
+            let index = this.step + (offset || 1);
+            step.injected = true;
+            // Insert the new step just after that
+            this.splice('steps', index, 0, step);
+            // jump to the new step
+            this._goToStep(index);
+        },
+        _updateStep (step) {
+            step.injected = true;
+            this.set(`steps.${this.step}`, step);
+            this.stepChanged();
+        }
+    };
+</script>

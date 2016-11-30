@@ -113,7 +113,7 @@
             if (app.parts.length) {
                 this.data.steps.push({
                     "tooltips": [{
-                        "location": "workspace.toolbar.add-part-button",
+                        "location": "add-part-button",
                         "position": "top",
                         "text": Kano.MakeApps.CopyManager.get('add-parts') + "<br>" + Kano.MakeApps.CopyManager.get('open-parts-drawer')
                     }],
@@ -123,7 +123,7 @@
                 });
             }
             this.data.steps = this.data.steps.concat(app.parts.map(function (part, index) {
-                var location = "sidebar.parts.part-" + part.type;
+                var location = "parts-panel-part-" + part.type;
                 if (this.data.parts.indexOf(part.type) === -1) {
                     this.data.parts.push(part.type);
                 }
@@ -152,7 +152,7 @@
             if (app.parts.length) {
                 this.data.steps.push({
                     "tooltips": [{
-                        "location": "workspace.toolbar.add-part-button",
+                        "location": "add-part-button",
                         "position": "top",
                         "text": Kano.MakeApps.CopyManager.get('start-code') + "<br>" + Kano.MakeApps.CopyManager.get('close-parts-drawer')
                     }],

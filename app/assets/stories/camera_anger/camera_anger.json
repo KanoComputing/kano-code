@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "workspace.toolbar.add-part-button",
+					"location": "add-part-button",
 					"position": "top",
 					"text": "We'll start by adding parts to our app.<br>Click here to see all the parts."
 				}
@@ -15,14 +15,14 @@
 		{
 			"tooltips": [
 				{
-					"location": "sidebar.parts.part-microphone",
+					"location": "parts-panel-part-microphone",
 					"position": "right",
 					"text": "Drag the Mic to your app"
 				}
 			],
-			"highlight": "sidebar.parts.part-microphone",
+			"highlight": "parts-panel-part-microphone",
 			"arrow": {
-				"source": "sidebar.parts.part-microphone",
+				"source": "parts-panel-part-microphone",
 				"target": "workspace-panel",
 				"size": 120
 			},
@@ -36,7 +36,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "workspace.toolbar.add-part-button",
+					"location": "add-part-button",
 					"position": "top",
 					"text": "All the parts are here, let's code!<br>Hit that button"
 				}
@@ -463,5 +463,5 @@
 	],
 	"variables": [],
 	"mode": "camera",
-    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"83\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"><block type=\\\"camera#take_picture\\\" id=\\\"default_take_picture_id\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"camera\"}"
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"260\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"><block type=\\\"camera#take_picture\\\" id=\\\"default_take_picture_id\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"camera\"}"
 }

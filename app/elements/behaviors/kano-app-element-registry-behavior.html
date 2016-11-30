@@ -1,0 +1,17 @@
+<script type="text/javascript">
+
+    let REGISTERY = {};
+
+    window.Kano = window.Kano || {};
+
+    window.Kano.Behaviors = window.Kano.Behaviors || {};
+    
+    window.Kano.Behaviors.AppElementRegistryBehavior = {
+        _registerElement (id, el) {
+            REGISTERY[id] = el;
+        },
+        _getElement (id) {
+            return REGISTERY[id];
+        }
+    };
+</script>

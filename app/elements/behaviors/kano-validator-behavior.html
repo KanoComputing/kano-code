@@ -1,23 +1,12 @@
+<link rel="import" href="../kano-app-challenge/kano-challenge-behavior.html">
 <script type="text/javascript">
 
     window.Kano = window.Kano || {};
 
     window.Kano.Behaviors = window.Kano.Behaviors || {};
 
-    window.Kano.Behaviors.ValidatorBehavior = {
+    window.Kano.Behaviors.ValidatorBehaviorImpl = {
         properties: {
-            step: {
-                type: Number,
-                value: 0
-            },
-            steps: {
-                type: Array,
-                value: () => []
-            },
-            done: {
-                type: Boolean,
-                value: false
-            },
             stepIds: {
                 type: Object,
                 value: () => {
@@ -104,49 +93,13 @@
                 }
             }
         },
-        /**
-         * Move to the next step or set the challenge as done
-         */
-        nextStep () {
-            // The current step was injected, we remove it form the array
-            if (this.steps[this.step].injected) {
-                this.splice('steps', this.step, 1);
-                this.stepChanged();
-            } else {
-                if (this.step < this.steps.length - 1) {
-                    this.step++;
-                } else {
-                    this.set('done', true);
-                    this.fire('scene-done');
-                }
-            }
-        },
-        _prevStep () {
-            if (this.step > 0) {
-                this.step--;
-            }
-        },
-        _goToStep (index) {
-            this.set('step', index);
-        },
-        _injectStep (step, offset) {
-            let index = this.step + (offset || 1);
-            step.injected = true;
-            // Insert the new step just after that
-            this.splice('steps', index, 0, step);
-            // jump to the new step
-            this._goToStep(index);
-        },
         _updateTooltip (text, index) {
             index = index || 0;
             this.set(`steps.${this.step}.tooltips.${index}.text`, text);
             this.stepChanged();
-        },
-        _updateStep (step) {
-            step.injected = true;
-            this.set(`steps.${this.step}`, step);
-            this.stepChanged();
         }
     };
+
+    window.Kano.Behaviors.ValidatorBehavior = [Kano.Behaviors.ChallengeBehavior, window.Kano.Behaviors.ValidatorBehaviorImpl];
 
 </script>

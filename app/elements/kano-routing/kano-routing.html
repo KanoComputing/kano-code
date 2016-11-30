@@ -44,6 +44,9 @@
         <template is="iron-lazy-page" name="editor" path="/views/kano-view-editor/kano-view-editor.html">
             <kano-view-editor context="[[context]]" user="{{user}}"></kano-view-editor>
         </template>
+        <template is="iron-lazy-page" name="onboarding" path="/views/kano-view-onboarding/kano-view-onboarding.html">
+            <kano-view-onboarding context="[[context]]" user="{{user}}"></kano-view-onboarding>
+        </template>
         <template is="iron-lazy-page" name="play" path="/views/kano-view-play/kano-view-play.html">
             <kano-view-play context="[[context]]" user="{{user}}"></kano-view-play>
         </template>
@@ -81,11 +84,12 @@
        * Initialize the views
        */
       ready () {
-          page('/',                 this._showPageThunk('editor'));
-          page('/remix/:slug',      this._showPageThunk('editor'));
-          page('/demo',             this._showPageThunk('demo'));
-          page('/story/:id',        this._showPageThunk('story'));
-          page('/tutorial/:slug',   this._showPageThunk('tutorial'));
+          page('/',                  this._showPageThunk('editor'));
+          page('/remix/:slug',       this._showPageThunk('editor'));
+          page('/demo',              this._showPageThunk('demo'));
+          page('/story/:id',         this._showPageThunk('story'));
+          page('/tutorial/:slug',    this._showPageThunk('tutorial'));
+          page('/onboarding/:stage', this._showPageThunk('onboarding'));
           page('/app/:slug', (ctx) => {
               window.location = Kano.MakeApps.config.WORLD_URL + "/shared/" + ctx.params.slug;
           });

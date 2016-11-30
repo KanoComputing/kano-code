@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "workspace.toolbar.add-part-button",
+					"location": "add-part-button",
 					"position": "top",
 					"text": "Grab some parts. Click here first."
 				}
@@ -15,14 +15,14 @@
 		{
 			"tooltips": [
 				{
-					"location": "sidebar.parts.part-picture-list",
+					"location": "parts-panel-part-picture-list",
 					"position": "right",
 					"text": "Drag a Picture List in to your app"
 				}
 			],
-			"highlight": "sidebar.parts.part-picture-list",
+			"highlight": "sparts-panel-part-picture-list",
 			"arrow": {
-				"source": "sidebar.parts.part-picture-list",
+				"source": "parts-panel-part-picture-list",
 				"target": "workspace-panel",
 				"size": 120
 			},
@@ -36,14 +36,14 @@
 		{
 			"tooltips": [
 				{
-					"location": "sidebar.parts.part-button",
+					"location": "parts-panel-part-button",
 					"position": "right",
 					"text": "Drag in a Button too"
 				}
 			],
-			"highlight": "sidebar.parts.part-button",
+			"highlight": "parts-panel-part-button",
 			"arrow": {
-				"source": "sidebar.parts.part-button",
+				"source": "parts-panel-part-button",
 				"target": "workspace-panel",
 				"size": 120
 			},
@@ -57,7 +57,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "workspace.toolbar.add-part-button",
+					"location": "add-part-button",
 					"position": "top",
 					"text": "That's all the parts. Press close."
 				}
@@ -585,5 +585,5 @@
 	],
 	"variables": [],
 	"mode": "camera",
-    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"83\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"><block type=\\\"camera#take_picture\\\" id=\\\"default_take_picture_id\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"camera\"}"
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"pseudo\":\"devices.get('camera').when('camera-shutter-button', function () {\\n  devices.get('camera').takePicture();\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_event_part_id\\\" x=\\\"260\\\" y=\\\"102\\\"><field name=\\\"EVENT\\\">camera.camera-shutter-button</field><statement name=\\\"DO\\\"><block type=\\\"camera#take_picture\\\" id=\\\"default_take_picture_id\\\"></block></statement></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"camera\"}"
 }

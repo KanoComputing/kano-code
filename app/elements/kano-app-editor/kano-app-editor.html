@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../kano-sidebar/kano-sidebar.html">
 <link rel="import" href="../kano-workspace/kano-workspace.html">
 <link rel="import" href="../kano-part-editor/kano-part-editor.html">
@@ -10,6 +11,7 @@
 <link rel="import" href="../kano-root-view/kano-root-view.html">
 <link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
 <link rel="import" href="../kano-bitmap-renderer/kano-bitmap-renderer.html">
+<link rel="import" href="../kano-editor-banner/kano-editor-banner.html">
 
 <dom-module id="kano-app-editor">
     <style>
@@ -34,7 +36,6 @@
     :host section #workspace-panel {
         position: relative;
         @apply(--layout-vertical);
-        @apply(--kano-box-shadow);
         min-width: 38%;
         max-width: 62%;
         background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
@@ -55,6 +56,7 @@
         width: 8px;
         cursor: ew-resize;
         background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
+        border-left: 1px solid var(--kano-app-editor-workspace-border, #6f6f6f);
     }
     :host .root-view-wrapper {
         position: relative;
@@ -144,7 +146,10 @@
                     right-drawer
                     selected="{{partsPanelState}}"
                     drawer-width="{{drawerWidth}}">
-                    <div main>
+                    <div main class="main">
+                        <template is="dom-if" if="{{banner}}">
+                            <kano-editor-banner head="{{banner.head}}" text="{{banner.text}}"></kano-editor-banner>
+                        </template>
                         <kano-root-view
                             id="root-view"
                             parts="{{addedParts}}"

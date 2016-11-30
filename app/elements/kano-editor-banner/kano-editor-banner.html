@@ -1,0 +1,58 @@
+<dom-module id="kano-editor-banner">
+    <style>
+        :host {
+            display: block
+        }
+        :host .banner {
+            margin: 35px;
+            display: flex;
+            flex-direction: row;
+        }
+        :host .content {
+            flex: 1;
+        }
+        :host .content .head {
+            color: #888;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+        :host .content .text {
+            font-weight: bold;
+            max-width: 500px;
+        }
+        :host .avatar img {
+            margin-top: 5px;
+            margin-right: 20px;
+            height: 40px;
+        }
+    </style>
+    <template>
+        <div class="banner">
+            <div class="avatar">
+                <img src="/assets/avatar/judoka.svg" alt="Judoka in a speech bubble" />
+            </div>
+            <div class="content">
+                <div class="head">{{head}}</div>
+                <div class="text">{{text}}</div>
+            </div>
+        </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    /* globals Polymer */
+
+    Polymer({
+        is: 'kano-editor-banner',
+        properties: {
+            head: {
+                type: String
+            },
+            text: {
+                type: String
+            }
+        },
+        ready () {
+        }
+    });
+</script>

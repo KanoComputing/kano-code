@@ -3,7 +3,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "workspace.toolbar.add-part-button",
+					"location": "add-part-button",
 					"position": "top",
 					"text": "You're going to use code to connect a microphone, a speaker, and a clock."
 				}
@@ -15,14 +15,14 @@
 		{
 			"tooltips": [
 				{
-					"location": "sidebar.parts.part-microphone",
+					"location": "parts-panel-part-microphone",
 					"position": "right",
 					"text": "Drag the mic onto your app first"
 				}
 			],
-			"highlight": "sidebar.parts.part-microphone",
+			"highlight": "parts-panel-part-microphone",
 			"arrow": {
-				"source": "sidebar.parts.part-microphone",
+				"source": "parts-panel-part-microphone",
 				"target": "workspace-panel",
 				"size": 120
 			},
@@ -36,14 +36,14 @@
 		{
 			"tooltips": [
 				{
-					"location": "sidebar.parts.part-speaker",
+					"location": "parts-panel-part-speaker",
 					"position": "right",
 					"text": "Now add the speaker"
 				}
 			],
-			"highlight": "sidebar.parts.part-speaker",
+			"highlight": "parts-panel-part-speaker",
 			"arrow": {
-				"source": "sidebar.parts.part-speaker",
+				"source": "parts-panel-part-speaker",
 				"target": "workspace-panel",
 				"size": 120
 			},
@@ -57,14 +57,14 @@
 		{
 			"tooltips": [
 				{
-					"location": "sidebar.parts.part-clock",
+					"location": "parts-panel-part-clock",
 					"position": "right",
 					"text": "Finally, add a clock"
 				}
 			],
-			"highlight": "sidebar.parts.part-clock",
+			"highlight": "parts-panel-part-clock",
 			"arrow": {
-				"source": "sidebar.parts.part-clock",
+				"source": "parts-panel-part-clock",
 				"target": "workspace-panel",
 				"size": 120
 			},
@@ -78,7 +78,7 @@
 		{
 			"tooltips": [
 				{
-					"location": "workspace.toolbar.add-part-button",
+					"location": "add-part-button",
 					"position": "top",
 					"text": "Close the drawer"
 				}
@@ -406,5 +406,5 @@
 	"modules": [],
 	"variables": [],
 	"mode": "normal",
-	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"90\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"normal\"}"
+	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
 }

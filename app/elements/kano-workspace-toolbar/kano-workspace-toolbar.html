@@ -1,4 +1,6 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 
 <dom-module id="kano-workspace-toolbar">
     <style>
@@ -7,7 +9,7 @@
         }
         :host .panel {
             margin-top: 5px;
-            background-color: #484848;
+            background-color: var(--kano-app-editor-workspace-controls, black);
             border-radius: 5px;
             padding: 4px 4px;
 
@@ -91,7 +93,7 @@
                 x: {{mouseX}}, y: {{mouseY}}
             </div>
             <div class="spacer"></div>
-            <div class="fullscreen icon" on-tap="fullscreenClicked">
+            <div class="fullscreen icon" on-tap="fullscreenClicked" id="fullscreen-button">
                 <img src="/assets/icons/fullscreen-icon.svg" alt="Fullscreen mode" />
             </div>
             <div class="pause icon" on-tap="pauseClicked">
@@ -120,6 +122,7 @@
     /* globals Polymer, Kano */
     Polymer({
         is: 'kano-workspace-toolbar',
+        behaviors: [Kano.Behaviors.AppElementRegistryBehavior],
         properties: {
             mouseX: {
                 type: Number
@@ -150,6 +153,8 @@
 
         },
         attached () {
+            this._registerElement('fullscreen-button', this.$['fullscreen-button']);
+            this._registerElement('add-part-button', this.$['add-part-button']);
         },
         mousePositionHidden (show) {
             return !show;

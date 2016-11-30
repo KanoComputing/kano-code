@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <dom-module id="kano-ui-list">
     <style>
     :host {
@@ -34,7 +35,7 @@
         <array-selector id="selector" items="{{items}}" selected="{{selected}}" multi toggle></array-selector>
         <template is="dom-repeat" items="{{_usedCategories(categories, items)}}" as="cat">
             <div class="category">
-                <template is="dom-repeat" items="{{items}}" filter="[[cat.partType]]Filter" observe="partType">
+                <template is="dom-repeat" items="{{items}}" filter="[[cat.partType]]Filter" observe="partType" on-dom-change="_onDomChange">
                     <div class="part">
                         <kano-ui-item
                             model="{{item}}"
@@ -55,7 +56,7 @@
 
     Polymer({
         is: 'kano-ui-list',
-        behaviors: [Kano.Behaviors.AppEditorBehavior],
+        behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.AppElementRegistryBehavior],
         properties: {
             items: {
                 type: Array,
@@ -136,6 +137,15 @@
             }
 
             return categories.filter((cat) => usedCategories.indexOf(cat.partType) >= 0);
+        },
+        _onDomChange () {
+            let partEls = Polymer.dom(this.root).querySelectorAll('kano-ui-item'),
+                partEl;
+
+            for (let i = 0; i < partEls.length; i++) {
+                partEl = partEls[i];
+                this._registerElement(`parts-panel-${partEl.getAttribute('id')}`, partEl);
+            }
         }
     });
 </script>

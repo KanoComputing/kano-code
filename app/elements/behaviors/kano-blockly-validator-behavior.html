@@ -1,4 +1,5 @@
-<link rel="import" type="" href="../../scripts/kano/make-apps/copy-manager.html">
+<link rel="import" href="../../scripts/kano/make-apps/copy-manager.html">
+<link rel="import" href="./kano-validator-behavior.html">
 <script type="text/javascript">
 
     window.Kano = window.Kano || {};
@@ -229,39 +230,6 @@
                 block = block.getInput(selector.shadow).connection.targetBlock();
             }
             return block;
-        },
-        getTargetBlockInput (selector) {
-            let block = this.getTargetBlock(selector),
-                connection,
-                blockRect,
-                blockPos,
-                inputRelPos,
-                pos;
-
-            if (selector.inputName) {
-                connection = block.getInput(selector.inputName).connection;
-            } else {
-                connection = block.nextConnection;
-            }
-            blockRect = block.svgPath_.getBoundingClientRect();
-            blockPos = block.getRelativeToSurfaceXY();
-            inputRelPos = {
-                x: connection.x_ - blockPos.x,
-                y: connection.y_ - blockPos.y
-            };
-            pos = {};
-
-            pos.left = blockRect.left + inputRelPos.x;
-            pos.top = blockRect.top + inputRelPos.y;
-
-            pos.right = blockRect.right + blockRect.width - inputRelPos.x;
-            pos.bottom = blockRect.bottom + blockRect.height - inputRelPos.y;
-
-            pos.width = 1;
-            pos.height = 1;
-
-            return pos;
-
         },
         _checkBlocklyEvent (validation, e) {
             let blocklyStep = validation,

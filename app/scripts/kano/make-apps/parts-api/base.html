@@ -156,7 +156,7 @@
                         // When the time has passed, check if a call was made and if so, execute the callback
                         Base.nextCall[id] = setTimeout(() => {
                             Base.nextCall[id] = null;
-                            if (AppModule.waiting[id]) {
+                            if (Base.waiting[id]) {
                                 this.throttle(id, Base.waiting[id], delay);
                                 Base.waiting[id] = null;
                             }

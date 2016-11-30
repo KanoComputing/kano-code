@@ -92,6 +92,11 @@
                 background: inherit;
                 display: none;
             }
+            /* SAFARIX to center the label */
+            .category-label {
+                display: flex;
+                align-items: center;
+            }
         </style>
         <kano-blockly-flyout id="flyout"
                             padding-left="0"
@@ -102,7 +107,7 @@
         <template is="dom-repeat" items="[[toolbox]]" as="category">
             <button type="button" class$="category [[_computeSelectedClass(category.selected)]]" on-tap="_selectCategory" id$="category-[[category.id]]" hidden$="[[_isSeparator(category.type)]]">
                 <div class="color" style$="[[_computeColorStyle(category.colour)]]"></div>
-                <div>[[category.name]]</div>
+                <div class="category-label">[[category.name]]</div>
             </button>
             <div class="separator" hidden$="[[!_isSeparator(category.type)]]"></div>
         </template>
@@ -201,7 +206,7 @@
                             buttons = Polymer.dom(this.root).querySelectorAll('button.category, .separator:not([hidden])'),
                             over = false, duration;
                         this.$.flyout.removeEventListener('size-changed', onSizeChanged);
-                        this.transform(`translate(0px, ${rect.top + rect.height}px`, this.$.flyout);
+                        this.transform(`translate(0px, ${rect.top + rect.height}px)`, this.$.flyout);
                         categoryEl.style.paddingBottom = `${size.height}px`;
                         this.style.width = `${size.width + 35}px`;
                         this._scrollIfNeeded(categoryEl);

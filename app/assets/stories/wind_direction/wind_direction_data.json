@@ -4,7 +4,7 @@
     "steps": [
       {
         "tooltips": [{
-            "location": "workspace.toolbar.add-part-button",
+            "location": "add-part-button",
             "position": "top",
             "text": "This app needs two<br />parts:<br />an arrow image<br />and weather data"
         }],
@@ -13,12 +13,12 @@
         }
     },{
         "tooltips": [{
-            "location": "sidebar.parts.part-image",
+            "location": "parts-panel-part-image",
             "position": "right",
             "text": "Drag the image<br />part to your app"
         }],
         "arrow": {
-            "source": "sidebar.parts.part-image",
+            "source": "parts-panel-part-image",
             "target": "workspace-panel",
             "size": 120
         },
@@ -30,12 +30,12 @@
         }
     },{
         "tooltips": [{
-            "location": "sidebar.parts.part-weather",
+            "location": "parts-panel-part-weather",
             "position": "right",
             "text": "Drag the Weather Data<br />part in too"
         }],
         "arrow": {
-            "source": "sidebar.parts.part-weather",
+            "source": "parts-panel-part-weather",
             "target": "workspace-panel",
             "size": 120
         },
@@ -47,7 +47,7 @@
         }
     },{
         "tooltips": [{
-            "location": "workspace.toolbar.add-part-button",
+            "location": "add-part-button",
             "position": "top",
             "text": "Close the parts drawer"
         }],

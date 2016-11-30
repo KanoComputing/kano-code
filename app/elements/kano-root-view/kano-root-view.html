@@ -1,4 +1,5 @@
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../kano-blockly/kano-blockly.html">
 
 <dom-module id="kano-root-view">
@@ -17,7 +18,8 @@
         <kano-blockly id="code-editor"
                 toolbox="[[toolbox]]"
                 on-change="saveCode"
-                default-blocks="[[mode.defaultBlocks]]"></kano-blockly>
+                default-blocks="[[mode.defaultBlocks]]"
+                on-blockly-ready="_onBlocklyReady"></kano-blockly>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -25,7 +27,7 @@
 
     Polymer({
         is: 'kano-root-view',
-        behaviors: [Kano.Behaviors.AppEditorBehavior],
+        behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.AppElementRegistryBehavior],
         properties: {
             parts: {
                 type: Array,
@@ -53,6 +55,10 @@
             'computeToolboxDebounced(mode)',
             'defaultCategoriesLoaded(defaultCategories.events)'
         ],
+        _onBlocklyReady () {
+            this._registerElement('blockly-bin', this.$['code-editor'].workspace.svgGroup_.querySelector('.blocklyTrash'));
+            this._registerElement('blockly-toolbox', this.$['code-editor'].getToolbox());
+        },
         codeChanged () {
             if (!this.code) {
                 return;

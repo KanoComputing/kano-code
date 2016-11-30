@@ -169,7 +169,7 @@
             let file;
             e.preventDefault();
             e.stopPropagation();
-            this.toggleClass('dragging', false); 
+            this.toggleClass('dragging', false);
             this._animateDrop().then(() => {
                 this.$['dropoverlay'].style.display = 'none';
             });
@@ -215,7 +215,7 @@
         _onDragleave (e) {
             let target = e.path ? e.path[0] : e.target;
             if (target === this) {
-                this.toggleClass('dragging', false);            
+                this.toggleClass('dragging', false);
                 this._animateDragLeave().then(() => {
                     this.$['dropoverlay'].style.display = 'none';
                 });
@@ -288,7 +288,7 @@
                 duration: 400,
                 easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
             }).finished;
-            
+
         },
         _animateDrop () {
             let overlay = this.$['dropoverlay'],
@@ -319,7 +319,7 @@
                 duration: 400,
                 easing: 'cubic-bezier(0.6, -0.28, 0.735, 0.045)'
             }).finished;
-            
+
         },
         _registerBlockly () {
             let appToLoad,
@@ -416,9 +416,6 @@
             let data = e.detail;
             // Add the new code and its rule to the components store
             Kano.MakeApps.components.setCode(data.id, data.emitter, data.event, data.code);
-        },
-        detached () {
-            window.removeEventListener('resize', this.updateWorkspaceRect.bind(this));
         }
     });
 </script>

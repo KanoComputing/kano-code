@@ -1,4 +1,6 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../behaviors/kano-sound-player-behavior.html">
 <link rel="import" href="../behaviors/kano-cover-generator-behavior.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
@@ -39,11 +41,6 @@
     :host ::slotted(#dropzone) {
         margin: auto;
         position: relative;
-    }
-    :host .made-with-kano {
-        text-align: center;
-        color: #B3B3B3;
-        pointer-events: none;
     }
     #workspace-placeholder {
         height: 100%;
@@ -152,7 +149,12 @@
     /* globals Polymer, Kano */
     Polymer({
         is: 'kano-workspace',
-        behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.CoverGeneratorBehavior, Kano.Behaviors.SoundPlayerBehavior],
+        behaviors: [
+            Kano.Behaviors.AppEditorBehavior,
+            Kano.Behaviors.CoverGeneratorBehavior,
+            Kano.Behaviors.SoundPlayerBehavior,
+            Kano.Behaviors.AppElementRegistryBehavior
+        ],
         properties: {
             parts: {
                 type: Array,
@@ -494,6 +496,7 @@
             if (this.soundReady) {
                 this.playSound('/assets/audio/sounds/pop.wav');
             }
+            this._registerElement(`workspace-part-${model.id}`, element);
         },
         removePart (key) {
             let element = this.elements[key];

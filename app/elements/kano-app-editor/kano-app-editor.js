@@ -11,7 +11,7 @@ function getDefaultBackground() {
 
 Polymer({
     is: 'kano-app-editor',
-    behaviors: [Kano.Behaviors.AppEditorBehavior],
+    behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.AppElementRegistryBehavior],
     properties: {
         parts: {
             type: Array
@@ -85,6 +85,10 @@ Polymer({
             computed: 'isPartsMenuOpen(partsPanelState, drawerPage)'
         },
         challengeState: {
+            type: Object,
+            value: null
+        },
+        banner: {
             type: Object,
             value: null
         }
@@ -505,6 +509,9 @@ Polymer({
                 return 'Any unsaved changes to your app will be lost. Continue?';
             }
         }
+
+        this._registerElement('workspace-panel', this.$['workspace-panel']);
+        this._registerElement('blocks-panel', this.$['blocks-panel']);
     },
     detached () {
         Kano.MakeApps.Parts.clear();

@@ -1,0 +1,98 @@
+<link rel="import" href="./mode.html">
+
+<link rel="import" href="../parts/button.html">
+<link rel="import" href="../parts/box.html">
+<link rel="import" href="../parts/text-input.html">
+<link rel="import" href="../parts/text.html">
+<link rel="import" href="../parts/map.html">
+<link rel="import" href="../parts/sticker.html">
+<link rel="import" href="../parts/scrolling-text.html">
+<link rel="import" href="../parts/slider.html">
+<link rel="import" href="../parts/oscillator.html">
+
+<link rel="import" href="../parts/data/space/iss.html">
+<link rel="import" href="../parts/data/weather/weather.html">
+<link rel="import" href="../parts/data/kano/share.html">
+<link rel="import" href="../parts/data/rss.html">
+<link rel="import" href="../parts/data/sports.html">
+<link rel="import" href="../parts/clock.html">
+
+<link rel="import" href="../parts/speaker.html">
+<link rel="import" href="../parts/microphone.html">
+
+<script>
+
+    (function (Kano) {
+        let normal,
+            blocks = [];
+
+        // TODO remove or replace with simple mode specific blocks
+        blocks.push({
+            block: (ui) => {
+                return {
+                    id: 'say',
+                    message0: 'Say %1',
+                    colour: 20,
+                    args0: [{
+                        type: 'input_value',
+                        name: 'VALUE'
+                    }]
+                };
+            },
+            javascript: (ui) => {
+                return function (block) {
+                    return `devices.get('${ui.id}').reset();`;
+                };
+            },
+            pseudo: (ui) => {
+                return function (block) {
+                    return `devices.get('${ui.id}').reset();`;
+                };
+            }
+        });
+
+        blocks.push({
+            block: (ui) => {
+                return {
+                    id: 'superpowers',
+                    message0: 'I now have computer superpowers!',
+                    output: null
+                };
+            },
+            javascript: (ui) => {
+                return function (block) {
+                    let alpha = Blockly.JavaScript.valueToCode(block, 'ALPHA');
+                    return `devices.get('${ui.id}').setTransparency(${alpha});`;
+                };
+            },
+            pseudo: (ui) => {
+                return function (block) {
+                    let alpha = Blockly.JavaScript.valueToCode(block, 'ALPHA');
+                    return `devices.get('${ui.id}').setTransparency(${alpha});`;
+                };
+            }
+        });
+
+        Kano.MakeApps.Mode.addMode('simple', {
+            id: 'simple',
+            name: 'Simple',
+            colour: '#249afb',
+            defaultBlocks: `<xml xmlns="http://www.w3.org/1999/xhtml"><block type="simple#say" id="_;K.SfBLF|T_]S;tb_li" x="266" y="157"></block><block type="simple#superpowers" id="-UzTT]%awZtu;M%O8bJ^" x="383" y="157"></block></xml>`,
+            blocks,
+            allowBackground: false,
+            workspace: {
+                viewport: {
+                    width: 512,
+                    height: 384
+                },
+                component: 'kano-workspace-normal'
+            },
+            sharing: {},
+            // TODO filter this
+            parts: ['clock', 'microphone', 'speaker', 'button', 'box',
+                        'sticker', 'map', 'scrolling-text', 'slider',
+                        'text-input', 'text', 'rss', 'sports', 'weather', 'iss',
+                        'share', 'canvas', 'oscillator']
+        });
+    })(window.Kano = window.Kano || {});
+</script>

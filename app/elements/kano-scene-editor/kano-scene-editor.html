@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../behaviors/kano-scene-component-behavior.html">
+<link rel="import" href="../behaviors/kano-sound-player-behavior.html">
 <link rel="import" href="../behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../kano-challenge-completed-modal/kano-challenge-completed-modal.html">
 <link rel="import" href="../kano-app-challenge/kano-app-challenge.html">
@@ -55,7 +56,10 @@
 
     Polymer({
         is: 'kano-scene-editor',
-        behaviors: [Kano.Behaviors.EditorViewBehavior, Kano.Behaviors.SceneComponentBehavior],
+        behaviors: [
+            Kano.Behaviors.EditorViewBehavior,
+            Kano.Behaviors.SceneComponentBehavior,
+            Kano.Behaviors.SoundPlayerBehavior],
         properties: {
             storyName: {
                 type: String
@@ -172,6 +176,7 @@
                 this.$.editor.generateCover().then((image) => {
                     this.appPreview = image.src;
                     this.$['challenge-completed'].open();
+                    this.playSound('/assets/audio/samples/challenge_complete.wav');
                 });
             }
         },
