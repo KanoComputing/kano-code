@@ -170,7 +170,7 @@
     </style>
     <template>
         <div id="workspace">
-            <kano-blockly-toolbox id="toolbox" toolbox="[[toolbox]]" on-block-created="_onToolboxBlockCreated" auto-close></kano-blockly-toolbox>
+            <kano-blockly-toolbox id="toolbox" toolbox="[[toolbox]]" on-block-created="_onToolboxBlockCreated" auto-close hidden$="{{noToolbox}}"></kano-blockly-toolbox>
             <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
         <div class="omnibox-wrapper" id="omnibox-wrapper" on-tap="_omniboxWrapperTapped">
@@ -216,6 +216,18 @@
             language: {
                 type: String,
                 value: 'JavaScript'
+            },
+            noTrashcan: {
+                type: Boolean,
+                value: false
+            },
+            noZoomControl: {
+                type: Boolean,
+                value: false
+            },
+            noToolbox: {
+                type: Boolean,
+                value: false  
             }
         },
         ready () {
@@ -224,6 +236,7 @@
         /**
          * Inject blockly to the workspace div
          */
+
         attached () {
             let options, defs;
             this.varModal = this.$['var-modal'];
@@ -232,11 +245,11 @@
             options = new Blockly.Options({
                 media: '/assets/vendor/google-blockly/media/',
                 scrollbars: true,
-                trashcan: true,
+                trashcan: !this.noTrashcan,
                 comments: true,
                 disable: true,
                 zoom: {
-                    controls: true,
+                    controls: !this.noZoomControl,
                     startScale: 1.0,
                     maxScale: 3,
                     minScale: 0.3,

@@ -19,7 +19,8 @@
                 toolbox="[[toolbox]]"
                 on-change="saveCode"
                 default-blocks="[[mode.defaultBlocks]]"
-                on-blockly-ready="_onBlocklyReady"></kano-blockly>
+                on-blockly-ready="_onBlocklyReady" no-trashcan="{{noTrashcan}}"
+                no-zoom-control="{{noZoomControl}}" no-toolbox="{{noToolbox}}"></kano-blockly>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -46,6 +47,20 @@
             },
             mode: {
                 type: Object
+            },
+            noTrashcan: {
+                type: Boolean,
+                notify: true,
+                value : false
+            },
+            noZoomControl: {
+                type: Boolean,
+                notify: true,
+                value : false
+            },
+            noToolbox: {
+                type: Boolean,
+                value: false
             }
         },
         observers: [
@@ -53,8 +68,15 @@
             'computeToolboxDebounced(parts.*)',
             'computeToolboxDebounced(defaultCategories.*)',
             'computeToolboxDebounced(mode)',
-            'defaultCategoriesLoaded(defaultCategories.events)'
+            'defaultCategoriesLoaded(defaultCategories.events)',
+            '_computeMode(mode)'
         ],
+        _computeMode (mode){
+            var simpleMode = (mode.id === "simple") ? true : false;
+            this.noTrashcan = simpleMode;
+            this.noZoomControl = simpleMode;
+            this.noToolbox = simpleMode;
+        },
         _onBlocklyReady () {
             this._registerElement('blockly-bin', this.$['code-editor'].workspace.svgGroup_.querySelector('.blocklyTrash'));
             this._registerElement('blockly-toolbox', this.$['code-editor'].getToolbox());
@@ -201,9 +223,12 @@
                 parts = this.parts,
                 blocks,
                 weight;
+
+        
             if (!parts || !this.defaultCategories || !this.mode) {
                 return;
             }
+   
             this.computeBlocks();
             // Reset events blocks
             weight = {
@@ -246,7 +271,6 @@
             });
 
             toolbox = Object.keys(this.defaultCategories).map(id => this.defaultCategories[id]);
-
             toolbox = toolbox
                 .concat({ type: 'separator' });
             // Generate the toolbox for the special mode
