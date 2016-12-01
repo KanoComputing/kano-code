@@ -1,4 +1,5 @@
 <link rel="import" href="../../../kano-style/part.html">
+<link rel="import" href="../../../behaviors/kano-sound-player-behavior.html">
 
 <dom-module id="kano-part-fireworks">
     <style is="custom-style" include="part-style"></style>
@@ -18,37 +19,106 @@
     }
     </style>
     <template>
-        <div id="canvas" on-tap="_clicked"></div>
+        <canvas id="canvas" on-tap="_clicked"></canvas>
     </template>
     <script type="text/javascript">
         /* globals Polymer, Kano */
-
         Polymer({
             is: 'kano-part-fireworks',
-            behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior],
+            behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior, Kano.Behaviors.SoundPlayerBehavior],
             properties: {
                 enabled: {
                     type: Boolean,
                     value: false
+                },
+                ctx: {
+                    type: Object,
+                    value: null
+                },
+                particles: {
+                    type: Array,
+                    value: []
                 }
             },
-            listeners: {
-            },
-            ready () {
+            attached () {
                 this.clicks = 0;
+                this.ctx = this.$.canvas.getContext("2d");
+                this.frameTick();
+                // Enable pop on drop part only after initialisation
+                this.async(() => {
+                    this.soundReady = true;
+                }, 500);
             },
             enable (flag) {
                 this.enabled = flag;
             },
             _clicked (e) {
                 if (this.enabled) {
-                    console.log("DISPLAY FIREWORKS at", e);
-                    this.clicks++;
+                    let bounds = this.$.canvas.getBoundingClientRect();
+                    let x = e.detail.x - bounds.left,
+                        y = e.detail.y - bounds.top;
 
+                    if (this.soundReady) {
+                        this.playSound('/assets/audio/sounds/pop.wav');
+                    }
+                    this.generateParticles(x, y);
+                    setTimeout(function () {
+                        this.generateParticles(x, y)
+                    }.bind(this), 200);
+                    this.clicks++;
                     if (this.clicks > 5) {
                         this.fire('fireworks-triggered');
                     }
                 }
+            },
+            generateParticles (x, y) {
+                for (let i = 0; i < 15; i++) {
+                    this.particles.push(new Particle(
+                        x,
+                        y,
+                        Math.random() * 20,
+                        (Math.random() * 10) - 5,
+                        (Math.random() * 10) - 5,
+                        '#'+Math.floor(Math.random()*1777215 + 15000000).toString(16)
+                    ));
+                }
+                //prototype constructor
+                function Particle (_x, _y, _r, _dx, _dy, _color) {
+                    this.x = _x;
+                    this.y = _y;
+                    this.r = _r;
+                    this.dx = _dx;
+                    this.dy = _dy;
+                    this.color = _color;
+                }
+            },
+            draw () {
+                for(let i = 0; i < this.particles.length; i++) {
+                    let p = this.particles[i];
+                    this.drawCircle(p.x, p.y, p.r, p.color);
+                }
+            },
+            drawCircle (x, y, r, color) {
+                this.ctx.beginPath();
+                this.ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+                this.ctx.fillStyle = color
+                this.ctx.fill();
+            },
+            frameTick () {
+                let view = this;
+                window.requestAnimationFrame(this.frameTick.bind(this));
+                for(let i = 0; i < this.particles.length; i++){
+                    let p = this.particles[i];
+                    p.x += p.dx;
+                    p.y += p.dy;
+                    if (p.r > 0.5) {
+                        p.r -= 0.5;
+                    } else {
+                        this.particles.splice(i, 1);
+                    }
+                }
+                this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                this.draw();
             }
         });
     </script>

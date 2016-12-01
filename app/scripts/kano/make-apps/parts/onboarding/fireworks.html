@@ -73,7 +73,6 @@
                 javascript: (part) => {
                     return function (block) {
                         let statement = Blockly.JavaScript.statementToCode(block, 'trigger') || 'false';
-                        console.log(statement);
                         return `devices.get('${part.id}').enable(${statement});`;
                     };
                 },
