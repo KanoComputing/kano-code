@@ -23,14 +23,6 @@
     </template>
     <script type="text/javascript">
         /* globals Polymer, Kano */
-        function particle (_x, _y, _r, _dx, _dy, _color) {
-            this.x = _x;
-            this.y = _y;
-            this.r = _r;
-            this.dx = _dx;
-            this.dy = _dy;
-            this.color = _color;
-        }
         Polymer({
             is: 'kano-part-fireworks',
             behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior, Kano.Behaviors.SoundPlayerBehavior],
@@ -65,6 +57,7 @@
                     let bounds = this.$.canvas.getBoundingClientRect();
                     let x = e.detail.x - bounds.left,
                         y = e.detail.y - bounds.top;
+
                     if (this.soundReady) {
                         this.playSound('/assets/audio/sounds/pop.wav');
                     }
@@ -80,7 +73,7 @@
             },
             generateParticles (x, y) {
                 for (let i = 0; i < 15; i++) {
-                    this.particles.push(new particle(
+                    this.particles.push(new Particle(
                         x,
                         y,
                         Math.random() * 20,
@@ -88,6 +81,15 @@
                         (Math.random() * 10) - 5,
                         '#'+Math.floor(Math.random()*1777215 + 15000000).toString(16)
                     ));
+                }
+                //prototype constructor
+                function Particle (_x, _y, _r, _dx, _dy, _color) {
+                    this.x = _x;
+                    this.y = _y;
+                    this.r = _r;
+                    this.dx = _dx;
+                    this.dy = _dy;
+                    this.color = _color;
                 }
             },
             draw () {
