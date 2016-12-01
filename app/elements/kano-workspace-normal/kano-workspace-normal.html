@@ -95,6 +95,9 @@
                 this.mousePositionX = 250;
                 this.mousePositionY = 250;
             },
+            when (event,func){
+                this.canvasElement.addEventListener(event, func);
+            },
             _onMouseMove (e) {
                 if (this._isMouseOver) {
                     this.rectangle = this.canvasElement.getBoundingClientRect();

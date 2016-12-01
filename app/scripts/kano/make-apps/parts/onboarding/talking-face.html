@@ -17,11 +17,64 @@
             },
             userProperties: {
             },
-            blocks: [{
+            blocks: [
+            {
+                    block: (ui) => {
+                    return {
+                            id: 'part_event',
+                            message0: 'When %1',
+                            args0: [{
+                                type: "field_dropdown",
+                                name: "EVENT",
+                                options: [['mouse clicked', 'simple.click']]
+                            }],
+                            message1: '%1',
+                            args1: [{
+                                type: "input_statement",
+                                name: "DO"
+                            }]
+                        };
+                },             
+                javascript: (ui) => {
+                    return function (block) {
+                        block.setDeletable(false);
+                        let ev = block.getFieldValue('EVENT'),
+                        statement = Blockly.JavaScript.statementToCode(block, 'DO'),
+                        pieces = ev.split('.'),
+                        emitter = pieces[0],
+                        eventId = pieces[1],
+                        code = `devices.get('${emitter}')`;
+                       
+                        if (emitter === 'global') {
+                                code = 'global';
+                            }
+                        code += `.when('${eventId}', function () {\n${statement}});\n`;
+                        return code;
+                            };
+                },
+                pseudo: (ui) => {
+                    return function (block) {
+                        block.setDeletable(false);
+                        let ev = block.getFieldValue('EVENT'),
+                            statement = Blockly.JavaScript.statementToCode(block, 'DO'),
+                            pieces = ev.split('.'),
+                            emitter = pieces[0],
+                            eventId = pieces[1],
+                            code = `devices.get('${emitter}')`;
+                        if (emitter === 'global') {
+                            code = 'global';
+                        }
+                        code += `.when('${eventId}', function () {\n${statement}});\n`;
+                        return code;
+                    };
+                }
+            }
+            ,{
                 block: (ui) => {
                     return {
                         id: 'say',
                         message0: 'Say %1',
+                        previousStatement: null,
                         args0: [{
                             type: 'input_value',
                             name: 'FLAG'
@@ -30,12 +83,14 @@
                 },
                 javascript: (part) => {
                     return function (block) {
+                        block.setDeletable(false);
                         let flag = Blockly.JavaScript.valueToCode(block, 'FLAG');
                         return `devices.get('${part.id}').runAnimation(${flag});`;
                     };
                 },
                 pseudo: (part) => {
                     return function (block) {
+                        block.setDeletable(false);
                         let flag = Blockly.JavaScript.valueToCode(block, 'FLAG');
                         return `devices.get('${part.id}').runAnimation(${flag});`;
                     };
@@ -50,11 +105,13 @@
                 },
                 javascript: (part) => {
                     return function (block) {
+                        block.setDeletable(false);
                         return [`true`];
                     };
                 },
                 pseudo: (part) => {
                     return function (block) {
+                        block.setDeletable(false);
                         return [`true`];
                     };
                 }
@@ -64,3 +121,4 @@
         Kano.MakeApps.Parts.registerPart(talkingFace);
     })(window.Kano = window.Kano || {});
 </script>
+
