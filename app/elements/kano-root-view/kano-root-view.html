@@ -61,7 +61,7 @@
             'defaultCategoriesLoaded(defaultCategories.events)'
         ],
         isModeSimple (mode) {
-            if (mode && mode.id === "simple") this.simpleMode = true;
+            this.simpleMode = mode && mode.id === "simple";
         },
         _onBlocklyReady () {
             if (!this.simpleMode) {
