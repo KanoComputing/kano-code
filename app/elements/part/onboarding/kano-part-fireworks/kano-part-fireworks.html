@@ -58,27 +58,28 @@
                     this.soundReady = true;
                 }, 500);
             },
-            enable (flag) {
-                this.enabled = flag;
-            },
-            _clicked (e) {
-                if (this.enabled) {
+            randomFireTick(enabled){
+                if (enabled) {
+                    this.clicks = 0;
                     let bounds = this.$.canvas.getBoundingClientRect();
-                    // TODO FIXME ugly, hardcoded and generally wrong hack
-                    // remove ASAP
-                    let x = (e.detail.x - bounds.left) * (502 / bounds.width),
-                        y = (e.detail.y - bounds.top) * (264 / bounds.height);
-                    if (this.soundReady) {
-                        this.playSound('/assets/audio/sounds/pop.wav');
-                    }
-                    this.generateParticles(x, y);
-                    setTimeout(function () {
-                        this.generateParticles(x, y)
-                    }.bind(this), 200);
-                    this.clicks++;
-                    if (this.clicks > 5) {
-                        this.fire('fireworks-triggered');
-                    }
+                    let loopFirework = setInterval(function () {
+                        if (this.soundReady) {
+                            this.playSound('/assets/audio/sounds/pop.wav');
+                            }
+                            let x = Math.random() * bounds.width,
+                                y = Math.random() * bounds.height;
+                                this.generateParticles(x, y);
+                            }.bind(this), 200);                     
+                
+                    var loopInSecond = setInterval(function(){
+                            this.clicks++;
+                            if (this.clicks > 5) {
+                                this.fire('fireworks-triggered');
+                                window.clearInterval(loopInSecond);
+                                window.clearInterval(loopFirework);
+                                }        
+                    }.bind(this),1000);
+                    this.generateParticles(Math.random() * bounds.width, Math.random() * bounds.height);
                 }
             },
             generateParticles (x, y) {
