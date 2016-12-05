@@ -19,9 +19,10 @@
                 toolbox="[[toolbox]]"
                 on-change="saveCode"
                 default-blocks="[[mode.defaultBlocks]]"
-                no-trashcan="{{noTrashcan}}"
-                no-zoom-control="{{noZoomControl}}"
-                no-toolbox="{{noToolbox}}"></kano-blockly>
+                on-blockly-ready="_onBlocklyReady"
+                no-trashcan="[[simpleMode]]"
+                no-zoom-control="[[simpleMode]]"
+                no-toolbox="[[simpleMode]]"></kano-blockly>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -47,7 +48,9 @@
                 observer: 'codeChanged'
             },
             mode: {
-                type: Object
+                type: Object,
+                value: null,
+                observer: 'isModeSimple'
             }
         },
         observers: [
@@ -55,18 +58,16 @@
             'computeToolboxDebounced(parts.*)',
             'computeToolboxDebounced(defaultCategories.*)',
             'computeToolboxDebounced(mode)',
-            'defaultCategoriesLoaded(defaultCategories.events)',
-            '_onModeChange(mode)'
+            'defaultCategoriesLoaded(defaultCategories.events)'
         ],
-        _onModeChange (mode){
-            var simpleMode = (mode.id === "simple");
-            this.noTrashcan = simpleMode;
-            this.noZoomControl = simpleMode;
-            this.noToolbox = simpleMode;
+        isModeSimple (mode) {
+            if (mode && mode.id === "simple") this.simpleMode = true;
         },
         _onBlocklyReady () {
-            this._registerElement('blockly-bin', this.$['code-editor'].workspace.svgGroup_.querySelector('.blocklyTrash'));
-            this._registerElement('blockly-toolbox', this.$['code-editor'].getToolbox());
+            if (!this.simpleMode) {
+                this._registerElement('blockly-bin', this.$['code-editor'].workspace.svgGroup_.querySelector('.blocklyTrash'));
+                this._registerElement('blockly-toolbox', this.$['code-editor'].getToolbox());
+            }
         },
         codeChanged () {
             if (!this.code) {
