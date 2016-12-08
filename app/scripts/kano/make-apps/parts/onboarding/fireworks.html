@@ -20,9 +20,8 @@
             blocks: [{
                 block: (ui) => {
                     return {
-                        id: 'fireworks',
-                        message0: 'Make fireworks at %1',
-                        previousStatement: null,
+                        id: 'make',
+                        message0: 'Make %1',
                         args0: [{
                             type: 'input_value',
                             name: 'FLAG'
@@ -31,21 +30,21 @@
                 },
                 javascript: (part) => {
                     return function (block) {
-                        let flag = Blockly.JavaScript.valueToCode(block, 'FLAG') || false;
-                        return `${flag}`;
+                        let flag = Blockly.JavaScript.valueToCode(block, 'FLAG');
+                        return `devices.get('${part.id}').randomFireTick(${flag});`;
                     };
                 },
                 pseudo: (part) => {
                     return function (block) {
-                        let flag = blockly.javascript.valuetocode(block, 'flag') || false;
-                        return `${flag}`;
+                        let flag = Blockly.JavaScript.valueToCode(block, 'FLAG');
+                        return `devices.get('${part.id}').randomFireTick(${flag});`;
                     };
                 }
-            }, {
+            },{
                 block: (part) => {
                     return {
-                        id: 'mouse_pos',
-                        message0: 'Mouse position',
+                        id: 'fireworks',
+                        message0: 'fireworks',
                         output: null
                     };
                 },
@@ -59,30 +58,8 @@
                         return [`true`];
                     };
                 }
-            }, {
-                block: (ui) => {
-                    return {
-                        id: 'when',
-                        message0: 'When mouse clicked %1',
-                        args0: [{
-                            "type": "input_statement",
-                            "name": "trigger"
-                        }]
-                    };
-                },
-                javascript: (part) => {
-                    return function (block) {
-                        let statement = Blockly.JavaScript.statementToCode(block, 'trigger') || 'false';
-                        return `devices.get('${part.id}').enable(${statement});`;
-                    };
-                },
-                pseudo: (part) => {
-                    return function (block) {
-                        let statement = Blockly.JavaScript.statementToCode(block, 'trigger') || 'false';
-                        return `devices.get('${part.id}').enable(${statement});`;
-                    };
-                }
-            }]
+            }
+            ]
         };
 
         Kano.MakeApps.Parts.registerPart(fireworks);
