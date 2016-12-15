@@ -114,6 +114,7 @@
             this.setupOverlay(scene.overlay_before);
             component = this._parseSceneComponent(scene.component);
             this.sceneData = Object.assign({}, scene.data);
+            this.sceneData.scene = this.scene;
             // Let the end of the overlay load the data
             if (!this.scene.overlay_before) {
                 this.set('sceneData.started', true);

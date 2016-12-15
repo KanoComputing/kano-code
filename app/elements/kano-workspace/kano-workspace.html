@@ -194,6 +194,9 @@
             background: {
                 type: String
             },
+            backgroundImage: {
+                type: String
+            },
             partsMenuOpen: {
                 type: Boolean
             },
@@ -361,6 +364,10 @@
 
             if (newDropzone.setBackgroundColor) {
                 newDropzone.setBackgroundColor(this.background);
+            }
+
+            if (newDropzone.setBackgroundImage) {
+                newDropzone.setBackgroundImage(this.backgroundImage);
             }
 
             /* Remove old dropzone and add new one */

@@ -43,7 +43,8 @@
                             on-blockly-ready="_blocklyReady"
                             on-share="_pauseAndShare"
                             challenge-state="[[challengeState]]"
-                            hide-leave-alert="[[alertDisabled]]">
+                            hide-leave-alert="[[alertDisabled]]"
+                            background-image="[[backgroundImage]]">
           </kano-app-editor>
       </kano-app-challenge>
       <kano-challenge-completed-modal id="challenge-completed"
@@ -156,6 +157,7 @@
             });
         },
         _sceneChanged () {
+            this.backgroundImage = this.scene.scene.background || '';
             this._loadVariables();
         },
         _loadVariables () {

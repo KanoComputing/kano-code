@@ -54,6 +54,10 @@ Polymer({
             notify: true,
             value: getDefaultBackground()
         },
+        backgroundImage:{
+            type: String,
+            notify: true
+        }
         defaultCategories: {
             type: Object
         },

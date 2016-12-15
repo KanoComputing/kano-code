@@ -1,5 +1,6 @@
 <link rel="import" href="../../scripts/kano/make-apps/mode/normal.html">
 <link rel="import" href="../../scripts/kano/make-apps/mode/simple.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../behaviors/kano-workspace-behavior.html">
 <dom-module id="kano-workspace-normal">
     <style>
@@ -20,6 +21,7 @@
         }
     </style>
     <template>
+        <iron-image src="{{backgroundImage}}" sizing="contain" hidden$="{{!backgroundImage}}" width$="[[width]]" height$="[[height]]"></iron-image>
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
         <slot></slot>
     </template>
@@ -39,6 +41,9 @@
                     type: Number,
                     value: 250,
                     notify: true
+                },
+                backgroundImage: {
+                    type:String
                 }
             },
             ready () {
@@ -56,6 +61,10 @@
                 this.canvasElement.addEventListener('mouseover', this._onMouseOver.bind(this));
                 this.ctx.addEventListener('mouseout', this._onMouseOut.bind(this));
                 this.canvasElement.addEventListener('mousemove', this._onMouseMove.bind(this));
+            },
+            setBackgroundImage(image) {
+                this.backgroundImage = image;
+                this.$.canvas.style.background = "transparent";
             },
             setBackgroundColor (color) {
                 this.style.backgroundColor = color;
