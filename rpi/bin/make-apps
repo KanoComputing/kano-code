@@ -126,7 +126,7 @@ URL = os.getenv('URL') or "https://make-apps-kit.kano.me"
 
 # TODO: for when Kano Code can handle the UI without a top bar
 # chromium-browser --kiosk URL
-cmdline=['chromium-browser',  '--app="{}"'.format(URL), '--start-maximized']
+cmdline = ['chromium-browser', '--app={}'.format(URL), '--start-maximized']
 UI_PROC = subprocess.Popen(cmdline)
 
 
