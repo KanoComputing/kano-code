@@ -16,9 +16,15 @@
             top: 0px;
             left: 0px
         }
+
         canvas {
             border-radius: 5px;
+            background-image: var(--canvas-background-image);
+            background-repeat: no-repeat;
         }
+
+
+
     </style>
     <template>
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
@@ -59,8 +65,8 @@
                 this.canvasElement.addEventListener('mousemove', this._onMouseMove.bind(this));
             },
             setBackgroundImage(image) {
-                this.$.canvas.style.backgroundImage = "url("+image+")";
-                this.$.canvas.style.backgroundRepeat = "no-repeat";
+                this.customStyle['--canvas-background-image'] = 'url('+image+')';
+                this.updateStyles();
             },
             setBackgroundColor (color) {
                 this.style.backgroundColor = color;
