@@ -56,7 +56,7 @@ Polymer({
         },
         backgroundImage:{
             type: String
-        }
+        },
         defaultCategories: {
             type: Object
         },

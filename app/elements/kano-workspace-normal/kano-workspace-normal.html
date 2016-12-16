@@ -21,7 +21,6 @@
         }
     </style>
     <template>
-        <iron-image src="{{backgroundImage}}" sizing="contain" hidden$="{{!backgroundImage}}" width$="[[width]]" height$="[[height]]"></iron-image>
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
         <slot></slot>
     </template>
@@ -41,9 +40,6 @@
                     type: Number,
                     value: 250,
                     notify: true
-                },
-                backgroundImage: {
-                    type:String
                 }
             },
             ready () {
@@ -63,8 +59,8 @@
                 this.canvasElement.addEventListener('mousemove', this._onMouseMove.bind(this));
             },
             setBackgroundImage(image) {
-                this.backgroundImage = image;
-                this.$.canvas.style.background = "transparent";
+                this.$.canvas.style.backgroundImage = "url("+image+")";
+                this.$.canvas.style.backgroundRepeat = "no-repeat";
             },
             setBackgroundColor (color) {
                 this.style.backgroundColor = color;
