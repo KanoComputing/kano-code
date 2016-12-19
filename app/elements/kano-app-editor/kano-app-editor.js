@@ -57,6 +57,9 @@ Polymer({
         backgroundImage:{
             type: String
         },
+        backgroundColor:{
+            type: String
+        },
         defaultCategories: {
             type: Object
         },
@@ -487,7 +490,7 @@ Polymer({
 
         this.partEditorOpened = false;
         this.backgroundEditorOpened = false;
-
+        this.background.userStyle.background = this.backgroundColor || '#ffffff';
         interact(this.$['workspace-panel']).dropzone({
             // TODO rename to kano-part-item
             accept: 'kano-ui-item:not([instance])',
