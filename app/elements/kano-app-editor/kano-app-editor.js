@@ -54,9 +54,6 @@ Polymer({
             notify: true,
             value: getDefaultBackground()
         },
-        backgroundCss: {
-            type: String
-        },
         defaultCategories: {
             type: Object
         },
@@ -486,7 +483,6 @@ Polymer({
         this.target = document.body;
         this.partEditorOpened = false;
         this.backgroundEditorOpened = false;
-        this.background.userStyle.background = this.backgroundCss || '#ffffff';
         interact(this.$['workspace-panel']).dropzone({
             // TODO rename to kano-part-item
             accept: 'kano-ui-item:not([instance])',
