@@ -101,6 +101,8 @@
         _matchCategory (validation, event) {
             if (validation.part || validation.rawPart) {
                 validation = validation.part ? this.stepIds[validation.part] : validation.rawPart;
+            } else if (validation.value) {
+                validation = validation.value;
             }
             return event.categoryId === validation;
         },

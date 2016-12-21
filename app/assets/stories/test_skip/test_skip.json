@@ -1,0 +1,64 @@
+{
+	"steps": [
+		{
+            "tooltips": [{
+                "location": "add-part-button",
+                "position": "top",
+                "text": "...or here"
+            }, {
+                "location": {
+                    "category": "color"
+                },
+                "position": "right",
+                "text": "Click here..."
+            }],
+			"validation": {
+                "open-parts": {
+                    "value": true,
+                    "skip": 2
+                },
+                "blockly": {
+                    "open-flyout": {
+                        "value": "color",
+                        "skip": 3
+                    }
+                }
+            }
+		},
+        {
+            "tooltips": [{
+                "location": "add-part-button",
+                "position": "top",
+                "text": "Step 2",
+                "next_button": true
+            }]
+        },
+        {
+            "tooltips": [{
+                "location": "add-part-button",
+                "position": "top",
+                "text": "Step 3",
+                "next_button": true
+            }]
+        },
+        {
+            "tooltips": [{
+                "location": "add-part-button",
+                "position": "top",
+                "text": "Step 4"
+            }],
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "color#colour_picker",
+                        "id": "color_block"
+                    }
+                }
+            }
+        }
+	],
+	"variables": [],
+    "modules": ["color"],
+    "parts": ["button"],
+	"mode": "normal"
+}

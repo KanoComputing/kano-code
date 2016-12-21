@@ -40,7 +40,11 @@
                     this._isOppositeAction(validation[type], type, detail)
                 } else {
                     if (this._validateEvent(validation[type], type, detail)) {
-                        this.nextStep();
+                        if (!validation[type].skip) {
+                            this.nextStep();
+                        } else {
+                            this._goToStep(this.step + validation[type].skip);
+                        }
                     // The matching event didn't pass the checks, find a fallback
                     } else {
                         this._validateMatchFallback(validation[type], type, detail);
@@ -56,7 +60,7 @@
          */
         _validateEvent (validation, type, detail) {
             // Simple presence validation
-            if (validation === true) {
+            if (validation === true || (validation.value && validation.value === true)) {
                 return true;
             }
             // Record changes for `count` type validations
