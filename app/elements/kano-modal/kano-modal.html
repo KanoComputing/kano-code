@@ -1,0 +1,174 @@
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../behaviors/kano-sound-player-behavior.html">
+
+<dom-module id="kano-modal">
+    <style is="custom-style"></style>
+    <style>
+        :host {
+            --color-background: #ffffff;
+            --color-light-grey: #f4f5f6;
+            --color-medium-grey: #a7aeb2;
+            --color-dark-grey: #999999;
+            --color-text: #253541;
+            --color-progress-bar: #9FD465;
+            --color-progress-bar-bg: #e5e5e5;
+            --border-radius-large: 6px;
+            --border-radius-medium: 3px;
+            background-color: transparent;
+        }
+        :host paper-dialog {
+            background-color: transparent;
+        }
+        :host .fadeInUp {
+            animation-duration: 0.1s;
+            animation-name: fadeInUp;
+            animation-fill-mode: both;
+        }
+        :host #wrapper {
+            background-color: var(--color-light-grey);
+            border-radius: var(--border-radius-large);
+            color: var(--color-text);
+            display: block;
+            font-family: 'Bariol', sans-serif;
+
+            margin: 0;
+            overflow: hidden;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            position: relative;
+
+            display: flex;
+
+            @apply(--kano-modal-main);
+        }
+        :host .content {
+            flex: 1;
+            background-color: var(--color-background);
+            box-sizing: border-box;
+            padding-left: 0;
+            padding-right: 0;
+            position: relative;
+            text-align: center;
+        }
+        :host .motif {
+            display: block;
+            height: 100px;
+            left: 0;
+            margin: 0 auto;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transform: translateY(-65%);
+            width: 100px;
+        }
+        :host .close-icon {
+            width: 20px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in;
+        }
+        :host .close-icon:hover {
+            transform: scale(1.15);
+        }
+        @media all and (max-width: 580px) {
+            :host #wrapper {
+                padding-top: 75px;
+                width: 380px;
+            }
+            :host .content {
+                padding-top: 30px;
+                padding-bottom: 20px;
+            }
+            :host .motif {
+                max-width: 80px;
+            }
+            :host .close-icon {
+                top: 10px;
+                right: 10px;
+            }
+        }
+        @media all and (min-width: 580px) {
+            :host #wrapper {
+                padding-top: 85px;
+                width: 460px;
+            }
+            :host .content {
+                padding-top: 40px;
+                padding-bottom: 40px;
+            }
+        }
+    </style>
+    <template>
+        <paper-dialog id="modal" on-iron-overlay-opened="_openAnimation" modal>
+            <div class="wrapper" id="wrapper">
+                <img class="close-icon"
+                     src="/assets/icons/modal-close-icon.svg"
+                     on-tap="close" />
+                <div class="content">
+                    <img class="motif" src="/assets/avatar/judoka-face.svg" />
+                    <slot></slot>
+                </div>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+
+<script>
+    /* globals Polymer, Kano */
+    Polymer({
+        is: 'kano-modal',
+        behaviors: [Kano.Behaviors.SoundPlayerBehavior],
+        properties: {
+            sound: {
+                type: Boolean,
+                value: false
+            }
+        },
+        observers: [
+            'soundChanged(sound)'
+        ],
+        attached () {
+        },
+        detached () {
+        },
+        _openAnimation () {
+            if ('animate' in HTMLElement.prototype) {
+                this.$.modal.animate([
+                    {transform: 'translateY(150%)'},
+                    {transform: 'translateY(0%)'}
+                ], {
+                    duration: 200,
+                    easing: 'ease-out'
+                });
+            }
+        },
+        open () {
+            if (this.sound) {
+                this.playSound(`/assets/audio/onboarding/challenge_complete.wav`);
+            }
+            this.$.modal.open();
+        },
+        close () {
+            if ('animate' in HTMLElement.prototype) {
+                this.$.modal.animate([
+                    {transform: 'translateY(0%)'},
+                    {transform: 'translateY(150%)'}
+                ], {
+                    duration: 200,
+                    easing: 'ease-in'
+                }).onfinish = () => {
+                    this.$.modal.close();
+                };
+            }
+        },
+        soundChanged (sound) {
+            if (sound) {
+                this.loadSound(`/assets/audio/onboarding/challenge_complete.wav`);
+            }
+        }
+    });
+</script>

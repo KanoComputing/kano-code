@@ -5,9 +5,6 @@
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-in-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
-<link rel="import" href="../../bower_components/neon-animation/animations/transform-animation.html">
 
 <link rel="import" href="../app.html">
 <link rel="import" href="../kano-routing/kano-routing.html">
@@ -18,6 +15,7 @@
 <link rel="import" href="../kano-side-menu/kano-side-menu.html">
 <link rel="import" href="../behaviors/kano-modal-animator-behavior.html">
 <link rel="import" href="../behaviors/kano-view-behavior.html">
+<link rel="import" href="../behaviors/kano-tracking-behavior.html">
 <link rel="import" href="../kano-slider/kano-slider.html">
 <link rel="import" href="../kano-try-chrome/kano-try-chrome.html">
 <!--
@@ -102,9 +100,6 @@ Example:
         @apply(--layout-flex);
         @apply(--layout-vertical);
     }
-    :host .auth-modal {
-        border-radius: 5px;
-    }
     #toast button {
         background-color: var(--color-green);
         margin-left: 16px;
@@ -119,9 +114,7 @@ Example:
                             world-url="[[worldUrl]]"></kano-side-menu>
             <kano-routing main id="router" ctx="{{ctx}}" name="app" on-toggle-menu="toggleMenu" user="[[user]]" on-login="_login" page="{{route}}"></kano-routing>
         </paper-drawer-panel>
-        <paper-dialog id="auth-modal" class="auth-modal" with-backdrop>
-            <kano-auth on-login="_onLogin" auth-view="{{authView}}" id="auth"></kano-auth>
-        </paper-dialog>
+        <kano-auth id="auth" on-login="_onLogin" world-url="{{worldUrl}}" api-url="{{apiUrl}}"></kano-auth>
         <paper-toast id="toast" text="[[message.text]]" duration="[[message.duration]]">
             <button type="button" name="button" hidden$="[[!message.closeWithButton]]" on-tap="_closeToast">[[message.buttonText]]</button>
         </paper-toast>
@@ -133,9 +126,13 @@ Example:
 
     Polymer({
         is: 'kano-app',
+        behaviors: [
+            Kano.Behaviors.TrackingBehavior
+        ],
         properties: {
             user: {
-                type: Object
+                type: Object,
+                observer: '_userChanged'
             },
             offline: {
                 type: Boolean,
@@ -174,29 +171,7 @@ Example:
             this.editor = null;
             this.offline = Kano.MakeApps.config.TARGET === 'osonline' && ClientUtil.isPi();
             this.worldUrl = Kano.MakeApps.config.WORLD_URL;
-            this.$['auth-modal'].animationConfig = {
-                entry: [{
-                    name: 'transform-animation',
-                    transformFrom: 'scale(1.5)',
-                    node: this.$['auth-modal'],
-                    timing: {
-                        duration: 200
-                    }
-                },{
-                    name: 'fade-in-animation',
-                    node: this.$['auth-modal'],
-                    timing: {
-                        duration: 200
-                    }
-                }],
-                exit: {
-                    name: 'fade-out-animation',
-                    node: this.$['auth-modal'],
-                    timing: {
-                        duration: 200
-                    }
-                }
-            };
+            this.apiUrl = Kano.MakeApps.config.API_URL;
             let initialiseSDK = () => {
                 Kano.MakeApps.sdk.auth.initSession((err, user) => {
                     if (user) {
@@ -205,6 +180,10 @@ Example:
                         if (this._needsNotifications()) {
                             this._startNotificationsPolling();
                         }
+                    } else {
+                        this.dispatchTrackingEvent({
+                            visitType: 'Logged out'
+                        });
                     }
                 });
             };
@@ -231,6 +210,8 @@ Example:
             } else {
                 initialiseSDK();
             }
+            this.trackUserDevice();
+            this.trackProgress();
         },
         _showErrorOnToast (e) {
             this.message = e.detail;
@@ -270,19 +251,17 @@ Example:
             clearInterval(this._pollingIntervalId);
         },
         _login () {
-            let modal = this.$['auth-modal'];
-            modal.open();
+            this.$.auth.open('login');
         },
         _signup () {
-            this._login();
-            this.authView = 'signup';
+            this.$.auth.open('signup');
         },
         _onLogin (e) {
             let data = e.detail;
             Kano.MakeApps.sdk.auth.setToken(data.token);
             data.user.notifications = [];
             this.user = data.user;
-            this.$['auth-modal'].close();
+            this.$.auth.close();
             this._populateUser();
             if (this._needsNotifications()) {
                 this._startNotificationsPolling();
@@ -325,6 +304,20 @@ Example:
                 .then((res) => {
                     this.set('user.profile', res.body.user.profile);
                 });
+        },
+        _userChanged (user) {
+            this.debounce('userChanged', () => {
+                if (user) {
+                    this.dispatchTrackingEvent({
+                        account: true,
+                        visitType: 'Logged in'
+                    });
+                } else {
+                    this.dispatchTrackingEvent({
+                        visitType: 'Logged out'
+                    });
+                }
+            });
         },
         _viewLoaded () {
             window.prerenderReady = true;

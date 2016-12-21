@@ -105,7 +105,8 @@
                             padding-left="0"
                             toolbox="[[currentToolbox]]"
                             target-workspace="[[targetWorkspace]]"
-                            on-block-created="_onBlockCreated"></kano-blockly-flyout>
+                            on-block-created="_onBlockCreated"
+                            auto-close="[[autoClose]]"></kano-blockly-flyout>
         <div id="mask" class="mask"></div>
         <template is="dom-repeat" items="[[toolbox]]" as="category">
             <button type="button" class$="category [[_computeSelectedClass(category.selected)]]" on-tap="_selectCategory" id$="category-[[category.id]]" hidden$="[[_isSeparator(category.type)]]">
@@ -155,6 +156,9 @@
             },
             close () {
                 let category, categoryEl, e;
+                if (!this.opened) {
+                    return;
+                }
                 category = this.toolbox[this.currentSelected];
                 if (category) {
                     categoryEl = this.$$(`#category-${category.id}`),
@@ -164,12 +168,14 @@
                 this.$.flyout.style.display = 'none';
                 this.set(`toolbox.${this.currentSelected}.selected`, false);
                 e = { type: Blockly.Events.CLOSE_FLYOUT };
+                this.prevSelected = this.currentSelected;
                 this.currentSelected = undefined;
                 this.customStyle['--selected-color'] = null;
                 this.updateStyles();
                 if (this.targetWorkspace) {
                     this.targetWorkspace.fireChangeListener(e);
                 }
+                this.set('opened', false);
             },
             _targetWorkspaceChanged (ws) {
                 if (!ws) {
@@ -204,11 +210,12 @@
                     },
                         onSizeChanged;
                     onSizeChanged = (e) => {
-                        let size = e.detail,
+                        let size = e && e.detail || this.prevSize,
                             categoryEl = this.$$(`#category-${category.id}`),
                             rect = categoryEl.getBoundingClientRect(),
                             buttons = Polymer.dom(this.root).querySelectorAll('button.category, .separator:not([hidden])'),
                             over = false, duration;
+                        this.prevSize = size;
                         this.$.flyout.removeEventListener('size-changed', onSizeChanged);
                         this.transform(`translate(0px, ${categoryEl.offsetTop + rect.height}px)`, this.$.flyout);
                         categoryEl.style.paddingBottom = `${size.height}px`;
@@ -237,7 +244,11 @@
                             this.$.mask.style.display = 'none';
                         };
                     };
-                    this.$.flyout.addEventListener('size-changed', onSizeChanged);
+                    if (this.prevSelected !== index) {
+                        this.$.flyout.addEventListener('size-changed', onSizeChanged);
+                    } else {
+                        this.async(onSizeChanged);
+                    }
                     this.$.flyout.style.display = 'block';
                     this.currentSelected = index;
                     this.currentToolbox = category.blocks;
@@ -250,6 +261,7 @@
                     let e = {
                         type: Blockly.Events.CLOSE_FLYOUT
                     };
+                    this.prevSelected = this.currentSelected;
                     this.currentSelected = undefined;
                     this.currentToolbox = undefined;
                     this.customStyle['--selected-color'] = null;

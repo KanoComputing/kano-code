@@ -1,0 +1,338 @@
+{
+	"steps": [
+		{
+			"banner": {
+				"text":"Ready to learn how to turn on a single light?",
+				"next_button": true
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Can you find the block to turn on a light?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "lightboard"
+					},
+					"position": "right",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "lightboard"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "lightboard#turn_on"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"lightboard#turn_on\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "lightboard#turn_on"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "lightboard#turn_on",
+						"id": "block_0"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "right",
+					"text": "Well done! Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Now we need a new lightboard block",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "lightboard"
+					},
+					"position": "right",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "lightboard"
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Can you find the block that turns on a <b>light at</b> a specific point?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "lightboard#light_x_y"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"lightboard#light_x_y\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "lightboard#light_x_y"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "lightboard#light_x_y",
+						"id": "block_1"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "2`6m0fBqa1R))*Yc82S)"
+						}
+					},
+					"position": "bottom",
+					"text": "That's it! Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "2`6m0fBqa1R))*Yc82S)",
+							"inputName": "TARGET"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "2`6m0fBqa1R))*Yc82S)"
+					}
+				},
+				"target": "TARGET"
+			}
+		},
+
+
+
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "X",
+							"id": "block_1"
+						}
+					},
+					"position": "bottom",
+					"text": "Play around with this number and see what happens"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "X",
+							"id": "block_1"
+						},
+						"value": ""
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "X",
+							"id": "block_1"
+						}
+					},
+					"position": "bottom",
+					"text": "It changes the X position!<br>Change to <kano-value-preview><span>16</span></kano-value-preview> when you're ready"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "X",
+							"id": "block_1"
+						},
+						"value": "16"
+					}
+				}
+			}
+		},
+
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "Y",
+							"id": "block_1"
+						}
+					},
+					"position": "bottom",
+					"text": "Play around with this number and see what happens"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "Y",
+							"id": "block_1"
+						},
+						"value": ""
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "Y",
+							"id": "block_1"
+						}
+					},
+					"position": "bottom",
+					"text": "It changes the Y position!<br>Change to <kano-value-preview><span>8</span></kano-value-preview> when you're ready"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "Y",
+							"id": "block_1"
+						},
+						"value": "8"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "<kano-blockly-block type=\"lightboard#light_x_y\"></kano-blockly-block><br><b>Unlocked!</b>",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [],
+	"modules": [],
+	"variables": [],
+	"filterBlocks": {
+		"lightboard": [
+			"turn_on",
+			"light_x_y"
+		]
+	},
+	"mode": "lightboard"
+}

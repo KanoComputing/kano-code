@@ -1,0 +1,656 @@
+{
+	"steps": [
+		{
+			"tooltips": [
+				{
+					"location": "workspace.toolbar.add-part-button",
+					"position": "top",
+					"text": "We'll start by adding parts to our app.<br>Click here to see all the parts."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-microphone",
+					"position": "right",
+					"text": "Drag the Mic to your app"
+				}
+			],
+			"highlight": "sidebar.parts.part-microphone",
+			"arrow": {
+				"source": "sidebar.parts.part-microphone",
+				"target": "workspace-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "microphone",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace.toolbar.add-part-button",
+					"position": "top",
+					"text": "All the parts are here, let's code!<br>Close the drawer."
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "right",
+					"text": "Open the Mic tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "threshold"
+						}
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"part_0#threshold\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "threshold"
+					}
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "threshold",
+						"id": "block_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "lightboard"
+					},
+					"position": "right",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "lightboard"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "lightboard#turn_on"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"lightboard#turn_on\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "lightboard#turn_on"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "lightboard#turn_on",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "P~U:3*;dDAgoD;wfJ`Py"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "P~U:3*;dDAgoD;wfJ`Py",
+							"inputName": "DO"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "P~U:3*;dDAgoD;wfJ`Py"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "lightboard"
+					},
+					"position": "right",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "lightboard"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "lightboard#light_x_y"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"lightboard#light_x_y\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "lightboard#light_x_y"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "lightboard#light_x_y",
+						"id": "block_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "Uck+eS6ccV4`8tcx_I_d"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "Uck+eS6ccV4`8tcx_I_d",
+							"inputName": "TARGET"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "Uck+eS6ccV4`8tcx_I_d"
+					}
+				},
+				"target": "TARGET"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "math"
+					},
+					"position": "right",
+					"text": "Open the Math tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "math"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "math_random"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"math_random\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "math_random"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "math_random",
+						"id": "block_3"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2",
+							"rawId": "5?C{%3+V*1A6an=}36[e"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_2",
+							"rawId": "5?C{%3+V*1A6an=}36[e",
+							"inputName": "X"
+						},
+						"target": "block_3"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "5?C{%3+V*1A6an=}36[e"
+					}
+				},
+				"target": "X"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "MIN",
+							"id": "block_3"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>1</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "MIN",
+							"id": "block_3"
+						},
+						"value": "1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "MAX",
+							"id": "block_3"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>16</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "MAX",
+							"id": "block_3"
+						},
+						"value": "16"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "math"
+					},
+					"position": "right",
+					"text": "Open the Math tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "math"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "math_random"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"math_random\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "math_random"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "math_random",
+						"id": "block_4"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2",
+							"rawId": "5?C{%3+V*1A6an=}36[e"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_2",
+							"rawId": "5?C{%3+V*1A6an=}36[e",
+							"inputName": "Y"
+						},
+						"target": "block_4"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_2",
+						"rawId": "5?C{%3+V*1A6an=}36[e"
+					}
+				},
+				"target": "Y"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "MIN",
+							"id": "block_4"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>1</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "MIN",
+							"id": "block_4"
+						},
+						"value": "1"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "MAX",
+							"id": "block_4"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>8</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "MAX",
+							"id": "block_4"
+						},
+						"value": "8"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "color"
+					},
+					"position": "right",
+					"text": "Open the Color tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "color"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "random_colour"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"random_colour\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "random_colour"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "random_colour",
+						"id": "block_5"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "Uck+eS6ccV4`8tcx_I_d"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "Uck+eS6ccV4`8tcx_I_d",
+							"inputName": "COLOR"
+						},
+						"target": "block_5"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "Uck+eS6ccV4`8tcx_I_d"
+					}
+				},
+				"target": "COLOR"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "You can now test the app",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"microphone"
+	],
+	"modules": [
+		"math",
+		"color"
+	],
+	"variables": [],
+	"filterBlocks": {
+		"mic": [
+			"threshold"
+		],
+		"lightboard": [
+			"turn_on",
+			"light_x_y"
+		],
+		"math": [
+			"math_random"
+		],
+		"color": [
+			"random_colour"
+		]
+	},
+	"mode": "lightboard"
+}

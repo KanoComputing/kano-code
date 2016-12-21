@@ -1,24 +1,30 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../kano-style/typography.html">
 <link rel="import" href="../kano-style/color.html">
+<link rel="import" href="../kano-glint-animation/kano-glint-animation.html">
 <dom-module id="kano-workspace-head">
     <style>
         :host {
             display: block;
+        }
+        [hidden] {
+            display: none !important;
         }
         :host .head-controls {
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
         }
+        :host kano-glint-animation {
+            margin-right: 6px;
+            border-radius: 22px;
+        }
         :host .progress-bar {
             height: 44px;
-            border-radius: 22px;
             position: relative;
 
             color: white;
             background-color: var(--kano-app-editor-workspace-controls, black);
-            margin-right: 6px;
 
             display: flex;
             justify-content: center;
@@ -28,6 +34,7 @@
 
             transform: scale(0, 1);
             transform-origin: left;
+            @apply --kano-workspace-head-progress;
         }
         .progress-bar .progress-wrap {
             position: absolute;
@@ -95,17 +102,19 @@
     </style>
     <template>
         <div class="head-controls">
-            <div id="progress-bar"
-                 style$="{{_computeProgressDisplay(challengeState)}}"
-                 class$="progress-bar {{_computeProgressClass(challengeState.ended)}}"
-                 on-tap="_progressTapped">
-                <div class="progress-wrap">
-                    <div class="progress" style$="{{_computeProgressStyle(challengeState.*)}}"></div>
+            <kano-glint-animation running="[[_isHighlightEnabled(challengeState.ended, highlight)]]">
+                <div id="progress-bar"
+                     style$="{{_computeProgressDisplay(challengeState)}}"
+                     class$="progress-bar {{_computeProgressClass(challengeState.ended)}}"
+                     on-tap="_progressTapped">
+                    <div class="progress-wrap">
+                        <div class="progress" style$="{{_computeProgressStyle(challengeState.*)}}"></div>
+                    </div>
+                    <h1 class="title">
+                        [[_computeTitle(challengeState.title)]]
+                    </h1>
                 </div>
-                <h1 class="title">
-                    [[_computeTitle(challengeState.title)]]
-                </h1>
-            </div>
+            </kano-glint-animation>
             <button class="save" on-tap="_saveButtonClicked" hidden$="[[noSave]]">Save</button>
             <button class="settings" on-tap="_settingsButtonClicked" hidden$="[[noSettings]]">
                 <img src="/assets/icons/settings-icon.svg" alt="Settings"/>
@@ -129,6 +138,18 @@
             noSave: {
                 type: Boolean,
                 value: false
+            },
+            highlight: {
+                type: Boolean,
+                value: false
+            },
+            endMessage: {
+                type: String,
+                value: 'Pick next project'
+            },
+            nextMessage: {
+                type: String,
+                value: 'Go to next story'
             }
         },
         observers: [
@@ -171,7 +192,7 @@
         _computeTitle () {
             if (this.challengeState) {
                 if (this.challengeState.ended) {
-                    return this.challengeState.nextStory ? 'Go to next story' : "Pick next project";
+                    return this.challengeState.nextStory ? this.nextMessage : this.endMessage;
                 } else {
                     return this.challengeState.title;
                 }
@@ -187,6 +208,9 @@
         },
         _computeProgressDisplay (challengeState) {
             return challengeState ? '' : 'display: none;'
+        },
+        _isHighlightEnabled (ended, highlight) {
+            return ended && highlight;
         }
     });
 </script>

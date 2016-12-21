@@ -198,7 +198,10 @@
 
                                 if (d.success && d.value) {
                                     s = JSON.stringify(d.value);
-                                } else {
+                                }  else if (d.entries){
+                                    // for shares data 
+                                    s = JSON.stringify(d);
+                                }  else {
                                     console.error('Failed to retrieve data');
                                     s = '{}';
                                 }

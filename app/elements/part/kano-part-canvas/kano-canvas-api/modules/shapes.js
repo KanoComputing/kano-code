@@ -135,6 +135,21 @@
         Kano.CanvasAPI.Utils.endShape(this.session, close);
     };
 
+    /*
+    * Draw a single pixel with no stroke using current cursor position as origin
+    *
+    * @return void
+    */
+    Shapes.prototype.pixel = function () {
+        var x = this.session.pos.x * this.session.ratio,
+            y = this.session.pos.y * this.session.ratio;
+        this.session.ctx.save();
+        this.session.ctx.lineWidth = 0;
+        this.session.ctx.fillStyle = this.session.settings.fill;
+        this.session.ctx.fillRect(x, y, 1, 1);
+        this.session.ctx.restore();
+    };
+
     Kano.CanvasAPI.Shapes = Shapes;
 
 })(window.Kano = window.Kano || {});

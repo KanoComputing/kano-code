@@ -46,6 +46,29 @@
         },{
             block: (ui) => {
                 return {
+                    id: 'move_to_random',
+                    lookup: 'moveToRandom()',
+                    message0: `${ui.name}: move to random point`,
+                    args0: [],
+                    inlineInputs: false,
+                    previousStatement: null,
+                    nextStatement: null,
+                    shadow: {}
+                };
+            },
+            javascript: (ui) => {
+                return function (block) {
+                    return `devices.get('${ui.id}').modules.space.moveToRandom();\n`;
+                };
+            },
+            pseudo: (ui) => {
+                return function (block) {
+                    return `devices.get('${ui.id}').modules.space.moveToRandom();\n`;
+                };
+            }
+        },{
+            block: (ui) => {
+                return {
                     id: 'move',
                     lookup: 'move(x, y)',
                     message0: `${ui.name}: move by x %1 y %2`,

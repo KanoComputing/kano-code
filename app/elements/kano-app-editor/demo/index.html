@@ -1,0 +1,66 @@
+<html>
+    <head>
+    <title>paper-slider demo</title>
+
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../kano-app-editor.html">
+    <link rel="import" href="../../kano-app-editor/kano-app-editor.html">
+    <link rel="import" href="../../kano-style/themes/light.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+        kano-app-editor {
+            width: 100%;
+            height: 100%;
+        }
+        demo-snippet {
+            --demo-snippet-demo: {
+                padding: 0;
+            };
+        }
+    </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>The kano code editor</h3>
+            <demo-snippet>
+                <template>
+                    <template is="dom-bind" id="bind">
+                        <kano-app-editor slot="editor" mode="[[mode]]" default-categories="[[defaultCategories]]"></kano-app-editor>
+                    </template>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let bind = document.getElementById('bind');
+
+                            bind.mode = {
+                                id: 'test-mode',
+                                name: 'Test Mode',
+                                workspace: {
+                                    viewport: {
+                                        width: 512,
+                                        height: 384
+                                    },
+                                    component: 'kano-workspace-normal'
+                                }
+                            };
+
+                            bind.defaultCategories = [{
+                                id: 'test',
+                                name: 'Test',
+                                colour: 'red',
+                                blocks: [{
+                                    id: 'math_number'
+                                }]
+                            }];
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

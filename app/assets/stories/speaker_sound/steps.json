@@ -1,0 +1,349 @@
+{
+	"steps": [
+		{
+			"banner": {
+				"text":"Let's teach your speaker a new power: playing sound effects!<br>First let's get it to play every sound it can...in 10 seconds!",
+				"next_button": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "We'll start by adding parts to our app.<br>Open the parts drawer by clicking here."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "parts-panel-part-speaker",
+					"position": "right",
+					"text": "Drag the Speaker to your app"
+				}
+			],
+			"highlight": "parts-panel-part-speaker",
+			"arrow": {
+				"source": "parts-panel-part-speaker",
+				"target": "workspace-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "speaker",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "Now we can start coding.<br>Close the drawer."
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "We need a <b>new block</b> that can play sounds...<br>It's hiding with the other Speaker blocks...can you find it?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "right",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "A-ha! It's in here.<br>Can you find the that <b>plays</b> a sound?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "speaker_play"
+						}
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"part_0#speaker_play\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "speaker_play"
+					}
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "speaker_play",
+						"id": "block_0"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "That's it!<br>Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Now we need to pick a sound to play.<br>Can you find the block that has a list of all our sounds?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "right",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "speaker_sample"
+						}
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"part_0#speaker_sample\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "speaker_sample"
+					}
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "speaker_sample",
+						"id": "block_1"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "K+?U)o?]8Y3XbUn=)28g"
+						}
+					},
+					"position": "left",
+					"text": "You found it!<br>Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "K+?U)o?]8Y3XbUn=)28g",
+							"inputName": "SAMPLE"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "K+?U)o?]8Y3XbUn=)28g"
+					}
+				},
+				"target": "SAMPLE"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1"
+						}
+					},
+					"position": "top",
+					"text": "These drop downs hold giant lists of sounds!<br>Dive in!<br>Change to <kano-value-preview><span>sounds</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_1"
+						},
+						"value": "sounds"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>Ping</span></kano-value-preview><br>@TODO change to frequency sweep..."
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_1"
+						},
+						"value": "elec_ping"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "<kano-blockly-block type=\"part_0#speaker_play\"></kano-blockly-block><br>Unlocked!<br><br>Those are all the notes your speaker can play...<br>...from 10 hertz all the way to 20 thousand hertz!",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"speaker"
+	],
+	"modules": [],
+	"variables": [],
+	"filterBlocks": {
+		"speaker": [
+			"speaker_play",
+			"speaker_sample"
+		]
+	},
+	"mode": "normal"
+}

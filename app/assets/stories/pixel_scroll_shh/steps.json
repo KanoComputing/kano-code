@@ -1,0 +1,388 @@
+{
+	"steps": [
+		{
+			"banner": {
+				"text":"Let's build an app that sends a message when things get noisy!",
+				"next_button": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace.toolbar.add-part-button",
+					"position": "top",
+					"text": "We'll start by adding parts to our app.<br>Click here to see all the parts."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "sidebar.parts.part-microphone",
+					"position": "right",
+					"text": "Drag the Mic to your app"
+				}
+			],
+			"highlight": "sidebar.parts.part-microphone",
+			"arrow": {
+				"source": "sidebar.parts.part-microphone",
+				"target": "workspace-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "microphone",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace.toolbar.add-part-button",
+					"position": "top",
+					"text": "Now we can start coding.<br>Close the drawer."
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Can you find the block that triggers code when things get loud?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "right",
+					"text": "Open the Mic tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "threshold"
+						}
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"part_0#threshold\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "threshold"
+					}
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "threshold",
+						"id": "block_0"
+					}
+				}
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "That's the one.<br>Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Can you find the block to scroll text on the lightboard?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "lightboard"
+					},
+					"position": "right",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "lightboard"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "lightboard#light_scroll_text"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"lightboard#light_scroll_text\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "lightboard#light_scroll_text"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "lightboard#light_scroll_text",
+						"id": "block_1"
+					}
+				}
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "XPHTdStR,p/IM{uHzR]o"
+						}
+					},
+					"position": "left",
+					"text": "You found it!<br>Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": "XPHTdStR,p/IM{uHzR]o",
+							"inputName": "DO"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": "XPHTdStR,p/IM{uHzR]o"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "variables"
+					},
+					"position": "right",
+					"text": "Open the Variables tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "variables"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "text"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"text\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "text"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "text",
+						"id": "block_2"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "Ol=1kX[nlef93[~`-Ix;"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "Ol=1kX[nlef93[~`-Ix;",
+							"inputName": "TEXT"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "Ol=1kX[nlef93[~`-Ix;"
+					}
+				},
+				"target": "TEXT"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>Shhh!</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_2"
+						},
+						"value": "Shhh"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "Clap to test it out.<br>Now you could be a librarian!",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"microphone"
+	],
+	"modules": [
+		"variables"
+	],
+	"variables": [],
+	"filterBlocks": {
+		"mic": [
+			"threshold"
+		],
+		"lightboard": [
+			"turn_on",
+			"light_x_y",
+			"light_scroll_text"
+		],
+		"variables": [
+			"text"
+		]
+	},
+	"mode": "lightboard"
+}

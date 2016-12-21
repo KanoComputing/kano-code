@@ -792,6 +792,33 @@ Blockly.FieldVariable.dropdownCreate = function() {
   return options;
 };
 
+/**
+ * Handle a mouse up event on an editable field.
+ * @param {!Event} e Mouse up event.
+ * @private
+ */
+Blockly.Field.prototype.onMouseUp_ = function(e) {
+  if ((goog.userAgent.IPHONE || goog.userAgent.IPAD) &&
+      !goog.userAgent.isVersionOrHigher('537.51.2') &&
+      e.layerX !== 0 && e.layerY !== 0) {
+    // Old iOS spawns a bogus event on the next touch after a 'prompt()' edit.
+    // Unlike the real events, these have a layerX and layerY set.
+    return;
+  } else if (Blockly.isRightButton(e)) {
+    // Right-click.
+    return;
+  } else if (this.sourceBlock_.workspace.isDragging() || this.sourceBlock_.isInFlyout) {
+    // Drag operation is concluding.  Don't open the editor.
+    return;
+  } else if (this.sourceBlock_.isEditable()) {
+    // Non-abstract sub-classes must define a showEditor_ method.
+    this.showEditor_();
+    // The field is handling the touch, but we also want the blockSvg onMouseUp
+    // handler to fire, so we will leave the touch identifier as it is.
+    // The next onMouseUp is responsible for nulling it out.
+  }
+};
+
 Blockly.setPhantomBlock = function (connection, targetBlock) {
     let sourceBlock = connection.getSourceBlock(),
         targetConnection = targetBlock.outputConnection ? targetBlock.outputConnection : targetBlock.previousConnection,

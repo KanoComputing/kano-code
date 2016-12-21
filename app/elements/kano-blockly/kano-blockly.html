@@ -8,6 +8,23 @@
 <link rel="import" href="../kano-blockly-omnibox/kano-blockly-omnibox.html">
 <link rel="import" href="../kano-blockly-toolbox/kano-blockly-toolbox.html">
 
+<!--
+
+`kano-blockly`
+
+Example:
+    <kano-blockly></kano-blockly>
+
+ The following custom properties and mixins are also available for styling:
+
+ Custom property | Description | Default
+ ----------------|-------------|----------
+ `--kano-blockly-background` | Background | `white`
+
+@group Kano Elements
+@hero hero.svg
+@demo ./demo/index.html
+-->
 <dom-module id="kano-blockly">
     <style>
         :host {
@@ -192,8 +209,6 @@
 </dom-module>
 
 <script>
-    /* globals Polymer, Blockly */
-
     Polymer({
         is: 'kano-blockly',
         properties: {
@@ -227,7 +242,7 @@
             },
             noToolbox: {
                 type: Boolean,
-                value: false  
+                value: false
             }
         },
         ready () {

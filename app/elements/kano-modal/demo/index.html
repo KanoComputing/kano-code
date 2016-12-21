@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../kano-modal.html">
+        <style is="custom-style">
+            html {
+                width: 100%;
+                height: 100%;
+            }
+
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <button type="button" name="button" onclick="document.getElementById('modal').open();">Open</button>
+        <kano-modal id="modal"></kano-modal>
+        <script type="text/javascript">
+                document.addEventListener('WebComponentsReady', () => {
+                    document.getElementById('modal').open();
+                });
+        </script>
+    </body>
+</html>

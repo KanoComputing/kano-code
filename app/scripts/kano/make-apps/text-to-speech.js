@@ -18,20 +18,18 @@
 
         constructor (config) {
             this.config = config;
+
             this.backend = this.remote;
-            this.backendStop = () => {};
-            this.rpiStop = () => {};
+            this.backendStop = this.remoteStop;
 
             this.cache = {};
+            this.audio = null;
         }
 
         configure (c) {
             this.config = c;
 
-            if (c.TARGET === 'rpi') {
-                this.backend = this.rpi;
-                this.backendStop = this.rpiStop;
-            } else if (window.speechSynthesis) {
+            if (window.speechSynthesis && !window.ClientUtil.isPi()) {
                 this.backend = this.browser;
                 this.backendStop = this.browserStop;
             }
@@ -45,30 +43,6 @@
 
         stop () {
             this.backendStop();
-        }
-
-        rpi (text, rate, language) {
-            let opts = {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    text: text,
-                    pitch: 1,
-                    rate: rate,
-                    language: language
-                })
-            };
-
-            fetch(`${this.config.API_URL}/speak`, opts)
-                .then((res) => {
-                    if (!res.ok) {
-                        console.log("Text-to-speech backend failed.");
-                    }
-                }).catch((e) => {
-                    console.log(`Text-to-speech FAILED: ${e}`);
-                });
         }
 
         browser (text, rate, language) {
@@ -93,10 +67,13 @@
                 c: 'OGG'
             },
             url,
+            cacheTag = `${language}-${rate}`,
             urlParams = [];
 
-            if (text in this.cache) {
-                this.playAudio(this.cache[text]);
+            this.cache[cacheTag] = this.cache[cacheTag] || {};
+
+            if (text in this.cache[cacheTag]) {
+                this.playAudio(this.cache[cacheTag][text]);
                 return;
             }
 
@@ -117,23 +94,29 @@
                 }).then((blob) => {
                     let objectUrl = URL.createObjectURL(blob);
                     this.playAudio(objectUrl);
-                    if (!(text in this.cache)) {
-                        this.cache[text] = objectUrl;
+                    if (!(text in this.cache[cacheTag])) {
+                        this.cache[cacheTag][text] = objectUrl;
                     }
                 }).catch((err) => {
                     console.log("Voice API request failed: " + err);
                 });
         }
 
+        remoteStop () {
+            this.audioStop();
+        }
+
         playAudio (url) {
-            this.this.audio = document.createElement('audio');
+            this.audio = document.createElement('audio');
             this.audio.src = url;
             this.audio.load();
             this.audio.play();
         }
 
         audioStop () {
-            this.audio.pause();
+            if (this.audio) {
+                this.audio.pause();
+            }
         }
 
         normaliseRateToRSS (rate) {

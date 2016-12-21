@@ -1,0 +1,463 @@
+{
+	"steps": [
+		{
+			"banner": {
+				"text":"Get ready to click up a cool beat by coding a button!<br>You'll learn how to add a new <b>part</b> to your code",
+				"next_button": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "To make our projects even cooler,<br> we can add in new parts<br><b>Click here</b> to open the parts drawer."
+				}
+			],
+			"validation": {
+				"open-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "parts-panel-part-speaker",
+					"position": "right",
+					"text": "Drag the Speaker to your app"
+				}
+			],
+			"highlight": "parts-panel-part-speaker",
+			"arrow": {
+				"source": "parts-panel-part-speaker",
+				"target": "workspace-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "speaker",
+					"id": "part_0"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "parts-panel-part-button",
+					"position": "right",
+					"text": "Drag the Button to your app"
+				}
+			],
+			"highlight": "parts-panel-part-button",
+			"arrow": {
+				"source": "parts-panel-part-button",
+				"target": "workspace-panel",
+				"size": 120
+			},
+			"validation": {
+				"add-part": {
+					"type": "button",
+					"id": "part_1"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location":  {
+	                    "path": "workspace",
+	                    "part": "part_1"
+	                },
+					"position": "left",
+					"text": "It's a real button!<br>You can click on it and do cool stuff",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
+					"location": "add-part-button",
+					"position": "top",
+					"text": "All the parts are here, let's code!<br>Hit that button"
+				}
+			],
+			"validation": {
+				"close-parts": true
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "bottom",
+					"text": "This is the <b>event block</b>.<br> We use it to tell the computer when we want it<br> to execute our commands...",
+					"next_button":true
+				}
+			]
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "bottom",
+					"text": "Most of the time we want our code to run immediately!<br>But sometimes we want to wait til something special happens...😜",
+					"next_button":true
+				}
+			]
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Let's change when our code runs<br>Can you change the <b>event</b> block to when <b>Button is clicked<b>?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>Button is clicked</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"rawId": "default_part_event_id"
+						},
+						"value": "button.clicked"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Nice!<br>Can you find the blocks we need to <b>play</b> a sound?<br>0 / 2 found",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "right",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "speaker_play"
+						}
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"part_0#speaker_play\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "speaker_play"
+					}
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "speaker_play",
+						"id": "block_1"
+					}
+				}
+			},
+			"reward": true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Can you find the blocks we need to <b>play</b> a sound?<br>1 / 2 found",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": {
+							"part": "part_0"
+						}
+					},
+					"position": "right",
+					"text": "Open the Speaker tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": {
+						"part": "part_0"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": {
+							"part": "part_0",
+							"type": "speaker_sample"
+						}
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"part_0#speaker_sample\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": {
+						"part": "part_0",
+						"type": "speaker_sample"
+					}
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"target": "part_0",
+						"type": "speaker_sample",
+						"id": "block_2"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "!nvv-Hle9pS`#3BvP{#/"
+						}
+					},
+					"position": "left",
+					"text": "Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "!nvv-Hle9pS`#3BvP{#/",
+							"inputName": "SAMPLE"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "!nvv-Hle9pS`#3BvP{#/"
+					}
+				},
+				"target": "SAMPLE"
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Cool! Can you find the Kano Challenge Complete sound?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>kano</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_2"
+						},
+						"value": "kano"
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_2"
+						}
+					},
+					"position": "top",
+					"text": "Change to <kano-value-preview><span>Challenge Complete</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_2"
+						},
+						"value": "challenge_complete"
+					}
+				}
+			},
+			"reward": true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location":  {
+	                    "path": "workspace",
+	                    "part": "part_1"
+	                },
+					"position": "left",
+					"text": "Click click click!<br>Make a beat!",
+					"next_button": true
+				}
+			],
+			"reward":true
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "<b>Buttons</b> and <b>Events</b><br>Unlocked!<br><br>You've learned so much, young student.<br>Get ready to show off your skills in the boss level!",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [
+		"speaker",
+		"button"
+	],
+	"modules": [
+		"events"
+	],
+	"variables": [],
+	"filterBlocks": {
+		"events": [
+			"part_event"
+		],
+		"speaker": [
+			"speaker_play",
+			"speaker_sample"
+		]
+	},
+	"mode": "normal"
+}

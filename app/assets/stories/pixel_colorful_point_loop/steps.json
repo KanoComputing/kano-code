@@ -1,0 +1,589 @@
+{
+	"steps": [
+		{
+			"banner": {
+				"text":"Now let's make our points of light come to life with color!",
+				"next_button": true
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "To start we need a block that does something <b>Every 1 second</b>...",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "control"
+					},
+					"position": "right",
+					"text": "Open the Control tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "control"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "every_x_seconds"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "every_x_seconds"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "every_x_seconds",
+						"id": "block_0"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"position": "right",
+					"text": "🎉🎉That's the one!🎉🎉<br>Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": null,
+							"rawId": "default_part_event_id",
+							"inputName": "DO"
+						},
+						"target": "block_0"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": null,
+						"rawId": "default_part_event_id"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Next can you find the block to turn on a light?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "lightboard"
+					},
+					"position": "right",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "lightboard"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "lightboard#turn_on"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"lightboard#turn_on\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "lightboard#turn_on"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "lightboard#turn_on",
+						"id": "block_1"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": ",{MB+C2_:0Mlpf|p3z/?"
+						}
+					},
+					"position": "right",
+					"text": "Well done! Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_0",
+							"rawId": ",{MB+C2_:0Mlpf|p3z/?",
+							"inputName": "DO"
+						},
+						"target": "block_1"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_0",
+						"rawId": ",{MB+C2_:0Mlpf|p3z/?"
+					}
+				},
+				"target": "DO"
+			}
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Now we need a lightboard block",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "lightboard"
+					},
+					"position": "right",
+					"text": "Open this tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "lightboard"
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Can you find the block that turns on a <b>light at</b> a specific point?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "lightboard#light_x_y"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"lightboard#light_x_y\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "lightboard#light_x_y"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "lightboard#light_x_y",
+						"id": "block_2"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "-+(Xr}#,2x5KA[5_w*fr"
+						}
+					},
+					"position": "bottom",
+					"text": "That's it! Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "-+(Xr}#,2x5KA[5_w*fr",
+							"inputName": "TARGET"
+						},
+						"target": "block_2"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "-+(Xr}#,2x5KA[5_w*fr"
+					}
+				},
+				"target": "TARGET"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "X",
+							"id": "block_2"
+						}
+					},
+					"position": "top",
+					"text": "Play around with this number and see what happens"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "X",
+							"id": "block_2"
+						},
+						"value": ""
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "X",
+							"id": "block_2"
+						}
+					},
+					"position": "top",
+					"text": "It changes the X position!<br>Change to <kano-value-preview><span>8</span></kano-value-preview> when you're ready"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "X",
+							"id": "block_2"
+						},
+						"value": "8"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "Y",
+							"id": "block_2"
+						}
+					},
+					"position": "bottom",
+					"text": "Now try playing with this number"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "Y",
+							"id": "block_2"
+						},
+						"value": ""
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"shadow": "Y",
+							"id": "block_2"
+						}
+					},
+					"position": "bottom",
+					"text": "It changes the Y position!<br>Change to <kano-value-preview><span>4</span></kano-value-preview> when you're ready"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"shadow": "Y",
+							"id": "block_2"
+						},
+						"value": "4"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "To make our point of light flash with color...find the random color block",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"category": "color"
+					},
+					"position": "right",
+					"text": "Open the Color tray"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"open-flyout": "color"
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"flyout_block": "random_colour"
+					},
+					"position": "right",
+					"text": "Drag the <kano-blockly-block type=\"random_colour\"></kano-blockly-block> block onto your code space"
+				}
+			],
+			"arrow": {
+				"target": {
+					"flyout_block": "random_colour"
+				},
+				"angle": 120,
+				"size": 80
+			},
+			"validation": {
+				"blockly": {
+					"create": {
+						"type": "random_colour",
+						"id": "block_3"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "-+(Xr}#,2x5KA[5_w*fr"
+						}
+					},
+					"position": "bottom",
+					"text": "That's it! Connect it to this block"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"connect": {
+						"parent": {
+							"id": "block_1",
+							"rawId": "-+(Xr}#,2x5KA[5_w*fr",
+							"inputName": "COLOR"
+						},
+						"target": "block_3"
+					}
+				}
+			},
+			"phantom_block": {
+				"location": {
+					"block": {
+						"id": "block_1",
+						"rawId": "-+(Xr}#,2x5KA[5_w*fr"
+					}
+				},
+				"target": "COLOR"
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "Watch it go!<br>It changes <b>every second</b>",
+					"next_button": true
+				}
+			]
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": false,
+					"disabled-banner": {
+						"text": "Now we need to turn it into a super loop by making it go fast...<br> can you make the loop run <b>every frame</b>?",
+						"hint_button": true
+					}
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": {
+						"block": {
+							"id": "block_0"
+						}
+					},
+					"position": "right",
+					"text": "Change to <kano-value-preview><span>frames</span></kano-value-preview>"
+				}
+			],
+			"validation": {
+				"blockly": {
+					"value": {
+						"target": {
+							"id": "block_0"
+						},
+						"value": "frames"
+					}
+				}
+			},
+			"reward":true
+		},
+		{
+			"set-state": {
+				"hints": {
+					"enabled": true
+				}
+			}
+		},
+		{
+			"tooltips": [
+				{
+					"location": "workspace-panel",
+					"position": "left",
+					"text": "Amazing! It's so fast!",
+					"next_button": true
+				}
+			]
+		}
+	],
+	"parts": [],
+	"modules": [
+		"control",
+		"color"
+	],
+	"variables": [],
+	"filterBlocks": {
+		"control": [
+			"every_x_seconds"
+		],
+		"lightboard": [
+			"turn_on",
+			"light_x_y"
+		],
+		"color": [
+			"random_colour"
+		]
+	},
+	"mode": "lightboard"
+}

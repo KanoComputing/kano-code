@@ -88,6 +88,7 @@ module.exports = (gulp, $) => {
     gulp.task('copy-index', () => {
         return gulp.src(['app/index.html',
                         'app/scripts/index.js',
+                        'app/scripts/splash.js',
                         'app/assets/vendor/cache-polyfill/cache-polyfill.js',
                         'app/bower_components/webcomponentsjs/webcomponents-lite.min.js'
                         ], { base: 'app' })

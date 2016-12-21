@@ -1,0 +1,447 @@
+{
+	"uidNss": {
+		"block": 4
+	},
+	"data": {
+		"steps": [
+			{
+				"tooltips": [
+					{
+						"location": {
+							"category": "normal"
+						},
+						"position": "right",
+						"text": "Open this tray"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"open-flyout": "normal"
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"flyout_block": "normal#set_background_color"
+						},
+						"position": "right",
+						"text": "Drag the <kano-blockly-block type=\"normal#set_background_color\"></kano-blockly-block> block onto your code space"
+					}
+				],
+				"arrow": {
+					"target": {
+						"flyout_block": "normal#set_background_color"
+					},
+					"angle": 120,
+					"size": 80
+				},
+				"validation": {
+					"blockly": {
+						"create": {
+							"type": "normal#set_background_color",
+							"id": "block_0"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": null,
+								"rawId": "default_part_event_id"
+							}
+						},
+						"position": "left",
+						"text": "Connect it to this block"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"connect": {
+							"parent": {
+								"id": null,
+								"rawId": "default_part_event_id",
+								"inputName": "DO"
+							},
+							"target": "block_0"
+						}
+					}
+				},
+				"phantom_block": {
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"target": "DO"
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"category": "color"
+						},
+						"position": "right",
+						"text": "Open the Color tray"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"open-flyout": "color"
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"flyout_block": "create_color"
+						},
+						"position": "right",
+						"text": "Drag the <kano-blockly-block type=\"create_color\"></kano-blockly-block> block onto your code space"
+					}
+				],
+				"arrow": {
+					"target": {
+						"flyout_block": "create_color"
+					},
+					"angle": 120,
+					"size": 80
+				},
+				"validation": {
+					"blockly": {
+						"create": {
+							"type": "create_color",
+							"id": "block_1"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": "block_0",
+								"rawId": "NGoA?+=y2JVQtW]]W|9@"
+							}
+						},
+						"position": "left",
+						"text": "Connect it to this block"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"connect": {
+							"parent": {
+								"id": "block_0",
+								"rawId": "NGoA?+=y2JVQtW]]W|9@",
+								"inputName": "COLOR"
+							},
+							"target": "block_1"
+						}
+					}
+				},
+				"phantom_block": {
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "NGoA?+=y2JVQtW]]W|9@"
+						}
+					},
+					"target": "COLOR"
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"category": "variables"
+						},
+						"position": "right",
+						"text": "Open the Variables tray"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"open-flyout": "variables"
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"flyout_block": "math_number"
+						},
+						"position": "right",
+						"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+					}
+				],
+				"arrow": {
+					"target": {
+						"flyout_block": "math_number"
+					},
+					"angle": 120,
+					"size": 80
+				},
+				"validation": {
+					"blockly": {
+						"create": {
+							"type": "math_number",
+							"id": "block_2"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": "block_1",
+								"rawId": "8cKf:_D{8K~j5Z~TG`P?"
+							}
+						},
+						"position": "left",
+						"text": "Connect it to this block"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"connect": {
+							"parent": {
+								"id": "block_1",
+								"rawId": "8cKf:_D{8K~j5Z~TG`P?",
+								"inputName": "1"
+							},
+							"target": "block_2"
+						}
+					}
+				},
+				"phantom_block": {
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "8cKf:_D{8K~j5Z~TG`P?"
+						}
+					},
+					"target": "1"
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": "block_2"
+							}
+						},
+						"position": "top",
+						"text": "Change to <kano-value-preview><span>100</span></kano-value-preview>"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"value": {
+							"target": {
+								"id": "block_2"
+							},
+							"value": "100"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"category": "variables"
+						},
+						"position": "right",
+						"text": "Open the Variables tray"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"open-flyout": "variables"
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"flyout_block": "math_number"
+						},
+						"position": "right",
+						"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+					}
+				],
+				"arrow": {
+					"target": {
+						"flyout_block": "math_number"
+					},
+					"angle": 120,
+					"size": 80
+				},
+				"validation": {
+					"blockly": {
+						"create": {
+							"type": "math_number",
+							"id": "block_3"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": "block_1",
+								"rawId": "8cKf:_D{8K~j5Z~TG`P?"
+							}
+						},
+						"position": "left",
+						"text": "Connect it to this block"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"connect": {
+							"parent": {
+								"id": "block_1",
+								"rawId": "8cKf:_D{8K~j5Z~TG`P?",
+								"inputName": "2"
+							},
+							"target": "block_3"
+						}
+					}
+				},
+				"phantom_block": {
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "8cKf:_D{8K~j5Z~TG`P?"
+						}
+					},
+					"target": "2"
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"category": "variables"
+						},
+						"position": "right",
+						"text": "Open the Variables tray"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"open-flyout": "variables"
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"flyout_block": "math_number"
+						},
+						"position": "right",
+						"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+					}
+				],
+				"arrow": {
+					"target": {
+						"flyout_block": "math_number"
+					},
+					"angle": 120,
+					"size": 80
+				},
+				"validation": {
+					"blockly": {
+						"create": {
+							"type": "math_number",
+							"id": "block_4"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": "block_1",
+								"rawId": "8cKf:_D{8K~j5Z~TG`P?"
+							}
+						},
+						"position": "left",
+						"text": "Connect it to this block"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"connect": {
+							"parent": {
+								"id": "block_1",
+								"rawId": "8cKf:_D{8K~j5Z~TG`P?",
+								"inputName": "3"
+							},
+							"target": "block_4"
+						}
+					}
+				},
+				"phantom_block": {
+					"location": {
+						"block": {
+							"id": "block_1",
+							"rawId": "8cKf:_D{8K~j5Z~TG`P?"
+						}
+					},
+					"target": "3"
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": "workspace-panel",
+						"position": "left",
+						"text": "You can now test the app",
+						"next_button": true
+					}
+				]
+			}
+		],
+		"parts": [],
+		"modules": [
+			"color",
+			"variables"
+		],
+		"variables": [],
+		"filterBlocks": {
+			"normal": [
+				"set_background_color"
+			],
+			"color": [
+				"create_color"
+			],
+			"variables": [
+				"math_number"
+			]
+		},
+		"mode": "normal"
+	},
+	"appParts": {},
+	"partsIds": {}
+}

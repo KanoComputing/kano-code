@@ -1,0 +1,61 @@
+<script src="../../scripts/util/client.js"></script>
+
+<script type="text/javascript">
+
+    window.dataLayer = window.dataLayer || [];
+
+    window.Kano = window.Kano || {};
+
+    window.Kano.Behaviors = window.Kano.Behaviors || {};
+
+    window.Kano.Behaviors.TrackingBehavior = {
+          /**
+           * Wrapper for dispatching events to GTM datalayer
+           *
+           * @param {Object || String} trackingEvent
+           */
+          dispatchTrackingEvent (trackingEvent) {
+              let payload = trackingEvent;
+              if (trackingEvent !== Object(trackingEvent)) {
+                  payload = {
+                      event: trackingEvent
+                  };
+              }
+              window.dataLayer.push(payload);
+          },
+          /**
+           * Function for setting number of challenges completed this session
+           *
+           * @param {String} challengeID
+           */
+          trackProgress (challenge) {
+              let storedProgress = sessionStorage.getItem('progress'),
+                  sessionProgress;
+              if (storedProgress) {
+                  sessionProgress = JSON.parse(storedProgress);
+              } else {
+                  sessionProgress = {
+                      completedStories: []
+                  }
+              }
+              if (challenge && sessionProgress.completedStories.indexOf(challenge) === -1) {
+                  sessionProgress.completedStories.push(challenge);
+              }
+              this.dispatchTrackingEvent({
+                  challengesCompleted: sessionProgress.completedStories.length
+              });
+              sessionStorage.setItem('progress', JSON.stringify(sessionProgress));
+          },
+          /**
+           * Track whether the user is a paid or free user, based on whether
+           * they are browsing from the Computer Kit or another device
+           */
+          trackUserDevice () {
+              let type = ClientUtil.isPi() ? 'paid' : 'free';
+              this.dispatchTrackingEvent({
+                  userType: type
+              });
+          }
+    };
+
+</script>

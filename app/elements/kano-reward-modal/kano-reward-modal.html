@@ -3,6 +3,8 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../behaviors/kano-sound-player-behavior.html">
+<link rel="import" href="../kano-glint-animation/kano-glint-animation.html">
 
 <dom-module id="kano-reward-modal">
     <style is="custom-style" include="input-text"></style>
@@ -20,14 +22,15 @@
         }
         :host {
             --color-background: #ffffff;
-            --color-green: #5ac3ac;
-            --color-red: #ff7473;
             --color-yellow: #f1cb44;
+            --color-yellow-darker: #E4BE37;
             --color-light-grey: #f4f5f6;
             --color-medium-grey: #a7aeb2;
             --color-dark-grey: #999999;
             --color-black: #000000;
             --color-text: #253541;
+            --color-progress-bar: #9FD465;
+            --color-progress-bar-bg: #e5e5e5;
             --border-radius-large: 6px;
             --border-radius-medium: 3px;
             background-color: transparent;
@@ -66,32 +69,14 @@
         }
         :host .motif {
             display: block;
-            height: 130px;
+            height: 100px;
             left: 0;
             margin: 0 auto;
             position: absolute;
             right: 0;
             top: 0;
             transform: translateY(-65%);
-            width: 130px;
-        }
-        :host .wrapper.wrapper--green .motif-component--fill {
-            fill: var(--color-green);
-        }
-        :host .wrapper.wrapper--green .motif-component--stroke {
-            stroke: var(--color-green);
-        }
-        :host .wrapper.wrapper--red .motif-component--fill {
-            fill: var(--color-red);
-        }
-        :host .wrapper.wrapper--red .motif-component--stroke {
-            stroke: var(--color-red);
-        }
-        :host .wrapper.wrapper--yellow .motif-component--fill {
-            fill: var(--color-yellow);
-        }
-        :host .wrapper.wrapper--yellow .motif-component--stroke {
-            stroke: var(--color-yellow);
+            width: 100px;
         }
         :host .title {
             font-size: 30px;
@@ -161,6 +146,7 @@
             text-transform: uppercase;
         }
         :host .button.button--primary {
+            background-color: var(--color-yellow);
             color: var(--color-background);
             padding: 14px 24px;
         }
@@ -181,14 +167,11 @@
         :host .button.button--primary .icon {
             color: var(--color-black);
         }
-        :host .wrapper.wrapper--green .button.button--primary {
-            background-color: var(--color-green);
-        }
-        :host .wrapper.wrapper--red .button.button--primary {
-            background-color: var(--color-red);
-        }
-        :host .wrapper.wrapper--yellow .button.button--primary {
+        :host .button.button--primary {
             background-color: var(--color-yellow);
+        }
+        :host .button.button--primary:hover {
+            background-color: var(--color-yellow-darker);
         }
         :host .button.button--secondary {
             background-color: var(--color-light-grey);
@@ -217,7 +200,8 @@
             }
             :host .title,
             :host .body,
-            :host .action {
+            :host .action,
+            :host .progress {
                 padding-left: 20px;
                 padding-right: 20px;
             }
@@ -232,10 +216,38 @@
             }
             :host .title,
             :host .body,
-            :host .action {
+            :host .action,
+            :host .progress {
                 padding-left: 50px;
                 padding-right: 50px;
             }
+        }
+
+        :host .progress {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        :host .progress-bar {
+            width: 100%;
+            height: 12px;
+            border-radius: 12px;
+            background-color: var(--color-progress-bar-bg);
+            max-width: 200px;
+        }
+        :host .progress-bar .gauge {
+            height: 100%;
+            width: 0px;
+            background-color: var(--color-progress-bar);
+            border-radius: 12px;
+        }
+        :host .progress .fraction {
+            color: #444444;
+            font-weight: bold;
+            margin-top: -3px;
+            margin-left: 10px;
         }
     </style>
     <template>
@@ -244,20 +256,10 @@
             id="reward-modal-dialog"
             on-iron-overlay-opened="_updateModalVisibility"
             on-iron-overlay-closed="_updateModalVisibility"
-            with-backdrop>
-            <div class$="[[_wrapperClass(content.color)]]">
+            modal>
+            <div class="wrapper">
                 <div class="content">
-                    <div class="motif">
-                        <template is="dom-if" if="[[_iconType('heart', content.icon)]]">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 137 137"><defs><style>.cls-1{isolation:isolate;}.cls-2,.cls-3,.cls-4{fill:none;stroke-miterlimit:10;}.cls-2{stroke-width:1.96px;opacity:0.4;}.cls-3{stroke-width:5.55px;opacity:0.8;}.cls-4{stroke-width:3.6px;opacity:0.6;}.cls-5{}.cls-6{mix-blend-mode:multiply;}.cls-7{fill:#ccc;}.cls-8{fill:#fff;}</style></defs><title>Heart</title><g class="cls-1"><g id="Layer_1" data-name="Layer 1"><circle class="cls-2" cx="68.49" cy="68.92" r="66.39"/><circle class="cls-3 motif-component motif-component--stroke" cx="68.49" cy="68.92" r="49.24"/><circle class="cls-4 motif-component motif-component--stroke" cx="68.49" cy="68.92" r="58.72"/><circle class="cls-5 motif-component motif-component--fill" cx="68.33" cy="69.11" r="41.53"/><g class="cls-6"><path class="cls-7" d="M78.33,53.77a10.88,10.88,0,0,0-10,6.64,10.87,10.87,0,0,0-10-6.64c-7.47,0-12,7.13-12,13,0,9.84,22,24.85,22,24.85s22-15,22-24.84C90.31,60.9,85.81,53.77,78.33,53.77Z"/></g><path class="cls-8" d="M78.33,50.62a10.88,10.88,0,0,0-10,6.64,10.87,10.87,0,0,0-10-6.64c-7.47,0-12,7.13-12,13,0,9.84,22,24.85,22,24.85s22-15,22-24.84C90.31,57.74,85.81,50.62,78.33,50.62Z"/></g></g></svg>
-                        </template>
-                        <template is="dom-if" if="[[_iconType('star', content.icon)]]">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 137 137"><defs><style>.cls-1{isolation:isolate;}.cls-2,.cls-3,.cls-4{fill:none;stroke-miterlimit:10;}.cls-2{stroke-width:1.96px;opacity:0.4;}.cls-3{stroke-width:5.55px;opacity:0.8;}.cls-4{stroke-width:3.6px;opacity:0.6;}.cls-5{}.cls-6{fill:#ccc;mix-blend-mode:multiply;}.cls-7{fill:#fff;}</style></defs><title>Star</title><g class="cls-1"><g id="Layer_1" data-name="Layer 1"><circle class="cls-2" cx="68.77" cy="68.73" r="66.39"/><circle class="cls-3 motif-component motif-component--stroke" cx="68.77" cy="68.73" r="49.24"/><circle class="cls-4 motif-component motif-component--stroke" cx="68.77" cy="68.73" r="58.72"/><circle class="cls-5 motif-component motif-component--fill" cx="68.77" cy="68.73" r="41.53"/><path class="cls-6" d="M80.49,88.23a3.08,3.08,0,0,1-1,.16A3.44,3.44,0,0,1,78.06,88l-9.37-4.86-9.33,5a2.92,2.92,0,0,1-.49.22,3.13,3.13,0,0,1-2.78-.4,3.19,3.19,0,0,1-1.26-3.06l1.72-10.45-7.66-7.32A3.11,3.11,0,0,1,50,62a3,3,0,0,1,.54-.13l10.49-1.6,4.58-9.54a3.12,3.12,0,0,1,1.8-1.58,3.15,3.15,0,0,1,3.82,1.56L76,60.17l10.49,1.44A3.1,3.1,0,0,1,89,63.69a3.17,3.17,0,0,1-.8,3.18l-7.52,7.46,1.88,10.4a3.15,3.15,0,0,1-2.07,3.5"/><path class="cls-7" d="M80.49,85a3.08,3.08,0,0,1-1,.16,3.44,3.44,0,0,1-1.46-.35l-9.37-4.86-9.33,5a2.92,2.92,0,0,1-.49.22,3.13,3.13,0,0,1-2.78-.4,3.19,3.19,0,0,1-1.26-3.06l1.72-10.45-7.66-7.32A3.11,3.11,0,0,1,50,58.76a3,3,0,0,1,.54-.13L61.05,57l4.58-9.54a3.12,3.12,0,0,1,1.8-1.58,3.15,3.15,0,0,1,3.82,1.56L76,56.94l10.49,1.44A3.1,3.1,0,0,1,89,60.46a3.17,3.17,0,0,1-.8,3.18l-7.52,7.46,1.88,10.4A3.15,3.15,0,0,1,80.49,85"/></g></g></svg>
-                        </template>
-                        <template is="dom-if" if="[[_iconType('tick', content.icon)]]">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 137 137"><defs><style>.cls-1{isolation:isolate;}.cls-2,.cls-3,.cls-4{fill:none;stroke-miterlimit:10;}.cls-2{stroke-width:1.96px;opacity:0.4;}.cls-3{stroke-width:5.55px;opacity:0.8;}.cls-4{stroke-width:3.6px;opacity:0.6;}.cls-5{}.cls-6{fill:#ccc;mix-blend-mode:multiply;}.cls-7{fill:#fff;}</style></defs><title>Tick</title><g class="cls-1"><g id="Layer_1" data-name="Layer 1"><circle class="cls-2" cx="68.72" cy="68.4" r="66.39"/><circle class="cls-3 motif-component motif-component--stroke" cx="68.72" cy="68.4" r="49.24"/><circle class="cls-4 motif-component motif-component--stroke" cx="68.72" cy="68.4" r="58.72"/><circle class="cls-5 motif-component motif-component--fill" cx="68.88" cy="68.4" r="41.53"/><path class="cls-6" d="M63.72,88.17a2.12,2.12,0,0,1-1.62.68,2.24,2.24,0,0,1-1.65-.68l-2.24-2.24a2.36,2.36,0,0,1,0-3.27l26-26a2.12,2.12,0,0,1,2.22-.6,2.23,2.23,0,0,1,1.05.6l2.24,2.24a2.15,2.15,0,0,1,.62,2.24,2,2,0,0,1-.62,1ZM47.34,74.8a2.36,2.36,0,0,1,0-3.27l2.24-2.24a2.25,2.25,0,0,1,1.65-.68,2.13,2.13,0,0,1,1.62.68L66,82.5a2.13,2.13,0,0,1,.68,1.62A2.25,2.25,0,0,1,66,85.77L63.81,88a2.36,2.36,0,0,1-3.27,0Z"/><path class="cls-7" d="M63.72,85.17a2.12,2.12,0,0,1-1.62.68,2.24,2.24,0,0,1-1.65-.68l-2.24-2.24a2.36,2.36,0,0,1,0-3.27l26-26a2.12,2.12,0,0,1,2.22-.6,2.23,2.23,0,0,1,1.05.6l2.24,2.24a2.15,2.15,0,0,1,.62,2.24,2,2,0,0,1-.62,1ZM47.34,71.8a2.36,2.36,0,0,1,0-3.27l2.24-2.24a2.25,2.25,0,0,1,1.65-.68,2.13,2.13,0,0,1,1.62.68L66,79.5a2.13,2.13,0,0,1,.68,1.62A2.25,2.25,0,0,1,66,82.77L63.81,85a2.36,2.36,0,0,1-3.27,0Z"/></g></g></svg>
-                        </template>
-                    </div>
+                    <img class="motif" src='/assets/avatar/judoka.svg' />
                     <h3 class="title">{{content.title}}</h3>
                     <p class="body">{{content.body}}</p>
                     <div class="xp">
@@ -265,45 +267,55 @@
                       <span class="xp-component xp-value">{{content.xp}}</span>
                       <span class="xp-component xp-suffix">xp</span>
                     </div>
+                    <template is="dom-if" if="{{content}}">
+                        <div class="progress">
+                            <div class="progress-bar">
+                                <div class="gauge" style$="{{calculateGaugeWidth(content.progress.*)}}"></div>
+                            </div>
+                            <div class="fraction">{{content.progress.current}}/{{content.progress.total}}</div>
+                        </div>
+                    </template>
                     <template is="dom-repeat" items={{content.links}} as="link">
                         <div class="action">
-                            <button class$="[[_buttonClass(index)]]" on-tap="_handleTap">
-                                <template is="dom-if" if="[[_iconType('save', link.type)]]">
-                                  <div class="icon icon-floppy-disc">
-                                      <?xml version="1.0" encoding="utf-8"?>
-                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 90 90" style="enable-background:new 0 0 90 90;" xml:space="preserve">
-                                        <g>
+                            <kano-glint-animation running="{{link.glint}}">
+                                <button class$="[[_buttonClass(index)]]" on-tap="_handleTap">
+                                    <template is="dom-if" if="[[_iconType('save', link.type)]]">
+                                      <div class="icon icon-floppy-disc">
+                                          <?xml version="1.0" encoding="utf-8"?>
+                                          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 90 90" style="enable-background:new 0 0 90 90;" xml:space="preserve">
+                                            <g>
+                                              <g>
+                                                <path
+                                                  d="M64.3,36.8V16.1c0-0.8,0.3-1.4,0.8-1.9c0.5-0.5,1.2-0.8,1.9-0.8h5.5c1.2,0,2.1,0.4,2.9,1.2c0.8,0.8,1.1,1.7,1.1,2.9v55
+                                                c0,1.2-0.4,2.1-1.1,2.9c-0.8,0.8-1.7,1.2-2.9,1.2h-55c-1.2,0-2.1-0.4-2.9-1.2c-0.8-0.8-1.2-1.7-1.2-2.9V26.8
+                                                c0-1.1,0.4-2.1,1.2-2.8l9.6-9.6c0.6-0.6,1.4-0.9,2.3-0.9H28c0.8,0,1.4,0.3,1.9,0.8c0.5,0.5,0.8,1.2,0.8,1.9v20.6
+                                                c0,0.7,0.3,1.4,0.8,1.9c0.5,0.5,1.2,0.8,1.9,0.8h28.1c0.8,0,1.4-0.3,1.9-0.8C64,38.1,64.3,37.5,64.3,36.8z M39.1,33.1
+                                                c-0.8,0-1.4-0.3-1.9-0.8c-0.5-0.5-0.8-1.2-0.8-1.9V16.1c0-0.8,0.3-1.4,0.8-1.9c0.5-0.5,1.2-0.8,1.9-0.8h5.4c0.8,0,1.4,0.3,1.9,0.8
+                                                c0.5,0.5,0.8,1.2,0.8,1.9v14.3c0,0.8-0.3,1.4-0.8,1.9c-0.5,0.5-1.2,0.8-1.9,0.8H39.1z"/>
+                                              </g>
+                                            </g>
+                                          </svg>
+                                        </div>
+                                    </template>
+                                    <span class="action-text">{{link.text}}</span>
+                                    <template is="dom-if" if="[[_iconType('progress', link.type)]]">
+                                        <div class="icon icon-arrow-up icon-arrow-right">
+                                          <?xml version="1.0" encoding="utf-8"?>
+                                          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                             viewBox="0 0 90 90" style="enable-background:new 0 0 90 90;" xml:space="preserve">
                                           <g>
-                                            <path
-                                              d="M64.3,36.8V16.1c0-0.8,0.3-1.4,0.8-1.9c0.5-0.5,1.2-0.8,1.9-0.8h5.5c1.2,0,2.1,0.4,2.9,1.2c0.8,0.8,1.1,1.7,1.1,2.9v55
-                                            c0,1.2-0.4,2.1-1.1,2.9c-0.8,0.8-1.7,1.2-2.9,1.2h-55c-1.2,0-2.1-0.4-2.9-1.2c-0.8-0.8-1.2-1.7-1.2-2.9V26.8
-                                            c0-1.1,0.4-2.1,1.2-2.8l9.6-9.6c0.6-0.6,1.4-0.9,2.3-0.9H28c0.8,0,1.4,0.3,1.9,0.8c0.5,0.5,0.8,1.2,0.8,1.9v20.6
-                                            c0,0.7,0.3,1.4,0.8,1.9c0.5,0.5,1.2,0.8,1.9,0.8h28.1c0.8,0,1.4-0.3,1.9-0.8C64,38.1,64.3,37.5,64.3,36.8z M39.1,33.1
-                                            c-0.8,0-1.4-0.3-1.9-0.8c-0.5-0.5-0.8-1.2-0.8-1.9V16.1c0-0.8,0.3-1.4,0.8-1.9c0.5-0.5,1.2-0.8,1.9-0.8h5.4c0.8,0,1.4,0.3,1.9,0.8
-                                            c0.5,0.5,0.8,1.2,0.8,1.9v14.3c0,0.8-0.3,1.4-0.8,1.9c-0.5,0.5-1.2,0.8-1.9,0.8H39.1z"/>
+                                            <g>
+                                              <path d="M28.3,47.4h-9.7c-1.3,0-2.3-0.6-2.9-1.8c-0.6-1.2-0.4-2.3,0.4-3.4l25.5-30.6c0.9-1,2-1.5,3.3-1.5c1.3,0,2.4,0.5,3.3,1.5
+                                                l25.5,30.6c0.9,1.1,1,2.2,0.4,3.4c-0.6,1.2-1.5,1.8-2.9,1.8h-9.8c-1.2,0-2.2,0.4-3.1,1.2c-0.8,0.8-1.2,1.9-1.2,3.1v23.5
+                                                c0,1.3-0.4,2.4-1.3,3.3c-0.9,0.9-2,1.3-3.3,1.3H37.2c-1.3,0-2.4-0.4-3.3-1.3c-0.9-0.9-1.3-2-1.3-3.3V51.8c0-1.2-0.4-2.2-1.2-3.1
+                                                C30.6,47.9,29.5,47.4,28.3,47.4z"/>
+                                            </g>
                                           </g>
-                                        </g>
-                                      </svg>
-                                    </div>
-                                </template>
-                                <span class="action-text">{{link.text}}</span>
-                                <template is="dom-if" if="[[_iconType('progress', link.type)]]">
-                                    <div class="icon icon-arrow-up icon-arrow-right">
-                                      <?xml version="1.0" encoding="utf-8"?>
-                                      <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                         viewBox="0 0 90 90" style="enable-background:new 0 0 90 90;" xml:space="preserve">
-                                      <g>
-                                        <g>
-                                          <path d="M28.3,47.4h-9.7c-1.3,0-2.3-0.6-2.9-1.8c-0.6-1.2-0.4-2.3,0.4-3.4l25.5-30.6c0.9-1,2-1.5,3.3-1.5c1.3,0,2.4,0.5,3.3,1.5
-                                            l25.5,30.6c0.9,1.1,1,2.2,0.4,3.4c-0.6,1.2-1.5,1.8-2.9,1.8h-9.8c-1.2,0-2.2,0.4-3.1,1.2c-0.8,0.8-1.2,1.9-1.2,3.1v23.5
-                                            c0,1.3-0.4,2.4-1.3,3.3c-0.9,0.9-2,1.3-3.3,1.3H37.2c-1.3,0-2.4-0.4-3.3-1.3c-0.9-0.9-1.3-2-1.3-3.3V51.8c0-1.2-0.4-2.2-1.2-3.1
-                                            C30.6,47.9,29.5,47.4,28.3,47.4z"/>
-                                        </g>
-                                      </g>
-                                      </svg>
-                                    </div>
-                                </template>
-                            </button>
+                                          </svg>
+                                        </div>
+                                    </template>
+                                </button>
+                            </kano-glint-animation>
                         </div>
                     </template>
                 </div>
@@ -316,6 +328,7 @@
     /* globals Polymer, Kano */
     Polymer({
         is: 'kano-reward-modal',
+        behaviors: [Kano.Behaviors.SoundPlayerBehavior],
         properties: {
             content: {
                 type: Object
@@ -330,11 +343,13 @@
         ],
         attached () {
             this.$['reward-modal-dialog'].backdropElement.classList.add('reward');
+            this.loadSound(`/assets/audio/onboarding/challenge_complete.wav`);
         },
-        deattached () {
+        detached () {
             this.$['reward-modal-dialog'].backdropElement.classList.remove('reward');
         },
         open () {
+            this.playSound(`/assets/audio/onboarding/challenge_complete.wav`);
             this.$['reward-modal-dialog'].open();
         },
         close () {
@@ -349,6 +364,7 @@
         _handleTap (e) {
             this.close();
             this.fire('interaction', {
+                trackingEvent: e.model.link.trackingEvent,
                 type: e.model.link.type
             });
         },
@@ -369,8 +385,12 @@
         _updateModalVisibility () {
             this.set('modalVisibility', !this.modalVisibility);
         },
-        _wrapperClass (color) {
-            return `wrapper wrapper--${color || "default"}`
+        calculateGaugeWidth () {
+            let progress;
+            if (this.content && this.content.progress) {
+                progress = this.content.progress;
+                return `width: ${(progress.current / progress.total) * 100}%;`
+            }
         }
     });
 </script>

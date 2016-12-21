@@ -45,6 +45,10 @@
                 separators: {
                     type: Boolean,
                     value: false
+                },
+                autoClose: {
+                    type: Boolean,
+                    value: false
                 }
             },
             ready () {
@@ -226,7 +230,16 @@
                 };
             },
             _onMouseUp (e) {
-                Blockly.Events.fire(new Blockly.Events.Ui(Blockly.Flyout.startBlock_, 'click', undefined, undefined));
+                if (!this.targetWorkspace.isDragging()) {
+                    // This was a click, not a drag.  End the gesture.
+                    Blockly.Touch.clearTouchIdentifier();
+                    if (this.autoClose) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                    } else if (!Blockly.WidgetDiv.isVisible()) {
+                        Blockly.Events.fire(new Blockly.Events.Ui(Blockly.Flyout.startBlock_, 'click', undefined, undefined));
+                    }
+                }
                 Blockly.terminateDrag_();
             },
             _onMouseMoveBlock (e) {

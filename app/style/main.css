@@ -27,80 +27,65 @@ html {
     font: normal 1.5em bariol, Arial !important;
 }
 
-.loader {
+.splash {
     position: absolute;
     top: 0px;
     bottom: 0px;
     left: 0px;
     right: 0px;
-    font-family: Arial;
     height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    transition: opacity ease-in-out 300ms;
-    background-color: #fbfbfb;
+    background-color: #263238;
     z-index: 101;
-    opacity: 0;
-}
-@media screen and (max-width: 960px) {
-    .loader {
-        flex-direction: column;
-    }
-    .text {
-        align-items: center;
-    }
-    .message-board {
-        text-align: center;
-    }
-    .loader-img {
-        margin-bottom: 22px;
-        margin-right: 0px !important;
-    }
+    transition: opacity ease-in-out 300ms;
+    opacity: 1;
 }
 
-.loader-img {
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                0 1px 5px 0 rgba(0, 0, 0, 0.12),
-                0 3px 1px -2px rgba(0, 0, 0, 0.2);
-    margin-right: 22px;
-    border-radius: 4px;
-    width: 160px;
-    height: 160px;
-}
+.splash .blocks {
+    margin: auto;
+    width: 120px;
+    height: 120px;
 
-.loader-img.animate-out {
-    animation: logo-out ease-in 400ms;
-}
-
-.loader>.text {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    height: 160px;
+
+    animation: fade-in .3s;
+    transition-timing-function: ease-in;
 }
 
-.loader.animate-out {
-    animation: fade-out ease-in 400ms;
+.splash .line {
+    width: 100%;
+
+    transform-origin: center;
+
+    display: flex;
 }
 
-.loader>.text>#title.animate-breathe {
-    animation: breathe ease-in 2s infinite;
+.splash .block {
+    opacity: 1;
+    border-radius: 2px;
+
+    background-color: rgba(0,0,0,0.5);
+
+    margin: 2px;
+    width: 10px;
+    height: 12px;
 }
 
-.loader>.text>#title {
-    font-family: monospace;
-    font-size: 48px;
-    margin: 0px;
-    margin-bottom: 12px;
+@keyframes splash-block-pop-in {
+    0% { transform: scale(0, 1); opacity: 0.5; }
+    90% { transform: scale(1.1, 1); opacity: 1.0; }
+    100% { transform: scale(1, 1); }
 }
 
-.message-board {
-    max-width: 440px;
-    font-size: 18px;
-    flex: 1;
+.splash .last {
+    animation: splash-block-pop-in .2s;
+    transform-origin: left;
+    transition-timing-function: ease-in;
 }
 
 paper-dialog {

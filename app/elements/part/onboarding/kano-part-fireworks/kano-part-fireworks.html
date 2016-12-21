@@ -20,7 +20,7 @@
     </style>
     <template>
         <!-- TODO FIXME Remove hardcoded values -->
-        <canvas id="canvas" on-tap="_clicked" width="502" height="264"></canvas>
+        <canvas id="canvas" width="502" height="264"></canvas>
     </template>
     <script type="text/javascript">
         /* globals Polymer, Kano */
@@ -36,10 +36,6 @@
             is: 'kano-part-fireworks',
             behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior, Kano.Behaviors.SoundPlayerBehavior],
             properties: {
-                enabled: {
-                    type: Boolean,
-                    value: false
-                },
                 ctx: {
                     type: Object,
                     value: null
@@ -53,32 +49,36 @@
                 this.clicks = 0;
                 this.ctx = this.$.canvas.getContext("2d");
                 this.frameTick();
-                // Enable pop on drop part only after initialisation
+                // load sound after initialisation
                 this.async(() => {
-                    this.soundReady = true;
+                    this.loadSound('/assets/audio/sounds/pop.wav');
                 }, 500);
             },
             enable (flag) {
                 this.enabled = flag;
+
             },
-            _clicked (e) {
-                if (this.enabled) {
+            randomFireTick (enabled) {
+                if (enabled) {
+                    this.fireTimes = 0;
                     let bounds = this.$.canvas.getBoundingClientRect();
-                    // TODO FIXME ugly, hardcoded and generally wrong hack
-                    // remove ASAP
-                    let x = (e.detail.x - bounds.left) * (502 / bounds.width),
-                        y = (e.detail.y - bounds.top) * (264 / bounds.height);
-                    if (this.soundReady) {
+                    let loopFirework = setInterval(() => {
+                        let x = Math.random() * bounds.width * (this.$.canvas.width / bounds.width),
+                            y = Math.random() * bounds.width * (this.$.canvas.height / bounds.width)
                         this.playSound('/assets/audio/sounds/pop.wav');
-                    }
-                    this.generateParticles(x, y);
-                    setTimeout(function () {
-                        this.generateParticles(x, y)
-                    }.bind(this), 200);
-                    this.clicks++;
-                    if (this.clicks > 5) {
-                        this.fire('fireworks-triggered');
-                    }
+                        this.generateParticles(x, y);
+                    }, 200);
+
+                    let loopInSecond = setInterval(() => {
+                        this.fireTimes++;
+                        if (this.fireTimes > 5) {
+                            this.fire('fireworks-triggered');
+                            window.clearInterval(loopInSecond);
+                            window.clearInterval(loopFirework);
+                        }
+                    }, 1000);
+                    this.generateParticles(Math.random() * bounds.width * (this.$.canvas.width / bounds.width), 
+                    Math.random() * bounds.width * (this.$.canvas.height / bounds.width));
                 }
             },
             generateParticles (x, y) {

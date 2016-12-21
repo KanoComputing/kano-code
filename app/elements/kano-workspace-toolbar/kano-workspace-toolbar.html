@@ -7,6 +7,9 @@
         :host {
             display: block;
         }
+        [hidden] {
+            display: none !important;
+        }
         :host .panel {
             margin-top: 5px;
             background-color: var(--kano-app-editor-workspace-controls, black);
@@ -88,7 +91,7 @@
         }
     </style>
     <template>
-        <div class="panel">
+        <div class="panel"  hidden$="[[noPlayerBar]]">
             <div class="mouse-position" hidden$="{{mousePositionHidden(showMousePosition)}}">
                 x: {{mouseX}}, y: {{mouseY}}
             </div>
@@ -104,7 +107,7 @@
                 <img src="/assets/icons/reset-icon.svg" alt="Reset app" />
             </div>
         </div>
-        <div class="buttons" style$="[[_computeEditingButtonStyle(mode.workspace.viewport.height)]]">
+        <div class="buttons" hidden$="[[noPartControls]]" style$="[[_computeEditingButtonStyle(mode.workspace.viewport.height)]]">
             <button id="add-part-button" class$="{{_applyButtonClass(partsMenuOpen)}}" on-tap="_togglePartsMenu">
                 <span>{{_computePartsMenuButtonLabel(partsMenuOpen)}}</span>
                 <span class="x">&nbsp;&times;</span>
@@ -141,6 +144,14 @@
             },
             partsMenuOpen: {
                 type: Boolean
+            },
+            noPlayerBar: {
+                type: Boolean,
+                value: false
+            },
+            noPartControls: {
+                type: Boolean,
+                value: false
             }
         },
         ready () {

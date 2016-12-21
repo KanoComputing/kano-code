@@ -36,13 +36,15 @@
             this.target = null;
         },
         getValue () {
-            return this.get('value');
+            let rawValue = this.get('value');
+            return parseInt(rawValue);
         },
         _valueChanged () {
+            let value = parseInt(this.value);
             if (this.target) {
-                this.target.node.set(this.target.property, this.value);
+                this.target.node.set(this.target.property, value);
             }
-            this.fire('update', this.value);
+            this.fire('update', value);
         }
     });
 </script>

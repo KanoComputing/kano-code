@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../kano-auth.html">
+        <style is="custom-style">
+            html {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <kano-auth id="modal"></kano-auth>
+        <script type="text/javascript">
+                document.addEventListener('WebComponentsReady', () => {
+                    document.getElementById('modal').open();
+                });
+        </script>
+    </body>
+</html>

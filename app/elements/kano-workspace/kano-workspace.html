@@ -128,9 +128,13 @@
                 on-pause-run-button-clicked="_runButtonClicked"
                 on-fullscreen-button-clicked="_toggleFullscreen"
                 on-reset-button-clicked="_resetAppState"
-                on-edit-layout-button-clicked="_editLayoutClicked" hidden$="{{noControls}}"></kano-workspace-toolbar>
+                on-edit-layout-button-clicked="_editLayoutClicked"
+                no-player-bar="[[simpleMode]]"
+                no-part-controls="[[simpleMode]]"></kano-workspace-toolbar>
         </kano-ui-viewport>
-        <kano-workspace-head challenge-state="[[challengeState]]" hidden$="{{noControls}}"></kano-workspace-head>
+        <kano-workspace-head challenge-state="[[challengeState]]"
+        no-save="[[simpleMode]]"
+        no-settings="[[simpleMode]]" highlight></kano-workspace-head>
         <array-selector id="selector" items="{{parts}}" selected="{{selected}}"></array-selector>
         <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="alt+t" on-keys-pressed="_onAltT" target="[[target]]"></iron-a11y-keys>
@@ -196,9 +200,9 @@
             challengeState: {
                 type: Object
             },
-            noControls: {
+            simpleMode: {
                 type: Boolean,
-                value: false
+                computed: 'isModeSimple(mode)'
             }
         },
         observers: [
@@ -208,6 +212,9 @@
         ],
         listeners: {
             'part-tapped': 'onPartTapped'
+        },
+        isModeSimple (mode) {
+            return mode.id === "simple";
         },
         ready () {
             this.elements = {};
@@ -369,7 +376,6 @@
                 this.insertPart(`#${index}`);
             });
 
-            this.noControls = mode.id === "simple";
         },
         viewportDimensionsChanged () {
             this.dropzone.setAttribute('width', this.mode.workspace.viewport.width);

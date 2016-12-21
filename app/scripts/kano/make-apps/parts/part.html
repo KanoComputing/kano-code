@@ -16,7 +16,7 @@
                 // Add it to the registery
                 names[newName] = true;
                 this.uniqueName = newName;
-                this.id = getSlug(this.uniqueName, '');
+                this.id = this.id || getSlug(this.uniqueName, '');
             }
 
             get name () {

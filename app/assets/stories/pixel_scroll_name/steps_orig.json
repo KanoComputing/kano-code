@@ -1,0 +1,287 @@
+{
+	"uidNss": {
+		"block": 1
+	},
+	"data": {
+		"steps": [
+			{
+				"tooltips": [
+					{
+						"location": {
+							"category": "lightboard"
+						},
+						"position": "right",
+						"text": "Open this tray"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"open-flyout": "lightboard"
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"flyout_block": "lightboard#light_scroll_text"
+						},
+						"position": "right",
+						"text": "Drag the <kano-blockly-block type=\"lightboard#light_scroll_text\"></kano-blockly-block> block onto your code space"
+					}
+				],
+				"arrow": {
+					"target": {
+						"flyout_block": "lightboard#light_scroll_text"
+					},
+					"angle": 120,
+					"size": 80
+				},
+				"validation": {
+					"blockly": {
+						"create": {
+							"type": "lightboard#light_scroll_text",
+							"id": "block_0"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": null,
+								"rawId": "default_part_event_id"
+							}
+						},
+						"position": "left",
+						"text": "Connect it to this block"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"connect": {
+							"parent": {
+								"id": null,
+								"rawId": "default_part_event_id",
+								"inputName": "DO"
+							},
+							"target": "block_0"
+						}
+					}
+				},
+				"phantom_block": {
+					"location": {
+						"block": {
+							"id": null,
+							"rawId": "default_part_event_id"
+						}
+					},
+					"target": "DO"
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"category": "variables"
+						},
+						"position": "right",
+						"text": "Open the Variables tray"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"open-flyout": "variables"
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"flyout_block": "text"
+						},
+						"position": "right",
+						"text": "Drag the <kano-blockly-block type=\"text\"></kano-blockly-block> block onto your code space"
+					}
+				],
+				"arrow": {
+					"target": {
+						"flyout_block": "text"
+					},
+					"angle": 120,
+					"size": 80
+				},
+				"validation": {
+					"blockly": {
+						"create": {
+							"type": "text",
+							"id": "block_1"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": "block_0",
+								"rawId": "Ol=1kX[nlef93[~`-Ix;"
+							}
+						},
+						"position": "left",
+						"text": "Connect it to this block"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"connect": {
+							"parent": {
+								"id": "block_0",
+								"rawId": "Ol=1kX[nlef93[~`-Ix;",
+								"inputName": "TEXT"
+							},
+							"target": "block_1"
+						}
+					}
+				},
+				"phantom_block": {
+					"location": {
+						"block": {
+							"id": "block_0",
+							"rawId": "Ol=1kX[nlef93[~`-Ix;"
+						}
+					},
+					"target": "TEXT"
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"id": "block_1"
+							}
+						},
+						"position": "top",
+						"text": "Change to <kano-value-preview><span>my name is judoka!</span></kano-value-preview>"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"value": {
+							"target": {
+								"id": "block_1"
+							},
+							"value": "my name is judoka!"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"shadow": "COLOR",
+								"id": "block_0"
+							}
+						},
+						"position": "top",
+						"text": "Change to <kano-value-preview><span>#ffffff</span></kano-value-preview>"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"value": {
+							"target": {
+								"shadow": "COLOR",
+								"id": "block_0"
+							},
+							"value": "#ffffff"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"shadow": "BACKGROUND_COLOR",
+								"id": "block_0"
+							}
+						},
+						"position": "top",
+						"text": "Change to <kano-value-preview><span>#000000</span></kano-value-preview>"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"value": {
+							"target": {
+								"shadow": "BACKGROUND_COLOR",
+								"id": "block_0"
+							},
+							"value": "#000000"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": {
+							"block": {
+								"shadow": "SPEED",
+								"id": "block_0"
+							}
+						},
+						"position": "top",
+						"text": "Change to <kano-value-preview><span>90</span></kano-value-preview>"
+					}
+				],
+				"validation": {
+					"blockly": {
+						"value": {
+							"target": {
+								"shadow": "SPEED",
+								"id": "block_0"
+							},
+							"value": "90"
+						}
+					}
+				}
+			},
+			{
+				"tooltips": [
+					{
+						"location": "workspace-panel",
+						"position": "left",
+						"text": "You can now test the app",
+						"next_button": true
+					}
+				]
+			}
+		],
+		"parts": [],
+		"modules": [
+			"variables"
+		],
+		"variables": [],
+		"filterBlocks": {
+			"lightboard": [
+				"light_scroll_text"
+			],
+			"variables": [
+				"text"
+			]
+		},
+		"mode": "lightboard"
+	},
+	"appParts": {},
+	"partsIds": {}
+}

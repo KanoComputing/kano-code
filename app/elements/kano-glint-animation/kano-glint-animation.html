@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="kano-glint-animation">
+    <style>
+        :host {
+            display: block;
+        }
+
+        :host .wrapper {
+            overflow: hidden;
+            border-radius: inherit;
+            position: relative;
+            z-index: 0;
+        }
+
+        :host .glint {
+            transform: translateX(-125%) rotate(-45deg);
+            top: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.3);
+            animation-delay: 0s;
+            animation-duration: 4s;
+            animation-timing-function: ease-in;
+            animation-iteration-count: infinite;
+            transform-origin: center;
+        }
+        :host([running]) .glint {
+            animation-name: glint;
+        }
+        @keyframes glint {
+            0% { transform: translateX(-125%) rotate(-45deg); }
+            20% { transform: translateX(125%) rotate(-45deg); }
+            100% { transform: translateX(125%) rotate(-45deg); }
+        }
+    </style>
+    <template>
+        <div class="wrapper">
+            <slot></slot>
+            <div class="glint"></div>
+        </div>
+    </template>
+</dom-module>
+
+<script type="text/javascript">
+    /* globals Polymer, DOMUtil */
+    Polymer({
+        is: 'kano-glint-animation',
+        properties: {
+            running: {
+                type: Boolean,
+                value: false,
+                reflectToAttribute: true
+            }
+        }
+    });
+</script>

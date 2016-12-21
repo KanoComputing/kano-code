@@ -53,10 +53,57 @@
             <h3>Within an ended challenge</h3>
             <demo-snippet>
                 <template>
-                    <kano-workspace-head id="challenge-demo-2"></kano-workspace-head>
+
+                    <style is="custom-style">
+                        kano-workspace-head#challenge-demo-2 {
+                            --kano-workspace-head-progress: {
+                                flex: 1 0 auto;
+                            };
+                        }
+                    </style>
+                    <kano-workspace-head id="challenge-demo-2" highlight></kano-workspace-head>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             let el = document.getElementById('challenge-demo-2');
+
+                            el.challengeState = {
+                                title: 'Demo challenge',
+                                progress: 0.45,
+                                started: true,
+                                ended: true
+                            };
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+
+            <h3>Custom 'next' message when a challenge is finished</h3>
+            <demo-snippet>
+                <template>
+                    <kano-workspace-head id="challenge-demo-3" next-message="Custom next message"></kano-workspace-head>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let el = document.getElementById('challenge-demo-3');
+
+                            el.challengeState = {
+                                title: 'Demo challenge',
+                                progress: 0.45,
+                                started: true,
+                                ended: true,
+                                nextStory: 'next-story'
+                            };
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+
+            <h3>Custom message when challenges are finished</h3>
+            <demo-snippet>
+                <template>
+                    <kano-workspace-head id="challenge-demo-4" end-message="Custom end message"></kano-workspace-head>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let el = document.getElementById('challenge-demo-4');
 
                             el.challengeState = {
                                 title: 'Demo challenge',

@@ -74,7 +74,7 @@
             },
             challengeState: {
                 type: Object,
-                computed: 'computeChallengeStatus(progress, storyName, scene.*)'
+                computed: 'computeChallengeStatus(progress, storyName, scene.*, done)'
             },
             scene: {
                 type: Object
@@ -92,6 +92,10 @@
             remix: {
                 type: Boolean,
                 observer: '_remixChanged'
+            },
+            done: {
+                type: Boolean,
+                value: false
             }
         },
         observers: [
@@ -185,15 +189,19 @@
             }
         },
         computeProgress (currentStep, scene) {
+            if (currentStep < 0) {
+                return 1;
+            }
+
             return (currentStep + 1) / scene.steps.length;
         },
-        computeChallengeStatus (progress, title, scene) {
+        computeChallengeStatus (progress, title, scene, done) {
             return {
                 progress: progress,
                 title: title,
                 nextStory: Boolean(this.nextStory),
                 started: this.scene.started,
-                ended: this.scene.ended
+                ended: this.done
             };
         },
         ready () {
@@ -298,6 +306,7 @@
             challenge.set('blockIds', savedState.blockIds);
         },
         goToRemixChallenge () {
+            this.done = true;
             this.remix = true;
         },
         powerUp (e) {

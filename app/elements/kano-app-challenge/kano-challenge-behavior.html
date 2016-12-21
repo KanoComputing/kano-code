@@ -56,6 +56,9 @@
             if (selectedStep.modal) {
                 selectedStep.modal.text = this._processMarkdown(selectedStep.modal.text);
             }
+            if (selectedStep.reward) {
+                selectedStep.play_on_end = "puzzle_success";
+            }
             return selectedStep;
         },
         /**
@@ -67,16 +70,23 @@
                     let cat = location.category;
                     if (cat.part) {
                         location.category = this.stepIds[cat.part];
+                    } else if (cat.rawPart) {
+                        location.category = cat.rawPart;
                     }
                 } else if (location.flyout_block) {
-                    let type = location.flyout_block;
+                    let type = location.flyout_block,
+                        partId;
                     if (type.part) {
-                        location.flyout_block = `${this.stepIds[type.part]}#${type.type}`;
+                        partId = this.stepIds[type.part];
+                    } else if (type.rawPart) {
+                        partId = type.rawPart;
                     }
-                } else if (location.path && location.part) {
-                    location = `${location.path}-part-${this.stepIds[location.part]}`;
-                } else if (location.part) {
-                    location.part = this.stepIds[location.part];
+                    location.flyout_block = `${partId}#${type.type}`;
+                } else if (location.path && (location.part || location.rawPart)) {
+                    let partId = location.part ? this.stepIds[location.part] : location.rawPart;
+                    location = `${location.path}-part-${partId}`;
+                } else if (location.part || location.rawPart) {
+                    location.part = location.part ? this.stepIds[location.part] : location.rawPart;
                 } else if (location.block) {
                     if (typeof location.block === 'string') {
                         location.block = {

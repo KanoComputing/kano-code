@@ -7,6 +7,7 @@
 <link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../../elements/kano-reward-modal/kano-reward-modal.html">
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
 
 <dom-module id="kano-view-onboarding">
     <style>
@@ -29,6 +30,7 @@
             mode="[[mode]]"
             banner="[[banner]]"
             challenge-state="{{challengeState}}"
+            on-change="_onBlocklyChange"
             on-fireworks-triggered="_stageFinished"
             on-talking-face-animation-stopped="_stageFinished"
             hide-leave-alert="[[alertDisabled]]"></kano-app-editor>
@@ -45,7 +47,10 @@
     // TODO use this when we add a third step
     Polymer({
         is: 'kano-view-onboarding',
-        behaviors: [Kano.Behaviors.EditorViewBehavior],
+        behaviors: [
+            Kano.Behaviors.EditorViewBehavior,
+            Kano.Behaviors.ViewBehavior
+        ],
         properties: {
             context: Object,
             addedParts: {
@@ -85,17 +90,17 @@
                                             </xml>`,
                             defaultParts: ['talking-face'],
                             banner: {
-                                head: 'Part One',
-                                text: 'Join the blocks: unlock your first powers!'
+                                head: 'Challenge 1',
+                                text: 'Join the blocks to unlock your first power!'
                             },
                             reward: {
-                                icon: 'star',
-                                color: 'yellow',
-                                title: 'You completed a challenge!',
-                                body: 'Now try another: get more powers',
+                                title: 'Awesome! You just controlled your computer',
+                                body: 'With training you’ll become more powerful',
                                 links: [{
-                                    text: 'Try second challenge',
-                                    type: 'progress'
+                                    text: 'Get another power',
+                                    type: 'progress',
+                                    trackingEvent: 'onboardingC1C2Click',
+                                    glint: true
                                 }],
                                 xp: 100
                             }
@@ -114,17 +119,17 @@
                                             </xml>`,
                             defaultParts: ['talking-face'],
                             banner: {
-                                head: 'Part Two',
-                                text: 'Take your powers to the next level: can you change the voice?'
+                                head: 'Challenge 2',
+                                text: 'Let’s level up your power. Can you change the voice?'
                             },
                             reward:     {
-                                icon: 'tick',
-                                color: 'green',
-                                title: 'Don’t your new powers feel good?',
-                                body: 'Last challenge: try it',
+                                title: 'High-five! Don’t your new powers feel good?',
+                                body: 'You’re getting more powerful. Keep going.',
                                 links: [{
-                                    text: 'Try last challenge',
-                                    type: 'progress'
+                                    text: 'Try next challenge',
+                                    type: 'progress',
+                                    trackingEvent: 'onboardingC2C3Click',
+                                    glint: true
                                 }],
                                 xp: 200
                             }
@@ -138,26 +143,28 @@
                                 component: 'kano-workspace-normal'
                             },
                             defaultBlocks: `<xml xmlns="http://www.w3.org/1999/xhtml">
-                                                <block type="fireworks#when" id="yo3" x="181" y="104" deletable="false"></block>
-                                                <block type="fireworks#mouse_pos" id="yo3" x="486" y="137" deletable="false"></block>
+                                                <block type="fireworks#repeat" id="yo3" x="181" y="104" deletable="false"></block>
                                                 <block type="fireworks#fireworks" id="yo4" x="335" y="206" deletable="false"></block>
+                                                <block type="fireworks#anywhere" id="yo4" x="235" y="306" deletable="false"></block>
                                             </xml>`,
                             defaultParts: ['fireworks'],
                             banner: {
-                                head: 'Part Three',
-                                text: "OK here's your last superpower: can you make your mouse explode?"
+                                head: 'Challenge 3',
+                                text: "Here’s an explosive new power to learn. Can you make fireworks?"
                             },
                             reward: {
-                                icon: 'heart',
-                                color: 'red',
-                                title: 'Save your XP!',
-                                body: 'You’ve earned 300 XP – keep it safe.',
+                                title: 'Woah. You’ll soon be a Kano Master!',
+                                body: 'New powers come with extra XP, keep them safe',
                                 links: [{
-                                    text: 'Save now',
-                                    type: 'save'
+                                    text: 'Save XP',
+                                    type: 'save',
+                                    trackingEvent: 'onboardingC3ClickSave',
+                                    glint: true
                                 }, {
                                     text: 'Try more challenges',
-                                    type: 'progress'
+                                    type: 'progress',
+                                    trackingEvent: 'onboardingC3ClickMoreChallenge',
+                                    glint: false
                                 }],
                                 xp: 300
                             }
@@ -166,6 +173,28 @@
             },
             stageNo: {
                 type: Number
+            },
+            trackingEvents: {
+                type: Array,
+                value: () => {
+                  return [
+                        {
+                            move: {
+                                'FLAG': 'onboardingC1Part1Join'
+                          }
+                        }, {
+                            language: 'onboardingC2Toggle',
+                            move: {
+                                'FLAG': 'onboardingC2Part1Join'
+                            }
+                        }, {
+                            move: {
+                                'FLAG': 'onboardingC3Part2Join',
+                                'trigger': 'onboardingC3Part1Join'
+                            }
+                        }
+                    ]
+                }
             }
         },
         observers: [
@@ -237,18 +266,38 @@
             Kano.MakeApps.dragAndDrop.setWorkspaceRect(rect);
         },
         _currentReward (stageNo) {
-            return this.stages[stageNo].reward;
+            let reward = this.stages[stageNo].reward;
+            reward.progress = {
+                current: stageNo + 1,
+                total: this.stages.length
+            };
+            return reward;
         },
         _handleModalAction (e) {
+            if (e.detail.trackingEvent) {
+                this.dispatchTrackingEvent(e.detail.trackingEvent);
+            }
             if (e.detail.type === 'save') {
                 this.fire('signup');
-            } else if (e.detail.type ==='progress' && this.stageNo === (this.stages.length - 1)) {
+            } else if (e.detail.type === 'progress' && this.stageNo === (this.stages.length - 1)) {
                 this.alertDisabled = true;
                 location.href = Kano.MakeApps.config.WORLD_URL + "/projects";
             } else {
                 if (this.stageNo < this.stages.length - 1) {
                     this.stageNo++;
                 }
+            }
+        },
+        _onBlocklyChange (e) {
+            let details = e.detail,
+              eventType;
+            if (details.type && details.newInputName) {
+                eventType = this.trackingEvents[this.stageNo][details.type][details.newInputName];
+            } else if (details.name && details.newValue) {
+                eventType = this.trackingEvents[this.stageNo][details.name];
+            }
+            if (eventType) {
+                this.dispatchTrackingEvent(eventType);
             }
         },
         _stageFinished () {

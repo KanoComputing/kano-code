@@ -53,7 +53,7 @@
             bg     : null,
             fill   : '#333',
             stroke : {
-                width : 1,
+                width : 0,
                 color : '#222',
                 cap   : 'butt'
             },

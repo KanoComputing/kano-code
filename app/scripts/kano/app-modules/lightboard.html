@@ -192,7 +192,7 @@
             }
 
             _scroll (text, color, backgroundColor, speed, callback) {
-                speed = (speed > 100) ? 10 : (100 - speed) * 10;
+                speed = (100 / speed) * 250;
                 let animationFrames = Kano.PixelFont.generateAnimation(text, color, backgroundColor);
 
                 this.currentAnimation = Date.now();

@@ -32,6 +32,18 @@
     };
 
     /*
+    * Move cursor to random x and y positions
+    *
+    * @return void
+    */
+    Space.prototype.moveToRandom = function () {
+        var x, y;
+        x = Math.floor(Math.random() * this.session.width);
+        y = Math.floor(Math.random() * this.session.height);
+        this.moveTo(x,y);
+    };
+
+    /*
     * Move cursor by relative x and y amounts
     *
     * @param {Number} x

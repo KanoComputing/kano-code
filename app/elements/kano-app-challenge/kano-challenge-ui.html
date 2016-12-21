@@ -10,7 +10,27 @@
 <link rel="import" href="../kano-value-preview/kano-value-preview.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../behaviors/kano-blockly-validator-behavior.html">
+<link rel="import" href="../behaviors/kano-sound-player-behavior.html">
+
 <link rel="import" href="../kano-style/typography.html">
+
+
+<!--
+
+`kano-challenge-ui`
+
+Example:
+    <kano-challenge-ui step="[[currentStep]]"></kano-challenge-ui>
+
+ The following custom properties and mixins are also available for styling:
+
+ Custom property | Description | Default
+ ----------------|-------------|----------
+
+@group Kano Elements
+@hero hero.svg
+@demo ./demo/kano-challenge-ui.html
+-->
 <dom-module id="kano-challenge-ui">
     <style>
     :host {
@@ -61,8 +81,44 @@
         @apply(--layout-horizontal);
         @apply(--layout-center);
     }
+    :host .banner-content .banner-text {
+        flex: 1 0 auto;
+    }
     :host .banner-content button {
         margin: auto 10px;
+    }
+    @keyframes button-hint-enter {
+        0% {
+          margin: 0 10px;
+          opacity: 1;
+          flex: 0 1 auto;
+          padding: 19px 22px 17px 22px;
+          transform: scale(0);
+          width: 100%;
+        }
+        100% {
+          margin: 0 10px;
+          opacity: 1;
+          flex: 0 1 auto;
+          padding: 19px 22px 17px 22px;
+          transform: scale(1);
+          width: 100%;
+        }
+    }
+    :host .banner-content button.button-hint {
+        opacity: 0;
+        width: 0;
+        margin: 0;
+        padding: 0;
+        animation-duration: 0.3s;
+        animation-delay: 6s;
+        animation-fill-mode: forwards;
+        background-color: #256883;
+        box-sizing: border-box;
+        color: white;
+    }
+    :host .banner-content button.button-hint-animation {
+        animation-name: button-hint-enter;
     }
     kano-tooltip {
         z-index: 101;
@@ -76,6 +132,7 @@
             padding: 18px 26px 20px;
             font-size: 20px;
             line-height: 25px;
+            @apply --kano-challenge-ui-tooltip;
         };
         --kano-tooltip-caret: {
             box-shadow: 0px 0px 0px 0px;
@@ -133,7 +190,7 @@
                             <div class="markdown-html"></div>
                         </marked-element>
                     </div>
-                    <button type="button" on-tap="showHints" hidden$="{{!banner.hint_button}}">Hint</button>
+                    <button id="hint-button" class="button-hint" type="button" on-tap="showHints">Hint</button>
                     <button type="button" on-tap="_nextStep" hidden$="{{!banner.next_button}}">Next</button>
                 </div>
             </kano-tooltip>
@@ -152,11 +209,9 @@
 </dom-module>
 
 <script type="text/javascript">
-    /* globals Polymer, Kano */
-
     Polymer({
         is: 'kano-challenge-ui',
-        behaviors: [Kano.Behaviors.AppElementRegistryBehavior],
+        behaviors: [Kano.Behaviors.AppElementRegistryBehavior, Kano.Behaviors.SoundPlayerBehavior],
         properties: {
             tooltips: {
                 type: Array
@@ -183,7 +238,8 @@
             }
         },
         observers: [
-            'stepChanged(step, state.*)'
+            'stepChanged(step, state.*)',
+            'animateHintButton(banner.*, banner.hint_button)'
         ],
         listeners: {
             'change': '_editorChanged'
@@ -352,7 +408,13 @@
                 this.computeArrow(step);
                 this.computeHighlight(step);
                 this.computePhantomBlock(step);
+                this.computeSounds(step);
             }, 10);
+        },
+        computeSounds (step) {
+            if (this.step.play_on_end) {
+                this.loadSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
+            }
         },
         computeBanner (step) {
             if (this.state.hints.enabled) {
@@ -374,6 +436,14 @@
                 } else {
                     this.banner = null;
                 }
+            }
+        },
+        animateHintButton (banner, hintButton) {
+            if (hintButton) {
+                let buttonElement = this.$$('#hint-button');
+                this.toggleClass('button-hint-animation', false, buttonElement);
+                buttonElement.getBoundingClientRect();
+                this.toggleClass('button-hint-animation', true, buttonElement);
             }
         },
         computePhantomBlock (step) {
@@ -510,6 +580,11 @@
 
             return pos;
 
+        },
+        finishStep () {
+            if (this.step.play_on_end) {
+                this.playSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
+            }
         }
     });
 </script>

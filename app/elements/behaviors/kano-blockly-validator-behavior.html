@@ -99,8 +99,10 @@
             return this._prevStep();
         },
         _matchCategory (validation, event) {
-            if (validation.part) {
-                validation = this.stepIds[validation.part];
+            if (validation.part || validation.rawPart) {
+                validation = validation.part ? this.stepIds[validation.part] : validation.rawPart;
+            } else if (validation.value) {
+                validation = validation.value;
             }
             return event.categoryId === validation;
         },
@@ -108,7 +110,7 @@
             return event.xml.getAttribute('type') === type;
         },
         getBlockType (validation) {
-            let target = this.stepIds[validation.target],
+            let target = validation.target ? this.stepIds[validation.target] : validation.rawTarget,
                 type;
             // Use the type or the value directly
             // Allows to declare shorthand creation as:

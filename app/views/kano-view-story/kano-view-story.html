@@ -8,6 +8,7 @@
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
 <link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
+<link rel="import" href="../../elements/behaviors/kano-tracking-behavior.html">
 
 <dom-module id="kano-view-story">
     <style>
@@ -49,7 +50,11 @@
     /* globals Polymer, Kano, page */
     Polymer({
         is: 'kano-view-story',
-        behaviors: [Kano.Behaviors.ViewBehavior, Kano.Behaviors.SharingBehavior],
+        behaviors: [
+            Kano.Behaviors.ViewBehavior,
+            Kano.Behaviors.SharingBehavior,
+            Kano.Behaviors.TrackingBehavior
+        ],
         properties: {
             selected: {
                 type: Number,
@@ -107,6 +112,7 @@
             return index === this.selected;
         },
         nextScene () {
+            this.trackProgress(this.story.id);
             if (this.selected < this.story.scenes.length - 1) {
                 this.selected++;
             } else {

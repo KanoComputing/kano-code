@@ -326,6 +326,26 @@
                     return `devices.get('${ui.id}').modules.shapes.polygon(${points.join(', ')}, ${close});`;
                 };
             }
+        },{
+            block: (ui) => {
+                return {
+                    id: 'pixel',
+                    lookup: 'pixel()',
+                    message0: `${ui.name}: pixel`,
+                    previousStatement: null,
+                    nextStatement: null
+                };
+            },
+            javascript: (ui) => {
+                return function (block) {
+                    return `devices.get('${ui.id}').modules.shapes.pixel();`;
+                };
+            },
+            pseudo: (ui) => {
+                return function (block) {
+                    return `devices.get('${ui.id}').modules.shapes.pixel();`;
+                };
+            }
         }];
 
     })(window.Kano = window.Kano || {});

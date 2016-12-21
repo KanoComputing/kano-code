@@ -1,10 +1,12 @@
+<link rel="import" href="./kano-tracking-behavior.html">
+
 <script type="text/javascript">
 
     window.Kano = window.Kano || {};
 
     window.Kano.Behaviors = window.Kano.Behaviors || {};
 
-    window.Kano.Behaviors.ViewBehavior = {
+     var ViewBehavior = {
         properties: {
             context: {
                 type: Object
@@ -27,12 +29,14 @@
             });
         },
         trackPage () {
-            window.dataLayer.push({
+            this.dispatchTrackingEvent({
                 'event'            : 'virtualPageView',
                 'virtualPageTitle' : document.title,
                 'virtualPageURL'   : window.location.pathname
             });
         }
     };
+
+    window.Kano.Behaviors.ViewBehavior = [window.Kano.Behaviors.TrackingBehavior, ViewBehavior];
 
 </script>

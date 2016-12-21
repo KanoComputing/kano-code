@@ -1,151 +1,426 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../kano-style/input.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../kano-modal/kano-modal.html">
+<link rel="import" href="../kano-style/button.html">
 
 <dom-module id="kano-auth">
-    <style is="custom-style" include="input-text"></style>
+    <style is="custom-style"></style>
     <style>
-    :host {
-        display: block;
-        font-family: bariol;
-    }
-    :host .x-username-field label {
-        display: inline-block;
-    }
-    :host label {
-        font-size: 20px;
-        display: block;
-        margin-bottom: 2px;
-        color: #6e6e6e;
-    }
-    :host button {
-        @apply(--kano-button);
-    }
-    :host .success {
-        width: 100%;
-        background: var(--color-green, green);
-    }
-    :host .buttons {
-        @apply(--layout-vertical);
-    }
-    :host .buttons .already-registered-button {
-        @apply(--layout-self-center);
-        margin-top: 30px;
-    }
-    :host .password-field {
-        position: relative;
-    }
-    :host .password-indicator {
-        position: absolute;
-        right: 10px;
-        top: 13px;
-        width: 30px;
-        height: 17px;
-        background-size: 30px 17px;
-        background-image: url("/assets/icons/show-icon.png");
-    }
-    :host kano-login-form kano-password-field .password-indicator {
-        display: none;
-    }
-    :host .password-indicator.hide-password {
-        background-image: url("/assets/icons/hide-icon.png");
-    }
-    @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
-        :host .password-indicator {
-            background-image: url("/assets/icons/show-icon@2x.png");
+        :host kano-modal {
+            --kano-modal-main: {
+                min-height: 450px;
+            };
         }
-
-        :host .password-indicator.hide-password {
-            background-image: url("/assets/icons/hide-icon@2x.png");
+        :host kano-modal > * {
+            margin: auto;
+            color: #4d4d4d;
         }
-    }
-    :host .errors {
-        background: var(--color-red, red);
-        padding: 10px;
-        border-radius: 10px;
-        color: var(--color-white, white);
-        display: none;
-        font-size: 16px;
-    }
-    :host hr {
-        border: 0;
-        background: rgba(0,0,0,0.05);
-        height: 1px;
-    }
-    :host kano-login-form .actions {
-        text-align: center;
-    }
-    :host a {
-        color: var(--color-orange);
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 15px;
-    }
-    :host a#terms {
-        font-size: 20px;
-        font-weight: 500;
-    }
-    :host h3 {
-        color: var(--color-orange, orange);
-        font-weight: 600;
-        text-align: center;
-        margin-bottom: 40px;
-        font-size: 30px;
-    }
-    :host .generate-nickname {
-        float: right;
-        font-size: 15px;
-        color: var(--color-orange);
-        cursor: pointer;
-        font-weight: 600;
-        border-bottom: 1px dotted;
-    }
+        :host kano-modal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        :host #pager > * {
+            margin: auto 50px;
+        }
+        :host h2 {
+            font-family: 'Bariol', sans-serif;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 14px;
+        }
+        :host .body {
+            color: #999;
+            margin-bottom: 18px;
+            line-height: 18px;
+        }
+        :host .fields {
+            display: flex;
+            align-items: stretch;
+            justify-content:center;
+            flex-direction: column;
+        }
+        :host .fields input {
+            display: block;
+            margin: 8px 0px 4px 0px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 16px;
+            font-family: 'Bariol', sans-serif;
+            padding: 10px;
+        }
+        :host .fields input:focus {
+            border-color: #ff842a;
+        }
+        :host .fields input[type=checkbox] {
+            display: inline;
+            margin-right: 10px
+        }
+        :host button {
+            @apply(--kano-button);
+            margin-top: 20px;
+            background-color: #ff842a;
+            font-weight: bold;
+            width: 80%;
+        }
+        :host button:hover {
+            background-color: #fd621e;
+        }
+        :host button:disabled, :host button:disabled:hover {
+            background-color: #ccc;
+            cursor: default;
+        }
+        :host button:focus {
+            text-decoration: underline;
+        }
+        :host fieldset {
+            border: 1px #ff842a dashed;
+            border-radius: 5px;
+        }
+        :host fieldset.grey {
+            border: 1px #ccc dashed;
+            margin: 20px auto;
+        }
+        :host fieldset button {
+            margin: 25px auto 30px auto;
+        }
+        :host fieldset legend {
+            font-weight: bold;
+            background-color: #fff;
+            padding: 0px 10px;
+        }
+        :host .footer {
+            margin-top: 56px;
+        }
+        :host .footer .bold {
+            font-weight: bold;
+        }
+        :host .footer a, :host .checkboxes a {
+            color: #999;
+            text-decoration: none;
+            border-bottom: 1px solid #e2e2e2;
+            cursor: pointer;
+        }
+        :host .footer a:hover, :host .checkboxes a:hover {
+            color: black;
+        }
+        :host .checkboxes {
+            text-align: left;
+            margin: 10px auto 5px auto;
+        }
+        :host .form-error {
+            text-align: left;
+            color: #ED5F5F;
+            font-weight: bold;
+            margin: auto 2px 5px 2px;
+        }
+        :host .modal-error {
+            text-align: center;
+            color: #ED5F5F;
+            font-weight: bold;
+            margin: 25px auto;
+        }
+        :host fieldset.grey > * {
+            margin: 2px auto;
+        }
+        :host .link-arrow {
+            opacity: 0.5;
+        }
+        @media all and (max-width: 580px) {
+            :host #pager > * {
+                margin: auto 40px;
+            }
+            :host h2 {
+                font-size: 18px;
+            }
+        }
+        @media all and (min-width: 580px) {
+        }
     </style>
     <template>
-        <iron-pages selected="[[authView]]" attr-for-selected="name">
-            <div name="signup">
-                <h3>Create your account</h3>
-                <kano-signup-form on-login-click="toggle" on-success="loginSuccess"></kano-signup-form>
-            </div>
-            <div name="login">
-                <h3>Login to Your Account</h3>
-                <kano-login-form on-signup-click="toggle" on-success="loginSuccess"></kano-login-form>
-            </div>
-        </iron-pages>
+        <kano-modal id="dialog">
+            <iron-pages attr-for-selected="id" selected="login" id="pager">
+                <div id="login">
+                    <h2>Log in to your account</h2>
+                    <form class="fields">
+                        <input type="text" value="{{username::input}}" placeholder="Your Kano username" tabindex="0" />
+                        <div class="form-error" hidden$="{{!errors.username}}">{{errors.username}}</div>
+                        <input type="password" value="{{password::input}}" placeholder="Your secret password" tabindex="0" />
+                        <div class="form-error" hidden$="{{!errors.password}}">{{errors.password}}</div>
+                    </form>
+                    <button on-tap="confirmLogin">Log In</button>
+                    <div class="footer">
+                        <a href="{{this.worldUrl}}/reset-password">Forgot your password?</a><br />
+                        <a on-tap="signupClicked">Sign up <img src="/assets/icons/link-arrow.svg" class="link-arrow" /></a>
+                    </div>
+                </div>
+                <div id="signup">
+                    <h2>Save your XP: join Kano</h2>
+                    <div class="body">
+                        Make a special username to save what you've earned.
+                    </div>
+                    <form class="fields">
+                        <input type="text" value="{{firstName::input}}" placeholder="Type your first name" tabindex="0" />
+                        <input type="text" value="{{username::input}}" placeholder="Make up a Kano username" tabindex="0" />
+                        <div class="form-error" hidden$="{{!errors.username}}">{{errors.username}}</div>
+                        <input type="password" value="{{password::input}}" placeholder="Make up a secret password" tabindex="0" />
+                        <div class="form-error" hidden$="{{!errors.password}}">{{errors.password}}</div>
+                    </form>
+                    <button on-tap="confirmUserDetails">Join</button>
+                </div>
+                <div id="grownups">
+                    <h2>Now go find your mum or dad!</h2>
+                    <div class="body">
+                        Ask a parent, teacher or guardian to help you (it'll take less than a minute).
+                        If they can't help right now, press 'skip'.
+                    </div>
+                    <fieldset>
+                        <legend>Grown Ups Only</legend>
+                        <button on-tap="grownupsSection">Join</button>
+                    </fieldset>
+                    <div class="footer">
+                        <div class="bold">
+                            No grown ups around?
+                        </div>
+                        <a on-tap="close">Skip for now</a>
+                    </div>
+                </div>
+                <div id="email">
+                    <h2>Secure {{firstName}}'s Kano Account</h2>
+                    <div class="body">
+                        Kano accounts need to be associated with an adult's
+                        email address. You'll be able to see {{firstName}}'s progress in
+                        learning to code, creative shares, and awards won.
+                    </div>
+                    <form class="fields">
+                        <input type="text" value="{{email::input}}" placeholder="Add your email address" tabindex="0" />
+                        <div class="form-error" hidden$="{{!errors.email}}">{{errors.email}}</div>
+                        <div class="checkboxes">
+                            <div class="checkbox-input">
+                                <input type="checkbox" checked="{{terms::change}}" id="tcs"><label for="tcs">I accept all the <a href="{{this.worldUrl}}/terms-of-use">Terms &amp; Conditions</a></label>
+                            </div>
+                            <div class="checkbox-input">
+                                <input type="checkbox" checked="{{newsletter::change}}" id="newsletter"><label for="newsletter">Subscribe to the Kano newsletter</label>
+                            </div>
+                        </div>
+                    </form>
+                    <button on-tap="confirmEmail" disabled$="{{!terms}}">Join</button>
+                    <div class="modal-error" hidden$="{{!errors.connection}}">{{errors.connection}}</div>
+                </div>
+                <div id="done">
+                    <h2>You've made a Kano Account</h2>
+                    <div class="body">
+                        Write down your username and password. Keep them
+                        somewhere secret and safe.
+                    </div>
+                    <fieldset class="grey">
+                        <legend>Keep this safe</legend>
+                        <div class="username"><strong>Username</strong> {{username}}</div>
+                        <div class="password"><strong>Password</strong> {{password}}</div>
+                    </fieldset>
+                    <button on-tap="close">Done</button>
+                </div>
+            </iron-pages>
+        </kano-modal>
     </template>
 </dom-module>
-<script type="text/javascript">
-    /* globals Polymer */
+
+<script>
+    /* globals Polymer, Kano */
     Polymer({
         is: 'kano-auth',
         properties: {
-            authView: {
-                type: String,
-                value: 'login',
-                notify: true
+            errors: {
+                type: Object,
+                value: {}
+            },
+            username: {
+                type: String
+            },
+            password: {
+                type: String
+            },
+            firstName: {
+                type: String
+            },
+            email: {
+                type: String
+            },
+            terms: {
+                type: Boolean,
+                value: false
+            },
+            newsletter: {
+                type: Boolean,
+                value: false
+            },
+            finished: {
+                type: Boolean,
+                value: false
             }
         },
-        toggle () {
-            this.authView = this.authView === 'login' ? 'signup' : 'login';
+        observers: [],
+        attached () {
         },
-        loginSuccess (e) {
-            this.fire('login', e.details);
+        detached () {
+        },
+        open (defaultPage) {
+            if (defaultPage) {
+                this.$.pager.selected = defaultPage;
+            }
+            this.$.dialog.open();
+        },
+        close () {
+            this.$.dialog.close();
         },
         reset () {
-            let inputs = this.querySelectorAll('input');
-            for (let i = 0, len = inputs.length; i < len; i++) {
-                inputs[i].value = "";
+            this.set('errors', {});
+            this.firstName = null;
+            this.username = null;
+            this.password = null;
+            this.email = null;
+            this.terms = false;
+            this.newsletter = false;
+            this.finished = false;
+        },
+        validateUsername (username) {
+            if (!username) {
+                this.set('errors.username', "Username is required.");
+                return false;
+            }
+
+            if (username.length < 3) {
+                this.set('errors.username', "Must be at least 3 characters long.");
+                return false;
+            }
+
+            if (!/^[a-zA-Z0-9_\-.]+$/.test(username)) {
+                this.set('errors.username', "Only letters, numbers, dashes, underscores and dots are allowed.");
+                return false;
+            }
+
+            this.set('errors.username', undefined);
+            return true;
+        },
+        checkUsernameAvailability (username) {
+            let url = this.apiUrl + "/users/username/" + username;
+            return fetch(url).then((res) => {
+                return !res.ok;
+            }).catch((err) => {
+                console.log("Failed to connect to the API. (" + err + ")");
+            });
+        },
+        validatePassword (password) {
+            if (!password) {
+                this.set('errors.password', "Password cannot be empty.");
+                return false;
+            }
+
+            if (password.length < 6) {
+                this.set('errors.password', "Password must be at least 6 characters long.");
+                return false;
+            }
+
+            this.set('errors.password', undefined);
+            return true;
+        },
+        confirmUserDetails (e) {
+            if (this.validateUsername(this.username) &&
+                this.validatePassword(this.password)) {
+                this.checkUsernameAvailability(this.username).then((available) => {
+                    if (available) {
+                        if (!this.firstName) {
+                            this.firstName = 'your kid';
+                        }
+
+                        this.$.pager.selected = 'grownups';
+                    } else {
+                        this.set('errors.username', 'This one is already taken.')
+                    }
+                });
             }
         },
-        attached () {
-            // Trick to enable shadow DOM like styling of xtag generated components
-            if (!Polymer.Settings.useNativeShadow) {
-                let elems = Polymer.dom(this.root).querySelectorAll('input, label, button, h3, hr, a, div');
+        grownupsSection (e) {
+            this.$.pager.selected = 'email';
+        },
+        validateEmail (email) {
+            let emailRegex = /^[_a-z0-9-\+]+(\.[_a-z0-9-\+]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]+)$/i;
 
-                for (let i = 0; i < elems.length; i++) {
-                    this.toggleClass('kano-auth', true, elems[i]);
-                }
+            if (!emailRegex.test(email)) {
+                this.set('errors.email', "Please enter a valid email address.");
+                return false;
             }
+
+            this.set('errors.email', undefined);
+            return true;
+        },
+        confirmEmail () {
+            if (this.validateEmail(this.email)) {
+                this.signup().then((finished) => {
+                    if (finished) {
+                        this.finished = finished;
+                        this.$.pager.selected = 'done';
+                        this.set('errors.connection', undefined);
+                    } else {
+                        this.set('errors.connection', 'Something went wrong. Please try again later.');
+                    }
+                });
+            }
+        },
+        signup () {
+            let url = this.apiUrl + "/users";
+            return fetch(url, {
+                method: 'post',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify({
+                    username: this.username,
+                    password: this.password,
+                    email: this.email,
+                    marketing_enabled_primary: this.newsletter
+                })
+            }).then((res) => {
+                return res.ok;
+            }).catch((err) => {
+                console.log("Failed to connect to the API");
+            });
+        },
+        confirmLogin () {
+            let url = this.apiUrl + "/auth";
+
+            if (!this.username) {
+                this.set('errors.username', 'Username cannot be empty.');
+                return;
+            }
+
+            if (!this.password) {
+                this.set('errors.password', 'Password cannot be empty.');
+                return;
+            }
+
+            fetch(url, {
+                method: 'post',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify({
+                    email: this.username,
+                    password: this.password
+                })
+            }).then((res) => {
+                return res.json();
+            }).then((data) => {
+                this.fire('login', data.session);
+            }).catch((err) => {
+                console.log("Failed to connect to the API");
+            });
+        },
+        signupClicked () {
+            this.reset();
+            this.$.pager.selected = 'signup';
         }
     });
 </script>
