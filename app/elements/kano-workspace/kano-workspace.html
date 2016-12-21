@@ -194,9 +194,6 @@
             background: {
                 type: String
             },
-            backgroundImage: {
-                type: String
-            },
             partsMenuOpen: {
                 type: Boolean
             },
@@ -338,8 +335,8 @@
             return this.dropzone.querySelector(`#${id}`);
         },
         backgroundChanged (bg) {
-            if (this.dropzone && this.dropzone.setBackgroundColor) {
-                this.dropzone.setBackgroundColor(bg);
+            if (this.dropzone && this.dropzone.setBackground) {
+                this.dropzone.setBackground(bg);
             }
         },
         _modeChanged (mode) {
@@ -362,12 +359,8 @@
             newDropzone.addEventListener('mouse-position-y-changed', this.mouseYChanged.bind(this));
             this.showMousePosition = mode.id === 'normal';
 
-            if (newDropzone.setBackgroundColor) {
-                newDropzone.setBackgroundColor(this.background);
-            }
-
-            if (newDropzone.setBackgroundImage) {
-                newDropzone.setBackgroundImage(this.backgroundImage);
+            if (newDropzone.setBackground) {
+                newDropzone.setBackground(this.background);
             }
 
             /* Remove old dropzone and add new one */

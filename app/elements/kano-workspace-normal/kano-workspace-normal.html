@@ -17,8 +17,7 @@
         }
         canvas {
             border-radius: 5px;
-            background-image: var(--canvas-background-image);
-            background-repeat: no-repeat;
+            background: var(--canvas-background);
         }
 
     </style>
@@ -60,12 +59,12 @@
                 this.ctx.addEventListener('mouseout', this._onMouseOut.bind(this));
                 this.canvasElement.addEventListener('mousemove', this._onMouseMove.bind(this));
             },
-            setBackgroundImage(image) {
-                this.customStyle['--canvas-background-image'] = 'url('+image+')';
-                this.updateStyles();
-            },
             setBackgroundColor (color) {
                 this.style.backgroundColor = color;
+            },
+            setBackground (bg){
+                this.customStyle['--canvas-background'] = bg;
+                this.updateStyles();
             },
             getBackgroundColor () {
                 return this.style.backgroundColor;

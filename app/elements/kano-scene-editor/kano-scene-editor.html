@@ -44,8 +44,7 @@
                             on-share="_pauseAndShare"
                             challenge-state="[[challengeState]]"
                             hide-leave-alert="[[alertDisabled]]"
-                            background-image="[[backgroundImage]]"
-                            background-color="[[backgroundColor]]">
+                            background-css="[[background]]">
           </kano-app-editor>
       </kano-app-challenge>
       <kano-challenge-completed-modal id="challenge-completed"
@@ -158,8 +157,7 @@
             });
         },
         _sceneChanged () {
-            this.backgroundImage = this.scene.scene.background || '';
-            this.backgroundColor = this.scene.scene.backgroundColor || '';
+            this.background = this.scene.scene.background || '';
             this._loadVariables();
         },
         _loadVariables () {
