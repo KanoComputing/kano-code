@@ -26,6 +26,8 @@
 
     Blockly.Msg.RANDOM_CAT = "random cat";
 
+    Blockly.Msg.CATEGORY_FUNCTION = "Functions";
+
     window.CustomBlocklyMsg = Blockly.Msg;
 
 })(window.Blockly = window.Blockly || {});
