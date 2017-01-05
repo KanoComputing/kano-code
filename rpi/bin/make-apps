@@ -122,16 +122,8 @@ kwargs = {}
 if len(sys.argv) > 1:
     kwargs['load_path'] = sys.argv[1]
 
-# URL = "http://localhost:{}".format(make_apps.server.DEFAULT_PORT)
 URL = os.getenv('URL') or "https://make-apps-kit.kano.me"
-cmdline=['kano-web-view', '--title', 'Kano Code', '--decorate' , '--favicon', '/usr/share/icons/Kano/88x88/apps/make-apps.png']
-
-# If we are launched from within the Dashboard, tell kano-web-view
-# to remove the Minimize/Maximize buttons, because we do not have a taskbar.
-if os.getenv('KANO_BLOCKS_SCREEN_HEIGHT'):
-    cmdline.append('--no-minmax')
-
-cmdline.append(URL)
+cmdline=['chromium-browser', '--start-maximized', URL]
 UI_PROC = subprocess.Popen(cmdline)
 
 
