@@ -487,10 +487,8 @@ Polymer({
     },
     attached () {
         this.target = document.body;
-
         this.partEditorOpened = false;
         this.backgroundEditorOpened = false;
-
         interact(this.$['workspace-panel']).dropzone({
             // TODO rename to kano-part-item
             accept: 'kano-ui-item:not([instance])',

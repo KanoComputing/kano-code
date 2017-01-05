@@ -17,7 +17,9 @@
         }
         canvas {
             border-radius: 5px;
+            background: var(--canvas-background);
         }
+
     </style>
     <template>
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
@@ -63,6 +65,10 @@
             },
             setBackgroundColor (color) {
                 this.style.backgroundColor = color;
+            },
+            setBackground (bg){
+                this.customStyle['--canvas-background'] = bg;
+                this.updateStyles();
             },
             getBackgroundColor () {
                 return this.style.backgroundColor;

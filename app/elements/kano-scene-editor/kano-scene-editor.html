@@ -162,6 +162,7 @@
             });
         },
         _sceneChanged () {
+            this.$.editor.background.userStyle.background = this.scene.scene.background || '';
             this._loadVariables();
         },
         _loadVariables () {
