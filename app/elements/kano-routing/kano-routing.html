@@ -59,6 +59,9 @@
         <template is="iron-lazy-page" name="demo" path="/views/kano-view-demo/kano-view-demo.html">
             <kano-view-demo context="[[context]]"></kano-view-demo>
         </template>
+        <template is="iron-lazy-page" name="lightboard" path="/views/kano-view-lightboard/kano-view-lightboard.html">
+            <kano-view-lightboard context="[[context]]"></kano-view-lightboard>
+        </template>
     </iron-lazy-pages>
     <paper-progress indeterminate class$="[[_computeLoadingClass(loading)]]"></paper-progress>
   </template>
@@ -93,6 +96,7 @@
           page('/story/:id',         this._showPageThunk('story'));
           page('/tutorial/:slug',    this._showPageThunk('tutorial'));
           page('/onboarding', this._showPageThunk('onboarding'));
+          page('/lightboard',        this._showPageThunk('lightboard'));
           page('/app/:slug', (ctx) => {
               window.location = Kano.MakeApps.config.WORLD_URL + "/shared/" + ctx.params.slug;
           });
@@ -100,7 +104,7 @@
           if (Kano.MakeApps.config.ENV !== 'production') {
               page('/flags', this._showPageThunk('flags'));
           }
-          // Fallback to /make if no match is found
+          // Fallback to / if no match is found
           page('*', () => {
               page.redirect('/' + document.location.search);
           });
