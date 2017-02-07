@@ -262,8 +262,8 @@
                     <template is="dom-if" if="{{content}}">
                         <div class="progress">
                             <kano-progress-bar id="progress-bar"
-                                           min="[[progress.min]]"
-                                           max="[[progress.max]]"></kano-progress-bar>
+                                               rate="[[progressRate]]">
+                                               </kano-progress-bar>
                             <div class="fraction">{{content.progress.current}}/{{content.progress.total}}</div>
                         </div>
                     </template>
@@ -329,12 +329,9 @@
                 type: Boolean,
                 value: false
             },
-            progress: {
-                type: Object,
-                value: {
-                    min: 0,
-                    max: 300
-                }
+            progressRate: {
+                type: Number,
+                value: 0.1
             }
         },
         observers: [
@@ -342,6 +339,7 @@
         ],
         attached () {
             this.$['reward-modal-dialog'].backdropElement.classList.add('reward');
+            this.$$('#progress-bar').rate
             this.loadSound(`/assets/audio/onboarding/challenge_complete.wav`);
         },
         detached () {
@@ -350,7 +348,7 @@
         open () {
             this.$['reward-modal-dialog'].open();
             this.playSound(`/assets/audio/onboarding/challenge_complete.wav`);
-            this.async(() => this._animateProgress(), 1000);
+            this.async(() => this._addProgress(), 1000);
         },
         close () {
             this.$['reward-modal-dialog'].close();
@@ -368,8 +366,8 @@
                 type: e.model.link.type
             });
         },
-        _animateProgress () {
-            this.$$('#progress-bar').addValue(100);
+        _addProgress () {
+            this.progressRate = this.progressRate + 33.33;
         },
         _iconType (icon, content) {
             return icon === content;
