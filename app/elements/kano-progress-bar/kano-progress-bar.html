@@ -6,9 +6,7 @@
 `kano-progress-bar`
 @group Kano Elements
 @demo demo/kano-progress-bar.html
-
 The following custom properties and mixins are also available for styling:
-
 Custom property | Description | Default
 ----------------|-------------|----------
 `--kano-progress-bar-bg-color` | Custom property applied to the progress bar background color | `{}`,
@@ -132,7 +130,6 @@ Custom property | Description | Default
                 return;
             }
             this.animating = true;
-
             this.$['progress-fill'].addEventListener('transitionend', this._onTransitionEnd);   
             this.$['progress-fill'].style.transition = `transform ${this.speed}ms linear`;
             this.$['progress-fill'].style.transform = `translateX(-${100 - newRate}%)`;
@@ -148,20 +145,39 @@ Custom property | Description | Default
         },
         _incrementValue (target, frequency) {
             // incrementing up or down
-            let cent = target > this.currentValue ? +this.unitValue : -this.unitValue;
-            let incrementing = setInterval(() => {
-                this.currentValue = this.currentValue + cent;
+            let incrementUnit = target > this.currentValue ? +this.unitValue : -this.unitValue,
+                incrementing = setInterval(() => {
+                this.currentValue = this.currentValue + incrementUnit;
                 if (this.currentValue === target) {
                     clearInterval(incrementing);
                 }
             }, frequency);
         },
         _computeNewValue (newRate, oldRate) {
-            //TODO extreme values should be more accurate (rounding issues)
-            let zeroPercentValue = Math.round(this.currentValue - oldRate * this.unitValue),
-                hundredPercentValue = Math.round(this.currentValue + (100 - oldRate) * this.unitValue),
-                newValue = Math.round(newRate * this.unitValue + zeroPercentValue);
-            return this._limitingValue(newValue, zeroPercentValue, hundredPercentValue);
+            let newValue = this.currentValue,
+                incrementUnit = newRate > oldRate ? +this.unitValue : -this.unitValue;
+            this.zeroPercentValue = this.zeroPercentValue || this._computeZeroPercentValue(oldRate);
+            this.hundredPercentValue = this.hundredPercentValue || this._computeHundredPercentValue(oldRate);
+            while ((newValue - this.zeroPercentValue) / this.unitValue !== newRate) {
+                newValue = newValue + incrementUnit;
+            }
+            return this._limitingValue(newValue, this.zeroPercentValue, this.hundredPercentValue);
+        },
+        _computeZeroPercentValue (oldRate) {
+            let zeroPercentValue = this.currentValue,
+                proportionalZeroPercentValue = this.currentValue - oldRate * this.unitValue;
+            while (this.unitValue <= (zeroPercentValue - proportionalZeroPercentValue)) {
+                zeroPercentValue = zeroPercentValue - this.unitValue;
+            }
+            return zeroPercentValue;
+        },
+        _computeHundredPercentValue (oldRate) {
+            let hundredPercentValue = this.currentValue,
+                proportionalHundredPercentValue = this.currentValue + (100 - oldRate) * this.unitValue;
+            while (this.unitValue < (proportionalHundredPercentValue - hundredPercentValue)) {
+                hundredPercentValue = hundredPercentValue + this.unitValue;
+            }
+            return hundredPercentValue + this.unitValue;
         },
         _limitingValue (value, min, max) {
             value = Math.min(value, max);
@@ -177,7 +193,7 @@ Custom property | Description | Default
         },
         _onTransitionEnd () {
             this.animating = false;
-            this.$['progress-fill'].removeEventListener('transitionend', this.toggleAnimationFlag);
+            this.$['progress-fill'].removeEventListener('transitionend', this._onTransitionEnd);
         }
     });
 </script>

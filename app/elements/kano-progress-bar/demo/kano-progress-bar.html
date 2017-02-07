@@ -46,9 +46,9 @@
             document.addEventListener('WebComponentsReady', () => {
                 var bind = document.getElementById('bind'),
                     bar = document.getElementById('bar');
-                bind.rate = 10;
+                bind.rate = 50;
                 bind.valueUnit = 1;
-                bind.currentValue = 105;
+                bind.currentValue = 125;
                 bind.addValue = () => {
                     console.log('Adding value');
                     bind.rate = bind.rate + 10;
