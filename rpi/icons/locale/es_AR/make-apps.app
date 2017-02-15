@@ -5,7 +5,7 @@
     "tagline": "Aplicaciones autenticas con Bloques Kano", 
     "colour": "#34495E", 
     "desktop": false, 
-    "priority": 1000, 
+    "priority": -50, 
     "dependencies": [], 
     "overrides": [], 
     "packages": [
