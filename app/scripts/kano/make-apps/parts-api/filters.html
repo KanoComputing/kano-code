@@ -16,7 +16,7 @@
                 if (this._worker) {
                     return this._worker;
                 }
-                return this._worker = new Worker('/scripts/kano/make-apps/parts-api/canvas-filters/canvas-filters.js');
+                return this._worker = new Worker('/scripts/kano/make-apps/parts-api/canvas-filters.js');
             },
             addFilter (name, args) {
                 this._filters = this._filters || [];

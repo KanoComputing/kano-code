@@ -1,22 +1,42 @@
-<link rel="import" href="../behaviors/kano-app-editor-behavior.html">
-<link rel="import" href="../kano-pixel-canvas/kano-pixel-canvas.html">
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../kano-pixel-frame-editor/kano-pixel-frame-editor.html">
+<link rel="import" href="../inputs/kano-input-range/kano-input-range.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 
 <dom-module id="kano-light-frame-editor">
     <style>
     :host {
-        display: block;
         @apply(--layout-vertical);
         position: relative;
     }
     .content>* {
         margin-top: 32px;
     }
+    .preview {
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+    }
+    .properties {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        @apply(--layout-center);
+        @apply(--layout-center-justified);
+    }
+    kano-input-range {
+        width: 100%;
+    }
     </style>
     <template>
         <div class="content">
-            <kano-input-range value="{{selected.userProperties.width}}" label="Width" min="1" max="16"></kano-input-range>
-            <kano-input-range value="{{selected.userProperties.height}}" label="Height" min="1" max="8"></kano-input-range>
-            <kano-pixel-canvas width="{{selected.userProperties.width}}" height="{{selected.userProperties.height}}" bitmap="{{selected.userProperties.bitmap}}"></kano-pixel-canvas>
+            <div class="preview">
+                <kano-pixel-frame-editor width="[[selected.userProperties.width]]"
+                                    height="[[selected.userProperties.height]]"
+                                    bitmap="{{selected.userProperties.bitmap}}"></kano-pixel-frame-editor>
+            </div>
+            <div class="properties">
+                <kano-input-range value="{{selected.userProperties.width}}" label="Width" min="1" max="16"></kano-input-range>
+                <kano-input-range value="{{selected.userProperties.height}}" label="Height" min="1" max="8"></kano-input-range>
+            </div>
         </div>
     </template>
 </dom-module>
@@ -25,7 +45,6 @@
 
     Polymer({
         is: 'kano-light-frame-editor',
-        behaviors: [Kano.Behaviors.AppEditorBehavior],
         properties: {
             selected: {
                 type: Object,

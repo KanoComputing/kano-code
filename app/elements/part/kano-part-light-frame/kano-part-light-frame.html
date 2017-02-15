@@ -1,5 +1,6 @@
 <link rel="import" href="../kano-light-shape-behavior.html">
 <link rel="import" href="../../../bower_components/web-components/kano-style/part.html">
+<link rel="import" href="../../../scripts/kano/make-apps/parts-api/light-frame.html">
 <dom-module id="kano-part-light-frame">
     <style is="custom-style" include="part-style"></style>
     <style>
@@ -22,7 +23,7 @@
     </style>
     <template>
         <div class="container" running$="[[isRunning]]">
-            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" pixel-size="22" spacing="3" bitmap="[[model.userProperties.bitmap]]"></kano-bitmap-renderer>
+            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" pixel-size="21" spacing="3" bitmap="[[model.userProperties.bitmap]]"></kano-bitmap-renderer>
         </div>
     </template>
     <script type="text/javascript">
@@ -30,7 +31,7 @@
 
         Polymer({
             is: 'kano-part-light-frame',
-            behaviors: [Kano.Behaviors.LightShapeBehavior],
+            behaviors: [Kano.MakeApps.PartsAPI['light-frame'], Kano.Behaviors.LightShapeBehavior],
             observers: [
                 '_sizeChanged(model.userProperties.width, model.userProperties.height)'
             ],

@@ -2,17 +2,13 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
-<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/polymer-filters/polymer-filters.html">
 <link rel="import" href="../../bower_components/polymer-filters/filters/compare.html">
 <link rel="import" href="../kano-pixel-canvas/kano-pixel-canvas.html">
-<link rel="import" href="../kano-bitmap-renderer/kano-bitmap-renderer.html">
-<link rel="import" href="../kano-bitmap-list/kano-bitmap-list.html">
 <link rel="import" href="../kano-tooltip/kano-tooltip.html">
-<link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/color.html">
-<dom-module id="kano-pixel-animation-editor">
+<dom-module id="kano-pixel-frame-editor">
     <style>
     :host {
         display: block;
@@ -20,32 +16,24 @@
     .content {
         @apply(--layout-vertical);
         @apply(--layout-center);
-        max-width: 552px;
-        min-width: 552px;
-    }
-    #frames {
         width: 100%;
-        padding: 0px 7px;
-        box-sizing: border-box;
     }
     .toolbox {
         box-sizing: border-box;
-        width: 100%;
-        @apply(--layout-horizontal);
+        width: 250px;
         padding: 7px;
-    }
-    .palette, .controls {
-        @apply(--layout-flex);
+        margin-top: 15px;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
     }
     .palette {
         @apply(--layout-horizontal);
         @apply(--layout-wrap);
         @apply(--layout-start-justified);
-        min-width: 256px;
     }
     .palette-color, .pen-control button {
-        width: 26px;
-        height: 26px;
+        width: 20px;
+        height: 20px;
         margin: 3px;
         cursor: pointer;
         border: 1px solid transparent;
@@ -73,41 +61,12 @@
     .palette-color.selected.draw::before {
         background-image: url(/assets/icons/pencil.svg);
     }
-    .controls {
-        @apply(--layout-horizontal);
-        @apply(--layout-end-justified);
-        @apply(--layout-center);
-    }
-    .controls button {
-        border: 0px;
-        border-radius: 4px;
-        font-family: Bariol;
-        font-size: 16px;
-        color: white;
-        padding: 12px;
-        cursor: pointer;
-    }
-    .controls button:focus {
-        outline: none;
-    }
-    button.add-frame {
-        background: rgb(155, 155, 155);
-        margin-right: 6px;
-        transition: opacity ease-in-out 70ms;
-    }
-    button.add-frame:disabled {
-        opacity: 0.3;
-    }
-    button.preview-control {
-        background: var(--color-green, green);
-        padding: 12px 20px;
-    }
     .add-color {
         background: transparent;
         color: grey;
-        font-size: 22px;
+        font-size: 20px;
         font-family: monospace;
-        line-height: 18px;
+        line-height: 14px;
         @apply(--layout-vertical);
         @apply(--layout-center);
     }
@@ -138,50 +97,18 @@
         border-color: var(--color-orange, orange);
         background: rgba(255, 132, 42, 0.5);
     }
-    .canvas-container {
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-self-stretch);
-        background: #444;
-    }
     kano-pixel-canvas {
         cursor: none;
+        margin: 0 5px;
         --kano-pixel-canvas-pixel: {
             transition: background linear 70ms;
         };
     }
-    .preview-renderer {
-        margin: 4px 0px;
-    }
-    .divider {
-        margin: 3px 8px;
-        width: 2px;
-        background: lightgrey;
-    }
-    kano-animated-svg {
-        @apply(--layout-flex);
-        width: 20px;
-        height: 20px;
-        -webkit-filter: drop-shadow(0px 2px 0px rgba(0, 0, 0, 0.25));
-        filter: drop-shadow(0px 2px 0px rgba(0, 0, 0, 0.25));
-        --kano-animated-path: {
-            fill: white;
-            stroke: white;
-            stroke-width: 7px;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: all ease-in-out 200ms;
-        }
-    }
     </style>
     <template>
         <div class="content">
-            <kano-bitmap-list bitmaps="{{bitmaps}}" selected="{{selected}}" width="[[width]]" height="[[height]]" class="frame-list" id="frames"></kano-bitmap-list>
             <div class="canvas-container">
-                <iron-pages selected="[[previewState]]" attr-for-selected="name">
-                    <kano-pixel-canvas id="canvas" name="stopped" bitmap="{{selected}}" spacing="2" width="[[width]]" height="[[height]]" pixel-size="30" palette="[[palette]]" pen-color="[[penColor]]" pen-type="[[penType]]"></kano-pixel-canvas>
-                    <kano-bitmap-renderer class="preview-renderer" name="running" bitmap="[[frame]]" spacing="2" width="[[width]]" height="[[height]]" pixel-size="30"></kano-bitmap-renderer>
-                </iron-pages>
+                <kano-pixel-canvas id="canvas" name="stopped" bitmap="{{bitmap}}" spacing="2" width="[[width]]" height="[[height]]" pixel-size="20" palette="[[palette]]" pen-color="[[penColor]]" pen-type="[[penType]]"></kano-pixel-canvas>
             </div>
             <div class="toolbox">
                 <div class="pen-control">
@@ -204,15 +131,6 @@
                     </template>
                     <button class="palette-color add-color" on-tap="_openWheel" id="add-color">+</button>
                 </div>
-                <div class="controls">
-                    <button type="button" name="button" on-tap="_addFrame" class="add-frame" disabled$="[[isEq(previewState, 'running')]]">
-                        <span>+</span>
-                        <span>new frame</span>
-                    </button>
-                    <button type="button" name="button" class="preview-control" on-tap="_togglePreviewState">
-                        <kano-animated-svg width="32" height="32" paths="[[previewButtonIconPaths]]" selected="[[previewState]]"></kano-animated-svg>
-                    </button>
-                </div>
             </div>
         </div>
         <kano-tooltip class="tooltip" position="right" id="tooltip" target="[[tooltipTarget]]" auto-close>
@@ -221,14 +139,11 @@
     </template>
     <script type="text/javascript">
         Polymer({
-            is: 'kano-pixel-animation-editor',
+            is: 'kano-pixel-frame-editor',
             behaviors: [PolymerFilters.FilterBehavior],
             properties: {
-                bitmaps: {
+                bitmap: {
                     type: Array,
-                    value: () => {
-                        return [['#000000']];
-                    },
                     notify: true
                 },
                 width: {
@@ -242,52 +157,31 @@
                 penType: {
                     type: String,
                     computed: '_computePenType(_penType, _isShiftPressed)'
-                },
-                speed: {
-                    type: Number,
-                    value: 15
                 }
             },
             observers: [
-                '_bitmapChanged(selected, width, height)',
-                '_selectedChanged(selected.*)'
+                '_bitmapChanged(bitmap, width, height)'
             ],
+            _bitmapChanged () {
+                if (!this.bitmap) {
+                    return;
+                }
+                if (this.bitmap.length === 0) {
+                    this._generateEmptyBitmap('bitmap', this.width, this.height);
+                }
+            },
             attached () {
                 this._onKeyEvent = this._onKeyEvent.bind(this);
                 document.addEventListener('keydown', this._onKeyEvent);
                 document.addEventListener('keyup', this._onKeyEvent);
                 this._penType = 'draw';
                 this._isShiftPressed = false;
-                this.previewButtonIconPaths = {
-                    stopped: 'M 10,4 l 16, 12, 0, 0, -16, 12, z',
-                    running: 'M 4,4 l 24, 0 0, 24, -24, 0, z'
-                };
-                this.previewState = 'stopped';
                 this.DEFAULT_PALETTE = ['#000000', '#ce1124', '#fb823f', '#f7e548', '#81d139', '#4397f9', '#bb30dd',
                                 '#8f35f7', '#ffffff', '#f85653', '#fba239', '#fbfb4d', '#44fb42', '#3ffde0', '#f66af9'];
-                this.previewIndex = 0;
             },
             detached () {
                 document.removeEventListener('keydown', this._onKeyEvent);
                 document.removeEventListener('keyup', this._onKeyEvent);
-            },
-            _updatePreview () {
-                if (this.bitmaps) {
-                    this.frame = this.bitmaps[this.previewIndex];
-                    this.previewIndex++;
-                    if (this.previewIndex > this.bitmaps.length - 1) {
-                        this.previewIndex = 0;
-                    }
-                }
-                this.timeoutId = setTimeout(this._updatePreview.bind(this), 1000 / this.speed);
-            },
-            _togglePreviewState () {
-                this.set('previewState', this.previewState === 'running' ? 'stopped' : 'running');
-                if (this.previewState === 'running') {
-                    this._updatePreview();
-                } else {
-                    clearTimeout(this.timeoutId);
-                }
             },
             _computePenType (penType, shiftPressed) {
                 return shiftPressed ? 'fill' : penType;
@@ -317,31 +211,18 @@
             _computePaletteColor (color) {
                 return `background: ${color}`;
             },
-            _selectedChanged (e) {
-                this._computePalette();
-            },
             _generateEmptyBitmap (name, width, height, color='#000000') {
+                let bitmap = [];
                 let length = width * height;
                 for (let i = 0; i < length; i++) {
-                    this.push(name, color);
+                    bitmap.push('#000000');
                 }
-            },
-            _bitmapChanged () {
-                if (!this.selected) {
-                    return;
-                }
-                if (this.selected.length === 0) {
-                    this._generateEmptyBitmap('selected', this.width, this.height);
-                }
-            },
-            _addFrame () {
-                this.$.frames.addFrame();
+                this.set('bitmap', bitmap);
             },
             _computePalette () {
                 this.debounce('palette', () => {
-                    let palette = this.bitmaps.reduce((acc, bitmap) => {
-                        return acc.concat(bitmap);
-                    }, []);
+                    //clone the bitmap array
+                    let palette = this.bitmap.slice(0);
 
                     palette.push(this.penColor);
                     
@@ -353,15 +234,12 @@
 
                     this.set('palette', palette);
                     if (!this.penColor) {
-                        this.set('penColor', this.palette[0]);
+                        this.set('penColor', this.palette[8]);
                     }
                 }, 16);
             },
             _computePaletteItemSelectedClass (color, penColor, penType) {
                 return color === penColor ? 'selected' : '';
-            },
-            _isNewFrameDisabled (previewState) {
-                return (previewState === 'running');
             }
         });
     </script>

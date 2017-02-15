@@ -2,6 +2,7 @@
 
 <link rel="import" href="../parts/lightboard/light-rectangle.html">
 <link rel="import" href="../parts/lightboard/light-circle.html">
+<link rel="import" href="../parts/lightboard/light-frame.html">
 <link rel="import" href="../parts/lightboard/light-animation.html">
 <link rel="import" href="../parts/lightboard/light-animation-display.html">
 <link rel="import" href="../parts/oscillator.html">
@@ -15,6 +16,11 @@
 
 <link rel="import" href="../parts/speaker.html">
 <link rel="import" href="../parts/microphone.html">
+
+<link rel="import" href="../parts/powerups/gesture-sensor.html">
+<link rel="import" href="../parts/powerups/gyro-accelerometer.html">
+<link rel="import" href="../parts/powerups/motion-sensor.html">
+<link rel="import" href="../parts/powerups/proximity-sensor.html">
 
 <script>
     (function (Kano) {
@@ -157,6 +163,38 @@
                             type: 'single',
                             x: ${x}-1,
                             y: ${y}-1
+                        }`];
+                    }
+                    return;
+                };
+            }
+        },{
+            block: () => {
+                return {
+                    id: 'light_random',
+                    message0: 'random light',
+                    output: 'Light',
+                };
+            },
+            javascript: () => {
+                return (block) => {
+                    if (block.parentBlock_) {
+                        return [`{
+                            type: 'single',
+                            x: Math.floor(Math.random() * 16),
+                            y: Math.floor(Math.random() * 8)
+                        }`];
+                    }
+                    return;
+                };
+            },
+            pseudo: () => {
+                return (block) => {
+                    if (block.parentBlock_) {
+                        return [`{
+                            type: 'single',
+                            x: Math.floor(Math.random() * 16),
+                            y: Math.floor(Math.random() * 8)
                         }`];
                     }
                     return;

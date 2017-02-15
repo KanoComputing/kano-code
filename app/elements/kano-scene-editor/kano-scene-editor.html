@@ -189,7 +189,14 @@
         endedChanged () {
             if (this.scene.ended) {
                 this.$.editor.generateCover().then((image) => {
+                    let flags;
                     this.appPreview = image.src;
+                    flags = Kano.MakeApps.config.getFlags();
+                    if (flags.experiments.indexOf('gamification_modal') !== -1) {
+                        //open new xp modal
+                    } else {
+                        this.$['challenge-completed'].open();
+                    }
                     this.$['challenge-completed'].open();
                     this.playSound('/assets/audio/samples/challenge_complete.wav');
                 });

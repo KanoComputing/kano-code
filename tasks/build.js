@@ -152,7 +152,10 @@ module.exports = (gulp, $) => {
                 removeComments: true
             })))
             .pipe($.if('*.js', $.uglify()))
-            .on('error', $.utils.notifyError)
+            .on('error', (e) => {
+                $.utils.notifyError(e);
+                throw e;
+            })
             .pipe(gulp.dest('www'));
     });
 

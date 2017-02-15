@@ -15,10 +15,10 @@
         --kano-pixel-editor-background: #444;
     }
     .pixel {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         /* Use a border the same color as the background, allows the spacing to trigger the mouseover event */
-        border: 3px solid var(--kano-pixel-editor-background);
+        border: 2px solid var(--kano-pixel-editor-background);
         background-color: black;
         @apply(--kano-pixel-canvas-pixel);
     }
@@ -35,8 +35,8 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 30px;
-        height: 30px;
+        width: 20px;
+        height: 20px;
         opacity: 0.45;
         border: 2px solid white;
         pointer-events: none;
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-        <div class="pen" id="pen" style$="[[_computePenStyle(penColor, _isMouseOver)]]"></div>
+        <div class="pen" id="pen" style$="[[_computePenStyle(pixelSize, penColor, _isMouseOver)]]"></div>
         <iron-a11y-keys target="[[target]]" keys="cmd+z ctrl+z" on-keys-pressed="undo"></iron-a11y-keys>
     </template>
     <script type="text/javascript">
@@ -72,9 +72,7 @@
                  */
                 bitmap: {
                     type: Array,
-                    value: () => {
-                        return [['#000000']];
-                    },
+                    value: null,
                     notify: true
                 },
                 /**
@@ -96,7 +94,7 @@
                  */
                 pixelSize: {
                     type: Number,
-                    value: 24
+                    value: 20
                 },
                 /**
                  * Space between each pixels
@@ -205,8 +203,8 @@
                 let w = (width * (pixelSize + (spacing * 2)));
                 return `max-width: ${w}px; width: ${w}px;`;
             },
-            _computePixelStyle (pixel) {
-                return `background-color: ${pixel || '#000000'}; width: ${this.pixelSize}px; height: ${this.pixelSize}px; border-width: ${this.spacing}px`;
+            _computePixelStyle (pixel, pixelSize, spacing) {
+                return `background-color: ${pixel || '#000000'}; width: ${pixelSize}px; height: ${pixelSize}px; border-width: ${spacing}px`;
             },
             _penTypeChanged () {
                 if (this.currentIndex) {
@@ -342,8 +340,8 @@
             _onMouseOut () {
                 this._isMouseOver = false;
             },
-            _computePenStyle (color, isMouseOver) {
-                return `background: ${color}; display: ${isMouseOver ? 'block' : 'none'}`;
+            _computePenStyle (size, color, isMouseOver) {
+                return `background: ${color}; display: ${isMouseOver ? 'block' : 'none'}; width: ${size}px; height: ${size}px;}`;
             }
         });
     </script>

@@ -530,25 +530,6 @@ Example:
             if ((e.type === Blockly.Events.MOVE || e.type === Blockly.Events.UI && e.element === 'click')) {
                 let block = this.workspace.getBlockById(e.blockId),
                     coord, dimensions, toolboxRect;
-                if (block) {
-                    coord = Blockly.getSvgXY_(block.getSvgRoot(), this.workspace);
-                    dimensions = block.getHeightWidth();
-                    toolboxRect = this.$.toolbox.getBoundingClientRect();
-
-                    if (coord.x + dimensions.width / 3 < toolboxRect.width) {
-                        // Cancel move event so that the undostack doesn't get populated
-                        Blockly.Events.disable();
-                        this.workspace.undo();
-                        Blockly.Events.enable();
-                        // Delete the block without animation
-                        block.dispose(true, false);
-                        // Compensate for the lack of audio
-                        // with the suppressed animation
-                        this.workspace.playAudio('delete');
-                        this._onToolboxEndDrag();
-                        return;
-                    }
-                }
                 // If there is a move event or a click event, we check if it matches the last block created
                 if (this.lastCreated === e.blockId) {
                     // The block targetted by the last event matches the last created,

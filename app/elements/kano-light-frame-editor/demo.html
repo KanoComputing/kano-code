@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>kano-light-frame-editor demo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../..//bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="./kano-light-frame-editor.html" async>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        <template is="dom-bind" id="bind">
+            <kano-light-frame-editor selected="{{selected}}"></kano-light-frame-editor>
+        </template>
+        <script>
+            var bind = document.getElementById('bind');
+            bind.selected = {
+                userProperties: {
+                    width: 5,
+                    height: 3,
+                    bitmap: []
+                }
+            }
+        </script>
+    </body>
+</html>

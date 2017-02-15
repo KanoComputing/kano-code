@@ -1,0 +1,37 @@
+<link rel="import" href="./light-shape.html">
+<script>
+    (function (Kano) {
+        let LightFrame, PartsAPI;
+
+        Kano.MakeApps = Kano.MakeApps || {};
+        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+
+        LightFrame = {
+            _updateLightboard (force) {
+                this.debounce('_updateLightboard', () => {
+                    if (this.isRunning) {
+                        let shape = {
+                            id: this.model.id,
+                            x: this.getX(),
+                            y: this.getY(),
+                            width: this.model.userProperties.width,
+                            height: this.model.userProperties.height,
+                            bitmap: this.frame,
+                            type: 'frame',
+                            force
+                        };
+                        this.fire('update-shape', shape);
+                    }
+                });
+            },
+            getWidth () {
+                return parseInt(this.get('model.userProperties.width'));
+            },
+            getHeight () {
+                return parseInt(this.get('model.userProperties.height'));
+            }
+        };
+        // @polymerBehavior
+        Kano.MakeApps.PartsAPI['light-frame'] = Object.assign({}, PartsAPI['light-shape'], LightFrame);
+    })(window.Kano = window.Kano || {});
+</script>

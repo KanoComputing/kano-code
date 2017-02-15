@@ -205,7 +205,6 @@
                     copy = this.bitmaps[this.selectedIndex].slice(0);
                 }
                 this.splice('bitmaps', this.selectedIndex, 0, copy);
-                this.selectedIndex = this.selectedIndex + 1;
                 this.set('selected', copy.slice(0));
             }
         });

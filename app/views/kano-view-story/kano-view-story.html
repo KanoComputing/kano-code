@@ -76,7 +76,6 @@
             hardwareAPI.config(Kano.MakeApps.config);
 
             Kano.AppModules.init(Object.assign({ hardwareAPI }, Kano.MakeApps.config));
-            Kano.MakeApps.Parts.init(Kano.MakeApps.config);
             Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
             Kano.MakeApps.Mode.init(Kano.MakeApps.config);
         },
@@ -126,9 +125,31 @@
             } else {
                 //story completed!!!
                 let progress = this.story.progress,
-                    extension = this.story.extension ? this.story.id : null;
+                    extension = this.story.extension ? this.story.id : null,
+                    headers = new Headers(),
+                    ev;
                 Kano.MakeApps.Progress.updateProgress(progress.group, progress.storyNo, extension, this.story.id)
                     .then((progress) => this.updateExtensions(progress));
+                // @next feature (Gamification)
+                if (!Kano.MakeApps.sdk.auth.getToken()) {
+                    return;
+                }
+                headers.append('Content-Type', 'application/json');
+                headers.append('Authorization', Kano.MakeApps.sdk.auth.getToken());
+                ev = {
+                    name: 'kano-code-challenge-completed',
+                    detail: {
+                        id: this.story.id
+                    }
+                };
+                fetch(`${Kano.MakeApps.config.API_URL}/progress`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(ev)
+                }).then(r => r.json())
+                .then(res => {
+                    // Here, consume the reponse to display level up animations, xp reward and badges
+                });
             }
         },
         selectedChanged () {

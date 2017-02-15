@@ -21,6 +21,7 @@
             'mode-ready': '_onModeReady'
         },
         _onModeReady () {
+            Kano.MakeApps.Parts.init(Kano.MakeApps.config);
             Kano.MakeApps.Blockly.register(window.Blockly);
             this.notifyPath('mode.defaultBlocks', this.mode.defaultBlocks);
             this._runningChanged(this.running);

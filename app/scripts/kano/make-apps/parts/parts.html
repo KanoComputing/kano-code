@@ -5,12 +5,14 @@
 
         Kano.MakeApps.Parts = {
             partTypes: {},
-            list: [/*Button, Box, TextInput, Text, Map, ISS, Weather, Share,
-                Sticker, ScrollingText, RSS, Sports, Speaker, Microphone, Clock,
-                LightRectangle, LightCircle, LightFrame, LightAnimation, LightAnimationDisplay,
-                PictureList, Slider, Oscillator*/],
-            registerPart (part) {
-                this.list.push(part);
+            list: [],
+            registerPart (part, experiment=false) {
+                if (experiment) {
+                    this.experiments[experiment] = this.experiments[experiment] || [];
+                    this.experiments[experiment].push(part);
+                } else {
+                    this.list.push(part);
+                }
             },
             registerPartType (name, partType) {
                 this.partTypes[name] = partType;
@@ -26,9 +28,7 @@
                     });
                 }
             },
-            experiments: {
-                'dongles': [/*ProximitySensor, MotionSensor, GestureSensor, GyroAccelerometer*/]
-            },
+            experiments: {},
             create (model, size) {
                 return new this.partTypes[model.partType](model, size);
             },

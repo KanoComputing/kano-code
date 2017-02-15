@@ -59,6 +59,8 @@
                 partsString = JSON.stringify(components);
 
                 template = template.join('\n');
+                //ensure 'background' css property will not carry double quotes
+                background = background ? background.replace(/"/ig, '\"') : null;
 
                 component = `
                     <dom-module id="kano-${componentName}">
@@ -110,7 +112,7 @@
                                     var ws = this.$['${mode.id}'];
 
                                     if (this.workspace.setBackground) {
-                                        this.workspace.setBackground('${background}');
+                                        this.workspace.setBackground("${background}");
                                     }
 
                                     this.async(function () {
