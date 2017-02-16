@@ -1,4 +1,5 @@
 <link rel="import" href="../../scripts/kano/make-apps/mode/mode.html">
+<link rel="import" href="../../scripts/kano/make-apps/mode/light.html">
 <link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
 <link rel="import" href="../../scripts/kano/make-apps/utils.html">
 <link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
@@ -12,8 +13,9 @@
 
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-drag-file-behavior.html">
 
-<dom-module id="kano-view-editor">
+<dom-module id="kano-view-lightboard">
     <style>
     :host {
         display: block;
@@ -104,7 +106,7 @@
 <script type="text/javascript">
     /* globals Polymer, Kano */
     Polymer({
-        is: 'kano-view-editor',
+        is: 'kano-view-lightboard',
         behaviors: [
             Kano.Behaviors.SharingBehavior,
             Kano.Behaviors.EditorViewBehavior,
@@ -144,18 +146,20 @@
             this.running = false;
             this.share(e);
         },
+        fileDropped (content) {
+            let app = JSON.parse(content);
+            if (app.mode !== 'lightboard') {
+                return;
+            }
+            Kano.MakeApps.Parts.clear();
+            this._filterParts();
+            this.editor.load(app, Kano.MakeApps.Parts.list);
+        },
         showOverlay () {
             this.$['dropoverlay'].style.display = 'flex';
         },
         hideOverlay () {
             this.$['dropoverlay'].style.display = 'none';
-        },
-        fileDropped (content) {
-            let app = JSON.parse(content);
-            Kano.MakeApps.Parts.clear();
-            this.set('mode', Kano.MakeApps.Mode.modes[app.mode]);
-            this._filterParts();
-            this.editor.load(app, Kano.MakeApps.Parts.list);
         },
         _animateDragEnter () {
             let overlay = this.$['dropoverlay'],
@@ -306,10 +310,6 @@
                 }));
             }
         },
-        _getMode (context) {
-            var modeFromQs = Kano.Util.Router.parseQsParam(this.context.querystring, 'mode');
-            return modeFromQs ? modeFromQs : 'normal';
-        },
         ready () {
             let hardwareAPI = new Kano.MakeApps.HardwareAPI();
             this.loaded = false;
@@ -326,7 +326,7 @@
             Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
             Kano.AppModules.init(Object.assign({ hardwareAPI }, Kano.MakeApps.config));
 
-            this.mode = Kano.MakeApps.Mode.modes[this._getMode(this.context)];
+            this.mode = Kano.MakeApps.Mode.modes.lightboard;
         },
         save () {
             let modeId = this.mode.id;
@@ -338,15 +338,6 @@
                     localStorage.setItem(`savedApp-${modeId}`, JSON.stringify(savedApp));
                 }, 3000);
             }
-        },
-        /**
-         * When the current code changes, save it in the components store
-         * @param  {Event} e  Informations about the code updated
-         */
-        codeChanged (e) {
-            let data = e.detail;
-            // Add the new code and its rule to the components store
-            Kano.MakeApps.components.setCode(data.id, data.emitter, data.event, data.code);
         }
     });
 </script>
