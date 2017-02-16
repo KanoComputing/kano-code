@@ -360,7 +360,15 @@
             let leftHand = block.getFieldValue('LEFT_HAND'),
                 op = block.getFieldValue('OPERATOR') || '+=',
                 rightHand = Blockly.JavaScript.valueToCode(block, 'RIGHT_HAND'),
-                code = `${leftHand} ${op} ${rightHand};\n`;
+                code;
+
+            // Default to 1 for multiplication and division, otherwise default to 0
+            if (['/=', '*='].indexOf(op) !== -1) {
+                rightHand = rightHand || 1;
+            } else {
+                rightHand = rightHand || 0;
+            }
+            code = `${leftHand} ${op} ${rightHand};\n`;
             return code;
         };
         Blockly.Pseudo.unary = (block) => {

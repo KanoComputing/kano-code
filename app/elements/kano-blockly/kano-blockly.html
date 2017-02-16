@@ -50,6 +50,7 @@ Example:
         }
         svg {
             @apply --layout-flex;
+            height: 100%;
         }
         .gutter {
             width: 20px;
@@ -73,6 +74,20 @@ Example:
         .blocklyEditableText>rect, ::slotted(*.blocklyEditableText>rect) {
             fill: white;
             fill-opacity: 0.6;
+        }
+
+        .blocklyLookupField>text,
+        ::slotted(*.blocklyLookupField>text) {
+            font-family: monospace;
+            cursor: pointer;
+            fill: #223541;
+        }
+
+        .blocklySearchOutput>text,
+        ::slotted(*.blocklySearchOutput>text) {
+            font-size: 28px;
+            transform: translateY(15px);
+            fill: #bbbbbb;
         }
 
         .searchPlus,

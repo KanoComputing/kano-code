@@ -101,6 +101,10 @@
                     type: Array,
                     notify: true
                 },
+                selectedIndex: {
+                    type: Number,
+                    value: 0
+                },
                 width: {
                     type: Number,
                     value: 1
@@ -112,7 +116,7 @@
             },
             observers: [
                 '_selectedChanged(selected.*)',
-                '_bitmapsChanged(bitmaps.splices)'
+                '_bitmapsChanged(bitmaps)'
             ],
             _selectedChanged (e) {
                 let index = this.selectedIndex,
@@ -125,7 +129,17 @@
                     });
                 } else if (e.path === 'selected' && e.value) {
                     this.select(e.value);
+                } else if (e.path === 'selected') {
+                    if (this.bitmaps.length === 0) {
+                        this.set('bitmaps', [[]]);
+                    }
+                    this.selected = this.bitmaps[0].slice(0);
                 }
+            },
+            _bitmapsChanged () {
+                let lastIndex = this.bitmaps.length -1;
+                this.selectedIndex = lastIndex;
+                this.selected = this.bitmaps[lastIndex].slice(0);
             },
             _sortStarted (e) {
                 if (e.detail) {
@@ -162,9 +176,11 @@
                 }
             },
             _sortRemove (e) {
-                if (e.detail) {
-                    this.selectedIndex = e.detail.newIndex;
+                if (this.bitmaps.length !== 0) {
+                    this.selectedIndex = e.detail && e.detail.newIndex || 0;
                     this.set('selected', this.bitmaps[this.selectedIndex].slice(0));
+                } else {
+                    this.createEmptyFrame();
                 }
             },
             _selectFrame (e) {
@@ -187,25 +203,25 @@
             _computeFrameSelectedClass (index, selectedIndex) {
                 return index === selectedIndex ? 'selected' : '';
             },
-            _bitmapsChanged () {
-                if (this.bitmaps.length === 0) {
-                    this.set('bitmaps', [[]]);
-                }
-                this.selectedIndex = 0;
-                this.selected = this.bitmaps[0].slice(0);
-            },
             addFrame () {
                 let copy;
                 if (!this.bitmaps.length) {
-                    copy = [];
-                    for (let i = 0; i < this.width * this.height; i++) {
-                        copy.push('#000000');
-                    }
+                    this.createEmptyFrame();
                 } else {
                     copy = this.bitmaps[this.selectedIndex].slice(0);
+                    this.splice('bitmaps', this.selectedIndex, 0, copy);
+                    this.selectedIndex = this.selectedIndex + 1;
+                    this.set('selected', copy.slice(0));
                 }
-                this.splice('bitmaps', this.selectedIndex, 0, copy);
-                this.set('selected', copy.slice(0));
+            },
+            createEmptyFrame () {
+                let frame = [];
+                for (let i = 0; i < this.width * this.height; i++) {
+                    frame.push('#000000');
+                }
+                this.push('bitmaps', frame);
+                this.selectedIndex = 0;
+                this.set('selected', frame);
             }
         });
     </script>

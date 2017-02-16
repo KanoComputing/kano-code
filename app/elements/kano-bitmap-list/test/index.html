@@ -45,8 +45,8 @@
                     list = fixture('default');
                     list.bitmaps = createFrames(5);
                 });
-                test('`selected` is the first bitmap by default', () => {
-                    assert.deepEqual(list.selected, list.bitmaps[0], 'Selected is not the first bitmap by default');
+                test('`selected` is the last bitmap by default', () => {
+                    assert.deepEqual(list.selected, list.bitmaps[list.bitmaps.length - 1], 'Selected is not the last bitmap by default');
                 });
             });
 
@@ -89,7 +89,7 @@
                         newIndex;
                     list.addFrame();
                     newIndex = list.selectedIndex;
-                    assert(newIndex === prevIndex, 'When adding a frame, `selectedIndex` is not pointing to the newly created frame');
+                    assert(newIndex === prevIndex + 1, 'When adding a frame, `selectedIndex` is not pointing to the newly created frame');
                 });
                 test('addFrame copies the previous frame', () => {
                     let prevFrame = list.selected.slice(0),

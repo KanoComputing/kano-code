@@ -10,6 +10,42 @@ Blockly.Blocks.procedures.HUE = '#ffff00';
 
 Blockly.Scrollbar.scrollbarThickness = 5;
 
+if (location.search.match('lookup=true')) {
+    Blockly.SEARCH_PLUS_ENABLED = true;
+}
+
+const FIELD_COLORS = {
+    "black": "#000000",
+    "darkgrey": "#213542",
+    "steelgrey": "#596870",
+    "lightgrey": "#bdccd4",
+    "white": "#ffffff",
+    "red": "#f6412c",
+    "darkorange": "#ff5505",
+    "orange": "#ff6b00",
+    "lightorange": "#ff9800",
+    "darkyellow": "#ffc101",
+    "yellow": "#ffec14",
+    "ligthgreen": "#ccdd1e",
+    "green": "#88c440",
+    "forestgreen": "#46af4b",
+    "aquamarine": "#019687",
+    "cyan": "#01bbd5",
+    "blue": "#00a6f6",
+    "darkblue": "#3d4db7",
+    "darkpurple": "#6633b9",
+    "purple": "#9c1ab1",
+    "magenta": "#eb1360",
+    "pink": "#ff2c82"
+};
+
+Blockly.FieldColour.COLOUR_NAMES = Object.keys(FIELD_COLORS);
+Blockly.FieldColour.HEX_REGEXP = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+if (Blockly.SEARCH_PLUS_ENABLED) {
+    Blockly.FieldColour.COLOURS = Blockly.FieldColour.COLOUR_NAMES.map(key => FIELD_COLORS[key]);
+    Blockly.FieldColour.COLUMNS = 7;
+}
+
 // Reload the custom messages as Blockly overrides them
 if (window.CustomBlocklyMsg) {
     Object.assign(Blockly.Msg, window.CustomBlocklyMsg);
@@ -721,12 +757,7 @@ Blockly.Workspace.prototype.openOmnibox = function () {
         svg.parentNode.appendChild(this._omniboxContainer);
         this._omnibox.style.position = 'fixed';
         this._omnibox.style.maxHeight = '345px';
-        this._omnibox.addEventListener('confirm', () => {
-            this.closeOmnibox(true);
-        });
-        this._omnibox.addEventListener('block-clicked', () => {
-            this.closeOmnibox(true);
-        });
+        this._omnibox.style.boxShadow = 'initial';
     } else {
         this._omniboxContainer.style.display = 'block';
     }
@@ -745,113 +776,76 @@ Blockly.Workspace.prototype.closeOmnibox = function (doNotNotify) {
 }
 
 Blockly.Block.prototype.renderSearchPlus_ = function () {
-    var inputList = this.inputList;
+    var inputList = this.inputList,
+        connections;
 
-    if (!this.workspace.searchPlusReady) {
-        let workspace = this.workspace;
-        workspace.searchPlusReady = true;
-        workspace.addChangeListener((e) => {
-            if (e.type === Blockly.Events.MOVE || e.type === Blockly.Events.DELETE) {
-                let blocks = workspace.getAllBlocks();
-                blocks.forEach(b => b.renderSearchPlus_());
+    // Only add the listener once, trick to avoid overriding the constructor
+    if (!this.listenerAdded) {
+        this.listenerAdded = true;
+        // Don't do it if in flyout
+        if (this.isInFlyout || !this.rendered) {
+            return;
+        }
+
+        // Grab all the input connections that are eligible for search plus buttons
+        connections = inputList.filter(input => input.type === Blockly.INPUT_VALUE || input.type === Blockly.NEXT_STATEMENT)
+                                .map(input => input.connection);
+        // Create the buttons
+        connections.forEach(connection => this.attachSearchToConnection_(connection));
+        // Create a button for the nextConnection if exists and store the created block
+        this.shadowSearch_ = this.attachSearchToConnection_(this.nextConnection);
+        this.workspace.addChangeListener((e) => {
+            // On a move event, we might need to remove/add a button to the next connection as it is not dealt with the `shadow block` paradigm
+            if (e.type === Blockly.Events.MOVE) {
+                // A block was connected to this one and the next connection now contains a block that is not the search plus button
+                if (e.newParentId === this.id
+                    && this.shadowSearch_
+                    && this.nextConnection.targetConnection
+                    && this.nextConnection.targetConnection.getSourceBlock() !== this.shadowSearch_) {
+                    // Remove the search plus button and dereference it
+                    this.shadowSearch_.dispose();
+                    this.shadowSearch_ = null;
+                } else if (e.oldParentId === this.id
+                        && this.nextConnection
+                        && !this.nextConnection.targetConnection
+                        && this.workspace) {
+                    // A block disconnected from this block and the nextConnection is now empty
+                    this.attachSearchToConnection_(this.nextConnection);
+                }
             }
         });
     }
-
-    inputList.forEach((input) => {
-        if (!input.button) {
-            if (input.connection) {
-                let offsetX = 0,
-                    offsetY = 0;
-                if (input.connection.type === Blockly.NEXT_STATEMENT) {
-                    offsetX = -19;
-                    offsetY = 1;
-                } else if (input.connection.type === Blockly.INPUT_VALUE) {
-                    offsetX = 1;
-                    offsetY = 2 + Blockly.BlockSvg.ROW_PADDING_Y;
-                }
-                input.button = Blockly.utils.createSvgElement('g', {
-                    class: 'searchPlus',
-                    width: 20,
-                    height: 20,
-                    transform: `translate(${input.connection.x_ + offsetX}, ${input.connection.y_ + offsetY})`
-                }, this.svgGroup_);
-                Blockly.utils.createSvgElement('rect', {
-                    width: 20,
-                    height: 20
-                }, input.button);
-                var plus = Blockly.utils.createSvgElement('text', {
-                    transform: 'translate(6.5, 13.5)'
-                }, input.button);
-                plus.appendChild(document.createTextNode('+'));
-                input.button.addEventListener('mousedown', () => {
-                    var rect = input.button.getBoundingClientRect(),
-                        omnibox = this.workspace.openOmnibox();
-                    omnibox.style.top = `${rect.top}px`;
-                    omnibox.style.left = `${rect.left}px`;
-                    omnibox.filter = (block) => {
-                        let dataBlock = Blockly.getDataBlock(block.id),
-                            blockConnection;
-                        if (input.connection.type === Blockly.NEXT_STATEMENT) {
-                            blockConnection = dataBlock.previousConnection;
-                        } else if (input.connection.type === Blockly.INPUT_VALUE) {
-                            blockConnection = dataBlock.outputConnection;
-                        }
-                        // The connection exists on the block found and it matches the type of the input
-                        return blockConnection  && (!input.connection.check_ || !blockConnection.check_
-                                || input.connection.check_.some(inputCheck => blockConnection.check_.indexOf(inputCheck) !== -1));
-                    };
-                    var onConfirm = (e) => {
-                        let type;
-                        omnibox.removeEventListener('confirm', onConfirm);
-                        omnibox.removeEventListener('close', onConfirm);
-                        omnibox.removeEventListener('block-clicked', onConfirm);
-                        if (e.detail) {
-                            if (e.detail.type) {
-                                type = e.detail.type;
-                            } else if (e.detail.selected) {
-                                type = e.detail.selected.id;
-                            }
-                            if (type) {
-                                let block = this.workspace.newBlock(type);
-                                block.initSvg();
-                                block.render();
-                                if (input.connection.type === Blockly.NEXT_STATEMENT) {
-                                    input.connection.connect(block.previousConnection);
-                                } else if (input.connection.type === Blockly.INPUT_VALUE) {
-                                    input.connection.connect(block.outputConnection);
-                                }
-                            }
-                        }
-                        
-                    };
-                    omnibox.addEventListener('confirm', onConfirm);
-                    omnibox.addEventListener('close', onConfirm);
-                    omnibox.addEventListener('block-clicked', onConfirm);
-                    if ('animate' in HTMLElement.prototype) {
-                        let rect = omnibox.getBoundingClientRect();
-                        omnibox.style.transformOrigin = '0 0';
-                        omnibox.animate({
-                            transform: [`scale(${20 / rect.width}, ${20 / rect.height})`, 'scale(1, 1)']
-                        }, {
-                            duration: 170,
-                            easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)'
-                        });
-                    }
-                });
-            }
-        }
-        if (input.button) {
-            if (input.connection && !input.connection.targetConnection && !this.isInFlyout) {
-                input.button.style.display = 'block';
-            } else {
-                input.button.style.display = 'none';
-            }
-        }
-    });
 };
 
+Blockly.Block.prototype.attachSearchToConnection_ = function (connection) {
+    // Do not attach if a block is already connected
+    if (connection && !connection.targetConnection && this.workspace) {
+        let type, block, connectionName;
+        // Prevent this manipulation to trigger events
+        Blockly.Events.disable();
+        // Select the right type of search plus and connection for the current connection
+        if (connection.type === Blockly.INPUT_VALUE) {
+            type = 'search_output';
+            connectionName = 'outputConnection';
+        } else if (connection.type === Blockly.NEXT_STATEMENT) {
+            type = 'search_statement';
+            connectionName = 'previousConnection';
+        }
+        // Create the search plus block
+        block = this.workspace.newBlock(type);
+        block.initSvg();
+        block.render();
+        // Connect to the given connection
+        connection.connect(block[connectionName]);
+        Blockly.Events.enable();
+        return block;
+    }
+};
 
+/**
+ * Create a virtual workspace where virtual blocks will be added
+ * This is used to grab instances of blocks and extract data from them, without the need of rendering them
+ */
 Blockly._dataWorkspace = new Blockly.Workspace();
 Blockly._dataBlocks = {};
 
@@ -862,3 +856,391 @@ Blockly.getDataBlock = function (type) {
     return Blockly._dataBlocks[type];
 };
 
+Blockly.stringMatch = function (s, lookup) {
+    return s.toLowerCase().indexOf(lookup.toLowerCase()) !== -1;
+};
+
+Blockly.stringMatchScore = function (s, lookup) {
+    let matches = s.toLowerCase().match(lookup.toLowerCase());
+    if (!matches) {
+        return 0;
+    }
+    return matches[0].length / matches.input.length;
+};
+
+Blockly.Block.prototype.matches = function (qs, workspace) {
+    let score = 0;
+    this.inputList.forEach(input => {
+        input.fieldRow.forEach(field => {
+            score += (field.matches(qs, workspace) ? 1 : 0);
+        });
+    });
+    return score;
+};
+
+Blockly.Block.prototype.fromQuery = function (qs, workspace) {
+    if (!qs) {
+        return;
+    }
+    this.inputList.forEach(input => {
+        input.fieldRow.forEach(field => {
+            field.fromQuery(qs, workspace);
+        });
+    });
+};
+
+Blockly.Field.prototype.getAPIText = function () {
+    return this.getText();
+};
+
+Blockly.Field.prototype.matches = function (qs) {
+    return qs.split(' ').some(piece => Blockly.stringMatch(this.text_, piece));
+};
+
+Blockly.Field.prototype.fromQuery = function () {};
+
+Blockly.FieldDropdown.prototype.getAPIText = function () {
+    let options = this.getOptions_().map(options => options[0]);
+    return `[${options.join('|')}]`;
+};
+
+Blockly.FieldDropdown.prototype.matches = function (qs) {
+    let options = this.getOptions_().map(options => options[0]);
+    // As soon as we find an option containing a piece of the query string
+    return options.some(option => {
+        return qs.split(' ').some(piece => Blockly.stringMatch(option, piece));
+    });
+};
+
+Blockly.FieldDropdown.prototype.fromQuery = function (qs) {
+    let options = this.getOptions_();
+    // As soon as we find an option containing a piece of the query string
+    return options.some(option => {
+        return qs.split(' ').forEach(piece => {
+            if (Blockly.stringMatch(option[0], piece)) {
+                this.setValue(option[1]);
+            }
+        });
+    });
+};
+
+Blockly.FieldVariable.prototype.getAPIText = function (qs, workspace) {
+    let variables = workspace.variableList.slice(0);
+    if (qs.split(' ').some(piece => Blockly.stringMatch('variable', piece))) {
+        return `<variable>`;
+    }
+    for (let i = 0; i < variables.length; i++) {
+        if (qs.split(' ').some(piece => Blockly.stringMatch(variables[i], piece))) {
+            return `(${variables[i]})`;
+        }
+    }
+    return `<variable>`;
+};
+
+Blockly.FieldVariable.prototype.matches = function (qs, workspace) {
+    let variables = workspace.variableList.slice(0);
+    if (qs.split(' ').some(piece => Blockly.stringMatch('variable', piece))) {
+        return `<variable>`;
+    }
+    // As soon as we find an option containing a piece of the query string
+    return variables.some(variable => {
+        return qs.split(' ').some(piece => Blockly.stringMatch(variable, piece));
+    });
+};
+
+Blockly.FieldVariable.prototype.fromQuery = function (qs, workspace) {
+    let variables = workspace.variableList.slice(0);
+    // As soon as we find an option containing a piece of the query string
+    for (let i = 0; i < variables.length; i++) {
+        if (qs.split(' ').some(piece => Blockly.stringMatch(variables[i], piece))) {
+            this.setValue(variables[i]);
+            return;
+        }
+    }
+};
+
+Blockly.FieldNumber.prototype.getAPIText = function (qs) {
+    return !isNaN(qs) ? `(${qs})` : '<number>';
+};
+
+Blockly.FieldNumber.prototype.matches = function (s) {
+    return !isNaN(s) || 'number'.indexOf(s) !== -1;
+};
+
+Blockly.FieldNumber.prototype.fromQuery = function (qs) {
+    let n = parseInt(qs, 10);
+    if (!isNaN(n)) {
+        this.setValue(n);
+    }
+};
+
+Blockly.FieldColour.prototype.getAPIText = function (qs) {
+    let colors = Blockly.FieldColour.COLOUR_NAMES,
+        highestScore = 0,
+        highestColor,
+        score;
+    if (Blockly.FieldColour.HEX_REGEXP.test(qs)) {
+        return `Color: ${qs}`;
+    }
+    for (let i = 0; i < colors.length; i++) {
+        score = Blockly.stringMatchScore(colors[i], qs);
+        if (score > highestScore) {
+            highestScore = score;
+            highestColor = colors[i];
+        }
+    }
+    return highestColor ? highestColor : '<color>';
+};
+
+Blockly.FieldColour.prototype.matches = function (s) {
+    let colors = Blockly.FieldColour.COLOUR_NAMES,
+        highestScore = 0,
+        highestColor,
+        score;
+    if (Blockly.FieldColour.HEX_REGEXP.test(s)) {
+        return true;
+    }
+    for (let i = 0; i < colors.length; i++) {
+        score = Blockly.stringMatchScore(colors[i], s);
+        if (score > highestScore) {
+            highestScore = score;
+            highestColor = colors[i];
+        }
+    }
+    return !!highestColor || Blockly.stringMatch('color', s);
+};
+
+Blockly.FieldColour.prototype.fromQuery = function (qs) {
+    let colors = Blockly.FieldColour.COLOUR_NAMES,
+        highestScore = 0,
+        highestColor,
+        score;
+    if (Blockly.FieldColour.HEX_REGEXP.test(qs)) {
+        this.setValue(qs);
+        return;
+    }
+    for (let i = 0; i < colors.length; i++) {
+        score = Blockly.stringMatchScore(colors[i], qs);
+        if (score > highestScore) {
+            highestScore = score;
+            highestColor = colors[i];
+        }
+    }
+    this.setValue(FIELD_COLORS[highestColor]);
+};
+
+Blockly.Input.prototype.toAPIString = function (qs, workspace) {
+    let s = '';
+    s += this.fieldRow.map(field => {
+        return field.getAPIText(qs, workspace);
+    }).join(' ');
+    // Deal with connection displays
+    if (this.type === Blockly.INPUT_VALUE) {
+        s += ' [ ]';
+    } else if (this.type === Blockly.NEXT_STATEMENT) {
+        s += ' ...';
+    }
+    return s;
+};
+
+Blockly.Block.prototype.getFirstAvailableSearch = function () {
+    let input;
+    for (let i = 0; i < this.inputList.length; i++) {
+        input = this.inputList[i];
+        if (input.connection && input.connection.targetConnection) {
+            let block = input.connection.targetConnection.sourceBlock_;
+            if (input.connection.type === Blockly.INPUT_VALUE && block.type === 'search_output'
+                || input.connection.type === Blockly.NEXT_STATEMENT && block.type === 'search_statement') {
+                return block;
+            }
+        }
+    }
+};
+
+Blockly.Block.prototype.toAPIString = function (qs, workspace) {
+    return this.inputList.map(input => {
+        return input.toAPIString(qs, workspace);
+    }).join(' ');
+};
+
+Blockly.Workspace.prototype.search = function (qs) {
+    let blocks = [];
+    // lookup blocks in the toolbox
+    this.toolbox.toolbox.forEach(category => {
+        blocks = blocks.concat(category.blocks.map(block => block.id));
+    });
+    // Lookup all blocks registered
+    //blocks = Object.keys(Blockly.Blocks);
+    return blocks
+        .map(Blockly.getDataBlock)
+        .filter(block => {
+            return block.matches(qs, this) > 0;
+        });
+};
+
+Blockly.FieldLookup = function (text, c) {
+    this._text = text;
+    this._c = c || '';
+    this.size_ = new goog.math.Size(0, Blockly.BlockSvg.MIN_BLOCK_Y);
+};
+goog.inherits(Blockly.FieldLookup, Blockly.Field);
+Blockly.FieldLookup.prototype.init = function () {
+    if (this._container) {
+        // Field has already been initialized once.
+        return;
+    }
+    // Build the DOM.
+    this._container = Blockly.utils.createSvgElement('g', {
+        class: 'blocklyLookupField ' + this._c
+    }, null);
+    this._textEl = Blockly.utils.createSvgElement('text', {
+        transform: `translate(0, 12)`
+    }, this._container);
+    this._textEl.appendChild(document.createTextNode(this._text));
+    this.sourceBlock_.getSvgRoot().appendChild(this._container);
+    Blockly.bindEvent_(this._container, 'mousedown', this, this._onMouseDown);
+};
+
+/**
+ * Draws the border with the correct width.
+ * Saves the computed width in a property.
+ * @private
+ */
+Blockly.FieldLookup.prototype.render_ = function() {
+  if (!this.visible_) {
+    this.size_.width = 0;
+    return;
+  }
+  // Replace the text.
+  goog.dom.removeChildren(/** @type {!Element} */ (this._textEl));
+  var textNode = document.createTextNode(this._text);
+  this._textEl.appendChild(textNode);
+
+  var width = Blockly.Field.getCachedWidth(this._textEl);
+  this.size_.width = width;
+};
+
+Blockly.FieldLookup.prototype._onMouseDown = function (e) {
+    if (Blockly.WidgetDiv.isVisible()) {
+        Blockly.WidgetDiv.hide();
+    } else if (!this.sourceBlock_.isInFlyout) {
+        this.showEditor_();
+        e.preventDefault();
+        e.stopPropagation();
+    }
+};
+Blockly.FieldLookup.prototype.getSvgRoot = function () {
+    return this._container;
+};
+Blockly.FieldLookup.prototype.showEditor_ = function () {
+    var block = this.sourceBlock_;
+    var xy = Blockly.getSvgXY_(block.svgGroup_, block.workspace);
+    var connection = block.outputConnection ? block.outputConnection : block.previousConnection;
+    var targetConnection = connection.targetConnection;
+    var workspace = this.sourceBlock_.workspace;
+
+    var omnibox = workspace.openOmnibox();
+    omnibox.style.top = `${xy.y}px`;
+    omnibox.style.left = `${xy.x}px`;
+
+    omnibox.filter = (block) => {
+        let blockConnection;
+        if (targetConnection.type === Blockly.NEXT_STATEMENT) {
+            blockConnection = block.previousConnection;
+        } else if (targetConnection.type === Blockly.INPUT_VALUE) {
+            blockConnection = block.outputConnection;
+        }
+        // The connection exists on the block found and it matches the type of the input
+        return blockConnection  && (!targetConnection.check_ || !blockConnection.check_
+                || targetConnection.check_.some(inputCheck => blockConnection.check_.indexOf(inputCheck) !== -1));
+    };
+    var onConfirm = (e) => {
+        let type;
+        omnibox.removeEventListener('confirm', onConfirm);
+        omnibox.removeEventListener('close', onConfirm);
+        if (e.detail && e.detail.selected) {
+            type = e.detail.selected.type;
+            if (type) {
+                let block = workspace.newBlock(type),
+                    searchBlock;
+                block.fromQuery(omnibox.query, workspace);
+                block.initSvg();
+                block.render();
+                if (targetConnection.type === Blockly.NEXT_STATEMENT) {
+                    targetConnection.connect(block.previousConnection);
+                } else if (targetConnection.type === Blockly.INPUT_VALUE) {
+                    targetConnection.connect(block.outputConnection);
+                }
+                setTimeout(() => {
+                    // Focus on the first available search block of the inserted block
+                    searchBlock = block.getFirstAvailableSearch();
+                    if (searchBlock) {
+                        searchBlock.getField('SEARCH').focus();
+                    }
+                });
+            }
+        }
+        workspace.closeOmnibox(true);
+    };
+    omnibox.addEventListener('confirm', onConfirm);
+    omnibox.addEventListener('close', onConfirm);
+    if ('animate' in HTMLElement.prototype) {
+        let rect = omnibox.getBoundingClientRect(),
+            hw = block.getHeightWidth();
+        omnibox.style.transformOrigin = '0 0';
+        omnibox.animate({
+            transform: [`scale(${hw.width / rect.width}, ${hw.height / rect.height})`, 'scale(1, 1)']
+        }, {
+            duration: 170,
+            easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)'
+        });
+    }
+};
+
+Blockly.FieldLookup.prototype.focus = function () {
+    let onKeyDown = (e) => {
+        window.removeEventListener('keydown', onKeyDown);
+        if (e.keyCode === 13) {
+            this.showEditor_();
+        }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    this._container.classList.add('selected');
+};
+
+Blockly.Blocks.search_statement = {
+    init: function () {
+        let searchField = new Blockly.FieldLookup('Type: __________', 'blocklySearchStatement');
+        this.setColour('#bdbdbd');
+        this.appendDummyInput('SEARCH')
+            .appendField(searchField, 'SEARCH');
+        this.setPreviousStatement(true);
+        this.setPaddingY(0);
+        this.setPaddingX(0);
+        this.setShadow(true);
+        this.workspace.addChangeListener(() => {
+            if (!this.previousConnection.targetConnection) {
+                this.dispose();
+            }
+        });
+    }
+};
+
+Blockly.Blocks.search_output = {
+    init: function () {
+        let searchField = new Blockly.FieldLookup('+', 'blocklySearchOutput');
+        this.setColour('#bdbdbd');
+        this.appendDummyInput('SEARCH')
+            .appendField(searchField, 'SEARCH');
+        this.setOutput(true);
+        this.setShadow(true);
+    }
+};
+
+Blockly.JavaScript.search_output = function () {
+    return '';
+};
+
+Blockly.JavaScript.search_statement = function () {
+    return '';
+};

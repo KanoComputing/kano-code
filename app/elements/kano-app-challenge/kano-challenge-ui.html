@@ -10,6 +10,7 @@
 <link rel="import" href="../kano-value-preview/kano-value-preview.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../behaviors/kano-blockly-validator-behavior.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../../bower_components/web-components/kano-sound-player-behavior/kano-sound-player-behavior.html">
 
 <link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
@@ -173,7 +174,7 @@ Example:
                             <div class="markdown-html"></div>
                         </marked-element>
                     </div>
-                    <button type="button" on-tap="_nextStep" hidden$="[[!tooltip.next_button]]">Next</button>
+                    <button type="button" on-tap="_nextStep" hidden$="[[!tooltip.next_button]]">[[localize('NEXT', 'Next')]]</button>
                 </div>
             </kano-tooltip>
         </template>
@@ -185,8 +186,8 @@ Example:
                             <div class="markdown-html"></div>
                         </marked-element>
                     </div>
-                    <button id="hint-button" class="button-hint" type="button" hidden$="{{!banner.hint_button}}" on-tap="showHints">Hint</button>
-                    <button type="button" on-tap="_nextStep" hidden$="{{!banner.next_button}}">Next</button>
+                    <button id="hint-button" class="button-hint" type="button" hidden$="{{!banner.hint_button}}" on-tap="showHints">[[localize('HINT', 'Hint')]]</button>
+                    <button type="button" on-tap="_nextStep" hidden$="{{!banner.next_button}}">[[localize('NEXT', 'Next')]]</button>
                 </div>
             </kano-tooltip>
         </template>
@@ -197,7 +198,7 @@ Example:
                         <div class="markdown-html"></div>
                     </marked-element>
                 </div>
-                <button type="button" on-tap="_nextStep">Next</button>
+                <button type="button" on-tap="_nextStep">[[localize('NEXT', 'Next')]]</button>
             </div>
         </paper-dialog>
     </template>
@@ -206,7 +207,11 @@ Example:
 <script type="text/javascript">
     Polymer({
         is: 'kano-challenge-ui',
-        behaviors: [Kano.Behaviors.AppElementRegistryBehavior, Kano.Behaviors.SoundPlayerBehavior],
+        behaviors: [
+            Kano.Behaviors.AppElementRegistryBehavior,
+            Kano.Behaviors.SoundPlayerBehavior,
+            Kano.Behaviors.I18nBehavior,
+        ],
         properties: {
             tooltips: {
                 type: Array
