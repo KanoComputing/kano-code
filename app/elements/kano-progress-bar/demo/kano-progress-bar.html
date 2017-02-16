@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
         <link rel="import" href="../kano-progress-bar.html">
@@ -28,11 +28,17 @@
         <demo-snippet>
             <template>
                 <template is="dom-bind" id="bind">
-                    <button type="button" name="button" on-tap="addValue">Add value</button>
+                    <button type="button" name="button" on-tap="addValue">+10</button>
+                    <button type="button" name="button" on-tap="substractValue">-10</button>
                     <kano-progress-bar id="bar"
-                                   start-value="[[startValue]]"
-                                   min="[[min]]"
-                                   max="[[max]]"></kano-progress-bar>
+                                       rate="{{rate}}"
+                                       unit-value="[[valueUnit]]"
+                                       current-value="{{currentValue}}"
+                                       on-min-reached="minReached"
+                                       on-max-reached="maxReached"
+                                       with-display>
+                        <p slot="label">[[currentValue]]</p>
+                    </kano-progress-bar>
                 </template>
             </template>
         </demo-snippet>
@@ -40,13 +46,22 @@
             document.addEventListener('WebComponentsReady', () => {
                 var bind = document.getElementById('bind'),
                     bar = document.getElementById('bar');
-
-                bind.min = 0;
-                bind.max = 100;
-                bind.startValue = 0;
+                bind.rate = 50;
+                bind.valueUnit = 1;
+                bind.currentValue = 125;
                 bind.addValue = () => {
                     console.log('Adding value');
-                    bar.addValue(20, 600);
+                    bind.rate = bind.rate + 10;
+                };
+                bind.substractValue = () => {
+                    console.log('Substracting value');
+                    bind.rate = bind.rate - 10;
+                };
+                bind.minReached = () => {
+                    console.log('Min level reached');
+                };
+                bind.maxReached = () => {
+                    console.log('Max level reached');
                 };
             });
         </script>
