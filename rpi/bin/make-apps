@@ -23,6 +23,12 @@ if __name__ == '__main__' and __package__ is None:
 
     if not DIR_PATH.startswith('/usr'):
         sys.path.insert(1, DIR_PATH)
+        LOCALE_PATH = os.path.join(DIR_PATH, 'locale')
+    else:
+        LOCALE_PATH = None
+
+import kano_i18n.init
+kano_i18n.init.install('make-apps', LOCALE_PATH)
 
 from kano_profile.tracker import Tracker
 kanotracker = Tracker()
@@ -104,16 +110,38 @@ SERVER_PROC.start()
 
 
 if not is_internet():
-    msg = 'kano-dialog title="Oh No" description="You need to be connected to the Internet to launch Kano Code. Click on the OK button to set up your WiFi" button="OK,color:green,return_value:0" button="QUIT,color:red,return_value:1" no-taskbar'
+    msg = (
+        u'kano-dialog title="{title}" '
+        u'description="{desc}" '
+        u'button="{ok},color:green,return_value:0" '
+        u'button="{quit},color:red,return_value:1" '
+        u'no-taskbar'
+    ).format(
+        title=_(u'Oh No'),
+        desc=_(u'You need to be connected to the Internet to launch Kano Code. Click on the OK button to set up your WiFi'),
+        ok=_(u'OK').upper(),
+        quit=_(u'Quit').upper()
+    )
     ret, dummy1, dummy2 = run_cmd(msg)
+
     if "1" == ret.strip():
         sys.exit(0)
 
-    run_cmd('sudo kano-settings wifi')
+    run_cmd('sudo kano-settings wifi', localised=True)
 
     if not is_internet():
-        msg2 = 'kano-dialog title="Oh No" description="It looks like something went wrong. Your Kano kit is still not connected to the Internet. Unfortunately Kano Code can\'t be launched offline" button="QUIT,color:red,return_value:1" no-taskbar'
-        run_cmd(msg2)
+        msg = (
+            u'kano-dialog '
+            u'title="{title}" '
+            u'description="{desc}" '
+            u'button="{quit},color:red,return_value:1" '
+            u'no-taskbar'
+        ).format(
+            title=_(u'Oh No'),
+            desc=_(u"It looks like something went wrong. Your Kano kit is still not connected to the Internet. Unfortunately Kano Code can\'t be launched offline"),
+            quit=_(u'Quit').upper()
+        )
+        run_cmd(msg)
         sys.exit(0)
 
 
