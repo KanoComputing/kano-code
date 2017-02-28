@@ -1,0 +1,118 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../kano-icons/parts.html">
+<dom-module id="kano-add-parts-item">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-vertical;
+                cursor: pointer;
+                color: white;
+                overflow: hidden;
+                --iron-icon-fill-color: #8F9195;
+            }
+            #label {
+                color: white;
+            }
+            button.body {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                background: inherit;
+                color: inherit;
+                padding: 6px 0px;
+                border: 0px;
+                font-size: 14px;
+                font-family: var(--font-body);
+                cursor: pointer;
+                outline: none;
+            }
+            .number {
+                width: 20px;
+            }
+            #content {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-flex;
+            }
+            .bin {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                padding: 4px;
+            }
+            .bin img {
+                width: 14px;
+                height: 14px;
+            }
+            iron-icon {
+                --iron-icon-width: 20px;
+                --iron-icon-height: 20px;
+                margin: 4px;
+            }
+            .clear {
+                --iron-icon-fill-color: #8F9195;
+                margin: 0px;
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
+        <button type="button" class="body" on-tap="_tapped">
+            <div class="number" hidden$="[[!count]]">[[count]]</div>
+            <div id="content">
+                <iron-icon icon="parts:[[type]]"></iron-icon>
+                <div id="label">[[label]]</div>
+            </div>
+            <div type="button" class="bin" on-tap="_binTapped" hidden$="[[_isCountZero(count)]]">
+                <iron-icon icon="close" class="clear"></iron-icon>
+            </div>
+        </button>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-add-parts-item',
+            properties: {
+                label: String,
+                count: {
+                    type: Number,
+                    value: 0,
+                    observer: '_countChanged'
+                },
+                type: String
+            },
+            _tapped (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.fire('part-tap', this.type);
+            },
+            _binTapped (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.fire('bin-tap', this.type);
+            },
+            _countChanged (newValue, oldValue) {
+                this.updateStyles();
+                if (!oldValue && newValue === 1) {
+                    this.$.content.animate({
+                        transform: ['translateX(-20px)', 'translateX(0px)']
+                    }, {
+                        duration: 200,
+                        esaing: 'ease-in'
+                    });
+                } else if (!newValue && oldValue == 1) {
+                    this.$.content.animate({
+                        transform: ['translateX(20px)', 'translateX(0px)']
+                    }, {
+                        duration: 200,
+                        esaing: 'ease-out'
+                    });
+                }
+            },
+            _isCountZero (count) {
+                return !count;
+            }
+        });
+    </script>
+</dom-module>

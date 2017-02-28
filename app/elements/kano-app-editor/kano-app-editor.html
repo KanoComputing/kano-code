@@ -3,15 +3,16 @@
 <link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../kano-sidebar/kano-sidebar.html">
+<link rel="import" href="../kano-animation/animations/from-big-animation.html">
 <link rel="import" href="../kano-workspace/kano-workspace.html">
 <link rel="import" href="../kano-part-editor/kano-part-editor.html">
 <link rel="import" href="../kano-background-editor/kano-background-editor.html">
 <link rel="import" href="../kano-root-view/kano-root-view.html">
 <link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
 <link rel="import" href="../kano-bitmap-renderer/kano-bitmap-renderer.html">
-<link rel="import" href="../kano-editor-banner/kano-editor-banner.html">
 
 <!--
 
@@ -71,7 +72,7 @@ Example:
         position: relative;
         width: 8px;
         cursor: ew-resize;
-        background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
+        background-color: var(--kano-blockly-background, #f2f2f2);
         border-left: 1px solid var(--kano-app-editor-workspace-border, #6f6f6f);
     }
     :host .drawer {
@@ -109,12 +110,56 @@ Example:
         visibility: hidden;
         opacity: 0;
     }
+    paper-dialog {
+        @apply --layout-horizontal;
+        @apply --layout-start;
+        border-radius: 6px;
+        padding: 20px;
+        font-family: var(--font-body);
+        color: #464646;
+    }
+    paper-dialog #modal-content {
+        @apply --layout-flex;
+        margin: 0px;
+    }
+    paper-dialog #badge {
+        padding: 12px;
+        margin: 6px 4px;
+        box-sizing: border-box;
+        border-radius: 50%;
+        background: #EA0923;
+    }
+    paper-dialog #badge iron-icon {
+        transform: rotate(-9deg);
+        --iron-icon-width: 24px;
+        --iron-icon-height: 24px;
+    }
+    paper-dialog#confirm-delete h2,
+    paper-dialog#external-use-warning h2 {
+        font-family: var(--font-body);
+        margin: 0px;
+        font-weight: bold;
+        color: black;
+    }
+    paper-dialog div#buttons {
+        padding: 18px 0px;
+        @apply --layout-start-justified;
+    }
     paper-dialog .buttons button {
-        @apply(--kano-button);
-        margin-left: 5px;
+        @apply --kano-button;
+        padding: 12px 22px;
+        text-shadow: none;
+        font-weight: bold;
+        min-width: 80px;
+        color: #8D8D8D;
+        background: #E1E1E1;
+    }
+    paper-dialog .buttons button:not(:first-of-type) {
+        margin-left: 7px;
     }
     paper-dialog .buttons .confirm {
-        background-color: var(--color-red, red);
+        background: #EA0923;
+        color: white;
     }
 
     #partsPanel {
@@ -158,9 +203,7 @@ Example:
                     selected="{{partsPanelState}}"
                     drawer-width="{{drawerWidth}}">
                     <div main class="main">
-                        <template is="dom-if" if="{{banner}}">
-                            <kano-editor-banner head="{{banner.head}}" text="{{banner.text}}"></kano-editor-banner>
-                        </template>
+                        <slot name="above-code"></slot>
                         <kano-root-view
                             id="root-view"
                             parts="{{addedParts}}"
@@ -169,7 +212,6 @@ Example:
                             on-change="_proxyChange"
                             default-categories="{{defaultCategories}}"
                             loading$="[[!modeReady]]"></kano-root-view>
-                        <slot></slot>
                     </div>
                     <div class="drawer animatable" drawer id="drawer">
                         <iron-pages selected="{{drawerPage}}" attr-for-selected="id" class="drawer-content">
@@ -197,24 +239,30 @@ Example:
                 </paper-drawer-panel>
             </div>
         </section>
-        <paper-dialog id="confirm-delete" with-backdrop on-iron-overlay-closed="modalClosed">
-            <h2>Delete Part</h2>
-            <div class="modal-content">
-                <div>You are about to delete '[[selected.name]]'</div>
-                <div>Are you sure you want to do this?</div>
+        <paper-dialog id="confirm-delete" entry-animation="from-big-animation" with-backdrop on-iron-overlay-closed="modalClosed">
+            <div id="badge">
+                <iron-icon src="/assets/icons/exclamation.svg"></iron-icon>
             </div>
-            <div class="buttons">
-                <button dialog-dismiss class="cancel">Cancel</button>
-                <button dialog-confirm class="confirm">Confirm</button>
+            <div id="modal-content">
+                <h2>[[localize('ARE_YOU_SURE', 'Are you sure')]]</h2>
+                <div>[[localize('ABOUT_TO_DELETE', 'You are about to delete')]] '[[toBeRemoved.name]]'</div>
+                <div>[[localize('WANT_TO_DO_THIS', 'Are you sure you want to do this?')]]</div>
+                <div class="buttons" id="buttons">
+                    <button dialog-confirm class="confirm">[[localize('Confirm', 'Confirm')]]</button>
+                    <button dialog-dismiss class="cancel">[[localize('CANCEL', 'Cancel')]]</button>
+                </div>
             </div>
         </paper-dialog>
-        <paper-dialog id="external-use-warning" with-backdrop>
-            <h2>Delete Part</h2>
-            <div class="modal-content">
-                <div>You can't delete '[[selected.name]]' because it is used in the code</div>
+        <paper-dialog id="external-use-warning"  entry-animation="from-big-animation" with-backdrop>
+            <div id="badge">
+                <iron-icon src="/assets/icons/exclamation.svg"></iron-icon>
             </div>
-            <div class="buttons">
-                <button dialog-dismiss class="cancel">Cancel</button>
+            <div id="modal-content">
+                <h2>[[localize('OH_OH', 'Oh oh')]]&hellip;</h2>
+                <div>[[localize('CANT_DELETE', 'You can\'t delete')]] '[[toBeRemoved.name]]' [[localize('USED_IN_CODE', 'because it is used in the code')]]</div>
+                <div class="buttons" id="buttons">
+                    <button dialog-dismiss class="cancel">[[localize('CANCEL', 'Cancel')]]</button>
+                </div>
             </div>
         </paper-dialog>
         <iron-signals on-iron-signal-export-app="_exportApp">

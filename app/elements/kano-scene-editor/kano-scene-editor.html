@@ -2,10 +2,12 @@
 <link rel="import" href="../behaviors/kano-scene-component-behavior.html">
 <link rel="import" href="../../bower_components/web-components/kano-sound-player-behavior/kano-sound-player-behavior.html">
 <link rel="import" href="../behaviors/kano-editor-view-behavior.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../kano-challenge-completed-modal/kano-challenge-completed-modal.html">
 <link rel="import" href="../kano-app-challenge/kano-app-challenge.html">
 <link rel="import" href="../kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../kano-share-modal/kano-share-modal.html">
+<link rel="import" href="../kano-editor-banner/kano-editor-banner.html">
 <dom-module id="kano-scene-editor">
   <style>
     :host {
@@ -32,7 +34,9 @@
                             on-load="loadApp"
                             step="{{currentStep}}"
                             started="[[scene.started]]"
-                            hint-stats="{{hintStats}}">
+                            hint-stats="{{hintStats}}"
+                            selected-step="{{selectedStep}}"
+                            state="{{state}}">
           <kano-app-editor id="editor"
                             added-parts="{{addedParts}}"
                             parts="[[parts]]"
@@ -44,6 +48,12 @@
                             on-share="_pauseAndShare"
                             challenge-state="[[challengeState]]"
                             hide-leave-alert="[[alertDisabled]]">
+                <kano-editor-banner slot="above-code" head="[[banner.head]]"
+                                                        text="[[banner.text]]"
+                                                        img-src="[[banner.icon]]"
+                                                        button-label="[[banner.buttonLabel]]"
+                                                        show-button="[[banner.showButton]]"
+                                                        on-button-tapped="_bannerButtonTapped"></kano-editor-banner>
           </kano-app-editor>
       </kano-app-challenge>
       <kano-challenge-completed-modal id="challenge-completed"
@@ -56,12 +66,18 @@
 
     /* globals Polymer, Kano */
 
+    const BANNER_ICONS = {
+        'default': '/assets/avatar/judoka-face.svg'
+    };
+
     Polymer({
         is: 'kano-scene-editor',
         behaviors: [
             Kano.Behaviors.EditorViewBehavior,
             Kano.Behaviors.SceneComponentBehavior,
-            Kano.Behaviors.SoundPlayerBehavior],
+            Kano.Behaviors.SoundPlayerBehavior,
+            Kano.Behaviors.I18nBehavior
+        ],
         properties: {
             storyName: {
                 type: String
@@ -97,13 +113,70 @@
             done: {
                 type: Boolean,
                 value: false
+            },
+            state: {
+                type: Object
             }
         },
         observers: [
             'endedChanged(scene.ended)',
             '_sceneChanged(scene)',
-            '_addedPartsChanged(addedParts.splices)'
+            '_addedPartsChanged(addedParts.splices)',
+            '_selectedStepChanged(selectedStep)'
         ],
+        _selectedStepChanged (step) {
+            if (!step) {
+                return;
+            }
+            this.computeBanner(step);
+        },
+        computeBanner (step) {
+            let iconId;
+            clearTimeout(this.showButtonTimeout);
+            this.debounce('banner', () => {
+                this.set('banner', null);
+                if (this.state.hints.enabled) {
+                    if (step.banner) {
+                        this.banner = this.banner || {};
+                        this.set('banner.head', step.banner.head);
+                        this.set('banner.text', step.banner.text);
+                        this.set('banner.buttonLabel', step.banner.next_button ? this.localize('NEXT', 'Next') : null);
+                        this.set('banner.showButton', true);
+                    } else {
+                        this.banner = null;
+                    }
+                } else {
+                    let bannerProps = this.state.hints['disabled-banner'];
+                    if (bannerProps) {
+                        this.banner = this.banner || {};
+                        this.set('banner.head', bannerProps.head);
+                        this.set('banner.text', bannerProps.text);
+                        this.set('banner.buttonLabel', this.localize('HINTS', 'Hints'));
+                        this.showButtonTimeout = setTimeout(() => {
+                            this.set('banner.showButton', true);
+                        }, 6000);
+                    } else {
+                        this.banner = null;
+                    }
+                }
+                if (this.banner) {
+                    iconId = (step.banner && step.banner.icon) || 'default';
+                    this.set('banner.icon', BANNER_ICONS[iconId]);
+                }
+            }, 200);
+        },
+        _bannerButtonTapped () {
+            if (this.state.hints && this.state.hints.enabled) {
+                this.$.challenge.nextStep();
+            } else {
+                this.showHints();
+            }
+        },
+        showHints () {
+            this.set('banner', null);
+            this.set('state.hints', { enabled: true });
+            this.$.challenge.hintUsed();
+        },
         _pauseAndShare (e) {
             this.running = false;
             this.fire('share', e.detail);
@@ -283,18 +356,20 @@
         _computeMode () {
             let mode = this.mode;
             if (this.remix) {
-                if (mode.originalBlocks) {
-                    this.set('mode.blocks', mode.originalBlocks);
-                    delete mode.originalBlocks;
+                if (mode.originalCategories) {
+                    this.set('mode.categories', mode.originalCategories);
+                    delete mode.originalCategories;
                 }
             } else if (this.scene.filterBlocks) {
                 let whitelist = this.scene.filterBlocks[mode.id];
                 if (whitelist) {
-                    this.set('mode.originalBlocks', mode.blocks);
-                    this.set('mode.blocks', mode.blocks.filter(block => {
-                        let definition = block.block(mode);
-                        return whitelist.indexOf(definition.id) !== -1;
-                    }));
+                    this.set('mode.originalCategories', mode.categories);
+                    this.mode.categories.forEach((category, index) => {
+                        this.set(`mode.categories.${index}.blocks`, category.blocks.filter(block => {
+                            let definition = block.block(mode);
+                            return whitelist.indexOf(definition.id) !== -1;
+                        }));
+                    });
                 }
             }
         },

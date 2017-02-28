@@ -1,0 +1,59 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="kano-ic-clock">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-horizontal;
+                @apply --layout-end-justified;
+                color: white;
+            }
+            .visuals {
+                @apply --layout-wrap;
+                @apply --layout-horizontal;
+                border-left: 1px solid #202428;
+            }
+            .data {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                width: 32px;
+                height: 32px;
+                border-right: 1px solid #202428;
+            }
+        </style>
+        <div class="visuals" id="visuals">
+            <div class="data">[[h]]</div>
+            <div class="data">[[m]]</div>
+            <div class="data">[[s]]</div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-ic-clock',
+            properties: {
+                model: Object
+            },
+            attached () {
+                this.interval = setInterval(this._updateClock.bind(this), 1000);
+                this._updateClock();
+            },
+            detached () {
+                clearInterval(this.interval);
+            },
+            _updateClock () {
+                let d = new Date(),
+                    h = this._leftPadTime(d.getHours()),
+                    m = this._leftPadTime(d.getMinutes()),
+                    s = this._leftPadTime(d.getSeconds());
+                this.set('h', h);
+                this.set('m', m);
+                this.set('s', s);
+            },
+            _leftPadTime (n) {
+                return n < 10 ? '0' + n : n;
+            }
+        });
+    </script>
+</dom-module>

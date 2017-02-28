@@ -6,6 +6,7 @@
 <link rel="import" href="../../scripts/kano/app-modules/index.html">
 
 <link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
+<link rel="import" href="../../elements/kano-editor-banner/kano-editor-banner.html">
 <link rel="import" href="../../elements/kano-reward-modal/kano-reward-modal.html">
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
@@ -29,12 +30,13 @@
             added-parts="{{addedParts}}"
             default-categories="[[defaultCategories]]"
             mode="[[mode]]"
-            banner="[[banner]]"
             challenge-state="{{challengeState}}"
             on-change="_onBlocklyChange"
             on-fireworks-triggered="_stageFinished"
             on-talking-face-animation-stopped="_stageFinished"
-            hide-leave-alert="[[alertDisabled]]"></kano-app-editor>
+            hide-leave-alert="[[alertDisabled]]">
+                <kano-editor-banner slot="above-code" head="[[banner.head]]" text="[[banner.text]]"></kano-editor-banner>
+        </kano-app-editor>
         <kano-reward-modal
             content="[[_currentReward(stageNo)]]"
             id="reward-modal"

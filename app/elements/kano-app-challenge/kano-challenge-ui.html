@@ -71,50 +71,11 @@ Example:
         @apply(--layout-vertical);
         @apply(--layout-center);
     }
-    :host .tooltip-content button,
-    :host .banner-content button {
+    :host .tooltip-content button {
         margin-top: 10px;
         background-color: white;
         color: #435055;
         text-shadow: none;
-    }
-    :host .banner-content {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-    }
-    :host .banner-content .banner-text {
-        flex: 1;
-    }
-    :host .banner-content button {
-        margin: auto 10px;
-    }
-    @keyframes button-hint-enter {
-        0% {
-          margin: 0 10px;
-          opacity: 1;
-          padding: 19px 22px 17px 22px;
-          transform: scale(0);
-        }
-        100% {
-          margin: 0 10px;
-          opacity: 1;
-          padding: 19px 22px 17px 22px;
-          transform: scale(1);
-        }
-    }
-    :host .banner-content button.button-hint {
-        opacity: 0;
-        margin: 0;
-        padding: 0;
-        animation-duration: 0.3s;
-        animation-delay: 6s;
-        animation-fill-mode: forwards;
-        background-color: #256883;
-        box-sizing: border-box;
-        color: white;
-    }
-    :host .banner-content button.button-hint-animation {
-        animation-name: button-hint-enter;
     }
     kano-tooltip {
         z-index: 101;
@@ -154,12 +115,39 @@ Example:
         vertical-align: middle;
         display: inline-block;
     }
+    .beacon-wrapper {
+        @apply --layout-vertical;
+        @apply --layout-center;
+        @apply --layout-center-justified;
+    }
+    .beacon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: rgba(253, 226, 61, 0.25);
+        @apply --layout-vertical;
+        @apply --layout-center;
+        @apply --layout-center-justified;
+    }
+    .beacon .core {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #fde23d;
+    }
     </style>
     <template>
         <slot name="editor" id="content"></slot>
         <kano-highlight id="highlight" x="[[highlight.x]]" y="[[highlight.y]]" width="[[highlight.width]]" height="[[highlight.height]]"></kano-highlight>
         <kano-arrow source="[[arrow.source]]" target="[[arrow.target]]" angle="[[arrow.angle]]" id="arrow">
             <iron-image slot="arrow-image" src="/assets/icons/blue-arrow.svg" width="[[arrow.size]]" height="[[arrow.size]]" sizing="contain"></iron-image>
+        </kano-arrow>
+        <kano-arrow target="[[beacon]]" bounce="0">
+            <div class="beacon-wrapper" slot="arrow-image">
+                <div class="beacon" id="beacon">
+                    <div class="core"></div>
+                </div>
+            </div>
         </kano-arrow>
         <template is="dom-repeat" items="{{tooltips}}" as="tooltip" on-dom-change="_tooltipDomChanged">
             <kano-tooltip id$="tooltip-[[index]]"
@@ -175,19 +163,6 @@ Example:
                         </marked-element>
                     </div>
                     <button type="button" on-tap="_nextStep" hidden$="[[!tooltip.next_button]]">[[localize('NEXT', 'Next')]]</button>
-                </div>
-            </kano-tooltip>
-        </template>
-        <template is="dom-if" if="{{banner}}">
-            <kano-tooltip position="float" target="{{blocksPanel}}" track-target>
-                <div class="banner-content">
-                    <div class="banner-text">
-                        <marked-element markdown="[[banner.text]]">
-                            <div class="markdown-html"></div>
-                        </marked-element>
-                    </div>
-                    <button id="hint-button" class="button-hint" type="button" hidden$="{{!banner.hint_button}}" on-tap="showHints">[[localize('HINT', 'Hint')]]</button>
-                    <button type="button" on-tap="_nextStep" hidden$="{{!banner.next_button}}">[[localize('NEXT', 'Next')]]</button>
                 </div>
             </kano-tooltip>
         </template>
@@ -230,16 +205,12 @@ Example:
                             enabled: true
                         }
                     };
-                }
-            },
-            banner: {
-                type: Object,
-                value: null
+                },
+                notify: true
             }
         },
         observers: [
-            'stepChanged(step, state.*)',
-            'animateHintButton(banner.*, banner.hint_button)'
+            'stepChanged(step, state.*)'
         ],
         listeners: {
             'change': '_editorChanged',
@@ -360,6 +331,51 @@ Example:
                 });
             }, 300);
         },
+        computeBeacon (step) {
+            let target;
+
+            this.$.beacon.animate({
+                opacity: [1, 0]
+            }, {
+                duration: 200,
+                fill: 'forwards'
+            });
+            clearInterval(this.beaconPulseInterval);
+
+            if (!step.beacon) {
+                return;
+            }
+
+            this.async(() => {
+                target = this._getTargetElement(step.beacon.target);
+                if (target && ('getBoundingClientRect' in target)) {
+                    target = target.getBoundingClientRect();
+                }
+                this.set('beacon', target);
+                this.$.beacon.animate({
+                    opacity: [0, 1]
+                }, {
+                    duration: 200,
+                    delay: 10,
+                    fill: 'forwards'
+                });
+                this.beaconPulseInterval = setInterval(() => {
+                    this.$.beacon.animate([{
+                        transform: 'scale(1, 1)',
+                        offset: 0
+                    },{
+                        transform: 'scale(1.3, 1.3)',
+                        offset: 0.2
+                    },{
+                        transform: 'scale(1, 1)',
+                        offset: 1
+                    }], {
+                        duration: 300,
+                        easing: 'ease-out'
+                    });
+                }, 3000);
+            }, 300);
+        },
         stepChanged () {
             let step;
             this.debounce('stepChanged', () => {
@@ -368,7 +384,6 @@ Example:
                     this.tooltips = [];
                     this.arrow = {};
                     this.modal.close();
-                    this.banner = null;
                     this.$.highlight.hide();
                     return;
                 }
@@ -397,8 +412,8 @@ Example:
                     return;
                 }
                 this.computeTooltips(step);
-                this.computeBanner(step);
                 this.computeArrow(step);
+                this.computeBeacon(step);
                 this.computeHighlight(step);
                 this.computePhantomBlock(step);
                 this.computeSounds(step);
@@ -407,36 +422,6 @@ Example:
         computeSounds (step) {
             if (this.step.play_on_end) {
                 this.loadSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
-            }
-        },
-        computeBanner (step) {
-            if (this.state.hints.enabled) {
-                if (step.banner) {
-                    this.banner = this.banner || {};
-                    this.set('banner.text', step.banner.text);
-                    this.set('banner.next_button', step.banner.next_button);
-                    this.set('banner.hint_button', false);
-                } else {
-                    this.banner = null;
-                }
-            } else {
-                let bannerProps = this.state.hints['disabled-banner'];
-                if (bannerProps) {
-                    this.banner = this.banner || {};
-                    this.set('banner.text', bannerProps.text);
-                    this.set('banner.hint_button', bannerProps.hint_button);
-                    this.set('banner.next_button', false);
-                } else {
-                    this.banner = null;
-                }
-            }
-        },
-        animateHintButton (banner, hintButton) {
-            if (hintButton) {
-                let buttonElement = this.$$('#hint-button');
-                this.toggleClass('button-hint-animation', false, buttonElement);
-                buttonElement.getBoundingClientRect();
-                this.toggleClass('button-hint-animation', true, buttonElement);
             }
         },
         computePhantomBlock (step) {
@@ -530,10 +515,6 @@ Example:
                 this.computeArrow(this.step);
                 this.$$('kano-arrow').updatePosition();
             }, 100);
-        },
-        showHints () {
-            this.set('state.hints', {enabled: true});
-            this.fire('hint-used');
         },
         getTargetBlock (selector) {
             let block = this.editor.getBlocklyWorkspace().getBlockById(selector.id);

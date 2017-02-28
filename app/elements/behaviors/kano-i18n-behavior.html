@@ -18,8 +18,8 @@
              * Returns a localised string or the fallback string provided. Scoped to the element tag name
              */
             localize (key, fallback) {
-                key = `${this._msgKeyPrefix}_${key}`;
-                return Kano.MakeApps.Msg[key] || fallback || '';
+                let scopedKey = `${this._msgKeyPrefix}_${key}`;
+                return Kano.MakeApps.Msg[scopedKey] || Kano.MakeApps.Msg[key] || fallback || '';
             }
         };
         

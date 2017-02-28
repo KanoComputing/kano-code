@@ -1,4 +1,4 @@
-/* globals Polymer, Kano, interact, Part */
+/* globals Polymer, Kano, interact */
 
 function getDefaultBackground() {
     return {
@@ -11,7 +11,11 @@ function getDefaultBackground() {
 
 Polymer({
     is: 'kano-app-editor',
-    behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.AppElementRegistryBehavior],
+    behaviors: [
+        Kano.Behaviors.AppEditorBehavior,
+        Kano.Behaviors.AppElementRegistryBehavior,
+        Kano.Behaviors.I18nBehavior
+    ],
     properties: {
         parts: {
             type: Array
@@ -92,10 +96,6 @@ Polymer({
             type: Object,
             value: null
         },
-        banner: {
-            type: Object,
-            value: null
-        },
         hideLeaveAlert: {
             type: Boolean,
             value: false,
@@ -111,7 +111,30 @@ Polymer({
         '_codeChanged(code.*)'
     ],
     listeners: {
-        'mode-ready': '_onModeReady'
+        'mode-ready': '_onModeReady',
+        'add-part': '_addPart',
+        'remove-part': '_removePartReceived'
+    },
+    _addPart (e) {
+        let viewport = this.$.workspace.getViewport(),
+            viewportRect = viewport.getBoundingClientRect(),
+            model, part;
+        for (let i = 0; i < Kano.MakeApps.Parts.list.length; i++) {
+            model = Kano.MakeApps.Parts.list[i];
+            if (model.type === e.detail) {
+                break;
+            }
+        }
+        model.position = {
+            x: viewportRect.width / 2,
+            y: viewportRect.height / 2
+        };
+        part = Kano.MakeApps.Parts.create(model, this.mode.workspace.viewport);
+        this.push('addedParts', part);
+        this.fire('change', {
+            type: 'add-part',
+            part
+        });
     },
     _onModeReady () {
         this.modeReady = true;
@@ -141,15 +164,24 @@ Polymer({
         this.fire('change', e.detail);
     },
     deletePartClicked () {
-        if (this.checkBlockDependency(this.selected)) {
+        this._removePartInitiated(this.selected);
+    },
+    _removePartInitiated (part) {
+        this.toBeRemoved = part;
+        if (this.checkBlockDependency(part)) {
             return this.$['external-use-warning'].open();
         } else {
             this.$['confirm-delete'].open();
         }
     },
+    _removePartReceived (e) {
+        let part = e.detail;
+        this._removePartInitiated(part);
+    },
     modalClosed (e) {
         if (e.detail.confirmed) {
             this._deletePart(this.selected);
+            this.closeDrawer();
         }
     },
     checkBlockDependency (part) {
@@ -402,9 +434,6 @@ Polymer({
     },
     _deletePart (part) {
         let index = this.addedParts.indexOf(part);
-        part.blockIds.forEach(id => {
-            Kano.MakeApps.Blockly.removeLookupString(id);
-        });
         this.splice('addedParts', index, 1);
         this.$.workspace.clearSelection();
     },

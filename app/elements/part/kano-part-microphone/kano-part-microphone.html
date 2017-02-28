@@ -60,9 +60,9 @@
     </style>
     <template>
         <div class="container">
-            <div class="ripple" style$="[[_computeRippleStyle(volume)]]"></div>
-            <div class="ripple" style$="[[_computeRippleStyle(low)]]"></div>
-            <div class="image" style$="[[_computePitchColor(pitch)]]"></div>
+            <div class="ripple" style$="[[_computeRippleStyle(model.volume)]]"></div>
+            <div class="ripple" style$="[[_computeRippleStyle(model.low)]]"></div>
+            <div class="image" style$="[[_computePitchColor(model.pitch)]]"></div>
             <div class="data">
                 <span>[[volumeData]]</span>
             </div>
@@ -86,22 +86,8 @@
             is: 'kano-part-microphone',
             behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior],
             properties: {
-                volume: {
-                    type: Number,
-                    value: 0,
-                    readOnly: true,
-                    notify: true
-                },
-                low: {
-                    type: Number,
-                    value: 0,
-                    readOnly: true,
-                    notify: true
-                },
-                pitch: {
-                    type: Number,
-                    value: 0,
-                    readOnly: true,
+                model: {
+                    type: Object,
                     notify: true
                 },
                 disabled: {
@@ -180,11 +166,11 @@
                 if (stats.frequency !== -1 && stats.frequency < 2000) {
                     if (!this.prevPitchTimestamp || timestamp - this.prevPitchTimestamp > 100) {
                         this.prevPitchTimestamp = timestamp;
-                        this._setPitch(Math.min(100, Math.max(0, (Math.log(stats.frequency) - 5.4) * (100 / 3))));
+                        this.set('model.pitch', Math.min(100, Math.max(0, (Math.log(stats.frequency) - 5.4) * (100 / 3))));
                     }
                 }
-                this._setVolume(Math.min(120, stats.volume) / 1.2);
-                this._setLow(Math.min(120, stats.low) / 1.2);
+                this.set('model.volume', Math.min(120, stats.volume) / 1.2);
+                this.set('model.low', Math.min(120, stats.low) / 1.2);
 
                 if (this.isRunning) {
                     this._executeThresholds();
@@ -192,21 +178,21 @@
 
                 if (!this.prevTimestamp || timestamp - this.prevTimestamp > 150) {
                     this.prevTimestamp = timestamp;
-                    this.set('volumeData', Math.round(this.volume));
+                    this.set('volumeData', Math.round(this.model.volume));
                 }
 
                 this.requestId = requestAnimationFrame(this._updateVisualisation.bind(this));
             },
             _executeThresholds () {
                 this.thresholds.forEach((threshold, index, self) => {
-                    if (this.volume > threshold.top) {
+                    if (this.model.volume > threshold.top) {
                         if (threshold.over && !threshold.isOver) {
                             self[index].isOver = true;
                             threshold.cb.call({});
                         } else if (!threshold.over && threshold.isUnder) {
                             self[index].isUnder = false;
                         }
-                    } else if (this.volume < threshold.bottom) {
+                    } else if (this.model.volume < threshold.bottom) {
                         if (threshold.over && threshold.isOver) {
                             self[index].isOver = false;
                         } else if (!threshold.over && !threshold.isUnder) {
@@ -250,10 +236,10 @@
                 this.thresholds.push(threshold);
             },
             getvolume () {
-                return this.volume
+                return this.model.volume
             },
             getpitch () {
-                return this.pitch;
+                return this.model.pitch;
             },
             reset () {
                 this.thresholds = [];

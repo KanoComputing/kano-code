@@ -1,0 +1,167 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
+<link rel="import" href="./kano-add-parts-item.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/button.html">
+<dom-module id="kano-add-parts">
+    <template>
+        <style>
+            :host {
+                display: block;
+                color: white;
+                background: #2A2F35;
+            }
+            :host>* {
+                padding: 18px 0px;
+            }
+            .categories {
+                @apply --layout-horizontal;
+                padding-top: 0px;
+            }
+            .categories h2 {
+                font-weight: normal;
+                font-size: 16px;
+            }
+            .categories>* {
+                @apply --layout-vertical;
+                @apply --layout-start-justified;
+                @apply --layout-flex;
+            }
+            .categories>*:not(:first-of-type) {
+                margin-left: 24px;
+            }
+            .categories .ui h2 {
+                color: #88c440;
+            }
+            .categories .data h2 {
+                color: #00d9c7;
+            }
+            .categories .hardware h2 {
+                color: #00a6f6;
+            }
+            header {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                border-bottom: 2px solid #252A30;
+            }
+            header .label {
+                @apply --layout-flex;
+            }
+            .button {
+                @apply --kano-button;
+                padding: 8px 18px;
+                margin: 4px;
+                font-size: 12px;
+                border-radius: 3px;
+                background: #54595D;
+                text-shadow: none;
+            }
+            button.add {
+                font-size: 17px;
+                padding: 12px 25px;
+                background: #7DC553;
+            }
+            kano-add-parts-item {
+                border-bottom: 2px solid #252A30;
+            }
+            kano-add-parts-item:first-of-type {
+                border-top: 2px solid #252A30;
+            }
+            .ui kano-add-parts-item[selected] {
+                --iron-icon-fill-color: #88c440;
+                color: #88c440;
+            }
+            .data kano-add-parts-item[selected] {
+                --iron-icon-fill-color: #00d9c7;
+                color: #00d9c7;
+            }
+            .hardware kano-add-parts-item[selected] {
+                --iron-icon-fill-color: #00a6f6;
+                color: #00a6f6;
+            }
+        </style>
+        <header>
+            <div class="label">[[localize('ADD_PARTS', 'Add Parts')]]</div>
+            <button type="button" class="button" on-tap="_cancel">[[localize('CANCEL', 'Cancel')]]</button>
+            <button type="button" class="button add" on-tap="_confirm">[[localize('DONE', 'Done')]]</button>
+        </header>
+        <div class="categories">
+            <div class="ui">
+                <h2>Interface</h2>
+                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('ui')]]" as="part">
+                    <kano-add-parts-item label="[[part.label]]"
+                                            type="[[part.type]]"
+                                            count="[[_getSelectedNumber(part.type, selection.*)]]"
+                                            selected$="[[_isInSelection(part.type, selection.*)]]"
+                                            on-part-tap="_addPart"
+                                            on-bin-tap="_removePart"></kano-add-parts-item>
+                </template>
+            </div>
+            <div class="data">
+                <h2>Data</h2>
+                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('data')]]" as="part">
+                    <kano-add-parts-item label="[[part.label]]"
+                                            type="[[part.type]]"
+                                            count="[[_getSelectedNumber(part.type, selection.*)]]"
+                                            selected$="[[_isInSelection(part.type, selection.*)]]"
+                                            on-part-tap="_addPart"
+                                            on-bin-tap="_removePart"></kano-add-parts-item>
+                </template>
+            </div>
+            <div class="hardware">
+                <h2>Hardware</h2>
+                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('hardware')]]" as="part">
+                    <kano-add-parts-item label="[[part.label]]"
+                                            type="[[part.type]]"
+                                            count="[[_getSelectedNumber(part.type, selection.*)]]"
+                                            selected$="[[_isInSelection(part.type, selection.*)]]"
+                                            on-part-tap="_addPart"
+                                            on-bin-tap="_removePart"></kano-add-parts-item>
+                </template>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-add-parts',
+            behaviors: [Kano.Behaviors.I18nBehavior],
+            properties: {
+                availableParts: Array
+            },
+            ready () {
+                this.selection = {};
+            },
+            _getFilter (type) {
+                return (item) => {
+                    return item.partType === type;
+                };
+            },
+            _addPart (e) {
+                let type = e.detail;           
+                if (typeof this.selection[type] === 'undefined') {
+                    this.set(`selection.${type}`, 0);
+                }
+                this.set(`selection.${type}`, Math.min(5, this.selection[type] + 1));
+            },
+            _removePart (e) {
+                let type = e.detail;            
+                this.set(`selection.${type}`, Math.max(0, this.selection[type] - 1));
+            },
+            _isInSelection (type, e) {
+                return !!this.selection[type];
+            },
+            _getSelectedNumber(type) {
+                return this.selection[type];
+            },
+            _cancel () {
+                this.fire('cancel');
+            },
+            _confirm () {
+                this.fire('confirm', this.selection);
+            },
+            reset () {
+                this.selection = {};
+            }
+        });
+    </script>
+</dom-module>

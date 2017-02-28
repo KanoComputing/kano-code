@@ -208,6 +208,9 @@
         },
         _onDragenter (e) {
             let target = e.path ? e.path[0] : e.target;
+            if (e.dataTransfer.effectAllowed === 'move') {
+                return;
+            }
             if (target !== this) {
                 this.toggleClass('dragging', true);
             } else {

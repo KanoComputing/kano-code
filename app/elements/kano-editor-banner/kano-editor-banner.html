@@ -1,15 +1,29 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <dom-module id="kano-editor-banner">
     <style>
-        :host {
-            display: block
+        @keyframes button-enter {
+            0% {
+                margin: 0 10px;
+                opacity: 1;
+                padding: 19px 22px 17px 22px;
+                transform: scale(0);
+            }
+            100% {
+                margin: 0 10px;
+                opacity: 1;
+                padding: 19px 22px 17px 22px;
+                transform: scale(1);
+            }
         }
-        :host .banner {
+        :host {
             margin: 35px;
-            display: flex;
             flex-direction: row;
+            @apply --layout-horizontal;
         }
         :host .content {
-            flex: 1;
+            @apply --layout-flex;
+            @apply --layout-horizontal;
         }
         :host .content .head {
             color: #888;
@@ -18,23 +32,55 @@
         }
         :host .content .text {
             font-weight: bold;
-            max-width: 500px;
         }
-        :host .avatar img {
+        :host .avatar iron-image {
             margin-top: 5px;
             margin-right: 20px;
             height: 40px;
+            width: 40px;
+        }
+        :host .text {
+            @apply --layout-vertical;
+            @apply --layout-flex;
+        }
+        :host button {
+            @apply(--kano-button);
+            background-color: var(--color-green, green);
+            margin-left: 10px;
+            opacity: 0;
+            margin: 0;
+            padding: 0;
+            animation-duration: 0.3s;
+            animation-fill-mode: forwards;
+            background-color: #256883;
+            box-sizing: border-box;
+            color: white;
+        }
+        :host button.animate {
+            animation-name: button-enter;
+        }
+        [hidden] {
+            display: none !important;
         }
     </style>
     <template>
-        <div class="banner">
-            <div class="avatar">
-                <img src="/assets/avatar/judoka-face.svg" alt="Judoka in a speech bubble" />
+        <div class="avatar">
+            <iron-image src="[[imgSrc]]" alt="Judoka in a speech bubble" sizing="contain"></iron-image>
+        </div>
+        <div class="content">
+            <div class="text">
+                <div class="head">
+                    <marked-element markdown="[[head]]">
+                        <div class="markdown-html"></div>
+                    </marked-element>
+                </div>
+                <div class="text">
+                    <marked-element markdown="[[text]]">
+                        <div class="markdown-html"></div>
+                    </marked-element>
+                </div>
             </div>
-            <div class="content">
-                <div class="head">{{head}}</div>
-                <div class="text">{{text}}</div>
-            </div>
+            <button id="button" type="button" hidden$="[[!showButton]]" on-tap="_buttonTapped">[[buttonLabel]]</button>
         </div>
     </template>
 </dom-module>
@@ -50,9 +96,30 @@
             },
             text: {
                 type: String
+            },
+            imgSrc: {
+                type: String,
+                value: '/assets/avatar/judoka-face.svg'
+            },
+            buttonLabel: {
+                type: String
+            },
+            showButton: {
+                type: Boolean,
+                value: false,
+                observer: '_showButtonChanged'
             }
         },
-        ready () {
+        _buttonTapped () {
+            this.fire('button-tapped');
+        },
+        _showButtonChanged (shown) {
+            if (shown) {
+                let buttonElement = this.$.button;
+                this.toggleClass('animate', false, buttonElement);
+                buttonElement.getBoundingClientRect();
+                this.toggleClass('animate', true, buttonElement);
+            }
         }
     });
 </script>

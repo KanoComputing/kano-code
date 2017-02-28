@@ -41,8 +41,11 @@
     Kano.MakeApps.Msg.Groups['wrong-category-opened'] = ['wrong-category-opened-1'];
     Kano.MakeApps.Msg.Groups['wrong-block-connection'] = ['wrong-block-connection-1'];
 
+    Kano.MakeApps.Msg.CANCEL = "Cancel";
+    Kano.MakeApps.Msg.CONFIRM = "Confirm";
 
     Kano.MakeApps.Msg.CLOSE = "Close";
+    Kano.MakeApps.Msg.DONE = "Done";
 
     Kano.MakeApps.Msg.STROKE_SIZE = "Stroke Size";
     Kano.MakeApps.Msg.STROKE_COLOR = "Stroke Color";
@@ -175,6 +178,9 @@
     Kano.MakeApps.Msg.KANO_WORKSPACE_TOOLBAR_DONE = "Done";
     Kano.MakeApps.Msg.KANO_WORKSPACE_TOOLBAR_EDIT_LAYOUT = "Edit Layout";
 
+    Kano.MakeApps.Msg.KANO_SCENE_EDITOR_NEXT = "Next";
+    Kano.MakeApps.Msg.KANO_SCENE_EDITOR_HINTS = "Hints";
+
     Kano.MakeApps.Msg.KANO_SIDE_MENU_LOGIN = "Login";
     Kano.MakeApps.Msg.KANO_SIDE_MENU_LEVEL = "Level";
     Kano.MakeApps.Msg.KANO_SIDE_MENU_RESET_WORKSPACE = "Reset Workspace";
@@ -188,7 +194,6 @@
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_RECORDING = "Recording your gif";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_BEGIN_RECORDING = "Click to begin recording your gif";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_START_RECORDING = "Start recording your animated gif";
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_CLOSE = Kano.MakeApps.Msg.CLOSE;
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_MAKE_ANOTHER = "Make another gif";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_SHARE_ON_WORLD = "Share on Kano World";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_COPY = "copy";
@@ -206,5 +211,14 @@
     Kano.MakeApps.Msg.KANO_CHALLENGE_UI_HINT = "Hint";
   
     Kano.MakeApps.Msg.KANO_BLOCKLY_OMNIBOX_TYPE = "Type: ";
+
+    Kano.MakeApps.Msg.KANO_ADD_PARTS_ADD_PARTS = "Add Parts";
+
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_ARE_YOU_SURE = "Are you sure";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_ABOUT_TO_DELETE = "You are about to delete";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_WANT_TO_DO_THIS = "Are you sure you want to do this?";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_OH_OH = "Oh oh";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_CANT_DELETE = "You can't delete";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_USED_IN_CODE = "because it is used in the code";
 
 })(window.Kano = window.Kano || {});

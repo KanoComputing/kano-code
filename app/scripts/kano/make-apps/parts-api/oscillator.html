@@ -9,7 +9,7 @@
         Oscillator = {
             start () {
                 PartsAPI.Base.start.apply(this);
-                this.x = 0;
+                this.set('model.x', 0);
                 if (!this.timeout) {
                     this._updateValue();
                 }
@@ -19,7 +19,7 @@
             },
             _updateValue () {
                 this.timeout = setTimeout(() => {
-                    this.x += this._getStep();
+                    this.set('model.x', this.model.x + this._getStep());
                     this._checkBounds();
                     this._updateValue();
                 }, 16);
@@ -46,14 +46,14 @@
                 this.set('model.userProperties.delay', d);
             },
             _checkBounds () {
-                if (this.x > 100) {
-                    this.x = 101 - this.x;
+                if (this.model.x > 100) {
+                    this.set('model.x', 101 - this.model.x);
                 } else if (this.x < 0) {
-                    this.x = 101 + this.x;
+                    this.set('model.x', 101 + this.model.x);
                 }
             },
             getValue () {
-                return this.getValueAt(this.x);
+                return this.getValueAt(this.model.x);
             },
             getValueAt (x) {
                 let wave = this.get('model.userProperties.wave'),

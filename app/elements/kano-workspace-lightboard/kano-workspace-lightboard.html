@@ -18,8 +18,8 @@
 
         #led-matrix {
             position: absolute;
-            top: 43px;
-            left: 18px;
+            top: 36px;
+            left: 17px;
             background-color: transparent;
         }
 
@@ -30,42 +30,44 @@
         }
         .btn {
             position: absolute;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: 0px;
             cursor: pointer;
-            background-color: transparent;
+            background-color: #f64646;
         }
         .btn:focus {
             outline: none;
             @apply(--shadow-elevation-2dp);
         }
         .btn.a {
-            top: 262px;
+            top: 266px;
             left: 365px;
         }
         .btn.b {
-            top: 262px;
+            top: 266px;
             left: 411px;
         }
         .joystick {
             position: absolute;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             cursor: pointer;
-            top: 263px;
-            left: 21px;
+            top: 264px;
+            left: 26px;
             background-color: #4c4f55;
-            transition: transform cubic-bezier(0.2, 0, 0.13, 1.5) 150ms;
+            transition: transform cubic-bezier(0.2, 0, 0.13, 1.5) 150ms, opacity cubic-bezier(0.2, 0, 0.13, 1.5) 150ms;
             @apply(--layout-horizontal);
             @apply(--layout-wrap);
             overflow: hidden;
             transform: rotate(45deg);
+            opacity: 0;
         }
         .joystick:hover {
             transform: rotate(45deg) scale(2);
+            opacity: 1;
         }
         .joystick:not(:hover) .js-dir {
             opacity: 0 !important;

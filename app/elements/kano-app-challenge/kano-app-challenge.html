@@ -30,7 +30,7 @@ Example:
         }
     </style>
     <template>
-        <kano-challenge-ui id="ui" step="[[selectedStep]]" on-next-step="nextStep" blocks-panel="{{blocksPanel}}" on-hint-used="hintUsed">
+        <kano-challenge-ui id="ui" step="[[selectedStep]]" on-next-step="nextStep" blocks-panel="{{blocksPanel}}" state="{{state}}">
             <slot name="editor" id="content"></slot>
         </kano-challenge-ui>
     </template>
@@ -39,7 +39,16 @@ Example:
 <script type="text/javascript">
     Polymer({
         is: 'kano-app-challenge',
-        behaviors: [Kano.Behaviors.BlocklyValidatorBehavior, Kano.Behaviors.AppElementRegistryBehavior],
+        behaviors: [
+            Kano.Behaviors.BlocklyValidatorBehavior,
+            Kano.Behaviors.AppElementRegistryBehavior
+        ],
+        properties: {
+            state: {
+                type: Object,
+                notify: true
+            }
+        },
         observers: [
             'doneChanged(done)'
         ],

@@ -1,0 +1,196 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../ui/kano-ui-viewport/kano-ui-viewport.html">
+<link rel="import" href="../kano-workspace-toolbar/kano-workspace-toolbar.html">
+<link rel="import" href="../kano-workspace-head/kano-workspace-head.html">
+<dom-module id="kano-default-workspace">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            :host kano-workspace-head {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+            :host .fullscreen-close {
+                position: fixed;
+                top: 0px;
+                right: 0px;
+                color: white;
+                background-color: transparent;
+                z-index: 101;
+                border: none;
+                width: 56px;
+                height: 56px;
+                font-size: 50px;
+                outline: none;
+                cursor: pointer;
+            }
+            :host .fullscreen-close div {
+                transition: all 0.3s ease;
+                transform: translate(0, -7px);
+            }
+            :host .fullscreen-close div:hover {
+                transform: translate(0, -9px);
+                color: #eaeaea;
+            }
+            :host(.fullscreen) #content {
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                z-index: 100;
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+            :host #content {
+                position: relative;
+                @apply(--layout-flex);
+                transition: background linear 150ms;
+            }
+            :host.running #content {
+                --kano-ui-viewport: {
+                    border: none;
+                };
+            }
+            .pause-overlay {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                @apply(--layout-center-justified);
+            }
+            .pause-overlay iron-image {
+                width: 40%;
+                height: 40%;
+                cursor: pointer;
+            }
+            #workspace-placeholder {
+                height: 100%;
+            }
+            #workspace-placeholder>* {
+                animation: fade-in 200ms linear;
+            }
+            kano-workspace-toolbar {
+                padding: 24px 8px;
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
+        <button class="fullscreen-close" hidden$="[[!fullscreen]]" on-tap="_toggleFullscreen">
+            <div>&times;</div>
+        </button>
+        <kano-ui-viewport mode="scaled"
+                    view-width="[[width]]"
+                    view-height="[[height]]"
+                    id="content">
+            <div id="workspace-placeholder">
+                <slot></slot>
+            </div>
+            <div class="pause-overlay" hidden$="[[_isPauseOverlayHidden(running, editableLayout)]]">
+                <iron-image src="/assets/icons/play-btn-overlay.svg" sizing="contain" on-tap="_runButtonClicked"></iron-image>
+            </div>
+            <kano-workspace-toolbar
+                id="toolbar"
+                show-mouse-position="{{showMousePosition}}"
+                mouse-x="[[mouseX]]"
+                mouse-y="[[mouseY]]"
+                running="[[running]]"
+                editable-layout="[[editableLayout]]"
+                parts-menu-open="[[partsMenuOpen]]"
+                on-pause-run-button-clicked="_runButtonClicked"
+                on-fullscreen-button-clicked="_toggleFullscreen"
+                on-reset-button-clicked="_resetAppState"
+                on-edit-layout-button-clicked="_editLayoutClicked"
+                no-player-bar="[[simpleMode]]"
+                no-part-controls="[[simpleMode]]"></kano-workspace-toolbar>
+        </kano-ui-viewport>
+        <kano-workspace-head challenge-state="[[challengeState]]"
+            no-save="[[simpleMode]]"
+            no-settings="[[simpleMode]]" highlight></kano-workspace-head>
+        <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-default-workspace',
+            properties: {
+                running: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                editableLayout: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                width: {
+                    type: Number
+                },
+                height: {
+                    type: Number
+                },
+                mouseX: {
+                    type: Number,
+                    value: 0
+                },
+                mouseY: {
+                    type: Number,
+                    value: 0
+                },
+                showMousePosition: {
+                    type: Boolean,
+                    value: false
+                },
+                partsMenuOpen: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                noPlayerBar: {
+                    type: Boolean
+                },
+                noPartsControls: {
+                    type: Boolean
+                },
+                fullscreen: {
+                    type: Boolean,
+                    value: false
+                },
+                challengeState: {
+                    type: Object
+                }
+            },
+            attached () {
+                this.target = document.body;
+                this.$.content.resizeView();
+            },
+            _toggleFullscreen () {
+                this.toggleClass('fullscreen');
+                this.$.content.resizeView();
+                this.fullscreen = !this.fullscreen;
+            },
+            _resetAppState () {
+                this.fire('reset-app-state');
+            },
+            _runButtonClicked () {
+                this.fire('run-button-clicked');
+            },
+            _isPauseOverlayHidden (running, editableLayout) {
+                return running || editableLayout;
+            },
+            getViewportScale () {
+                return this.$.content.getScale();
+            },
+            _editLayoutClicked () {
+                this.fire('editable-layout-clicked');
+            }
+        });
+    </script>
+</dom-module>

@@ -2,7 +2,7 @@
 (function (Kano) {
     Kano.MakeApps = Kano.MakeApps || {};
 
-    const COLOUR = '#084655';
+    const COLOUR = '#5fc9f3';
 
     let register = (Blockly) => {
 

@@ -1,0 +1,97 @@
+<link rel="import" href="../kano-default-workspace/kano-default-workspace.html">
+<link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
+<dom-module id="kano-editor-normal">
+    <style>
+        :host {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            @apply --layout-vertical;
+        }
+        kano-default-workspace {
+            @apply --layout-vertical;
+            @apply --layout-flex;
+        }
+        kano-workspace-normal {
+            @apply --layout-flex;
+        }
+    </style>
+    <template>
+        <kano-default-workspace id="wrapper"
+                                width="[[width]]"
+                                height="[[height]]"
+                                running="[[running]]"
+                                mouse-x="[[mousePositionX]]"
+                                mouse-y="[[mousePositionY]]"
+                                running="{{running}}"
+                                editable-layout="[[editableLayout]]"
+                                parts-menu-open="[[partsMenuOpen]]"
+                                show-mouse-position>
+            <kano-workspace-normal id="workspace" width="[[width]]" height="[[height]]">
+                <slot></slot>
+            </kano-workspace-normal>
+        </kano-default-workspace>
+    </template>
+    <script>
+        /* globals Polymer, Kano */
+        Polymer({
+            is: 'kano-editor-normal',
+            behaviors: [Kano.Behaviors.WorkspaceBehavior],
+            properties: {
+                autoStart: Boolean,
+                mousePositionX: {
+                    type: Number,
+                    value: 250,
+                    notify: true
+                },
+                mousePositionY: {
+                    type: Number,
+                    value: 250,
+                    notify: true
+                },
+                running: {
+                    type: Boolean
+                }
+            },
+            ready () {
+                this.mousePositionX = 250;
+                this.mousePositionY = 250;
+            },
+            attached () {
+                this.$.workspace.addEventListener('mouseover', this._onMouseOver.bind(this));
+                this.$.workspace.addEventListener('mouseout', this._onMouseOut.bind(this));
+                this.$.workspace.addEventListener('mousemove', this._onMouseMove.bind(this));
+            },
+            getWorkspace () {
+                return this.$.workspace;
+            },
+            _onMouseOver (e) {
+                this._isMouseOver = true;
+            },
+            _onMouseOut (e) {
+                this._isMouseOver = false;
+                this.mousePositionX = 250;
+                this.mousePositionY = 250;
+            },
+            _onMouseMove (e) {
+                if (this._isMouseOver) {
+                    this.rectangle = this.$.workspace.getBoundingClientRect();
+                    let scalingFactor = this.rectangle.width / this.width;
+
+                    this.mousePositionX = parseInt(parseInt(e.x - this.rectangle.left) / scalingFactor);
+                    this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
+                }
+            },
+            getRestrictElement () {
+                return this.$.workspace;
+            },
+            getViewport () {
+                return this.$.workspace;
+            },
+            getViewportScale () {
+                return this.$.wrapper.getViewportScale();
+            }
+        });
+    </script>
+</dom-module>

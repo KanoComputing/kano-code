@@ -6,7 +6,25 @@
                 this.modes[name] = mode;
             },
             setBlocks (name, blocks) {
-                this.modes[name].blocks = blocks;
+                let registeredMode = this.modes[name];
+                if (registeredMode) {
+                    registeredMode.categories = registeredMode.categories || [];
+                    registeredMode.categories.push({
+                        name: registeredMode.name,
+                        id: registeredMode.id,
+                        colour: registeredMode.colour,
+                        blocks
+                    });
+                }
+            },
+            setCategories (name, categories) {
+                let registeredMode = this.modes[name];
+                if (registeredMode) {
+                    categories.forEach(category => {
+                        category.colour = registeredMode.colour;
+                    });
+                    this.modes[name].categories = categories;
+                }
             },
             modes: {},
             experiments: {},
@@ -32,7 +50,7 @@
                     width: 512,
                     height: 384
                 },
-                component: 'kano-workspace-normal'
+                component: 'kano-editor-normal'
             },
             sharing: {},
             parts: ['clock', 'microphone', 'speaker', 'button', 'box',
@@ -45,7 +63,7 @@
         Kano.MakeApps.Mode.addMode('lightboard', {
             id: 'lightboard',
             name: 'Lightboard',
-            colour: '#82C23D',
+            colour: '#4674e8',
             parts: ['clock', 'microphone', 'speaker', 'light-animation-display',
                         'light-animation', 'light-circle', 'light-frame', 'light-rectangle',
                         'rss', 'sports', 'weather', 'iss', 'share', 'proximity-sensor',
@@ -56,7 +74,7 @@
                     width: 466,
                     height: 322
                 },
-                component: 'kano-workspace-lightboard'
+                component: 'kano-editor-lightboard'
             },
             sharing: {
                 padding: 10,
@@ -93,7 +111,7 @@
                     width: 512,
                     height: 384
                 },
-                component: 'kano-workspace-camera'
+                component: 'kano-editor-camera'
             },
             sharing: {
                 cover: 'still'
@@ -131,7 +149,7 @@
                     width: 512,
                     height: 384
                 },
-                component: 'kano-workspace-normal'
+                component: 'kano-editor-normal'
             },
             parts: ['talking-face', 'fireworks']
         });

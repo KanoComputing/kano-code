@@ -4,7 +4,7 @@
     /**
      * Registers the logic blocks, and creates its category
      */
-    const COLOUR = '#9f231b';
+    const COLOUR = '#f75846';
 
     let register = (Blockly) => {
 

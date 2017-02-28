@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/web-components/kano-style/typography.html">
+        <link rel="import" href="../kano-add-parts.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--font-body);
+            }
+            demo-snippet {
+                --demo-snippet-demo: {
+                    background: #292F34;
+                    padding: 24px;
+                };
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>Parts menu</h3>
+            <demo-snippet>
+                <template>
+                    <template is="dom-bind" id="bind">
+                        <kano-add-parts available-parts="[[availableParts]]"></kano-add-parts>
+                    </template>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let b = document.getElementById('bind');
+
+                            b.availableParts = [{
+                                partType: 'ui',
+                                type: 'button',
+                                label: 'Button'
+                            },{
+                                partType: 'ui',
+                                type: 'box',
+                                label: 'Box'
+                            },{
+                                partType: 'data',
+                                type: 'rss',
+                                label: 'RSS'
+                            },{
+                                partType: 'hardware',
+                                type: 'gesture-sensor',
+                                label: 'Gesture'
+                            }];
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

@@ -76,7 +76,7 @@
         },
         observers: [
             'computeToolbox(parts)',
-            'computeToolboxDebounced(parts.*)',
+            '_partsChanged(parts.*)',
             'computeToolboxDebounced(defaultCategories.*)',
             'computeToolboxDebounced(mode)',
             'defaultCategoriesLoaded(defaultCategories.events)'
@@ -170,7 +170,6 @@
             let events = [];
             this.parts
                 .forEach((part) => {
-                    part.blockIds = [];
                     part.blocks.forEach((definition) => {
                         this._registerBlock(part, definition);
                     });
@@ -182,11 +181,12 @@
                         events.push(ev);
                     });
                 });
-            if (this.mode.blocks) {
-                this.mode.blockIds = [];
-                this.mode.blocks.forEach((definition) => {
-                    this._registerBlock(this.mode, definition);
-                });
+            if (this.mode.categories) {
+                this.mode.categories.forEach(category => {
+                    category.blocks.forEach((definition) => {
+                        this._registerBlock(this.mode, definition);
+                    });
+                })
             }
         },
         _registerBlock (part, definition) {
@@ -200,7 +200,6 @@
             block.id = `${part.id}#${block.id}`;
             lookups.forEach(lookup => {
                 lookupString = `${part.id}.${lookup}`;
-                part.blockIds.push(block.id);
                 Kano.MakeApps.Blockly.setLookupString(block.id, lookupString);
             });
             if (!block.doNotRegister) {
@@ -276,28 +275,37 @@
             });
 
             toolbox = Object.keys(this.defaultCategories).map(id => this.defaultCategories[id]);
+
             // Generate the toolbox for the special mode
-            if (this.mode.blocks && this.mode.blocks.length) {
-                let modeCat = {
-                    name: this.mode.name,
-                    id: this.mode.id,
-                    colour: this.mode.colour
-                };
-                modeCat.blocks = this.mode.blocks.map((definition) => {
-                    let block = definition.block(this.mode);
-                    return {
-                        id: `${this.mode.id}#${block.id}`,
-                        colour: this.mode.colour,
-                        shadow: block.shadow
+            if (this.mode.categories) {
+                this.mode.categories.forEach(category => {
+                    let modeCat = {
+                        name: category.name,
+                        id: category.id,
+                        colour: category.colour
                     };
+                    modeCat.blocks = category.blocks.map((definition) => {
+                        let block = definition.block(this.mode);
+                        return {
+                            id: `${this.mode.id}#${block.id}`,
+                            colour: this.mode.colour,
+                            shadow: block.shadow
+                        };
+                    });
+                    toolbox.push(modeCat);
                 });
-                toolbox.push(modeCat);
             }
             toolbox = toolbox.concat(categories);
             this.set('toolbox', toolbox);
             if (!this.toolboxReady) {
                 this.toolboxReady = true;
                 this.$['code-editor'].load(this.code.snapshot);
+            }
+        },
+        _partsChanged (e) {
+            // Only update if the splices changes (part added or removed) or if the name of the part changes
+            if (e.path === 'parts' || e.path === 'parts.splices' || e.path.indexOf('name') === e.path.length - 4) {
+                this.computeToolboxDebounced();
             }
         },
         computeToolboxDebounced () {

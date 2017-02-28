@@ -42,6 +42,8 @@ node {
     stage('deploy') {
         if (env.BRANCH_NAME == "jenkins") {
             echo 'deploy skipped'
+        } else if (env.BRANCH_NAME == "lightboard") {
+            deploy_lightboard()
         } else if (env.NODE_ENV=="staging") {
             deploy_staging()
             deploy_doc()
@@ -94,6 +96,10 @@ def deploy_doc() {
 
 def deploy_staging() {
     sh 'aws s3 sync ./www s3://make-apps-staging-site.kano.me --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
+}
+
+def deploy_lightboard() {
+    sh 'aws s3 sync ./www s3://apps-lightboard.kano.me --region eu-west-1 --cache-control "max-age=600" --only-show-errors'
 }
 
 def deploy_pre_release() {

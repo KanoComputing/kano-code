@@ -429,6 +429,21 @@ To define the arrow, use the `arrow` key and set the values as follow:
 
 The location of the source and target are defined the same way the highlight and tooltips are. Read the `Location` chapter to learn more.
 
+#### Beacons
+
+You can display a beacon on the screen. This beacon will be placed on the element described by the `target`. The beacon will bounce every 3 seconds
+To define the beacon, use the `beacon` key and set the values as follow:
+
+```json
+{
+    "beacon": {
+        "target": "<target location>"
+    }
+}
+```
+
+The location of the source and target are defined the same way the highlight and tooltips are. Read the `Location` chapter to learn more.
+
 ### Phantom blocks
 
 You can define a `phantom block` that will appear at a target position to indicate where to drop a block. You can only use this in a step with a blockly connect validation.

@@ -1,0 +1,79 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../kano-icons/parts.html">
+<link rel="import" href="../inline-controls/kano-inline-controls.html">
+<dom-module id="kano-part-list-item">
+    <template>
+        <style>
+            :host {
+                display: block;
+                color: white;
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                padding: 2px 0px;
+                font-size: 12px;
+            }
+            iron-icon {
+                --iron-icon-fill-color: #8F9195;
+                --iron-icon-width: 20px;
+                --iron-icon-height: 20px;
+                margin: 4px;
+            }
+            .controls {
+                @apply --layout-flex;
+            }
+        </style>
+        <iron-icon icon="parts:[[model.type]]" class="icon"></iron-icon>
+        <div class="label">[[model.name]]</div>
+        <div class="controls" id="controls"></div>
+        <template id="oscillator">
+            <kano-ic-oscillator model="[[model]]"></kano-ic-oscillator>
+        </template>
+        <template id="microphone">
+            <kano-ic-microphone model="[[model]]"></kano-ic-microphone>
+        </template>
+        <template id="clock">
+            <kano-ic-clock model="[[model]]"></kano-ic-clock>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-part-list-item',
+            behaviors: [Polymer.Templatizer],
+            properties: {
+                model: Object
+            },
+            observers: [
+                '_typeChanged(model.type)'
+            ],
+            _forwardParentProp (prop, value) {
+                if (this.instance) {
+                    this.instance.__setProperty(prop, value);
+                }
+            },
+            _forwardParentPath (path, value) {
+                if (this.instance) {
+                    this.instance._notifyPath(path, value, true);
+                }
+            },
+            _typeChanged (type) {
+                let template = this.$[type];
+
+                if (!template) {
+                    return;
+                }
+
+                this.templatize(template);
+
+                this.instance = this.stamp();
+
+                while (this.$.controls.firstChild) {
+                    this.$.controls.removeChild(this.$.controls.firstChild);
+                }
+
+                this.$.controls.appendChild(this.instance.root);
+            }
+        });
+    </script>
+</dom-module>

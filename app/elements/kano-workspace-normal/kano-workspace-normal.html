@@ -51,14 +51,6 @@
                 }
 
                 this.ctx = this.$.canvas;
-                this.canvasElement = Polymer.dom(this).parentNode;
-
-                this.canvasElement.addEventListener('mouseover', this._onMouseOver.bind(this));
-                this.ctx.addEventListener('mouseout', this._onMouseOut.bind(this));
-                this.canvasElement.addEventListener('mousemove', this._onMouseMove.bind(this));
-            },
-            getRestrictElement () {
-                return this.$.canvas;
             },
             setBackground (bg) {
                 this.style.background = bg;
@@ -95,23 +87,6 @@
                 image.src = this.$.canvas.toDataURL();
                 ctx.drawImage(image, 0, 0);
                 return Promise.resolve();
-            },
-            _onMouseOver (e) {
-                this._isMouseOver = true;
-            },
-            _onMouseOut (e) {
-                this._isMouseOver = false;
-                this.mousePositionX = 250;
-                this.mousePositionY = 250;
-            },
-            _onMouseMove (e) {
-                if (this._isMouseOver) {
-                    this.rectangle = this.canvasElement.getBoundingClientRect();
-                    let scalingFactor = this.rectangle.width / this.width;
-
-                    this.mousePositionX = parseInt(parseInt(e.x - this.rectangle.left) / scalingFactor);
-                    this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
-                }
             }
         });
     </script>

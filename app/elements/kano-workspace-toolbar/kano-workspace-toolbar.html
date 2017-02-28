@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../behaviors/kano-i18n-behavior.html">
@@ -7,34 +8,29 @@
     <style>
         :host {
             display: block;
+            @apply --layout-horizontal;
+            @apply --layout-center-justified;
+        }
+        :host>div {
+            @apply --layout-horizontal;
         }
         [hidden] {
             display: none !important;
         }
-        :host .panel {
-            margin-top: 5px;
-            background-color: var(--kano-app-editor-workspace-controls, black);
-            border-radius: 5px;
-            padding: 4px 4px;
-
-            display: flex;
-            flex-direction: row;
-
-            align-items: center;
-            justify-content: center;
-
-            color: white;
-        }
-        :host .panel .fullscreen,
-        :host .panel .pause {
+        .fullscreen,
+        .pause {
             border-right: 2px solid #eee;
         }
-        :host .mouse-position,
-        :host .panel .icon img,
-        :host .panel kano-animated-svg {
+        .mouse-position,
+        .icon img,
+        .panel kano-animated-svg {
             margin: 8px 16px;
         }
-        .icon kano-animated-svg {
+        .mouse-position {
+            color: white;
+            width: 100px;
+        }
+        kano-animated-svg {
             width: 17px;
             height: 17px;
 
@@ -47,68 +43,47 @@
                 transition: all ease-in-out 200ms;
             }
         }
-        :host .panel .icon:hover {
+        .icon:hover {
             transition: opacity .3s ease;
             opacity: 0.8;
             cursor: pointer;
         }
-        :host .panel .icon {
+        .icon {
             display: flex;
 
             align-items: center;
             justify-content: center;
             transition: background-color .3s ease;
         }
-        :host .panel .spacer {
+        .spacer {
             flex: 1;
         }
-        :host .buttons {
-            position: absolute;
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 5px;
-            right: 0px;
-        }
-        .buttons button {
-            @apply(--kano-button);
-            background-color: var(--color-orange, orange);
+        button {
+            @apply --kano-button;
+            background-color: #515151;
+            padding: 8px 16px;
             cursor: pointer;
-            margin-right: 5px;
+            margin-left: 9px;
             transition: background-color .3s ease;
+            font-size: 12px;
+            border-radius: 2px;
         }
-        .buttons button span.x {
+        button span.x {
             display: none;
         }
-        .buttons button.open span.x {
+        button.open span.x {
             display: inline-block;
             transform: translate(0px, -2px);
         }
-        .buttons button:last-child {
-            margin-right: 0px;
-        }
-        .buttons button:hover,
-        .buttons button.open {
-            background-color: var(--color-lighter-orange, orange);
+        #play-pause-button {
+            background: #7CC74C;
         }
     </style>
     <template>
-        <div class="panel"  hidden$="[[noPlayerBar]]">
-            <div class="mouse-position" hidden$="{{mousePositionHidden(showMousePosition)}}">
-                x: {{mouseX}}, y: {{mouseY}}
-            </div>
-            <div class="spacer"></div>
-            <div class="fullscreen icon" on-tap="fullscreenClicked" id="fullscreen-button">
-                <img src="/assets/icons/fullscreen-icon.svg" alt="Fullscreen mode" />
-            </div>
-            <div class="pause icon" on-tap="pauseClicked">
-                <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}">
-                </kano-animated-svg>
-            </div>
-            <div class="reset icon" on-tap="resetClicked">
-                <img src="/assets/icons/reset-icon.svg" alt="Reset app" />
-            </div>
+        <div class="mouse-position" hidden$="[[mousePositionHidden(showMousePosition)]]">
+            x: {{mouseX}}, y: {{mouseY}}
         </div>
-        <div class="buttons" hidden$="[[noPartControls]]" style$="[[_computeEditingButtonStyle(mode.workspace.viewport.height)]]">
+        <div class="part-controls" hidden$="[[noPartControls]]">
             <button id="add-part-button" class$="{{_applyButtonClass(partsMenuOpen)}}" on-tap="_togglePartsMenu">
                 <span>{{_computePartsMenuButtonLabel(partsMenuOpen)}}</span>
                 <span class="x">&nbsp;&times;</span>
@@ -118,7 +93,17 @@
                 <span class="x">&nbsp;&times;</span>
             </button>
         </div>
-
+        <div class="player-bar" hidden$="[[noPlayerBar]]">
+            <button type="button" on-tap="fullscreenClicked">
+                <img src="/assets/icons/fullscreen-icon.svg" alt="Fullscreen mode" />
+            </button>
+            <button type="button" on-tap="resetClicked">
+                <img src="/assets/icons/reset-icon.svg" alt="Reset app" />
+            </button>
+            <button id="play-pause-button" type="button" on-tap="_runButtonClicked">
+                <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}"></kano-animated-svg>
+            </button>
+        </div>
     </template>
 </dom-module>
 
@@ -174,7 +159,7 @@
         fullscreenClicked (e) {
             this.fire('fullscreen-button-clicked');
         },
-        pauseClicked (e) {
+        _runButtonClicked (e) {
             this.fire('run-button-clicked');
         },
         resetClicked (e) {

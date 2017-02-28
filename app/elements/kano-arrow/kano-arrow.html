@@ -127,6 +127,7 @@
         _showWithoutSource() {
             let target = this.target,
                 arrowStyle = this.arrowImage.style,
+                arrowRect = this.arrowImage.getBoundingClientRect(),
                 a = (this.angle / 180) * Math.PI,
                 h = target.height,
                 w = target.width,
@@ -136,6 +137,7 @@
             x = Math.min(Math.cos(a) * r, w / 2);
             y = Math.min(Math.sin(a) * r, h / 2);
 
+
             x += target.left;
             y += target.top;
 
@@ -144,8 +146,8 @@
 
             y -= this.arrowImage.offsetHeight / 2;
 
-            y = Math.max(y, target.top - this.arrowImage.height / 2);
-            x = Math.max(x, target.left - this.arrowImage.width / 2);
+            y = Math.max(y, target.top - arrowRect.height / 2);
+            x = Math.max(x, target.left - arrowRect.width / 2);
 
             offsetX = Math.cos(a) * this.bounce;
             offsetY = Math.sin(a) * this.bounce;
@@ -154,6 +156,7 @@
             arrowStyle.visibility = 'visible';
 
             DOMUtil.addVendorProperty(this.arrowImage, 'transform-origin', `0% 50%`);
+
 
             if (!this.bounce) {
                 this.transform(`translate(${x}px, ${y}px) rotate(${a}rad)`, this.arrowImage);

@@ -76,9 +76,12 @@
             behaviors: [Kano.MakeApps.PartsAPI.oscillator, Kano.Behaviors.UIBehavior],
             attached () {
                 this.ctx = this.$.canvas.getContext('2d');
-                this.x = 0;
-                this._updateValue();
+                this.model.x = 0;
+                this._startOscillating();
                 this._render();
+            },
+            _startOscillating () {
+                this._updateValue();
             },
             detached () {
                 cancelAnimationFrame(this._nextFrameId);
@@ -94,7 +97,7 @@
                 this.ctx.beginPath();
                 for (let i = 0; i < 140; i++) {
                     x = i / 2;
-                    y = 70 - this.getValueAt(this.x - i + 170) * 0.7;
+                    y = 70 - this.getValueAt(this.model.x - i + 170) * 0.7;
                     y *= yScale;
                     y += (70 - (70 * yScale)) / 2;
                     this.ctx.lineTo(x, y);

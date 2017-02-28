@@ -24,7 +24,8 @@
 
 <script>
     (function (Kano) {
-        let blocks = [{
+        let pixelBlocks, textBlocks;
+        pixelBlocks = [{
             block: () => {
                 return {
                     id: 'turn_on',
@@ -200,7 +201,9 @@
                     return;
                 };
             }
-        },{
+        }];
+        
+        textBlocks = [{
             block: () => {
                 return {
                     id: 'light_show_text',
@@ -302,6 +305,14 @@
             }
         }];
 
-        Kano.MakeApps.Mode.setBlocks('lightboard', blocks);
+        Kano.MakeApps.Mode.setCategories('lightboard', [{
+            name: 'Lightboard',
+            id: 'lightboard',
+            blocks: pixelBlocks
+        }, {
+            name: 'Text',
+            id: 'lightboard_text',
+            blocks: textBlocks
+        }]);
     })(window.Kano = window.Kano || {});
 </script>

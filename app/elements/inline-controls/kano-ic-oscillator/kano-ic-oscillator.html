@@ -1,0 +1,102 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../scripts/kano/make-apps/parts-api/oscillator.html">
+<dom-module id="kano-ic-oscillator">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply --layout-horizontal;
+                @apply --layout-end-justified;
+                color: white;
+            }
+            .visuals {
+                @apply --layout-wrap;
+                @apply --layout-horizontal;
+                border-right: 1px solid #202428;
+                border-left: 1px solid #202428;
+            }
+            .data {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                width: 32px;
+                border-right: 1px solid #202428;
+            }
+        </style>
+        <div class="visuals" id="visuals">
+            <canvas id="canvas" width="200" height="32"></canvas>
+        </div>
+        <div class="data">
+            <span>[[yValue]]</span>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-ic-oscillator',
+            behaviors: [Kano.MakeApps.PartsAPI.oscillator],
+            properties: {
+                model: {
+                    type: Object,
+                    value: () => {
+                        return {
+                            x: 0
+                        };
+                    }
+                }
+            },
+            attached () {
+                this.ctx = this.$.canvas.getContext('2d');
+                this.model.x = 0;
+                this._render();
+            },
+            // Make sure the oscillation doesn't start. Here everthing is driven by the `x` given through the model
+            _startOscillating () {},
+            _render (timestamp) {
+                let yScale = 0.5,
+                    width = 200,
+                    height = 31,
+                    iterations = width / 0.5,
+                    middle = iterations / 2,
+                    x, y;
+                this.ctx.fillStyle = 'black';
+                this.ctx.clearRect(0, 0, this.$.canvas.width, this.$.canvas.height);
+                this.ctx.beginPath();
+                for (let i = 0; i < iterations; i++) {
+                    x = i / 2;
+                    y = height - this.getValueAt(this.model.x - i + iterations) * height / 100;
+                    y *= yScale;
+                    y += (height - (height * yScale)) / 2;
+                    // only draw the line when not over the value marker
+                    if (i < middle - 2 || i > middle + 2) {
+                        this.ctx.lineTo(x, y);
+                    } else {
+                        this.ctx.moveTo(x, y);
+                    }
+                    if (i === middle) {
+                        this.ctx.strokeStyle = '#8F9195';
+                        this.ctx.stroke();
+                        this.ctx.closePath();
+                        this.ctx.beginPath();
+                        this.ctx.arc(x, y, 2, 0, 2 * Math.PI, false);
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.fill();
+                        this.ctx.closePath();
+                        this.ctx.beginPath();
+                    }
+                }
+                this.ctx.strokeStyle = '#8F9195';
+                this.ctx.stroke();
+                this.ctx.closePath();
+
+                if (!this.prevTimestamp || timestamp - this.prevTimestamp > 100) {
+                    this.prevTimestamp = timestamp;
+                    this.set('yValue', Math.round(this.getValue()));
+                }
+
+                
+                this._nextFrameId = requestAnimationFrame(this._render.bind(this));
+            }
+        });
+    </script>
+</dom-module>

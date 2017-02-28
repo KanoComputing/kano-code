@@ -16,7 +16,8 @@
             },
             selectedStep: {
                 type: Object,
-                computed: 'computeSelectedStep(steps, step, started)'
+                computed: 'computeSelectedStep(steps, step, started)',
+                notify: true
             },
             started: {
                 type: Boolean,
@@ -61,6 +62,9 @@
             if (selectedStep.arrow) {
                 selectedStep.arrow.source = this.processLocation(selectedStep.arrow.source);
                 selectedStep.arrow.target = this.processLocation(selectedStep.arrow.target);
+            }
+            if (selectedStep.beacon) {
+                selectedStep.beacon.target = this.processLocation(selectedStep.beacon.target);
             }
             selectedStep.highlight = this.processLocation(selectedStep.highlight);
             if (selectedStep.phantom_block) {
