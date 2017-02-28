@@ -59,6 +59,9 @@
                 partsString = JSON.stringify(components);
 
                 template = template.join('\n');
+                if (background && background.userStyle) {
+                    background = background.userStyle.background;
+                }
                 //ensure 'background' css property will not carry double quotes
                 background = background ? background.replace(/"/ig, '\"') : null;
 

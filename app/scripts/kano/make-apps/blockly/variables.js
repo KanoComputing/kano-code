@@ -12,7 +12,7 @@
     };
 
     category = Kano.MakeApps.Blockly.Defaults.createCategory({
-        name: 'Variables',
+        name: Blockly.Msg.CATEGORY_VARIABLES,
         id: 'variables',
         colour: COLOUR,
         blocks: [

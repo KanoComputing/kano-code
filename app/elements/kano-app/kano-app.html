@@ -128,7 +128,8 @@ Example:
                    api-url="{{apiUrl}}"
                    assets-path="/assets"
                    on-success="_authSuccess"
-                   on-cancel="_authCancelled"></kano-auth>
+                   on-cancel="_authCancelled"
+                   successful="[[authenticated]]"></kano-auth>
         <paper-toast id="toast" text="[[message.text]]" duration="[[message.duration]]">
             <button type="button" name="button" hidden$="[[!message.closeWithButton]]" on-tap="_closeToast">[[message.buttonText]]</button>
         </paper-toast>
@@ -155,6 +156,10 @@ Example:
             route: {
                 type: String,
                 observer: '_routeChanged'
+            },
+            authenticated: {
+                type: Boolean,
+                value: false
             }
         },
         listeners: {
@@ -298,6 +303,7 @@ Example:
             if (this._needsNotifications()) {
                 this._startNotificationsPolling();
             }
+            this.authenticated = true;
         },
         _populateUser () {
             this._updateProfile();

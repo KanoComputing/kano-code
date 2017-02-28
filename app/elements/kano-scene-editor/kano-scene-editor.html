@@ -1,8 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../behaviors/kano-scene-component-behavior.html">
-<link rel="import" href="../../bower_components/web-components/kano-sound-player-behavior/kano-sound-player-behavior.html">
 <link rel="import" href="../behaviors/kano-editor-view-behavior.html">
-<link rel="import" href="../kano-challenge-completed-modal/kano-challenge-completed-modal.html">
 <link rel="import" href="../kano-app-challenge/kano-app-challenge.html">
 <link rel="import" href="../kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../kano-share-modal/kano-share-modal.html">
@@ -43,13 +41,8 @@
                             mode="[[mode]]"
                             on-share="_pauseAndShare"
                             challenge-state="[[challengeState]]"
-                            hide-leave-alert="[[alertDisabled]]">
-          </kano-app-editor>
+                            hide-leave-alert="[[alertDisabled]]"></kano-app-editor>
       </kano-app-challenge>
-      <kano-challenge-completed-modal id="challenge-completed"
-                                      on-close="goToRemixChallenge"
-                                      hint-stats="[[hintStats]]">
-      </kano-challenge-completed-modal>
   </template>
 </dom-module>
 <script type="text/javascript">
@@ -60,8 +53,8 @@
         is: 'kano-scene-editor',
         behaviors: [
             Kano.Behaviors.EditorViewBehavior,
-            Kano.Behaviors.SceneComponentBehavior,
-            Kano.Behaviors.SoundPlayerBehavior],
+            Kano.Behaviors.SceneComponentBehavior
+        ],
         properties: {
             storyName: {
                 type: String
@@ -75,14 +68,14 @@
             },
             challengeState: {
                 type: Object,
-                computed: 'computeChallengeStatus(progress, storyName, scene.*, done)'
+                computed: 'computeChallengeStatus(progress, storyName, scene.*, ended)'
             },
             scene: {
                 type: Object
             },
             progress: {
                 type: Number,
-                computed: "computeProgress(currentStep, scene)"
+                computed: 'computeProgress(currentStep, scene)'
             },
             extensions: {
                 type: Array
@@ -94,14 +87,15 @@
                 type: Boolean,
                 observer: '_remixChanged'
             },
-            done: {
+            ended: {
                 type: Boolean,
-                value: false
+                value: false,
+                observer: '_onEndedChanged'
             }
         },
         observers: [
-            'endedChanged(scene.ended)',
             '_sceneChanged(scene)',
+            '_completedChanged(scene.completed)',
             '_addedPartsChanged(addedParts.splices)'
         ],
         _pauseAndShare (e) {
@@ -186,23 +180,11 @@
                 editor.load(JSON.parse(this.scene.defaultApp), Kano.MakeApps.Parts.list);
             }
         },
-        endedChanged () {
-            if (this.scene.ended) {
+        _completedChanged () {
+            if (this.scene.completed) {
                 this.$.editor.generateCover().then((image) => {
-                    let flags;
                     this.appPreview = image.src;
-                    flags = Kano.MakeApps.config.getFlags();
-                    if (flags.experiments.indexOf('gamification_modal') !== -1) {
-                        //open new xp modal
-                    } else {
-                        this.$['challenge-completed'].open();
-                    }
-                    this.$['challenge-completed'].open();
-                    this.playSound('/assets/audio/samples/challenge_complete.wav');
                 });
-            }
-            if (this.scene.ended && !this.nextStory) {
-                this.alertDisabled = true;
             }
         },
         computeProgress (currentStep, scene) {
@@ -211,13 +193,13 @@
             }
             return (currentStep + 1) / scene.steps.length;
         },
-        computeChallengeStatus (progress, title, scene, done) {
+        computeChallengeStatus (progress, title, scene, ended) {
             return {
                 progress: progress,
                 title: title,
                 nextStory: Boolean(this.nextStory),
                 started: this.scene.started,
-                ended: this.done
+                ended: this.ended
             };
         },
         resetHintStats () {
@@ -323,9 +305,14 @@
             challenge.set('stepIds', savedState.stepIds);
             challenge.set('blockIds', savedState.blockIds);
         },
-        goToRemixChallenge () {
-            this.done = true;
-            this.remix = true;
+        _onEndedChanged (ended) {
+            if (ended) {
+                this.remix = true;
+            }
+            //don't alert user on leaving if it's the last story
+            if (ended && !this.nextStory) {
+                this.alertDisabled = true;
+            }
         },
         powerUp (e) {
             let extensionId = e.detail.id;

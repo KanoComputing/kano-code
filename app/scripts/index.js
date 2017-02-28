@@ -15,12 +15,7 @@
                                         'content' in document.createElement('template'));
 
     Bootstrap.getLang = function () {
-        var lang = window.navigator.languages ? window.navigator.languages[0] : null;
-        lang = lang || window.navigator.language || window.navigator.browserLanguage || window.navigator.userLanguage;
-        if (lang === 'en-GB') {
-            lang = 'en-US';
-        }
-        return lang;
+        return 'en-US';
     };
 
     /**

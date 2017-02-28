@@ -7,7 +7,7 @@
     Blockly.Msg.CATEGORY_LISTS = "Lists";
     Blockly.Msg.CATEGORY_LOGIC = "Logic";
     Blockly.Msg.CATEGORY_MATH = "Math";
-    Blockly.Msg.CATEGORY_VARIALBLES = "Variables";
+    Blockly.Msg.CATEGORY_VARIABLES = "Variables";
     Blockly.Msg.CATEGORY_FUN = "Fun";
     Blockly.Msg.CATEGORY_MISC = "Misc";
 
@@ -50,6 +50,11 @@
     Blockly.Msg.BLOCK_UI_Y = "y position";
     Blockly.Msg.BLOCK_UI_SIZE = "size";
     Blockly.Msg.BLOCK_UI_ROTATION = "rotation";
+
+    Blockly.Msg.DIRECTION_UP = "up";
+    Blockly.Msg.DIRECTION_DOWN = "down";
+    Blockly.Msg.DIRECTION_LEFT = "left";
+    Blockly.Msg.DIRECTION_RIGHT = "right";
 
     Blockly.Msg.BLOCK_DATA_REFRESH = "refresh data";
     Blockly.Msg.BLOCK_DATA_SET_CONFIG = "set %1 to %2";
@@ -142,6 +147,8 @@
     Blockly.Msg.BLOCK_WEATHER_RAINY = "rainy";
     Blockly.Msg.BLOCK_WEATHER_CLOUDY = "cloudy";
     Blockly.Msg.BLOCK_WEATHER_SNOWY = "snowy";
+
+    Blockly.Msg.BLOCK_LIGHT_MOVE_BY = "move %1 by %2 pixels";
 
     Blockly.Msg.BLOCK_LIGHT_ANIMATION_PLAY = "play";
     Blockly.Msg.BLOCK_LIGHT_ANIMATION_STOP = "stop";

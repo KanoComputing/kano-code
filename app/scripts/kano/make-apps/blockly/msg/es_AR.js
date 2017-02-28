@@ -7,7 +7,7 @@
     Blockly.Msg.CATEGORY_LISTS = "Listas";
     Blockly.Msg.CATEGORY_LOGIC = "Lógica";
     Blockly.Msg.CATEGORY_MATH = "Matemáticas";
-    Blockly.Msg.CATEGORY_VARIALBLES = "Variables";
+    Blockly.Msg.CATEGORY_VARIABLES = "Variables";
     Blockly.Msg.CATEGORY_FUN = "Diversión";
     Blockly.Msg.CATEGORY_MISC = "Misc";
 

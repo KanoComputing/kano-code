@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const LOCALES_PATH = path.join(__dirname, '../app/assets/stories/locales/');
-const EN_CHALLENGES_PATH = path.join(LOCALES_PATH, '/en/');
+const EN_CHALLENGES_PATH = path.join(LOCALES_PATH, '/en-US/');
 
 function listFolders(p) {
     return new Promise((resolve, reject) => {
@@ -33,7 +33,7 @@ function indexExists(challenge, locale) {
 
 function validateChallengeLocale(challenge, locale, ignoreMissing) {
     try {
-        indexExists(challenge, 'en');
+        indexExists(challenge, 'en-US');
     } catch (e) {
         throw new Error(`Missing index.json for locale 'en' in challenge '${challenge}'`);
     }
@@ -45,12 +45,12 @@ function validateChallengeLocale(challenge, locale, ignoreMissing) {
         }
         throw new Error(`Missing index.json for locale '${locale}' in challenge '${challenge}'`);
     }
-    return Promise.all(['en', locale].map(l => readJSON(path.join(LOCALES_PATH, l, challenge, 'index.json'))))
+    return Promise.all(['en-US', locale].map(l => readJSON(path.join(LOCALES_PATH, l, challenge, 'index.json'))))
         .then(indices => {
             if (indices[0].scenes.length > indices[1].scenes.length) {
                 throw new Error(`Missing scene in locale '${locale}' of challenge '${challenge}'`);
             }
-            indices[0].scenes.forEach(scene => scene.__location = path.join(LOCALES_PATH, 'en', challenge));
+            indices[0].scenes.forEach(scene => scene.__location = path.join(LOCALES_PATH, 'en-US', challenge));
             indices[1].scenes.forEach(scene => scene.__location = path.join(LOCALES_PATH, locale, challenge));
             return Promise.all(indices[0].scenes.map((scene, i) => validateChallengeLocaleScene(scene, indices[1].scenes[i])));
         });
@@ -97,7 +97,7 @@ function validateChallengeLocaleScene(scene, localeScene) {
 
 function validateChallenge(challenge, ignoreMissing) {
     return listFolders(LOCALES_PATH).then(locales => {
-        locales = locales.filter(locale => locale !== 'en');
+        locales = locales.filter(locale => locale !== 'en-US');
         return Promise.all(locales.map(locale => validateChallengeLocale(challenge, locale, ignoreMissing)));
     });
 }

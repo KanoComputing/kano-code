@@ -40,7 +40,8 @@ module.exports = (gulp, $) => {
             file.path.indexOf('assets/vendor/') === -1) ||
             file.path.indexOf('web-components') !== -1 ||
             file.path.indexOf('lazy-imports') !== -1 ||
-            file.path.indexOf('Sortable') !== -1);
+            file.path.indexOf('Sortable') !== -1) ||
+            file.path.indexOf('polymer-sortablejs') !== -1;
         return needTranspile;
     }
 
@@ -67,19 +68,7 @@ module.exports = (gulp, $) => {
 
     gulp.task('copy-all', () => {
         return gulp.src('app/**/*', { base: 'app' })
-            // Rename the Sortable polymer wrapper to avoid name conflict with the library when crisper will create the .js file
-            .pipe($.rename((file) => {
-                if (file.basename === 'Sortable' && file.extname === '.html') {
-                    file.basename = 'Sortable.polymer';
-                }
-            }))
             .pipe($.if(notBowerComponentHtml, $.crisper({ scriptInHead: false })))
-            // Restore the polymer wrapper name
-            .pipe($.rename((file) => {
-                if (file.basename === 'Sortable.polymer' && file.extname === '.html') {
-                    file.basename = 'Sortable';
-                }
-            }))
             .pipe($.if(isConfig, $.htmlReplace($.utils.getHtmlReplaceOptions())))
             .pipe($.if('*.html', $.utils.htmlAutoprefixerStream()))
             .pipe($.if(notBowerComponentJs, $.transpile()))
@@ -108,6 +97,7 @@ module.exports = (gulp, $) => {
             'shards',
             'split',
             ['copy-index', 'blockly-media', 'assets', 'workers', 'i18n'],
+            'compress',
             'sw',
             'external-play-bundle', done);
     });

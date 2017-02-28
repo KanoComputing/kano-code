@@ -31,6 +31,9 @@ module.exports = (gulp, $) => {
             },{
                 urlPattern: /assets/,
                 handler: 'cacheFirst'
+            },{
+                urlPattern: /bower_components/,
+                handler: 'cacheFirst'
             }]
         };
         swPrecache.write('www/sw.js', config, callback);

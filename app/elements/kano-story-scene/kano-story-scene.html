@@ -36,7 +36,7 @@
     <template>
         <iron-lazy-pages class="scene" attr-for-selected="name" selected="[[name]]" restamp>
             <template is="iron-lazy-page" name="editor">
-                <kano-scene-editor store="{{store}}" story-name="[[storyName]]" scene="[[sceneData]]" extensions="{{extensions}}" on-scene-done="sceneFinished" next-story="{{nextStory}}"></kano-scene-editor>
+                <kano-scene-editor store="{{store}}" story-name="[[storyName]]" scene="[[sceneData]]" extensions="{{extensions}}" on-scene-done="sceneCompleted" next-story="{{nextStory}}" ended="[[scene.ended]]"></kano-scene-editor>
             </template>
             <template is="iron-lazy-page" name="empty"></template>
         </iron-lazy-pages>
@@ -94,12 +94,12 @@
             this.overlayDone = this.overlayDone.bind(this);
             this.overlayHidden = true;
         },
-        sceneFinished (e) {
+        sceneCompleted (e) {
             if (this.scene.overlay_after) {
                 e.stopPropagation();
                 this.setupOverlay(this.scene.overlay_after);
             } else if (this.scene.show_remix_options) {
-                this.set('sceneData.ended', true);
+                this.set('sceneData.completed', true);
             }
             this.fire('track-event', {
                 event: 'worldTutorialCompleted'
@@ -130,7 +130,7 @@
                 started = true;
             } else {
                 if (this.scene.overlay_after && this.scene.show_remix_options) {
-                    this.set('sceneData.ended', true);
+                    this.set('sceneData.completed', true);
                 }
                 this.fire('scene-done');
             }

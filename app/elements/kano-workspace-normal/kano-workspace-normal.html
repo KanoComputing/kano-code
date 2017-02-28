@@ -61,8 +61,7 @@
                 return this.$.canvas;
             },
             setBackground (bg) {
-                this.customStyle['--canvas-background'] = bg;
-                this.updateStyles();
+                this.style.background = bg;
             },
             setBackgroundColor (color) {
                 this.style.backgroundColor = color;
@@ -85,6 +84,9 @@
                     width: this.width,
                     height: this.height
                 });
+            },
+            clear () {
+                this.setBackground('#ffffff');
             },
             renderOnCanvas (ctx, util, scaleFactor) {
                 let image = new Image();

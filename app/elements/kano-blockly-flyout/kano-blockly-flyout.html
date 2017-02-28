@@ -320,8 +320,8 @@
                 var x = wsRect.left - targetWsRect.left;
                 var y = wsRect.top - targetWsRect.top;
 
-                xyOld.x += x;
-                xyOld.y += y;
+                xyOld.x += x * targetWorkspace.scale;
+                xyOld.y += y * targetWorkspace.scale;
 
                 // Create the new block by cloning the block in the flyout (via XML).
                 var xml = Blockly.Xml.blockToDom(originBlock);
