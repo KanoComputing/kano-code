@@ -202,6 +202,12 @@
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_TRY_LATER = "Por favor intenta más tarde.";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_UNFORTUNATE = "This is unfortunate";
 
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_CHALLENGE_COMPLETED = "Has Completado el Desafío";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_XP_EARNED = "Ahora has ganado";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_XP = "PX";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_GOT_IT = "CONTINUAR";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_COMPLIMENT = "¡Buen trabajo!";
+
     Kano.MakeApps.Msg.KANO_CHALLENGE_UI_NEXT = "Siguiente";
     Kano.MakeApps.Msg.KANO_CHALLENGE_UI_HINT = "Indicio";
 

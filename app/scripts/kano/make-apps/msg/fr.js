@@ -202,4 +202,11 @@
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_TRY_LATER = "Please try again later.";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_UNFORTUNATE = "This is unfortunate";
 
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_CHALLENGE_COMPLETED = "Challenge Completed";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_XP_EARNED = "You've just earned";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_XP = "XP";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_GOT_IT = "GOT IT";
+    Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_COMPLIMENT = "Nice work!";
+
+
 })(window.Kano = window.Kano || {});
