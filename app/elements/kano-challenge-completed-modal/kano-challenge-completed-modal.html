@@ -107,7 +107,7 @@
                 <h2>[[localize('CHALLENGE_COMPLETED','Challenge Completed')]]</h2>
                 <div class="small-text">
                     [[compliment]] <span hidden$="{{!xp}}">[[localize('XP_EARNED', "You've just earned")]] {{xp}} [[localize('XP','XP')]].</span>
-                    <div hidden$="[[!hintStats.total]]">
+                    <div hidden$="[[!hints.total]]">
                         [[hintSummary]]
                     </div>
                 </div>
@@ -132,7 +132,7 @@
                 observer: 'openedChanged',
                 notify: true
             },
-            hintStats: {
+            hints: {
                 type: Object,
                 value: null
             },
@@ -190,13 +190,13 @@
             return xp ? 'xp-num' : 'star';
         },
         computeHintSummary () {
-            if (!this.hintStats.total) {
+            if (!this.hints.total) {
                 return;
             }
-            if (this.hintStats.used === 1) {
+            if (this.hints.used === 1) {
                 this.hintSummary = `You used a hint. Think you can complete it without?`;
-            } else if (this.hintStats.used) {
-                this.hintSummary = `You used ${this.hintStats.used} of ${this.hintStats.total} hints. Think you can complete it without any hints?`;
+            } else if (this.hints.used) {
+                this.hintSummary = `You used ${this.hints.used} of ${this.hints.total} hints. Think you can complete it without any hints?`;
             } else {
                 this.compliment = 'Congratulations!';
                 this.hintSummary = 'You finished the challenge without using any hints!';

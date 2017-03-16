@@ -72,9 +72,13 @@
                             on-load="loadApp"
                             step="{{currentStep}}"
                             started="[[scene.started]]"
+<<<<<<< HEAD
                             hint-stats="{{hintStats}}"
                             selected-step="{{selectedStep}}"
                             state="{{state}}">
+=======
+                            hints="{{hints}}">
+>>>>>>> 4577a3c28b4321131b395ea5c4ddca24e3573c1d
           <kano-app-editor id="editor"
                             added-parts="{{addedParts}}"
                             parts="[[parts]]"
@@ -326,7 +330,7 @@
         _sceneChanged () {
             this._loadVariables();
             //async for correct data-binding with child element
-            this.async(this.resetHintStats, 0);
+            this.async(this.resetHints, 0);
         },
         _loadVariables () {
             let workspace = this.$.editor.getBlocklyWorkspace();
@@ -364,9 +368,9 @@
                 ended: this.ended
             };
         },
-        resetHintStats () {
-            this.set('hintStats.total', 0);
-            this.set('hintStats.used', 0);
+        resetHints () {
+            this.set('hints.total', 0);
+            this.set('hints.used', 0);
         },
         ready () {
             this.remix = false;

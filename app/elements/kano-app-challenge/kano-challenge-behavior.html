@@ -23,11 +23,13 @@
                 type: Boolean,
                 value: false
             },
-            hintStats: {
+            hints: {
                 type: Object,
-                value: {
-                    total: 0,
-                    used: 0
+                value: () => {
+                    return {
+                        total: 0,
+                        used: 0
+                    };
                 },
                 notify: true
             }
@@ -47,9 +49,9 @@
             // Deep clone the step to not change the original step when updating the ids
             selectedStep = JSON.parse(JSON.stringify(selectedStep));
 
-            // update stats if step includes optional hint
+            // Update hint count
             if (selectedStep['set-state'] && selectedStep['set-state'].hints && selectedStep['set-state'].hints.enabled === false) {
-                this.set('hintStats.total', this.hintStats.total + 1);
+                this.set('hints.total', this.hints.total + 1);
             }
 
             if (selectedStep.tooltips) {
@@ -145,7 +147,9 @@
                     this.step++;
                 } else {
                     this.set('done', true);
-                    this.fire('scene-done');
+                    this.fire('scene-done', {
+                        hints: this.hints
+                    });
                 }
             }
         },
