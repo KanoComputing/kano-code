@@ -138,7 +138,8 @@
         isSelected (index) {
             return index === this.selected;
         },
-        nextScene () {
+        nextScene (e) {
+            let hints = e.detail && e.detail.hints;
             this.trackUserProgress(this.story.id);
             if (this.selected < this.story.scenes.length - 1) {
                 this.selected++;
@@ -148,10 +149,10 @@
                     extension = this.story.extension ? this.story.id : null;
                 Kano.MakeApps.Progress.updateProgress(progress.group, progress.storyNo, extension, this.story.id)
                     .then((progress) => this.updateExtensions(progress));
-                this._displayUserReward();
+                this._displayUserReward(hints);
             }
         },
-        _displayUserReward () {
+        _displayUserReward (hints) {
             let headers = new Headers(),
                 flags = Kano.MakeApps.config.getFlags(),
                 //FIXME for demo we turn the gamification enabled always true on this branch
@@ -176,6 +177,7 @@
                     if (gamificationEnabled) {
                         this.$['reward-modal'].open(res, this.user);
                     } else {
+                        this.$['challenge-completed'].set('hints', hints);
                         this.$['challenge-completed'].open();
                     }
                     this.playSound('/assets/audio/samples/challenge_complete.wav');
@@ -213,6 +215,7 @@
                 if (gamificationEnabled) {
                     this.$['reward-modal'].open(fakeGamificationData);
                 } else {
+                    this.$['challenge-completed'].set('hints', hints);
                     this.$['challenge-completed'].open();
                 }
                 this.playSound('/assets/audio/samples/challenge_complete.wav');

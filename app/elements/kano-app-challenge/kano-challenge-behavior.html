@@ -3,7 +3,7 @@
     window.Kano = window.Kano || {};
 
     window.Kano.Behaviors = window.Kano.Behaviors || {};
-    
+
     window.Kano.Behaviors.ChallengeBehavior = {
         properties: {
             steps: {
@@ -16,18 +16,19 @@
             },
             selectedStep: {
                 type: Object,
-                computed: 'computeSelectedStep(steps, step, started)',
-                notify: true
+                computed: 'computeSelectedStep(steps, step, started)'
             },
             started: {
                 type: Boolean,
                 value: false
             },
-            hintStats: {
+            hints: {
                 type: Object,
-                value: {
-                    total: 0,
-                    used: 0
+                value: () => {
+                    return {
+                        total: 0,
+                        used: 0
+                    };
                 },
                 notify: true
             }
@@ -43,18 +44,13 @@
             if (!selectedStep) {
                 return null;
             }
-            // We arrived at the last step of the challenge, which acknowledges the completion.
-            if (this.step === this.steps.length - 1) {
-                selectedStep.isLast = true;
-                this.fire('scene-done');
-            }
 
             // Deep clone the step to not change the original step when updating the ids
             selectedStep = JSON.parse(JSON.stringify(selectedStep));
 
-            // Update stats if step includes optional hint
+            // Update hint count
             if (selectedStep['set-state'] && selectedStep['set-state'].hints && selectedStep['set-state'].hints.enabled === false) {
-                this.set('hintStats.total', this.hintStats.total + 1);
+                this.set('hints.total', this.hints.total + 1);
             }
 
             if (selectedStep.tooltips) {
@@ -67,9 +63,6 @@
             if (selectedStep.arrow) {
                 selectedStep.arrow.source = this.processLocation(selectedStep.arrow.source);
                 selectedStep.arrow.target = this.processLocation(selectedStep.arrow.target);
-            }
-            if (selectedStep.beacon) {
-                selectedStep.beacon.target = this.processLocation(selectedStep.beacon.target);
             }
             selectedStep.highlight = this.processLocation(selectedStep.highlight);
             if (selectedStep.phantom_block) {
@@ -84,7 +77,7 @@
             return selectedStep;
         },
         /**
-         * Changes the location to adapt to the current context 
+         * Changes the location to adapt to the current context
          */
         processLocation (location) {
             if (typeof location === 'object') {
@@ -143,10 +136,17 @@
             // The current step was injected, we remove it form the array
             if (this.selectedStep.injected) {
                 this.splice('steps', this.step, 1);
-                // Use `_goToStep` to force a refresh of the current step 
+                // Use `_goToStep` to force a refresh of the current step
                 this._goToStep(this.step);
             } else {
-                this.step++;
+                if (this.step < this.steps.length - 1) {
+                    this.step++;
+                } else {
+                    this.set('done', true);
+                    this.fire('scene-done', {
+                        hints: this.hints
+                    });
+                }
             }
         },
         stepChanged () {
