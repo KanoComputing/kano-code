@@ -404,9 +404,15 @@ Polymer({
         this.$.partsPanel.closeDrawer();
     },
     selectedChanged (newValue) {
-        // The selection is cleared
         if (!newValue) {
             this.drawerPage = 'background-editor';
+            return;
+        }
+
+        if (newValue.fullscreenEdit) {
+            this.$['edit-part-dialog'].fitInto = window;
+        } else {
+            this.$['edit-part-dialog'].fitInto = this.$['root-view'];
         }
     },
     panelStateChanged () {
@@ -561,8 +567,6 @@ Polymer({
     },
     attached () {
         this.target = document.body;
-        this.codeEditor = this.$['root-view'];
-
         this.partEditorOpened = false;
         this.backgroundEditorOpened = false;
 
