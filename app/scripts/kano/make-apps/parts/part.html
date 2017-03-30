@@ -49,6 +49,7 @@
                 this.userProperties = Object.assign({}, opts.userProperties);
                 this.nonvolatileProperties = Array.isArray(opts.nonvolatileProperties) ? opts.nonvolatileProperties : [];
                 this.removable = typeof opts.removable === 'undefined' ? true : opts.removable;
+                this.fullscreenEdit = opts.fullscreenEdit || false;
             }
             getUniqueName (value, inc=0) {
                 let newName = inc ? `${value} ${inc}` : value;

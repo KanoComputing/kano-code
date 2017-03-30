@@ -222,13 +222,9 @@ Example:
         position: relative;
     }
     #edit-part-dialog {
-        @apply --layout-vertical;
         overflow: auto;
     }
-    #edit-part-dialog kano-part-editor {
-        flex: 1 0 auto;
-        min-width: 420px;
-    }
+
     #edit-part-dialog .icon-button {
         position: absolute;
         right: 0;
@@ -374,7 +370,7 @@ Example:
                 </div>
             </iron-pages>
         </paper-dialog>
-        <paper-dialog id="edit-part-dialog" fit-into="[[codeEditor]]" entry-animation="from-big-animation" on-iron-overlay-closed="_partEditorDialogClosed">
+        <paper-dialog id="edit-part-dialog" entry-animation="from-big-animation" on-iron-overlay-closed="_partEditorDialogClosed">
             <button class="icon-button" type="button" dialog-dismiss>
                 <iron-icon icon="close"></iron-icon>
             </button>
