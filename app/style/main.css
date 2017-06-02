@@ -4,6 +4,7 @@ html, body {
     width: 100vw;
     height: 100vh;
     display: flex;
+    background-color: #292f35;
 }
 
 kano-app {
@@ -19,8 +20,33 @@ html {
 }
 
 .blocklyWidgetDiv .goog-menu {
-    border-color: black !important;
     border-radius: 4px !important;
+    border: 0px;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
+}
+
+.blocklyWidgetDiv .goog-menuitem {
+    opacity: 0.6;
+    cursor: pointer;
+    border: 0px;
+    padding: 4px 7em 4px 38px;
+}
+
+.blocklyWidgetDiv .blocklyContextMenu .goog-menuitem {
+    padding: 4px 7em 4px 28px;
+}
+
+.blocklyWidgetDiv .goog-option-selected .goog-menuitem-checkbox, .blocklyWidgetDiv .goog-option-selected .goog-menuitem-icon {
+    background: url(/assets/icons/tick.svg) no-repeat 0px 0px !important;
+    margin-top: 8px;
+    margin-left: 7px;
+}
+
+.blocklyWidgetDiv .goog-menuitem-highlight {
+    opacity: 0.9;
+    background: rgba(0, 0, 0, 0.2);
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .blocklyWidgetDiv .goog-menuitem-content {
@@ -39,7 +65,7 @@ html {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #263238;
+    background-color: #292f35;
     z-index: 101;
     transition: opacity ease-in-out 300ms;
     opacity: 1;
@@ -47,8 +73,8 @@ html {
 
 .splash .blocks {
     margin: auto;
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
 
     display: flex;
     flex-direction: column;
@@ -72,14 +98,14 @@ html {
     background-color: rgba(0,0,0,0.5);
 
     margin: 2px;
-    width: 10px;
-    height: 12px;
+    width: 8px;
+    height: 10px;
 }
 
 /* The alert message box */
 .splash .alert {
     padding: 20px;
-    background-color: #263238;
+    background-color: #292f35;
     color: #fff;
     margin: 15px;
     font-size: large;

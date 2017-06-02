@@ -1,0 +1,387 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Let's make a clock that pops up whenever you clap, using the microphone.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "The microphone can detect how loud you are.<br>First, click on 'Add Part' +."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Mic</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-microphone"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "microphone",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+      					"text": "The microphone code lives in this tray.<br>Open it."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block let's you use sound to trigger your code.<br> Grab it and drag it into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "threshold"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "threshold",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+      					"text": "Connect it to your event."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+      					"text": "Nice! Now change the trigger volume to <kano-value-preview><span>90</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "VALUE",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "VALUE",
+                            "id": "block_0"
+                        },
+                        "value": "90"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "It's time to display the time!"
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard_text"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "You can use this block to write with lights. <br>Drag it into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#light_scroll_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#light_scroll_text",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+      					"text": "...and connect it in your microphone trigger."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "?s+UT_qERqihy`O.B+ir"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "?s+UT_qERqihy`O.B+ir",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "?s+UT_qERqihy`O.B+ir"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Next, let's add the clock data part.<br>Go back to 'Add Parts +'."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Clock</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-clock"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "clock",
+                    "id": "part_1"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Wonderful! Now open the Clock tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block let's you use the time from the clock part."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_1",
+                        "type": "get_formatted_time"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "get_formatted_time",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+      					"text": "Connect it to the scroll text input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "|}bOa7x`90j-^y]K=iuq"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "|}bOa7x`90j-^y]K=iuq",
+                            "inputName": "TEXT"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "|}bOa7x`90j-^y]K=iuq"
+                    }
+                },
+                "target": "TEXT"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>date</span></kano-value-preview> to <kano-value-preview><span>time</span></kano-value-preview>..."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        },
+                        "value": "time"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and change 'speed' to <kano-value-preview><span>90</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "SPEED",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "SPEED",
+                            "id": "block_1"
+                        },
+                        "value": "90"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+      					"text": "Woohoo! Clap your hands to see the time.<br>Can you figure out how to speed it up?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "microphone",
+        "clock"
+    ],
+    "modules": [],
+    "variables": [],
+    "filterBlocks": {
+        "mic": [
+            "threshold"
+        ],
+        "lightboard": [
+            "light_scroll_text"
+        ],
+        "clock": [
+            "get_formatted_time"
+        ]
+    },
+    "mode": "lightboard"
+}

@@ -1,5 +1,7 @@
+<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../../scripts/kano/make-apps/mode/light.html">
 <link rel="import" href="../behaviors/kano-workspace-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../../scripts/kano/make-apps/parts-api/lightboard.html">
 <link rel="import" href="../kano-bitmap-renderer/kano-bitmap-renderer.html">
 <link rel="import" href="../ui/kano-ui/kano-ui-lightboard.html">
@@ -18,59 +20,79 @@
 
         #led-matrix {
             position: absolute;
-            top: 43px;
-            left: 18px;
+            top: 37px;
+            left: 17px;
             background-color: transparent;
         }
 
         :host ::slotted(*) {
             position: absolute;
-            top: 0px;
+            top: 1px;
             left: 0px;
+        }
+        :host([joystick-mouse-off]) #joystick,
+        :host([joystick-mouse-off]) #joystick button.js-dir {
+            pointer-events: none;
         }
         .btn {
             position: absolute;
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             border: 0px;
             cursor: pointer;
-            background-color: transparent;
+            background-color: #f64646;
+        }
+        .btn:hover,
+        .btn.pressed {
+            background-color: #ff6060;
+        }
+        /*Take off 'active' state if mouse leaves without releasing click*/
+        .btn:not(:hover) {
+            transform: scale(1);
         }
         .btn:focus {
             outline: none;
-            @apply(--shadow-elevation-2dp);
+            @apply --shadow-elevation-2dp;
         }
-        .btn.a {
-            top: 262px;
-            left: 365px;
+        .btn.pressed {
+            transform: scale(0.97);
         }
-        .btn.b {
-            top: 262px;
+        #lightboard-btn-A {
+            top: 266px;
             left: 411px;
         }
-        .joystick {
+        #lightboard-btn-B {
+            top: 266px;
+            left: 365px;
+        }
+        #joystick {
             position: absolute;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             cursor: pointer;
-            top: 263px;
-            left: 21px;
+            top: 264px;
+            left: 26px;
             background-color: #4c4f55;
-            transition: transform cubic-bezier(0.2, 0, 0.13, 1.5) 150ms;
-            @apply(--layout-horizontal);
-            @apply(--layout-wrap);
+            transition: transform cubic-bezier(0.2, 0, 0.13, 1.5) 100ms, opacity cubic-bezier(0.2, 0, 0.13, 1.5) 100ms;
             overflow: hidden;
             transform: rotate(45deg);
+            opacity: 0;
+            @apply --layout-horizontal;
+            @apply --layout-wrap;
         }
-        .joystick:hover {
+        #joystick:hover,
+        #joystick.pressed {
             transform: rotate(45deg) scale(2);
+            opacity: 1;
         }
-        .joystick:not(:hover) .js-dir {
+        #joystick:not(:hover) .js-dir
+        #joystick:not(.pressed) .js-dir {
             opacity: 0 !important;
         }
-        .joystick:hover .js-dir {
+        #joystick:hover .js-dir,
+        #joystick.pressed .js-dir {
             opacity: 1;
         }
         .js-dir {
@@ -78,7 +100,7 @@
             width: 50%;
             height: 50%;
             box-sizing: border-box;
-            transition: opacity cubic-bezier(0.2, 0, 0.13, 1.5) 150ms;
+            transition: opacity cubic-bezier(0.2, 0, 0.13, 1.5) 100ms;
             background-color: #3c3d3f;
             border: 0px;
             cursor: pointer;
@@ -88,19 +110,21 @@
             display: block;
             font-weight: normal;
             text-transform: none;
-            font-size: auto;
             margin: 0;
-
         }
-        .joystick button.js-dir:focus, .joystick button.js-dir:hover {
+        #joystick button.js-dir:hover,
+        #joystick button.js-dir.pressed {
             outline: none;
             background-color: #45474c;
         }
-        .js-dir.up, .js-dir.left {
+        #joystick button.js-dir:focus {
+            outline: none;
+        }
+        #lightboard-js-up, #lightboard-js-left {
             margin-right: 1px;
             width: calc(50% - 1px);
         }
-        .js-dir.up, .js-dir.right {
+        #lightboard-js-up, #lightboard-js-right {
             margin-bottom: 1px;
             height: calc(50% - 1px);
         }
@@ -112,83 +136,287 @@
             border-style: solid;
             border-width: 0px;
         }
-        .js-dir.up .arrow-icon {
+        #lightboard-js-up .arrow-icon {
             border-top-width: 1px;
             border-left-width: 1px;
         }
-        .js-dir.right .arrow-icon {
+        #lightboard-js-right .arrow-icon {
             border-top-width: 1px;
             border-right-width: 1px;
         }
-        .js-dir.down .arrow-icon {
-            border-bottom-width: 1px;
-            border-right-width: 1px;
-        }
-        .js-dir.left .arrow-icon {
+        #lightboard-js-left .arrow-icon {
             border-bottom-width: 1px;
             border-left-width: 1px;
         }
-        .joystick button.js-dir:focus .arrow-icon, .joystick button.js-dir:hover .arrow-icon {
+        #lightboard-js-down .arrow-icon {
+            border-bottom-width: 1px;
+            border-right-width: 1px;
+        }
+        #joystick button.js-dir:hover .arrow-icon,
+        #joystick button.js-dir.pressed .arrow-icon {
             border-color: white;
+        }
+        #joystick button.js-dir:focus .arrow-icon {
+            outline: none;
+        }
+        #joystick button.js-dir:active .arrow-icon,
+        #joystick button.js-dir.pressed .arrow-icon {
+            transform: scale(0.9);
         }
     </style>
     <template>
         <iron-image src="/assets/mode/lightboard/body.svg" sizing="contain" width="[[width]]" height="[[height]]"></iron-image>
-        <button class="btn a" on-tap="_buttonATapped"></button>
-        <button class="btn b" on-tap="_buttonBTapped"></button>
-        <kano-bitmap-renderer id="led-matrix" bitmap="[[bitmap]]" width="16" height="8" pixel-size="21" spacing="3"></kano-bitmap-renderer>
-        <div class="joystick">
-            <button class="js-dir up" on-tap="_joystickUpTapped">
+        <button id="lightboard-btn-A"
+                class="btn"
+                on-mousedown="_mouseDown"
+                on-touchstart="_mouseDown"
+                on-mouseup="_mouseUp"
+                on-touchend="_mouseUp"
+                on-mouseleave="_mouseUp"></button>
+        <button id="lightboard-btn-B"
+                class="btn"
+                on-mousedown="_mouseDown"
+                on-touchstart="_mouseDown"
+                on-mouseup="_mouseUp"
+                on-touchend="_mouseUp"
+                on-mouseleave="_mouseUp"></button>
+        <kano-bitmap-renderer id="led-matrix" bitmap="[[bitmap]]" width="16" height="8" pixel-size="25" spacing="1"></kano-bitmap-renderer>
+        <div id="joystick">
+            <button id="lightboard-js-up"
+                    class="js-dir"
+                    on-mousedown="_mouseDown"
+                    on-touchstart="_mouseDown"
+                    on-mouseup="_mouseUp"
+                    on-touchend="_mouseUp"
+                    on-mouseleave="_mouseUp">
                 <div class="arrow-icon"></div>
             </button>
-            <button class="js-dir right" on-tap="_joystickRightTapped">
+            <button id="lightboard-js-right"
+                    class="js-dir"
+                    on-mousedown="_mouseDown"
+                    on-touchstart="_mouseDown"
+                    on-mouseup="_mouseUp"
+                    on-touchend="_mouseUp"
+                    on-mouseleave="_mouseUp">
                 <div class="arrow-icon"></div>
             </button>
-            <button class="js-dir left" on-tap="_joystickLeftTapped">
+            <button id="lightboard-js-left"
+                    class="js-dir"
+                    on-mousedown="_mouseDown"
+                    on-touchstart="_mouseDown"
+                    on-mouseup="_mouseUp"
+                    on-touchend="_mouseUp"
+                    on-mouseleave="_mouseUp">
                 <div class="arrow-icon"></div>
             </button>
-            <button class="js-dir down" on-tap="_joystickDownTapped">
+            <button id="lightboard-js-down"
+                    class="js-dir"
+                    on-mousedown="_mouseDown"
+                    on-touchstart="_mouseDown"
+                    on-mouseup="_mouseUp"
+                    on-touchend="_mouseUp"
+                    on-mouseleave="_mouseUp">
                 <div class="arrow-icon"></div>
             </button>
         </div>
         <slot></slot>
+        <iron-signals on-iron-signal-remove-shape="_removeShape"></iron-signals>
     </template>
     <script>
         /* globals Polymer, Kano */
         Polymer({
             is: 'kano-workspace-lightboard',
-            behaviors: [Kano.Behaviors.WorkspaceBehavior, Kano.MakeApps.PartsAPI.lightboard],
-            listeners: {
-                'update-shape': '_updateShape'
+            behaviors: [
+                Kano.Behaviors.WorkspaceBehavior,
+                Kano.MakeApps.PartsAPI.lightboard,
+                Kano.Behaviors.AppElementRegistryBehavior
+            ],
+            observers: [
+                '_disableJoystickMouse(joystickQueue.length)'
+            ],
+            properties: {
+                pressedKeys: {
+                    type: Object,
+                    value: () =>  {
+                        return {};
+                    }
+                },
+                firingEvents: {
+                    type: Object,
+                    value: () =>  {
+                        return {};
+                    }
+                },
+                joystickQueue: {
+                    type: Array,
+                    value: () => []
+                },
+                joystickMouseOff: {
+                    type: Boolean,
+                    reflectToAttribute: true
+                },
+                keyMap: {
+                    type: Object,
+                    value: () => {
+                        return {
+                            'ArrowLeft': 'lightboard-js-left',
+                            'ArrowUp': 'lightboard-js-up',
+                            'ArrowRight': 'lightboard-js-right',
+                            'ArrowDown': 'lightboard-js-down',
+                            'a': 'lightboard-btn-A',
+                            'b': 'lightboard-btn-B',
+                            's': 'lightboard-btn-B'
+                        };
+                    }
+                }
             },
             ready () {
-                this.set('bitmap', new Array(128));
+                let bitmap = [];
+                for (let i = 0; i < 128; i++) {
+                    bitmap.push("#000000");
+                }
+                this.set('bitmap', bitmap);
             },
             attached () {
-                Kano.AppModules.getModule('lightboard').connect({
-                    name: 'Make Apps'
-                });
+                this._onKeyDown = this._onKeyDown.bind(this);
+                this._onKeyUp = this._onKeyUp.bind(this);
+                this._stopSimulation = this._stopSimulation.bind(this);
+
+                document.body.addEventListener('keydown', this._onKeyDown);
+                document.body.addEventListener('keyup', this._onKeyUp);
+                window.addEventListener('blur', this._stopSimulation);
+
+                this._registerElement('lightboard-joystick', this.$.joystick);
+                this._registerElement('lightboard-button-A', this.$['lightboard-btn-A']);
+                this._registerElement('lightboard-button-B', this.$['lightboard-btn-B']);
+            },
+            detached () {
+                document.body.removeEventListener('keydown', this._onKeyDown);
+                document.body.removeEventListener('keyup', this._onKeyUp);
+                window.removeEventListener('blur', this._stopSimulation);
             },
             render (bitmap) {
                 this.bitmap = bitmap;
             },
-            _buttonATapped () {
-                this.fire('lightboard-btn-A');
+            _mouseDown (e) {
+                if (e.type === 'touchstart') {
+                    e.stopPropagation();
+                }
+                let target = e.currentTarget.id;
+                if (this._isJoystick(target)) {
+                    //Don't allow simultaneous joystick action
+                    if (this.JoystickPressed) {
+                        return;
+                    }
+                    this.joystickPressed = target;
+                    this.fire(target);
+                    this.firingEvents[target] = setInterval(() => this.fire(target), 100);
+                } else {
+                    this.fire(target);
+                }
+                this.isMouseUsed = true;
+                this.$[target].classList.add('pressed');
             },
-            _buttonBTapped () {
-                this.fire('lightboard-btn-B');
+            _mouseUp (e) {
+                if (e.type === 'touchend') {
+                    e.stopPropagation();
+                }
+                let target = e.currentTarget.id;
+                //Check if function wasn't called by mouseleave event without click
+                if (!this.isMouseUsed) {
+                    return;
+                }
+                //Check if mouseup is on the joystick being pressed
+                if (this.joystickPressed === target) {
+                    this.joystickPressed = null;
+                }
+                //Set false if no other joystick is being held
+                if (!this.joystickPressed) {
+                    this.isMouseUsed = false;
+                }
+                this.$[target].classList.remove('pressed');
+                clearInterval(this.firingEvents[target]);
             },
-            _joystickUpTapped () {
-                this.fire('lightboard-js-up');
+            _onKeyDown (e) {
+                let target = this.keyMap[e.key];
+
+                if (!target || this.pressedKeys[e.key]) {
+                    return;
+                }
+                this.pressedKeys[e.key] = true;
+
+                if (this._isJoystick(target)) {
+                    //Don't trigger action if mouse or touch controls joystick
+                    if (this.joystickPressed) {
+                        return;
+                    }
+                    //We use a queue of joystick keys to allow smoother transition
+                    if (this.joystickQueue.indexOf(target) === -1) {
+                        this.push('joystickQueue', target);
+                    }
+                    //Don't trigger action if there are keys in queue
+                    if (this.joystickQueue.length > 1) {
+                        return;
+                    }
+                }
+                this._simulatePressed(target, e.key);
             },
-            _joystickRightTapped () {
-                this.fire('lightboard-js-right');
+            _onKeyUp (e) {
+                let target = this.keyMap[e.key],
+                    releasedIndex;
+
+                if (this.pressedKeys[e.key]) {
+                    this.$[target].classList.remove('pressed');
+
+                    if (this._isJoystick(target)) {
+                        //Splice released key from queue and simulate next event if there's any
+                        releasedIndex = this.joystickQueue.indexOf(target);
+                        this.splice('joystickQueue', releasedIndex, 1);
+                        if (releasedIndex === 0 && this.joystickQueue.length) {
+                            this._simulatePressed(this.joystickQueue[0]);
+                        }
+                        // We keep the joystick simulation and only remove if no other arrow keys are pressed
+                        this.async(()=> {
+                            if (this.joystickQueue.length === 0) {
+                                this.$.joystick.classList.remove('pressed');
+                            }
+                        }, 300);
+                    }
+                    delete this.pressedKeys[e.key];
+                    clearInterval(this.firingEvents[target]);
+                }
             },
-            _joystickLeftTapped () {
-                this.fire('lightboard-js-left');
+            _simulatePressed (target) {
+                this.$[target].classList.add('pressed');
+                if (this._isJoystick(target)) {
+                    this.$.joystick.classList.add('pressed');
+                    this.fire(target);
+                    this.firingEvents[target] = setInterval(() => this.fire(target), 100);
+                } else {
+                    this.fire(target);
+                }
             },
-            _joystickDownTapped () {
-                this.fire('lightboard-js-down');
+            _isJoystick (target) {
+                return target.search(/js/) !== -1;
+            },
+            _disableJoystickMouse (keyQueueLength) {
+                //We disable pointer events if keys control joystick
+                if (keyQueueLength > 1) {
+                    this.cancelAsync(this.pendingDisable);
+                    this.joystickMouseOff = true;
+                } else if (keyQueueLength) {
+                    //We delay the disabling to minimise DOM interaction
+                    this.pendingDisable = this.async(() => this.joystickMouseOff = true, 800);
+                } else {
+                    this.cancelAsync(this.pendingDisable);
+                    this.joystickMouseOff = false;
+                }
+            },
+            _stopSimulation () {
+                Object.keys(this.firingEvents).forEach(target => clearInterval(this.firingEvents[target]));
+                this.cancelAsync(this.pendingDisable);
+                this.$.joystick.classList.remove('pressed');
+                this.pressedKeys = {};
             },
             stop () {
                 Kano.MakeApps.PartsAPI.lightboard.stop.apply(this);
@@ -201,7 +429,7 @@
                 return this.$['led-matrix'];
             },
             renderOnCanvas (ctx, util, scaleFactor) {
-                let bitmap = this.appModules.getModule('lightboard').getBitmap(),
+                let bitmap = this.getBitmap(),
                     pxSize = 21,
                     paintLeds, hsl, x, y;
 

@@ -12,6 +12,9 @@ window.Kano.Behaviors = window.Kano.Behaviors || {};
 var SharingBehavior = {
 
     properties: {
+        remixedShare: {
+            type: Object
+        },
         shareInfo: {
             type: Object,
             value: function () {
@@ -21,7 +24,7 @@ var SharingBehavior = {
         }
     },
     listeners: {
-        'cover-generated': '_goToForm',
+        'cover-generated': '_onCoverGenerated',
         'change-gif': '_goToGifCreator'
     },
     observers: [
@@ -34,31 +37,75 @@ var SharingBehavior = {
     _goToGifCreator () {
         this._goToPage('gif-creation');
     },
-    _goToForm () {
-        this._goToPage('sharing-form');
+    _onCoverGenerated () {
+        if (this.shareInfo.autoshare) {
+            this._shareApp({
+                share: true
+            });
+            this._goToPage('publishing');
+        } else {
+            this._goToPage('sharing-form');
+        }
     },
-    _shareApp () {
+    _shareApp (options) {
         // Generates the standalone component
         let savedApp,
         attachment,
+        appName = 'make-apps',
         cover = this.shareInfo.coverBlob,
-        workspaceInfo = new Blob([this.shareInfo.workspaceInfo], { type: 'application/json' });
+        spritesheet = this.shareInfo.spriteSheetBlob,
+        workspaceInfo = new Blob([this.shareInfo.workspaceInfo], { type: 'application/json' }),
+        files,
+        trackingData = {},
+        taggableParts = [
+            'gyro-accelerometer',
+            'motion-sensor'
+        ],
+        hardware = this.shareInfo.parts.filter(part => {
+            return part.partType === 'hardware' &&
+                   taggableParts.indexOf(part.partType) >= 0;
+        }).map(part => {
+            return { product: part.type };
+        });
 
-        cover.filename = 'cover.gif';
+        if (this.shareInfo.mode.id === 'lightboard') {
+            hardware.push({product: 'lightboard'});
+        }
+
+        if (this.remixedShare) {
+            trackingData.remixed_from_project_id = this.remixedShare.id;
+        }
+
+        if (this.shareInfo.mode.sharing.cover === 'still') {
+            cover.filename = 'cover.png';
+        } else {
+            cover.filename = 'cover.gif';
+        }
+
         workspaceInfo.filename = 'workspace_info.json';
 
         this.set('shareInfo.loading', true);
 
+        trackingData.project_type = appName;
+
+        files = {
+            cover: cover,
+            workspace_info: workspaceInfo
+        };
+
+        if (this.shareInfo.mode.sharing.spritesheet && spritesheet) {
+            spritesheet.filename = 'spritesheet.png';
+            files.lightboard_spritesheet = spritesheet;
+        }
+
         //Share by calling the API
         return Kano.MakeApps.sdk.api.share.post({
-            app: 'make-apps',
+            app: appName,
             title: this.shareInfo.title,
             description: this.shareInfo.description,
-            files: {
-                cover: cover,
-                workspace_info: workspaceInfo
-            },
-            is_private: this.shareInfo.is_private || false
+            files: files,
+            is_private: this.shareInfo.is_private || false,
+            hardware: hardware
         }).then((res) => {
             if (res.status == 200) {
                 let share = res.body.item;
@@ -76,6 +123,7 @@ var SharingBehavior = {
                 // Attach the file to the share
                 return Kano.MakeApps.sdk.api.share.attach({ id: share.id, files: { attachment } }).then((res) => {
                     if (res.status == 200) {
+                        trackingData.project_id = share.id;
                         return res.body.item;
                     } else {
                         throw new Error('Could not share the app');
@@ -87,6 +135,12 @@ var SharingBehavior = {
         }).then((share) => {
             this.set('shareInfo.id', share.id);
             this.set('shareInfo.slug', share.slug);
+            if (options && options.share) {
+                this.fire('tracking-event', {
+                    name: 'shared_project',
+                    data: trackingData
+                });
+            }
             if (!this.shareInfo.is_private) {
                 this._goToPage('success');
             }
@@ -98,7 +152,7 @@ var SharingBehavior = {
     },
 
     /**
-    * Opens the sharing modal and share the app
+    * Opens the sharing modal and shares the app
     */
     share (e) {
         let app = e.detail.app,
@@ -118,13 +172,14 @@ var SharingBehavior = {
             },
             workspaceInfo: e.detail.workspaceInfo,
             page: 'gif-creation',
-            title: '',
+            title: e.detail.title || '',
             description: '',
             id: null,
             background: e.detail.background,
             parts: e.detail.parts,
             code: e.detail.code,
-            mode
+            mode,
+            autoshare: e.detail.autoshare
         };
 
         this.set('shareInfo', shareInfo);
@@ -170,14 +225,14 @@ var SharingBehavior = {
         }
     },
 
-    confirmShare () {
+    confirmShare (e) {
         // The user is not authenticated
         if (!this.user) {
             // Flag the sharing as waiting authentication and trigger a login event
             this.waitingAuth = true;
             return this.fire('login');
         }
-        this._shareApp();
+        this._shareApp(e.detail);
 
         if (!this.shareInfo.is_private) {
             this._goToPage('publishing');

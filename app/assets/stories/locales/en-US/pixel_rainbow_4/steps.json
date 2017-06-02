@@ -1,0 +1,902 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Great! Now let's bring the whole lightboard to life.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "First, let's fill the board up and down. <br> Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "pN//yl~e%?Jm-*e82[R("
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "pN//yl~e%?Jm-*e82[R(",
+                            "inputName": "DO"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "pN//yl~e%?Jm-*e82[R("
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change it from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>rainbowY</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "rainbowY"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now we need to fetch a number. <br>Open the Variables tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "oKcA1?SeBgI$SC7!M}^?"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "oKcA1?SeBgI$SC7!M}^?",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "oKcA1?SeBgI$SC7!M}^?"
+                    }
+                },
+                "target": "VALUE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change it from <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>1</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_4"
+                        },
+                        "value": "1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's add a loop inside your code. <br>Open the Control tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "repeat_x_times"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "repeat_x_times",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "oKcA1?SeBgI$SC7!M}^?"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "oKcA1?SeBgI$SC7!M}^?"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "oKcA1?SeBgI$SC7!M}^?"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Your lightboard is 8 pixels high. Let's light them up! <br>Change this from <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>8</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "N",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "N",
+                            "id": "block_5"
+                        },
+                        "value": "8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Do you remember how to turn on the lights? <br>Open the lightboard tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#turn_on"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#turn_on",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "Xj-JcwD^S{)~@fXO/CQ6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "Xj-JcwD^S{)~@fXO/CQ6",
+                            "inputName": "DO"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "Xj-JcwD^S{)~@fXO/CQ6"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Let's bring back the color. <br> Open the Color tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "create_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "create_color",
+                        "id": "block_10"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "}:N^fbDBY(C7Fvrq|^GN",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+              "text": "Remember to change <kano-value-preview><span>rgb</span></kano-value-preview> to <kano-value-preview><span>hsv</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_10"
+                        },
+                        "value": "hsv"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, let's give the colors some energy. <br> Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_11"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "#Ex#Y{vyFDPK$,REjR+!"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_10",
+                            "rawId": "#Ex#Y{vyFDPK$,REjR+!",
+                            "inputName": "1"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "#Ex#Y{vyFDPK$,REjR+!"
+                    }
+                },
+                "target": "1"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change it from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>hue</span></kano-value-preview> again."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "hue"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Do you remember how to turn on specific lights? <br>Open the lightboard tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#light_x_y"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#light_x_y",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "}:N^fbDBY(C7Fvrq|^GN",
+                            "inputName": "TARGET"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                },
+                "target": "TARGET"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's fill the board left to right. <br>Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "[`bC5Y#fl}HU*gt,HiY4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "[`bC5Y#fl}HU*gt,HiY4",
+                            "inputName": "X"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "[`bC5Y#fl}HU*gt,HiY4"
+                    }
+                },
+                "target": "X"
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Your lightboard is 16 pixels wide. Make them shine! <br>Change from <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>16</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_8"
+                        },
+                        "value": "16"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's use our <b>rainbowY</b> variable again. <br> Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_9"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "[`bC5Y#fl}HU*gt,HiY4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "[`bC5Y#fl}HU*gt,HiY4",
+                            "inputName": "Y"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "[`bC5Y#fl}HU*gt,HiY4"
+                    }
+                },
+                "target": "Y"
+            }
+        },
+        {
+            "banner": {
+                "text": "Awesome. Now change from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>rainbowY</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_9"
+                        },
+                        "value": "rainbowY"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's add something to our <b>rainbowY</b> variable and fill up the whole board! <br> Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_12"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                        },
+                        "target": "block_12"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>rainbowY</span></kano-value-preview> again."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_12"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_12"
+                        },
+                        "value": "rainbowY"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "WOW! DANCING RAINBOWS! Make your lightboard dance to real music in the next challenge.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [],
+    "modules": [
+        "variables",
+        "control",
+        "math",
+        "color"
+    ],
+    "variables": [
+        "hue",
+        "rainbowY"
+    ],
+    "filterBlocks": {
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ],
+        "control": [
+            "every_x_seconds",
+            "repeat_x_times"
+        ],
+        "lightboard": [
+            "turn_on",
+            "light_x_y"
+        ],
+        "math": [
+            "math_random",
+            "unary"
+        ],
+        "color": [
+            "create_color"
+        ]
+    },
+    "mode": "lightboard",
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"var hue, rainbowY;\\n\\n\\nglobal.when('start', function () {\\n  hue = 0;\\n  time.every(1, 'frames', function () {\\n    hue += 1;\\n  });\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n  hue = 0;\\n  time.every(1, 'frames', function () {\\n    hue += 1;\\n  });\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"200\\\" y=\\\"40\\\"><field name=\\\"EVENT\\\">global.start<\/field><statement name=\\\"DO\\\"><block type=\\\"variables_set\\\" id=\\\"w+_vj^0ZY@C~WsRFBfxp\\\"><field name=\\\"VAR\\\">hue<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\":F:SO?JH6ij$1XL%!-!2\\\"><field name=\\\"NUM\\\">0<\/field><\/block><\/value><next><block type=\\\"every_x_seconds\\\" id=\\\"pN\/\/yl~e%?Jm-*e82[R(\\\"><field name=\\\"UNIT\\\">frames<\/field><value name=\\\"INTERVAL\\\"><shadow type=\\\"math_number\\\" id=\\\"*tP7h0Ya%`6\/q%^-O%hg\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><statement name=\\\"DO\\\"><block type=\\\"unary\\\" id=\\\"5_1RKzUKRmjY=.3EayGv\\\"><field name=\\\"LEFT_HAND\\\">hue<\/field><field name=\\\"OPERATOR\\\">+=<\/field><value name=\\\"RIGHT_HAND\\\"><shadow type=\\\"math_number\\\" id=\\\"e`v]\/TS(AT!)gZxR9p*9\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><\/next><\/block><\/statement><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

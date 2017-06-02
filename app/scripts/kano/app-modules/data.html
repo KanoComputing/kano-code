@@ -156,7 +156,7 @@
                             document.dispatchEvent(event);
                         } catch (e) {}
                         return r;
-                    });
+                    }).catch(e => {});
             }
 
             buildUrl (srcId, queryParams) {
@@ -199,7 +199,7 @@
                                 if (d.success && d.value) {
                                     s = JSON.stringify(d.value);
                                 }  else if (d.entries){
-                                    // for shares data 
+                                    // for shares data
                                     s = JSON.stringify(d);
                                 }  else {
                                     console.error('Failed to retrieve data');
@@ -211,8 +211,8 @@
                                 this.cache[url].response = response.clone();
 
                                 return response;
-                            });
-                        });
+                            }).catch(e => {});
+                        }).catch(e => {});
                     this.cache[url] = {
                         timestamp: currentDate,
                         finished: promise
@@ -226,7 +226,7 @@
                         // Wait for the request to finish before returning the response
                         return this.cache[url].finished.then(() => {
                             return this.cache[url].response.clone()
-                        });
+                        }).catch(e => {});
                     }
                 }
             }

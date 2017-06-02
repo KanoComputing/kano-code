@@ -2,7 +2,6 @@
 <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../behaviors.html">
 <!--
-
 `kano-input-color` Dislpay a color palette and allows selection by clicking on one of them
 
 Example:
@@ -14,35 +13,22 @@ Example:
 -->
 <dom-module id="kano-input-color">
     <style>
-    :host {
-        display: block;
-        padding: 10px 0px;
-        @apply(--layout-vertical);
-    }
-    :host .selectedColor {
-        width: 60px;
-        height: 60px;
-        border-radius: 2px;
-        margin: 3px;
-    }
     :host .colors {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        max-width: 220px;
-        margin: 0px auto;
+        text-align: center;
+        margin: 8px 0;
     }
     :host .color {
-        width: 40px;
-        height: 40px;
+        display: inline-block;
+        width: 29px;
+        height: 29px;
         margin: 2px;
-        border-radius: 4px;
+        border-radius: 3px;
     }
     :host .color:hover {
         cursor: pointer;
     }
     </style>
     <template>
-        <label>{{label}}</label>
         <div class="colors">
             <template is="dom-repeat" items="{{colors}}" as="color">
                 <div class="color" style$="[[_computeColor(color, value)]]" on-tap="_selectColor"></div>
@@ -53,22 +39,18 @@ Example:
 <script type="text/javascript">
 
     const COLORS = [
-        '#FFFFFF',  // White
-        '#CCCCCC',  // Light Gray
-        '#7D7A73',  // Gray
+        '#ffffff',  // White
         '#000000',  // Black
-        '#E95C5A',  // Red
-        '#FF842A',  // Kano Orange
-        '#F8EB1E',  // Yellow
-        '#70C222',  // Light Green
-        '#3CAA36',  // Green
-        '#0E6633',  // Dark Green
+        '#e95c5a',  // Red
+        '#ff842a',  // Kano Orange
+        '#f8eb1e',  // Yellow
+        '#3caa36',  // Green
+        '#0e6633',  // Dark Green
         '#59b3d0',  // Light Blue
-        '#2A3080',  // Dark Blue
+        '#2a3080',  // Dark Blue
         '#642682',  // Violet
-        '#E61974',  // Fuschia
-        '#DB7D92',  // Pink
-        '#683D12'   // Brown
+        '#db7d92',  // Pink
+        '#683d12'   // Brown
     ];
 
     Polymer({
@@ -88,13 +70,14 @@ Example:
             }
         },
 
+
         _computeColor (color, value) {
             let style = `background-color: ${color};`;
             if (color === value) {
                 style += `outline: 1px dashed #aaa;
                             outline-offset: 1px;`;
             }
-            if (color === '#FFFFFF') {
+            if (color === '#ffffff') {
                 style += `box-shadow: inset 0 0 0 1px #eee;`
             }
             return style;

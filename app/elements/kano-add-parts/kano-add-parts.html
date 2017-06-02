@@ -1,0 +1,168 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+<link rel="import" href="./kano-add-parts-item.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+<dom-module id="kano-add-parts">
+    <template>
+        <style>
+            :host {
+                display: block;
+                color: white;
+                background: #2A2F35;
+            }
+            .categories {
+                @apply --layout-horizontal;
+                padding: 24px 32px;
+            }
+            .categories h2 {
+                font-weight: normal;
+                font-size: 16px;
+                margin: 0;
+            }
+            .underline {
+                @apply --layout-self-stretch;
+                height: 4px;
+                border-radius: 6px;
+                margin: 24px 0;
+            }
+            .categories>* {
+                width: 238px;
+                @apply --layout-vertical;
+                @apply --layout-start-justified;
+                @apply --layout-flex;
+            }
+            .categories>*:not(:first-of-type) {
+                margin-left: 32px;
+            }
+            .categories .ui .underline {
+                background-color: #00d9c7;
+            }
+            .categories .data .underline {
+                background-color: #f25446;
+            }
+            .categories .hardware .underline {
+                background-color: #ff40a6;
+            }
+            header {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                height: 58px;
+                padding: 0 16px;
+                border-bottom: 2px solid #252A30;
+            }
+            header .label {
+                @apply --layout-flex;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            .button {
+                @apply --kano-button;
+                padding: 8px 24px;
+                font-size: 14px;
+                font-weight: bold;
+                border-radius: 3px;
+                background: #54595D;
+                text-shadow: none;
+            }
+            .button:hover {
+                background-color: #5b646b;
+            }
+            kano-add-parts-item {
+                @apply --layout-center-justified;
+                width: 100%;
+                height: 40px;
+                background-color: var(--color-chateau);
+                border-radius: 3px;
+                margin-bottom: 16px;
+            }
+            kano-add-parts-item:hover {
+                background-color: #5b646b;
+            }
+        </style>
+        <header>
+            <div class="label">[[localize('ADD_PARTS', 'Add Parts')]]</div>
+            <button type="button" class="button" on-tap="_confirm">[[localize('DONE', 'Done')]]</button>
+        </header>
+        <div class="categories">
+            <div class="ui">
+                <h2>Interface</h2>
+                <div class="underline"></div>
+                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('ui')]]" as="part" on-dom-change="_repeaterChanged">
+                    <kano-add-parts-item id$="[[part.type]]"
+                                            label="[[part.label]]"
+                                            type="[[part.type]]"
+                                            color-fill="#00d9c7"
+                                            on-part-tap="_addPart"></kano-add-parts-item>
+                </template>
+            </div>
+            <div class="data">
+                <h2>Data</h2>
+                <div class="underline"></div>
+                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('data')]]" as="part" on-dom-change="_repeaterChanged">
+                    <kano-add-parts-item id$="[[part.type]]"
+                                            label="[[part.label]]"
+                                            type="[[part.type]]"
+                                            color-fill="#f25446"
+                                            on-part-tap="_addPart"></kano-add-parts-item>
+                </template>
+            </div>
+            <div class="hardware">
+                <h2>Hardware</h2>
+                <div class="underline"></div>
+                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('hardware')]]" as="part" on-dom-change="_repeaterChanged">
+                    <kano-add-parts-item id$="[[part.type]]"
+                                            label="[[part.label]]"
+                                            type="[[part.type]]"
+                                            color-fill="#ff40a6"
+                                            on-part-tap="_addPart"></kano-add-parts-item>
+                </template>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-add-parts',
+            behaviors: [
+                Kano.Behaviors.I18nBehavior,
+                Kano.Behaviors.AppElementRegistryBehavior
+            ],
+            properties: {
+                availableParts: Array
+            },
+            ready () {
+                this.selection = {};
+            },
+            _getFilter (type) {
+                return (item) => {
+                    return item.partType === type;
+                };
+            },
+            _addPart (e) {
+                let type = e.detail;
+                if (typeof this.selection[type] === 'undefined') {
+                    this.set(`selection.${type}`, 0);
+                }
+                this.set(`selection.${type}`, Math.min(5, this.selection[type] + 1));
+                this._confirm();
+            },
+            _confirm () {
+                this.fire('confirm', this.selection);
+            },
+            reset () {
+                this.selection = {};
+            },
+            _repeaterChanged (e) {
+                let target = e.path ? e.path[0] : e.target,
+                    partEls = Polymer.dom(target.parentNode).querySelectorAll('kano-add-parts-item'),
+                    partEl;
+
+                for (let i = 0; i < partEls.length; i++) {
+                    partEl = partEls[i];
+                    this._registerElement(`parts-panel-${partEl.getAttribute('id')}`, partEl);
+                }
+            }
+        });
+    </script>
+</dom-module>

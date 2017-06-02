@@ -110,36 +110,33 @@
             this.data.mode = app.mode.id || app.mode;
             mode = Kano.MakeApps.Mode.modes[this.data.mode]
             defaultXml = Blockly.Xml.textToDom(mode.defaultBlocks);
-            if (app.parts.length) {
-                this.data.steps.push({
-                    "tooltips": [{
-                        "location": "add-part-button",
-                        "position": "top",
-                        "text": Kano.MakeApps.CopyManager.get('add-parts') + "<br>" + Kano.MakeApps.CopyManager.get('open-parts-drawer')
-                    }],
-                    "validation": {
-                        "open-parts": true
-                    }
-                });
-            }
-            this.data.steps = this.data.steps.concat(app.parts.map(function (part, index) {
-                var location = "parts-panel-part-" + part.type;
+            app.parts.map(function (part, index) {
+                var location = "parts-panel-" + part.type;
                 if (this.data.parts.indexOf(part.type) === -1) {
                     this.data.parts.push(part.type);
                 }
                 this.partsIds[part.id] = "part_" + this.uid('part');
                 this.appParts[part.id] = part;
-                return {
+
+                this.data.steps.push({
+                    "banner": {
+                        "text": Kano.MakeApps.CopyManager.get('add-parts') + "<br>" + Kano.MakeApps.CopyManager.get('open-parts-drawer')
+                    },
+                    "beacon": {
+                        "target": "add-part-button"
+                    },
+                    "validation": {
+                        "open-parts": true
+                    }
+                });
+                this.data.steps.push({
                     "tooltips": [{
-                        "location": location,
-                        "position": "right",
-                        "text": "Drag the " + part.name + " to your app"
+                        "location": "parts-panel",
+                        "position": "top",
+                        "text": "Click on <b>" + part.name + "</b> to add it to your app"
                     }],
-                    "highlight": location,
-                    "arrow": {
-                        "source": location,
-                        "target": "workspace-panel",
-                        "size": 120
+                    "beacon": {
+                        "target": location
                     },
                     "validation": {
                         "add-part": {
@@ -147,28 +144,18 @@
                             "id": this.partsIds[part.id]
                         }
                     }
-                };
-            }.bind(this)));
-            if (app.parts.length) {
-                this.data.steps.push({
-                    "tooltips": [{
-                        "location": "add-part-button",
-                        "position": "top",
-                        "text": Kano.MakeApps.CopyManager.get('start-code') + "<br>" + Kano.MakeApps.CopyManager.get('close-parts-drawer')
-                    }],
-                    "validation": {
-                        "close-parts": true
-                    }
                 });
-            }
+            }.bind(this));
             this.data.steps = this.data.steps.concat(this.matchDefaultBlocks(xml.children, defaultXml.children));
             this.data.steps.push({
-                "tooltips": [{
-                    "location": "workspace-panel",
-                    "position": "left",
+                "banner": {
                     "text": "You can now test the app",
                     "next_button": true
-                }]
+                },
+                "beacon": {
+                    "target": "banner-button",
+                    "offset": 0
+                }
             });
         };
 
@@ -197,7 +184,7 @@
                         steps.push({
                             "tooltips": [{
                                 "text": "You can remove this block we won't need it for this app",
-                                "position": "left",
+                                "position": "right",
                                 "location": {
                                     "block": {
                                         "rawId": defaultNode.getAttribute('id')
@@ -296,8 +283,8 @@
 
             commentData = this.parseComment(parent);
 
-            if (commentData.tooltipText) {
-                commentData.tooltipText = commentData.tooltipText[0];
+            if (commentData.bannerText) {
+                commentData.bannerText = commentData.bannerText[0];
             }
 
             if (commentData.freeWill) {
@@ -327,7 +314,7 @@
                 if (node.firstChild.nodeValue != fieldDefault) {
                     let challengeId = parent.getAttribute('challengeId'),
                         rawId = parent.getAttribute('id'),
-                        tooltipText, fieldPreview;
+                        bannerText, fieldPreview, currentFieldPreview;
                     let selector = {
                         shadow: inputName
                     },
@@ -339,17 +326,20 @@
                     }
                     fieldValue = this.translate('field', node.firstChild.nodeValue);
                     fieldPreview = this.generateFieldPreview(node, fieldValue);
-                    tooltipText = commentData.tooltipText || 'Change to $fieldPreview';
-                    tooltipText = tooltipText.replace(/\$fieldPreview/g, fieldPreview);
+                    currentFieldPreview = this.generateFieldPreview(node, fieldDefault);
+                    bannerText = commentData.bannerText || `Change $currentFieldPreview to $fieldPreview`;
+                    bannerText = bannerText.replace(/\$fieldPreview/g, fieldPreview);
+                    bannerText = bannerText.replace(/\$currentFieldPreview/g, currentFieldPreview);
                     // Add a `change value` step to get the right value
                     step = {
-                        "tooltips": [{
-                            "location": {
+                        "banner": {
+                            "text": bannerText
+                        },
+                        "beacon": {
+                            "target": {
                                 "block": selector
-                            },
-                            "position": "top",
-                            "text": tooltipText
-                        }],
+                            }
+                        },
                         "validation": {
                             "blockly": {
                                 "value": {
@@ -456,13 +446,14 @@
             }
 
             steps.push({
-                "tooltips": [{
-                    "location": {
-                        "category": categoryLocation
-                    },
-                    "position": "right",
+                "banner": {
                     "text": commentData.openTrayText || "Open " + categoryLabel + " tray"
-                }],
+                },
+                "beacon": {
+                    "target": {
+                        "category": categoryLocation
+                    }
+                },
                 "validation": {
                     "blockly": {
                         "open-flyout": categoryLocation
@@ -470,19 +461,13 @@
                 }
             });
             steps.push({
-                "tooltips": [{
-                    "location": {
-                        "flyout_block": blockLocation
-                    },
-                    "position": "right",
-                    "text": commentData.createText || 'Drag the <kano-blockly-block type="' + markdownType + '"></kano-blockly-block> block onto your code space'
-                }],
-                "arrow": {
+                "banner": {
+                    "text": commentData.createText || 'Drag the block onto your code space'
+                },
+                "beacon": {
                     "target": {
                         "flyout_block": blockLocation
-                    },
-                    "angle": 120,
-                    "size": 80
+                    }
                 },
                 "validation": {
                     "blockly": {
@@ -500,16 +485,17 @@
             }
             if (parent) {
                 let step = {
-                    "tooltips": [{
-                        "location": {
+                    "banner": {
+                        "text": commentData.connectText || Kano.MakeApps.CopyManager.get('connect-blocks')
+                    },
+                    "beacon": {
+                        "target": {
                             "block": {
                                 id: parent.getAttribute('challengeId'),
                                 rawId: parent.getAttribute('id')
                             }
-                        },
-                        "position": "left",
-                        "text": commentData.connectText || Kano.MakeApps.CopyManager.get('connect-blocks')
-                    }],
+                        }
+                    },
                     "validation": {
                         "blockly": {
                             "connect": {
@@ -535,13 +521,14 @@
                 steps.push(step);
             } else {
                 steps.push({
-                    "tooltips": [
-                        {
-                            "location": "blocks-panel",
-                            "position": "right",
-                            "text": Kano.MakeApps.CopyManager.get('drop-codespace')
-                        }
-                    ],
+                    "banner": {
+                        "text": Kano.MakeApps.CopyManager.get('drop-codespace')
+                    },
+                    "beacon": {
+                        "target": "blocks-panel",
+                        "offset": 300,
+                        "angle": 200
+                    },
                     "validation": {
                         "blockly": {
                             "drop": {

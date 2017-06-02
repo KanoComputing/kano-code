@@ -40,9 +40,10 @@
                         vendorName = winNav.vendor,
                         isOpera = winNav.userAgent.indexOf("OPR") > -1,
                         isIEedge = winNav.userAgent.indexOf("Edge") > -1,
+                        isElectron = winNav.userAgent.indexOf("Electron") > -1,
                         isIOSChrome = winNav.userAgent.match("CriOS");
 
-                    if((isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) || ClientUtil.isPi()) {
+                    if((isChromium !== null && isChromium !== undefined && vendorName === "Google Inc." && isOpera == false && isIEedge == false) || ClientUtil.isPi() || isElectron) {
                         // Do not show
                     } else if(isIOSChrome){
                         this._promptToTryChrome();

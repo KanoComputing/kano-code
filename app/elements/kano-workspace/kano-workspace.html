@@ -5,14 +5,13 @@
 <link rel="import" href="../../bower_components/web-components/kano-sound-player-behavior/kano-sound-player-behavior.html">
 <link rel="import" href="../behaviors/kano-cover-generator-behavior.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
-<link rel="import" href="../kano-workspace-head/kano-workspace-head.html">
-<link rel="import" href="../kano-workspace-toolbar/kano-workspace-toolbar.html">
 <link rel="import" href="../ui/kano-ui/kano-ui.html">
 
 <dom-module id="kano-workspace">
-    <link rel="lazy-import" href="../kano-workspace-lightboard/kano-workspace-lightboard.html" group="lightboard">
-    <link rel="lazy-import" href="../kano-workspace-camera/kano-workspace-camera.html" group="camera">
-    <link rel="lazy-import" href="../kano-workspace-normal/kano-workspace-normal.html" group="normal">
+    <link rel="lazy-import" href="../kano-editor-lightboard/kano-editor-lightboard.html" group="lightboard">
+    <link rel="lazy-import" href="../kano-editor-camera/kano-editor-camera.html" group="camera">
+    <link rel="lazy-import" href="../kano-editor-normal/kano-editor-normal.html" group="normal">
+    <link rel="lazy-import" href="../kano-editor-simple/kano-editor-simple.html" group="simple">
     <style>
     @keyframes fade-in {
         from { opacity: 0 },
@@ -24,25 +23,6 @@
         border: 0px;
         overflow: hidden;
     }
-    :host #content {
-        position: relative;
-        @apply(--layout-flex);
-        transition: background linear 150ms;
-    }
-    :host.running #content {
-        --kano-ui-viewport: {
-            border: none;
-        };
-    }
-    :host(.fullscreen) #content {
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 100%;
-        z-index: 100;
-        background-color: rgba(0, 0, 0, 0.8);
-    }
     :host ::slotted(#dropzone) {
         margin: auto;
         position: relative;
@@ -53,98 +33,14 @@
     #workspace-placeholder>* {
         animation: fade-in 200ms linear;
     }
-    :host kano-workspace-head {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-    }
-    :host .fullscreen-close {
-        position: fixed;
-        top: 0px;
-        right: 0px;
-        color: white;
-        background-color: transparent;
-        z-index: 101;
-        border: none;
-        width: 56px;
-        height: 56px;
-        font-size: 50px;
-        outline: none;
-        cursor: pointer;
-    }
-    :host .fullscreen-close div {
-        transition: all 0.3s ease;
-        transform: translate(0, -7px);
-    }
-    :host .fullscreen-close div:hover {
-        transform: translate(0, -9px);
-        color: #eaeaea;
-    }
-    :host kano-workspace-lightboard {
-        margin-top: -35px;
-    }
-    :host(.fullscreen) kano-workspace-lightboard {
-        margin-top: 0;
-    }
-    .pause-overlay {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 100%;
-        height: 100%;
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-    }
-    .pause-overlay iron-image {
-        width: 40%;
-        height: 40%;
-        cursor: pointer;
-    }
-    .editable-layout {
-        opacity: 0.5;
-        pointer-events: none;
-    }
     *[hidden] {
         display: none !important;
     }
     </style>
     <template>
-        <button class="fullscreen-close" hidden$="[[!fullscreen]]" on-tap="_toggleFullscreen">
-            <div>&times;</div>
-        </button>
-        <kano-ui-viewport mode="scaled"
-                    view-width="[[mode.workspace.viewport.width]]"
-                    view-height="[[mode.workspace.viewport.height]]"
-                    id="content"
-                    on-tap="onTap">
-            <!-- The variable workspace component will be inserted here -->
-            <div id="workspace-placeholder">
-
-            </div>
-            <div class="pause-overlay" hidden$="[[_isPauseOverlayHidden(running, editableLayout)]]">
-                <iron-image src="/assets/icons/play-btn-overlay.svg" sizing="contain" on-tap="_runButtonClicked"></iron-image>
-            </div>
-            <kano-workspace-toolbar
-                id="toolbar"
-                show-mouse-position="{{showMousePosition}}"
-                mouse-x="[[mouseX]]"
-                mouse-y="[[mouseY]]"
-                running="[[running]]"
-                editable-layout="[[editableLayout]]"
-                parts-menu-open="[[partsMenuOpen]]"
-                on-pause-run-button-clicked="_runButtonClicked"
-                on-fullscreen-button-clicked="_toggleFullscreen"
-                on-reset-button-clicked="_resetAppState"
-                on-edit-layout-button-clicked="_editLayoutClicked"
-                no-player-bar="[[simpleMode]]"
-                no-part-controls="[[simpleMode]]"></kano-workspace-toolbar>
-        </kano-ui-viewport>
-        <kano-workspace-head challenge-state="[[challengeState]]"
-        no-save="[[simpleMode]]"
-        no-settings="[[simpleMode]]" highlight></kano-workspace-head>
+        <!-- The variable workspace component will be inserted here -->
+        <div id="workspace-placeholder" on-tap="onTap"></div>
         <array-selector id="selector" items="{{parts}}" selected="{{selected}}"></array-selector>
-        <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="alt+t" on-keys-pressed="_onAltT" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="esc" on-keys-pressed="_cancel" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="tab" on-keys-pressed="_selectNextPart" target="[[target]]"></iron-a11y-keys>
@@ -158,9 +54,6 @@
 </dom-module>
 
 <script type="text/javascript">
-    const importsMap = {
-        'simple': 'normal'
-    };
     const importedWorkspaces = {};
     /* globals Polymer, Kano */
     Polymer({
@@ -170,7 +63,8 @@
             Kano.Behaviors.CoverGeneratorBehavior,
             Kano.Behaviors.SoundPlayerBehavior,
             Kano.Behaviors.AppElementRegistryBehavior,
-            Polymer.LazyImportsBehavior
+            Polymer.LazyImportsBehavior,
+            Polymer.Templatizer
         ],
         properties: {
             parts: {
@@ -186,7 +80,8 @@
             editableLayout: {
                 type: Boolean,
                 value: false,
-                notify: true
+                notify: true,
+                observer: '_editableLayoutChanged'
             },
             selected: {
                 type: Object,
@@ -208,7 +103,8 @@
                 type: String
             },
             partsMenuOpen: {
-                type: Boolean
+                type: Boolean,
+                observer: '_partsMenuOpenChanged'
             },
             challengeState: {
                 type: Object
@@ -218,12 +114,20 @@
                 computed: 'isModeSimple(mode)'
             }
         },
+        _instanceProps: {
+            running: true,
+            editableLayout: true,
+            partsMenuOpen: true,
+            parts: true
+        },
         observers: [
             'partsChanged(parts.*)',
             'backgroundChanged(background)'
         ],
         listeners: {
-            'part-tapped': 'onPartTapped'
+            'part-tapped': 'onPartTapped',
+            'editable-layout-clicked': 'toggleEditableLayout',
+            'part-selected': '_partSelected'
         },
         isModeSimple (mode) {
             return mode.id === "simple";
@@ -240,12 +144,6 @@
             };
             this.devices = {};
             this.devices.get = this._getPartById.bind(this);
-
-            this.showMousePosition = false;
-            this.mouseX = 250;
-            this.mouseY = 250;
-
-            this.fullscreen = false;
         },
         attached () {
             this.target = document.body;
@@ -254,19 +152,26 @@
                 this.soundReady = true;
             }, 500);
         },
-        _editLayoutClicked () {
-            this.toggleEditableLayout();
+        _editableLayoutChanged () {
+            if (this.instance) {
+                this.instance.set('editableLayout', this.editableLayout);
+            }
+            if (this.editableLayout) {
+                this.prevRunningState = this.running;
+                this.set('running', false);
+                this.fire('open-settings');
+            } else {
+                this.set('running', this.prevRunningState);
+                this.fire('close-settings');
+            }
+        },
+        _partsMenuOpenChanged () {
+            if (this.instance) {
+                this.instance.set('partsMenuOpen', this.partsMenuOpen);
+            }
         },
         _onAltT () {
             this.toggleEditableLayout();
-        },
-        _toggleFullscreen () {
-            this.toggleClass('fullscreen');
-            this.$.content.resizeView();
-            this.fullscreen = !this.fullscreen;
-        },
-        _isPauseOverlayHidden (running, editableLayout) {
-            return running || editableLayout;
         },
         _moveLeft (e) {
             this._movePart('left', e.detail.keyboardEvent.shiftKey);
@@ -331,32 +236,29 @@
         },
         toggleEditableLayout (value) {
             this.set('editableLayout', typeof value !== 'boolean' ? !this.editableLayout : value);
-            if (this.editableLayout) {
-                this.prevRunningState = this.running;
-                this.set('running', false);
-                this.fire('open-settings');
-            } else {
-                this.set('running', this.prevRunningState);
-                this.fire('close-settings');
-            }
         },
         _getPartById (id) {
-            if (id === this.dropzone.getAttribute('id') || id === 'dropzone') {
-                return this.dropzone;
+            let dropzone = this.$$('.dropzone');
+            if (id === dropzone.getAttribute('id') || id === 'dropzone') {
+                return dropzone.getWorkspace();
             }
-            return this.dropzone.querySelector(`#${id}`);
+            return dropzone.querySelector(`#${id}`);
         },
         backgroundChanged (bg) {
-            if (this.dropzone && this.dropzone.setBackground) {
-                this.dropzone.setBackground(bg);
+            let dropzone = this.$$('.dropzone');
+            if (dropzone && dropzone.setBackground) {
+                dropzone.setBackground(bg);
             }
         },
+        _forwardInstancePath (inst, path, value) {
+            this.set(path, value);
+            this._parentProps = {};
+        },
         _modeChanged (mode) {
-            let oldDropzone = this.dropzone,
-                placeholder = this.$$('#workspace-placeholder'),
+            let placeholder = this.$$('#workspace-placeholder'),
                 newDropzone, modeId, importPromise;
 
-            modeId = importsMap[mode.id] || mode.id;
+            modeId = mode.id;
 
             this.async(() => {
                 if (importedWorkspaces[modeId]) {
@@ -365,57 +267,56 @@
                     importPromise = this.importLazyGroup(modeId);
                 }
                 importPromise.then(() => {
+                    let template,
+                        tagName;
                     importedWorkspaces[modeId] = true;
-                    if (mode && mode.workspace.component) {
-                        newDropzone = document.createElement(mode.workspace.component);
-                    } else {
-                        newDropzone = document.createElement('kano-workspace-normal');
-                    }
+                    tagName = `kano-editor-${modeId}`;
+                    template = document.createElement('template');
+                    template.innerHTML = `<${tagName} id$="[[mode.id]]"
+                                                        class="dropzone"
+                                                        width="[[mode.workspace.viewport.width]]"
+                                                        height="[[mode.workspace.viewport.height]]"
+                                                        running="[[running]]"
+                                                        editable-layout="[[editableLayout]]"
+                                                        parts-menu-open="[[partsMenuOpen]]"
+                                                        parts="{{parts}}">
+                                                        </${tagName}>`;
 
-                    newDropzone.setAttribute('id', this.mode.id);
-                    newDropzone.setAttribute('class', 'dropzone');
-                    newDropzone.setAttribute('width', this.mode.workspace.viewport.width);
-                    newDropzone.setAttribute('height', this.mode.workspace.viewport.height);
+                    this.templatize(template);
 
-                    newDropzone.addEventListener('mouse-position-x-changed', this.mouseXChanged.bind(this));
-                    newDropzone.addEventListener('mouse-position-y-changed', this.mouseYChanged.bind(this));
-                    this.showMousePosition = mode.id === 'normal';
+                    this.instance = this.stamp({
+                        mode: this.mode,
+                        parts: this.parts,
+                    });
 
-                    if (newDropzone.setBackground) {
-                        newDropzone.setBackground(this.background);
-                    }
+                    newDropzone = this.instance.root;
 
                     /* Remove old dropzone and add new one */
-                    if (oldDropzone) {
-                        placeholder.removeChild(oldDropzone);
+                    if (this.dropzone) {
+                        placeholder.removeChild(this.dropzone);
                     }
                     placeholder.appendChild(newDropzone);
 
                     /* Update dropzone reference */
-                    this.dropzone = newDropzone;
+                    this.dropzone = this.$$(`#${this.mode.id}`);
+
+                    if (this.dropzone.setBackground) {
+                        this.dropzone.setBackground(this.background);
+                    }
 
                     this.parts.forEach((model, index) => {
                         this.insertPart(`#${index}`);
                     });
-                    this.dropzone.setAttribute('width', this.mode.workspace.viewport.width);
-                    this.dropzone.setAttribute('height', this.mode.workspace.viewport.height);
-                    this.$.content.resizeView();
                     this.fire('mode-ready');
                 });
             });
-        },
-        mouseXChanged (e) {
-            this.mouseX = e.detail.value;
-        },
-        mouseYChanged (e) {
-            this.mouseY = e.detail.value;
         },
         onTap (e) {
             let target;
             if (this.running) {
                 return;
             }
-            target = e.target;
+            target = e.path ? e.path[0] : e.target;
             if (target === this.dropzone) {
                 this.clearSelection();
             } else if (target === this.$.content) {
@@ -446,6 +347,19 @@
             this.clearSelection();
             this.$.selector.select(e.detail.model);
         },
+        _partSelected (e) {
+            let part = e.detail;
+            if (this.selected && part.id === this.selected.id) {
+                this.fire('close-settings');
+                this.clearSelection();
+                this.set('editableLayout', false);
+            } else {
+                let selectedPartElement = this.dropzone.querySelector('.selected');
+                this.toggleClass('selected', false, selectedPartElement);
+                this.$.selector.select(part);
+                this.set('editableLayout', true);
+            }
+        },
         _selectedChanged (part) {
             let partElement;
             if (!this.dropzone || !part) {
@@ -461,6 +375,9 @@
                 return;
             }
             path = e.path;
+            if (this.dropzone) {
+                this.dropzone.notifyPath(path, e.value);
+            }
             if (path === 'parts.splices') {
                 let keySplices = e.value.keySplices,
                     indexSplices = e.value.indexSplices;
@@ -520,6 +437,7 @@
             tagName = model.tagName;
             element = document.createElement(tagName);
             element.setAttribute('id', model.id);
+            element.classList.add(model.partType);
             element.addEventListener('model-changed', (e) => {
                 let detail = e.detail,
                     path;
@@ -553,9 +471,9 @@
                 acc[model.id] = this.elements[key];
                 return acc;
             }, {});
-            dict[this.mode.id] = this.dropzone;
+            dict[this.mode.id] = this.dropzone.getViewport();
             // Support legacy apps
-            dict['dropzone'] = this.dropzone;
+            dict['dropzone'] = this.dropzone.getViewport();
             return dict;
         },
         runningChanged () {
@@ -564,6 +482,9 @@
                 this.clearSelection();
             } else {
                 this.classList.remove('running');
+            }
+            if (this.instance) {
+                this.instance.set('running', this.running);
             }
         },
         getPartIndexById (id) {
@@ -575,10 +496,10 @@
             }
         },
         getViewport () {
-            return this.dropzone;
+            return this.$$('.dropzone').getViewport();
         },
         getViewportScale () {
-            return this.$.content.getScale();
+            return this.dropzone.getViewportScale();
         },
         generateCover () {
             return Kano.Behaviors.CoverGeneratorBehavior.generateCover(
@@ -592,12 +513,6 @@
             if (this.dropzone) {
                 this.dropzone.clear();
             }
-        },
-        _runButtonClicked () {
-            this.fire('run-button-clicked');
-        },
-        _resetAppState () {
-            this.fire('reset-app-state');
         }
     });
 </script>

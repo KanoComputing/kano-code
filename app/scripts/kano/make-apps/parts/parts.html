@@ -32,6 +32,9 @@
             create (model, size) {
                 return new this.partTypes[model.partType](model, size);
             },
+            freeId (model) {
+                this.Part.freeId(model);
+            },
             clear () {
                 return this.Part.clear();
             },

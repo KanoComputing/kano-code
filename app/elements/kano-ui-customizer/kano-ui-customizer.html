@@ -1,40 +1,22 @@
 <link rel="import" href="../inputs/kano-input/kano-input.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <dom-module id="kano-ui-customizer">
     <style>
-    :host {
-        display: block;
-        @apply(--layout-vertical);
-        @apply(--layout-start);
-        transition: all linear 100ms;
-    }
-    :host .line {
-        width: 100%;
-        margin-top: 5px;
-        @apply(--layout-vertical);
-    }
-    :host .line label {
-        font-size: 1.1em;
-        font-weight: 400;
-        color: var(--color-grey-darker, grey);
-    }
+        :host {
+            @apply --layout-vertical;
+        }
     </style>
     <template>
-        <template is="dom-repeat"
-                items="{{customizable}}"
-                as="property">
-            <div class="line">
-                <kano-input id$="[[property.key]]"
-                        type="{{property.type}}"
-                        name="name"
-                        label="{{property.label}}"
-                        symbol="{{property.symbol}}"
-                        on-value-changed="propertyChanged"
-                        value$="[[computeValue(property.key)]]"
-                        min="[[property.min]]"
-                        max="[[property.max]]"
-                        options="[[property.options]]">
-                </kano-input>
-            </div>
+        <template is="dom-repeat" items="{{customizable}}" as="property"> 
+            <kano-input id$="[[property.key]]"
+                    type="{{property.type}}"
+                    label="{{property.label}}"
+                    symbol="{{property.symbol}}"
+                    on-value-changed="propertyChanged"
+                    value="[[computeValue(property.key)]]"
+                    min="[[property.min]]"
+                    max="[[property.max]]"
+                    options="[[property.options]]"></kano-input>
         </template>
     </template>
 </dom-module>

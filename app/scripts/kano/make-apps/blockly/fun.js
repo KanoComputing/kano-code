@@ -2,14 +2,14 @@
 (function (Kano) {
     Kano.MakeApps = Kano.MakeApps || {};
 
-    const COLOUR = '#1198ff';
+    const COLOR = '#1198ff';
 
     let register = (Blockly) => {
         Blockly.Blocks.random_cat = {
             init: function () {
                 let json = {
                     id: 'random_cat',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: Blockly.Msg.RANDOM_CAT,
                     output: 'String'
                 };
@@ -30,7 +30,7 @@
     let category = Kano.MakeApps.Blockly.Defaults.createCategory({
         name: Blockly.Msg.CATEGORY_FUN,
         id: 'fun',
-        colour: COLOUR,
+        colour: COLOR,
         blocks: ['random_cat']
     });
 

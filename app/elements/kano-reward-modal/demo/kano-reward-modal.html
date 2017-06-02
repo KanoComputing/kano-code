@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+        <link rel="import" href="../kano-reward-modal.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            .wrapper {
+                @apply --layout-vertical;
+            }
+            button {
+                background-color: #fff;
+                max-width: 250px;
+                padding: 15px 25px;
+                margin: 5px;
+                border: 1px solid;
+            }
+            .events {
+                display: flex;
+                flex-direction: column;
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <h2>kano-modal demo</h2>
+        <demo-snippet>
+            <template>
+                <template is="dom-bind" id="bind">
+                    <div class="wrapper">
+                        <button type="button" name="button" on-tap="openModalAnonym">Modal no user</button>
+                        <button type="button" name="button" on-tap="openModalUser">Modal with user</button>
+                        <button type="button" name="button" on-tap="openModalAnonymLevelUp">Modal no user with levelup</button>
+                        <button type="button" name="button" on-tap="openModalUserLevelUp">Modal with user and levelup</button>
+                        <button type="button" name="button" on-tap="openModalUserTenXp">Modal, 10 xp gained with user</button>
+                    </div>
+                    <div class="events">
+                        <h2>Events</h2>
+                        <template is="dom-repeat" items="[[events]]">
+                            <div>[[item]]</div>
+                        </template>
+                    </div>
+                    <kano-reward-modal id="modal"
+                                   on-confirm="onConfirm"
+                                   on-second-action="onSecondAction"></kano-reward-modal>
+                </template>
+            </template>
+        </demo-snippet>
+        <script type="text/javascript">
+            document.addEventListener('WebComponentsReady', () => {
+                var bind = document.getElementById('bind'),
+                    modal = document.getElementById('modal');
+                bind.events = [];
+
+                gamificationData = {
+                    "update": {
+                        "levels": {
+                            "progress": {
+                                "xp": 510,
+                                "level": 4,
+                                "xp-offset": 120,
+                                "next-threshold": 580,
+                                "complete": 0.631578947368421
+                            },
+                            "changes": {
+                                "xp-offset": {
+                                    "oldValue": 20,
+                                    "newValue": 120
+                                },
+                                "total-xp": {
+                                    "oldValue": 410,
+                                    "newValue": 510
+                                },
+                                "complete": {
+                                    "oldValue": 0.10526315789473684,
+                                    "newValue": 0.631578947368421
+                                }
+                            }
+                        }
+                    }
+                };
+                gamificationDataWithLevelUp = {
+                    "update": {
+                        "levels": {
+                            "progress": {
+                                "level": 1
+                            },
+                            "changes": {
+                                "total-xp": {
+                                    "oldValue": 0,
+                                    "newValue": 100
+                                },
+                                "level": {
+                                    "oldValue": 1,
+                                    "newValue": 2
+                                },
+                                "xp-offset": {
+                                    "oldValue": 0,
+                                    "newValue": 100
+                                },
+                                "next-threshold": {
+                                    "oldValue": 100,
+                                    "newValue": 260,
+                                }
+                            }
+                        }
+                    }
+                };
+                gamificationDataTen = {
+                    "update": {
+                        "levels": {
+                            "progress": {
+                                "xp": 310,
+                                "level": 3,
+                                "xp-offset": 50,
+                                "next-threshold": 390,
+                                "complete": 0.38461538461538464
+                            },
+                            "changes": {
+                                "xp-offset": {
+                                    "oldValue": 40,
+                                    "newValue": 50
+                                },
+                                "total-xp": {
+                                    "oldValue": 300,
+                                    "newValue": 310
+                                },
+                                "complete": {
+                                    "oldValue": 0.3076923076923077,
+                                    "newValue": 0.38461538461538464
+                                }
+                            }
+                        }
+                    }
+                };
+                bind.openModalAnonym = () => {
+                    modal.open(gamificationData);
+                };
+                bind.openModalUser = () => {
+                    modal.open(gamificationData, {username: "bob"});
+                };
+                bind.openModalAnonymLevelUp = () => {
+                    modal.open(gamificationDataWithLevelUp);
+                };
+                bind.openModalUserLevelUp = () => {
+                    modal.open(gamificationDataWithLevelUp, {username: "bob"});
+                };
+                bind.openModalUserTenXp = () => {
+                    modal.open(gamificationDataTen, {username: "bob"});
+                };
+                bind.onConfirm = () => {
+                    bind.push('events', 'confirm');
+                    modal.close();
+                };
+                bind.onSecondAction = () => {
+                    bind.push('events', 'second-action');
+                    modal.close();
+                };
+            });
+        </script>
+    </body>
+</html>

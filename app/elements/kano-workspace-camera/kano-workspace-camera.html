@@ -7,16 +7,22 @@
 <dom-module id="kano-workspace-camera">
     <style>
         :host {
-            background: var(--canvas-background, #ffffff);
-            border-radius: 5px;
             display: block;
             width: 100%;
             height: 100%;
+            @apply --layout-vertical;
         }
         :host ::slotted(*) {
             position: absolute;
             top: 0px;
             left: 0px
+        }
+        .canvas {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: var(--canvas-background, #ffffff);
+            border-radius: 5px;
         }
         :host #canvas, :host .content {
             position: absolute;
@@ -26,11 +32,9 @@
             height: 100%;
         }
         :host button {
-            @apply(--kano-button);
+            @apply --kano-button;
+            @apply --layout-self-end;
             background-color: var(--color-green, green);
-            position: absolute;
-            right: 0px;
-            top: -61px;
         }
         :host canvas,
         :host .content {
@@ -39,9 +43,11 @@
     </style>
     <template>
         <button on-tap="_triggerShutterEvent">Shutter</button>
-        <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
-        <div class="content">
-            <slot></slot>
+        <div class="canvas">
+            <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
+            <div class="content">
+                <slot></slot>
+            </div>
         </div>
     </template>
     <script>

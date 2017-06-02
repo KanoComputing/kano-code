@@ -28,7 +28,7 @@
                         break;
                     }
                     case 'string': {
-                        // Check if it is a colours
+                        // Check if it is a color
                         if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(values[input])) {
                             shadow[input] = `<shadow type="colour_picker"><field name="COLOUR">${values[input]}</field></shadow>`;
                         }
@@ -80,6 +80,11 @@
             'colour_picker': {
                 'COLOUR': '#ff0000'
             },
+            'color_lerp': {
+                'FROM': '#000000',
+                'TO': '#ffffff',
+                'PERCENT': 50
+            },
             'math_number': {
                 'NUM': 0
             },
@@ -87,6 +92,11 @@
                 'TYPE': 'integer',
                 'MIN': 0,
                 'MAX': 10
+            },
+            'math_lerp': {
+                'FROM': 0,
+                'TO': 200,
+                'PERCENT': 50
             },
             'variables_set': {
                 'VAR': 'item'

@@ -7,12 +7,15 @@ let gulp = require('gulp'),
     source = require('vinyl-source-stream'),
     es = require('event-stream'),
     htmlAutoprefixer = require("html-autoprefixer"),
-    browserSync = require('browser-sync').create(),
-    historyApiFallback = require('connect-history-api-fallback'),
+    connect = require('connect'),
+    livereload = require('livereload'),
+    serveStatic = require('serve-static'),
+    history = require('connect-history-api-fallback'),
     validateChallenges = require('./tasks/validate-challenges-locales'),
     runSequence = require('run-sequence'),
     env = process.env.NODE_ENV || 'development',
     target = process.env.TARGET || 'web',
+    version = require('./package.json').version,
     utils;
 
 const DEFAULT_META_DATA = [
@@ -64,6 +67,7 @@ utils = {
         code += 'window.Kano.MakeApps.config = {};';
         code += `window.Kano.MakeApps.config.ENV = '${env}';`;
         code += `window.Kano.MakeApps.config.TARGET = '${target}';`;
+        code += `window.Kano.MakeApps.config.VERSION = '${version}';`;
         code += 'window.AudioContext = window.AudioContext || window.webkitAudioContext;';
 
         return code;
@@ -108,8 +112,9 @@ $.utils = utils;
 $.source = source;
 $.watchify = watchify;
 $.runSequence = runSequence;
-$.browserSync = browserSync;
-$.historyApiFallback = historyApiFallback;
+$.connect = connect;
+$.serveStatic = serveStatic;
+$.history = history;
 $.debug = env === 'development' || process.env.DEBUG;
 
 $.transpile = () => {
@@ -126,38 +131,24 @@ $.transpile = () => {
     });
 };
 
+$.startServer = (lr) => {
+    let server = $.connect();
+    if (lr) {
+        server = server.use(require('connect-livereload')());
+    }
+    return server
+        .use($.history())
+        .use($.serveStatic(__dirname + '/app'))
+        .listen(4000);
+};
+
 gulp.task('serve', () => {
-    return $.browserSync.init({
-        server: {
-            baseDir: './www',
-            middleware: [$.historyApiFallback()]
-        },
-        port: 4000,
-        open: false,
-        ghostMode: {
-            clicks: true,
-            forms: true,
-            scroll: true
-        }
-    });
+    return $.startServer();
 });
 
 gulp.task('watch', () => {
-    $.browserSync.init({
-        server: {
-            baseDir: './app',
-            middleware: [$.historyApiFallback()]
-        },
-        port: 4000,
-        open: false,
-        ghostMode: {
-            clicks: true,
-            forms: true,
-            scroll: true
-        }
-    });
-    return gulp.watch('./app/**/*')
-        .on('change', () => browserSync.reload());
+    $.startServer(true);
+    livereload.createServer().watch(__dirname + "/app");
 });
 
 // Copy the webcomponents polyfill to the vendor folder
@@ -172,7 +163,7 @@ gulp.task('validate-challenges', () => {
 
 require('./tasks/service-worker')(gulp, $);
 require('./tasks/workers')(gulp, $);
-require('./tasks/parts-api')(gulp, $);
+require('./tasks/kano-code-lib')(gulp, $);
 require('./tasks/build')(gulp, $);
 require('./tasks/test')(gulp, $);
 require('./tasks/doc')(gulp, $);

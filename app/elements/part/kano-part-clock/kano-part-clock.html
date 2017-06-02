@@ -1,75 +1,10 @@
 <link rel="import" href="../kano-ui-behavior.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/base.html">
-<dom-module id="kano-part-clock">
-    <style>
-    :host {
-        display: block;
-    }
-    :host(.selected) .container {
-        border-color: var(--color-orange);
-    }
-    .container {
-        position: relative;
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        border: 2px solid white;
-        @apply(--shadow-elevation-2dp);
-        background-color: rgba(0, 0, 0, 0.25);
-    }
-    .hand {
-        position: absolute;
-        left: calc(50% - 1px);
-        transform-origin: calc(0% + 1px) 50%;
-        background-color: white;
-        border-top-left-radius: 1px;
-        border-bottom-left-radius: 1px;
-    }
-    .hours {
-        top: calc(50% - 1px);
-        width: 15px;
-        height: 2px;
-    }
-    .minutes {
-        top: calc(50% - 1px);
-        width: 25px;
-        height: 2px;
-    }
-    .seconds {
-        top: calc(50% - 0.5px);
-        width: 30px;
-        height: 1px;
-    }
-    </style>
-    <template>
-        <div class="container">
-            <div id="h" class="hours hand"></div>
-            <div id="m" class="minutes hand"></div>
-            <div id="s" class="seconds hand"></div>
-        </div>
-    </template>
-    <script type="text/javascript">
-        /* globals Polymer, Kano */
+<script type="text/javascript">
+    /* globals Polymer, Kano */
 
-        Polymer({
-            is: 'kano-part-clock',
-            behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior],
-            attached () {
-                this.interval = setInterval(this._updateClock.bind(this), 1000);
-                this._updateClock();
-            },
-            detached () {
-                clearInterval(this.interval);
-            },
-            _updateClock () {
-                let d = new Date(),
-                    hours = (d.getHours() / 12) * 360,
-                    minutes = (d.getMinutes() / 60) * 360,
-                    seconds = (d.getSeconds() / 60) * 360;
-                this.transform(`rotate(${hours - 90}deg)`, this.$.h);
-                this.transform(`rotate(${minutes - 90}deg)`, this.$.m);
-                this.transform(`rotate(${seconds - 90}deg)`, this.$.s);
-            }
-        });
-    </script>
-</dom-module>
+    Polymer({
+        is: 'kano-part-clock',
+        behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior]
+    });
+</script>

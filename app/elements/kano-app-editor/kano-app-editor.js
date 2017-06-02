@@ -1,4 +1,4 @@
-/* globals Polymer, Kano, interact, Part */
+/* globals Polymer, Kano, interact */
 
 function getDefaultBackground() {
     return {
@@ -11,7 +11,12 @@ function getDefaultBackground() {
 
 Polymer({
     is: 'kano-app-editor',
-    behaviors: [Kano.Behaviors.AppEditorBehavior, Kano.Behaviors.AppElementRegistryBehavior],
+    behaviors: [
+        Kano.Behaviors.AppEditorBehavior,
+        Kano.Behaviors.AppElementRegistryBehavior,
+        Kano.Behaviors.MediaQueryBehavior,
+        Kano.Behaviors.I18nBehavior
+    ],
     properties: {
         parts: {
             type: Array
@@ -34,14 +39,17 @@ Polymer({
                 };
             }
         },
+        workspaceTab: {
+            type: String,
+            value: 'workspace'
+        },
         remixMode: {
             type: Boolean,
             value: false
         },
         selected: {
             type: Object,
-            value: null,
-            observer: 'selectedChanged'
+            value: null
         },
         running: {
             type: Boolean,
@@ -65,36 +73,24 @@ Polymer({
             type: Boolean,
             value: false
         },
-        partsPanelState: {
-            type: String,
-            observer: '_partsPanelStateChanged'
-        },
         selectedParts: {
             type: Array
-        },
-        drawerPage: {
-            type: String,
-            value: 'sidebar'
-        },
-        drawerWidth: {
-            type: String,
-            value: '80%'
         },
         mode: {
             type: Object
         },
         partsMenuOpen: {
             type: Boolean,
-            value: false,
-            computed: 'isPartsMenuOpen(partsPanelState, drawerPage)'
+            value: false
         },
         challengeState: {
             type: Object,
             value: null
         },
-        banner: {
-            type: Object,
-            value: null
+        lockdown: {
+            type: Boolean,
+            reflectToAttribute: true,
+            observer: '_onLockdownChanged'
         },
         hideLeaveAlert: {
             type: Boolean,
@@ -103,22 +99,116 @@ Polymer({
         }
     },
     observers: [
-        'addedPartsChanged(addedParts.*)',
         'selectedPartChanged(selected.*)',
         'backgroundChanged(background.*)',
         'updateColors(addedParts.splices)',
         'updateColors(defaultCategories.*)',
-        '_codeChanged(code.*)'
+        '_codeChanged(code.*)',
+        '_partsChanged(parts.slices)',
+        '_onPartsSet(parts)'
     ],
     listeners: {
-        'mode-ready': '_onModeReady'
+        'mode-ready': '_onModeReady',
+        'add-part': '_addPart',
+        'remove-part': '_removePartReceived',
+        'save-button-clicked': 'share',
+        'open-parts-modal': '_openPartsModal',
+        'edit-background': '_openBackgroundDialog',
+        'iron-resize': '_refitPartModal'
+    },
+    _openBackgroundDialog () {
+        this.$['edit-background-dialog'].open();
+        this.toggleClass('open', true, this.$['code-overlay']);
+    },
+    _backgroundEditorDialogClosed (e) {
+        let target = e.path ? e.path[0] : e.target;
+        if (target === this.$['edit-background-dialog']) {
+            this.toggleClass('open', false, this.$['code-overlay']);
+        }
+    },
+    _openPartsModal () {
+        this.$['parts-modal'].open();
+        this.partsMenuOpen = true;
+        this.async(() => {
+            this.notifyChange('open-parts');
+        }, 500);
+    },
+    _closePartsModal () {
+        this.$['parts-modal'].close();
+    },
+    _partsModalClosed () {
+        this.$['add-parts'].reset();
+        this.partsMenuOpen = false;
+        this.notifyChange('close-parts');
+    },
+    _addParts (e) {
+        this._closePartsModal();
+        Object.keys(e.detail).forEach(type => {
+            for (let i = 0; i < e.detail[type]; i++) {
+                this._addPart({ detail: type });
+            }
+        });
+    },
+    _partsChanged () {
+        this.fire('parts-changed', this.parts);
+    },
+    _newPartRequest (e) {
+        let model;
+
+        // Too early
+        if (!Array.isArray(this.parts)) {
+            this.queuedHardware = this.queuedHardware || [];
+            this.queuedHardware.push(e.detail);
+            return;
+        }
+
+        if (!this.queuedHardware || this.queuedHardware.indexOf(e.detail) === -1) {
+            this._addHardwarePart(e.detail.product);
+        }
+    },
+    _addHardwarePart (product) {
+        let model;
+        for (var i = 0; i < this.parts.length; i++) {
+            model = this.parts[i];
+            if (model.supportedHardware && model.supportedHardware.indexOf(product) >= 0) {
+                this._addPart({ detail: model.type });
+                break;
+            }
+        }
+    },
+    _addPart (e) {
+        let viewport = this.$.workspace.getViewport(),
+            viewportRect = viewport.getBoundingClientRect(),
+            model, part;
+        for (let i = 0; i < Kano.MakeApps.Parts.list.length; i++) {
+            model = Kano.MakeApps.Parts.list[i];
+            if (model.type === e.detail) {
+                break;
+            }
+        }
+        model.position = {
+            x: viewportRect.width / 2,
+            y: viewportRect.height / 2
+        };
+        part = Kano.MakeApps.Parts.create(model, this.mode.workspace.viewport);
+        this.push('addedParts', part);
+        this.fire('change', {
+            type: 'add-part',
+            part
+        });
     },
     _onModeReady () {
         this.modeReady = true;
+        this.triggerResize();
     },
-    _partsPanelStateChanged (state) {
-        if (this.editableLayout && state === 'main') {
-            this.$.workspace.toggleEditableLayout();
+    _partEditorDialogClosed (e) {
+        let target = e.path ? e.path[0] : e.target;
+        if (target === this.$['edit-part-dialog']) {
+            this.toggleClass('open', false, this.$['code-overlay']);
+            this.notifyChange('close-part-settings', { part: this.selected });
+            this.editableLayout = false;
+            // Stop eventual actions the part editor might be doing
+            this.$['edit-part-dialog-content'].stop();
         }
     },
     _isPauseOverlayHidden (running, editableLayout) {
@@ -130,8 +220,10 @@ Polymer({
         if (this.prevCode && this.code.snapshot.javascript === this.prevCode) {
             return;
         }
-        this.toggleRunning(false);
-        this.toggleRunning(true);
+        if (!this.editableLayout) {
+            this.toggleRunning(false);
+            this.toggleRunning(true);
+        }
         this.prevCode = this.code.snapshot.javascript;
     },
     _proxyChange (e) {
@@ -141,15 +233,50 @@ Polymer({
         this.fire('change', e.detail);
     },
     deletePartClicked () {
-        if (this.checkBlockDependency(this.selected)) {
-            return this.$['external-use-warning'].open();
+        this._removePartInitiated(this.selected);
+    },
+    _openDialog (page) {
+        this.dialogPage = page;
+        this.$.dialog.open();
+    },
+    _removePartInitiated (part) {
+        this.toBeRemoved = part;
+        if (this.checkBlockDependency(part)) {
+            return this._openDialog('external-use-warning');
         } else {
-            this.$['confirm-delete'].open();
+            this._openDialog('confirm-delete');
         }
     },
-    modalClosed (e) {
+    _removePartReceived (e) {
+        let part = e.detail;
+        this._removePartInitiated(part);
+    },
+    _modalClosed (e) {
         if (e.detail.confirmed) {
-            this._deletePart(this.selected);
+            switch (this.dialogPage) {
+                case 'confirm-delete': {
+                    this._dialogConfirmedDelete();
+                    break;
+                }
+                case 'reset-warning': {
+                    this._dialogConfirmedReset();
+                    break;
+                }
+            }
+        }
+    },
+    _dialogConfirmedDelete () {
+        this._deletePart(this.toBeRemoved);
+    },
+    _dialogConfirmedReset () {
+        this.set('addedParts', []);
+        this.set('code', this._formatCode({}));
+        this.set('background', getDefaultBackground());
+        this.save();
+        Kano.MakeApps.Parts.Part.clear();
+        this.$.workspace.reset();
+        if (!this.remixMode) {
+            localStorage.removeItem(`savedApp-${this.mode.id}`);
         }
     },
     checkBlockDependency (part) {
@@ -171,9 +298,6 @@ Polymer({
             }
         }
         return false;
-    },
-    toggleMenu () {
-        this.fire('toggle-menu');
     },
     setColorRange (hs, range, items = []) {
         // Set the increment value, which will decide how much to change the lightness between all colors
@@ -236,22 +360,12 @@ Polymer({
             value: e.value
         });
     },
-    addedPartsChanged () {
-        this.fire('change');
-    },
     computeBackground () {
         let style = this.background.userStyle;
         return Object.keys(style).reduce((acc, property) => {
             acc += `${property}:${style[property]};`;
             return acc;
         }, '');
-    },
-    previous () {
-        if (this.leftPanelView === 'background') {
-            this.set('leftViewOpened', false);
-        } else {
-            this.set('leftPanelView', 'background');
-        }
     },
     /**
      * Save the current work in the local storage
@@ -278,14 +392,17 @@ Polymer({
             e.detail.keyboardEvent.preventDefault();
             e.detail.keyboardEvent.stopPropagation();
         }
-        this.fire('share', {
+        this.fire('share', this.compileApp());
+    },
+    compileApp () {
+        return {
             app: this.save(false, false),
             workspaceInfo: JSON.stringify(this.save()),
             background: this.background.userStyle.background,
             mode: this.mode,
             code: this.code,
             parts: this.addedParts
-        });
+        };
     },
     generateCover () {
         return this.$.workspace.generateCover();
@@ -326,87 +443,51 @@ Polymer({
         return code;
     },
     reset () {
-        this.set('addedParts', []);
-        this.set('code', this._formatCode({}));
-        this.set('background', getDefaultBackground());
-        this.save();
-        this.$.workspace.reset();
-        if (!this.remixMode) {
-            localStorage.removeItem(`savedApp-${this.mode.id}`);
-        }
-    },
-    closeDrawer () {
-        this.$.partsPanel.closeDrawer();
-    },
-    selectedChanged (newValue) {
-        // The selection is cleared
-        if (!newValue) {
-            this.drawerPage = 'background-editor';
-        }
-    },
-    panelStateChanged () {
-        let isClosing = this.partsPanelState !== 'drawer',
-            eventName,
-            eventData;
-        if (this.drawerPage === 'sidebar') {
-            eventName = isClosing ? 'close-parts' : 'open-parts';
-        } else if (this.drawerPage === 'part-editor') {
-            if (!isClosing) {
-                eventData = { part: this.selected };
-            }
-            eventName = isClosing ? 'close-part-settings' : 'open-part-settings';
-        } else if (this.drawerPage === 'background-editor') {
-            eventName = isClosing ? 'close-background-settings' : 'open-background-settings';
-        }
-        this.debounce('notifyPanelState', () => {
-            this.notifyChange(eventName, eventData);
-        }, 10);
-    },
-    toggleParts () {
-        if (this.drawerPage === 'sidebar' && this.partsPanelState === 'drawer') {
-            this.$.partsPanel.closeDrawer();
-        } else {
-            this.drawerPage = 'sidebar';
-            this.drawerWidth = '80%';
-            this._openDrawer();
-        }
-    },
-    _openDrawer () {
-        // HACK. Removes the will-change transform from the drawer inside the paper-drawer-panel shadow dom because
-        // it creates a new stacking context and prevent children using position: fixed to refer to the viewport
-        let drawer = Polymer.dom(this.$.partsPanel.root).querySelector('#drawer');
-        this.$.partsPanel.openDrawer();
-        drawer.style.willChange = 'initial';
+        this._openDialog('reset-warning');
     },
     onPartSettings () {
         // No part selected, show the background editor
         if (!this.selected) {
-            if (this.partsPanelState === 'drawer' && this.drawerPage === 'background-editor') {
-                this.$.partsPanel.closeDrawer();
-            } else {
-                this.drawerPage = 'background-editor';
-                this.drawerWidth = '60%';
-                this._openDrawer();
-            }
+            this._toggleFullscreenModal(false);
+            this._openBackgroundDialog();
+            this.notifyChange('open-background-settings');
         } else {
-            this.drawerPage = 'part-editor';
-            this.drawerWidth = '60%';
-            this._openDrawer();
+            this._toggleFullscreenModal(this.selected.fullscreenEdit);
+            this.$['edit-part-dialog'].open();
             this.notifyChange('open-part-settings', { part: this.selected });
         }
     },
-    closeSettings () {
-        if (this.drawerPage === 'background-editor' || this.drawerPage === 'part-editor') {
-            this.$.partsPanel.closeDrawer();
-        }
+    _toggleFullscreenModal (isFullScreen) {
+        this.$['edit-part-dialog'].fitInto = isFullScreen ? window : this.$['root-view'];
+        this.$['edit-part-dialog'].withBackdrop = isFullScreen;
+        this.toggleClass('large', isFullScreen, this.$['edit-part-dialog-content']);
+        //If modal is not fullscreen, use a custom overlay
+        this.toggleClass('open', !isFullScreen, this.$['code-overlay']);
     },
     _deletePart (part) {
         let index = this.addedParts.indexOf(part);
-        part.blockIds.forEach(id => {
-            Kano.MakeApps.Blockly.removeLookupString(id);
-        });
         this.splice('addedParts', index, 1);
+        Kano.MakeApps.Parts.freeId(part);
         this.$.workspace.clearSelection();
+    },
+    _onPartsSet (parts) {
+        if (!this.queuedHardware) {
+            return;
+        }
+
+        this.async(() => {
+            let product,
+                partTypes;
+            for (var i = 0; i < this.queuedHardware.length; i++) {
+                product = this.queuedHardware[i].product;
+                partTypes = this.parts.map(p => p.type);
+                if (partTypes.indexOf(product) > -1) {
+                    this._addHardwarePart(product);
+                    this.splice('queuedHardware', i, 1);
+                }
+            }
+        }, 5);
+
     },
     onPartReady (e) {
         let clone;
@@ -466,25 +547,12 @@ Polymer({
         window.dispatchEvent(new Event('resize'));
     },
     bindEvents () {
-        let sidebar = this.$.drawer;
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
-        this.panelStateChanged = this.panelStateChanged.bind(this);
 
         this.$.workspace.addEventListener('viewport-resize', this.updateWorkspaceRect);
-        if (sidebar.classList.contains('animatable')) {
-            sidebar.addEventListener('transitionend', this.panelStateChanged);
-        } else {
-            this.$.partsPanel.addEventListener('selected-changed', this.panelStateChanged);
-        }
     },
     detachEvents () {
-        let sidebar = this.$.drawer;
         this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
-        if (sidebar.classList.contains('animatable')) {
-            sidebar.removeEventListener('transitionend', this.panelStateChanged);
-        } else {
-            this.$.partsPanel.removeEventListener('selected-changed', this.panelStateChanged);
-        }
     },
     ready () {
         this.reset = this.reset.bind(this);
@@ -494,35 +562,14 @@ Polymer({
     },
     attached () {
         this.target = document.body;
-
         this.partEditorOpened = false;
         this.backgroundEditorOpened = false;
+        this.codeEditor = this.$['root-view'];
 
-        interact(this.$['workspace-panel']).dropzone({
-            // TODO rename to kano-part-item
-            accept: 'kano-ui-item:not([instance])',
-            ondrop: (e) => {
-                let model = e.relatedTarget.model,
-                    part,
-                    viewport = this.$.workspace.getViewport(),
-                    viewportRect = viewport.getBoundingClientRect(),
-                    viewportScale = this.$.workspace.getViewportScale(),
-                    targetRect = e.relatedTarget.getBoundingClientRect();
-                model.position = {
-                    x: (targetRect.left - viewportRect.left) / viewportScale.x,
-                    y: (targetRect.top - viewportRect.top) / viewportScale.y
-                };
-                part = Kano.MakeApps.Parts.create(model, this.mode.workspace.viewport);
-                this.push('addedParts', part);
-                this.fire('change', {
-                    type: 'add-part',
-                    part
-                });
-            }
-        });
         this.bindEvents();
         this._registerElement('workspace-panel', this.$['workspace-panel']);
         this._registerElement('blocks-panel', this.$['blocks-panel']);
+        this._registerElement('parts-panel', this.$['parts-modal']);
     },
     detached () {
         Kano.MakeApps.Parts.clear();
@@ -531,7 +578,7 @@ Polymer({
     },
     onHideLeaveAlertChanged (flag) {
         //show alert on default flag
-        if (!flag && !window.navigator.userAgent.match("Electron")) {
+        if (!flag && !window.navigator.userAgent.match('Electron')) {
             window.onbeforeunload = () => {
                 return 'Any unsaved changes to your app will be lost. Continue?';
             }
@@ -573,6 +620,12 @@ Polymer({
         });
         document.body.appendChild(this.fileInput);
         this.fileInput.click();
+    },
+    _setCodeDisplay(code, workspaceTab) {
+        if (workspaceTab === 'workspace') {
+            return;
+        }
+        return js_beautify(code, { 'indent_size': 2 });
     },
     updateWorkspaceRect (e) {
         this.set('workspaceRect', e.detail);
@@ -669,11 +722,17 @@ Polymer({
             });
         });
     },
-    trapEvent (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    _onLockdownChanged (value) {
+        //Catch click events with backdrop
+        if (value) {
+            this.$.backdrop.open();
+        } else {
+            this.$.backdrop.close();
+        }
     },
-
+    _refitPartModal () {
+        this.$['edit-part-dialog'].refit();
+    },
     getMakeButtonClass (running, editableLayout) {
         let classes = [];
         if (running) {
@@ -686,7 +745,6 @@ Polymer({
         }
         return classes.join(' ');
     },
-
     applyHiddenClass () {
         return this.running ? '' : 'hidden';
     },
@@ -700,7 +758,6 @@ Polymer({
 
         return 'Make';
     },
-
     /**
      * Resize the workspace
      */
@@ -708,7 +765,6 @@ Polymer({
         this.pauseEvent(e);
         this.isResizing = true;
     },
-
     /**
      * Completed the resize action
      */
@@ -729,14 +785,14 @@ Polymer({
         e.returnValue = false;
         return false;
     },
-
     /**
      * Mouse moved handler
      */
     mouseMoved (e) {
         let workspacePanel = this.$['workspace-panel'],
             container = this.$.section,
-            offsetPanel;
+            offsetPanel,
+            workspaceRelSize;
 
         if (!this.isResizing) {
             return;
@@ -759,17 +815,16 @@ Polymer({
             // Disable drag when starts
             this._disableDrag();
             this.set('editableLayout', false);
-            this.closeDrawer();
         }
+    },
+    _onLockdownClicked () {
+        this.fire('lockdown-clicked');
     },
     getBlockly () {
         return this.$['root-view'].getBlockly();
     },
     getBlocklyWorkspace () {
         return this.$['root-view'].getBlocklyWorkspace();
-    },
-    isPartsMenuOpen () {
-        return this.partsPanelState === 'drawer' && this.drawerPage === 'sidebar';
     },
     getWorkspace () {
         return this.$.workspace;

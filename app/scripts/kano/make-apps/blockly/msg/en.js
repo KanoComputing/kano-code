@@ -12,6 +12,7 @@
     Blockly.Msg.CATEGORY_MISC = "Misc";
 
     Blockly.Msg.COLOR_RANDOM = "random color";
+    Blockly.Msg.COLOR_LERP = "lerp from %1 to %2 % %3";
 
     Blockly.Msg.LOOP_FOREVER_REPEAT = "Repeat";
     Blockly.Msg.LOOP_FOREVER_FOREVER = "forever";
@@ -29,6 +30,7 @@
 
     Blockly.Msg.RANDOM_CAT = "random cat";
 
+    Blockly.Msg.MATH_LERP = "lerp from %1 to %2 % %3";
     Blockly.Msg.BLOCK_VALUE = "value";
     Blockly.Msg.BLOCK_SET_BACKGROUND_COLOR = "set background color to %1";
     Blockly.Msg.BLOCK_IS_CLICKED = "is clicked";
@@ -111,7 +113,13 @@
     Blockly.Msg.BLOCK_SPEAKER_GERMAN = "German";
     Blockly.Msg.BLOCK_SPEAKER_ITALIAN = "Italian";
     Blockly.Msg.BLOCK_SPEAKER_PLAY = "play %1";
+    Blockly.Msg.BLOCK_SPEAKER_PLAYBACK_RATE = "set pitch to %1";
     Blockly.Msg.BLOCK_SPEAKER_LOOP = "loop %1";
+    Blockly.Msg.BLOCK_SPEAKER_VOLUME = "set volume %1";
+    Blockly.Msg.BLOCK_SPEAKER_RANDOM_FROM = "random sound %1";
+    Blockly.Msg.BLOCK_SPEAKER_PLAY_FREQUENCY_FOR = "Speaker: synthesize frequency %1 for %2 miliseconds";
+    Blockly.Msg.BLOCK_SPEAKER_START_SYNTH = "start synth";
+    Blockly.Msg.BLOCK_SPEAKER_SYNTH_SET_FREQUENCY = "synth set frequency %1";
 
     Blockly.Msg.BLOCK_STICKER_SET = "set to %1";
     Blockly.Msg.BLOCK_STICKER_RANDOM = "random sticker";
@@ -183,6 +191,9 @@
 
     Blockly.Msg.BLOCK_GYRO_ACCELEROMETER_GYRO_AXIS = "Gyroscope %1 axis";
     Blockly.Msg.BLOCK_GYRO_ACCELEROMETER_ACCEL_AXIS = "Accelerometer %1 axis";
+
+    Blockly.Msg.BLOCK_MOTION_WHEN = "when";
+    Blockly.Msg.BLOCK_MOTION_IS_TRIGGERED = "is triggered";
 
     window.CustomBlocklyMsg = Blockly.Msg;
 

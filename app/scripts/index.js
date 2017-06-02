@@ -1,4 +1,4 @@
-(function () {
+(function (Kano) {
     var Bootstrap = {},
         MobileAlert = {},
         userAgent = window.navigator.userAgent;
@@ -171,6 +171,8 @@
 
     Bootstrap.start = function () {
         Bootstrap.redirectCore();
+        this.splash = new Kano.BlockAnimation(document.getElementById('blocks'));
+        this.splash.init();
         Bootstrap.started = new Date();
         // Attach the loading of the dependencies when the page is loaded
         if (window.addEventListener) {
@@ -194,4 +196,4 @@
 
     Bootstrap.start();
 
-})();
+})(window.Kano = window.Kano || {});

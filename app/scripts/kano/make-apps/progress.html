@@ -8,13 +8,14 @@
         let loadDebouncer = null,
             neverLoaded = true,
             Progress,
-            progress = {};
+            progress = {},
+            storedProgress = localStorage.getItem('progress') || JSON.stringify({});
 
         const storageLocation = Kano.MakeApps.config.WORLD_URL + '/cross-storage.html',
             sharedStorage = new CrossStorageClient(storageLocation),
             LOAD_DEBOUNCE_DELAY = 3000;
 
-        localStorage.progress = localStorage.progress || JSON.stringify({});
+        localStorage.setItem('progress', storedProgress);
 
         function formatProgressGroup(group) {
             group = group || {};
@@ -150,15 +151,15 @@
                 });
             },
             saveToStorage () {
-                let storedProgress = JSON.stringify(progress);
-                localStorage.progress = storedProgress;
+                let progressString = JSON.stringify(progress);
+                localStorage.setItem('progress', progressString);
                 sharedStorage.onConnect().then(function () {
-                    return sharedStorage.set('progress', storedProgress);
+                    return sharedStorage.set('progress', progressString);
                 });
             },
             loadFromStorage () {
                 try {
-                    progress = JSON.parse(localStorage.progress) || {};
+                    progress = JSON.parse(localStorage.getItem('progress')) || {};
                 } catch (e) {
                     progress = {};
                 }

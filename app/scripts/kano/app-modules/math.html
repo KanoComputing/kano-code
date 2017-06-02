@@ -8,6 +8,7 @@
 
                 this.addMethod('random', '_random');
                 this.addMethod('sign', '_sign');
+                this.addMethod('lerp', '_lerp');
             }
             _sign (x) {
                 x = +x; // convert to a number
@@ -29,6 +30,14 @@
                 }
 
                 return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            /* This generator is inclusive the ranges [min, max] */
+            _lerp (from, to, percent) {
+                const span = to - from;
+                percent = Math.max(0, Math.min(percent, 100));
+
+                return from + (span * (percent * 0.01));
             }
         }
 

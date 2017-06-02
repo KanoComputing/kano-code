@@ -51,6 +51,57 @@
                     return image;
                 });
             },
+            generateSpriteSheet (workspace, fps, duration) {
+                /* Only works for the lightboard workspace */
+                if (!workspace || !workspace.bitmap) {
+                    return Promise.resolve();
+                }
+
+                let length = Math.round(duration * fps),
+                    sheet = document.createElement('canvas'),
+                    ctx = sheet.getContext('2d'),
+                    frame = 0,
+                    interval = 1000 / fps,
+                    fw = 16,
+                    fh = 8,
+                    pixelSize = 1;
+
+                ctx.canvas.width = fw * pixelSize * length;
+                ctx.canvas.height = fh * pixelSize;
+
+                this.gifProgress = 0;
+                this.gifRenderProgress = 0;
+
+                return new Promise((resolve, reject) => {
+                    let renderSprite = () => {
+                        let bitmap = workspace.bitmap;
+
+                        bitmap.forEach((pixel, i) => {
+                            let fX = i % fw,
+                                fY = Math.floor(i / fw),
+                                sX = fw * pixelSize * frame + fX * pixelSize,
+                                sY = fY * pixelSize;
+
+                            ctx.beginPath();
+                            ctx.rect(sX, sY, pixelSize, pixelSize);
+                            ctx.fillStyle = pixel;
+                            ctx.fill();
+                        });
+
+                        if (frame < length) {
+                            frame++;
+                            this.gifProgress += 100 / length;
+                            this.gifRenderProgress += 100 / length;
+                            setTimeout(renderSprite, interval);
+                        } else {
+                            resolve(sheet.toDataURL("image/png"));
+                        }
+                    };
+
+                    // To skip the first empty frames
+                    setTimeout(renderSprite, 2000);
+                });
+            },
             base64toBlob (b64Data, contentType, sliceSize) {
                 contentType = contentType || '';
                 sliceSize = sliceSize || 512;

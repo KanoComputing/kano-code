@@ -1,0 +1,551 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Let's make a heart that beats to sound 💗.<br> First, fetch a microphone from Add Part +."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Microphone</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-microphone"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "microphone",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "You're coding an animation, so you'll need a loop.<br>Open the Control tra.y"
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "frames"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's make your heart beat.<br>Open the Heart tray."
+            },
+            "beacon": {
+              "target": {
+                "category": "heart"
+              }
+            },
+            "validation": {
+              "blockly": {
+                "open-flyout": "heart"
+              }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block moves an animation to a specific frame."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "heart#animation_go_to_frame"
+                }
+            },
+
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "heart#animation_go_to_frame",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "F*r/y1NKV.wZCm-C;b;W"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "F*r/y1NKV.wZCm-C;b;W",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "F*r/y1NKV.wZCm-C;b;W"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "There are 5 frames of animation, but microphone data is 0 to 100.<br>Open the Math tray to find code that will help."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Animations need whole numbers to work...<br>...can you find a block that makes round numbers?"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_round"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_round",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "MrILFRh6$n;W?r||A;7J"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "MrILFRh6$n;W?r||A;7J",
+                            "inputName": "FRAME"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "MrILFRh6$n;W?r||A;7J"
+                    }
+                },
+                "target": "FRAME"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to add more math!<br>Open this tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "AzM?Fkjml](6W/hmm1by"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "AzM?Fkjml](6W/hmm1by",
+                            "inputName": "NUM"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "AzM?Fkjml](6W/hmm1by"
+                    }
+                },
+                "target": "NUM"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>+</span></kano-value-preview> to <kano-value-preview><span>÷</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "DIVIDE"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "We need to read the current microphone value, open the Microphone tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block gets the current volume from the microphone.<br>Drag it into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "get_volume"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "get_volume",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "!GVpAo}).W|)~SE8BTg{"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "!GVpAo}).W|)~SE8BTg{",
+                            "inputName": "A"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "!GVpAo}).W|)~SE8BTg{"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Now you need a number to make your microphone data smaller.<br>Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "!GVpAo}).W|)~SE8BTg{"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "!GVpAo}).W|)~SE8BTg{",
+                            "inputName": "B"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "!GVpAo}).W|)~SE8BTg{"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "100 divided by 20 is 5.<br>Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>20</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_5"
+                        },
+                        "value": "20"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Awesome, you did it! Now make some noise, or play some music, and watch the heart beat to the sound 🎵",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "microphone",
+        "light-animation",
+        "gyro-accelerometer"
+    ],
+    "modules": [
+        "control",
+        "math",
+        "variables"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "control": [
+            "every_x_seconds"
+        ],
+        "heart": [
+            "animation_go_to_frame"
+        ],
+        "math": [
+            "math_round",
+            "math_arithmetic"
+        ],
+        "microphone": [
+            "get_volume"
+        ],
+        "variables": [
+            "math_number"
+        ]
+    },
+    "mode": "lightboard",
+    "defaultApp": "{\"parts\":[{\"id\":\"heart\",\"name\":\"Heart\",\"type\":\"light-animation\",\"tagName\":\"kano-part-light-animation\",\"userStyle\":{},\"userProperties\":{\"width\":\"11\",\"height\":\"8\",\"speed\":15,\"bitmaps\":[[\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#000000\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\"],[\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#000000\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\"],[\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#000000\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#fac5c4\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\"],[\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\"],[\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#d84146\",\"#fac5c4\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#000000\",\"#d84146\",\"#d84146\",\"#d84146\",\"#000000\",\"#000000\",\"#000000\",\"#000000\"]]},\"nonvolatileProperties\":[],\"position\":{\"x\":85.10311397419339,\"y\":-4.137005379018367},\"partType\":\"ui\",\"excludeDefaultBlocks\":false,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"width\",\"type\":\"range\",\"label\":\"Width\"},{\"key\":\"height\",\"type\":\"range\",\"label\":\"Height\"},{\"key\":\"speed\",\"type\":\"range\",\"label\":\"Speed\",\"min\":1,\"max\":30},{\"key\":\"bitmaps\",\"type\":\"bitmap-animation\",\"label\":\"Bitmaps\"}],\"style\":[]},\"rotation\":0,\"scale\":100,\"visible\":true}],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"201\\\" y=\\\"29\\\"><field name=\\\"EVENT\\\">global.start<\/field><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#F5F5F5\"}},\"mode\":\"lightboard\"}"
+}

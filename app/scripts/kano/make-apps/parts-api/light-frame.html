@@ -10,19 +10,23 @@
             _updateLightboard (force) {
                 this.debounce('_updateLightboard', () => {
                     if (this.isRunning) {
-                        let shape = {
-                            id: this.model.id,
-                            x: this.getX(),
-                            y: this.getY(),
-                            width: this.model.userProperties.width,
-                            height: this.model.userProperties.height,
-                            bitmap: this.frame,
-                            type: 'frame',
-                            force
-                        };
+                        let shape = this.getShape();
+                        shape.force = force;
                         this.fire('update-shape', shape);
                     }
                 });
+            },
+            getShape () {
+                return {
+                    id: this.model.id,
+                    x: this.getX(),
+                    y: this.getY(),
+                    width: this.model.userProperties.width,
+                    height: this.model.userProperties.height,
+                    visible: this.model.visible,
+                    bitmap: this.bitmap,
+                    type: 'frame'
+                };
             },
             getWidth () {
                 return parseInt(this.get('model.userProperties.width'));

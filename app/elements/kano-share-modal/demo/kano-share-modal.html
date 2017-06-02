@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+        <title>kano-share-modal demo</title>
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+        <script>
+            window.Polymer = {
+                dom: 'shadow'
+            };
+        </script>
+
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/paper-tabs/paper-tabs.html">
+        <link rel="import" href="../../../scripts/kano/make-apps/parts-api/index.html">
+        <link rel="import" href="../kano-share-modal.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>Inputs can have different types, and be disabled</h3>
+            <demo-snippet>
+                <template>
+                    <template is="dom-bind" id="bind">
+                        <paper-tabs id="tabs" selected="{{page}}" attr-for-selected="name">
+                            <paper-tab name="gif-creation">GIF Creation</paper-tab>
+                            <paper-tab name="sharing-form">Sharing form</paper-tab>
+                            <paper-tab name="publishing">Publishing</paper-tab>
+                            <paper-tab name="failure">Failure</paper-tab>
+                            <paper-tab name="success">Success</paper-tab>
+                        </paper-tabs>
+                        <kano-share-modal id="modal"></kano-share-modal>
+                    </template>
+                </template>
+                <script>
+                    document.addEventListener('WebComponentsReady', () => {
+                        let bind = document.getElementById('bind'),
+                            slug = 'kano-blinky-the-ghost',
+                            mode = 'lightboard';
+                        fetch('https://s3-eu-west-1.amazonaws.com/world.kano.me.staging/share-items/attachments/59084e8ad0fda147604031d8.html')
+                            .then(r => r.text())
+                            .then(res => {
+                                let component = res;
+                                bind.page = 'gif-creation';
+                                bind.$.tabs.addEventListener('selected-changed', () => {
+                                    updateModal();
+                                });
+                                function updateModal () {
+                                    bind.$.modal.shareInfo = {
+                                        page: bind.page,
+                                        slug,
+                                        app: {
+                                            src: 'data:text/html;base64,' + window.btoa(component),
+                                            slug
+                                        },
+                                        mode,
+                                        description: ''
+                                    };
+                                }
+                                updateModal();
+                            });
+                    });
+                </script>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

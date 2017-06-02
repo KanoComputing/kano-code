@@ -2,20 +2,20 @@
 (function (Kano) {
     Kano.MakeApps = Kano.MakeApps || {};
 
-    const COLOUR = '#60ade1';
+    const COLOR = '#ccdd1e';
 
     let category,
         register = (Blockly) => {
 
         category.blocks.forEach((category) => {
-            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOUR);
+            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOR);
         });
     };
 
     category = Kano.MakeApps.Blockly.Defaults.createCategory({
         name: Blockly.Msg.CATEGORY_LISTS,
         id: 'lists',
-        colour: COLOUR,
+        colour: COLOR,
         blocks: [
             'lists_create_empty',
             'lists_create_with',

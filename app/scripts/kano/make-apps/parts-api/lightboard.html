@@ -12,12 +12,24 @@
             },
             start () {
                 PartsAPI.Base.start.apply(this, arguments);
-                this.appModules.getModule('lightboard').on('button-down', this._propagateButtonEvent.bind(this));
+                this.attachListeners();
+
+                this.iterator = {
+                    currentColumn: 1,
+                    currentRow: 1
+                };
             },
             stop () {
                 PartsAPI.Base.stop.apply(this, arguments);
+                this.detachListeners();
+            },
+            attachListeners () {
+                this.detachListeners();
+                this.appModules.getModule('lightboard').on('button-down', this._propagateButtonEvent.bind(this));
+            },
+            detachListeners () {
                 if (this.appModules) {
-                    this.appModules.getModule('lightboard').removeListener('button-down', this._propagateButtonEvent);
+                    this.appModules.getModule('lightboard').removeAllListeners('button-down');
                 }
             },
             clear () {
@@ -33,17 +45,37 @@
                 return this.appModules.getModule('lightboard').text(text.toString(), color, backgroundColor, this.render.bind(this));
             },
             render () {},
+            getBitmap () {
+                return this.appModules.getModule('lightboard').getBitmap();
+            },
             scroll (text, color, backgroundColor, speed) {
                 return this.appModules.getModule('lightboard').scroll(text.toString(), color, backgroundColor, speed, this.render.bind(this));
+            },
+            forEach (direction, callback) {
+                if (direction === 'column') {
+                    for (this.iterator.currentColumn = 1;
+                         this.iterator.currentColumn <= 16;
+                         this.iterator.currentColumn++) {
+                        callback();
+                    }
+                } else {
+                    for (this.iterator.currentRow = 1;
+                         this.iterator.currentRow <= 8;
+                         this.iterator.currentRow++) {
+                        callback();
+                    }
+                }
             },
             _propagateButtonEvent (data) {
                 this.fire("lightboard-" + data['button-id']);
             },
             _updateShape (e) {
-                this.debounce("updateShape-" + e.detail.id, () => {
-                    let shape = e.detail;
-                    this.appModules.getModule('lightboard').updateOrCreateShape(shape.id, shape, this.render.bind(this));
-                });
+                let shape = e.detail;
+                this.appModules.getModule('lightboard').updateOrCreateShape(shape.id, shape, this.render.bind(this));
+            },
+            _removeShape (e) {
+                let shapeId = e.detail;
+                this.appModules.getModule('lightboard').removeShape(shapeId, this.render.bind(this));
             }
         };
 

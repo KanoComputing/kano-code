@@ -1,0 +1,70 @@
+{
+    "id": "test_beacon",
+    "name": "Test Beacon",
+    "next": "camera_kaleidoscope",
+    "description": "",
+    "scenes": [{
+        "id": "_0",
+        "component": "common/editor",
+        "data": {
+            "steps": [{
+                "beacon": {
+                    "target": {
+                        "category": "normal"
+                    }
+                },
+                "validation": {
+                    "blockly": {
+                        "open-flyout": "normal"
+                    }
+                }
+            },{
+                "beacon": {
+                    "target": {
+                        "flyout_block": "normal#set_background_color"
+                    }
+                },
+                "validation": {
+                    "blockly": {
+                        "create": {
+                            "type": "normal#set_background_color",
+                            "id": "color"
+                        }
+                    }
+                }
+            },{
+                "phantom_block": {
+                    "location": {
+                        "block": {
+                            "rawId": "default_part_event_id"
+                        }
+                    },
+                    "target": "DO"
+                },
+                "validation": {
+                    "blockly": {
+                        "connect": {
+                            "parent": {
+                                "rawId": "default_part_event_id",
+							    "inputName": "DO"
+                            },
+                            "target": "color"
+                        }
+                    }
+                }
+            },{
+                "beacon": {
+                    "target": {
+                        "block": {
+                            "id": "color",
+                            "inputName": "COLOR"
+                        }
+                    }
+                }
+            }],
+            "mode": "normal",
+            "modules": [],
+            "parts": []
+        }
+    }]
+}

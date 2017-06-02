@@ -41,8 +41,33 @@
     Kano.MakeApps.Msg.Groups['wrong-category-opened'] = ['wrong-category-opened-1'];
     Kano.MakeApps.Msg.Groups['wrong-block-connection'] = ['wrong-block-connection-1'];
 
+    Kano.MakeApps.Msg.CANCEL = "Cancel";
+    Kano.MakeApps.Msg.CONFIRM = "Confirm";
 
+    Kano.MakeApps.Msg.EXIT = "Exit";
     Kano.MakeApps.Msg.CLOSE = "Close";
+    Kano.MakeApps.Msg.DONE = "Done";
+    Kano.MakeApps.Msg.LOGIN = "Login";
+    Kano.MakeApps.Msg.LOG_OUT = "Logout";
+    Kano.MakeApps.Msg.SAVE = "Save";
+
+    Kano.MakeApps.Msg.RESET = "Reset";
+    Kano.MakeApps.Msg.DELETE = "delete";
+
+    Kano.MakeApps.Msg.NEXT_CHALLENGE = "Next Challenge";
+    Kano.MakeApps.Msg.BACK_TO_CHALLENGES = "Back to Challenges";
+
+    Kano.MakeApps.Msg.RESET_WORKSPACE = "Reset Workspace";
+    Kano.MakeApps.Msg.EXPORT = "Export";
+    Kano.MakeApps.Msg.IMPORT = "Import";
+    Kano.MakeApps.Msg.GIVE_FEEDBACK = "Give Feedback";
+
+    Kano.MakeApps.Msg.PARTS = "Parts";
+
+    Kano.MakeApps.Msg.MODE = "Mode";
+    Kano.MakeApps.Msg.UPDATE_INTERVAL = "Interval";
+    Kano.MakeApps.Msg.PROXIMITY = "Proximity";
+    Kano.MakeApps.Msg.GESTURE = "Gesture";
 
     Kano.MakeApps.Msg.STROKE_SIZE = "Stroke Size";
     Kano.MakeApps.Msg.STROKE_COLOR = "Stroke Color";
@@ -97,10 +122,8 @@
     Kano.MakeApps.Msg.PART_LIGHT_RECTANGLE_NAME = "Rectangle";
     Kano.MakeApps.Msg.PART_FIREWORKS_NAME = "Fireworks";
     Kano.MakeApps.Msg.PART_TALKING_FACE_NAME = "Talking face";
-    Kano.MakeApps.Msg.PART_GESTURE_SENSOR_NAME = "Gesture Sensor";
     Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_NAME = "Tilt";
-    Kano.MakeApps.Msg.PART_MOTION_SENSOR_NAME = "Tripwire";
-    Kano.MakeApps.Msg.PART_PROXIMITY_SENSOR_NAME = "Proximity Sensor";
+    Kano.MakeApps.Msg.PART_MOTION_SENSOR_NAME = "Motion";
 
     Kano.MakeApps.Msg.BLOCK_TEXT_INPUT_TYPE_IN = "Type in here...";
 
@@ -122,8 +145,8 @@
     Kano.MakeApps.Msg.PART_DATA_WEATHER_LOCATION_DEFAULT = "London, U.K.";
     Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_TITLE = "Units";
     Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_DESC = "The metric system will display the temperature in ºC while the imperial one will display it in ºF";
-    Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_METRIC = "Metric system";
-    Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_IMPERIAL = "Imperial system";
+    Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_METRIC = "Celsius";
+    Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_IMPERIAL = "Fahrenheit";
     Kano.MakeApps.Msg.PART_DATA_WEATHER_TEMPERATURE_TITLE = "Temperature";
     Kano.MakeApps.Msg.PART_DATA_WEATHER_TEMPERATURE_DESC = "The current temperature at the location";
     Kano.MakeApps.Msg.PART_DATA_WEATHER_SPEED_TITLE = "Wind speed";
@@ -156,48 +179,38 @@
     Kano.MakeApps.Msg.PART_DATA_SPORTS_SPORT_TENNIS = "Tennis";
     Kano.MakeApps.Msg.PART_DATA_SPORTS_SPORT_GOLF = "Golf";
 
-    Kano.MakeApps.Msg.PART_GESTURE_SENSOR_UP = "gesture up";
-    Kano.MakeApps.Msg.PART_GESTURE_SENSOR_DOWN = "gesture down";
-    Kano.MakeApps.Msg.PART_GESTURE_SENSOR_LEFT = "gesture left";
-    Kano.MakeApps.Msg.PART_GESTURE_SENSOR_RIGHT = "gesture right";
-    Kano.MakeApps.Msg.PART_GESTURE_SENSOR_NEAR = "gesture near";
-    Kano.MakeApps.Msg.PART_GESTURE_SENSOR_FAR = "gesture far";
+    Kano.MakeApps.Msg.PART_MOTION_SENSOR_UP = "gesture up";
+    Kano.MakeApps.Msg.PART_MOTION_SENSOR_DOWN = "gesture down";
+    Kano.MakeApps.Msg.PART_MOTION_SENSOR_LEFT = "gesture left";
+    Kano.MakeApps.Msg.PART_MOTION_SENSOR_RIGHT = "gesture right";
+    Kano.MakeApps.Msg.PART_MOTION_SENSOR_NEAR = "gesture near";
+    Kano.MakeApps.Msg.PART_MOTION_SENSOR_FAR = "gesture far";
 
     Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_READ_DATA = "reads data";
-
-    Kano.MakeApps.Msg.PART_MOTION_SENSOR_START = "movement starts";
-    Kano.MakeApps.Msg.PART_MOTION_SENSOR_END = "movement ends";
-
-    Kano.MakeApps.Msg.KANO_WORKSPACE_HEAD_SAVE = "Save";
 
     Kano.MakeApps.Msg.KANO_WORKSPACE_TOOLBAR_CLOSE = "close";
     Kano.MakeApps.Msg.KANO_WORKSPACE_TOOLBAR_ADD_PARTS = "add parts";
     Kano.MakeApps.Msg.KANO_WORKSPACE_TOOLBAR_DONE = "Done";
     Kano.MakeApps.Msg.KANO_WORKSPACE_TOOLBAR_EDIT_LAYOUT = "Edit Layout";
 
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_LOGIN = "Login";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_LEVEL = "Level";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_RESET_WORKSPACE = "Reset Workspace";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_EXPORT = "Export";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_IMPORT = "Import";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_BACK_TO_PROJECTS = "Back to Projects";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_GIVE_FEEDBACK = "Give Feedback";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_EXIT = "Exit";
-    Kano.MakeApps.Msg.KANO_SIDE_MENU_LOG_OUT = "Log Out";
+    Kano.MakeApps.Msg.KANO_SCENE_EDITOR_NEXT = "Next";
+    Kano.MakeApps.Msg.KANO_SCENE_EDITOR_HINTS = "Hints";
 
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_RECORDING = "Recording your gif";
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_BEGIN_RECORDING = "Click to begin recording your gif";
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_START_RECORDING = "Start recording your animated gif";
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_CLOSE = Kano.MakeApps.Msg.CLOSE;
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_RECORDING = "Generating Animation";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_BEGIN_RECORDING = "Click to begin generating the animation";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_START_RECORDING = "Start generating your animated gif";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_MAKE_ANOTHER = "Make another gif";
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_SHARE_ON_WORLD = "Share on Kano World";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_SHARE_ON_WORLD = "Kano Share";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_COPY = "copy";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_GET_SHARE_LINK = "Get share link";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_BRING_TO_LIFE = "Bring your own creation to life";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_BUILD_YOUR_OWN = "build your own";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_PUBLISHING = "Publishing";
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_APP_IS_LIVE = "Your app is live! Share it with your friends.";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_PUBLISHED = "Published";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_APP_IS_LIVE = "Your app is now live!";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_SHARE_WITH_FRIENDS = "Share it with your friends.";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_OPEN_APP = "Open app";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_NEXT_CHALLENGE = "Next Challenge";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_PUBLISHING_FAILED = "Publishing failed";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_TRY_LATER = "Please try again later.";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_UNFORTUNATE = "This is unfortunate";
@@ -212,5 +225,17 @@
     Kano.MakeApps.Msg.KANO_CHALLENGE_COMPLETED_MODAL_COMPLIMENT = "Nice work!";
 
     Kano.MakeApps.Msg.KANO_BLOCKLY_OMNIBOX_TYPE = "Type: ";
+
+    Kano.MakeApps.Msg.KANO_ADD_PARTS_ADD_PARTS = "Add Parts";
+
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_ARE_YOU_SURE = "Are you sure";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_ABOUT_TO_RESET = "You'll lose any unsaved changes";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_ABOUT_TO_DELETE = "You are about to delete";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_WANT_TO_DO_THIS = "Are you sure you want to do this?";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_OH_OH = "Oh oh";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_CANT_DELETE = "You can't delete";
+    Kano.MakeApps.Msg.KANO_APP_EDITOR_USED_IN_CODE = "because it is used in the code";
+
+    Kano.MakeApps.Msg.KANO_EDITOR_LIGHTBOARD_ADD_PART = "Add Part";
 
 })(window.Kano = window.Kano || {});

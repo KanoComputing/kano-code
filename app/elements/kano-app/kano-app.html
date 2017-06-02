@@ -3,21 +3,19 @@
 <link rel="import" href="../../scripts/config/config.html">
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-drawer-panel/paper-drawer-panel.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/themes/light.html">
+<link rel="import" href="../kano-style/themes/dark.html">
 <link rel="import" href="../../bower_components/web-components/kano-auth/kano-auth.html">
 
 <link rel="import" href="../kano-routing/kano-routing.html">
 <link rel="import" href="../kano-ui-item/kano-ui-item.html">
-<link rel="import" href="../kano-side-menu/kano-side-menu.html">
 <link rel="import" href="../behaviors/kano-modal-animator-behavior.html">
 <link rel="import" href="../behaviors/kano-view-behavior.html">
-<link rel="import" href="../behaviors/kano-tracking-behavior.html">
-<link rel="import" href="../kano-slider/kano-slider.html">
+<link rel="import" href="../behaviors/kano-code-ga-tracking-behavior.html">
+<link rel="import" href="../behaviors/kano-code-tracking-behavior.html">
 <link rel="import" href="../kano-try-chrome/kano-try-chrome.html">
 <link rel="import" href="../../scripts/kano/make-apps/progress.html">
 <!--
@@ -37,17 +35,6 @@ Example:
     }
     :host button {
         font-family: Bariol;
-    }
-    #drawer {
-        @apply(--layout-vertical);
-        @apply(--layout-flex);
-        --paper-drawer-panel-main-container: {
-            @apply(--layout-flex);
-        };
-        --paper-drawer-panel-drawer-container: {
-            box-shadow: none !important;
-        };
-        overflow-y: scroll;
     }
     :host kano-routing {
         @apply(--layout-vertical);
@@ -78,29 +65,15 @@ Example:
     :host .user-info {
         margin-left: 5px;
     }
-    :host .main header iron-image {
-        height: 42px;
-        width: 155px;
-        margin-left: 15px;
-    }
-    :host .main header button {
-        margin-right: 15px;
-    }
-    :host .main header .links {
-        @apply(--layout-horizontal);
-        @apply(--layout-end-justified);
-        padding-right: 5px;
-    }
-    :host paper-drawer-panel {
+    :host kano-routing {
         @apply(--layout-flex);
         position: relative;
     }
     :host .logged-out {
         background: white;
     }
-    :host .main {
-        @apply(--layout-flex);
-        @apply(--layout-vertical);
+    #toast {
+        --paper-toast-background-color: var(--kano-app-editor-workspace-background);
     }
     #toast button {
         background-color: var(--color-green);
@@ -108,20 +81,12 @@ Example:
     }
     </style>
     <template>
-        <paper-drawer-panel id="drawer" force-narrow disable-edge-swipe disable-swipe right-drawer>
-            <kano-side-menu drawer user="[[user]]"
-                            on-toggle-menu="toggleMenu"
-                            offline="[[offline]]"
-                            on-login="_login"
-                            world-url="[[worldUrl]]"></kano-side-menu>
-            <kano-routing main id="router"
-                          ctx="{{ctx}}"
-                          name="app"
-                          on-toggle-menu="toggleMenu"
-                          user="[[user]]"
-                          on-login="_login"
-                          page="{{route}}"></kano-routing>
-        </paper-drawer-panel>
+        <kano-routing id="router"
+                ctx="{{ctx}}"
+                name="app"
+                user="[[user]]"
+                on-login="_login"
+                page="{{route}}"></kano-routing>
         <kano-auth id="auth"
                    on-login="_onLogin"
                    world-url="{{worldUrl}}"
@@ -142,7 +107,8 @@ Example:
     Polymer({
         is: 'kano-app',
         behaviors: [
-            Kano.Behaviors.TrackingBehavior
+            Kano.Behaviors.Tracking.GABehavior,
+            Kano.Behaviors.Tracking.KanoCodeBehavior
         ],
         properties: {
             user: {
@@ -168,8 +134,9 @@ Example:
             signup: '_signup',
             'kano-error': '_showErrorOnToast',
             'view-loaded': '_viewLoaded',
-            'track-event': '_trackEvent',
-            'track-page': '_trackPage'
+            'ga-tracking-event': '_trackGAEvent',
+            'ga-page-tracking-event': '_trackGAPage',
+            'update-user-progress': '_updateUserProgress'
         },
         _routeChanged (route) {
             // User not authenticated not actions to be done
@@ -261,10 +228,12 @@ Example:
             e.preventDefault();
             Kano.MakeApps.sdk.auth.logout(false);
             this.user = null;
-            this.$.drawer.closeDrawer();
             this.$.auth.reset();
             Kano.MakeApps.Progress.reset();
             clearInterval(this._pollingIntervalId);
+            this.fire('tracking-event', {
+                name: 'logged_out'
+            });
         },
         _login (e) {
             if (e && e.detail) {
@@ -294,6 +263,12 @@ Example:
                 this.set('authCallbacks', null);
             }
         },
+        _fetchUserProgress () {
+            Kano.MakeApps.sdk.api.progress.get()
+                .then((res) => {
+                    this.set('user.profile.levels', res.body.progress.levels);
+                });
+        },
         _onLogin (e) {
             let data = e.detail;
             Kano.MakeApps.sdk.auth.setToken(data.token);
@@ -304,23 +279,13 @@ Example:
                 this._startNotificationsPolling();
             }
             this.authenticated = true;
+            this.fire('tracking-event', {
+                name: 'logged_in'
+            });
         },
         _populateUser () {
             this._updateProfile();
             this._updateNotifications();
-        },
-        toggleMenu (e) {
-            let state = e.detail;
-            this.editor = document.getElementById('editor');
-            if (typeof state !== 'undefined') {
-                if (state) {
-                    this.$.drawer.openDrawer();
-                } else {
-                    this.$.drawer.closeDrawer();
-                }
-            } else {
-                this.$.drawer.togglePanel();
-            }
         },
         _startNotificationsPolling () {
             this._pollingIntervalId = setInterval(this._updateNotifications.bind(this), 30000);
@@ -341,7 +306,17 @@ Example:
             Kano.MakeApps.sdk.api.users.get.byUsername({ username: this.user.username })
                 .then((res) => {
                     this.set('user.profile', res.body.user.profile);
+                    this._fetchUserProgress();
                 });
+        },
+        _updateUserProgress (e) {
+            let progress = e.detail 
+                           && e.detail.levels
+                           && e.detail.levels.progress;
+            if (!progress) {
+                return;
+            }
+            this.set('user.profile.levels', progress);
         },
         _userChanged (user) {
             this.debounce('userChanged', () => {
@@ -355,10 +330,10 @@ Example:
         _viewLoaded () {
             window.prerenderReady = true;
         },
-        _trackEvent (e, payload) {
+        _trackGAEvent (e, payload) {
             this.dispatchTrackingEvent(payload);
         },
-        _trackPage (e, payload) {
+        _trackGAPage (e, payload) {
             this.dispatchVirtualPageView(payload.title, payload.path);
         }
     });

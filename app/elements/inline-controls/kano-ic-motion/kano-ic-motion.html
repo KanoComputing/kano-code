@@ -1,0 +1,39 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../kano-value-rendering/kano-value-rendering.html">
+<dom-module id="kano-ic-motion">
+    <template>
+        <style>
+            :host {
+                @apply --layout-horizontal;
+                @apply --layout-end-justified;
+                color: #fff;
+            }
+            .data {
+                width: 32px;
+                @apply --layout-horizontal;
+                @apply --layout-center-justified;
+                flex-shrink: 0;
+            }
+        </style>
+        <div class="data">
+            <kano-value-rendering width="32" height="32" value="[[value]]" offset-x="10"></kano-value-rendering>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-ic-motion',
+            properties: {
+                model: Object
+            },
+            attached () {
+                this._updateInterval = setInterval(() => {
+                    this.set('value', Math.round(this.model.lastProximityValue));
+                }, 100);
+            },
+            detached () {
+                clearInterval(this._updateInterval);
+            }
+        });
+    </script>
+</dom-module>

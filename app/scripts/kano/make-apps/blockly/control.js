@@ -2,14 +2,14 @@
 (function (Kano) {
     Kano.MakeApps = Kano.MakeApps || {};
 
-    const COLOUR = '#f38033';
+    const COLOR = '#1198ff';
 
     let register = (Blockly) => {
         Blockly.Blocks.loop_forever = {
             init: function () {
                 let json = {
                     id: 'loop_forever',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: `${Blockly.Msg.LOOP_FOREVER_REPEAT} %1 %2`,
                     args0: [
                     {
@@ -44,7 +44,7 @@
             init: function () {
                 let json = {
                     id: 'every_x_seconds',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: `${Blockly.Msg.LOOP_EVERY_REPEAT} %1 %2`,
                     args0: [{
                         type: "input_value",
@@ -98,7 +98,7 @@
             init: function () {
                 let json = {
                     id: 'in_x_time',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: Blockly.Msg.LOOP_IN,
                     args0: [{
                         type: "input_value",
@@ -148,7 +148,7 @@
             init: function () {
                 let json = {
                     id: 'repeat_x_times',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: Blockly.Msg.LOOP_X_TIMES_REPEAT,
                     args0: [{
                         type: "input_value",
@@ -186,13 +186,13 @@
         };
 
         category.blocks.forEach((category) => {
-            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOUR);
+            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOR);
         });
     };
     let category = Kano.MakeApps.Blockly.Defaults.createCategory({
         name: Blockly.Msg.CATEGORY_CONTROL,
         id: 'control',
-        colour: COLOUR,
+        colour: COLOR,
         blocks: [
             {
                 id: 'repeat_x_times',

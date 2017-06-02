@@ -25,7 +25,7 @@
                     sets = Object.keys(Kano.MakeApps.Files.stickers),
                     set = sets[Math.floor(Math.random() * sets.length)];
                 }
-                stickers = Object.keys(Kano.MakeApps.Files.stickers[set])
+                stickers = Object.keys(Kano.MakeApps.Files.stickers[set]);
                 randomSticker = stickers[Math.floor(Math.random() * stickers.length)];
                 return this.getSticker(set, randomSticker);
             }

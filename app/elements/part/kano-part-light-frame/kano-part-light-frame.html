@@ -23,7 +23,7 @@
     </style>
     <template>
         <div class="container" running$="[[isRunning]]">
-            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" pixel-size="21" spacing="3" bitmap="[[model.userProperties.bitmap]]"></kano-bitmap-renderer>
+            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" pixel-size="25" spacing="1" bitmap="[[model.userProperties.bitmap]]"></kano-bitmap-renderer>
         </div>
     </template>
     <script type="text/javascript">
@@ -33,51 +33,96 @@
             is: 'kano-part-light-frame',
             behaviors: [Kano.MakeApps.PartsAPI['light-frame'], Kano.Behaviors.LightShapeBehavior],
             observers: [
-                '_sizeChanged(model.userProperties.width, model.userProperties.height)'
+                '_sizeChanged(model.userProperties.width, model.userProperties.height)',
+                '_onBitmapChanged(model.userProperties.bitmap.*)'
             ],
+
+            get bitmap () {
+                return this.get('model.userProperties.bitmap');
+            },
+
+            _onBitmapChanged (e) {
+                //Lock observer as it's resetting the observed property
+                if (this.lock) {
+                    return;
+                }
+                this.lock = true;
+                this.async(() => this.lock = false);
+
+                if (e.path.search(/splices/) !== -1) {
+                    this._setBitmap();
+                }
+            },
+            _setBitmap () {
+                this.set('storedBitmap', this._adjustBitmapForStorage(this.model.userProperties.bitmap));
+                this.set('model.userProperties.bitmap',
+                    this._adjustBitmapForDisplay(this.storedBitmap));
+            },
             _sizeChanged () {
+                if (this.model.userProperties.bitmap.length === 0) {
+                    this._generateEmptyFrame();
+                    return;
+                }
+                this.storedBitmap = this.storedBitmap ||
+                        this._adjustBitmapForStorage(this.model.userProperties.bitmap);
+                this.set('model.userProperties.bitmap',
+                    this._adjustBitmapForDisplay(this.storedBitmap));
+            },
+            _adjustBitmapForStorage (bitmap) {
                 let newBitmap = [],
                     width = this.model.userProperties.width,
-                    height = this.model.userProperties.height,
-                    prevColor;
-                for (let i = 0; i < height * width; i++) {
-                    height = this.model.userProperties.height,
-                    // If prevSize is not set, we load the previous bitmap
-                    prevColor = (this.prevSize || !this.model.userProperties.bitmap) ? '#000000' : this.model.userProperties.bitmap[i];
-                    newBitmap.push(prevColor);
+                    height = this.model.userProperties.height;
+
+                for (let i = 0; i < 128; i++) {
+                    newBitmap.push('#000000');
                 }
 
-                if (this.prevSize) {
-                    this.model.userProperties.bitmap.forEach((color, i) => {
-                        let y = Math.floor(i / this.prevSize.width),
-                            x = i % this.prevSize.width,
-                            newPos = x + y * width;
-                        if (newPos < newBitmap.length) {
-                            newBitmap[newPos] = color;
-                        }
-                    });
-                }
-
-                this.prevSize = {
-                    width: width,
-                    height: height
-                };
-
-                this.set('model.userProperties.bitmap', newBitmap);
-            },
-            _updateLightboard () {
-                this.debounce('_updateLightboard', () => {
-                    let shape = {
-                        id: this.model.id,
-                        x: this.getX(),
-                        y: this.getY(),
-                        width: this.model.userProperties.width,
-                        height: this.model.userProperties.height,
-                        bitmap: this.model.userProperties.bitmap,
-                        type: 'frame'
-                    };
-                    this.fire('update-shape', shape);
+                bitmap.forEach((color, i) => {
+                    let x = i % width,
+                        y = Math.floor(i / width),
+                        storedPos = x + y * 16;
+                    if (storedPos < 128) {
+                        newBitmap[storedPos] = color;
+                    }
                 });
+                return newBitmap;
+            },
+            _adjustBitmapForDisplay (bitmap) {
+                let newBitmap = [],
+                    width = this.model.userProperties.width,
+                    height = this.model.userProperties.height;
+
+                for (let i = 0; i < height * width; i++) {
+                    newBitmap.push('#000000');
+                }
+
+                bitmap.forEach((color, i) => {
+                    let x = i % 16,
+                        y = Math.floor(i / 16),
+                        realPos = x + y * width;
+                    if (realPos < newBitmap.length) {
+                        newBitmap[realPos] = color;
+                    }
+                });
+                return newBitmap;
+            },
+            _generateEmptyFrame () {
+                let emptyFrame = [];
+                for (let i = 0; i < this.model.userProperties.height * this.model.userProperties.width; i++) {
+                    emptyFrame.push('#000000');
+                }
+                this.set('model.userProperties.bitmap', emptyFrame);
+            },
+            detached () {
+                // Firing a regular event won't do much as this is detached and the workspace will not receive it.
+                // This make iron-signals dispatch the event to the interested elements
+                document.dispatchEvent(new CustomEvent('iron-signal', {
+                    bubbles: false,
+                    detail: {
+                        name: 'remove-shape',
+                        data: this.model.id
+                    }
+                }));
             }
         });
     </script>

@@ -76,7 +76,7 @@
         },
         observers: [
             'computeToolbox(parts)',
-            'computeToolboxDebounced(parts.*)',
+            '_partsChanged(parts.*)',
             'computeToolboxDebounced(defaultCategories.*)',
             'computeToolboxDebounced(mode)',
             'defaultCategoriesLoaded(defaultCategories.events)'
@@ -170,7 +170,6 @@
             let events = [];
             this.parts
                 .forEach((part) => {
-                    part.blockIds = [];
                     part.blocks.forEach((definition) => {
                         this._registerBlock(part, definition);
                     });
@@ -182,11 +181,12 @@
                         events.push(ev);
                     });
                 });
-            if (this.mode.blocks) {
-                this.mode.blockIds = [];
-                this.mode.blocks.forEach((definition) => {
-                    this._registerBlock(this.mode, definition);
-                });
+            if (this.mode.categories) {
+                this.mode.categories.forEach(category => {
+                    category.blocks.forEach((definition) => {
+                        this._registerBlock(this.mode, definition);
+                    });
+                })
             }
         },
         _registerBlock (part, definition) {
@@ -200,7 +200,6 @@
             block.id = `${part.id}#${block.id}`;
             lookups.forEach(lookup => {
                 lookupString = `${part.id}.${lookup}`;
-                part.blockIds.push(block.id);
                 Kano.MakeApps.Blockly.setLookupString(block.id, lookupString);
             });
             if (!block.doNotRegister) {
@@ -276,22 +275,25 @@
             });
 
             toolbox = Object.keys(this.defaultCategories).map(id => this.defaultCategories[id]);
+
             // Generate the toolbox for the special mode
-            if (this.mode.blocks && this.mode.blocks.length) {
-                let modeCat = {
-                    name: this.mode.name,
-                    id: this.mode.id,
-                    colour: this.mode.colour
-                };
-                modeCat.blocks = this.mode.blocks.map((definition) => {
-                    let block = definition.block(this.mode);
-                    return {
-                        id: `${this.mode.id}#${block.id}`,
-                        colour: this.mode.colour,
-                        shadow: block.shadow
+            if (this.mode.categories) {
+                this.mode.categories.forEach(category => {
+                    let modeCat = {
+                        name: category.name,
+                        id: category.id,
+                        colour: category.colour
                     };
+                    modeCat.blocks = category.blocks.map((definition) => {
+                        let block = definition.block(this.mode);
+                        return {
+                            id: `${this.mode.id}#${block.id}`,
+                            colour: this.mode.colour,
+                            shadow: block.shadow
+                        };
+                    });
+                    toolbox.push(modeCat);
                 });
-                toolbox.push(modeCat);
             }
             toolbox = toolbox.concat(categories);
             this.set('toolbox', toolbox);
@@ -299,6 +301,34 @@
                 this.toolboxReady = true;
                 this.$['code-editor'].load(this.code.snapshot);
             }
+        },
+        _partsChanged (e) {
+            let idChanged = e.path.indexOf('id') === e.path.length - 2;
+            if (e.path === 'parts' || e.path === 'parts.splices') {
+                // Update the id registry when the parts array is changed or if any item is added/removed
+                this._updateIdRegistry();
+            }
+            // Only update if the splices changes (part added or removed) or if the name of the part changes
+            if (e.path === 'parts' || e.path === 'parts.splices' || idChanged) {
+                this.computeToolboxDebounced();
+                // If the id changed, we nee to upgrade the blocks already added
+                if (idChanged) {
+                    this.debounce('reloadAfterIdChanged', () => {
+                        let key = e.path.replace('parts.#', '').split('.').shift(),
+                            oldId = this._idRegistry[key],
+                            blocks = this.$['code-editor'].getBlocks(),
+                            replaceRegexp = new RegExp(`type="${oldId}#`, 'g');
+
+                        blocks = blocks.replace(replaceRegexp, `type="${e.value}#`);
+                        // Reflect the id change by updating the id registry
+                        this._updateIdRegistry();
+                    }, 200);
+                }
+            }
+        },
+        _updateIdRegistry () {
+            // Keeps a record of all the ids. If one changes, we can get the old value from here
+            this._idRegistry = this.parts.map(part => part.id);
         },
         computeToolboxDebounced () {
             this.debounce('computeToolbox', () => this.computeToolbox(), 200);

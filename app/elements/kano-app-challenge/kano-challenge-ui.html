@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../kano-tooltip/kano-tooltip.html">
 <link rel="import" href="../kano-arrow/kano-arrow.html">
 <link rel="import" href="../kano-blockly-block/kano-blockly-block.html">
@@ -34,10 +35,38 @@ Example:
 -->
 <dom-module id="kano-challenge-ui">
     <style>
+        @keyframes pulse {
+            0% {
+                transform: scale(1, 1);
+            }
+            10% {
+                transform: scale(1.3, 1.3);
+            }
+            100% {
+                transform: scale(1, 1);
+            }
+        }
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            75% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            85% {
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.5, 1.5);
+                opacity: 0;
+            }
+        }
     :host {
         @apply(--layout-vertical);
         flex: 1;
-        --tooltip-color: #21596F;
+        --tooltip-color: white;
     }
     :host .instruction-overlay {
         @apply(--layout-horizontal);
@@ -71,57 +100,22 @@ Example:
         @apply(--layout-vertical);
         @apply(--layout-center);
     }
-    :host .tooltip-content button,
-    :host .banner-content button {
-        margin-top: 10px;
-        background-color: white;
-        color: #435055;
+    :host .tooltip-content button {
+        margin: 10px 0 0 0;
+        background-color: var(--color-grassland);
+        color: #fff;
         text-shadow: none;
+        padding: 10px 22px;
     }
-    :host .banner-content {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-    }
-    :host .banner-content .banner-text {
-        flex: 1;
-    }
-    :host .banner-content button {
-        margin: auto 10px;
-    }
-    @keyframes button-hint-enter {
-        0% {
-          margin: 0 10px;
-          opacity: 1;
-          padding: 19px 22px 17px 22px;
-          transform: scale(0);
-        }
-        100% {
-          margin: 0 10px;
-          opacity: 1;
-          padding: 19px 22px 17px 22px;
-          transform: scale(1);
-        }
-    }
-    :host .banner-content button.button-hint {
-        opacity: 0;
-        margin: 0;
-        padding: 0;
-        animation-duration: 0.3s;
-        animation-delay: 6s;
-        animation-fill-mode: forwards;
-        background-color: #256883;
-        box-sizing: border-box;
-        color: white;
-    }
-    :host .banner-content button.button-hint-animation {
-        animation-name: button-hint-enter;
+    :host .tooltip-content button:hover {
+        background-color: var(--color-apple);
     }
     kano-tooltip {
-        z-index: 101;
+        z-index: 201;
         --kano-tooltip-background-color: var(--tooltip-color);
         --kano-tooltip-border-color: white;
         --kano-tooltip-border-width: 1px;
-        color: white;
+        color: black;
         font-family: var(--font-body);
         --kano-tooltip: {
             box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
@@ -131,28 +125,70 @@ Example:
             @apply --kano-challenge-ui-tooltip;
         };
         --kano-tooltip-caret: {
-            box-shadow: 0px 0px 0px 0px;
+            box-shadow: none;
         };
     }
     kano-tooltip[position="top"] {
-        --kano-tooltip-caret: {
-            box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.25);
-        };
+         --kano-tooltip-caret: {
+             box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.25);
+         };
+     }
+     kano-tooltip[position="left"] {
+         --kano-tooltip-caret: {
+             box-shadow: 2px 0px 0px 0px rgba(0, 0, 0, 0.25);
+         };
+     }
+     kano-tooltip[position="right"] {
+         --kano-tooltip-caret: {
+             box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
+              };
     }
-    kano-tooltip[position="left"] {
-        --kano-tooltip-caret: {
-            box-shadow: 2px 0px 0px 0px rgba(0, 0, 0, 0.25);
-        };
-    }
-    kano-tooltip[position="right"] {
-        --kano-tooltip-caret: {
-            box-shadow: 0px 2px 0px 0px rgba(0, 0, 0, 0.25);
-        };
+    kano-arrow {
+        z-index: 201;
     }
     .tooltip-text kano-blockly-block {
         line-height: 0px;
         vertical-align: middle;
         display: inline-block;
+    }
+    .beacon-wrapper {
+        position: relative;
+        @apply --layout-vertical;
+        @apply --layout-center;
+        @apply --layout-center-justified;
+    }
+    .beacon {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: rgba(253, 226, 61, 0.25);
+        @apply --layout-vertical;
+        @apply --layout-center;
+        @apply --layout-center-justified;
+    }
+    .beacon.animate {
+        animation: 1s ease-out infinite pulse;
+    }
+    .beacon .core {
+        font-size: 24px;
+        margin-bottom: 4px;
+        color: #fde23d;
+    }
+    .beacon-wrapper .ring {
+        position: absolute;
+        width: 800px;
+        height: 800px;
+        border-radius: 50%;
+        border: 10px solid #fde23d;
+        transform: scale(0, 0);
+    }
+    .beacon-wrapper .ring.animate {
+        animation: 5s ease-out ripple;
+        animation-delay: 400ms;
+        animation-iteration-count: infinite;
+    }
+    .markdown-html p {
+        margin: 0px;
     }
     </style>
     <template>
@@ -161,13 +197,22 @@ Example:
         <kano-arrow source="[[arrow.source]]" target="[[arrow.target]]" angle="[[arrow.angle]]" id="arrow">
             <iron-image slot="arrow-image" src="/assets/icons/blue-arrow.svg" width="[[arrow.size]]" height="[[arrow.size]]" sizing="contain"></iron-image>
         </kano-arrow>
+        <kano-arrow target="[[beacon.target]]" bounce="0" angle="[[beacon.angle]]" offset="[[beacon.offset]]">
+            <div class="beacon-wrapper" slot="arrow-image">
+                <div class="ring" id="ring" on-animationiteration="_ringAnimationIterated" on-animationstart="_ringAnimationIterated"></div>
+                <div class="beacon" id="beacon">
+                    <div class="core">&#9670;</div>
+                </div>
+            </div>
+        </kano-arrow>
         <template is="dom-repeat" items="{{tooltips}}" as="tooltip" on-dom-change="_tooltipDomChanged">
             <kano-tooltip id$="tooltip-[[index]]"
                           target="[[tooltip.target]]"
                           position="[[tooltip.position]]"
                           z-index="[[tooltip.zIndex]]"
                           tracking="[[tooltip.tracking]]"
-                          bounce$="[[tooltip.bounce]]">
+                          bounce$="[[tooltip.bounce]]"
+                          on-tap="_stopPropagation">
                 <div class="tooltip-content">
                     <div class="tooltip-text">
                         <marked-element markdown="[[tooltip.text]]">
@@ -175,19 +220,6 @@ Example:
                         </marked-element>
                     </div>
                     <button type="button" on-tap="_nextStep" hidden$="[[!tooltip.next_button]]">[[localize('NEXT', 'Next')]]</button>
-                </div>
-            </kano-tooltip>
-        </template>
-        <template is="dom-if" if="{{banner}}">
-            <kano-tooltip position="float" target="{{blocksPanel}}" track-target>
-                <div class="banner-content">
-                    <div class="banner-text">
-                        <marked-element markdown="[[banner.text]]">
-                            <div class="markdown-html"></div>
-                        </marked-element>
-                    </div>
-                    <button id="hint-button" class="button-hint" type="button" hidden$="{{!banner.hint_button}}" on-tap="showHints">[[localize('HINT', 'Hint')]]</button>
-                    <button type="button" on-tap="_nextStep" hidden$="{{!banner.next_button}}">[[localize('NEXT', 'Next')]]</button>
                 </div>
             </kano-tooltip>
         </template>
@@ -211,6 +243,7 @@ Example:
             Kano.Behaviors.AppElementRegistryBehavior,
             Kano.Behaviors.SoundPlayerBehavior,
             Kano.Behaviors.I18nBehavior,
+            Polymer.IronResizableBehavior
         ],
         properties: {
             tooltips: {
@@ -230,20 +263,21 @@ Example:
                             enabled: true
                         }
                     };
-                }
-            },
-            banner: {
-                type: Object,
-                value: null
+                },
+                notify: true
             }
         },
         observers: [
-            'stepChanged(step, state.*)',
-            'animateHintButton(banner.*, banner.hint_button)'
+            'stepChanged(step, state.*)'
         ],
         listeners: {
             'change': '_editorChanged',
-            'mode-ready': 'stepChanged'
+            'mode-ready': 'stepChanged',
+            'iron-resize': '_onResize'
+        },
+        _stopPropagation (e) {
+            e.preventDefault();
+            e.stopPropagation();
         },
         _editorChanged (e) {
             // Store current step object
@@ -266,16 +300,29 @@ Example:
         ready () {
             this.modal = this.$.modal;
             this.highlight = {};
+            this.loadSound('/assets/audio/sounds/ding.mp3');
+            this._refitUiElements = this._refitUiElements.bind(this);
+            this.eventsCausingRefit = {
+                'toolbox-scroll': ['flyout_block'],
+                'workspace-scroll': ['block'],
+                'block-move': ['block']
+            };
         },
         attached () {
             this.editor = Polymer.dom(this.$.content).getDistributedNodes()[0];
             this.updateTooltips = this.updateTooltips.bind(this);
             this.addEventListener('mousewheel', this.updateTooltips, true);
             window.addEventListener('resize', this.updateTooltips);
+            Object.keys(this.eventsCausingRefit).forEach(eventName => {
+                this.addEventListener(eventName, this._refitUiElements);
+            });
         },
         detached () {
             this.removeEventListener('mousewheel', this.updateTooltips);
             window.removeEventListener('resize', this.updateTooltips);
+            Object.keys(this.eventsCausingRefit).forEach(eventName => {
+                this.removeEventListener(eventName, this._refitUiElements);
+            });
         },
         getToolbox () {
             return this.editor.getBlocklyWorkspace().toolbox;
@@ -283,26 +330,76 @@ Example:
         _nextStep () {
             this.fire('next-step');
         },
+        _onResize () {
+            let step = this.step;
+            if (!step) {
+                return;
+            }
+
+            if (step.beacon) {
+                this._fitBeacon(step);
+            }
+
+            if (step.arrow) {
+                this._fitArrow(step);
+            }
+
+            this._fitTooltips(step);
+        },
+        /**
+         * Reposition the UI elements of the current step without delay.
+         * Useful when a user interaction changed the position of one of the targets.
+         */
+        _refitUiElements (e) {
+            let step = this.step,
+                targetConcerned = this.eventsCausingRefit[e.type];
+            if (step.beacon && this._targetIsConcerned(step.beacon.target, targetConcerned)) {
+                this._fitBeacon(step);
+            }
+            if (step.arrow && this._targetIsConcerned(step.arrow.target, targetConcerned)) {
+                this._fitArrow(step);
+            }
+            this._fitTooltips(step);
+        },
+        /**
+         * Checks if the target of the beacon matches the type of targets concerned by the refit event received
+         */
+        _targetIsConcerned (target, targetTypes) {
+            return typeof target === 'object' && Object.keys(target).some(key => targetTypes.indexOf(key) !== -1);
+        },
         computeTooltips (step) {
             this.set('tooltips', []);
             this.debounce('computeTooltips', () => {
-                /* With hints disabled, only show tooltips for injected steps */
-                if (!this.state.hints.enabled && !step.injected) {
-                    this.tooltips = [];
-                    return;
-                }
-
-                let tooltips = step.tooltips || [];
-                tooltips = tooltips.map((tooltip) => {
-                    let copy = Object.assign({}, tooltip);
-                    copy.target = this._getTargetElement(tooltip.location);
-                    copy.text = tooltip.text;
-                    copy.tracking = tooltip.tracking !== false ? true : false;
-                    return copy;
-                });
-
-                this.set('tooltips', tooltips);
+                this._fitTooltips(step, true);
             }, 200);
+        },
+        _fitTooltips (step, scroll) {
+            /* With hints disabled, only show tooltips for injected steps */
+            if (!this.state.hints.enabled && !step.injected) {
+                this.tooltips = [];
+                return;
+            }
+
+            let tooltips = step.tooltips || [];
+            tooltips = tooltips.map(tooltip => {
+                let copy = Object.assign({}, tooltip);
+                copy.target = this._getTargetElement(tooltip.location);
+                if ('getBoundingClientRect' in copy.target) {
+                    copy.target = copy.target.getBoundingClientRect();
+                }
+                if (scroll) {
+                    this._scrollWorkspaceOnTargetIfNeeded(copy.target, tooltip.location);
+                }
+                copy.text = tooltip.text;
+                copy.tracking = !!tooltip.tracking;
+
+                return copy;
+            });
+            // Forces a recompute on the dom-repeat to make sure all tooltips are updated
+            this.set('tooltips', []);
+            this.async(() => {
+                this.set('tooltips', tooltips);
+            });
         },
         _tooltipDomChanged (e) {
             let tooltips = Polymer.dom(this.root).querySelectorAll('kano-tooltip[bounce]'),
@@ -334,31 +431,118 @@ Example:
             }
         },
         computeArrow (step) {
-            let source, target;
-
             if (!step || !step.arrow || (!this.state.hints.enabled && !step.injected)) {
                 this.$.arrow.hide();
                 this.arrow = {};
                 return;
             }
             this.async(() => {
-                if (step.arrow.source) {
-                    source = this._getTargetElement(step.arrow.source);
-                    if ('getBoundingClientRect' in source) {
-                        source = source.getBoundingClientRect();
-                    }
-                }
-                target = this._getTargetElement(step.arrow.target);
-                if ('getBoundingClientRect' in target) {
-                    target = target.getBoundingClientRect();
-                }
-                this.set('arrow', {
-                    source,
-                    target,
-                    size: step.arrow.size || 70,
-                    angle: step.arrow.angle || 0
-                });
+                this._fitArrow(step, true);
             }, 300);
+        },
+        _fitArrow (step, scroll) {
+            let source, target;
+
+            if (step.arrow.source) {
+                source = this._getTargetElement(step.arrow.source);
+                if ('getBoundingClientRect' in source) {
+                    source = source.getBoundingClientRect();
+                }
+            }
+            target = this._getTargetElement(step.arrow.target);
+            if ('getBoundingClientRect' in target) {
+                target = target.getBoundingClientRect();
+            }
+            if (scroll) {
+                this._scrollWorkspaceOnTargetIfNeeded(target, step.arrow.target);
+            }
+            this.set('arrow', {
+                source,
+                target,
+                size: step.arrow.size || 70,
+                angle: step.arrow.angle || 0
+            });
+        },
+        computeBeacon (step) {
+            this.$.beacon.animate({
+                opacity: [1, 0]
+            }, {
+                duration: 200,
+                fill: 'forwards'
+            });
+
+            clearTimeout(this._ringSoundTimeout);
+            this._ringAnimationCount = 0;
+
+            this.toggleClass('animate', false, this.$.beacon);
+            this.toggleClass('animate', false, this.$.ring);
+
+            if (!step || !step.beacon || (!this.state.hints.enabled && !step.injected)) {
+                return;
+            }
+
+            this.async(() => {
+                this._fitBeacon(step, true);
+            }, 300);
+        },
+        _scrollWorkspaceOnTargetIfNeeded (target, location) {
+            if (location && location.block) {
+                let workspace = this.editor.getBlocklyWorkspace(),
+                    workspaceRect = workspace.svgBackground_.getBoundingClientRect(),
+                    viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+                    viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+                    block;
+                if (target &&
+                        (target.top + target.height > workspaceRect.top + workspaceRect.height) ||
+                        (target.left + target.width > workspaceRect.left + workspaceRect.width)) {
+                    block = this.getTargetBlock(location.block);
+                    workspace.scrollBlockIntoView(block, true);
+                }
+            }
+        },
+        _fitBeacon (step, scroll) {
+            let target = this._getTargetElement(step.beacon.target),
+                angle = step.beacon.angle || 0,
+                offset = step.beacon.offset || 10,
+                viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+                viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+            if (target && ('getBoundingClientRect' in target)) {
+                target = target.getBoundingClientRect();
+            }
+            if (scroll) {
+                this._scrollWorkspaceOnTargetIfNeeded(target, step.beacon.target);
+            }
+            // Check if the target is out of the viewport (vertically)
+            if (target && target.top + target.height > viewportHeight) {
+                if (step.beacon.target.flyout_block) {
+                    let toolbox = this._getElement('blockly-toolbox');
+                    // Force a scroll of the toolbox to move the target in the viewport. Add 50 to make sure it's not just at the border of the screen
+                    toolbox.scrollTop = toolbox.scrollTop + (target.top + target.height - viewportHeight) + 50;
+                }
+            }
+            this.set('beacon', {
+                target,
+                angle,
+                offset
+            });
+            this.$.beacon.animate({
+                opacity: [0, 1]
+            }, {
+                duration: 200,
+                delay: 10,
+                fill: 'forwards'
+            });
+            this.toggleClass('animate', true, this.$.beacon);
+            this.toggleClass('animate', true, this.$.ring);
+        },
+        _ringAnimationIterated (e) {
+            if (this._ringAnimationCount > 4) {
+                return;
+            }
+            this._ringSoundTimeout = setTimeout(() => {
+                this.playSound('/assets/audio/sounds/ding.mp3');
+                this._ringAnimationCount++;
+            }, 4600 * 0.75);
         },
         stepChanged () {
             let step;
@@ -368,7 +552,6 @@ Example:
                     this.tooltips = [];
                     this.arrow = {};
                     this.modal.close();
-                    this.banner = null;
                     this.$.highlight.hide();
                     return;
                 }
@@ -397,8 +580,8 @@ Example:
                     return;
                 }
                 this.computeTooltips(step);
-                this.computeBanner(step);
                 this.computeArrow(step);
+                this.computeBeacon(step);
                 this.computeHighlight(step);
                 this.computePhantomBlock(step);
                 this.computeSounds(step);
@@ -407,36 +590,6 @@ Example:
         computeSounds (step) {
             if (this.step.play_on_end) {
                 this.loadSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
-            }
-        },
-        computeBanner (step) {
-            if (this.state.hints.enabled) {
-                if (step.banner) {
-                    this.banner = this.banner || {};
-                    this.set('banner.text', step.banner.text);
-                    this.set('banner.next_button', step.banner.next_button);
-                    this.set('banner.hint_button', false);
-                } else {
-                    this.banner = null;
-                }
-            } else {
-                let bannerProps = this.state.hints['disabled-banner'];
-                if (bannerProps) {
-                    this.banner = this.banner || {};
-                    this.set('banner.text', bannerProps.text);
-                    this.set('banner.hint_button', bannerProps.hint_button);
-                    this.set('banner.next_button', false);
-                } else {
-                    this.banner = null;
-                }
-            }
-        },
-        animateHintButton (banner, hintButton) {
-            if (hintButton) {
-                let buttonElement = this.$$('#hint-button');
-                this.toggleClass('button-hint-animation', false, buttonElement);
-                buttonElement.getBoundingClientRect();
-                this.toggleClass('button-hint-animation', true, buttonElement);
             }
         },
         computePhantomBlock (step) {
@@ -496,27 +649,49 @@ Example:
         _getTargetElement (selector) {
             let element = this.editor,
                 partId,
-                block;
+                block,
+                el;
             if (typeof selector == 'object') {
                 if (selector.block) {
                     block = this.getTargetBlock(selector.block);
                     if (selector.block.inputName) {
-                        return this.getTargetBlockInput(selector.block);
+                        let el = this.getTargetBlockInput(selector.block);
+                        if (!el) {
+                            this._notifyError('Could not find input', selector.block);
+                        }
+                        return el;
+                    }
+                    if (!block || !block.svgPath_) {
+                        this._notifyError('Could not find block', selector.block);
                     }
                     return block.svgPath_;
                 } else if (selector.category) {
-                    let toolbox = this._getElement('blockly-toolbox');
-                    return toolbox.getCategoryElement(selector.category);
+                    let toolbox = this._getElement('blockly-toolbox'),
+                        el = toolbox.getCategoryElement(selector.category);
+                    if (!el) {
+                        this._notifyError('Could not find category', selector.category);
+                    }
+                    return el;
                 } else if (selector.flyout_block) {
-                    let toolbox = this._getElement('blockly-toolbox');
-
-                    return toolbox.getFlyoutBlock(selector.flyout_block).getSvgRoot();
+                    let toolbox = this._getElement('blockly-toolbox'),
+                        block = toolbox.getFlyoutBlock(selector.flyout_block);
+                    if (!block) {
+                        this._notifyError('Could not find block in flyout', selector.flyout_block);
+                    }
+                    return block.getSvgRoot();
                 } else if (selector.root) {
                     element = document.querySelector(selector.root);
                     selector = selector.path;
                 }
             }
-            return this._getElement(selector);
+            el = this._getElement(selector);
+            if (!el) {
+                this._notifyError('Could not find element', selector);
+            }
+            return el;
+        },
+        _notifyError (message, detail) {
+            this.fire('challenge-ui-error', { message, detail });
         },
         updateTooltips () {
             this.debounce('updateTooltips', () => {
@@ -530,10 +705,6 @@ Example:
                 this.computeArrow(this.step);
                 this.$$('kano-arrow').updatePosition();
             }, 100);
-        },
-        showHints () {
-            this.set('state.hints', {enabled: true});
-            this.fire('hint-used');
         },
         getTargetBlock (selector) {
             let block = this.editor.getBlocklyWorkspace().getBlockById(selector.id);
@@ -551,6 +722,11 @@ Example:
                 pos;
 
             if (selector.inputName) {
+                // The input targeted might be a field. If a field exists with this name, return the rect matching
+                let field = block.getField(selector.inputName);
+                if (field) {
+                    return field.fieldGroup_.getBoundingClientRect();
+                }
                 connection = block.getInput(selector.inputName).connection;
             } else {
                 connection = block.nextConnection;

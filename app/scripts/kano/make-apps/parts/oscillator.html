@@ -14,7 +14,24 @@
                 properties: [{
                     key: 'wave',
                     label: Kano.MakeApps.Msg.WAVE,
-                    type: 'wave'
+                    type: 'list',
+                    options: [{
+                        value: 'sine',
+                        label: 'Sine',
+                        image: '/assets/part/oscillator/sine.svg'
+                    },{
+                        value: 'square',
+                        label: 'Square',
+                        image: '/assets/part/oscillator/square.svg'
+                    },{ 
+                        value: 'sawtooth',
+                        label: 'Sawtooth',
+                        image: '/assets/part/oscillator/sawtooth.svg'
+                    },{
+                        value: 'triangle',
+                        label: 'Triangle',
+                        image: '/assets/part/oscillator/triangle.svg'
+                    }]
                 },{
                     key: 'speed',
                     label: Kano.MakeApps.Msg.SPEED,

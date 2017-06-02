@@ -8,6 +8,49 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI.Base = Base = {
+            /**
+             * Do a Object.assign, but also brings in the getter/setters
+             */
+            applyMixin (target, source) {
+                Object.assign(target, source);
+                Object.keys(source).forEach(key => {
+                    let desc = Object.getOwnPropertyDescriptor(source, key),
+                        getter, setter;
+                    if (typeof desc.get === 'function') {
+                        getter = desc.get;
+                    }
+                    if (typeof desc.set === 'function') {
+                        setter = desc.set;
+                    }
+                    if (getter || setter) {
+                        Object.defineProperty(target, key, {
+                            get: getter,
+                            set: setter
+                        });
+                    }
+                });
+                return target;
+            },
+            applyMixins (target) {
+                let args = Array.prototype.slice.apply(arguments);
+                args.shift();
+                args.forEach(source => {
+                    this.applyMixin(target, source);
+                });
+                return target;
+            },
+            attached () {
+                this.onCreated();
+            },
+            detached () {
+                this.onDestroyed();
+            },
+            onCreated () {
+                // In old apps, we refered to Kano.AppModules directly. Now we set a standalone appModules.
+                // Keep this to ensure old apps and not yet updated clients still work
+                this.appModules = this.appModules || Kano.AppModules;
+            },
+            onDestroyed () {},
             start () {
                 if (this.model) {
                     this.savedState = {

@@ -1,0 +1,561 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Let's make an awesome light that reacts to sound... perfect for any party! 🎉",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+        				"text": "Start by adding the microphone part."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Mic</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-microphone"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "microphone",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "You need your code to run over and over.<br> Fetch a loop from the Control tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "Grab this block and drag it into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+        				"text": "Great! To make the code run faster, change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "frames"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "Next, let's turn on all the lights!<br>Open the lightboard tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "This block turns on the lights."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#turn_on"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#turn_on",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "yFZij/%R=,(tF:c6RPCC"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "yFZij/%R=,(tF:c6RPCC",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "yFZij/%R=,(tF:c6RPCC"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+        				"text": "Now you need to tell your lightboard which lights to turn on..."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "...and you want all of the lights!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#lights_all"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#lights_all",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "Connect this block to 'lights: turn on'."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "T5E{42C3k3,fW~(k~NM)"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "T5E{42C3k3,fW~(k~NM)",
+                            "inputName": "TARGET"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "T5E{42C3k3,fW~(k~NM)"
+                    }
+                },
+                "target": "TARGET"
+            }
+        },
+        {
+            "banner": {
+        				"text": "Want to add some epic colors?<br>Open the Color tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "This block lets you generate custom colors."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "create_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "create_color",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "Connect it to the 'set color' input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "T5E{42C3k3,fW~(k~NM)"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "T5E{42C3k3,fW~(k~NM)",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "T5E{42C3k3,fW~(k~NM)"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+        				"text": "Nice. Now change <kano-value-preview><span>rgb</span></kano-value-preview> to <kano-value-preview><span>hsv</span></kano-value-preview><br>. <br>That’s short for Hue-Saturation-Value!"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "hsv"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "You can control the lights using sound.<br>Open the Mic tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "This block shares how loud or soft the sounds from the microphone are."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "get_volume"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "get_volume",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "You will control which color lights shine, using mic data."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "rdnau|=85KMc(xRli,4%"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "rdnau|=85KMc(xRli,4%",
+                            "inputName": "1"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "rdnau|=85KMc(xRli,4%"
+                    }
+                },
+                "target": "1"
+            }
+        },
+        {
+            "banner": {
+        				"text": "Change <kano-value-preview><span>volume</span></kano-value-preview> to <kano-value-preview><span>pitch</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_4"
+                        },
+                        "value": "pitch"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "Now let's control the darkness of the color with<br>more microphone data"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "Grab another of these blocks."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "get_volume"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "get_volume",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+        				"text": "Connect it to control the darkness, or value, of the color."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "rdnau|=85KMc(xRli,4%"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "rdnau|=85KMc(xRli,4%",
+                            "inputName": "3"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "rdnau|=85KMc(xRli,4%"
+                    }
+                },
+                "target": "3"
+            }
+        },
+        {
+            "banner": {
+        				"text": "Well done! Now play some music 🎵 or make some noise 👄 to see what the lights do!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "microphone"
+    ],
+    "modules": [
+        "control",
+        "color"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "control": [
+            "every_x_seconds"
+        ],
+        "lightboard": [
+            "turn_on",
+            "lights_all"
+        ],
+        "color": [
+            "create_color"
+        ],
+        "mic": [
+            "get_volume"
+        ]
+    },
+    "mode": "lightboard"
+}

@@ -1,0 +1,847 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Let's use random numbers to create a dice rolling app ⚀ ⚁ ⚂ ⚃ ⚄ ⚅ for your next boardgame!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "We want to the dice to roll when we press the A button. <br> Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Lightboard A pressed</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "rawId": "default_part_event_id"
+                        },
+                        "value": "lightboard.lightboard-btn-A"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's use a Variable to create an animation."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice. Now change it to <kano-value-preview><span>rollwait</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "rollwait"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's set the inital value to 0.<br>Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "H_dZW+ps|z7*]NOO*:tB"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "H_dZW+ps|z7*]NOO*:tB",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "H_dZW+ps|z7*]NOO*:tB"
+                    }
+                },
+                "target": "VALUE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's use animation to make the app act like it's rolling a dice across the table. <br>Open the Control tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "repeat_x_times"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "repeat_x_times",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "H_dZW+ps|z7*]NOO*:tB"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "H_dZW+ps|z7*]NOO*:tB"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "H_dZW+ps|z7*]NOO*:tB"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Make each roll take longer than the last, like a dice tumbling to a halt. <br>Open the Control tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "in_x_time"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "in_x_time",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "PltdgI{2RREfQ6L+el2^"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "PltdgI{2RREfQ6L+el2^",
+                            "inputName": "DO"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "PltdgI{2RREfQ6L+el2^"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>milliseconds</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "milliseconds"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Use the variable you set earlier to decide how long each roll should take.<br>Open the Variables tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "t~V2}mP0r%T.@dXgSu3W"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "t~V2}mP0r%T.@dXgSu3W",
+                            "inputName": "DELAY"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "t~V2}mP0r%T.@dXgSu3W"
+                    }
+                },
+                "target": "DELAY"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change it to <kano-value-preview><span>rollwait</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_4"
+                        },
+                        "value": "rollwait"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Let's use the text block to show the value of the dice roll."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard_text"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#light_show_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#light_show_text",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "t~V2}mP0r%T.@dXgSu3W"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "t~V2}mP0r%T.@dXgSu3W",
+                            "inputName": "DO"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "t~V2}mP0r%T.@dXgSu3W"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now you will code random numbers for your dice. <br>Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "Y-aYZ]x!RL27,:Aq6.zb"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "Y-aYZ]x!RL27,:Aq6.zb",
+                            "inputName": "TEXT"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "Y-aYZ]x!RL27,:Aq6.zb"
+                    }
+                },
+                "target": "TEXT"
+            }
+        },
+        {
+            "banner": {
+                "text": "The lowest number on the dice is 1.<br>Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>1</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MIN",
+                        "id": "block_6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MIN",
+                            "id": "block_6"
+                        },
+                        "value": "1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Dice have 6 sides. Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>6</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_6"
+                        },
+                        "value": "6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's use random colors to make things even cooler.<br>Open the Color tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "random_colour"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "random_colour",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "Y-aYZ]x!RL27,:Aq6.zb"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "Y-aYZ]x!RL27,:Aq6.zb",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "Y-aYZ]x!RL27,:Aq6.zb"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "If you press the A button now, a random number will show.<br>Let's use a variable you set earlier to make it more exciting.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "lightboard-button-A",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "t~V2}mP0r%T.@dXgSu3W"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "t~V2}mP0r%T.@dXgSu3W"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "t~V2}mP0r%T.@dXgSu3W"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now increase the time between rolls, so it feels like a dice slowing down.<br>Change it to <kano-value-preview><span>rollwait</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_8"
+                        },
+                        "value": "rollwait"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice. Now change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>100</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "RIGHT_HAND",
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "RIGHT_HAND",
+                            "id": "block_8"
+                        },
+                        "value": "100"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now press the A button and roll some dice! <br> When you can code there is no limit to what you can make.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [],
+    "modules": [
+        "variables",
+        "control",
+        "math",
+        "color"
+    ],
+    "variables": [
+        "rollwait"
+    ],
+    "filterBlocks": {
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ],
+        "control": [
+            "repeat_x_times",
+            "in_x_time"
+        ],
+        "lightboard": [
+            "light_show_text"
+        ],
+        "math": [
+            "math_random",
+            "unary"
+        ],
+        "color": [
+            "random_colour"
+        ]
+    },
+    "mode": "lightboard"
+}

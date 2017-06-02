@@ -16,7 +16,7 @@
                 // Add it to the registery
                 names[newName] = true;
                 this.uniqueName = newName;
-                this.id = this.id || getSlug(this.uniqueName, '');
+                this.id = getSlug(this.uniqueName, '');
             }
 
             get name () {
@@ -49,9 +49,12 @@
                 this.userProperties = Object.assign({}, opts.userProperties);
                 this.nonvolatileProperties = Array.isArray(opts.nonvolatileProperties) ? opts.nonvolatileProperties : [];
                 this.removable = typeof opts.removable === 'undefined' ? true : opts.removable;
+                this.supportedHardware = opts.supportedHardware || [];
+                this.fullscreenEdit = opts.fullscreenEdit || false;
+
             }
-            getUniqueName (value, inc=0) {
-                let newName = inc ? `${value} ${inc}` : value;
+            getUniqueName (value, inc=1) {
+                let newName = (inc === 2) ? `${value} ${inc}` : value;
                 if (Part.nameRegistry[this.type][newName]) {
                     return this.getUniqueName(value, inc + 1);
                 }
@@ -93,6 +96,13 @@
         Part.nameRegistry = {};
         Part.clear = () => {
             Part.nameRegistry = {};
+        };
+
+        Part.freeId = (model) => {
+            const names = Part.nameRegistry[model.type];
+            if (names) {
+                delete names[model.name];
+            }
         };
 
         Kano.MakeApps.Parts.Part = Part;

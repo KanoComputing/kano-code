@@ -30,22 +30,22 @@
                 }
             },
             attached () {
+                this.ctx = this.$.canvas.getContext('2d');
                 this._renderCanvas();
             },
             _canvasSize (size, pixelSize, spacing) {
                 return size * pixelSize + (size * (spacing * 2));
             },
             _renderCanvas () {
-                let ctx = this.$.canvas.getContext('2d'),
-                    x, y;
-                for (let i = 0; i < this.bitmap.length; i++) {
+                let x, y;
+                this.bitmap.forEach((v, i) => {
                     x = (i % this.width);
                     y = Math.floor(i / this.width);
                     x = this.spacing + x * (this.pixelSize + this.spacing * 2);
                     y = this.spacing + y * (this.pixelSize + this.spacing * 2);
-                    ctx.fillStyle = this.bitmap[i];
-                    ctx.fillRect(x, y, this.pixelSize, this.pixelSize);
-                }
+                    this.ctx.fillStyle = v;
+                    this.ctx.fillRect(x, y, this.pixelSize, this.pixelSize);
+                }, this);
                 this._animationFrameId = requestAnimationFrame(this._renderCanvas.bind(this));
             }
         });

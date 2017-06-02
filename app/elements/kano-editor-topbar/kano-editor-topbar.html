@@ -1,0 +1,212 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
+<link rel="import" href="../kano-tooltip/kano-tooltip.html">
+<dom-module id="kano-editor-topbar">
+    <template>
+        <style>
+            :host {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+                background: #394148;
+                color: rgba(255, 255, 255, 0.5);
+                height: 32px;
+                padding: 0px 4px 0px 0px;
+                border-bottom: 1px solid #282E34;
+            }
+            .title {
+                height: 100%;
+                width: 44px;
+            }
+            .back {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                text-transform: uppercase;
+                text-decoration: none;
+                font-size: 12px;
+                color: rgba(255, 255, 255, 0.5);
+            }
+            .user-profile {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            .user-profile button {
+                background: transparent;
+                border: 0px;
+                cursor: pointer;
+                color: rgba(255, 255, 255, 0.5);
+                font-family: var(--font-body);
+                padding: 0px;
+            }
+            .user-profile button iron-image {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                box-sizing: border-box;
+                border: 1px solid transparent;
+            }
+            .user-profile button:focus {
+                outline: none;
+            }
+            .user-profile button:focus iron-image {
+                border-color: rgba(255, 255, 255, 0.6);
+            }
+            .login {
+                text-transform: uppercase;
+            }
+            kano-tooltip {
+                box-sizing: border-box;
+            }
+            ul {
+                margin: 0px;
+                padding-left: 0px;
+                padding-bottom: 16px;
+                color: black;
+                min-width: 200px;
+            }
+            li {
+                @apply --layout-vertical;
+                @apply --layout-stretch;
+            }
+            li.user {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                padding: 16px 14px;
+            }
+            li.user iron-image {
+                width: 30px;
+                height: 30px;
+            }
+            li.user .info {
+                @apply --layout-vertical;
+                @apply --layout-start;
+                margin-left: 14px;
+            }
+            li.user .info .name {
+                font-size: 14px;
+                font-weight: bold;
+            }
+            li.user .info .level {
+                font-size: 12px;
+                opacity: 0.6;
+            }
+            .inline {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                padding: 8px 14px;
+                cursor: pointer;
+                opacity: 0.6;
+            }
+            .inline:hover {
+                opacity: 0.9;
+                background: rgba(0, 0, 0, 0.2);
+            }
+            .inline iron-icon {
+                --iron-icon-width: 14px;
+                --iron-icon-height: 14px;
+                margin-right: 14px;
+            }
+            .back {
+                --iron-icon-width: 16px;
+                --iron-icon-height: 16px;
+                padding-right: 8px;
+                padding-left: 4px;
+                cursor: pointer;
+            }
+            a.back:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
+        <a class="back" on-tap="_exitButtonTapped">
+            <iron-icon class="back" src="/assets/icons/back.svg"></iron-icon>
+            <span>[[exitButtonLabel]]</span>
+        </a>
+        <iron-image class="title" src="/assets/kano-logo-simple.svg" sizing="contain"></iron-image>
+        <div class="user-profile" id="profile-container">
+            <button id="user-button" type="button" on-tap="_userOptionsTapped">
+                <iron-image src="[[avatar]]" sizing="contain" hidden$="[[!user]]"></iron-image>
+                <div class="login" hidden$="[[user]]">[[localize('LOGIN', 'login')]]</div>
+            </button>
+            <kano-tooltip id="tooltip" target="[[tooltipTarget]]" position="bottom" auto-close>
+                <ul>
+                    <li class="user">
+                        <iron-image src="[[avatar]]" sizing="contain" hidden$="[[!user]]"></iron-image>
+                        <div class="info">
+                            <div class="name">[[user.username]]</div>
+                            <div class="level">[[localize('LEVEL', 'Level')]] [[profile.levels.level]]</div>
+                        </div>
+                    </li>
+                    <li>
+                        <a on-tap="_logoutTapped" class="inline">
+                            <iron-icon src="/assets/icons/logout.svg"></iron-icon>
+                            <div class="label">[[localize('LOGOUT', 'Log Out')]]</div>
+                        </a>
+                    </li>
+                </ul>
+            </kano-tooltip>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'kano-editor-topbar',
+            behaviors: [Kano.Behaviors.I18nBehavior],
+            properties: {
+                exitUrl: String,
+                exitButtonLabel: String,
+                profile: Object,
+                user: {
+                    type: Object,
+                    value: null
+                },
+                avatar: {
+                    type: String,
+                    computed: '_computeAvatar(user)'
+                }
+            },
+            attached () {
+                this.exitButtonLabel = this._runningOnElectron() ? this.localize('BACK', 'Back') : this.localize('EXIT', 'Exit');
+            },
+            _runningOnElectron () {
+                return navigator.userAgent.indexOf("Electron") > -1;
+            },
+            _computeAvatar(user) {
+                if (user && user.avatar && user.avatar.urls) {
+                    return user.avatar.urls.circle || '/assets/avatar/judoka-face.svg';
+                }
+                return '/assets/avatar/judoka-face.svg';
+            },
+            _exitButtonTapped () {
+                if (this._runningOnElectron()) {
+                    window.history.back();
+                    return;
+                }
+
+                window.location = this.exitUrl;
+            },
+            _closeTooltip () {
+                this.$.tooltip.close();
+            },
+            _openTooltip () {
+                this.tooltipTarget = this.$['user-button'];
+                this.$.tooltip.open();
+            },
+            _userOptionsTapped () {
+                if (!!this.user) {
+                    if (!this.$.tooltip.opened) {
+                        this._openTooltip();
+                    }
+                } else {
+                    this.fire('login');
+                }
+            },
+            _logoutTapped () {
+                this.fire('logout');
+                this._closeTooltip();
+            }
+        });
+    </script>
+</dom-module>

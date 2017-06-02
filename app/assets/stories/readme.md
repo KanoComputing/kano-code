@@ -17,6 +17,8 @@ The order and metadata of each scenes are defines in the `index.json` file. Here
         "id": "_0", // Scene id (not implemented yet)
         "component": "my_story/my-story-intro-1", // Scene component
         "data": {} // Additional data to give to the component
+        "show_remix_options": true, // Optional flag
+        "autoshare_disabled": true // Optional flag
     },{
         "id": "_1",
         "component": "my_story/my-story-intro-2",
@@ -429,6 +431,21 @@ To define the arrow, use the `arrow` key and set the values as follow:
 
 The location of the source and target are defined the same way the highlight and tooltips are. Read the `Location` chapter to learn more.
 
+#### Beacons
+
+You can display a beacon on the screen. This beacon will be placed on the element described by the `target`. The beacon will bounce every 3 seconds
+To define the beacon, use the `beacon` key and set the values as follow:
+
+```json
+{
+    "beacon": {
+        "target": "<target location>"
+    }
+}
+```
+
+The location of the source and target are defined the same way the highlight and tooltips are. Read the `Location` chapter to learn more.
+
 ### Phantom blocks
 
 You can define a `phantom block` that will appear at a target position to indicate where to drop a block. You can only use this in a step with a blockly connect validation.
@@ -495,6 +512,17 @@ Later on you will be able to target this block using:
     "block": "show_marker"
 }
 ```
+
+You can also target inputs or fields in a block by specifying its `inputName`:
+```json
+{
+    "block": {
+        "id": "show_marker",
+        "inputName": "LATITUDE"
+    }
+}
+```
+You can find a list of all blocks and their inputs by running `Kano.MakeApps.Utils.displayBlockInputs();` in your browser's console
 
 To target a category in a blockly workspace, define an object and use the `category` key e.g.
 

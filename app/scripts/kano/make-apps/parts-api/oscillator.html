@@ -7,9 +7,12 @@
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         Oscillator = {
+            onDestroyed () {
+                this._stopOscillating();
+            },
             start () {
                 PartsAPI.Base.start.apply(this);
-                this.x = 0;
+                this.set('model.x', 0);
                 if (!this.timeout) {
                     this._updateValue();
                 }
@@ -18,11 +21,18 @@
                 return parseInt(this.get('model.userProperties.delay')) + this.x;
             },
             _updateValue () {
+                if (this.timeout) {
+                    this._stopOscillating();
+                }
                 this.timeout = setTimeout(() => {
-                    this.x += this._getStep();
+                    this.set('model.x', this.model.x + this._getStep());
                     this._checkBounds();
                     this._updateValue();
                 }, 16);
+            },
+            _stopOscillating () {
+                clearTimeout(this.timeout);
+                this.timeout = null;
             },
             stop () {
                 PartsAPI.Base.stop.apply(this);
@@ -46,14 +56,14 @@
                 this.set('model.userProperties.delay', d);
             },
             _checkBounds () {
-                if (this.x > 100) {
-                    this.x = 101 - this.x;
+                if (this.model.x > 100) {
+                    this.set('model.x', 101 - this.model.x);
                 } else if (this.x < 0) {
-                    this.x = 101 + this.x;
+                    this.set('model.x', 101 + this.model.x);
                 }
             },
             getValue () {
-                return this.getValueAt(this.x);
+                return this.getValueAt(this.model.x);
             },
             getValueAt (x) {
                 let wave = this.get('model.userProperties.wave'),

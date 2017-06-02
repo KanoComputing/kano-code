@@ -1,40 +1,257 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/input.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/color.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
 <link rel="import" href="../behaviors/kano-cover-generator-behavior.html">
 <link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../kano-app-player/kano-app-player.html">
+<script src="../../scripts/splash.js"></script>
 
 <dom-module id="kano-share-modal">
     <style is="custom-style" include="input-text"></style>
     <style>
         :host {
-            display: block;
             position: relative;
-            @apply(--layout-vertical);
-            font-family: Bariol;
-            background-color: var(--color-grey-lighter, lighter);
-            /* It's bad practice to use !important but there is no other way
-                to remove the padding & margins without affecting other
-                paper-dialogs */
-            margin: 0px !important;
-            padding: 24px !important;
+            @apply --layout-horizontal;
+            font-family: var(--font-body);
+            background: var(--color-black);
+            color: white;
+            --section-padding: 32px;
+            width: 1000px;
+            height: 500px;
         }
-        :host .right {
-            float: right;
+        .header {
+            position: absolute;
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            color: white;
+            font-size: 20px;
+            top: 32px;
+            left: 32px;
+            font-size: 14px;
         }
-        .dialog button {
-            @apply(--kano-button);
+        .header iron-icon {
+            --iron-icon-fill-color: var(--color-chateau);
+            --iron-icon-width: 32px;
+            --iron-icon-height: 32px;
+            transform: scale(-1, 1);
         }
-        .button-container {
+        .dismiss {
+            position: absolute;
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            top: 28px;
+            right: 28px;
+            background: transparent;
+            color: var(--color-chateau);
+            font-size: 14px;
+            z-index: 1;
+        }
+        .dismiss iron-icon {
+            background: var(--color-chateau);
+            border-radius: 4px;
+            --iron-icon-fill-color: white;
+            --iron-icon-width: 16px;
+            --iron-icon-height: 16px;
+            margin-left: 12px;
+            padding: 10px;
+        }
+        .options {
+            @apply --layout-vertical;
+            background: var(--color-abbey);
+            padding: var(--section-padding);
+            width: 40%;
+        }
+        .options>iron-pages {
+            @apply --layout-flex;
+            @apply --layout-vertical;
+        }
+        .options>iron-pages>* {
+            @apply --layout-flex;
+        }
+        .gif-creation-header {
+            @apply --layout-flex;
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
+        }
+        .gif-creation-header span,
+        .publish span {
+            margin: 16px 0px;
+            font-size: 20px;
+        }
+        .preview {
             position: relative;
+            background: var(--color-black);
+            width: 60%;
+        }
+        .preview iron-pages,
+        .preview iron-pages>* {
+            height: 100%;
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
+        }
+        .preview iron-pages>* {
+            height: 100%;
             width: 100%;
-            height: 47px;
-            @apply(--layout-horizontal);
-            @apply(--layout-end-justified);
-            @apply(--layout-center);
+        }
+        .app-preview {
+            margin: var(--section-padding);
+            width: 420px;
+            height: 280px;
+        }
+        button {
+            border: none;
+            outline: none;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            color: white;
+            font-family: var(--font-body);
+            font-size: 16px;
+        }
+        button[disabled] {
+            opacity: 0.7;
+        }
+        button.change-gif, button.gif {
+            color: white;
+            padding: 12px;
+            border-radius: 24px;
+            margin-bottom: 12px;
+            background: var(--color-abbey);
+        }
+
+        form {
+            @apply --layout-vertical;
+            @apply --layout-center-justified;
+            padding-top: 64px;
+        }
+
+        form textarea {
+            @apply --layout-flex;
+            margin-bottom: 8px;
+        }
+
+        form input[type="text"],
+        form textarea {
+            color: white;
+            border: 1px solid transparent;
+            background: var(--color-chateau);
+            box-shadow: none;
+            width: 100%;
+        }
+
+        .share-button {
+            width: 100%;
+            text-transform: uppercase;
+            border-radius: 4px;
+            padding: 9px;
+            background: var(--color-chateau);
+        }
+
+        button.round {
+            border-radius: 50px;
+            padding: 9px 25px;
+            margin-bottom: 12px;
+        }
+
+        .kw-share-button,
+        .next,
+        .open {
+            background: var(--color-apple);
+            @apply --layout-self-center;
+        }
+
+        form hr {
+            width: 100%;
+            border: 0px;
+            height: 1px;
+            background: var(--color-black);
+            margin: 14px 0px 14px;
+        }
+
+        .composed-button {
+            @apply --layout-horizontal;
+        }
+
+        .composed-button button {
+            border: 0px;
+            border-radius: 4px;
+            border-bottom-left-radius: 0px;
+            border-top-left-radius: 0px;
+            background: var(--color-black);
+            text-transform: none;
+            padding: 7px 20px;
+        }
+
+        .composed-button input[type="text"] {
+            @apply --layout-flex;
+            border: 0px;
+            border-radius: 4px;
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            margin-bottom: 0px;
+            color: white;
+            background: var(--color-black);
+            padding-right: 0px;
+            font-family: var(--font-body);
+        }
+
+        .publish {
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
+        }
+
+        .blocks {
+            width: 80px;
+            height: 80px;
+
+            display: flex;
+            flex-direction: column;
+
+            animation: fade-in .3s;
+            transition-timing-function: ease-in;
+        }
+
+        .line {
+            width: 100%;
+
+            transform-origin: center;
+
+            display: flex;
+        }
+
+        .block {
+            opacity: 1;
+            border-radius: 1px;
+
+            background-color: rgba(0,0,0,0.5);
+
+            margin: 2px;
+            width: 10px;
+            height: 8px;
+        }
+
+        @keyframes splash-block-pop-in {
+            0% { transform: scale(0, 1); opacity: 0.5; }
+            90% { transform: scale(1.1, 1); opacity: 1.0; }
+            100% { transform: scale(1, 1); }
+        }
+
+        .last {
+            animation: splash-block-pop-in .2s;
+            transform-origin: left;
+            transition-timing-function: ease-in;
+        }
+
+        .dialog button {
+            @apply --kano-button;
         }
         button {
             cursor: pointer;
@@ -52,9 +269,10 @@
             margin-bottom: 12px;
         }
         .social-share-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            @apply --layout-center-justified;
+            margin-right: 8px;
         }
         .social-share-container a,
         .social-share-container iron-image {
@@ -65,54 +283,62 @@
         .social-share-container a {
             margin-left: 6px;
         }
-        .social-share-container {
-            margin-right: 8px;
-        }
         :host button .button-img {
             width: 25px;
             vertical-align: middle;
             margin-right: 10px;
             text-shadow: 0px 1.5px rgba(0, 0, 0, 0.25);
         }
-        button.change-gif, button.gif {
-            text-transform: none;
-            border: none;
-            outline: none;
-            font-weight: 500;
-            color: white;
-            padding: 12px;
-            cursor: pointer;
-            border-radius: 24px;
-            margin-bottom: 12px;
+        .preview iron-image.cover {
+            width: 420px;
+            height: 280px;
         }
-        iron-image.cover {
-            width: 512px;
-            height: 384px;
-        }
-        .success iron-image.cover {
-            margin: 0px auto 20px;
+        .success,
+        .success .actions {
+            @apply --layout-vertical;
+            @apply --layout-center;
         }
         .success {
-            @apply(--layout-vertical);
-            text-align: center;
+            @apply --layout-around-justified;
+        }
+        .success iron-icon {
+            --iron-icon-width: 62px;
+            --iron-icon-height: 62px;
         }
         .success .title, .fail .title {
-            font-size: 2.0em;
-            margin-bottom: 10px;
-            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 4px;
+            font-weight: 400;
+        }
+        .instructions span {
+            color: var(--color-stone);
+            font-size: 16px;
+        }
+        .success .composed-button {
+            @apply --layout-self-stretch;
         }
         .fail {
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-            @apply(--layout-center-justified);
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
+        }
+        .fail .title {
+            text-transform: uppercase;
         }
         .fail button {
-            @apply(--kano-button);
             background: var(--color-red);
+            border-radius: 50px;
+            padding: 9px 32px;
+            font-weight: 400;
         }
-        .success .instructions, .fail .instructions {
-            font-size: 1.2em;
-            margin: 15px 0;
+        .instructions {
+            @apply --layout-vertical;
+            @apply --layout-center;
+            font-size: 14px;
+            margin-bottom: 12px
+        }
+        .success .instructions {
+            margin: 0px;
         }
         label {
             font-size: 20px;
@@ -120,40 +346,9 @@
             margin-bottom: 2px;
             color: #6e6e6e;
         }
-        button.open-app {
-            @apply(--kano-button);
-            background: var(--color-green);
-            height: 40px;
-            margin-top: 10px;
-            margin-left: 5px;
-            padding-top: 12px;
-        }
-        .dialog {
-            display: flex;
-            flex-direction: row-reverse;
-        }
-        .form {
-            @apply(--layout-vertical);
-            padding-right: 24px;
-            flex: 1;
-        }
-        :host .form a {
-            text-align: center;
-        }
-        .app-preview {
-            width: 512px;
-            height: 384px;
-        }
-        .gif-creator {
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-        }
-        paper-progress {
-            width: 100%;
-            --paper-progress-active-color: var(--color-orange);
-            --paper-progress-secondary-color: rgba(255, 132, 42, 0.5);
-        }
         .gif-creation {
+            @apply --layout-vertical;
+            @apply --layout-center;
             position: relative;
         }
         .start-gif-overlay {
@@ -162,33 +357,18 @@
             left: 0px;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.35);
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-            @apply(--layout-center-justified);
+            background-color: rgba(0, 0, 0, 0.5);
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
             cursor: pointer;
         }
         *[hidden] {
             display: none !important;
         }
         .cover-preview {
-            @apply(--layout-vertical);
-            @apply(--layout-start);
-        }
-        .close {
-            position: absolute;
-            bottom: calc(100% + 12px);
-            right: 0px;
-            background-color: var(--color-red, red);
-            @apply(--kano-button);
-            @apply(--layout-horizontal);
-            @apply(--layout-center);
-            @apply(--layout-center-justified);
-        }
-        .close .times {
-            font-size: 25px;
-            font-weight: 500;
-            transform: translate(0px, -3px);
+            @apply --layout-vertical;
+            @apply --layout-start;
         }
         .generate-url button {
             padding: 12px;
@@ -202,28 +382,12 @@
             right: 0px;
             width: 100%;
             height: 100%;
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-            @apply(--layout-center-justified);
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
         }
         paper-spinner-lite {
             --paper-spinner-color: white;
-        }
-        .generate-url .composed-button button {
-            border-bottom-left-radius: 0;
-            border-top-left-radius: 0;
-            margin: 0;
-            height: 40px;
-            vertical-align: top;
-        }
-        .generate-url .composed-button input {
-            border-top-left-radius: 24px;
-            border-bottom-left-radius: 24px;
-            width: 200px;
-            border-right: 0;
-            margin: 0px;
-            padding-right: 0px;
-            margin-right: -2px;
         }
         .change-gif-container {
             position: absolute;
@@ -231,21 +395,14 @@
             left: 0px;
             width: 100%;
             height: 100%;
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-            @apply(--layout-center-justified);
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
             opacity: 0;
             transition: opacity ease-in-out 70ms;
         }
         .change-gif-container:hover {
             opacity: 1;
-        }
-        .app-player-container {
-            position: relative;
-            text-align: center;
-        }
-        .generate-url-container {
-            position: relative;
         }
         .social-share-container button.social {
             background-color: transparent;
@@ -254,113 +411,56 @@
             margin: 4px;
             border: 0px;
         }
-        paper-card {
-            font-family: Bariol;
-        }
-        .kit-card {
-            display: flex;
-            flex-direction: row;
-            height: 187px;
-            background-color: white;
-            margin-top: 20px;
-        }
-        .kit-card iron-image {
-            width: 220px;
-            height: 100%;
-        }
-        .kit-card .card-content {
-            padding: 18px 11px;
-        }
-        .kit-card button {
-            background-color: white;
-            background-image: url("/assets/campaign/ks-button.svg");
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            width: 250px;
-            height: 40px;
-            margin: 20px 0px 20px;
-            border: 1px solid green;
-            border-radius: 3px;
-        }
-        @media screen and (max-width: 1200px) {
-            iron-image.cover {
-                width: 305px;
-                height: 255px;
-            }
-        }
-        @media screen and (max-width: 960px) {
-            .dialog {
-                @apply(--layout-vertical);
-            }
-            .app-preview, .screenshot {
-                width: 100%;
-            }
-            .form {
-                padding-right: 0px;
-            }
-            iron-image.cover {
-                width: 70%;
-                height: 200px;
-            }
-            .kit-card {
-                flex-direction: column;
-            }
-            .kit-card button {
-                width: 100%;
-                margin-left: 0;
-            }
-            .kit-card iron-image {
-                display: none;
-            }
-            .kit-card h2 {
-                font-size: 1.2em;
-                text-align: center;
-            }
-        }
-
     </style>
     <template>
-        <iron-pages selected="[[shareInfo.page]]" attr-for-selected="name">
-            <div class="gif-creator" name="gif-creation">
-                <h2 hidden$="[[!firstRender]]">[[localize('RECORDING', 'Recording your gif')]] &hellip;</h2>
-                <h2 hidden$="[[firstRender]]">[[localize('BEGIN_RECORDING', 'Click to begin recording your gif')]]</h2>
-                <paper-progress value="[[gifRenderProgress]]" secondary-progress="[[gifProgress]]"></paper-progress>
-                <div class="gif-creation">
-                    <kano-app-player id="app-preview" class="app-preview" src="[[shareInfo.app.src]]" slug="[[shareInfo.app.slug]]"></kano-app-player>
-                    <div class="start-gif-overlay" hidden$="[[recording]]" on-tap="_generateAppGif">
-                        <button class="gif" type="button">[[localize('START_RECORDING', 'Start recording your animated gif')]]</button>
-                    </div>
+        <button hidden$="[[shareInfo.autoshare]]" class="dismiss" on-tap="dismiss">
+            <span>[[localize('CLOSE', 'Close')]]</span>
+            <iron-icon icon="clear"></iron-icon>
+        </button>
+        <div class="header" hidden$="[[_isHeaderHidden(_page)]]">
+            <iron-icon icon="reply"></iron-icon>
+            <span>[[localize('SHARE', 'Share')]]</span>
+        </div>
+        <section class="options">
+            <iron-pages id="options-pager" selected="[[_page]]" attr-for-selected="name">
+                <div class="gif-creation-header" name="gif-creation">
+                    <div class="blocks" id="gif-creation-blocks"></div>
+                    <span hidden$="[[!firstRender]]">[[localize('RECORDING', 'Generating Animation')]]</span>
+                    <span hidden$="[[firstRender]]">[[localize('BEGIN_RECORDING', 'Click to begin generating your animation')]]</span>
                 </div>
-            </div>
-            <div class="dialog" name="sharing-form">
-                <button type="button" name="button" class="close" on-tap="dismiss"><span>[[localize('CLOSE', 'Close')]]&nbsp;&nbsp;</span><span class="times">&times;</span></button>
-                <div class="app-player-container">
-                    <iron-image class="cover" src="[[gifSrc]]" preload fade sizing="contain" width="[[coverWidth]]" height="[[coverHeight]]"></iron-image>
-                    <div class="change-gif-container">
-                        <button class="change-gif" on-tap="_changeGif" type="button">&larr; [[localize('MAKE_ANOTHER', 'Make another gif')]]</button>
-                    </div>
-                </div>
-                <form class="form">
-                    <div class="form-group">
-                        <input type="text"
+                <form class="form" name="sharing-form">
+                    <input type="text"
                             id="title_input"
                             value="{{shareInfo.title::change}}"
                             placeholder="Title"
-                            autofocus>
-                    </div>
-                    <div class="form-group">
-                        <textarea rows="8"
+                            autofocus />
+                    <textarea rows="4"
                             cols="40"
                             value="{{shareInfo.description::change}}"
                             placeholder="Description"></textarea>
+
+                    <hr>
+
+                    <div class="generate-url-container">
+                        <button hidden$="[[shareInfo.slug]]" disabled$="[[loading]]" on-tap="_socialShareLink" class="share-button" type="button">
+                            <img src="/assets/get-share-link.svg"/>
+                            <span>[[localize('GET_SHARE_LINK', 'Get share link')]]</span>
+                        </button>
+                        <div class="loading-overlay" hidden$="[[!loading]]">
+                            <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
+                        </div>
                     </div>
 
-                    <div class="button-container">
-                        <button type="button" name="button" class="share normal-button" on-tap="_shareOnKW"><img class="button-img" src="/assets/kano-world-planet.svg" alt="" /><span>[[localize('SHARE_ON_WORLD', 'Share on Kano World')]]</span></button>
+                    <div class="composed-button" hidden$="[[!shareInfo.slug]]">
+                        <input type="text" id="shareurl" value="{{playUrl(shareInfo.slug)}}">
+                        <button on-tap="copyToClipboard" type="button">[[localize('COPY', 'copy')]]</button>
                     </div>
 
-                    <div class="button-container generate-url">
+                    <hr>
+
+                    <button type="button" name="button" class="kw-share-button round" on-tap="_shareOnKW">[[localize('SHARE_ON_WORLD', 'Kano Share')]]</button>
+
+                    <div class="generate-url">
                         <div class="social-share-container">
                             <button type="button" class="social" on-tap="_socialShareFacebook">
                                 <iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image>
@@ -369,59 +469,80 @@
                                 <iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image>
                             </button>
                         </div>
-                        <div class="composed-button" hidden$="[[!shareInfo.slug]]">
-                            <input type="text" id="shareurl" value="{{playUrl(shareInfo.slug)}}">
-                            <button on-tap="copyToClipboard" type="button"><img src="/assets/get-share-link.svg"/> <span>[[localize('COPY', 'copy')]]</span></button>
-                        </div>
-                        <div class="generate-url-container">
-                            <button hidden$="[[shareInfo.slug]]" disabled$="[[loading]]" on-tap="_socialShareLink" class="share-button right" type="button"><img src="/assets/get-share-link.svg"/> <span>[[localize('GET_SHARE_LINK', 'Get share link')]]</span></button>
-                            <div class="loading-overlay" hidden$="[[!loading]]">
-                                <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
-                            </div>
+                    </div>
+                </form>
+                <div id="publish-process" class="publish" name="publishing">
+                    <div class="blocks" id="gif-creation-blocks"></div>
+                    <span>[[localize('PUBLISHING', 'Publishing')]] ...</span>
+                </div>
+                <div class="fail" name="failure">
+                    <div class="title">[[localize('PUBLISHING_FAILED', 'Publishing failed')]]</div>
+                    <div class="instructions">
+                        <span>[[localize('TRY_LATER', 'Please try again later.')]]</span>
+                    </div>
+                    <button on-tap="dismiss" type="button">[[localize('UNFORTUNATE', 'This is unfortunate')]]</button>
+                </div>
+                <div name="success" class="success">
+                    <iron-icon src="/assets/icons/success.svg"></iron-icon>
+                    <div class="instructions">
+                        <h2>[[localize('PUBLISHED', 'Published')]]</h2>
+                        <span>[[localize('APP_IS_LIVE', 'Your app is now live!')]]</span>
+                        <span>[[localize('SHARE_WITH_FRIENDS', 'Share it with your friends.')]]</span>
+                    </div>
+                    <div class="composed-button" hidden$="[[!shareInfo.slug]]">
+                        <input type="text" id="shareurl" value="{{playUrl(shareInfo.slug)}}">
+                        <button on-tap="copyToClipboard" type="button">[[localize('COPY', 'copy')]]</button>
+                    </div>
+                    <div class="actions">
+                        <button hidden$="[[!inChallenge]]" type="button" class="next round" on-tap="_nextStory">[[nextButtonLabel]]</button>
+                        <a href$="[[playUrl(shareInfo.slug)]]" target="_blank" hidden$="[[shareInfo.autoshare]]">
+                            <button class="open round" type="button">[[localize('OPEN_APP', 'Open app')]]</button>
+                        </a>
+                        <div class="social-share-container">
+                            <button type="button" class="social" on-tap="_socialShareFacebook">
+                                <iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image>
+                            </button>
+                            <button type="button" class="social" on-tap="_socialShareTwitter">
+                                <iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image>
+                            </button>
                         </div>
                     </div>
-
-                    <template is="dom-if" if="[[isKitAvailable(shareInfo.mode.id)]]">
-                        <paper-card class="kit-card">
-                            <iron-image src="/assets/campaign/[[shareInfo.mode.id]].jpg" sizing="contain">
-                            </iron-image>
-                            <div class="card-content">
-                                <h2>[[localize('BRING_TO_LIFE', 'Bring your own creation to life')]] -<br>[[localize('BUILD_YOUR_OWN', 'build your own')]] [[shareInfo.mode.id]]</h2>
-                                <a href="https://kano.me/kickstarter"><button type="button"></button></a>
-                           </div>
-                       </paper-card>
-                    </template>
-
-                </form>
-            </div>
-            <div id='publish-process' name="publishing">[[localize('PUBLISHING', 'Publishing')]] ...</div>
-            <div name="success" class="success">
-                <iron-image class="cover" src="[[gifSrc]]" preload fade sizing="contain"></iron-image>
-                <div class="title">[[shareInfo.title]]</div>
-                <div class="instructions">
-                    [[localize('APP_IS_LIVE', 'Your app is live! Share it with your friends.')]]
                 </div>
-                <div class="social-share-container">
-                    <button type="button" class="social" on-tap="_socialShareFacebook">
-                        <iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image>
-                    </button>
-                    <button type="button" class="social" on-tap="_socialShareTwitter">
-                        <iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image>
-                    </button>
+            </iron-pages>
+        </section>
+        <section class="preview">
+            <iron-pages selected="[[shareInfo.page]]" attr-for-selected="name">
+                <div class="gif-creation" name="gif-creation">
+                    <kano-app-player id="app-preview" class="app-preview" src="[[shareInfo.app.src]]" slug="[[shareInfo.app.slug]]"></kano-app-player>
+                    <div class="start-gif-overlay" hidden$="[[recording]]" on-tap="_generateAppGif">
+                        <button class="gif" type="button">[[localize('START_RECORDING', 'Start recording your animated gif')]]</button>
+                    </div>
                 </div>
-                <a href$="[[playUrl(shareInfo.slug)]]" target="_blank"><button class="open-app" type="button">[[localize('OPEN_APP', 'Open app')]]</button></a>
-            </div>
-            <div class="fail" name="failure">
-                <div class="title">
-                    [[localize('PUBLISHING_FAILED', 'Publishing failed')]]
+                <div name="sharing-form">
+                    <div class="app-player-container">
+                        <iron-image class="cover" src="[[gifSrc]]" preload fade sizing="cover"></iron-image>
+                        <div class="change-gif-container">
+                            <button class="change-gif" on-tap="_changeGif" type="button">&larr; [[localize('MAKE_ANOTHER', 'Make another gif')]]</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="instructions">
-                    [[localize('TRY_LATER', 'Please try again later.')]]
+                <div name="publishing">
+                    <div class="app-player-container">
+                        <iron-image class="cover" src="[[gifSrc]]" preload fade sizing="cover"></iron-image>
+                    </div>
                 </div>
-                <button on-tap="dismiss" type="button">[[localize('UNFORTUNATE', 'This is unfortunate')]]</button>
-            </div>
-        </iron-pages>
-
+                <div name="failure">
+                    <div class="app-player-container">
+                        <iron-image class="cover" src="[[gifSrc]]" preload fade sizing="cover"></iron-image>
+                    </div>
+                </div>
+                <div name="success">
+                    <div class="app-player-container">
+                        <iron-image class="cover" src="[[gifSrc]]" preload fade sizing="cover"></iron-image>
+                    </div>
+                </div>
+            </iron-pages>
+        </section>
     </template>
 </dom-module>
 
@@ -440,11 +561,11 @@
             },
             appData: {
                 type: String,
-                value: ""
+                value: ''
             },
             appSlug: {
                 type: String,
-                value: ""
+                value: ''
             },
             loading: {
                 type: Boolean,
@@ -458,11 +579,65 @@
             isAuthenticated: {
                 type: Boolean,
                 value: false
+            },
+            inChallenge: {
+                type: Boolean,
+                value: false
+            },
+            nextButtonLabel: {
+                type: String,
+                value: 'Next Challenge'
             }
         },
         observers: [
-            '_shareSlugChanged(shareInfo.slug)'
+            '_shareSlugChanged(shareInfo.slug)',
+            '_pageChanged(shareInfo.page)'
         ],
+        _isHeaderHidden (page) {
+            return page === 'success';
+        },
+        _pageChanged (page) {
+            let oldPageEl = this.$['options-pager'].querySelector('.iron-selected'),
+                animationPromise;
+            if (oldPageEl) {
+                animationPromise = new Promise((resolve, reject) => {
+                    oldPageEl.animate({
+                        opacity: [1, 0]
+                    }, {
+                        duration: 300,
+                        easing: 'ease-out'
+                    }).onfinish = resolve;
+                });
+            } else {
+                animationPromise = Promise.resolve();
+            }
+            animationPromise.then(() => {
+                let newPageEl;
+                this._page = page;
+                if (this.splash) {
+                    this.splash.cancel();
+                }
+                if (page === 'gif-creation' || page === 'publishing') {
+                    let container = this.$['options-pager'].querySelector(`.iron-selected #gif-creation-blocks`);
+                    this.splash = new Kano.BlockAnimation(container);
+                    this.splash.init();
+                }
+                newPageEl = this.$['options-pager'].querySelector('.iron-selected');
+                if (newPageEl) {
+                    animationPromise = new Promise((resolve, reject) => {
+                        newPageEl.animate({
+                            opacity: [0, 1]
+                        }, {
+                            duration: 300,
+                            easing: 'ease-out'
+                        }).onfinish = resolve;
+                    });
+                } else {
+                    animationPromise = Promise.resolve();
+                }
+                return animationPromise;
+            });
+        },
         _shareSlugChanged (newValue, oldValue) {
             if (newValue && !oldValue) {
                 this.loading = false;
@@ -474,8 +649,14 @@
         _externalShare () {
             let socialConfig = this.socialConfigs[this.socialTarget];
             this.popup.location.href = socialConfig.generateUrl(this.playUrl(), this.shareInfo.title);
-            this.fire('track-event', {
+            this.fire('ga-tracking-event', {
                 event: 'worldExternalShare'
+            });
+            this.fire('tracking-event', {
+                name: 'shared_external',
+                data: {
+                    medium: this.socialTarget
+                }
             });
         },
         _checkTitleInput () {
@@ -552,39 +733,67 @@
             this.recording = true;
 
             if (sharingConfig.cover === 'still') {
-                let waitingFrame = 0,
-                    interval;
-                this.gifRenderProgress = 0;
-                // Simulate gif recording
-                interval = setInterval(_ => {
-                    // Fake frame increment
-                    waitingFrame++;
-                    // Let the user know the progress state
-                    this.gifRenderProgress += (100 / LENGTH);
-                    // The number of fake frames hit the limit
-                    if (waitingFrame > LENGTH) {
-                        clearInterval(interval);
-                        // Generate the still cover
-                        this.generateCover(workspace,
-                                    parts,
-                                    workspace.width,
-                                    workspace.height,
-                                    1,
-                                    sharingConfig.padding,
-                                    sharingConfig.color)
-                            .then(image => {
-                                let base64Data = image.src.split(',').pop(),
-                                    blob = this.base64toBlob(base64Data, 'image/png');
-                                this.gifSrc = image.src;
-                                this.shareInfo.coverBlob = blob;
-                                this.fire('cover-generated');
-                                // Reset UI for potential future gif-creation
-                                this.recording = false;
-                                this.firstRender = false;
-                                this.gifRenderProgress = 0;
-                            });
-                    }
-                }, 1000 / FPS);
+                if (sharingConfig.spritesheet) {
+                    this.generateSpriteSheet(workspace, FPS, 4)
+                        .then((url) => {
+                            let data = url.split(',').pop(),
+                                spriteSheetBlob = this.base64toBlob(data, 'image/png');
+
+                            this.shareInfo.spriteSheetBlob = spriteSheetBlob
+
+                            return this.generateCover(workspace,
+                                        parts,
+                                        workspace.width,
+                                        workspace.height,
+                                        1,
+                                        sharingConfig.padding,
+                                        sharingConfig.color);
+                        }).then(image => {
+                            let base64Data = image.src.split(',').pop(),
+                                blob = this.base64toBlob(base64Data, 'image/png');
+                            this.gifSrc = image.src;
+                            this.shareInfo.coverBlob = blob;
+                            this.fire('cover-generated');
+                            // Reset UI for potential future gif-creation
+                            this.recording = false;
+                            this.firstRender = false;
+                            this.gifRenderProgress = 0;
+                        });
+                } else {
+                    let waitingFrame = 0,
+                        interval;
+                    this.gifRenderProgress = 0;
+                    // Simulate gif recording
+                    interval = setInterval(_ => {
+                        // Fake frame increment
+                        waitingFrame++;
+                        // Let the user know the progress state
+                        this.gifRenderProgress += (100 / LENGTH);
+                        // The number of fake frames hit the limit
+                        if (waitingFrame > LENGTH) {
+                            clearInterval(interval);
+                            // Generate the still cover
+                            this.generateCover(workspace,
+                                        parts,
+                                        workspace.width,
+                                        workspace.height,
+                                        1,
+                                        sharingConfig.padding,
+                                        sharingConfig.color)
+                                .then(image => {
+                                    let base64Data = image.src.split(',').pop(),
+                                        blob = this.base64toBlob(base64Data, 'image/png');
+                                    this.gifSrc = image.src;
+                                    this.shareInfo.coverBlob = blob;
+                                    this.fire('cover-generated');
+                                    // Reset UI for potential future gif-creation
+                                    this.recording = false;
+                                    this.firstRender = false;
+                                    this.gifRenderProgress = 0;
+                                });
+                        }
+                    }, 1000 / FPS);
+                }
             } else {
                 this._generateGifCover(workspace, parts, 0.6, sharingConfig.padding, sharingConfig.color, FPS, LENGTH).then(blob => {
                     let url = URL.createObjectURL(blob);
@@ -608,14 +817,22 @@
         _shareOnKW () {
             if (this._checkTitleInput()) {
                 this.shareInfo.is_private = false;
-                this.fire('confirm');
-                this.fire('track-event', {
+                this.fire('confirm', {
+                    share: true
+                });
+                this.fire('ga-tracking-event', {
                     event: 'worldInternalShare'
                 });
             }
         },
-        copyToClipboard () {
-            this.$$("#shareurl").select();
+        copyToClipboard (e) {
+            const target = e.path ? e.path[0] : e.target,
+                  parent = target.parentNode,
+                  input = parent.querySelector('input');
+            if (!input) {
+                return;
+            }
+            input.select();
             document.execCommand('copy');
         },
         _socialShareTwitter () {
@@ -659,10 +876,8 @@
             this.popup = window.open("", 'sharer', `top=${winTop},left=${winLeft},toolbar=0,status=0,width=${socialConfig.width},height=${socialConfig.height}`);
             this.popup.document.write("<p>Fetching your link...</p>")
         },
-        isKitAvailable () {
-            if (this.shareInfo.mode) {
-                return this.shareInfo.mode.id === 'lightboard' || this.shareInfo.mode.id === 'camera'
-            }
+        _nextStory () {
+            this.fire('next-story');
         }
     });
 </script>

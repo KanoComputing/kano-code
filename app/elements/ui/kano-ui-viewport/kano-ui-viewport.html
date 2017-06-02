@@ -46,20 +46,20 @@ the content out of proportions to make it fit inside the available space.
         :host {
             display: block;
             width: 100%;
-            height: 100%;
             position: relative;
             overflow: hidden;
         }
 
         #view {
             position: absolute;
+            top: 0;
             transform-origin: 0 0 0;
             background-color: transparent;
             @apply(--kano-ui-viewport);
         }
 
         :host([no-overflow]) #view {
-            /*overflow: hidden;*/
+            overflow: hidden;
         }
 
         .debug {
@@ -109,7 +109,7 @@ the content out of proportions to make it fit inside the available space.
             'resizeView(mode, viewWidth, viewHeight, aspectRatio)'
         ],
         resizeView () {
-            requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
                 switch (this.mode) {
                     case "responsive":
                         this.resize();
@@ -177,8 +177,7 @@ the content out of proportions to make it fit inside the available space.
             style.width = this.viewWidth + 'px';
             style.height = this.viewHeight + 'px';
 
-            /* Center the view on the screen */
-            style.top = yOffset + 'px';
+            /* Align the view to top center */
             style.left = xOffset + 'px';
 
             /* Transform the element to the appropriate scale */

@@ -1,104 +1,137 @@
 <link rel="import" href="../../scripts/kano/make-apps/mode/mode.html">
 <link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
-<link rel="import" href="../../scripts/kano/make-apps/utils.html">
 <link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
 <link rel="import" href="../../scripts/kano/util/router.html">
 <link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
 <link rel="import" href="../../scripts/kano/make-apps/challenge.html">
 <link rel="import" href="../../scripts/kano/app-modules/index.html">
-<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
-<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
-<link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
 <link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-modal-animator-behavior.html">
 
 <link rel="import" href="../../scripts/kano/make-apps/sdk.html">
+<link rel="import" href="../../scripts/kano/make-apps/debug/challenge.html">
 
 <dom-module id="kano-view-tutorial">
     <style>
         :host {
-            display: block;
             position: relative;
-            @apply(--layout-vertical);
-            font-family: Bariol;
+            @apply --layout-vertical;
+            @apply --font-body;
         }
         :host kano-story-scene {
-            @apply(--layout-flex);
+            @apply --layout-flex;
         }
-        paper-dialog {
+        :host paper-dialog {
             border-radius: 5px;
         }
-        kano-scene-editor {
+        :host kano-scene-editor {
             height: 100%;
         }
-        button {
-            @apply(--kano-button);
+        :host button {
+            @apply --kano-button;
             background-color: var(--color-green);
         }
-        *[hidden] {
+        :host button[disabled] {
+            color: #bbb;
+            background-color: var(--color-grey);
+        }
+        :host *[hidden] {
             display: none !important;
         }
-        .challenge-modal {
-            max-width: 514px;
-            max-height: 500px;
-            overflow-y: scroll;
-        }
-        .share-preview {
+        :host .start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 384px;
-            background: lightgrey;
+            height: 100%;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            @apply --layout-vertical;
         }
-        .challenge-modal div.buttons {
-            @apply(--layout-center-justified);
+        :host .start-overlay.hidden {
+            display: none;
+        }
+        :host .start-overlay .wrapper {
+            margin: auto;
+            border-radius: 5px;
+            background: #ffffff;
+            padding: 20px;
+            @apply --layout-center-justified;
+            @apply --layout-center;
+        }
+        :host #drop-target {
+            background-color: #ccc;
+            border-radius: 5px;
+            height: 100px;
+            text-align: center;
+
+            @apply --layout-center-justified;
+            @apply --layout-center;
+            @apply --layout-vertical;
+        }
+        :host #drop-target.active {
+            background-color: #888;
+        }
+        :host .start-overlay .buttons {
+            margin-top: 20px;
+        }
+        .block-highlighter-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+        .block-highlighter-container path,
+        .block-highlighter-container rect {
+            fill: var(--color-sky);
+            fill-opacity: 0.6;
         }
     </style>
     <template>
-        <template is="dom-if" if="[[shareLoaded]]" on-dom-change="_editorDomChanged">
-            <kano-scene-editor id="editor" scene="[[scene]]" story-name="[[_share.title]]" on-scene-done="_showEndModal" on-share="_pauseAndShare"></kano-scene-editor>
+        <template is="dom-if" if="[[loaded]]" on-dom-change="_editorDomChanged">
+            <kano-scene-editor id="editor"
+                               scene="[[scene]]"
+                               story-name="[[fileName]]"
+                               on-scene-done="_showEndModal"
+                               added-parts="{{addedParts}}"
+                               current-step="{{step}}"></kano-scene-editor>
         </template>
-        <paper-dialog id="share-modal" with-backdrop>
-            <kano-share-modal on-confirm="confirmShare"
-                              on-dismiss="dismissShare"
-                              share-info="{{shareInfo}}"></kano-share-modal>
-        </paper-dialog>
-        <paper-dialog class="challenge-modal" id="start-modal" modal on-iron-overlay-closed="_startTutorial">
-            <iron-pages selected="[[selectedStartPage]]" attr-for-selected="name">
-                <div name="loading">Loading tutorial...</div>
-                <div name="loaded">
-                    <h2>How to build [[_share.user.username]]'s [[_share.title]] app</h2>
-                    <iron-image src="[[_share.cover_url]]" sizing="contain" preload fade class="share-preview"></iron-image>
-                    <p>
-                        Hi there. In this tutorial you will learn how to create [[_share.user.username]]'s app, and then you will be able to remix it to make it your own.
-                    </p>
-                    <div hidden$="[[!_share.description]]">
-                        <p>Here's what the app does:</p>
-                        <p>[[_share.description]]</p>
-                    </div>
-                    <p>
-                        If you're ready, hit the start button!
-                    </p>
-                    <div class="buttons">
-                        <button class="start-button" disabled$="[[!shareLoaded]]" dialog-confirm>Start!</button>
-                    </div>
+        <div class$="start-overlay {{_computeOverlayClass(testing)}}">
+            <div class="wrapper">
+                <div id="drop-target"
+                     on-dragover="_dragOver"
+                     on-drop="_drop"
+                     on-dragenter="_dragEnter"
+                     on-dragleave="_dragLeave"
+                     class$="{{_computeDropTargetClass(dragging)}}">
+                    {{fileName}}
                 </div>
-            </iron-pages>
+                <div class="buttons">
+                    <button class="test-button" on-tap="_startChallenge" disabled$="{{!file}}">Test Challenge</button>
+                    <button class="download-button" on-tap="_downloadSteps" disabled$="{{!file}}">Download steps.json</button>
+                </div>
+            </div>
+        </div>
+        <paper-dialog class="challenge-modal" id="end-modal" modal>
+          <h2>Well that's it!</h2>
+          <div class="buttons">
+              <button class="start-button" dialog-confirm>Got it</button>
+          </div>
         </paper-dialog>
-        <paper-dialog class="challenge-modal" id="end-modal" modal on-iron-overlay-closed="_enableRemixMode">
-          <h2>Well done!</h2>
-          <paper-dialog-scrollable>
-              <p>You finished rebuilding [[_share.user.username]]'s app. You can now remix it to add your personnal touch or add more awesome features</p>
-              <div class="buttons">
-                  <button class="start-button" dialog-confirm>Start remixing</button>
-              </div>
-          </paper-dialog-scrollable>
-        </paper-dialog>
-        <paper-dialog id="share-modal" with-backdrop>
-            <kano-share-modal on-confirm="confirmShare"
-                              on-dismiss="dismissShare"
-                              share-info="{{shareInfo}}"
-                              world-url="[[config.WORLD_URL]]"
-                              is-authenticated="[[user]]"></kano-share-modal>
-        </paper-dialog>
+        <svg id="block-highlighter-svg" class="block-highlighter-container">
+            <path id="block-highlighter"></path>
+            <rect id="element-highlighter"></rect>
+        </svg>
     </template>
 </dom-module>
 
@@ -106,18 +139,132 @@
     /* globals Polymer, Kano, page */
     Polymer({
         is: 'kano-view-tutorial',
-        behaviors: [Kano.Behaviors.SharingBehavior, Kano.Behaviors.ModalAnimatorBehavior, Kano.Behaviors.EditorViewBehavior],
+        behaviors: [
+            Kano.Behaviors.ModalAnimatorBehavior,
+            Kano.Behaviors.EditorViewBehavior,
+            Kano.Behaviors.AppElementRegistryBehavior
+        ],
+        listeners: {
+            'challenge-ui-error': '_onChallengeUIError'
+        },
+        observers: [
+            '_stepChanged(step)'
+        ],
         properties: {
             app: {
                 type: Object
+            },
+            file: {
+                type: String,
+                value: null,
+                observer: '_fileChanged'
+            },
+            fileName: {
+                type: String,
+                value: 'Drop your .kcode or .json challenge file here'
+            },
+            dragging: {
+                type: Boolean,
+                value: false
+            },
+            testing: {
+                type: Boolean,
+                value: false
+            },
+            addedParts: {
+                type: Array,
+                observer: '_addedPartsChanged'
             }
         },
+        _onModeReady () {
+            Kano.Behaviors.EditorViewBehavior._onModeReady.apply(this);
+            this.async(() => {
+                this.initialContext = this._getCurrentEditorContext();
+                this._updateContext();
+            });
+        },
+        _debuggerConnected () {
+            this._updateContext();
+        },
+        _stepChanged () {
+            Kano.MakeApps.Debug.Challenge.step = this.step;
+            this._updateContext();
+        },
+        _updateContext () {
+            let editor = this.$$('#editor');
+            if (editor) {
+                let stepIds = editor.$.challenge.stepIds,
+                    blockIds = editor.$.challenge.blockIds,
+                    elementIds = this._getElementList(),
+                    categoryIds;
+                categoryIds = Object.keys(editor.editor.defaultCategories);
+                categoryIds = categoryIds.concat(editor.editor.mode.categories.map(category => category.id));
+                Kano.MakeApps.Debug.Challenge.updateChallengeContext({
+                    stepIds,
+                    blockIds,
+                    elementIds,
+                    categoryIds,
+                    initial: this.initialContext,
+                    steps: this.scene.steps,
+                    stepIndex: this.step
+                });
+            }
+        },
+        _onChallengeUIError (e) {
+            Kano.MakeApps.Debug.Challenge.setError({
+                message: e.detail.message,
+                selector: JSON.stringify(e.detail.detail, null, 4)
+            });
+        },
+        _highlightElement (id) {
+            this.debounce('highlightBlock', () => {
+                let editor = this.$$('#editor');
+                if (editor) {
+                    let challengeUI = editor.$.challenge.$.ui,
+                        el = challengeUI._getTargetElement(id),
+                        rect;
+                    if (el) {
+                        this.$['block-highlighter-svg'].style.display = 'block';
+                        this.$['element-highlighter'].style.display = 'block';
+                        rect = el.getBoundingClientRect();
+                        this.$['element-highlighter'].setAttribute('width', rect.width);
+                        this.$['element-highlighter'].setAttribute('height', rect.height);
+                        this.$['element-highlighter'].setAttribute('transform', `translate(${rect.left}, ${rect.top})`);
+                    }
+                }
+            }, 10);
+        },
+        _highlightBlock (id) {
+            this.debounce('highlightBlock', () => {
+                let editor = this.$$('#editor');
+                if (editor) {
+                    let challengeUI = editor.$.challenge.$.ui,
+                        el = challengeUI._getTargetElement({
+                            block: { id }
+                        }), path, blockRect, newBlockRect, scale;
+                    if (el) {
+                        this.$['block-highlighter-svg'].style.display = 'block';
+                        this.$['block-highlighter'].style.display = 'block';
+                        path = el.getAttribute('d');
+                        this.$['block-highlighter'].setAttribute('d', path);
+                        blockRect = el.getBoundingClientRect();
+                        newBlockRect = this.$['block-highlighter'].getBoundingClientRect();
+                        scale = blockRect.width / newBlockRect.width;
+                        this.$['block-highlighter'].setAttribute('transform', `translate(${blockRect.left}, ${blockRect.top}) scale(${scale}, ${scale})`);
+                    }
+                }
+            }, 10);
+        },
+        _blurBlock () {
+            this.$['block-highlighter-svg'].style.display = 'none';
+            this.$['block-highlighter'].style.display = 'none';
+            this.$['element-highlighter'].style.display = 'none';
+            this.$['block-highlighter'].removeAttribute('transform');
+        },
         ready () {
-            let hardwareAPI = new Kano.MakeApps.HardwareAPI();
+            this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
 
-            hardwareAPI.config(Kano.MakeApps.config);
-
-            Kano.AppModules.init(Object.assign({ hardwareAPI }, Kano.MakeApps.config));
+            Kano.AppModules.init(Object.assign({ hardwareAPI: this.hardwareAPI }, Kano.MakeApps.config));
 
             Kano.MakeApps.Parts.init(Kano.MakeApps.config);
             Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
@@ -125,66 +272,132 @@
 
             this.configureModal(this.$['end-modal'], 'scale-down');
             this.configureModal(this.$['end-modal'], 'fade-out');
-            this.configureModal(this.$['start-modal'], 'scale-down');
-            this.configureModal(this.$['start-modal'], 'fade-out');
-            this.mode = Kano.MakeApps.Mode.modes[this._getMode(this.context)];
+
+            Kano.MakeApps.Debug.Challenge.on('update-step', (e) => {
+                let path = e.path ? e.path.replace('step', '') : '';
+                this.set(`scene.steps.${this.step}${path}`, e.value);
+                this.debounce('forceReload', () => {
+                    let editor = this.$$('#editor');
+                    if (editor) {
+                        editor.forceReloadStep();
+                    }
+                }, 200);
+            });
+            Kano.MakeApps.Debug.Challenge.on('connected', () => this._debuggerConnected());
+            Kano.MakeApps.Debug.Challenge.on('highlight-block', (id) => this._highlightBlock(id));
+            Kano.MakeApps.Debug.Challenge.on('blur-block', () => this._blurBlock());
+            Kano.MakeApps.Debug.Challenge.on('highlight-element', (id) => this._highlightElement(id));
+            Kano.MakeApps.Debug.Challenge.on('blur-element', () => this._blurBlock());
+            Kano.MakeApps.Debug.Challenge.on('save-challenge', () => this._downloadSteps());
         },
         attached () {
-            let editor = Kano.Util.Router.parseQsParam(this.context.querystring, 'editor');
-            this.modal = this.$['share-modal'];
-            this.$['start-modal'].open();
-            this.selectedStartPage = 'loading';
-            this.shareLoaded = false;
-            if (editor) {
-                let modeId = this.mode.id;
-                this._share = {
-                    user: this.user || { username: 'Current user' },
-                    title: 'From Local Storage',
-                    description: 'App loaded from the localStorage'
-                };
-                this.selectedStartPage = 'loaded';
-                this.$['start-modal'].refit();
-                this.challenge = Kano.MakeApps.Challenge.createFromApp(JSON.parse(localStorage.getItem(`savedApp-${modeId}`)));
-                this.scene = Object.assign({}, this.challenge.data);
-                this.shareLoaded = true;
-            } else {
-                Kano.MakeApps.sdk.api.share.get.bySlug({ slug: this.context.params.slug })
-                    .then((res) => res.body.item)
-                    .then((share) => {
-                        this._share = share;
-                        this.selectedStartPage = 'loaded';
-                        this.$['start-modal'].refit();
-                        return fetch(share.workspace_info_url);
-                    })
-                    .then((res) => res.json())
-                    .then((app) => {
-                        this.challenge = Kano.MakeApps.Challenge.createFromApp(app);
-                        this.scene = Object.assign({}, this.challenge.data);
-                        this.shareLoaded = true;
-                    }).catch((e) => {
-                        console.error(e);
-                    });
-            }
+            this.loaded = false;
+
             window.dumpChallenge = () => {
-                return JSON.stringify(this.challenge, null, '\t');
+                return this.dumpChallenge();
             };
         },
-        _pauseAndShare (e) {
-            this.running = false;
-            this.share(e);
+        _addedPartsChanged () {
+            this.hardwareAPI.setParts(this.addedParts);
         },
-        _getMode (context) {
-            let modeFromQs = Kano.Util.Router.parseQsParam(this.context.querystring, 'mode');
-            return modeFromQs ? modeFromQs : 'normal';
+        dumpChallenge () {
+            return JSON.stringify(this.challenge, null, '    ');
         },
-        _startTutorial () {
+        dumpSteps () {
+            return JSON.stringify(this.scene, null, '    ');
+        },
+        _downloadSteps () {
+            let a = window.document.createElement('a');
+            a.href = window.URL.createObjectURL(new Blob([this.dumpSteps()], {type: 'application/json'}));
+            a.download = 'steps.json';
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        },
+        _dragOver (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.dataTransfer.dropEffect = 'copy';
+        },
+        _drop (e) {
+            let file;
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            file = e.dataTransfer.files[0];
+            if (file) {
+                this._readFile(file).then(content => {
+                    this.fileName = file.name;
+                    this.file = content;
+                });
+            }
+
+            this._dragLeave();
+        },
+        _readFile (f) {
+            return new Promise((resolve, reject) => {
+                var reader = new FileReader();
+
+                reader.onload = () => {
+                    resolve(reader.result);
+                };
+
+                reader.onerror = reject;
+
+                reader.readAsText(f);
+            });
+        },
+        _dragEnter () {
+            this.dragging = true;
+        },
+        _dragLeave () {
+            this.dragging = false;
+        },
+        _computeDropTargetClass (dragging) {
+            return dragging ? 'active' : '';
+        },
+        _computeOverlayClass (testing) {
+            return testing ? 'hidden' : '';
+        },
+        _fileChanged (contents) {
+            if (contents) {
+                let app = JSON.parse(contents);
+                if ('code' in app) {
+                    // Likely to be an app
+                    this.challenge = Kano.MakeApps.Challenge.createFromApp(app);
+                } else if ('steps' in app) {
+                    // Likely to be steps
+                    this.challenge = { data: app };
+                }
+
+                this.scene = Object.assign({}, this.challenge.data);
+                this.mode = Kano.MakeApps.Mode.modes[this.scene.mode];
+                this.loaded = true;
+                Kano.MakeApps.Debug.Challenge.loadChallenge(this.challenge);
+                this._updateContext();
+            }
+        },
+        _getCurrentEditorContext () {
+            let editor = this.$$('#editor'),
+                workspace, blocks;
+            if (!editor) {
+                return {};
+            }
+            workspace = editor.editor.getBlocklyWorkspace();
+            blocks = workspace.getAllBlocks();
+            return {
+                parts: editor.editor.addedParts.map(part => part.id),
+                blocks: blocks.map(block => block.id)
+            };
+        },
+        _startChallenge () {
             this.set('scene.started', true);
+            this.testing = true;
         },
         _showEndModal () {
             this.$['end-modal'].open();
-        },
-        _enableRemixMode () {
-            this.$$('#editor').goToRemixChallenge();
         },
         _editorDomChanged () {
             let editor = this.$$('#editor');

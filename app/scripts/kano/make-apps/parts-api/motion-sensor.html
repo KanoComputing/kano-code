@@ -1,4 +1,4 @@
-<link rel="import" href="./base.html">
+<link rel="import" href="./dongle-base.html">
 <script>
     (function (Kano) {
         let MotionSensor, PartsAPI;
@@ -7,30 +7,77 @@
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         MotionSensor = {
-            start () {
-                this.movement = false;
-                Kano.MakeApps.PartsAPI.Base.start.apply(this, arguments);
-
-                this.motionEventListener = (e) => {
-                    if (e.movement) {
-                        this.fire('movement-start');
-                    } else {
-                        this.fire('movement-end');
-                    }
-                    this.movement = e.movement;
+            module: 'motionSensor',
+            onCreated () {
+                this._onProximityDataChanged = this._onProximityDataChanged.bind(this);
+                this._onGestureChanged = this._onGestureChanged.bind(this);
+                this.handlers = {
+                    'proximity-data': this._onProximityDataChanged,
+                    'gesture': this._onGestureChanged
                 };
-
-                Kano.AppModules.getModule('motionSensor').on('motion-sensor:0:motion-data', this.motionEventListener);
+                Kano.MakeApps.PartsAPI.DongleBase.onCreated.apply(this);
+            },
+            start () {
+                this.reset();
+                PartsAPI.DongleBase.start.apply(this, arguments);
             },
             stop () {
-                Kano.MakeApps.PartsAPI.Base.stop.apply(this, arguments);
+                PartsAPI.DongleBase.stop.apply(this, arguments);
+                this.reset();
+            },
+            reset () {
+                this.model.lastProximityValue = 0;
+                this._listeners = [];
+            },
+            _onProximityDataChanged (e) {
+                const newValue = this.dataToPercentage(e.proximity);
+                this._triggerListeners(newValue, this.model.lastProximityValue);
+                this.set('model.lastProximityValue', newValue);
+                this.fire('proximity-update');
+            },
+            _onGestureChanged (e) {
+                if (e.type) {
+                    let fireString = 'gesture-' + e.type;
+                    this.fire(fireString);
+                }
+            },
+            _triggerListeners (newValue, oldValue) {
+                const zoneSize = 100 / 5;                 // 100 is the whole span, 5 is the number of zones
+                this._listeners.forEach(listener => {
+                    let zoneClamp = [(listener.zone - 1) * zoneSize, listener.zone * zoneSize];
+                    // Was outside of the clamp and now is inside
+                    if ((oldValue < zoneClamp[0] || oldValue > zoneClamp[1]) &&
+                        (newValue >= zoneClamp[0] && newValue <= zoneClamp[1])) {
+                            listener.callback();
+                        }
+                });
+            },
+            whenEntersZone (zone, callback) {
+                this._listeners.push({ zone, callback });
+            },
+            getValue () {
+                return this.model.lastProximityValue;
+            },
+            dataToPercentage (value) {
+                return Math.round((value / 255) * 100);
+            },
+            setMode (mode) {
+                let device = this.appModules.getModule(this.module).getDeviceForPart(this.id);
 
-                Kano.AppModules.getModule('motionSensor').removeListener('motion-sensor:0:motion-data', this.motionEventListener);
-                this.movement = false;
+                if (device) {
+                    device.setMode(mode);
+                }
+            },
+            setUpdateInterval (interval) {
+                let device = this.appModules.getModule(this.module).getDeviceForPart(this.id);
+
+                if (device) {
+                    device.setUpdateInterval(interval);
+                }
             }
         };
 
         // @polymerBehavior
-        Kano.MakeApps.PartsAPI['motion-sensor'] = Object.assign({}, PartsAPI.Base, MotionSensor);
+        Kano.MakeApps.PartsAPI['motion-sensor'] = Object.assign({}, PartsAPI.DongleBase, MotionSensor);
     })(window.Kano = window.Kano || {});
 </script>

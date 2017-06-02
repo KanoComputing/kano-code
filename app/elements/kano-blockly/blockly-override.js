@@ -287,10 +287,6 @@ Blockly.Block.prototype.setColour = function(colour) {
     }
 };
 
-Blockly.Events.DROP_BLOCK = 'drop-block';
-Blockly.Events.OPEN_FLYOUT = 'open-flyout';
-Blockly.Events.CLOSE_FLYOUT = 'close-flyout';
-
 /**
  * Overrides Blockly color computation to use HEX colors instead of
  * fixed saturation and value
@@ -478,115 +474,6 @@ Blockly.hueToRgb = function(color) {
       this.animateLid_();
       return this.svgGroup_;
     };
-
-
-Blockly.Variables.asyncPromptName = function (workspace, promptText, defaultText) {
-    var promptFunction;
-    // Default prompt behavior from Blockly
-    function defaultPromptFunction (promptText, defaultText) {
-        return Promise.resolve(Blockly.Variables.promptName(promptText, defaultText));
-    }
-    promptFunction = workspace.options.modalFunction || defaultPromptFunction;
-
-    return promptFunction(promptText, defaultText).then((newVar) => {
-        // Merge runs of whitespace.  Strip leading and trailing whitespace.
-        // Beyond this, all names are legal.
-        if (newVar) {
-            newVar = newVar.replace(/[\s\xa0]+/g, ' ').replace(/^ | $/g, '');
-            if (newVar == Blockly.Msg.RENAME_VARIABLE ||
-                newVar == Blockly.Msg.NEW_VARIABLE) {
-            // Ok, not ALL names are legal...
-            newVar = null;
-            }
-        }
-        return newVar;
-    });
-};
-
-/**
- * Create a new variable on the given workspace.
- * @param {!Blockly.Workspace} workspace The workspace on which to create the
- *     variable.
- * @return {null|undefined|string} An acceptable new variable name, or null if
- *     change is to be aborted (cancel button), or undefined if an existing
- *     variable was chosen.
- */
-Blockly.Variables.createVariable = function(workspace) {
-    return Blockly.Variables.asyncPromptName(workspace, Blockly.Msg.NEW_VARIABLE_TITLE, '').then(text => {
-        if (text) {
-            workspace.createVariable(text);
-        }
-    });
-};
-
-/**
- * Event handler for a change in variable name.
- * Special case the 'Rename variable...' and 'Delete variable...' options.
- * In the rename case, prompt the user for a new name.
- * @param {string} text The selected dropdown menu option.
- * @return {null|undefined|string} An acceptable new variable name, or null if
- *     change is to be either aborted (cancel button) or has been already
- *     handled (rename), or undefined if an existing variable was chosen.
- */
-Blockly.FieldVariable.prototype.classValidator = function(text) {
-  var workspace = this.sourceBlock_.workspace;
-  if (text == Blockly.Msg.RENAME_VARIABLE) {
-    var oldVar = this.getText();
-    Blockly.hideChaff();
-    Blockly.Variables.asyncPromptName(workspace, Blockly.Msg.RENAME_VARIABLE_TITLE.replace('%1', oldVar), oldVar)
-        .then(t => {
-            if (text) {
-            workspace.renameVariable(oldVar, t);
-            }
-        });
-    return null;
-  } else if (text == 'New variable') {
-      Blockly.hideChaff();
-      Blockly.Variables.asyncPromptName(workspace, 'Give your variable a name', oldVar)
-          .then(t => {
-              if (text) {
-                workspace.createVariable(t);
-                this.setValue(t);
-              }
-         });
-      return null;
-  } else if (text == Blockly.Msg.DELETE_VARIABLE.replace('%1', this.getText())) {
-    workspace.deleteVariable(this.getText());
-    return null;
-  }
-  return undefined;
-};
-
-/**
- * Return a sorted list of variable names for variable dropdown menus.
- * Include a special option at the end for creating a new variable name.
- * @return {!Array.<string>} Array of variable names.
- * @this {!Blockly.FieldVariable}
- */
-Blockly.FieldVariable.dropdownCreate = function() {
-  if (this.sourceBlock_ && this.sourceBlock_.workspace) {
-    // Get a copy of the list, so that adding rename and new variable options
-    // doesn't modify the workspace's list.
-    var variableList = this.sourceBlock_.workspace.variableList.slice(0);
-  } else {
-    var variableList = [];
-  }
-  // Ensure that the currently selected variable is an option.
-  var name = this.getText();
-  if (name && variableList.indexOf(name) == -1) {
-    variableList.push(name);
-  }
-  variableList.sort(goog.string.caseInsensitiveCompare);
-  variableList.push('New variable');
-  variableList.push(Blockly.Msg.RENAME_VARIABLE);
-  // Variables are not language-specific, use the name as both the user-facing
-  // text and the internal representation.
-  var options = [];
-  for (var i = 0; i < variableList.length; i++) {
-    options[i] = [variableList[i], variableList[i]];
-  }
-  return options;
-};
 
 /**
  * Handle a mouse up event on an editable field.
@@ -1243,4 +1130,34 @@ Blockly.JavaScript.search_output = function () {
 
 Blockly.JavaScript.search_statement = function () {
     return '';
+};
+
+
+/**
+ * Set the workspace to have focus in the browser.
+ * @private
+ */
+Blockly.WorkspaceSvg.prototype.setBrowserFocus = function() {
+  // Blur whatever was focused since explcitly grabbing focus below does not
+  // work in Edge.
+//   if (document.activeElement) {
+//     document.activeElement.blur();
+//   }
+  try {
+    // Focus the workspace SVG - this is for Chrome and Firefox.
+    this.getParentSvg().focus();
+  }  catch (e) {
+    // IE and Edge do not support focus on SVG elements. When that fails
+    // above, get the injectionDiv (the workspace's parent) and focus that
+    // instead.  This doesn't work in Chrome.
+    try {
+      // In IE11, use setActive (which is IE only) so the page doesn't scroll
+      // to the workspace gaining focus.
+      this.getParentSvg().parentNode.setActive();
+    } catch (e) {
+      // setActive support was discontinued in Edge so when that fails, call
+      // focus instead.
+      this.getParentSvg().parentNode.focus();
+    }
+  }
 };

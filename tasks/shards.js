@@ -160,12 +160,13 @@ function getDependencies(filePath, ignoreLazy, noCache) {
     return new Promise((resolve) => {
         let document, files;
         fs.readFile(filePath, (err, file) => {
-            let content = file.toString(),
-                size = content.length;
+            let content, size;
             if (err) {
                 console.log(`Could not read '${filePath}'`);
                 return resolve([]);
             }
+            content = file.toString();
+            size = content.length;
             document = parse5.parse(content, {
                 treeAdapter: parse5.treeAdapters.default
             });

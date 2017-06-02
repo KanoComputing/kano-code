@@ -1,0 +1,950 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Please remember to plug in your Tilt sensor for this challenge.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            },
+            "validation": {
+                "add-part": {
+                    "type": "gyro-accelerometer",
+                    "id": "tilt_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's turn your pixel kit into an automatic lamp... <br> that turns off when you put it face down!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "You're going to use a loop to change the brightness of the light as it tilts.<br>Open the Control tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block repeats everything inside it, every second!<br>Drag it into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Great. Let's check the tilt even faster than every second.<br>Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "frames"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Don't forget, you're making light!<br>Open the lightboard tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block will turn your lights on.<br> Drag it into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#turn_on"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#turn_on",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "N/M#5@id7*_WX|kK2g:I"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "N/M#5@id7*_WX|kK2g:I",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "N/M#5@id7*_WX|kK2g:I"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Now let's turn on all of the lights.<br>Open this tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block will turn on all the lights 💡."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#lights_all"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#lights_all",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "BZh^ie]eW#8B)Wy?y]_H"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "BZh^ie]eW#8B)Wy?y]_H",
+                            "inputName": "TARGET"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "BZh^ie]eW#8B)Wy?y]_H"
+                    }
+                },
+                "target": "TARGET"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's control the lights!<br> Open the color tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "create_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "create_color",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "BZh^ie]eW#8B)Wy?y]_H"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "BZh^ie]eW#8B)Wy?y]_H",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "BZh^ie]eW#8B)Wy?y]_H"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "All you need to change is the brightness.<br>Change <kano-value-preview><span>rgb</span></kano-value-preview> to <kano-value-preview><span>hsv</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "hsv"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Saturation controls how bright or dull a color is. Let's see if we can change it to get rid of this bright red... Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": ",E92O6%Eils#F/[EAB6t"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": ",E92O6%Eils#F/[EAB6t",
+                            "inputName": "2"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": ",E92O6%Eils#F/[EAB6t"
+                    }
+                },
+                "target": "2"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, let's change the brightness of your light.<br>Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block will control how bright, and how dim, your light can go."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_constrain"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_constrain",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": ",E92O6%Eils#F/[EAB6t"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": ",E92O6%Eils#F/[EAB6t",
+                            "inputName": "3"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": ",E92O6%Eils#F/[EAB6t"
+                    }
+                },
+                "target": "3"
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Your Tilt Sensor gives values between -1 and 1, but the brightness is 0 to 10. Let's fetch a math block to help."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "m6l14lwRQW6I}st4[jPw"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "m6l14lwRQW6I}st4[jPw",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "m6l14lwRQW6I}st4[jPw"
+                    }
+                },
+                "target": "VALUE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now change <kano-value-preview><span>+</span></kano-value-preview> to <kano-value-preview><span>x</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_6"
+                        },
+                        "value": "MULTIPLY"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "It's time to use your sensor.<br>Open the Tilt tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "tilt_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "tilt_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block shows the tilt value from the sensor... showing how tilted your lightboard is."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "tilt_0",
+                        "type": "accelerometer_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "tilt_0",
+                        "type": "accelerometer_value",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "sHw-+KW8Q4U^JD/@_1xO"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "sHw-+KW8Q4U^JD/@_1xO",
+                            "inputName": "A"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "sHw-+KW8Q4U^JD/@_1xO"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "You only need to use the forward and backwards, or vertical, tilt to control your light.<br>Change <kano-value-preview><span>x</span></kano-value-preview> to <kano-value-preview><span>y</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_7"
+                        },
+                        "value": "y"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, let's finish off the multiplication! <br>Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "sHw-+KW8Q4U^JD/@_1xO"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "sHw-+KW8Q4U^JD/@_1xO",
+                            "inputName": "B"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "sHw-+KW8Q4U^JD/@_1xO"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Awesome. Now change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>-100</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_8"
+                        },
+                        "value": "-100"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's set some limits for your code. <br>Open the Variables tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag this block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_9"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "m6l14lwRQW6I}st4[jPw"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "m6l14lwRQW6I}st4[jPw",
+                            "inputName": "LOW"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "m6l14lwRQW6I}st4[jPw"
+                    }
+                },
+                "target": "LOW"
+            }
+        },
+        {
+            "banner": {
+                "text": "`Nice work! Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_10"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "m6l14lwRQW6I}st4[jPw"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "m6l14lwRQW6I}st4[jPw",
+                            "inputName": "HIGH"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "m6l14lwRQW6I}st4[jPw"
+                    }
+                },
+                "target": "HIGH"
+            }
+        },
+        {
+            "banner": {
+                "text": "100 is maximum brightness.<br>Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>100</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_10"
+                        },
+                        "value": "100"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Well done! Take your Pixel Kit and place it face down to to turn the lamp off, and pick it up again to turn it on.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "gyro-accelerometer"
+    ],
+    "modules": [
+        "control",
+        "color",
+        "variables",
+        "math"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "control": [
+            "every_x_seconds"
+        ],
+        "lightboard": [
+            "turn_on",
+            "lights_all"
+        ],
+        "color": [
+            "create_color"
+        ],
+        "variables": [
+            "math_number"
+        ],
+        "math": [
+            "math_constrain",
+            "math_arithmetic"
+        ],
+        "tilt1": [
+            "accelerometer_value"
+        ]
+    },
+    "mode": "lightboard"
+}

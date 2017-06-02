@@ -1,9 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../kano-color-wheel/kano-color-wheel.html">
 <!--
-
 @group Kano Elements
 @hero hero.svg
 @demo ./demo/index.html
@@ -12,41 +12,42 @@
     <style>
     :host {
         display: block;
-        --kano-pixel-editor-background: #444;
+        position: relative;
     }
     .pixel {
         width: 20px;
         height: 20px;
         /* Use a border the same color as the background, allows the spacing to trigger the mouseover event */
-        border: 2px solid var(--kano-pixel-editor-background);
+        border: 2px solid var(--kano-pixel-editor-background, #444);
         background-color: black;
-        @apply(--kano-pixel-canvas-pixel);
+        @apply --kano-pixel-canvas-pixel;
     }
     .canvas {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
+        @apply --layout-horizontal;
+        @apply --layout-wrap;
         box-sizing: border-box;
     }
     .canvas-wrapper {
-        padding: 4px;
-        background-color: var(--kano-pixel-editor-background);
+        @apply --layout-horizontal;
+        @apply --layout-center-justified;
+        background-color: var(--kano-pixel-editor-background, #444);
     }
     .pen {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
-        width: 20px;
-        height: 20px;
+        width: 18px;
+        height: 18px;
         opacity: 0.45;
         border: 2px solid white;
         pointer-events: none;
-        @apply(--shadow-elevation-2dp);
+        @apply --shadow-elevation-2dp;
         border-radius: 1px;
         display: none;
     }
     .picker {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
+        @apply --layout-horizontal;
+        @apply --layout-center;
         margin-top: 16px;
     }
     </style>
@@ -66,6 +67,7 @@
     <script type="text/javascript">
         Polymer({
             is: 'kano-pixel-canvas',
+            behaviors: [Polymer.IronResizableBehavior],
             properties: {
                 /**
                  * An array of all the pixels of the canvas
@@ -122,8 +124,10 @@
             listeners: {
                 'mousedown': '_mouseDown',
                 'mouseover': '_onMouseOver',
+                'mousemove': '_onMouseMove',
                 'mouseout': '_onMouseOut',
-                'mousemove': '_onMouseMove'
+                'mouseenter': '_computePosition',
+                'iron-resize': '_computePosition'
             },
             attached () {
                 this._mouseUp = this._mouseUp.bind(this);
@@ -160,6 +164,7 @@
                 changes = this._cleanHistoryChanges(changes);
                 if (changes.length) {
                     this._history.push({ changes });
+                    this.fire('paint-action');
                     if (this._history.length > this.MAX_HISTORY_LENGTH) {
                         this._history.shift();
                     }
@@ -312,6 +317,8 @@
                 this._blurAll();
             },
             _mouseDown (e) {
+                //Prevent drag-and-drop
+                e.preventDefault();
                 let target = e.path ? e.path[0] : e.target;
                 this.isMouseDown = true;
                 this.rightClick = (e.button === 2);
@@ -333,8 +340,9 @@
                 this._isMouseOver = true;
             },
             _onMouseMove (e) {
-                if (this._isMouseOver) {
-                    this.transform(`translate(${e.x - 14}px, ${e.y - 14}px)`, this.$.pen);
+                if (this._isMouseOver && this.position) {
+                    let x = this.getBoundingClientRect();
+                    this.transform(`translate(${e.x - this.position.left - 14}px, ${e.y - this.position.top - 14}px)`, this.$.pen);
                 }
             },
             _onMouseOut () {
@@ -342,6 +350,9 @@
             },
             _computePenStyle (size, color, isMouseOver) {
                 return `background: ${color}; display: ${isMouseOver ? 'block' : 'none'}; width: ${size}px; height: ${size}px;}`;
+            },
+            _computePosition () {
+                this.position = this.getBoundingClientRect();
             }
         });
     </script>

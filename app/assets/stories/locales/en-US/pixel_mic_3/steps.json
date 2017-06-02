@@ -1,0 +1,359 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Let’s make a scoreboard app for your favourite game!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Can you remember how to add the microphone part?"
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Mic</b> to add it to your code"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-microphone"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "microphone",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Can you find the code to control the micrpohone?."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block detects loud noises. Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "threshold"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "threshold",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect the blocks."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, go ahead and open up the text tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard_text"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block will make writing scroll across your board!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#light_scroll_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#light_scroll_text",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the micrpohone block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "KQpPRDJE:c`lrKA]ei/S"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "KQpPRDJE:c`lrKA]ei/S",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "KQpPRDJE:c`lrKA]ei/S"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Next, we need an empty text block.<br> You'll fill it later!"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the empty text block..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "text",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to the text scroll block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "{;%;hzxF~jUfUYmj$lO2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "{;%;hzxF~jUfUYmj$lO2",
+                            "inputName": "TEXT"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "{;%;hzxF~jUfUYmj$lO2"
+                    }
+                },
+                "target": "TEXT"
+            }
+        },
+        {
+            "banner": {
+                "text": "Write your message in here! You might want to say <kano-value-preview><span>GOAL!</span></kano-value-preview>⚽️, <kano-value-preview><span>WOOHOO!</span></kano-value-preview>🎉, or <kano-value-preview><span>YES!</span></kano-value-preview>🎆"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change the background color to match your team."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "BACKGROUND_COLOR",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "BACKGROUND_COLOR",
+                            "id": "block_1"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's make the writing speed up. <br> Set this to  <kano-value-preview><span>800</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "SPEED",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "SPEED",
+                            "id": "block_1"
+                        },
+                        "value": "800"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now cheer and clap like your team just scored!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Don't forget to use your new app next time the game is on! 🏆",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "microphone"
+    ],
+    "modules": [
+        "variables"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "mic": [
+            "threshold"
+        ],
+        "lightboard": [
+            "light_scroll_text"
+        ],
+        "variables": [
+            "text"
+        ]
+    },
+    "mode": "lightboard"
+}

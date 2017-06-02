@@ -1,0 +1,372 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Let's make the perfect sign for a library... one that tells people to SHHHH! 😳 when they make too much noise.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "To get started you need your microphone!<br>Click on Add Part +."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Mic</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-microphone"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "microphone",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's fetch a block that tells us when things get noisy.<br>Open the Mic tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block does the trick! Drag it into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "threshold"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "threshold",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "This <em>threshold</em> tells the computer how loud things need to be before the code runs. <br>Change it to <kano-value-preview><span>60</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "VALUE",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "VALUE",
+                            "id": "block_0"
+                        },
+                        "value": "60"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "When things get loud, let's tell everyone to shhhh!<br>Open this tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard_text"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block helps us show the message."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#light_scroll_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#light_scroll_text",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This makes it run when things get loud.<br>Drop it inside the mic block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "J1xk4UqG/:BS[f:##kqc"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "J1xk4UqG/:BS[f:##kqc",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "J1xk4UqG/:BS[f:##kqc"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to write your message..."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "text",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "H7=n4qFf2KV)wHs(:AXI"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "H7=n4qFf2KV)wHs(:AXI",
+                            "inputName": "TEXT"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "H7=n4qFf2KV)wHs(:AXI"
+                    }
+                },
+                "target": "TEXT"
+            }
+        },
+        {
+            "banner": {
+      					"text": "Write <kano-value-preview><span>SHHHHH!!!</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+      					"text": "Now pick a bright color."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_1"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+      					"text": "And pick a dark color."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "BACKGROUND_COLOR",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "BACKGROUND_COLOR",
+                            "id": "block_1"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Try to stay quiet... and then clap your hands! What happens if you make too much noise? Try remix it by making the text go faster!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "microphone"
+    ],
+    "modules": [
+        "variables"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "mic": [
+            "threshold"
+        ],
+        "lightboard": [
+            "light_scroll_text"
+        ],
+        "variables": [
+            "text"
+        ]
+    },
+    "mode": "lightboard"
+}

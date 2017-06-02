@@ -1,90 +1,147 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
 <link rel="import" href="../kano-ui-editor/kano-ui-editor.html">
 <link rel="import" href="../kano-data-editor/kano-data-editor.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
+<link rel="import" href="../behaviors/kano-media-query-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+<link rel="import" href="../kano-media-query/kano-media-query.html">
+<link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
 <dom-module id="kano-part-editor">
-    <style>
-    :host {
-        display: block;
-        position: relative;
-        min-width: 85%;
-        text-align: center;
-        border-radius: 6px;
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-    }
-    :host(.is-scrolled) #config-panel-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: lightgrey;
-    }
-    :host(.can-scroll:not(.scrolled-to-bottom)) #config-panel-container::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: lightgrey;
-    }
-    #config-panel-container {
-        @apply(--layout-flex);
-        @apply(--layout-vertical);
-        width: 100%;
-        position: relative;
-        margin-bottom: 24px;
-    }
-    kano-light-animation-editor {
-        overflow-x: hidden;
-    }
-    #config-panel-container>* {
-        overflow-y: auto;
-        height: 100%;
-        @apply(--layout-flex);
-    }
-    :host .title-bar {
-        width: 90%;
-        max-width: 340px;
-        text-align: left;
-        padding-bottom: 5px;
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-    }
-    :host #element-name-editor {
-        @apply(--kano-light-input);
-        margin-left: 15px;
-        border-bottom: 1px dotted var(--color-black, black);
-    }
-    :host #element-name-editor:focus {
-        outline: none;
-        border-bottom-color: var(--color-orange, orange);
-    }
-    :host .icon {
-        cursor: pointer;
-    }
-    :host .delete-button {
-        color: #de0f30;
-    }
-    :host #edit-icon {
-        width: 20px;
-        height: 20px;
-    }
+    <style include="kano-code-shared-styles">
+        :host {
+            flex: 1 0 auto;
+            position: relative;
+            text-align: center;
+            border-radius: 6px;
+            background-color: var(--color-dark);
+            @apply --layout-vertical;
+        }
+        :host #config-panel-container {
+            @apply --layout-vertical;
+            flex: 1 0 auto;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+        :host #config-panel-container {
+            width: 720px;
+            padding: var(--kano-modal-content-padding-large);
+        }
+        :host([large-screen]) #config-panel-container {
+            width: 540px;
+            padding: var(--kano-modal-content-padding-large);
+        }
+        :host([medium-screen]) #config-panel-container {
+            width: 380px;
+            padding: var(--kano-modal-content-padding-small);
+        }
+        :host([small-screen]) #config-panel-container {
+            width: 380px;
+            padding: 16px;
+        }
+        :host(.large) #config-panel-container {
+            width: 900px;
+            padding: 0;
+        }
+        :host([medium-screen].large) #config-panel-container {
+            width: 620px;
+            padding: 0;
+        }
+        :host([small-screen].large) #config-panel-container {
+            width: 100%;
+            padding: 0;
+        }
+        #config-panel-container > * {
+            @apply --layout-vertical;
+            flex: 1 1 auto;
+        }
+        :host .button-container {
+            @apply --layout-flex;
+            @apply --layout-horizontal;
+            @apply --layout-end-justified;
+        }
+        :host .type-display {
+            width: 80px;
+            margin-right: 32px;
+            color: #fff;
+        }
+        :host([small-screen][with-name-editor]) .type-display {
+            display: none;
+        }
+        :host .title-bar {
+            flex: 1 0 auto;
+            @apply --layout-horizontal;
+            @apply --layout-start-justified;
+            @apply --layout-center;
+            text-align: left;
+            font-family: var(--font-body);
+            font-weight: bold;
+            font-size: 16px;
+            color: rgba(255,255,255,0.5);
+            border-bottom: 1px solid #202428;
+            padding: var(--kano-modal-header-padding-large);
+        }
+        :host([medium-screen]) .title-bar,
+        :host([small-screen]) .title-bar {
+            padding: var(--kano-modal-header-padding-small);
+        }
+        :host([small-screen]) .title-bar {
+            padding: 16px;
+        }
+        :host([small-screen]) kano-input {
+            width: 140px;
+        }
+        :host button {
+            @apply --kano-button;
+            @apply --layout-self-center;
+            font-size: 14px;
+            line-height: 14px;
+            text-shadow: none;
+            font-weight: bold;
+            border-radius: 3px;
+            padding: 12px 22px 10px;
+        }
+        :host button.done-button {
+            background-color: var(--color-grassland);
+        }
+        :host button.done-button:hover {
+            background-color: var(--color-sushi);
+        }
+        :host button.delete-button {
+            background-color: var(--color-chateau);
+            padding: 10px 16px 8px;
+            margin-right: 24px;
+            font-size: 12px;
+        }
+        :host([small-screen]) .delete-button {
+            margin-right: 16px;
+        }
+        :host .delete-button:hover {
+            background-color: var(--color-abbey);
+        }
+        :host .icon {
+            cursor: pointer;
+        }
+        :host #edit-icon {
+            width: 20px;
+            height: 20px;
+        }
+        [hidden] {
+          display: none !important;
+        }
     </style>
     <template>
+        <kano-media-query small-screen="{{smallScreen}}" medium-screen="{{mediumScreen}}" large-screen="{{largeScreen}}">
+        </kano-media-query>
         <div class="title-bar">
-            <div class="element-name-editor">
-                <input id="element-name-editor" type="text" value="{{selected.name::keyup}}"
-                on-keydown="enterQuitsInput">
-            <label class="icon" for="element-name-editor">
-                <iron-icon id="edit-icon" src="/assets/icons/layout-edit-icon.png"></iron-icon>
-            </label>
+            <div class="type-display">[[selected.label]]</div>
+            <kano-input hidden$="[[!withNameEditor]]" type="text" label="Name" value="{{selected.name}}" no-label></kano-input>
+            <div class="button-container">
+                <button class="delete-button" type="button" on-tap="_deletePart" dialog-dismiss>Delete</button>
+                <button id="done" class="done-button" type="button" dialog-dismiss>Done</button>
             </div>
-
-            <label class="icon delete-button" on-tap="_deletePart">delete
-                <iron-icon  src="/assets/icons/layout-bin-icon.png"></iron-icon>
-            </label>
         </div>
         <div id="config-panel-container"></div>
     </template>
@@ -93,7 +150,12 @@
     /* globals Polymer */
     Polymer({
         is: 'kano-part-editor',
-        behaviors: [Polymer.Templatizer],
+        behaviors: [
+            Polymer.Templatizer,
+            Kano.Behaviors.MediaQueryBehavior,
+            Kano.Behaviors.I18nBehavior,
+            Kano.Behaviors.AppElementRegistryBehavior
+        ],
         properties: {
             selected: {
                 type: Object,
@@ -101,6 +163,11 @@
             },
             mode: {
                 type: Object
+            },
+            withNameEditor: {
+                type: Boolean,
+                computed: '_needNameEditor(selected)',
+                reflectToAttribute: true
             }
         },
         _instanceProps: {
@@ -110,12 +177,25 @@
             '_configPanelChanged(selected.configPanel)',
             '_selectedChanged(selected.*)'
         ],
+        attached () {
+            this._registerElement('part-editor-done', this.$.done);
+        },
+        _selectedChanged (e) {
+            if (this.instance) {
+                this.instance.set(e.path, e.value);
+            }
+            // Let know the bindings that the `id` changed together with the name
+            if (e.path === 'selected.name') {
+                this.notifyPath('selected.id', this.selected.id);
+            }
+        },
         _configPanelChanged (panel) {
             let tagName = panel || 'div',
                 container = Polymer.dom(this.$['config-panel-container']),
                 template = document.createElement('template');
 
-            template.innerHTML = `<${tagName} id="${tagName.replace('kano-', '')}" mode="[[mode]]" selected="{{selected}}" element="{{selected}}"></${tagName}>`
+            // Add `kano-part-editor` class to simulate CSS processing of ShadyDOM
+            template.innerHTML = `<${tagName} class="kano-part-editor" id="${tagName.replace('kano-', '')}" mode="[[mode]]" selected="{{selected}}" element="{{selected}}"></${tagName}>`
 
             this.templatize(template);
             this.instance = this.stamp({
@@ -128,9 +208,7 @@
             // Listen to scroll events on the part-editor to append the top/bottom divider
             this.scrollTarget.addEventListener('scroll', this._onScroll.bind(this));
 
-            while (container.firstChild) {
-                container.removeChild(container.firstChild);
-            }
+            this._cleanContainer();
 
             container.appendChild(this.instance.root);
 
@@ -151,10 +229,8 @@
         _forwardInstanceProp (inst, prop, value) {
             this.set(prop, value);
         },
-        _selectedChanged(e) {
-            if (this.instance) {
-                this.instance.set(e.path, e.value);
-            }
+        _needNameEditor (selected) {
+            return selected && selected.configPanel === 'kano-light-animation-editor';
         },
         _deletePart () {
             this.fire('delete-part', this.selected);
@@ -164,6 +240,15 @@
                 this.blur();
                 return false;
             }
+        },
+        _cleanContainer () {
+            let container = Polymer.dom(this.$['config-panel-container']);
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+        },
+        stop () {
+            this._cleanContainer();
         }
     });
 </script>

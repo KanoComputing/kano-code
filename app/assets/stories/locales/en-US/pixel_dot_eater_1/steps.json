@@ -1,0 +1,569 @@
+{
+	"steps": [{
+		"banner": {
+			"text": "Build a game and help your Hero collect treasure! <br> First, let’s learn how to move the Hero (the pink dot!) with the joystick.",
+			"next_button": true
+		}
+	}, {
+		"banner": {
+			"text": "This event block tells your computer when to run the code.<br>Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Lightboard LEFT pressed</span></kano-value-preview>."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"rawId": "default_part_event_id"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"value": {
+					"target": {
+						"rawId": "default_part_event_id"
+					},
+					"value": "lightboard.lightboard-js-left"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "The code for the Hero lives in here."
+		},
+		"beacon": {
+			"target": {
+				"category": "hero"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"open-flyout": "hero"
+			}
+		}
+	}, {
+		"banner": {
+			"text": "You can move the Hero with this block...<br> Grab it!"
+		},
+		"beacon": {
+			"target": {
+				"flyout_block": "hero#move_by"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"create": {
+					"type": "hero#move_by",
+					"id": "block_0"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Connect it to your event block. <br>The code will run whenever the left joystick is pressed."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": null,
+					"rawId": "default_part_event_id"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"connect": {
+					"parent": {
+						"id": null,
+						"rawId": "default_part_event_id",
+						"inputName": "DO"
+					},
+					"target": "block_0"
+				}
+			}
+		},
+		"phantom_block": {
+			"location": {
+				"block": {
+					"id": null,
+					"rawId": "default_part_event_id"
+				}
+			},
+			"target": "DO"
+		}
+	}, {
+		"banner": {
+			"text": "Now change <kano-value-preview><span>up</span></kano-value-preview> to <kano-value-preview><span>left</span></kano-value-preview>."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_0"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"value": {
+					"target": {
+						"id": "block_0"
+					},
+					"value": "left"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Try it out! <br>Press and hold left on your joystick to move the Hero dot.",
+			"next_button": true
+		}
+	}, {
+		"banner": {
+			"text": "Let's add more events that trigger different code. <br>Open the events tray."
+		},
+		"beacon": {
+			"target": {
+				"category": "events"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"open-flyout": "events"
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Grab an event block."
+		},
+		"beacon": {
+			"target": {
+				"flyout_block": "part_event"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"create": {
+					"type": "part_event",
+					"id": "block_1"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Events don’t need to be connected to other blocks. <br>Drop this one anywhere in your code space."
+		},
+		"validation": {
+			"blockly": {
+				"drop": {
+					"target": "block_1"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "We want this event to run when the joystick is pushed to the right. Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Lightboard RIGHT pressed</span></kano-value-preview>."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_1"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"value": {
+					"target": {
+						"id": "block_1"
+					},
+					"value": "lightboard.lightboard-js-right"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Can you find the code that controls the Hero?"
+		},
+		"beacon": {
+			"target": {
+				"category": "hero"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"open-flyout": "hero"
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Great! Grab another block to move the Hero."
+		},
+		"beacon": {
+			"target": {
+				"flyout_block": "hero#move_by"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"create": {
+					"type": "hero#move_by",
+					"id": "block_2"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Connect it inside your new event."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_1",
+					"rawId": "%c4_fUDqykqT@x265oq7"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"connect": {
+					"parent": {
+						"id": "block_1",
+						"rawId": "%c4_fUDqykqT@x265oq7",
+						"inputName": "DO"
+					},
+					"target": "block_2"
+				}
+			}
+		},
+		"phantom_block": {
+			"location": {
+				"block": {
+					"id": "block_1",
+					"rawId": "%c4_fUDqykqT@x265oq7"
+				}
+			},
+			"target": "DO"
+		}
+	}, {
+		"banner": {
+			"text": "Now, change <kano-value-preview><span>up</span></kano-value-preview> to <kano-value-preview><span>right</span></kano-value-preview>."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_2"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"value": {
+					"target": {
+						"id": "block_2"
+					},
+					"value": "right"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Awesome! We’re going to use the same blocks to make the Hero move down."
+		},
+		"beacon": {
+			"target": {
+				"category": "events"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"open-flyout": "events"
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Grab an event block..."
+		},
+		"beacon": {
+			"target": {
+				"flyout_block": "part_event"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"create": {
+					"type": "part_event",
+					"id": "block_3"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "...and drop it anywhere."
+		},
+		"validation": {
+			"blockly": {
+				"drop": {
+					"target": "block_3"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Make the code run when <b>Lightboard Down</b> is pressed."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_3"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"value": {
+					"target": {
+						"id": "block_3"
+					},
+					"value": "lightboard.lightboard-js-down"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Find the Hero code..."
+		},
+		"beacon": {
+			"target": {
+				"category": "hero"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"open-flyout": "hero"
+			}
+		}
+	}, {
+		"banner": {
+			"text": "... and fetch the block that will move the Hero."
+		},
+		"beacon": {
+			"target": {
+				"flyout_block": "hero#move_by"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"create": {
+					"type": "hero#move_by",
+					"id": "block_4"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Connect it to the event block."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_3",
+					"rawId": "Z;|R%BJGTtNPm3~1][Br"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"connect": {
+					"parent": {
+						"id": "block_3",
+						"rawId": "Z;|R%BJGTtNPm3~1][Br",
+						"inputName": "DO"
+					},
+					"target": "block_4"
+				}
+			}
+		},
+		"phantom_block": {
+			"location": {
+				"block": {
+					"id": "block_3",
+					"rawId": "Z;|R%BJGTtNPm3~1][Br"
+				}
+			},
+			"target": "DO"
+		}
+	}, {
+		"banner": {
+			"text": "Now, make the Hero move <b>down</b> when the joystick is pushed down."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_4"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"value": {
+					"target": {
+						"id": "block_4"
+					},
+					"value": "down"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "One last time! <br> Let's code the Hero moving up."
+		},
+		"beacon": {
+			"target": {
+				"category": "events"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"open-flyout": "events"
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Grab your event..."
+		},
+		"beacon": {
+			"target": {
+				"flyout_block": "part_event"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"create": {
+					"type": "part_event",
+					"id": "block_5"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "...and drop it anywhere on your code space."
+		},
+		"validation": {
+			"blockly": {
+				"drop": {
+					"target": "block_5"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Make the code run when <b>Lightboard Up</b> is pressed."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_5"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"value": {
+					"target": {
+						"id": "block_5"
+					},
+					"value": "lightboard.lightboard-js-up"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Fetch the Hero code..."
+		},
+		"beacon": {
+			"target": {
+				"category": "hero"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"open-flyout": "hero"
+			}
+		}
+	}, {
+		"banner": {
+			"text": "... and the block that moves the Hero."
+		},
+		"beacon": {
+			"target": {
+				"flyout_block": "hero#move_by"
+			}
+		},
+		"validation": {
+			"blockly": {
+				"create": {
+					"type": "hero#move_by",
+					"id": "block_6"
+				}
+			}
+		}
+	}, {
+		"banner": {
+			"text": "Make the Hero move <b>up</b> when the joystick is pushed up."
+		},
+		"beacon": {
+			"target": {
+				"block": {
+					"id": "block_5",
+					"rawId": "VD3}%`*5keQzFE47uIX3"
+				}
+			}
+		},
+		"validation": {
+			"blockly": {
+				"connect": {
+					"parent": {
+						"id": "block_5",
+						"rawId": "VD3}%`*5keQzFE47uIX3",
+						"inputName": "DO"
+					},
+					"target": "block_6"
+				}
+			}
+		},
+		"phantom_block": {
+			"location": {
+				"block": {
+					"id": "block_5",
+					"rawId": "VD3}%`*5keQzFE47uIX3"
+				}
+			},
+			"target": "DO"
+		}
+	}, {
+		"banner": {
+			"text": "Move the Hero around with the joystick!<br>You can also use the arrow keys on your computer.",
+			"next_button": true
+		}
+	}, {
+		"banner": {
+			"text": "Amazing work! Next, let's add some gold treasure for your Hero to collect!",
+			"next_button": true
+		}
+	}],
+	"parts": [
+		"light-rectangle"
+	],
+	"modules": [
+		"events"
+	],
+	"variables": [],
+	"filterBlocks": {
+		"hero": [
+			"move_by"
+		],
+		"events": [
+			"part_event"
+		]
+	},
+	"mode": "lightboard",
+	"defaultApp": "{\"parts\":[{\"id\":\"hero\",\"name\":\"Hero\",\"type\":\"light-rectangle\",\"tagName\":\"kano-part-light-rectangle\",\"userStyle\":{},\"userProperties\":{\"width\":\"1px\",\"height\":\"1px\",\"color\":\"#E61974\",\"undefined\":\"#FFFFFF\"},\"nonvolatileProperties\":[],\"position\":{\"x\":81,\"y\":135},\"partType\":\"ui\",\"excludeDefaultBlocks\":true,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"width\",\"type\":\"range\",\"label\":\"Width\",\"min\":1,\"max\":16},{\"key\":\"height\",\"type\":\"range\",\"label\":\"Height\",\"min\":1,\"max\":8},{\"key\":\"color\",\"type\":\"color\",\"label\":\"Color\"}],\"style\":[]},\"rotation\":0,\"scale\":100,\"visible\":true}],\"code\":{\"snapshot\":{\"javascript\":\"\",\"pseudo\":\"\/\/ Edit me to add code\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

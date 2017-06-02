@@ -15,6 +15,7 @@
                 style: []
             },
             userProperties: {},
+            supportedHardware: ['gyro-accelerometer'],
             events: [{
                 label: Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_READ_DATA,
                 id: 'gyro-accel-update'
@@ -23,7 +24,7 @@
                 block: (part) => {
                     return {
                         id: 'gyroscope_value',
-                        message0: `${part.name}: ${Blockly.Msg.BLOCK_GYRO_ACCELEROMETER_AXIS}`,
+                        message0: `${part.name}: ${Blockly.Msg.BLOCK_GYRO_ACCELEROMETER_GYRO_AXIS}`,
                         inputsInline: true,
                         args0: [{
                             type: 'field_dropdown',
@@ -55,7 +56,7 @@
                 block: (part) => {
                     return {
                         id: 'accelerometer_value',
-                        message0: `${part.name} ${Blockly.Msg.BLOCK_GYRO_ACCELEROMETER_ACCEL_AXIS}`,
+                        message0: `${part.name}: ${Blockly.Msg.BLOCK_GYRO_ACCELEROMETER_ACCEL_AXIS}`,
                         inputsInline: true,
                         args0: [{
                             type: 'field_dropdown',
@@ -86,6 +87,6 @@
             }]
         };
 
-        Kano.MakeApps.Parts.registerPart(gyroAccelerometer, 'dongles');
+        Kano.MakeApps.Parts.registerPart(gyroAccelerometer);
     })(window.Kano = window.Kano || {});
 </script>

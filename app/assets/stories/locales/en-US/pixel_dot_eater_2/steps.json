@@ -1,0 +1,398 @@
+{
+  "steps": [{
+      "banner": {
+          "text": "Your Hero is ready to go! <br>P.S. You can zoom out by clicking on the minus (–) button next to the trashcan.",
+          "next_button": true
+      }
+    },
+    {
+      "banner": {
+        "text": "All the code for this part of the game is going to go in one event."
+      },
+      "beacon": {
+        "target": {
+          "category": "events"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "open-flyout": "events"
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Grab this event block..."
+      },
+      "beacon": {
+        "target": {
+          "flyout_block": "part_event"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "create": {
+            "type": "part_event",
+            "id": "block_7"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "...and drop it anywhere in your code space."
+      },
+      "beacon": {
+        "target": "blocks-panel"
+      },
+      "validation": {
+        "blockly": {
+          "drop": {
+            "target": "block_7"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Can you see the new 'Dot' object? It's a yellow rectangle... <br>That's your treasure! The code to control it is in here."
+      },
+      "beacon": {
+        "target": {
+          "category": "dot"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "open-flyout": "dot"
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Set the co-ordinates, or the location, of the treasure with code. <br> Grab a 'set x' block..."
+      },
+      "beacon": {
+        "target": {
+          "flyout_block": "dot#set_x"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "create": {
+            "type": "dot#set_x",
+            "id": "block_8"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "... and connect it to your event."
+      },
+      "beacon": {
+        "target": {
+          "block": {
+            "id": "block_7",
+            "rawId": "SX#u*_SWf^7Sr|kDSZ?J"
+          }
+        }
+      },
+      "validation": {
+        "blockly": {
+          "connect": {
+            "parent": {
+              "id": "block_7",
+              "rawId": "SX#u*_SWf^7Sr|kDSZ?J",
+              "inputName": "DO"
+            },
+            "target": "block_8"
+          }
+        }
+      },
+      "phantom_block": {
+        "location": {
+          "block": {
+            "id": "block_7",
+            "rawId": "SX#u*_SWf^7Sr|kDSZ?J"
+          }
+        },
+        "target": "DO"
+      }
+    }, {
+      "banner": {
+        "text": "Let's make the treasure appear randomly from left to right. <br>Can you find the random number block in the Math tray?"
+      },
+      "beacon": {
+        "target": {
+          "category": "math"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "open-flyout": "math"
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Grab the random number block."
+      },
+      "beacon": {
+        "target": {
+          "flyout_block": "math_random"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "create": {
+            "type": "math_random",
+            "id": "block_9"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Connect it to ''<b>dot set x to</b>''."
+      },
+      "beacon": {
+        "target": {
+          "block": {
+            "id": "block_8",
+            "rawId": "Q%?uldi^/v1Lm@ir.GxX"
+          }
+        }
+      },
+      "validation": {
+        "blockly": {
+          "connect": {
+            "parent": {
+              "id": "block_8",
+              "rawId": "Q%?uldi^/v1Lm@ir.GxX",
+              "inputName": "X"
+            },
+            "target": "block_9"
+          }
+        }
+      },
+      "phantom_block": {
+        "location": {
+          "block": {
+            "id": "block_8",
+            "rawId": "Q%?uldi^/v1Lm@ir.GxX"
+          }
+        },
+        "target": "X"
+      }
+    }, {
+      "banner": {
+        "text": "The lightboard is 18 pixels wide. <br>Change it from <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>16</span></kano-value-preview>."
+      },
+      "beacon": {
+        "target": {
+          "block": {
+            "shadow": "MAX",
+            "id": "block_9"
+          }
+        }
+      },
+      "validation": {
+        "blockly": {
+          "value": {
+            "target": {
+              "shadow": "MAX",
+              "id": "block_9"
+            },
+            "value": "16"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Now let's change the y-position."
+      },
+      "beacon": {
+        "target": {
+          "category": "dot"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "open-flyout": "dot"
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Fetch the block that will change y..."
+      },
+      "beacon": {
+        "target": {
+          "flyout_block": "dot#set_y"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "create": {
+            "type": "dot#set_y",
+            "id": "block_10"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "...and connect it below ''<b>dot set x to</b>''."
+      },
+      "beacon": {
+        "target": {
+          "block": {
+            "id": "block_8",
+            "rawId": "Q%?uldi^/v1Lm@ir.GxX"
+          }
+        }
+      },
+      "validation": {
+        "blockly": {
+          "connect": {
+            "parent": {
+              "id": "block_8",
+              "rawId": "Q%?uldi^/v1Lm@ir.GxX"
+            },
+            "target": "block_10"
+          }
+        }
+      },
+      "phantom_block": {
+        "location": {
+          "block": {
+            "id": "block_8",
+            "rawId": "Q%?uldi^/v1Lm@ir.GxX"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Can you remember where to find a random number?"
+      },
+      "beacon": {
+        "target": {
+          "category": "math"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "open-flyout": "math"
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Set the y position with a random number too."
+      },
+      "beacon": {
+        "target": {
+          "flyout_block": "math_random"
+        }
+      },
+      "validation": {
+        "blockly": {
+          "create": {
+            "type": "math_random",
+            "id": "block_11"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Now let's make the treasure appear randomly up and down the board."
+      },
+      "beacon": {
+        "target": {
+          "block": {
+            "id": "block_10",
+            "rawId": "7Hez37g0#tM^;^SW}%M{"
+          }
+        }
+      },
+      "validation": {
+        "blockly": {
+          "connect": {
+            "parent": {
+              "id": "block_10",
+              "rawId": "7Hez37g0#tM^;^SW}%M{",
+              "inputName": "Y"
+            },
+            "target": "block_11"
+          }
+        }
+      },
+      "phantom_block": {
+        "location": {
+          "block": {
+            "id": "block_10",
+            "rawId": "7Hez37g0#tM^;^SW}%M{"
+          }
+        },
+        "target": "Y"
+      }
+    }, {
+      "banner": {
+        "text": "Make your Hero can find treasure on the whole board.<br> Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>8</span></kano-value-preview>."
+      },
+      "beacon": {
+        "target": {
+          "block": {
+            "shadow": "MAX",
+            "id": "block_11"
+          }
+        }
+      },
+      "validation": {
+        "blockly": {
+          "value": {
+            "target": {
+              "shadow": "MAX",
+              "id": "block_11"
+            },
+            "value": "8"
+          }
+        }
+      }
+    }, {
+      "banner": {
+        "text": "Every time the app runs, the treaure will appear in a random spot on your lightboard!",
+  			"next_button": true
+      }
+    }, {
+        "banner": {
+<<<<<<< HEAD
+          "text": "Brilliant! Next you’ll give your Hero the power to collect the treasure.",
+              "next_button": true
+        },
+        "beacon": {
+          "target": "workspace-panel"
+=======
+          "text": "Great work. Next you’ll code it so that the hero can collect the treasure.",
+          "next_button": true
+>>>>>>> 2248b1311988a065b488fd4a3efb7ff9d48f24ff
+        }
+    }
+  ],
+  "parts": [
+    "light-rectangle"
+  ],
+  "modules": [
+    "events",
+    "math"
+  ],
+  "variables": [],
+  "filterBlocks": {
+    "hero": [
+      "move_by"
+    ],
+    "events": [
+      "part_event"
+    ],
+    "dot": [
+      "set_x",
+      "set_y"
+    ],
+    "math": [
+      "math_random"
+    ]
+  },
+  "mode": "lightboard",
+  "defaultApp": "{\"parts\":[{\"id\":\"hero\",\"name\":\"Hero\",\"type\":\"light-rectangle\",\"tagName\":\"kano-part-light-rectangle\",\"userStyle\":{},\"userProperties\":{\"width\":\"1px\",\"height\":\"1px\",\"color\":\"#E61974\",\"undefined\":\"#FFFFFF\"},\"nonvolatileProperties\":[],\"position\":{\"x\":81,\"y\":135},\"partType\":\"ui\",\"excludeDefaultBlocks\":true,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"width\",\"type\":\"range\",\"label\":\"Width\",\"min\":1,\"max\":16},{\"key\":\"height\",\"type\":\"range\",\"label\":\"Height\",\"min\":1,\"max\":8},{\"key\":\"color\",\"type\":\"color\",\"label\":\"Color\"}],\"style\":[]},\"rotation\":0,\"scale\":100,\"visible\":true},{\"id\":\"dot\",\"name\":\"Dot\",\"type\":\"light-rectangle\",\"tagName\":\"kano-part-light-rectangle\",\"userStyle\":{},\"userProperties\":{\"width\":\"1px\",\"height\":\"1px\",\"color\":\"#F8EB1E\",\"undefined\":\"#FFFFFF\"},\"nonvolatileProperties\":[],\"position\":{\"x\":324,\"y\":27},\"partType\":\"ui\",\"excludeDefaultBlocks\":true,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"width\",\"type\":\"range\",\"label\":\"Width\",\"min\":1,\"max\":16},{\"key\":\"height\",\"type\":\"range\",\"label\":\"Height\",\"min\":1,\"max\":8},{\"key\":\"color\",\"type\":\"color\",\"label\":\"Color\"}],\"style\":[]},\"rotation\":0,\"scale\":100,\"visible\":true}],\"code\":{\"snapshot\":{\"javascript\":\"devices.get('lightboard').when('lightboard-js-left', function () {\\n  devices.get('hero').move(-1, 0);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-right', function () {\\n  devices.get('hero').move(1, 0);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-down', function () {\\n  devices.get('hero').move(0, 1);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-up', function () {\\n  devices.get('hero').move(0, -1);\\n});\\n\",\"pseudo\":\"devices.get('lightboard').when('lightboard-js-left', function () {\\n  devices.get('hero').move(-1, 0);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-right', function () {\\n  devices.get('hero').move(1, 0);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-down', function () {\\n  devices.get('hero').move(0, 1);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-up', function () {\\n  devices.get('hero').move(0, -1);\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"251\\\" y=\\\"104\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-left<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\"tHu68?#(y=,F(Pu*6zJV\\\"><field name=\\\"direction\\\">left<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\"fofalr@2Yf|LOD|it`O@\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><block type=\\\"part_event\\\" id=\\\"%c4_fUDqykqT@x265oq7\\\" x=\\\"255\\\" y=\\\"210\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-right<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\")vK[(+}]inLM5#PXNoap\\\"><field name=\\\"direction\\\">right<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\"S?Txoj1GPiGd(+sl;FX~\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><block type=\\\"part_event\\\" id=\\\"Z;|R%BJGTtNPm3~1][Br\\\" x=\\\"251\\\" y=\\\"311\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-down<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\"I\/p,kIGqpmRxalXGV$O}\\\"><field name=\\\"direction\\\">down<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\"5BXP{NmKx?myAr|I1.Om\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><block type=\\\"part_event\\\" id=\\\"VD3}%`*5keQzFE47uIX3\\\" x=\\\"254\\\" y=\\\"427\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-up<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\"cKZ2k,72ZCG_z-wU``y1\\\"><field name=\\\"direction\\\">up<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\"r.?tHIL(C-+32)dR|ZWQ\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

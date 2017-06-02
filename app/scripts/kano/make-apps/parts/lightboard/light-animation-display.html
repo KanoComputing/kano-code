@@ -16,7 +16,7 @@
             customizable: {
                 properties: [{
                     key: 'animation',
-                    type: 'light-animation',
+                    type: 'list',
                     label: Kano.MakeApps.Msg.ANIMATION,
                     options: Object.keys(Kano.MakeApps.Parts.animations).map(key => {
                         return {
@@ -24,10 +24,6 @@
                             value: key
                         };
                     })
-                },{
-                    key: 'animations',
-                    type: 'animations',
-                    label: Kano.MakeApps.Msg.ANIMATIONS
                 },{
                     key: 'speed',
                     type: 'range',
@@ -38,7 +34,7 @@
                 style: []
             },
             userProperties: {
-                animation: 'smiley',
+                animation: 'Smiley',
                 animations: Kano.MakeApps.Parts.animations,
                 speed: 15
             },

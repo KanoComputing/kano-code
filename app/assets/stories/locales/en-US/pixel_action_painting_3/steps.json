@@ -1,0 +1,449 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Remember: Plug in your Tilt sensor to complete this challenge.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            },
+            "validation": {
+                "add-part": {
+                    "type": "gyro-accelerometer",
+                    "id": "tilt_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Let's use the Tilt Sensor to change those variables and move your brush.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "We need some math to change the variables.<br>Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block adds numbers to variables"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_9"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block..."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "Xz[!4#Z}M:hRC3cFS?=F"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "Xz[!4#Z}M:hRC3cFS?=F"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "Xz[!4#Z}M:hRC3cFS?=F"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and change it to <kano-value-preview><span>brushX</span></kano-value-preview> so we can change the X position."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_9"
+                        },
+                        "value": "brushX"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, let's shake things up with some sensor data! <br>Open the Tilt tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "tilt_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "tilt_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Do you remember this block? It can tell how tilted the sensor is."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "tilt_0",
+                        "type": "accelerometer_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "tilt_0",
+                        "type": "accelerometer_value",
+                        "id": "block_10"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "[vA=%fe32#p7*EtzqC0Y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_9",
+                            "rawId": "[vA=%fe32#p7*EtzqC0Y",
+                            "inputName": "RIGHT_HAND"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "[vA=%fe32#p7*EtzqC0Y"
+                    }
+                },
+                "target": "RIGHT_HAND"
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Now, tilt the sensor. Can you see that moving the sensor also changes the variables that move your brush?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Now for the vertical, or Y position. <br>Open the Math tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag this block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_11"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "[vA=%fe32#p7*EtzqC0Y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_9",
+                            "rawId": "[vA=%fe32#p7*EtzqC0Y"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "[vA=%fe32#p7*EtzqC0Y"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, change it to your vertical variable <kano-value-preview><span>brushY</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "brushY"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Change this from <kano-value-preview><span>+=</span></kano-value-preview> to <kano-value-preview><span>-=</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "-="
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, open the Tilt sensor tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "tilt_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "tilt_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "tilt_0",
+                        "type": "accelerometer_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "tilt_0",
+                        "type": "accelerometer_value",
+                        "id": "block_12"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "SG5dVBlad4QI`jt;2a[x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_11",
+                            "rawId": "SG5dVBlad4QI`jt;2a[x",
+                            "inputName": "RIGHT_HAND"
+                        },
+                        "target": "block_12"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "SG5dVBlad4QI`jt;2a[x"
+                    }
+                },
+                "target": "RIGHT_HAND"
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Now, change <kano-value-preview><span>x</span></kano-value-preview> to <kano-value-preview><span>y</span></kano-value-preview> to use the vertical variable."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_12"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_12"
+                        },
+                        "value": "y"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Awesome! Your brush should move around the Pixel Kit when you tilt it... but does it fly straight off the screen? We'll fix this in the next challenge.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "gyro-accelerometer"
+    ],
+    "modules": [
+        "variables",
+        "control",
+        "math"
+    ],
+    "variables": [
+        "brushX",
+        "brushY"
+    ],
+    "filterBlocks": {
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ],
+        "control": [
+            "every_x_seconds"
+        ],
+        "lightboard": [
+            "turn_on",
+            "light_x_y"
+        ],
+        "math": [
+            "unary"
+        ],
+        "tilt1": [
+            "accelerometer_value"
+        ]
+    },
+    "mode": "lightboard",
+    "defaultApp" : "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"var brushY, brushX;\\n\\n\\nglobal.when('start', function () {\\n  brushX = 8;\\n  brushY = 4;\\n  time.every(1, 'frames', function () {\\n    devices.get('lightboard').turnOn({\\n                                type: 'single',\\n                                x: brushX-1,\\n                                y: brushY-1\\n                            }, \\\"#ffffff\\\");\\n  });\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n  brushX = 8;\\n  brushY = 4;\\n  time.every(1, 'frames', function () {\\n    devices.get('lightboard').turnOn({\\n                                type: 'single',\\n                                x: brushX-1,\\n                                y: brushY-1\\n                            }, \\\"#ffffff\\\");\\n  });\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"310\\\" y=\\\"140\\\"><field name=\\\"EVENT\\\">global.start<\/field><statement name=\\\"DO\\\"><block type=\\\"variables_set\\\" id=\\\"e}kqI=e|:{FAw%8qpY,6\\\"><field name=\\\"VAR\\\">brushX<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"kqL2HeYMt^#Uh7c;2A[_\\\"><field name=\\\"NUM\\\">8<\/field><\/block><\/value><next><block type=\\\"variables_set\\\" id=\\\"^Y,$;l9N7DFXmIc;=rL{\\\"><field name=\\\"VAR\\\">brushY<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"H|8Gc#5zq?%:W?0p`^zj\\\"><field name=\\\"NUM\\\">4<\/field><\/block><\/value><next><block type=\\\"every_x_seconds\\\" id=\\\"N\/M#5@id7*_WX|kK2g:I\\\"><field name=\\\"UNIT\\\">frames<\/field><value name=\\\"INTERVAL\\\"><shadow type=\\\"math_number\\\" id=\\\"%gWyz:44tBcGf-B1).o|\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><statement name=\\\"DO\\\"><block type=\\\"lightboard#turn_on\\\" id=\\\"Xz[!4#Z}M:hRC3cFS?=F\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#light_x_y\\\" id=\\\"BBj(dGEm69Hpv}%NWmu\/\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"JyOY$y_0Ki]R;.z?,^-7\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"variables_get\\\" id=\\\"Ei+DGHlR|IU920;q3UXL\\\"><field name=\\\"VAR\\\">brushX<\/field><\/block><\/value><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"#WpVcSK0vo_Y5C{7,yMx\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"variables_get\\\" id=\\\"m^j7JCDe(r-1e0-urRY|\\\"><field name=\\\"VAR\\\">brushY<\/field><\/block><\/value><\/block><\/value><\/block><\/statement><\/block><\/next><\/block><\/next><\/block><\/statement><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

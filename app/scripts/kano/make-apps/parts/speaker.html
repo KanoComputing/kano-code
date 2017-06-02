@@ -243,7 +243,239 @@
                         return [`'${sample}'`];
                     };
                 }
-            }]);
+            },{
+               block: (part) => {
+                   return {
+                       id: 'speaker_playback_rate',
+                       message0: `${part.name}: ${Blockly.Msg.BLOCK_SPEAKER_PLAYBACK_RATE}`,
+                       args0: [{
+                           type: 'input_value',
+                           name: 'RATE',
+                           check: 'Number'
+                       }],
+                       previousStatement: null,
+                       nextStatement: null,
+                       shadow: {
+                           'RATE': '<shadow type="math_number"><field name="NUM">100</field></shadow>'
+                       }
+                   };
+               },
+               javascript: (part) => {
+                   return (block) => {
+                       let rate = Blockly.JavaScript.valueToCode(block, 'RATE') || 100,
+                           code = `parts.get('${part.id}').setPlaybackRate(${rate});\n`;
+                       return code;
+                   };
+               },
+               pseudo: (part) => {
+                   return (block) => {
+                       let rate = Blockly.Pseudo.valueToCode(block, 'RATE') || 100,
+                           code = `parts.get('${part.id}').setPlaybackRate(${rate});\n`;
+                       return code;
+                   };
+               }
+           },{
+               block: (part) => {
+                   return {
+                       id: 'speaker_set_volume',
+                       message0: `${part.name}: ${Blockly.Msg.BLOCK_SPEAKER_VOLUME}`,
+                       args0: [{
+                           type: 'input_value',
+                           name: 'VOLUME',
+                           check: 'Number'
+                       }],
+                       previousStatement: null,
+                       nextStatement: null,
+                       shadow: {
+                           'VOLUME': '<shadow type="math_number"><field name="NUM">100</field></shadow>'
+                       }
+                   };
+               },
+               javascript: (part) => {
+                   return (block) => {
+                       let volume = Blockly.JavaScript.valueToCode(block, 'VOLUME') || 100,
+                           code = `parts.get('${part.id}').setVolume(${volume});\n`;
+                       return code;
+                   };
+               },
+               pseudo: (part) => {
+                   return (block) => {
+                       let volume = Blockly.Pseudo.valueToCode(block, 'VOLUME') || 100,
+                           code = `parts.get('${part.id}').setVolume(${volume});\n`;
+                       return code;
+                   };
+               }
+           },{
+                block: (ui) => {
+                    let sets = Kano.MakeApps.Files.samples;
+                    return {
+                        id: 'random_from_set',
+                        message0: Blockly.Msg.BLOCK_SPEAKER_RANDOM_FROM,
+                        args0: [{
+                            type: 'field_dropdown',
+                            name: 'SET',
+                            options: ['any'].concat(Object.keys(sets)).map(key => [key, key])
+                        }],
+                        output: 'Sample'
+                    };
+                },
+                javascript: (ui) => {
+                    return function (block) {
+                        let set = block.getFieldValue('SET') || 'drum machine',
+                            code = [`parts.get('${ui.id}').randomSound('${set}')`];
+                        return code;
+                    };
+                },
+                pseudo: (ui) => {
+                    return function (block) {
+                        let set = block.getFieldValue('SET') || 'drum machine',
+                            code = [`parts.get('${ui.id}').randomSound('${set}')`];
+                        return code;
+                    };
+                }
+            }, {
+                block: () => {
+                    return {
+                        id: 'speaker_play_frequency_for',
+                        message0: Blockly.Msg.BLOCK_SPEAKER_PLAY_FREQUENCY_FOR,
+                        args0: [{
+                            type: 'input_value',
+                            name: 'FREQUENCY',
+                            check: 'Number'
+                        }, {
+                            type: 'input_value',
+                            name: 'DURATION',
+                            check: 'Number'
+                        }],
+                        previousStatement: null,
+                        nextStatement: null,
+                        shadow: {
+                            'FREQUENCY': '<shadow type="math_number"><field name="NUM">25</field></shadow>',
+                            'DURATION': '<shadow type="math_number"><field name="NUM">100</field></shadow>'
+                        }
+                    };
+                },
+                javascript: (part) => {
+                    return (block) => {
+                        let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25,
+                            duration = Blockly.Pseudo.valueToCode(block, 'DURATION') || 100,
+                            code;
+
+                        if (freq > 100) {
+                            freq = 100;
+                        }
+
+                        if (freq < 0) {
+                            freq = 0;
+                        }
+
+                        if (duration > 1000 * 60 * 5) {
+                            duration = 1000 * 60 * 5;
+                        }
+
+                        if (duration < 0) {
+                            duration = 0;
+                        }
+
+                        code = `parts.get('${part.id}').playFrequency(${freq}, ${duration});\n`;
+                        return code;
+                    };
+                },
+                pseudo: (part) => {
+                    return (block) => {
+                        let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25,
+                            duration = Blockly.Pseudo.valueToCode(block, 'DURATION') || 100,
+                            code;
+
+                        if (freq > 100) {
+                            freq = 100;
+                        }
+
+                        if (freq < 0) {
+                            freq = 0;
+                        }
+
+                        if (duration > 1000 * 60 * 5) {
+                            duration = 1000 * 60 * 5;
+                        }
+
+                        if (duration < 0) {
+                            duration = 0;
+                        }
+
+                        code = `parts.get('${part.id}').playFrequency(${freq}, ${duration});\n`;
+                        return code;
+                    };
+                }
+            }, {
+               block: (part) => {
+                   return {
+                       id: 'speaker_start_synth',
+                       message0: `${part.name}: ${Blockly.Msg.BLOCK_SPEAKER_START_SYNTH}`,
+                       previousStatement: null,
+                       nextStatement: null
+                   };
+               },
+               javascript: (part) => {
+                   return (block) => {
+                       let code = `parts.get('${part.id}').startSynth();\n`;
+                       return code;
+                   };
+               },
+               pseudo: (part) => {
+                   return (block) => {
+                       let code = `parts.get('${part.id}').startSynth();\n`;
+                       return code;
+                   };
+               }
+           }, {
+               block: (part) => {
+                   return {
+                       id: 'speaker_synth_set_frequency',
+                       message0: `${part.name}: ${Blockly.Msg.BLOCK_SPEAKER_SYNTH_SET_FREQUENCY}`,
+                        args0: [{
+                            type: 'input_value',
+                            name: 'FREQUENCY',
+                            check: 'Number'
+                        }],
+                       previousStatement: null,
+                       nextStatement: null,
+                       shadow: {
+                           'FREQUENCY': '<shadow type="math_number"><field name="NUM">25</field></shadow>'
+                       }
+                   };
+               },
+               javascript: (part) => {
+                   return (block) => {
+                       let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25;
+
+                       if (freq > 100) {
+                           freq = 100;
+                       }
+
+                       if (freq < 0) {
+                           freq = 0;
+                       }
+
+                       return `parts.get('${part.id}').setSynthFrequency(${freq});\n`;
+                   };
+               },
+               pseudo: (part) => {
+                   return (block) => {
+                       let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25;
+
+                       if (freq > 100) {
+                           freq = 100;
+                       }
+
+                       if (freq < 0) {
+                           freq = 0;
+                       }
+
+                       return `parts.get('${part.id}').setSynthFrequency(${freq});\n`;
+                   };
+               }
+           }]);
         };
 
 

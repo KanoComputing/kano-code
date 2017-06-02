@@ -30,7 +30,7 @@ Example:
         }
     </style>
     <template>
-        <kano-challenge-ui id="ui" step="[[selectedStep]]" on-next-step="nextStep" blocks-panel="{{blocksPanel}}" on-hint-used="hintUsed">
+        <kano-challenge-ui id="ui" step="[[selectedStep]]" on-next-step="nextStep" blocks-panel="{{blocksPanel}}" state="{{state}}">
             <slot name="editor" id="content"></slot>
         </kano-challenge-ui>
     </template>
@@ -39,7 +39,16 @@ Example:
 <script type="text/javascript">
     Polymer({
         is: 'kano-app-challenge',
-        behaviors: [Kano.Behaviors.BlocklyValidatorBehavior, Kano.Behaviors.AppElementRegistryBehavior],
+        behaviors: [
+            Kano.Behaviors.BlocklyValidatorBehavior,
+            Kano.Behaviors.AppElementRegistryBehavior
+        ],
+        properties: {
+            state: {
+                type: Object,
+                notify: true
+            }
+        },
         observers: [
             'doneChanged(done)'
         ],
@@ -76,13 +85,17 @@ Example:
             this._addValidator('trigger', 'matchTrigger');
             this._addValidator('running', 'matchValue');
             this._addValidator('select-new-part', 'matchPartType');
-            this._addValidator('open-part-config', 'matchPartTarget');
             this._addValidator('enable-refresh', 'matchPartTarget');
             this._addValidator('disable-refresh', 'matchPartTarget');
             this._addValidator('manual-refresh', 'matchPartTarget');
             this._addValidator('open-settings-tooltip', 'matchPartTarget');
             this._addValidator('open-part-settings', 'matchPartTarget');
             this._addValidator('settings-interaction', 'matchSettingsInteraction');
+            this._addValidator('light-animation-tool-changed', 'matchValue');
+            this._addValidator('light-animation-paint', 'matchTool');
+            this._addValidator('light-animation-preview-changed', 'matchValue');
+
+            this._addOppositeAction('add-part', 'close-parts', '_partsClosed');
             this.changeCounts = {};
             this.editor = Polymer.dom(this.$.content).getDistributedNodes()[0];
             this.editor.addEventListener('blockly-ready', (e) => {
@@ -98,6 +111,9 @@ Example:
         detached () {
             this.removeEventListener('mousewheel', this.updateTooltips);
             window.removeEventListener('resize', this.updateTooltips);
+        },
+        _partsClosed () {
+            return this._prevStep();
         },
         isNextHidden () {
             let currentStep;
@@ -164,6 +180,9 @@ Example:
         },
         matchValue (validation, event) {
             return validation.value === event.value;
+        },
+        matchTool (validation, event) {
+            return validation.tool === event.tool;
         },
         matchAddPart (validation, event) {
             // Check the type of the added part

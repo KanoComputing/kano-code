@@ -1,33 +1,101 @@
 <link rel="import" href="../../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../../bower_components/iron-image/iron-image.html">
 <link rel="import" href="../behaviors.html">
-<link rel="import" href="../../../bower_components/web-components/kano-style/typography.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/web-components/kano-style/kano-style.html">
 
 <dom-module id="kano-input-list">
     <style>
-    :host {
-        display: block;
-        text-align: left;
-    }
-    paper-dropdown-menu {
-        --paper-input-container-input: {
-            font-family: var(--font-body, Arial);
-        };
-    }
-    paper-item {
-        --paper-item: {
-            font-family: var(--font-body, Arial);
-        };
-    }
+        :host {
+            @apply --layout-vertical;
+        }
+        paper-dropdown-menu {
+            @apply --layout-vertical;
+            background: var(--color-abbey);
+
+            --paper-dropdown-menu-ripple: {
+                display: none;
+            };
+
+            --paper-menu-button-content: {
+                background-color: transparent;
+            };
+
+            --paper-dropdown-menu-button: {
+                color: #fff;
+            };
+            --paper-input-container-input: {
+                color: #fff;
+                font-size: 14px;
+                font-family: var(--font-body);
+                font-weight: bold;
+            };
+            --paper-input-container: {
+                border-radius: 3px;
+                white-space: nowrap;
+                font-size: 14px;
+                overflow: hidden;
+                background-color: var(--color-chateau);
+                padding: 4px 8px 2px;
+            };
+            --paper-input-container-underline: {
+                border: none;
+            };
+            --paper-input-container-underline-focus: {
+                border: none;
+            }; 
+        }
+        .dropdown-content {
+            background-color: var(--color-dark);
+            color: #fff;
+            padding: 0;
+            margin-top: 4px;
+            --paper-menu-button-content: {
+                padding: 3px;
+                background-color: var(--color-dark);
+            };
+            --paper-dropdown-menu-button: {
+                 left: 0;
+                 width: 100%;
+              };
+            --paper-menu: {
+                box-sizing: border-box;
+                color: #fff;
+                padding: 0;
+            };
+            --paper-menu-color: #fff;
+        }
+        .dropdown-content paper-item {
+            --paper-item: {
+                min-height: 36px;
+                font-family: var(--font-body);
+                font-size: 14px;
+                font-weight: bold;
+                box-sizing: border-box;
+                padding: 7px 8px 3px;
+            };
+        }
+        .dropdown-content paper-item iron-image {
+            height: 26px;
+            width: 40px;
+            margin-right: 16px;
+        }
+        [hidden] {
+            display: none !important;
+        }
     </style>
     <template>
-        <paper-dropdown-menu noink no-animations label="[[label]]">
-            <paper-listbox class="dropdown-content" selected="{{value}}" attr-for-selected="value">
+        <paper-dropdown-menu id="dropdown-menu" horizontal-align="left" no-label-float no-animations on-tap="_computeDropdownStyle">
+            <paper-menu id="dropdown" class="dropdown-content" selected="{{value}}" attr-for-selected="value">
                 <template is="dom-repeat" items="[[options]]" as="option">
-                    <paper-item value="[[option.value]]">[[option.label]]</paper-item>
+                    <paper-item value="[[option.value]]">
+                        <iron-image hidden$="[[!option.image]]" src="[[option.image]]" sizing="contain"></iron-image>
+                        <span>[[option.label]]</span>
+                    </paper-item>
                 </template>
-            </paper-listbox>
+            </paper-menu>
         </paper-dropdown-menu>
     </template>
 </dom-module>
@@ -42,6 +110,10 @@
         ],
         valueChanged () {
             this.fire('change');
+        },
+        _computeDropdownStyle () {
+            let containerWidth = this.$['dropdown-menu'].offsetWidth;
+            this.$.dropdown.style.width = `${containerWidth}px`;
         }
     });
 </script>

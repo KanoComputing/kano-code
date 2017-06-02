@@ -1,0 +1,25 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<script type="text/javascript">
+
+    window.Kano = window.Kano || {};
+
+    window.Kano.Behaviors = window.Kano.Behaviors || {};
+
+    // @polymerBehavior
+    Kano.Behaviors.MediaQueryBehavior = {
+        properties: {
+            smallScreen: {
+                type: Boolean,
+                reflectToAttribute: true
+            },
+            mediumScreen: {
+                type: Boolean,
+                reflectToAttribute: true
+            },
+            largeScreen: {
+                type: Boolean,
+                reflectToAttribute: true
+            }       
+        }
+    };
+</script>

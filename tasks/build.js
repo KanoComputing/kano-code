@@ -1,8 +1,11 @@
 'use strict';
 
-const shards = require('./shards');
+const shards = require('./shards'),
+      kanoCodeLib = require('./kano-code-lib');
 
 module.exports = (gulp, $) => {
+
+    kanoCodeLib(gulp, $);
 
     gulp.task('treemap', () => {
         return shards.generateTreeMap({
@@ -21,18 +24,16 @@ module.exports = (gulp, $) => {
     });
 
     gulp.task('serve-doc', () => {
-        return $.connect.server({
-            root: 'app',
-            port: process.env.PORT || 5000
-        });
+        return $.connect()
+            .use($.serveStatic(__dirname + '/../app'))
+            .listen(process.env.PORT || 5000);
     });
 
     gulp.task('serve-prod', () => {
-        return $.connect.server({
-            root: 'www',
-            port: process.env.PORT,
-            fallback: './www/index.html'
-        });
+        return $.connect()
+            .use($.history())
+            .use($.serveStatic(__dirname + '/../www'))
+            .listen(process.env.PORT || 4000);
     });
 
     function notBowerComponent(file) {
@@ -96,20 +97,22 @@ module.exports = (gulp, $) => {
             'copy-all',
             'shards',
             'split',
-            ['copy-index', 'blockly-media', 'assets', 'workers', 'i18n'],
+            ['copy-index', 'blockly-media', 'assets', 'workers', 'i18n', 'kano-code-lib'],
             'compress',
             'sw',
             'external-play-bundle', done);
     });
 
     gulp.task('copy-index', () => {
-        return gulp.src(['app/index.html',
-                        'app/scripts/index.js',
-                        'app/scripts/splash.js',
-                        'app/assets/vendor/cache-polyfill/cache-polyfill.js',
-                        'app/assets/vendor/object-assign/object-assign.js',
-                        'app/bower_components/webcomponentsjs/webcomponents-lite.min.js'
-                        ], { base: 'app' })
+        return gulp.src(['.tmp/app/index.html',
+                        '.tmp/app/index.js',
+                        '.tmp/app/scripts/index.js',
+                        '.tmp/app/scripts/splash.js',
+                        '.tmp/app/style/main.css',
+                        '.tmp/app/assets/vendor/cache-polyfill/cache-polyfill.js',
+                        '.tmp/app/assets/vendor/object-assign/object-assign.js',
+                        '.tmp/app/bower_components/webcomponentsjs/webcomponents-lite.min.js'
+                        ], { base: '.tmp/app' })
             .pipe($.if('index.html', $.htmlReplace($.utils.getHtmlReplaceOptions())))
             .pipe($.if('index.html', $.inlineSource()))
             .pipe($.if('index.html', $.utils.htmlAutoprefixerStream()))
@@ -118,7 +121,8 @@ module.exports = (gulp, $) => {
 
     gulp.task('blockly-media', () => {
         return gulp.src([
-            'app/assets/vendor/google-blockly/media/**/*'
+            'app/assets/vendor/google-blockly/media/**/*',
+            'app/assets/vendor/google-blockly/msg/**/*'
         ], { base: 'app' })
             .pipe(gulp.dest('www'));
     });
@@ -135,7 +139,7 @@ module.exports = (gulp, $) => {
     });
 
     gulp.task('compress', () => {
-        return gulp.src(['www/**/*.{js,html}', '!www/scripts/kano/make-apps/parts-api/parts-api.js'])
+        return gulp.src(['www/**/*.{js,html}', '!www/scripts/kano/scripts/kano-code-lib.js'])
             .pipe($.if('*.html', $.htmlmin({
                 collapseWhitespace: true,
                 minifyCSS: true,

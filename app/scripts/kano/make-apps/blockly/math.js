@@ -1,7 +1,7 @@
 (function (Kano) {
     Kano.MakeApps = Kano.MakeApps || {};
 
-    const COLOUR = '#f6b231';
+    const COLOR = '#ff9800';
 
     let register = (Blockly) => {
 
@@ -10,7 +10,7 @@
             init: function () {
                 let json = {
                     id: 'math_max',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: '%3 %1 %2',
                     args0: [{
                         type: "input_value",
@@ -56,7 +56,7 @@
             init: function () {
                 let json = {
                     id: 'math_max',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: 'max %1 %2',
                     args0: [{
                         type: "input_value",
@@ -93,7 +93,7 @@
             init: function () {
                 let json = {
                     id: 'math_min',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: 'min %1 %2',
                     args0: [{
                         type: "input_value",
@@ -130,7 +130,7 @@
             init: function () {
                 let json = {
                     id: 'math_sign',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: 'sign %1',
                     args0: [{
                         type: "input_value",
@@ -161,7 +161,7 @@
             init: function () {
                 let json = {
                     id: 'math_random',
-                    colour: COLOUR,
+                    colour: COLOR,
                     message0: 'random number from %1 to %2',
                     args0: [{
                         type: "input_value",
@@ -190,6 +190,48 @@
             let min = Blockly.Pseudo.valueToCode(block, 'MIN') || 0,
                 max = Blockly.Pseudo.valueToCode(block, 'MAX') || 100,
                 code = `math.random(${min}, ${max})`;
+            return [code];
+        };
+
+        Blockly.Blocks.math_lerp = {
+            init: function () {
+                let json = {
+                    id: 'math_lerp',
+                    colour: COLOR,
+                    message0: Blockly.Msg.MATH_LERP,
+                    args0: [{
+                        type: "input_value",
+                        name: "FROM",
+                        check: "Number"
+                    }, {
+                        type: "input_value",
+                        name: "TO",
+                        check: "Number"
+                    }, {
+                        type: 'input_value',
+                        name: 'PERCENT',
+                        check: "Number"
+                    }],
+                    inputsInline: true,
+                    output: "Number"
+                };
+                this.jsonInit(json);
+            }
+        };
+
+        Blockly.JavaScript.math_lerp = (block) => {
+            let from = Blockly.JavaScript.valueToCode(block, 'FROM') || 0,
+                to = Blockly.JavaScript.valueToCode(block, 'TO') || 200,
+                percent = Blockly.JavaScript.valueToCode(block, 'PERCENT') || 50,
+                code = `math.lerp(${from}, ${to}, ${percent})`;
+            return [code];
+        };
+
+        Blockly.Pseudo.math_lerp = (block) => {
+            let from = Blockly.Pseudo.valueToCode(block, 'FROM') || 0,
+                to = Blockly.Pseudo.valueToCode(block, 'TO') || 200,
+                percent = Blockly.Pseudo.valueToCode(block, 'PERCENT') || 50,
+                code = `math.lerp(${from}, ${to}, ${percent})`;
             return [code];
         };
 
@@ -386,15 +428,16 @@
         Blockly.Pseudo.math_modulo = Blockly.JavaScript.math_modulo;
 
         category.blocks.forEach((category) => {
-            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOUR);
+            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOR);
         });
     };
 
     let category = Kano.MakeApps.Blockly.Defaults.createCategory({
         name: Blockly.Msg.CATEGORY_MATH,
         id: 'math',
-        colour: COLOUR,
+        colour: COLOR,
         blocks: [
+            'math_number',
             'math_arithmetic',
             {
                 id: 'unary',
@@ -402,6 +445,9 @@
             },{
                 id: 'math_random',
                 defaults: ['MIN', 'MAX']
+            }, {
+                id: 'math_lerp',
+                defaults: ['FROM', 'TO', 'PERCENT']
             },
             'math_single',
             'math_trig',

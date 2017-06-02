@@ -1,44 +1,77 @@
 <link rel="import" href="../behaviors.html">
-<link rel="import" href="../../kano-slider/kano-slider.html">
-<link rel="import" href="../../../bower_components/web-components/kano-style/input.html">
+<link rel="import" href="../../kano-code-shared-styles/kano-code-shared-styles.html">
+<link rel="import" href="../../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/web-components/kano-style/kano-style.html">
+<!--
+### Styling
 
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--kano-input-range-label`
+-->
 <dom-module id="kano-input-range">
     <style is="custom-style" include="input-range"></style>
     <style>
         :host {
-            display: block;
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            min-height: 64px;
         }
         :host label {
-            @apply(--kano-settings-label);
-            bottom: 11px;
+            width: var(--kano-part-settings-label-width, 82px);
+            color: rgba(255, 255, 255, 0.5);
+            text-align: left;
+            font-size: 14px;
+            font-family: var(--font-body);
+            font-weight: bold;
+            margin-right: 40px;
+            @apply --kano-input-range-label;
         }
         :host .inputs {
-            @apply(--kano-settings-container);
+            @apply --kano-settings-container;
         }
-        kano-slider {
-            width: 95%;
+        :host .display {
+            @apply --kano-button;
+            @apply --layout-horiztonal;
+            @apply --layout-center-justified;
+            width: 52px;
+            border-radius: 3px;
+            background-color: var(--color-chateau);
+            text-shadow: none;
+            padding: 9px 0 8px;
+            margin-left: 16px;
+            font-size: 14px;
+            line-height: 14px;
+            text-align: center;
+            @apply --kano-input-range-display;
+        }
+        :host .display span.symbol {
+            font-size: 12px;
+            text-transform: none;
+        }
+        paper-slider {
+            width: auto;
+            @apply --layout-flex;
             --paper-slider-height: 3px;
+            --paper-slider-container-color: #435055;
             --paper-progress-active-color: #435055;
-            --paper-slider-knob-color: #435055;
-            --paper-slider-pin-color: #435055;
-            --paper-slider-knob-start-color: #435055;
+            --paper-progress-secondary-color: #435055;
+            --paper-slider-knob-color: #d3d6d8;
+            --paper-slider-knob-start-color: #d3d6d8;
         }
     </style>
     <template>
-        <label>{{label}}</label>
-        <div class="inputs">
-              <kano-slider
-                      min="{{min}}"
-                      max="{{max}}"
-                      value="[[value]]"
-                      immediate-value="{{value}}"
-                      symbol="{{symbol}}"
-                      step="{{step}}"
-                      on-change="expandKnob"
-                      on-click="expandKnob"
-                      pin>
-              <kano-slider>
-        </div>
+        <label hidden$="[[noLabel]]">[[label]]</label>
+        <paper-slider
+              id="slider"
+              min="[[min]]"
+              max="[[max]]"
+              value="{{value}}"
+              immediate-value="{{value}}"></paper-slider>
+        <div class="display">[[_roundValue(value)]]<span hidden$=[[!symbol]] class="symbol"> [[symbol]]</span></div>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -48,10 +81,13 @@
         is: 'kano-input-range',
         behaviors: [Kano.Behaviors.Input],
         attached () {
-            this.expandKnob();
+            /* add kano-code-shared-styles to paper-slider for custom styling */
+            let customStyle = document.createElement('style', 'custom-style');
+            customStyle.setAttribute('include', 'kano-code-shared-styles');
+            Polymer.dom(this.$.slider.root).appendChild(customStyle);
         },
-        expandKnob () {
-            this.$$('kano-slider')._expandKnob();
+        _roundValue (value) {
+            return Math.round(value);
         }
     });
 </script>

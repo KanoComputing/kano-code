@@ -1,0 +1,785 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "We'll start by adding parts to our app.<br>Open the parts drawer by clicking here."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Speaker</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-speaker"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "speaker",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change to <kano-value-preview><span>Lightboard A Pressed</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "rawId": "default_part_event_id"
+                        },
+                        "value": "lightboard.lightboard-btn-A"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "speaker_play"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "speaker_play",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "speaker_sample"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "speaker_sample",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "AVx1j`MY|9M!/C34_L-S"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "AVx1j`MY|9M!/C34_L-S",
+                            "inputName": "SAMPLE"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "AVx1j`MY|9M!/C34_L-S"
+                    }
+                },
+                "target": "SAMPLE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change to <kano-value-preview><span>Bass drum</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_1"
+                        },
+                        "value": "bass_drum"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open this tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#turn_on"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#turn_on",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "AVx1j`MY|9M!/C34_L-S"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "AVx1j`MY|9M!/C34_L-S"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "AVx1j`MY|9M!/C34_L-S"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Color tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "colour_picker"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "colour_picker",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "lF3}nS#L|grkztziC%^Y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "lF3}nS#L|grkztziC%^Y",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "lF3}nS#L|grkztziC%^Y"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Events tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "events"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "events"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "part_event"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "part_event",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drop the block anywhere on your code space"
+            },
+            "beacon": {
+                "target": "blocks-panel",
+                "offset": 300,
+                "angle": 200
+            },
+            "validation": {
+                "blockly": {
+                    "drop": {
+                        "target": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change to <kano-value-preview><span>Lightboard B Pressed</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_4"
+                        },
+                        "value": "lightboard.lightboard-btn-B"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "speaker_play"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "speaker_play",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Xx*6c(9,61$N!0qum;)l"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "Xx*6c(9,61$N!0qum;)l",
+                            "inputName": "DO"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Xx*6c(9,61$N!0qum;)l"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "speaker_sample"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "speaker_sample",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "SGbsm1$QF^{L$t6WBJ~C"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "SGbsm1$QF^{L$t6WBJ~C",
+                            "inputName": "SAMPLE"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "SGbsm1$QF^{L$t6WBJ~C"
+                    }
+                },
+                "target": "SAMPLE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change to <kano-value-preview><span>Open hi hat</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_6"
+                        },
+                        "value": "open_hi_hat"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open this tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#turn_on"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#turn_on",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "SGbsm1$QF^{L$t6WBJ~C"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "SGbsm1$QF^{L$t6WBJ~C"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "SGbsm1$QF^{L$t6WBJ~C"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Color tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "colour_picker"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "colour_picker",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "YP8LMq]4HpOnsg+81H]t"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "YP8LMq]4HpOnsg+81H]t",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "YP8LMq]4HpOnsg+81H]t"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change to any color you like"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_8"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Bash the A & B buttons to make some beats 💥"
+            }
+        }
+    ],
+    "parts": [
+        "speaker"
+    ],
+    "modules": [
+        "color",
+        "events"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "speaker": [
+            "speaker_play",
+            "speaker_sample"
+        ],
+        "lightboard": [
+            "turn_on"
+        ],
+        "color": [
+            "colour_picker"
+        ],
+        "events": [
+            "part_event"
+        ]
+    },
+    "mode": "lightboard"
+}

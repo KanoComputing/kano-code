@@ -91,7 +91,7 @@
           page('/remix/:slug',       this._showPageThunk('editor'));
           page('/demo',              this._showPageThunk('demo'));
           page('/story/:id',         this._showPageThunk('story'));
-          page('/tutorial/:slug',    this._showPageThunk('tutorial'));
+          page('/tutorial',          this._showPageThunk('tutorial'));
           page('/onboarding', this._showPageThunk('onboarding'));
           page('/app/:slug', (ctx) => {
               window.location = Kano.MakeApps.config.WORLD_URL + "/shared/" + ctx.params.slug;

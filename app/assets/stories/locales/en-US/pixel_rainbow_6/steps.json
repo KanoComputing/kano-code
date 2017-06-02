@@ -1,0 +1,463 @@
+{
+    "steps": [
+      {
+          "banner": {
+              "text": "Let's give your board new dance moves... using an oscillator!",
+              "next_button": true
+          },
+          "beacon": {
+              "target": "banner-button",
+              "offset": 0
+          }
+      },
+      {
+        "banner": {
+            "text": "You won't need this random block. <br> Drag it to the trashcan."
+        },
+        "beacon": {
+            "target": {
+              "block": {
+                  "rawId": "2U_Iw+u(P7U~3Pg@xS0#"
+              }
+            },
+            "offset": 0
+        },
+
+          "arrow": {
+              "target": "blockly-bin",
+              "angle": 210,
+              "size": 80
+          },
+          "validation": {
+              "blockly": {
+                  "delete": {
+                      "target": {
+                          "rawId": "2U_Iw+u(P7U~3Pg@xS0#"
+                      }
+                  }
+              }
+          }
+      },
+        {
+            "banner": {
+                "text": "Can you find the oscillator part? <br>Look for it near the microphone."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Osc</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-oscillator"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "oscillator",
+                    "id": "part_1"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "An oscillator creates a wave 🌊 out of numbers. Can you see the wave in the <b>Osc part</b>?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's make sure our lightboard can use the code.<br>Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block converts a decimal number into a round number, like 1.8 into 2. <br> Your board only works with round numbers."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_round"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_round",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "[`bC5Y#fl}HU*gt,HiY4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "[`bC5Y#fl}HU*gt,HiY4",
+                            "inputName": "X"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "[`bC5Y#fl}HU*gt,HiY4"
+                    }
+                },
+                "target": "X"
+            }
+        },
+        {
+            "banner": {
+                "text": "Awesome! Next, let's do the actual calculations. <br> Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_9"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": ":^:;[[]s2|j~7hn}sq)-"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_8",
+                            "rawId": ":^:;[[]s2|j~7hn}sq)-",
+                            "inputName": "NUM"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": ":^:;[[]s2|j~7hn}sq)-"
+                    }
+                },
+                "target": "NUM"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's make sure the wave 🌊 fits on your lightboard. <br>Change <kano-value-preview><span>+</span></kano-value-preview> to <kano-value-preview><span>÷</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_9"
+                        },
+                        "value": "DIVIDE"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "It's time to use the oscillator. <br>Open the Osc tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_1",
+                        "type": "osc_get_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "osc_get_value",
+                        "id": "block_10"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "azz@KhTG+/%jZ?JB#!D("
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_9",
+                            "rawId": "azz@KhTG+/%jZ?JB#!D(",
+                            "inputName": "A"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "azz@KhTG+/%jZ?JB#!D("
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "You're almost done... but it's still shooting off the screen!<br> Let's get that under control.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray..."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_11"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "azz@KhTG+/%jZ?JB#!D("
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_9",
+                            "rawId": "azz@KhTG+/%jZ?JB#!D(",
+                            "inputName": "B"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "azz@KhTG+/%jZ?JB#!D("
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Finally, change it from <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>6</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Pow! Your lightshow is done! Can you see the wave dancing across your board?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "microphone",
+        "oscillator"
+    ],
+    "modules": [
+        "variables",
+        "control",
+        "math",
+        "color"
+    ],
+    "variables": [
+        "hue",
+        "rainbowY"
+    ],
+    "filterBlocks": {
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ],
+        "control": [
+            "every_x_seconds",
+            "repeat_x_times"
+        ],
+        "lightboard": [
+            "turn_on",
+            "light_x_y"
+        ],
+        "math": [
+            "math_round",
+            "math_arithmetic",
+            "unary"
+        ],
+        "osc": [
+            "osc_get_value"
+        ],
+        "color": [
+            "create_color"
+        ],
+        "mic": [
+            "get_volume"
+        ]
+    },
+    "mode": "lightboard",
+    "defaultApp": "{\"parts\":[{\"id\":\"mic\",\"name\":\"Mic\",\"type\":\"microphone\",\"tagName\":\"kano-part-microphone\",\"userStyle\":{},\"userProperties\":{},\"nonvolatileProperties\":[],\"position\":{\"x\":233,\"y\":161},\"partType\":\"hardware\"}],\"code\":{\"snapshot\":{\"javascript\":\"var hue, rainbowY;\\n\\n\\nglobal.when('start', function () {\\n  hue = 0;\\n  time.every(1, 'frames', function () {\\n    rainbowY = 1;\\n    for (var i = 0; i < 8; i++) {\\n      devices.get('lightboard').turnOn({\\n                                  type: 'single',\\n                                  x: math.random(0, 16)-1,\\n                                  y: rainbowY-1\\n                              }, colour.create('hsv', hue \/ 10, 100, devices.get('mic').volume));\\n      rainbowY += 1;\\n    }\\n    hue += 1;\\n  });\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n  hue = 0;\\n  time.every(1, 'frames', function () {\\n    rainbowY = 1;\\n    for (var i = 0; i < 8; i++) {\\n      devices.get('lightboard').turnOn({\\n                                  type: 'single',\\n                                  x: math.random(0, 16)-1,\\n                                  y: rainbowY-1\\n                              }, colour.create('hsv', hue \/ 10, 100, devices.get('mic').volume));\\n      rainbowY += 1;\\n    }\\n    hue += 1;\\n  });\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"200\\\" y=\\\"40\\\"><field name=\\\"EVENT\\\">global.start<\/field><statement name=\\\"DO\\\"><block type=\\\"variables_set\\\" id=\\\"w+_vj^0ZY@C~WsRFBfxp\\\"><field name=\\\"VAR\\\">hue<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\":F:SO?JH6ij$1XL%!-!2\\\"><field name=\\\"NUM\\\">0<\/field><\/block><\/value><next><block type=\\\"every_x_seconds\\\" id=\\\"pN\/\/yl~e%?Jm-*e82[R(\\\"><field name=\\\"UNIT\\\">frames<\/field><value name=\\\"INTERVAL\\\"><shadow type=\\\"math_number\\\" id=\\\"*tP7h0Ya%`6\/q%^-O%hg\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><statement name=\\\"DO\\\"><block type=\\\"variables_set\\\" id=\\\"oKcA1?SeBgI$SC7!M}^?\\\"><field name=\\\"VAR\\\">rainbowY<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"g[0U^_T[@\/1@E}IuKfy(\\\"><field name=\\\"NUM\\\">1<\/field><\/block><\/value><next><block type=\\\"repeat_x_times\\\" id=\\\"Xj-JcwD^S{)~@fXO\/CQ6\\\"><value name=\\\"N\\\"><shadow type=\\\"math_number\\\" id=\\\"l\/ZrqHRLZVUtEOn:pW=F\\\"><field name=\\\"NUM\\\">8<\/field><\/shadow><\/value><statement name=\\\"DO\\\"><block type=\\\"lightboard#turn_on\\\" id=\\\"}:N^fbDBY(C7Fvrq|^GN\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#light_x_y\\\" id=\\\"[`bC5Y#fl}HU*gt,HiY4\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"Ki?t,4DcM83M8*kvj\/6T\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"math_random\\\" id=\\\"2U_Iw+u(P7U~3Pg@xS0#\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\":2I5-5Qx%497vpVqAw%s\\\"><field name=\\\"NUM\\\">0<\/field><\/shadow><\/value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"|Q5^79],RFDIQI45+.fi\\\"><field name=\\\"NUM\\\">16<\/field><\/shadow><\/value><\/block><\/value><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"wUA1:tPl=9b{N,eoqh:@\\\"><field name=\\\"NUM\\\">5<\/field><\/shadow><block type=\\\"variables_get\\\" id=\\\"9!2*=];A~3INwyF*=@4R\\\"><field name=\\\"VAR\\\">rainbowY<\/field><\/block><\/value><\/block><\/value><value name=\\\"COLOR\\\"><block type=\\\"create_color\\\" id=\\\"#Ex#Y{vyFDPK$,REjR+!\\\"><mutation color_type=\\\"hsv\\\"><\/mutation><field name=\\\"TYPE\\\">hsv<\/field><value name=\\\"1\\\"><block type=\\\"math_arithmetic\\\" id=\\\";=@oS~cTa.2oOq7rWuwK\\\"><field name=\\\"OP\\\">DIVIDE<\/field><value name=\\\"A\\\"><block type=\\\"variables_get\\\" id=\\\"QA9WMfy)kxt);N$CqHL.\\\"><field name=\\\"VAR\\\">hue<\/field><\/block><\/value><value name=\\\"B\\\"><block type=\\\"math_number\\\" id=\\\"Co3jlPKFtKdxsMHE5|ii\\\"><field name=\\\"NUM\\\">10<\/field><\/block><\/value><\/block><\/value><value name=\\\"3\\\"><block type=\\\"mic#get_volume\\\" id=\\\"7G+3-pxn}^GhX-.XC^;J\\\"><field name=\\\"TYPE\\\">volume<\/field><\/block><\/value><\/block><\/value><next><block type=\\\"unary\\\" id=\\\"H$@?_^dwx!0p[KZV~g~j\\\"><field name=\\\"LEFT_HAND\\\">rainbowY<\/field><field name=\\\"OPERATOR\\\">+=<\/field><value name=\\\"RIGHT_HAND\\\"><shadow type=\\\"math_number\\\" id=\\\");iZi:b;_`z-G2qaf~ox\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/next><\/block><\/statement><next><block type=\\\"unary\\\" id=\\\"5_1RKzUKRmjY=.3EayGv\\\"><field name=\\\"LEFT_HAND\\\">hue<\/field><field name=\\\"OPERATOR\\\">+=<\/field><value name=\\\"RIGHT_HAND\\\"><shadow type=\\\"math_number\\\" id=\\\"e`v]\/TS(AT!)gZxR9p*9\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/next><\/block><\/next><\/block><\/statement><\/block><\/next><\/block><\/statement><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

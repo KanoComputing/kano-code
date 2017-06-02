@@ -1,12 +1,15 @@
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+
 <dom-module id="kano-color-wheel">
     <style>
     :host {
         display: block;
         position: relative;
+        background-color: var(--color-dark);
+        border-radius: 3px;
     }
     #canvas {
         border-radius: 50%;
-        border: 1px solid black;
         margin: 37px 50px;
         cursor: pointer;
     }
@@ -20,8 +23,8 @@
         pointer-events: none;
         transition: transform cubic-bezier(0.2, 0, 0.13, 1.5) 150ms, opacity cubic-bezier(0.2, 0, 0.13, 1.5) 150ms;
         transform-origin: 50% 110%;
-        @apply(--shadow-elevation-2dp);
-        border: 2px solid white;
+        @apply --shadow-elevation-2dp;
+        border: 1px solid var(--color-dark);
     }
     .magn.open {
         opacity: 1;
@@ -45,6 +48,10 @@
                     value: () => {
                         return [];
                     }
+                },
+                renderLater: {
+                    type: Boolean,
+                    value: false
                 }
             },
             attached () {
@@ -56,7 +63,9 @@
                 this.$.canvas.addEventListener('mousemove', this._onMouseMove);
                 this.$.canvas.addEventListener('mouseout', this._onMouseOut);
                 this.$.canvas.addEventListener('mouseover', this._onMouseOver);
-                this._drawWheel(this.$.canvas, 170);
+                if (!this.renderLater) {
+                    this.render();
+                }
             },
             detached () {
                 this.$.canvas.removeEventListener('click', this._onClick);
@@ -75,44 +84,39 @@
                 this._isMouseOver = true;
                 this.toggleClass('open', true, this.$.magn);
             },
-            /**
+            /*
              * Converts an HSL color value to RGB. Conversion formula
              * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
              * Assumes h, s, and l are contained in the set [0, 1] and
-             * returns r, g, and b in the set [0, 255].
-             *
-             * @param   {number}  h       The hue
-             * @param   {number}  s       The saturation
-             * @param   {number}  l       The lightness
-             * @return  {Array}           The RGB representation
+             * returns r, g, and b in the set [0, 255]. 
              */
             hslToRgb (h, s, l) {
-                var r, g, b;
-
+                let r, g, b;
                 if (s == 0) {
                     r = g = b = l; // achromatic
                 } else {
-                    var hue2rgb = function hue2rgb(p, q, t) {
-                        if(t < 0) t += 1;
-                        if(t > 1) t -= 1;
-                        if(t < 1/6) return p + (q - p) * 6 * t;
-                        if(t < 1/2) return q;
-                        if(t < 2/3) return p + (q - p) * (2 / 3 - t) * 6;
-                        return p;
-                    };
-
-                    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-                    var p = 2 * l - q;
-                    r = hue2rgb(p, q, h + 1 / 3);
-                    g = hue2rgb(p, q, h);
-                    b = hue2rgb(p, q, h - 1 / 3);
+                    let q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                    let p = 2 * l - q;
+                    r = this.hue2rgb(p, q, h + 1 / 3);
+                    g = this.hue2rgb(p, q, h);
+                    b = this.hue2rgb(p, q, h - 1 / 3);
                 }
-
                 return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
             },
-            rgbToHex (r, g, b) {
-                let rgb = b | (g << 8) | (r << 16);
-                return '#' + rgb.toString(16);
+            hue2rgb(p, q, t) {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1/6) return p + (q - p) * 6 * t;
+                if (t < 1/2) return q;
+                if (t < 2/3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            },
+            componentToHex(c) {
+                let hex = c.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            },
+            rgbToHex(r, g, b) {
+                return '#' + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
             },
             _onMouseMove (e) {
                 if (this._isMouseOver) {
@@ -121,40 +125,39 @@
                         y = e.y - this.wheelRect.top,
                         r = (170 - 2) / 2,
                         dist = Math.sqrt(Math.pow(r - x, 2) + Math.pow(r - y, 2)),
-                        a = 180 - Math.atan2(r - y, r - x),
+                        a = (Math.PI * 3 / 2) - Math.atan2(r - y, r - x),
                         h, s, l, rgbValue;
                     h = a * 180 / Math.PI;
-                    s = 100 - (dist * 40 / r);
-                    l = 115 - (dist * 70 / r);
-
+                    s = 100 - (dist * 2 / r);
+                    l = 105 - (dist * 95 / r);
                     h = h % 360;
                     h /= 360;
                     s /= 100;
                     l /= 100;
-
                     rgbValue = this.rgbToHex.apply(this, this.hslToRgb(h, s, l));
-
                     this.set('magnColor', rgbValue);
                     this.$.magn.style.top = `${y - 80}px`;
                     this.$.magn.style.left = `${x}px`;
                     this.$.magn.style.background = rgbValue;
                 }
             },
+            render () {
+                this._drawWheel(this.$.canvas, 170);
+            },
             _drawWheel (canvas, size) {
-                var r = (size - 2) / 2,
+                let r = (size - 2) / 2,
                     ctx;
                 canvas.setAttribute('width', size);
                 canvas.setAttribute('height', size);
                 ctx = canvas.getContext('2d');
-
-                for (var i = 0; i < r + 1; i++) {
+                for (let i = 0; i < r + 1; i++) {
                     // A ring
-                    var c = 2 * Math.PI * i;
-                    for (var j = 0; j < c; j++) {
-                        var a = j * 2 * Math.PI / c,
+                    let c = 5 * Math.PI * i;
+                    for (let j = 0; j < c; j++) {
+                        let a = j * 3 * Math.PI / c,
                         y = Math.cos(a) * i,
                         x = Math.sin(a) * i;
-                        ctx.fillStyle = `hsl(${a * 180 / Math.PI}, ${100 - (i * 40 / r)}%, ${115 - (i * 70 / r)}%)`;
+                        ctx.fillStyle = `hsl(${a * 180 / Math.PI}, ${100 - (i * 2 / r)}%, ${105 - i * 95 / r}%)`;
                         ctx.fillRect(r + x, r + y, 2, 2);
                     }
                 }

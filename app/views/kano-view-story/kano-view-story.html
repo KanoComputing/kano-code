@@ -9,11 +9,13 @@
 <link rel="import" href="../../scripts/kano/make-apps/stories.html">
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
-<link rel="import" href="../../elements/behaviors/kano-tracking-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-code-ga-tracking-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
 <link rel="import" href="../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.html">
-<link rel="import" href="../../elements/kano-xp-modal/kano-xp-modal.html">
+<link rel="import" href="../../elements/kano-reward-modal/kano-reward-modal.html">
+<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
 
 <link rel="import" href="../../scripts/kano/make-apps/progress.html">
 
@@ -29,32 +31,41 @@
         }
         paper-dialog {
             border-radius: 5px;
+            overflow: hidden;
+            background: transparent;
         }
-        @media screen and (max-width: 1200px) {
-            #share-modal {
-                max-width: 900px;
-            }
-        }
-        @media screen and (max-width: 960px) {
-            #share-modal {
-                max-width: 330px;
-            }
+        paper-dialog#share-modal kano-share-modal {
+            padding: 0px;
+            margin: 0px;
         }
     </style>
     <template>
-        <kano-story-scene id="story-scene" scene="{{scene}}" on-scene-done="nextScene" story-name="{{story.name}}" next-story="{{story.next}}" extensions="[[story.extensions]]" on-extend-story="extendStory" on-next-story="nextStory" on-share="share"></kano-story-scene>
-        <paper-dialog id="share-modal" with-backdrop>
-            <kano-share-modal on-confirm="confirmShare"
+        <kano-story-scene id="story-scene"
+                            user="[[user]]"
+                            scene="{{scene}}"
+                            on-scene-done="nextScene"
+                            story="[[story]]"
+                            extensions="[[story.extensions]]"
+                            on-extend-story="extendStory"
+                            on-next-story="goToNextStory"
+                            on-share="share"
+                            added-parts="{{addedParts}}"></kano-story-scene>
+        <paper-dialog id="share-modal" no-cancel-on-esc-key no-cancel-on-outside-click with-backdrop>
+            <kano-share-modal id="share-modal-content"
+                              on-confirm="confirmShare"
                               on-dismiss="dismissShare"
+                              on-next-story="goToNextStory"
                               share-info="{{shareInfo}}"
                               world-url="[[config.WORLD_URL]]"
-                              is-authenticated="[[user]]"></kano-share-modal>
+                              is-authenticated="[[user]]"
+                              in-challenge></kano-share-modal>
        </paper-dialog>
        <kano-challenge-completed-modal id="challenge-completed"
                                        on-close="_setStoryEnded"></kano-challenge-completed-modal>
-        <kano-xp-modal id="xp-modal"
+        <kano-reward-modal id="reward-modal"
                        on-confirm="_setStoryEnded"
-                       on-second-action="_openSignup"></kano-xp-modal>
+                       on-second-action="_openSignup"
+                       on-close="_setStoryEnded"></kano-reward-modal>
     </template>
 </dom-module>
 
@@ -65,8 +76,9 @@
         behaviors: [
             Kano.Behaviors.ViewBehavior,
             Kano.Behaviors.SharingBehavior,
-            Kano.Behaviors.TrackingBehavior,
-            Kano.Behaviors.SoundPlayerBehavior
+            Kano.Behaviors.Tracking.GABehavior,
+            Kano.Behaviors.SoundPlayerBehavior,
+            Kano.Behaviors.I18nBehavior
         ],
         properties: {
             selected: {
@@ -77,17 +89,32 @@
             story: {
                 type: Object,
                 observer: 'selectedChanged'
+            },
+            addedParts: {
+                type: Array
             }
         },
+        listeners: {
+            'parts-changed': '_partsChanged'
+        },
+        observers: [
+            '_addedPartsChanged(addedParts.splices)'
+        ],
         ready () {
-            let hardwareAPI = new Kano.MakeApps.HardwareAPI();
+            Kano.MakeApps.config.HOST = Kano.Util.Router.parseQsParam(this.context.querystring, 'host') || Kano.MakeApps.config.HOST;
+            Kano.MakeApps.config.PORT = Kano.Util.Router.parseQsParam(this.context.querystring, 'port') || Kano.MakeApps.config.PORT;
+
+            this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
+            this.hardwareAPI.on('new-part-request', (e) => {
+                this.fire('iron-signal', { name: 'new-part-request', data: e.detail });
+            });
+
             this.modal = this.$['share-modal'];
 
-            hardwareAPI.config(Kano.MakeApps.config);
-
-            Kano.AppModules.init(Object.assign({ hardwareAPI }, Kano.MakeApps.config));
+            Kano.AppModules.init(Object.assign({ hardwareAPI: this.hardwareAPI }, Kano.MakeApps.config));
             Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
             Kano.MakeApps.Mode.init(Kano.MakeApps.config);
+            Kano.MakeApps.config.PROJECTS_URL = Kano.Util.Router.parseQsParam(this.context.querystring, 'projectsUrl') || Kano.MakeApps.config.PROJECTS_URL;
         },
         attached () {
             Kano.MakeApps.Stories.getById(this.context.params.id)
@@ -95,7 +122,7 @@
                     if (typeof story.next === 'string') {
                         return Kano.MakeApps.Stories.getById(story.next)
                             .then((nextStory) => {
-                                story.next = nextStory;
+                                this.set('story.next', nextStory);
                                 return story;
                             })
                             .catch(() => {
@@ -106,11 +133,32 @@
                 })
                 .then((story) => {
                     this.story = story;
+                    let trackingData = {
+                        id: story.id,
+                        name: story.name
+                    };
+                    if (story.progress && story.progress.group) {
+                        trackingData.group = story.progress.group;
+                    }
+                    this.fire('track-challenge-event', {
+                        type: 'attempt',
+                        data: trackingData
+                    });
                     if (story.progress) {
                         return Kano.MakeApps.Progress.loadProgress(story.progress.group);
                     }
                 })
                 .then((progress) => this.updateExtensions(progress));
+        },
+        _addedPartsChanged () {
+            if (this.hardwareAPI) {
+                this.hardwareAPI.setParts(this.addedParts);
+            }
+        },
+        _partsChanged () {
+            if (this.hardwareAPI) {
+                this.hardwareAPI.requestDeviceUpdate();
+            }
         },
         updateExtensions (progress) {
             let story = this.story,
@@ -145,9 +193,21 @@
         _displayUserReward (hints) {
             let headers = new Headers(),
                 flags = Kano.MakeApps.config.getFlags(),
-                gamificationEnabled = flags.experiments.indexOf('gamification_modal') !== -1,
+                //FIXME for demo we turn the gamification enabled always true on this branch
+                gamificationEnabled = true || flags.experiments.indexOf('gamification_modal') !== -1,
                 payload,
-                tempGamificationData;
+                fakeGamificationData,
+                trackingData = {
+                    id: this.story.id,
+                    name: this.story.name
+                };
+            if (this.story.progress && this.story.progress.group) {
+                trackingData.group = this.story.progress.group;
+            }
+            this.fire('track-challenge-event', {
+                type: 'complete',
+                data: trackingData
+            });
             if (Kano.MakeApps.sdk.auth.getToken()) {
                 headers.append('Content-Type', 'application/json');
                 headers.append('Authorization', Kano.MakeApps.sdk.auth.getToken());
@@ -158,23 +218,25 @@
                     }
                 };
                 fetch(`${Kano.MakeApps.config.API_URL}/progress`, {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify(payload)
-                }).then(r => r.json())
-                .then(res => {
-                    if (gamificationEnabled) {
-                        this.$['xp-modal'].open(res, this.user);
-                    } else {
-                        this.$['challenge-completed'].set('hints', hints);
-                        this.$['challenge-completed'].open();
-                    }
-                    this.playSound('/assets/audio/samples/challenge_complete.wav');
-                })
+                        method: 'POST',
+                        headers,
+                        body: JSON.stringify(payload)
+                    }).then(r => r.json())
+                    .then(res => {
+                        if (gamificationEnabled) {
+                            this._trackRewards(res.update);
+                            this.$['reward-modal'].open(res, this.user);
+                            this.fire('update-user-progress', res.update);
+                        } else {
+                            this.$['challenge-completed'].set('hints', hints);
+                            this.$['challenge-completed'].open();
+                        }
+                        this.playSound('/assets/audio/samples/challenge_complete.wav');
+                    });
             } else {
-                //send temp progress data if there's no registered user
-                //TODO -- change this when specs are ready for this scenario
-                tempGamificationData = {
+                //send fake progress data if there's no registered user
+                //TODO -- change this when specs are ready
+                fakeGamificationData = {
                     "update": {
                         "levels": {
                             "progress": {
@@ -202,7 +264,7 @@
                     }
                 };
                 if (gamificationEnabled) {
-                    this.$['xp-modal'].open(tempGamificationData);
+                    this.$['reward-modal'].open(fakeGamificationData);
                 } else {
                     this.$['challenge-completed'].set('hints', hints);
                     this.$['challenge-completed'].open();
@@ -210,10 +272,40 @@
                 this.playSound('/assets/audio/samples/challenge_complete.wav');
             }
         },
+        _trackRewards (update) {
+            let levelChanges = update.levels && update.levels.changes,
+                badgeChanges = update['badges-basic'] && update['badges-basic'].changes,
+                xpChanges = levelChanges && levelChanges['total-xp'];
+            if (xpChanges) {
+                this.fire('tracking-event', {
+                    name: 'xp_earned',
+                    data: {
+                        previous_level: xpChanges.oldValue,
+                        new_level: xpChanges.newValue,
+                        xp_earned: xpChanges.newValue - xpChanges.oldValue,
+                        leveled_up: !!levelChanges.level
+                    }
+                });
+            }
+            if (badgeChanges) {
+                badgeChanges.new.forEach(badge => {
+                    this.fire('tracking-event', {
+                        name: 'badge_unlocked',
+                        data: {
+                            badge_id: badge.id,
+                            badge_name: badge.title
+                        }
+                    });
+                });
+            }
+        },
         selectedChanged () {
             if (!this.story) {
                 return;
             }
+            this.$['share-modal-content'].set('nextButtonLabel', Boolean(this.story.next) ?
+                    this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
+
             Kano.MakeApps.Stories.getSceneByIndex(this.story, this.selected)
                 .then((scene) => {
                     this.set('scene', scene);
@@ -228,14 +320,16 @@
             let extensionId = e.detail;
             page.redirect(`/story/${extensionId}`);
         },
-        nextStory (e) {
+        goToNextStory (e) {
             let storyId;
             if (!this.story.next) {
-                location.href = Kano.MakeApps.config.WORLD_URL + '/projects';
+                location.href = Kano.MakeApps.config.PROJECTS_URL;
                 return;
             }
-            storyId = this.story.next.id;
-            page.redirect(`/story/${storyId}`);
+
+            if (this.story.next) {
+                page.redirect(`/story/${this.story.next}`);
+            }
         },
         _setStoryEnded () {
             this.set('scene.ended', true);

@@ -1,55 +1,227 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../kano-pixel-frame-editor/kano-pixel-frame-editor.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/polymer-filters/polymer-filters.html">
+<link rel="import" href="../../bower_components/polymer-filters/filters/compare.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+<link rel="import" href="../../scripts/kano/make-apps/parts-api/light-frame.html">
+<link rel="import" href="../../scripts/kano/app-modules/lightboard.html">
 <link rel="import" href="../inputs/kano-input-range/kano-input-range.html">
-<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
-
+<link rel="import" href="../kano-media-query/kano-media-query.html">
+<link rel="import" href="../kano-pixel-canvas/kano-pixel-canvas.html">
+<link rel="import" href="../kano-palette/kano-palette.html">
+<link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
+<link rel="import" href="../behaviors/kano-media-query-behavior.html">
 <dom-module id="kano-light-frame-editor">
-    <style>
-    :host {
-        @apply(--layout-vertical);
-        position: relative;
-    }
-    .content>* {
-        margin-top: 32px;
-    }
-    .preview {
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-    }
-    .properties {
-        @apply(--layout-flex);
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-    }
-    kano-input-range {
-        width: 100%;
-    }
+    <style include="kano-code-shared-styles">
+        :host {
+            @apply --layout-vertical;
+            @apply --layout-center-justified;
+        }
+        :host button {
+            @apply --kano-button;
+            @apply --layout-horizontal;
+            @apply --layout-center-justified;
+            background-color: var(--color-chateau);
+            width: 48px;
+            height: 48px;
+        }
+        .main {
+            @apply --layout-horizontal;
+            @apply --layout-center-justified;
+            padding: 32px 48px;
+        }
+        :host([medium-screen]) .main,
+        :host([small-screen]) .main {
+            @apply --layout-vertical;
+            @apply --layout-center;
+            padding: 32px;
+        }
+        :host([small-screen]) .main {
+            padding: 32px 16px;
+        }
+        #palette {
+            @apply --layout-horizontal;
+            @apply --layout-justified;
+            width: 130px;
+            text-align: left;
+        }
+        :host([medium-screen]) #palette {
+            width: 72%;
+            margin-bottom: 32px;
+        }
+        :host([small-screen]) #palette {
+            width: 80%;
+            margin-bottom: 32px;
+        }
+        .control-container {
+            @apply --layout-vertical;
+            flex: 1 0 auto;
+            min-height: 200px;
+        }
+        :host([medium-screen]) .control-container label {
+            margin-top: 16px;
+        }
+        :host label {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: bold;
+            text-align: left;
+            color: rgba(255,255,255,0.5);
+            margin-bottom: 24px;
+            @apply --layout-self-start;
+        }
+        .control-content {
+            @apply --layout-flex;
+            @apply --layout-vertical;
+        }
+        .control-content kano-input:first-of-type {
+            min-height: 33px;
+            margin-bottom: 16px;
+            --kano-input-label: {
+                width: 40px;
+                margin-right: 24px;
+            };
+        }
+        .control-content kano-input-range {
+            --kano-input-range-label: {
+                width: 40px;
+                margin-right: 24px;
+            };
+        }
+        .canvas-container {
+            @apply --layout-flex-none;
+            @apply --layout-vertical;
+            height: 244px;
+            margin: 0 36px;
+        }
+        .canvas-content {
+            @apply --layout-horizontal;
+            @apply --layout-center-justified;
+            width: 385px;
+            margin-top: -2px;
+            margin-left: -2px;
+        }
+        :host([small-screen]) .canvas-container,
+        :host([medium-screen]) .canvas-container {
+            margin: 0 0 32px;
+        }
+        :host([small-screen]) .canvas-container {
+            min-width: 352px;
+        }
+        :host([small-screen]) .control-container,
+        :host([medium-screen]) .control-container {
+            @apply --layout-self-stretch;
+        }
+        kano-pixel-canvas {
+            cursor: none;
+            --kano-pixel-editor-background: var(--color-dark);
+        }
     </style>
     <template>
-        <div class="content">
-            <div class="preview">
-                <kano-pixel-frame-editor width="[[selected.userProperties.width]]"
-                                    height="[[selected.userProperties.height]]"
-                                    bitmap="{{selected.userProperties.bitmap}}"></kano-pixel-frame-editor>
+        <kano-media-query small-screen="{{smallScreen}}" medium-screen="{{mediumScreen}}" large-screen="{{largeScreen}}">
+        </kano-media-query>
+        <div class="header"></div>
+        <div class="main">
+            <kano-palette id="palette" bitmaps="[[bitmap]]" pen-type="{{penType}}" palette="{{palette}}" pen-color="{{penColor}}"></kano-palette>
+            <div class="canvas-container">
+                <label>Canvas</label>
+                <div class="canvas-content">
+                    <kano-pixel-canvas id="canvas"
+                                       bitmap="{{selected.userProperties.bitmap}}"
+                                       width="[[selected.userProperties.width]]"
+                                       height="[[selected.userProperties.height]]"
+                                       pixel-size="22"
+                                       spacing="1"
+                                       palette="[[palette]]"
+                                       pen-color="[[penColor]]"
+                                       pen-type="[[penType]]"></kano-pixel-canvas>
+                </div>
             </div>
-            <div class="properties">
-                <kano-input-range value="{{selected.userProperties.width}}" label="Width" min="1" max="16"></kano-input-range>
-                <kano-input-range value="{{selected.userProperties.height}}" label="Height" min="1" max="8"></kano-input-range>
+            <div class="control-container">
+                <label>Controls</label>
+                <div class="control-content">
+                    <kano-input type="text" label="Name" value="{{element.name}}"></kano-input>
+                    <kano-input-range class="slider row" value="{{selected.userProperties.width}}" label="Width" min="1" max="16"></kano-input-range>
+                    <kano-input-range class="slider row" value="{{selected.userProperties.height}}" label="Height" min="1" max="8"></kano-input-range>
+                </div>
             </div>
         </div>
     </template>
-</dom-module>
-<script type="text/javascript">
-    /* globals Polymer, Kano */
-
-    Polymer({
-        is: 'kano-light-frame-editor',
-        properties: {
-            selected: {
-                type: Object,
-                notify: true
+    <script type="text/javascript">
+        Polymer({
+            is: 'kano-light-frame-editor',
+            behaviors: [
+                PolymerFilters.FilterBehavior,
+                Kano.Behaviors.MediaQueryBehavior,
+                Kano.MakeApps.PartsAPI['light-frame']
+            ],
+            properties: {
+                selected: {
+                    type: Object,
+                    notify: true
+                },
+                bitmap: {
+                    type: Array,
+                    value: () => {
+                        return ['#000000'];
+                    },
+                    notify: true
+                },
+                width: {
+                    type: Number,
+                    value: 1
+                },
+                height: {
+                    type: Number,
+                    value: 1
+                }
+            },
+            observers: [
+                '_onSmallScreenActive(smallScreen)',
+                '_userPropertiesChanged(selected.userProperties.*)'
+            ],
+            attached () {
+                this.$.palette._computePalette();
+                this.BOARD_WIDTH = 16;
+                this.BOARD_HEIGHT = 8;
+            },
+            enterQuitsInput () {
+                if (event.keyCode == 13) {
+                    this.blur();
+                    return false;
+                }
+            },
+            _onSmallScreenActive (smallScreen) {
+                this.pixelSize = smallScreen ? 18 : 20;
+            },
+            _renderOnRealDevice () {
+                Kano.AppModules.modules.lightboard.shapes = {
+                    'being-edited': this.getShape()
+                };
+                Kano.AppModules.modules.lightboard.updateAndSync(false, () => {});
+            },
+            _userPropertiesChanged () {
+                this._renderOnRealDevice();
+            },
+            getShape () {
+                this.model = this.selected;
+                return {
+                    id: 'being-edited',
+                    x: this.getX(),
+                    y: this.getY(),
+                    width: this.getWidth(),
+                    height: this.getHeight(),
+                    visible: true,
+                    bitmap: this.selected.userProperties.bitmap,
+                    type: 'frame'
+                };
             }
-        }
-    });
-</script>
+        });
+    </script>
+</dom-module>

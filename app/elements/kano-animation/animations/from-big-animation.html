@@ -1,0 +1,24 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/neon-animation/neon-animation-behavior.html">
+
+<script>
+Polymer({
+    is: 'from-big-animation',
+    behaviors: [
+        Polymer.NeonAnimationBehavior
+    ],
+    configure (config) {
+        let node = config.node;
+
+        this._effect = new KeyframeEffect(node, [
+            {'transform': 'scale(3,3)', opacity: 0},
+            {'transform': 'scale(1,1)', opacity: 1}
+        ], this.timingFromConfig(config));
+
+        if (config.transformOrigin) {
+            this.setPrefixedProperty(node, 'transformOrigin', config.transformOrigin);
+        }
+        return this._effect;
+    }
+});
+</script>

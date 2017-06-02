@@ -1,0 +1,127 @@
+<dom-module id="kano-blockly-style">
+    <template>
+        <style>
+            .blocklyBlockCanvas.smoothScroll, ::slotted(*.blocklyBlockCanvas.smoothScroll) {
+                transition: transform 200ms ease-out;
+            }
+
+            .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"]), ::slotted(* .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"])) {
+                display: none;
+            }
+
+            .blocklyEditableText>rect, ::slotted(*.blocklyEditableText>rect) {
+                fill: white;
+                fill-opacity: 0.6;
+            }
+
+            .blocklyLookupField>text,
+            ::slotted(*.blocklyLookupField>text) {
+                font-family: monospace;
+                cursor: pointer;
+                fill: #223541;
+            }
+
+            .blocklySearchOutput>text,
+            ::slotted(*.blocklySearchOutput>text) {
+                font-size: 28px;
+                transform: translateY(15px);
+                fill: #bbbbbb;
+            }
+
+            .searchPlus,
+            ::slotted(* .searchPlus) {
+                cursor: pointer;
+            }
+
+            .searchPlus rect,
+            ::slotted(* .searchPlus rect) {
+                fill: #bbbbbb;
+                stroke: #737373;
+                rx: 4;
+                ry: 4;
+            }
+
+            .searchPlus text,
+            ::slotted(* .searchPlus text) {
+                fill: #eaeaea;
+            }
+
+            .blocklyPathDark,
+            .blocklyPathLight,
+            ::slotted(* .blocklyPathDark),
+            ::slotted(* .blocklyPathLight) {
+                fill: transparent !important;
+                stroke-width: 0px !important;
+            }
+            .blocklySelected > .blocklyPath, ::slotted(* .blocklySelected > .blocklyPath) {
+                stroke-width: 1px !important;
+                stroke: rgba(0, 0, 0, 0.5) !important;
+                stroke-linejoin: round !important;
+            }
+            .blocklyHighlightedConnectionPath, ::slotted(* .blocklyHighlightedConnectionPath) {
+                stroke-width: 2px !important;
+            }
+            text.blocklyText, ::slotted(* text.blocklyText) {
+                font-family: bariol;
+                font-size: 1em;
+                fill: white;
+            }
+            .blocklyEditableText:hover > rect, ::slotted(* .blocklyEditableText:hover > rect) {
+                stroke-width: 1px !important;
+            }
+            .blocklyEditableText .blocklyText, ::slotted(* .blocklyEditableText .blocklyText) {
+                font-size: 1em !important;
+            }
+            div.blocklyTreeRoot, ::slotted(* div.blocklyTreeRoot) {
+                padding: 0px;
+            }
+            span.blocklyTreeLabel, ::slotted(* span.blocklyTreeLabel) {
+                font-family: bariol;
+                font-size: 14px;
+            }
+            div.blocklyTreeRow, ::slotted(* div.blocklyTreeRow) {
+                position: relative;
+                height: auto !important;
+                line-height: 20px !important;
+                padding: 9px 12px !important;
+                margin: 0px;
+                color: white;
+                font-size: 1em;
+            }
+            div.blocklyTreeRow:hover,
+            span.blocklyTreeLabel:hover,
+            ::slotted(* div.blocklyTreeRow:hover),
+            ::slotted(* span.blocklyTreeLabel:hover) {
+                cursor: pointer;
+            }
+            div.blocklyTriangle {
+                position: absolute;
+                left: 130px;
+                top: 0px;
+                display: none;
+                border: 12px solid transparent;
+                border-left: 0px;
+                border-right-width: 10px;
+                border-right-color: #E8E8E8;
+            }
+            span.blocklyTreeIcon, ::slotted(* span.blocklyTreeIcon) {
+                width: 0px;
+            }
+            div.blocklyToolboxDiv, ::slotted(* div.blocklyToolboxDiv) {
+                background-color: transparent;
+                position: absolute;
+            }
+            div.goog-tree-item, ::slotted(* div.goog-tree-item) {
+                border: 0px;
+                visibility: hidden;
+            }
+            path.blocklyFlyoutBackground, ::slotted(* path.blocklyFlyoutBackground) {
+                fill: #E8E8E8;
+                fill-opacity: 1;
+            }
+            rect.blocklyMainBackground, ::slotted(* rect.blocklyMainBackground) {
+                opacity: 0 !important;
+            }
+        </style>
+    </template>
+</dom-module>

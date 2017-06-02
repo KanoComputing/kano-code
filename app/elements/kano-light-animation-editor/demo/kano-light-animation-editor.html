@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+        <title>kano-light-animation-editor demo</title>
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+
+        <script>
+            window.Polymer = {
+                dom: 'shadow'
+            };
+        </script>
+
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../scripts/kano/make-apps/parts-api/index.html">
+        <link rel="import" href="../../part/kano-part-light-animation/kano-part-light-animation.html">
+        <link rel="import" href="../kano-light-animation-editor.html">
+
+        <style is="custom-style" include="demo-pages-shared-styles">
+        </style>
+        <style>
+            html, body {
+                min-height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            h1 {
+                align-self: flex-start;
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+        <h1>kano-light-animation-editor</h1>
+            <demo-snippet>
+                <template is="dom-bind" id="bind">
+                    <kano-light-animation-editor selected="{{model}}"></kano-light-animation-editor>
+                    <kano-part-light-animation model={{model}} hidden></kano-part-light-animation>
+                </template>
+                <script>
+                    document.addEventListener('WebComponentsReady', () => {
+                        const bind = document.getElementById('bind');
+
+                        bind.model = {
+                            userProperties: {
+                                speed: 7,
+                                width: 16,
+                                height: 8,
+                                bitmaps: [_generateEmptyFrame()]
+                            }
+                        };
+
+                        function _generateEmptyFrame () {
+                            const emptyFrame = [];
+                            for (let i = 0; i < 128; i++) {
+                                emptyFrame.push('#000000');
+                            }
+                            return emptyFrame;
+                        }
+
+                    });
+                </script>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

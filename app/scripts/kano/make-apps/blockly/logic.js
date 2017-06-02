@@ -4,7 +4,7 @@
     /**
      * Registers the logic blocks, and creates its category
      */
-    const COLOUR = '#9f231b';
+    const COLOR = '#f75846';
 
     let register = (Blockly) => {
 
@@ -45,14 +45,14 @@
         };
 
         category.blocks.forEach((category) => {
-            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOUR);
+            Kano.Util.Blockly.updateBlockColour(Blockly.Blocks[category.id], COLOR);
         });
     };
 
     let category = Kano.MakeApps.Blockly.Defaults.createCategory({
         name: Blockly.Msg.CATEGORY_LOGIC,
         id: 'logic',
-        colour: COLOUR,
+        colour: COLOR,
         blocks: [
             'controls_if',
             'logic_compare',

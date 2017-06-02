@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../../bower_components/web-components/kano-style/typography.html">
+        <link rel="import" href="../kano-ic-clock.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--font-body);
+            }
+            demo-snippet {
+                --demo-snippet-demo: {
+                    background: #292F34;
+                };
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>Inline controls of the clock</h3>
+            <demo-snippet>
+                <template>
+                    <template is="dom-bind" id="bind">
+                        <kano-ic-clock model="[[model]]"></kano-ic-clock>
+                    </template>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let b = document.getElementById('bind');
+
+                            b.model = {
+                                name: 'Clock',
+                                type: 'clock'
+                            };
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

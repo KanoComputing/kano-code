@@ -32,6 +32,7 @@
 
                 this._addOppositeAction('create', 'close-flyout', '_flyoutClosed');
                 this._addOppositeAction('connect', 'create', '_createNotExpected');
+                this._addOppositeAction('connect', 'delete', '_deleteNotExpected');
 
                 this._addMatchFallback('connect', '_wrongConnection');
                 this._addMatchFallback('create', '_wrongCreate');
@@ -48,6 +49,9 @@
                     size: 80
                 };
                 this._updateStep(step);
+            },
+            _deleteNotExpected (validation, detail) {
+                this._prevStep(3);
             },
             _createNotExpected (validation, detail) {
                 return this._wrongCreateRedirect(detail.blockId);

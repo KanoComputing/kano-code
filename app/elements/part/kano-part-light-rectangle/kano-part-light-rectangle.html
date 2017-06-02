@@ -52,6 +52,17 @@
                     container.appendChild(div);
                 }
                 return `width: ${width}px; height: ${height}px;`;
+            },
+            detached () {
+                // Firing a regular event won't do much as this is detached and the workspace will not receive it.
+                // This make iron-signals dispatch the event to the interested elements
+                document.dispatchEvent(new CustomEvent('iron-signal', {
+                    bubbles: false,
+                    detail: {
+                        name: 'remove-shape',
+                        data: this.model.id
+                    }
+                }));
             }
         });
     </script>

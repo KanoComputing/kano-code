@@ -6,19 +6,26 @@
 <link rel="import" href="../../scripts/kano/app-modules/index.html">
 
 <link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
-<link rel="import" href="../../elements/kano-reward-modal/kano-reward-modal.html">
+<link rel="import" href="../../elements/kano-editor-banner/kano-editor-banner.html">
+<link rel="import" href="../../elements/kano-onboarding-reward-modal/kano-onboarding-reward-modal.html">
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
 
 <dom-module id="kano-view-onboarding">
     <style>
-    :host {
-        display: block;
-        @apply(--layout-vertical);
-    }
-    :host kano-app-editor {
-        @apply(--layout-flex);
-    }
+        :host {
+            display: block;
+            @apply(--layout-vertical);
+        }
+        :host kano-app-editor {
+            @apply(--layout-flex);
+        }
+        kano-editor-banner {
+            background: #394148;
+            color: white;
+            border-bottom: 1px solid #282E34;
+            height: 120px;
+        }
     </style>
     <template>
         <kano-app-editor
@@ -29,16 +36,20 @@
             added-parts="{{addedParts}}"
             default-categories="[[defaultCategories]]"
             mode="[[mode]]"
-            banner="[[banner]]"
             challenge-state="{{challengeState}}"
             on-change="_onBlocklyChange"
             on-fireworks-triggered="_stageFinished"
             on-talking-face-animation-stopped="_stageFinished"
-            hide-leave-alert="[[alertDisabled]]"></kano-app-editor>
-        <kano-reward-modal
+            hide-leave-alert="[[alertDisabled]]">
+                <div slot="above-code">
+                    <kano-editor-topbar exit-url="[[exitUrl]]" user="[[user]]" profile="[[profile]]"></kano-editor-topbar>
+                    <kano-editor-banner slot="above-code" head="[[banner.head]]" text="[[banner.text]]"></kano-editor-banner>
+                </div>
+        </kano-app-editor>
+        <kano-onboarding-reward-modal
             content="[[_currentReward(stageNo)]]"
             id="reward-modal"
-            on-interaction="_handleModalAction"></kano-reward-modal>
+            on-interaction="_handleModalAction"></kano-onboarding-reward-modal>
     </template>
 </dom-module>
 
@@ -83,7 +94,7 @@
                                     width: 502,
                                     height: 264
                                 },
-                                component: 'kano-workspace-normal'
+                                component: 'kano-editor-simple'
                             },
                             defaultBlocks: `<xml xmlns="http://www.w3.org/1999/xhtml">
                                                 <block type="talkingface#say" id="onboarding1" x="266" y="157" deletable="false"></block>
@@ -112,7 +123,7 @@
                                     width: 502,
                                     height: 264
                                 },
-                                component: 'kano-workspace-normal'
+                                component: 'kano-editor-simple'
                             },
                             defaultBlocks: `<xml xmlns="http://www.w3.org/1999/xhtml">
                                                 <block type="talkingface1#say_accent" id="onboarding3" x="161" y="157" deletable="false"></block>
@@ -141,7 +152,7 @@
                                     width: 502,
                                     height: 264
                                 },
-                                component: 'kano-workspace-normal'
+                                component: 'kano-editor-simple'
                             },
                             defaultBlocks: `<xml xmlns="http://www.w3.org/1999/xhtml">
                                                 <block type="fireworks#repeat" id="onboarding5" x="181" y="104" deletable="false"></block>
@@ -263,23 +274,22 @@
             return reward;
         },
         _handleModalAction (e) {
-            let projectsUrl = Kano.MakeApps.config.WORLD_URL + "/projects";
             if (e.detail.trackingEvent) {
-                this.fire('track-event', e.detail.trackingEvent);
+                this.fire('ga-tracking-event', e.detail.trackingEvent);
             }
             if (e.detail.type === 'save') {
                 this.alertDisabled = true;
                 this.fire('signup', {
                     onSuccess: () => {
-                        location.href = projectsUrl;
+                        location.href = Kano.MakeApps.config.PROJECTS_URL;
                     },
                     onCancel: () => {
-                        location.href = projectsUrl;
+                        location.href = Kano.MakeApps.config.PROJECTS_URL;
                     }
                 });
             } else if (e.detail.type === 'progress' && this.stageNo === (this.stages.length - 1)) {
                 this.alertDisabled = true;
-                location.href = projectsUrl;
+                location.href = Kano.MakeApps.config.PROJECTS_URL;
             } else {
                 if (this.stageNo < this.stages.length - 1) {
                     this.stageNo++;
@@ -293,7 +303,7 @@
                 eventType = this.trackingEvents[details.blockId];
             }
             if (eventType) {
-                this.fire('track-event', eventType);
+                this.fire('ga-tracking-event', eventType);
             }
         },
         _stageFinished () {

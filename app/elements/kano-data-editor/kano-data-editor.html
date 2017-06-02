@@ -1,9 +1,12 @@
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
 <link rel="import" href="../kano-data-display/kano-data-display.html">
 <link rel="import" href="./kano-what-is-json.html">
@@ -12,36 +15,150 @@
     @keyframes spin { 100% { transform: rotate(-360deg); } }
     :host {
         display: block;
-        @apply(--layout-vertical);
+        @apply --layout-vertical;
+        color: #fff;
     }
     :host .content {
-        @apply(--layout-flex);
+        @apply --layout-vertical;
     }
     :host .config {
-        padding: 15px 22px;
+        padding: 0 0 36px;
+        flex: 1 0 auto;
+        @apply --layout-vertical;
     }
     :host .line {
-        @apply(--layout-vertical);
-        @apply(--layout-start);
+        @apply --layout-horizontal;
+        @apply --layout-center;
         margin-top: 12px;
         margin-bottom: 20px;
         text-align: left;
     }
+    #refresh-toggle paper-toggle-button {
+        --paper-toggle-button-label-color: #fff;
+    }
     :host .refresh-button {
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-        @apply(--kano-icon-button);
-        margin-left: 22px;
+        @apply --layout-vertical;
+        @apply --layout-center;
+        @apply --layout-center-justified;
+        @apply --kano-icon-button;
+        margin: 16px 8px 16px 0px;
+        padding: 0;
+        transition: transform ease-out 400ms;
+    }
+    :host .refresh-button:hover {
+        transform: rotate(-45deg);
+    }
+    :host([loading]) kano-data-display {
+        opacity: 0.2;
+    }
+    paper-spinner-lite {
+        position: absolute;
+        top: 164px;
+        left: 50%;
+        --paper-spinner-color: #fff;
+    }
+    #refresh-frequency paper-dropdown-menu {
+        @apply --layout-flex;
+        @apply --layout-vertical;
+        background: var(--color-abbey);
+
+        --paper-dropdown-menu-ripple: {
+            display: none;
+        };
+
+        --paper-menu-button-content: {
+            background-color: transparent;
+        };
+
+        --paper-dropdown-menu-button: {
+            color: #fff;
+        };
+        --paper-input-container-input: {
+            color: #fff;
+            font-family: var(--font-body);
+            font-weight: bold;
+            font-size: 14px;
+        };
+        --paper-input-container: {
+            border-radius: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            background-color: var(--color-chateau);
+            font-size: 14px;
+            padding: 4px 8px 2px;
+        };
+        --paper-input-container-underline: {
+            border: none;
+        };
+        --paper-input-container-underline-focus: {
+            border: none;
+        }; 
+    }
+    :host .line label {
+        width: 80px;
+        color: rgba(255, 255, 255, 0.5);
+        text-align: left;
+        width: var(--kano-part-settings-label-width);
+        font-size: 14px;
+        font-family: var(--font-body);
+        font-weight: bold;
+        margin-right: 40px;
     }
     :host.loading .refresh-button iron-image {
         transform-origin: 46% 50%;
         animation: spin 1s linear infinite;
     }
+    .dropdown-content {
+        background-color: var(--color-dark);
+        color: #fff;
+        padding: 0;
+        margin-top: 4px;
+        --paper-menu-button-content: {
+            padding: 3px;
+            background-color: var(--color-dark);
+        };
+        --paper-dropdown-menu-button: {
+             left: 0;
+             width: 100%;
+          };
+        --paper-menu: {
+            color: #fff;
+            box-sizing: border-box;
+            padding: 0;
+        };
+
+        --paper-menu-color: #fff;
+    }
+    .dropdown-content paper-item {
+        --paper-item: {
+            min-height: 36px;
+            font-family: var(--font-body);
+            font-weight: bold;
+            font-size: 14px;
+            box-sizing: border-box;
+            padding: 7px 8px 3px;
+        };
+    }
+    :host .dropdown-content paper-item:hover {
+        --paper-icon-item: {
+            color: #fff;
+        };
+    }
+    paper-dialog-scrollable {
+        min-height: 360px;
+        @apply(--shadow-elevation-2dp);
+        --paper-dialog-scrollable: {
+            margin: 16px 0;
+            padding: 0 48px;
+        };
+        --divider-color: #202428;
+    }
     :host .data-browser {
-        @apply(--layout-flex);
         position: relative;
-        padding-top: 15px;
+    }
+    :host .data-header {
+        @apply --layout-horizontal;
+        @apply --layout-justified;
     }
     :host .loading-overlay {
         position: absolute;
@@ -54,18 +171,17 @@
         @apply(--layout-center-justified);
         background-color: rgba(255, 255, 255, 0.4);
     }
-    :host paper-spinner-lite {
-        --paper-spinner-color: var(--primary-color, orange);
-    }
     :host .data-browser {
         position: relative;
-        @apply(--layout-vertical);
-        @apply(--layout-start);
-        background-color: #263238;
-        box-shadow: inset 0px 2px 6px 0px rgba(0,0,0,0.5);
+        @apply --layout-vertical;
+        background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
     }
     :host .param-description {
-        font-style: italic;
+        font-family: var(--font-body);
+        margin-top: 8px;
+        width: 85%;
+        color: rgba(255, 255, 255, 0.5);
+        @apply --layout-self-end;
     }
     :host kano-what-is-json {
         position: absolute;
@@ -73,15 +189,16 @@
         right: 15px;
     }
     :host .info-button {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
-        line-height: 15px;
-        border: 1px solid grey;
-        background-color: var(--color-white, white);
+        border: 0;
+        background-color: #fff;
+        margin-top: 13px;
+        transition: transform linear 250ms;
+    }
+    :host .info-button:hover {
+        transform: scale(1.1);
     }
     *[hidden] {
         display: none !important;
@@ -90,64 +207,68 @@
     <template>
         <div class="content">
             <div class="config">
+                <kano-input type="text" label="Name" value="{{selected.name}}"></kano-input>
                 <template is="dom-repeat" items="[[selected.parameters]]" as="param">
-                    <kano-input id="[[param.key]]" type="[[param.type]]" label="[[param.label]]" options="[[param.options]]" value="[[_computeInputValue(param.key, param.value, selected.config)]]" on-change="paramChanged"></kano-input>
-                    <span class="param-description">[[param.description]]</span>
+                            <kano-input id="[[param.key]]"
+                                        type="[[param.type]]"
+                                        label="[[param.label]]"
+                                        options="[[param.options]]"
+                                        value="[[_computeInputValue(param.key, param.value, selected.config)]]"
+                                        on-change="paramChanged"
+                                        description="[[param.description]]"></kano-input>
                 </template>
-                <div class="line" id="refresh-toggle">
-                    <paper-toggle-button checked="{{selected.refreshEnabled}}">Refresh</paper-toggle-button>
-                </div>
                 <div class="line" id="refresh-frequency">
-                    <paper-dropdown-menu label="Refresh every" disabled="[[!selected.refreshEnabled]]">
-                        <paper-menu class="dropdown-content" selected="{{selected.refreshFreq}}" attr-for-selected="value">
-                            <paper-item value="5">5 seconds</paper-item>
-                            <paper-item value="30">30 seconds</paper-item>
-                            <paper-item value="60">minute</paper-item>
-                            <paper-item value="3600">hour</paper-item>
+                    <label>Refresh</label>
+                    <paper-dropdown-menu id="dropdown-menu" horizontal-align="left" no-label-float no-animations on-tap="_computeDropdownStyle">
+                        <paper-menu id="dropdown" class="dropdown-content" selected="{{selected.refreshFreq}}" attr-for-selected="value">
+                            <paper-item value="5">Every 5 seconds</paper-item>
+                            <paper-item value="30">Every 30 seconds</paper-item>
+                            <paper-item value="60">Every minute</paper-item>
+                            <paper-item value="3600">Every hour</paper-item>
+                            <paper-item value="0">Don't refresh</paper-item>
                         </paper-menu>
                     </paper-dropdown-menu>
                 </div>
             </div>
-            <div class="data-browser" id="data-browser">
-                <button type="button" class="refresh-button" on-tap="refresh" id="refresh-button">
-                    <iron-image src="/assets/icons/refresh-icon.svg" width="24" height="24" sizing="contain"></iron-image>
-                </button>
-                <template is="dom-repeat" items="[[dataArray]]" as="value">
-                    <kano-data-display data-definition="[[selected.dataKeys]]" data-values="[[value]]" trailing-comma="[[!isLastItem(dataArray, index)]]"></kano-data-display>
-                </template>
-                <button type="button" class="info-button" id="info-button" on-tap="openJsonInfo">?</button>
-                <paper-tooltip position="left" for="info-button">Learn more about JSON</paper-tooltip>
-                <kano-what-is-json id="what-is-json"></kano-what-is-json>
-                <div class="loading-overlay" hidden$="[[!loading]]">
+            <paper-dialog-scrollable>
+                <div class="data-browser" id="data-browser">
+                    <div class="data-header">
+                        <button type="button" class="refresh-button" on-tap="refresh" id="refresh-button">
+                            <iron-image src="/assets/icons/refresh-icon.svg" width="24" height="24" sizing="contain"></iron-image>
+                        </button>
+                        <button type="button" class="info-button" id="info-button" on-tap="openJsonInfo">?</button>
+                    </div>
+                    <template is="dom-repeat" items="[[dataArray]]" as="value">
+                        <kano-data-display data-definition="[[selected.dataKeys]]" data-values="[[value]]" trailing-comma="[[!isLastItem(dataArray, index)]]"></kano-data-display>
+                    </template>
+                    <paper-tooltip position="left" for="info-button">Learn more about JSON</paper-tooltip>
+                    <kano-what-is-json id="what-is-json"></kano-what-is-json>
+                    
                     <paper-spinner-lite active="[[loading]]"></paper-spinner-lite>
                 </div>
-            </div>
+            </paper-dialog-scrollable>
         </div>
-
     </template>
 </dom-module>
 <script type="text/javascript">
-
     /* globals Polymer, Kano */
-
     Polymer({
         is: 'kano-data-editor',
         behaviors: [Kano.Behaviors.AppEditorBehavior],
         properties: {
             selected: {
                 type: Object,
-                notify: true,
-                observer: 'computeDataArray'
+                notify: true
             },
             loading: {
                 type: Boolean,
                 value: false,
-                observer: 'loadingChanged'
+                reflectToAttribute: true
             }
         },
         observers: [
             'computeDataArray(selected.data.*)',
-            'refreshEnabledChanged(selected.refreshEnabled)'
+            'computeRefreshEnabled(selected.refreshFreq)',
         ],
         attached () {
             this.jsonInfo = this.$['what-is-json'];
@@ -159,10 +280,16 @@
         openJsonInfo () {
             this.jsonInfo.openJsonInfo();
         },
-        refreshEnabledChanged (enabled) {
-            if (enabled) {
+        _computeDropdownStyle () {
+            let containerWidth = this.$['dropdown-menu'].offsetWidth;
+            this.$.dropdown.style.width = `${containerWidth}px`;
+        },
+        computeRefreshEnabled (freq) {
+            if (freq) {
+                this.set('selected.refreshEnabled', true);
                 this.notifyChange('enable-refresh', { part: this.selected });
             } else {
+                this.set('selected.refreshEnabled', false);
                 this.notifyChange('disable-refresh', { part: this.selected });
             }
         },
@@ -171,13 +298,10 @@
                 return;
             }
             if (!this.selected.data) {
-                this.dataArray = new Array(this.selected.dataLength);
+                this.set('dataArray', new Array(this.selected.dataLength));
                 return;
             }
-            this.dataArray = Array.isArray(this.selected.data) ? this.selected.data : [this.selected.data];
-        },
-        loadingChanged () {
-            this.toggleClass('loading', this.loading);
+            this.set('dataArray', Array.isArray(this.selected.data) ? this.selected.data : [this.selected.data]);
         },
         refresh () {
             this.loading = true;

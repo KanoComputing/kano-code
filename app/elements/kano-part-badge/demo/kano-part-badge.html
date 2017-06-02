@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/web-components/kano-style/typography.html">
+        <link rel="import" href="../kano-part-badge.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--font-body);
+            }
+            .badges {
+                display: flex;
+            }
+            kano-part-badge {
+                margin: 6px;
+            }
+            .blued {
+                border: 1px solid #4BACEF;
+                background: #304759;
+            }
+            .blued-plus {
+                border: 1px solid #4BACEF;
+                background: #3E80AE;
+            }
+            demo-snippet {
+                --demo-snippet-demo: {
+                    background: #292F34;
+                };
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>Simple badge</h3>
+            <demo-snippet>
+                <template>
+                    <div class="badges">
+                        <kano-part-badge icon="box" label="Box"></kano-part-badge>
+                        <kano-part-badge label="RSS" value="12" class="blued">
+                            <div slot="icon">+</div>
+                        </kano-part-badge>
+                        <kano-part-badge icon="button" label="Button" value="78" class="blued-plus"></kano-part-badge>
+                    </div>
+                </template>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

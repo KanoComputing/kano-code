@@ -1,0 +1,1048 @@
+{
+    "steps": [
+    {
+          "banner": {
+              "text": "Ready to build the last stage of the game? <br>Let's add a count-down timer and score display to finish Treasure Hunter!"
+          },
+          "beacon": {
+              "target": {
+                  "category": "variables"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "variables"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Start with the set variable block..."
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "variables_set"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "variables_set",
+                      "id": "block_3"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "...and connect it beneath your loop."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "rawId": "RU#a{:xKB_/cn+vLgb)+"
+                  }
+              },
+              "angle": 90
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "rawId": "RU#a{:xKB_/cn+vLgb)+"
+                      },
+                      "target": "block_3"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "rawId": "RU#a{:xKB_/cn+vLgb)+"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>countdown</span></kano-value-preview>."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_3",
+                      "inputName": "VAR"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "value": {
+                      "target": {
+                          "id": "block_3"
+                      },
+                      "value": "countdown"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Grab a number block..."
+          },
+          "beacon": {
+              "target": {
+                  "category": "variables"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "variables"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "...and connect it to your countdown variable."
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "math_number"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "math_number",
+                      "id": "block_4"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "...and connect it to your countdown variable."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_3",
+                      "inputName": "VALUE",
+                      "rawId": "KNefhghNlB%RN]6H~{rt"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_3",
+                          "rawId": "KNefhghNlB%RN]6H~{rt",
+                          "inputName": "VALUE"
+                      },
+                      "target": "block_4"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_3",
+                      "rawId": "KNefhghNlB%RN]6H~{rt"
+                  }
+              },
+              "target": "VALUE"
+          }
+      },
+      {
+          "banner": {
+              "text": "This is the number the countdown will start from. <br>Change it to <kano-value-preview><span>15</span></kano-value-preview>."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_4"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "value": {
+                      "target": {
+                          "id": "block_4"
+                      },
+                      "value": "15"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Now, let's code the countdown. <br>Open the Control tray."
+          },
+          "beacon": {
+              "target": {
+                  "category": "control"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "control"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Grab the 'Every 1 second' block."
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "every_x_seconds"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "every_x_seconds",
+                      "id": "block_5"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Connect it beneath the countdown variable"
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_3"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_3"
+                      },
+                      "target": "block_5"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_3"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Can you find another number block?"
+          },
+          "beacon": {
+              "target": {
+                  "category": "math"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "math"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Use the block to change the value of the variable."
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "unary"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "unary",
+                      "id": "block_6"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Connect it inside the 'every second' loop."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_5",
+                      "rawId": "S2uy[DTnl^cxB=D7W{W?"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_5",
+                          "rawId": "S2uy[DTnl^cxB=D7W{W?",
+                          "inputName": "DO"
+                      },
+                      "target": "block_6"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_5",
+                      "rawId": "S2uy[DTnl^cxB=D7W{W?"
+                  }
+              },
+              "target": "DO"
+          }
+      },
+      {
+          "banner": {
+              "text": "Nice! Change it from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>countdown</span></kano-value-preview>."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_6",
+                      "inputName": "LEFT_HAND"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "value": {
+                      "target": {
+                          "id": "block_6"
+                      },
+                      "value": "countdown"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "This time you’re going to subtract instead of add. <br>Change it from <kano-value-preview><span>+=</span></kano-value-preview> to <kano-value-preview><span>-=</span></kano-value-preview>."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_6",
+                      "inputName": "OPERATOR"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "value": {
+                      "target": {
+                          "id": "block_6"
+                      },
+                      "value": "-="
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Great! The countdown will change every second. We also need to know when it gets to 0. <br>Let's use logic to check."
+          },
+          "beacon": {
+              "target": {
+                  "category": "logic"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "logic"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Can you remember which blocks you need for most if statements?"
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "controls_if"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "controls_if",
+                      "id": "block_7"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Can you remember which blocks you need for most if statements?"
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_6",
+                      "rawId": "Vyx+W1C[Y=tAGRsEK+DD"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_6",
+                          "rawId": "Vyx+W1C[Y=tAGRsEK+DD"
+                      },
+                      "target": "block_7"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_6",
+                      "rawId": "Vyx+W1C[Y=tAGRsEK+DD"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Nice! Now for the second block."
+          },
+          "beacon": {
+              "target": {
+                  "category": "logic"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "logic"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Nice! Now for the second block."
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "logic_compare"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "logic_compare",
+                      "id": "block_8"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Great! Connect to the if block."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_7",
+                      "rawId": "gQHo=gM0}|x,S0/s+?B*"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_7",
+                          "rawId": "gQHo=gM0}|x,S0/s+?B*",
+                          "inputName": "IF0"
+                      },
+                      "target": "block_8"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_7",
+                      "rawId": "gQHo=gM0}|x,S0/s+?B*"
+                  }
+              },
+              "target": "IF0"
+          }
+      },
+      {
+          "banner": {
+              "text": "Now, use code to check 'if the number for the countdown is 0'."
+          },
+          "beacon": {
+              "target": {
+                  "category": "variables"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "variables"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Can you find the variable block?"
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "variables_get"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "variables_get",
+                      "id": "block_9"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Nice! Connect it to the first gap in the logic block."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_8",
+                      "rawId": "YMjTa?JVE}t/.4F{._7r"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_8",
+                          "rawId": "YMjTa?JVE}t/.4F{._7r",
+                          "inputName": "A"
+                      },
+                      "target": "block_9"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_8",
+                      "rawId": "YMjTa?JVE}t/.4F{._7r"
+                  }
+              },
+              "target": "A"
+          }
+      },
+      {
+          "banner": {
+              "text": "Now change it from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>countdown</span></kano-value-preview>."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_9"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "value": {
+                      "target": {
+                          "id": "block_9"
+                      },
+                      "value": "countdown"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Remember, your goal is to check 'if the number for the countdown is 0'. <br> Do you know which variable to use next?"
+          },
+          "beacon": {
+              "target": {
+                  "category": "variables"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "variables"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Remember, your goal is to check 'if the number for the countdown is 0'. <br> Do you know which variable to use next?"
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "math_number"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "math_number",
+                      "id": "block_10"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Great! Connect it to the second gap."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_8",
+                      "rawId": "YMjTa?JVE}t/.4F{._7r"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_8",
+                          "rawId": "YMjTa?JVE}t/.4F{._7r",
+                          "inputName": "B"
+                      },
+                      "target": "block_10"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_8",
+                      "rawId": "YMjTa?JVE}t/.4F{._7r"
+                  }
+              },
+              "target": "B"
+          }
+      },
+      {
+          "banner": {
+              "text": "Good job – now let's finish the game! When the timer runs out, use code to play a sound and show the score. <br> Let's start with sound."
+          },
+          "beacon": {
+              "target": {
+                  "category": "speaker"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout":"speaker"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Grab the play sound block..."
+        },
+        "beacon": {
+          "target": {
+            "flyout_block": "speaker#speaker_play"
+          }
+        },
+        "validation": {
+          "blockly": {
+            "create": {
+              "type": "speaker#speaker_play",
+              "id": "block_11"
+            }
+          }
+        }
+      },
+      {
+          "banner": {
+              "text": "...and connect it inside the 'if' statement."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_7",
+                      "rawId": "gQHo=gM0}|x,S0/s+?B*"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_7",
+                          "rawId": "gQHo=gM0}|x,S0/s+?B*",
+                          "inputName": "DO0"
+                      },
+                      "target": "block_11"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_7",
+                      "rawId": "gQHo=gM0}|x,S0/s+?B*"
+                  }
+              },
+              "target": "DO0"
+          }
+      },
+      {
+          "banner": {
+              "text": "Now find another sound block to attach to the 'play sound' block in your code space."
+          },
+          "beacon": {
+              "target": {
+                  "category": "speaker"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout":"speaker"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Now find the sound block to attach to the play sound block."
+        },
+        "beacon": {
+          "target": {
+            "flyout_block": "speaker#speaker_sample"
+          }
+        },
+        "validation": {
+          "blockly": {
+            "create": {
+              "type": "speaker#speaker_sample",
+              "id": "block_12"
+            }
+          }
+        }
+      },
+      {
+          "banner": {
+              "text": "Connect the sound blocks to each other."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_11",
+                      "rawId": "QJgSxg2Rv1!cb_mMZY2U"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_11",
+                          "rawId": "QJgSxg2Rv1!cb_mMZY2U",
+                          "inputName": "SAMPLE"
+                      },
+                      "target": "block_12"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_11",
+                      "rawId": "QJgSxg2Rv1!cb_mMZY2U"
+                  }
+              },
+              "target": "SAMPLE"
+          }
+      },
+      {
+          "banner": {
+              "text": "Change it to <kano-value-preview><span>sounds</span></kano-value-preview>."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_12",
+                      "inputName": "SET"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "value": {
+                      "target": {
+                          "id": "block_12"
+                      },
+                      "value": "sounds"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Nice! Finally, let's show the score using a text block."
+          },
+          "beacon": {
+              "target": {
+                  "category": "lightboard_text"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "lightboard_text"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Grab the text block."
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "lightboard#light_show_text"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "lightboard#light_show_text",
+                      "id": "block_13"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Connect it beneath the sound block."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_11",
+                      "rawId": "QJgSxg2Rv1!cb_mMZY2U"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_11",
+                          "rawId": "QJgSxg2Rv1!cb_mMZY2U"
+                      },
+                      "target": "block_13"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_11",
+                      "rawId": "QJgSxg2Rv1!cb_mMZY2U"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "You need to tell the text block what the score was.<br> The score is stored in a variable."
+          },
+          "beacon": {
+              "target": {
+                  "category": "variables"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "open-flyout": "variables"
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Grab the variable block."
+          },
+          "beacon": {
+              "target": {
+                  "flyout_block": "variables_get"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "create": {
+                      "type": "variables_get",
+                      "id": "block_14"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Plug it into the text block."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_13",
+                      "rawId": "WYY?yE0?G7(kwtmO28*v",
+                      "inputName": "TEXT"
+                  }
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "connect": {
+                      "parent": {
+                          "id": "block_13",
+                          "rawId": "WYY?yE0?G7(kwtmO28*v",
+                          "inputName": "TEXT"
+                      },
+                      "target": "block_14"
+                  }
+              }
+          },
+          "phantom_block": {
+              "location": {
+                  "block": {
+                      "id": "block_13",
+                      "rawId": "WYY?yE0?G7(kwtmO28*v"
+                  }
+              },
+              "target": "TEXT"
+          }
+      },
+      {
+          "banner": {
+              "text": "Change it from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>score</span></kano-value-preview>."
+          },
+          "beacon": {
+              "target": {
+                  "block": {
+                      "id": "block_14"
+                  },
+                  "inputName": "VAR"
+              }
+          },
+          "validation": {
+              "blockly": {
+                  "value": {
+                      "target": {
+                          "id": "block_14"
+                      },
+                      "value": "score"
+                  }
+              }
+          }
+      },
+      {
+          "banner": {
+              "text": "Incredible... You created some amazing code!<br> It's time to play your game... How much treasure can your Hero collect before the time runs out?",
+              "next_button": true
+          },
+          "beacon": {
+              "target": "banner-button",
+              "offset": 0
+          }
+      },
+      {
+			"banner": {
+				"text":"",
+				"next_button": true
+			}
+		},
+    {
+  "banner": {
+      "text":"You can always change your treasure from ✨gold✨ to sapphire, emerald or ruby! <br>Click on 'Dot' underneath your PARTS to change the color.",
+      "next_button": true
+  },
+  "beacon":{
+    "target":{
+      "path":"parts-controls",
+      "part":"dot"
+    },
+    "angle":180,
+    "offset":30
+  }
+},
+      {
+          "banner": {
+              "text": "🎮👾 You're a Treasure Hunter! 👾🎮 You built a game from scratch using loops, logic, inputs, coordinates and lights... well done!",
+              "next_button": true
+          }
+      }
+    ],
+    "parts": [
+        "light-rectangle",
+        "speaker"
+    ],
+    "modules": [
+        "events",
+        "math",
+        "variables",
+        "control",
+        "logic"
+    ],
+    "variables": [
+      "score",
+      "countdown"
+    ],
+    "filterBlocks": {
+        "hero": [
+            "move_by",
+            "get_x",
+            "get_y"
+        ],
+        "events": [
+            "part_event"
+        ],
+        "dot": [
+            "set_x",
+            "set_y",
+            "get_x",
+            "get_y"
+        ],
+        "math": [
+            "math_random"
+        ],
+        "control": [
+            "loop_forever",
+            "every_x_seconds"
+        ],
+        "logic": [
+            "controls_if",
+            "logic_compare"
+        ],
+        "speaker": [
+            "speaker_play",
+            "speaker_sample"
+        ],
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ],
+        "math": [
+            "unary"
+        ]
+    },
+    "mode": "lightboard",
+    "defaultApp": "{\"parts\":[{\"id\":\"dot\",\"name\":\"Dot\",\"type\":\"light-rectangle\",\"tagName\":\"kano-part-light-rectangle\",\"userStyle\":{},\"userProperties\":{\"width\":\"1px\",\"height\":\"1px\",\"color\":\"#F8EB1E\",\"undefined\":\"#FFFFFF\"},\"nonvolatileProperties\":[],\"position\":{\"x\":324,\"y\":81},\"partType\":\"ui\",\"excludeDefaultBlocks\":true,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"width\",\"type\":\"range\",\"label\":\"Width\",\"min\":1,\"max\":16},{\"key\":\"height\",\"type\":\"range\",\"label\":\"Height\",\"min\":1,\"max\":8},{\"key\":\"color\",\"type\":\"color\",\"label\":\"Color\"}],\"style\":[]},\"rotation\":0,\"scale\":100,\"visible\":true},{\"id\":\"hero\",\"name\":\"Hero\",\"type\":\"light-rectangle\",\"tagName\":\"kano-part-light-rectangle\",\"userStyle\":{},\"userProperties\":{\"width\":\"1px\",\"height\":\"1px\",\"color\":\"#E61974\",\"undefined\":\"#FFFFFF\"},\"nonvolatileProperties\":[],\"position\":{\"x\":108,\"y\":54},\"partType\":\"ui\",\"excludeDefaultBlocks\":true,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"width\",\"type\":\"range\",\"label\":\"Width\",\"min\":1,\"max\":16},{\"key\":\"height\",\"type\":\"range\",\"label\":\"Height\",\"min\":1,\"max\":8},{\"key\":\"color\",\"type\":\"color\",\"label\":\"Color\"}],\"style\":[]},\"rotation\":0,\"scale\":100,\"visible\":true},{\"id\":\"speaker\",\"name\":\"Speaker\",\"type\":\"speaker\",\"tagName\":\"kano-part-speaker\",\"userStyle\":{},\"userProperties\":{},\"nonvolatileProperties\":[],\"position\":{\"x\":233,\"y\":161},\"partType\":\"hardware\"}],\"code\":{\"snapshot\":{\"javascript\":\"var score, item;\\n\\n\\ndevices.get('lightboard').when('lightboard-js-left', function () {\\n  devices.get('hero').move(-1, 0);\\n});\\n\\nglobal.when('start', function () {\\n  devices.get('dot').setX(math.random(0, 16)-1);\\n  devices.get('dot').setY(math.random(0, 8)-1);\\n  score = 0;\\n  loop.forever(function () {\\n    if (devices.get('hero').getX()+1 == devices.get('dot').getX()+1) {\\n      if (devices.get('hero').getY()+1 == devices.get('dot').getY()+1) {\\n        devices.get('dot').setX(math.random(0, 16)-1);\\n        devices.get('dot').setY(math.random(0, 8)-1);\\n        parts.get('speaker').play('elec_ping');\\n        score += 1;\\n      }\\n    }\\n  });\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-right', function () {\\n  devices.get('hero').move(1, 0);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-down', function () {\\n  devices.get('hero').move(0, 1);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-up', function () {\\n  devices.get('hero').move(0, -1);\\n});\\n\",\"pseudo\":\"devices.get('lightboard').when('lightboard-js-left', function () {\\n  devices.get('hero').move(-1, 0);\\n});\\n\\nglobal.when('start', function () {\\n  devices.get('dot').setX(math.random(0, 16)-1);\\n  devices.get('dot').setY(math.random(0, 8)-1);\\n  score = 0;\\n  loop.forever(function () {\\n    if (devices.get('hero').getX()+1 == devices.get('dot').getX()+1) {\\n      if (devices.get('hero').getY()+1 == devices.get('dot').getY()+1) {\\n        devices.get('dot').setX(math.random(0, 16)-1);\\n        devices.get('dot').setY(math.random(0, 8)-1);\\n        parts.get('speaker').play('elec_ping');\\n        score += 1;\\n      }\\n    }\\n  });\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-right', function () {\\n  devices.get('hero').move(1, 0);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-down', function () {\\n  devices.get('hero').move(0, 1);\\n});\\n\\ndevices.get('lightboard').when('lightboard-js-up', function () {\\n  devices.get('hero').move(0, -1);\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"52\\\" y=\\\"-150\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-left<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\"\/j#pVuk*]dr)u-=,IjR+\\\"><field name=\\\"direction\\\">left<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\"y*#*b1}b_tEjk;9WXF)$\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><block type=\\\"part_event\\\" id=\\\"SX#u*_SWf^7Sr|kDSZ?J\\\" x=\\\"368\\\" y=\\\"-150\\\"><field name=\\\"EVENT\\\">global.start<\/field><statement name=\\\"DO\\\"><block type=\\\"dot#set_x\\\" id=\\\"Q%?uldi^\/v1Lm@ir.GxX\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"%z#]H+d7H9ULt\/FA-,F=\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"math_random\\\" id=\\\"g|uRDulXOvH!Ds:7Ba6|\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"|+3PLx=}_p*Z)aetw5Ga\\\"><field name=\\\"NUM\\\">0<\/field><\/shadow><\/value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"a$m`R[*TkmI,B1@;l.Q*\\\"><field name=\\\"NUM\\\">16<\/field><\/shadow><\/value><\/block><\/value><next><block type=\\\"dot#set_y\\\" id=\\\"7Hez37g0#tM^;^SW}%M{\\\"><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"UQmK=GEvbJr-@?6CnvxH\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"math_random\\\" id=\\\"o*wqDmisZW9|R9=EEu}$\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"X}R$a9+fzStt{*ig=%52\\\"><field name=\\\"NUM\\\">0<\/field><\/shadow><\/value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"Uat0}x=#G5uf~b#\/A~FB\\\"><field name=\\\"NUM\\\">8<\/field><\/shadow><\/value><\/block><\/value><next><block type=\\\"variables_set\\\" id=\\\"l[7=?-|QVb8}[YSr7Wzw\\\"><field name=\\\"VAR\\\">score<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"%PzbwWyJI;tfSAH^(iJ]\\\"><field name=\\\"NUM\\\">0<\/field><\/block><\/value><next><block type=\\\"loop_forever\\\" id=\\\"RU#a{:xKB_\/cn+vLgb)+\\\"><statement name=\\\"DO\\\"><block type=\\\"controls_if\\\" id=\\\";oT$eZ=j1-Qh)T\/{sIo6\\\"><value name=\\\"IF0\\\"><block type=\\\"logic_compare\\\" id=\\\"dj*3q;;{D,J^yqh5B2*-\\\"><field name=\\\"OP\\\">EQ<\/field><value name=\\\"A\\\"><block type=\\\"hero#get_x\\\" id=\\\",7S~_X9t,7-]4sRVuB3*\\\"><\/block><\/value><value name=\\\"B\\\"><block type=\\\"dot#get_x\\\" id=\\\"OU6o%nXS)hak}!7VK|c_\\\"><\/block><\/value><\/block><\/value><statement name=\\\"DO0\\\"><block type=\\\"controls_if\\\" id=\\\"aFL~2Ml^\/5VU|JExnSZ-\\\"><value name=\\\"IF0\\\"><block type=\\\"logic_compare\\\" id=\\\"KBijnH7!J1aDJ8KH\/-+6\\\"><field name=\\\"OP\\\">EQ<\/field><value name=\\\"A\\\"><block type=\\\"hero#get_y\\\" id=\\\"hkh6BL^t]ej^{6M1.|}L\\\"><\/block><\/value><value name=\\\"B\\\"><block type=\\\"dot#get_y\\\" id=\\\"eB)R(-ieK@XQLzxGn6Ap\\\"><\/block><\/value><\/block><\/value><statement name=\\\"DO0\\\"><block type=\\\"dot#set_x\\\" id=\\\"!nXT\/tdYVec!Y_L*9?,V\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"bTG3=V,?#dGpC3cihHV0\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"math_random\\\" id=\\\"C7+[pZtP*xl3NLN[dqmR\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"D_GFMB%N=Zk9ZZXTY|##\\\"><field name=\\\"NUM\\\">0<\/field><\/shadow><\/value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\",kTv1DX2igFcnsKA^7Bf\\\"><field name=\\\"NUM\\\">16<\/field><\/shadow><\/value><\/block><\/value><next><block type=\\\"dot#set_y\\\" id=\\\"VlP(Zh6D785pr~GgRB}l\\\"><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"Q~=q1(a,87*zX7k.`2,5\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"math_random\\\" id=\\\"qjYeDA:42@}]U-Xq0Oj-\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"-7dm,Y$Rdbzp8HNwA@TK\\\"><field name=\\\"NUM\\\">0<\/field><\/shadow><\/value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"h(NpV-;TQOBB~.uRF7f!\\\"><field name=\\\"NUM\\\">8<\/field><\/shadow><\/value><\/block><\/value><next><block type=\\\"speaker#speaker_play\\\" id=\\\"l?=6@=AL9Qg:Ao_NHCn$\\\"><value name=\\\"SAMPLE\\\"><block type=\\\"speaker#speaker_sample\\\" id=\\\"PxXO=2U|TAn*mSxZ@QXc\\\"><mutation set=\\\"sounds\\\"><\/mutation><field name=\\\"SET\\\">sounds<\/field><field name=\\\"SAMPLE\\\">elec_ping<\/field><\/block><\/value><next><block type=\\\"unary\\\" id=\\\"J:clt3_@T:%BN%CEUlrk\\\"><field name=\\\"LEFT_HAND\\\">score<\/field><field name=\\\"OPERATOR\\\">+=<\/field><value name=\\\"RIGHT_HAND\\\"><shadow type=\\\"math_number\\\" id=\\\"_zSO\/wW`1IzcW#\/`ZBJ8\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/next><\/block><\/next><\/block><\/next><\/block><\/statement><\/block><\/statement><\/block><\/statement><\/block><\/next><\/block><\/next><\/block><\/next><\/block><\/statement><\/block><block type=\\\"part_event\\\" id=\\\"%c4_fUDqykqT@x265oq7\\\" x=\\\"53\\\" y=\\\"-50\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-right<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\"jy(4VpX0DpW.%jDBiY^=\\\"><field name=\\\"direction\\\">right<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\",@v3S2*}uktY|b}P\/j]9\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><block type=\\\"part_event\\\" id=\\\"Z;|R%BJGTtNPm3~1][Br\\\" x=\\\"51\\\" y=\\\"71\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-down<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\"O-(NR}Hy(][M*=495[~)\\\"><field name=\\\"direction\\\">down<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\"Vru)UHW,:RA;s}1_xOu^\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><block type=\\\"part_event\\\" id=\\\"VD3}%`*5keQzFE47uIX3\\\" x=\\\"54\\\" y=\\\"187\\\"><field name=\\\"EVENT\\\">lightboard.lightboard-js-up<\/field><statement name=\\\"DO\\\"><block type=\\\"hero#move_by\\\" id=\\\".\/_6mv4|Oo^Bcx-d.|]y\\\"><field name=\\\"direction\\\">up<\/field><value name=\\\"MOVEMENT\\\"><shadow type=\\\"math_number\\\" id=\\\"ygeRj^y4zo$\/BukR5n=.\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><\/block><\/statement><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

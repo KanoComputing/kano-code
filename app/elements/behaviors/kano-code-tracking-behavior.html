@@ -1,0 +1,100 @@
+<link rel="import" href="../../bower_components/web-components/kano-tracking/kano-tracking-behavior.html">
+
+<script type="text/javascript">
+
+    window.dataLayer = window.dataLayer || [];
+
+    window.Kano = window.Kano || {};
+    window.Kano.Behaviors = window.Kano.Behaviors || {};
+    window.Kano.Behaviors.Tracking = window.Kano.Behaviors.Tracking || {};
+
+    // @polymerBehavior
+    let KanoCodeBehavior = {
+        properties: {
+            path: {
+                type: String,
+                value: ''
+            },
+            preserveSavedSession: {
+                type: Boolean,
+                value: true
+            }
+        },
+        listeners: {
+            'track-page-view': '_trackPageView',
+            'track-challenge-event': '_trackChallengeEvent'
+        },
+        _trackChallengeAttempt (challengeAttempts, challenge) {
+            let idString = this.browserId + Date.now().toString(),
+                hashedId = md5(idString);
+            challengeAttempts[challenge.id] = challengeAttempts[challenge.id] || [];
+            challengeAttempts[challenge.id].push({
+                id: hashedId,
+                start: Date.now(),
+                end: null
+            });
+            this._dispatchEvent({
+                name: 'challenge_attempted',
+                data: {
+                    challenge_attempt_id: hashedId,
+                    challenge_id: challenge.id,
+                    challenge_set_id: challenge.group,
+                    challenge_name: challenge.name
+                }
+            });
+            localStorage.setItem('KANO-TRACKING-CHALLENGE-ATTEMPTS', JSON.stringify(challengeAttempts));
+        },
+        _trackChallengeCompletion (challengeAttempts, challenge) {
+            let lastIndex = challengeAttempts[challenge.id].length - 1,
+                lastAttempt = challengeAttempts[challenge.id][lastIndex],
+                end = Date.now(),
+                duration = (end - lastAttempt.start) / 1000;
+            challengeAttempts[challenge.id][lastIndex].end = end;
+            this._dispatchEvent({
+                name: 'challenge_completed',
+                data: {
+                    challenge_attempt_id: lastAttempt.id,
+                    challenge_id: challenge.id,
+                    challenge_name: challenge.name,
+                    challenge_set_id: challenge.group,
+                    time_in_challenge: duration.toFixed(2)
+                }
+            });
+            localStorage.setItem('KANO-TRACKING-CHALLENGE-ATTEMPTS', JSON.stringify(challengeAttempts));
+        },
+        _trackChallengeEvent (e) {
+            let storedAttempts = localStorage.getItem('KANO-TRACKING-CHALLENGE-ATTEMPTS'),
+                challengeAttempts = {},
+                eventType = e.detail.type,
+                challenge = e.detail.data;
+            if (storedAttempts) {
+                challengeAttempts = JSON.parse(storedAttempts);
+            }
+            if (eventType === 'attempt') {
+                this._trackChallengeAttempt(challengeAttempts, challenge);
+            }
+            if (eventType === 'complete') {
+                this._trackChallengeCompletion(challengeAttempts, challenge);
+            }
+        },
+        _trackPageView (e) {
+            let previous = this.path,
+                payload = {
+                    name: 'viewed_page'
+                };
+            this.path = e.detail.path;
+            if (previous) {
+                payload.data = {
+                    previous_page_path: previous
+                }
+            }
+            this._dispatchEvent(payload);
+        }
+    };
+
+    Kano.Behaviors.Tracking.KanoCodeBehavior = [
+        window.Kano.Behaviors.Tracking.GeneralBehavior,
+        KanoCodeBehavior
+    ];
+
+</script>

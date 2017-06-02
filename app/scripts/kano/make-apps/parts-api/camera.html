@@ -20,10 +20,10 @@
             },
             takePicture () {
                 this.throttle('takePicture', () => {
-                    Kano.AppModules.getModule('camera').takePicture()
+                    this.appModules.getModule('camera').takePicture()
                         .then((pictureUrl) => {
                             let filename = pictureUrl.split('/').pop();
-                            this._onPictureTaken(Kano.AppModules.getModule('camera').getPicture(filename));
+                            this._onPictureTaken(this.appModules.getModule('camera').getPicture(filename));
                         });
                 }, 300);
             },
@@ -36,7 +36,7 @@
                 return this.lastPictureUrl;
             },
             flash (color, length) {
-                Kano.AppModules.getModule('camera').flash(color, length);
+                this.appModules.getModule('camera').flash(color, length);
             },
             _propagateTimerChange (data) {
                 this.fire("camera-timer-" + data.direction);
@@ -133,22 +133,22 @@
                 this.kaleidoscope = null;
                 this.ctx = this.canvas.getContext('2d');
 
-                Kano.AppModules.getModule('camera').on('button-down', this._propagateButtonPress.bind(this));
-                Kano.AppModules.getModule('camera').on('timer-changed', this._propagateTimerChange.bind(this));
+                this.appModules.getModule('camera').on('button-down', this._propagateButtonPress.bind(this));
+                this.appModules.getModule('camera').on('timer-changed', this._propagateTimerChange.bind(this));
             },
             stop () {
                 PartsAPI.kaleidoscope.stop.apply(this, arguments);
                 PartsAPI.filters.stop.apply(this, arguments);
                 this.reset();
 
-                Kano.AppModules.getModule('camera').removeListener('button-down', this._propagateButtonPress);
-                Kano.AppModules.getModule('camera').removeListener('timer-changed', this._propagateTimerChange);
+                this.appModules.getModule('camera').removeListener('button-down', this._propagateButtonPress);
+                this.appModules.getModule('camera').removeListener('timer-changed', this._propagateTimerChange);
             },
             reset () {
                 if (this.socketListeners) {
                     // Remove all the listeners and reset the listeners array
                     this.socketListeners.forEach((listener) => {
-                        Kano.AppModules.getModule('camera').removeListener(listener.name, listener.cb);
+                        this.appModules.getModule('camera').removeListener(listener.name, listener.cb);
                     });
                 }
                 this.socketListeners = [];

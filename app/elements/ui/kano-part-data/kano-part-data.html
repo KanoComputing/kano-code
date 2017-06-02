@@ -1,70 +1,14 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../part/kano-ui-behavior.html">
-<link rel="import" href="../../kano-data-visualizer/kano-data-visualizer.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/data.html">
-<dom-module id="kano-part-data">
-    <style>
-    :host {
-        display: block;
-    }
-    :host .part {
-        position: relative;
-        width: 70px;
-    }
-    :host kano-data-visualizer {
-        position: absolute;
-        top: -10px;
-        left: 0px;
-        right: 0px;
-        height: 90px;
-        text-align: center;
-        --kano-data-visualizer-color: black;
-    }
-    :host kano-circle-progress {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-    }
-    kano-ui-item {
-        border: 2px solid transparent;
-    }
-    :host(.selected) kano-ui-item {
-        border-color: var(--color-orange);
-    }
-    </style>
-    <template>
-        <div class="part">
-            <kano-data-visualizer for="[[model.id]]" buffer-length="100" hide-progress loading="{{loading}}"></kano-data-visualizer>
-            <kano-ui-item model="[[model]]"
-                size="50"
-                id$="part-[[model.id]]"
-                colour="[[model.colour]]"
-                instance></kano-ui-item>
-            <kano-circle-progress value="[[progressValue]]" radius="70"></kano-circle-progress>
-        </div>
-    </template>
-</dom-module>
 <script type="text/javascript">
     /* globals Polymer, Kano */
 
     Polymer({
         is: 'kano-part-data',
         behaviors: [Kano.Behaviors.UIBehavior, Kano.MakeApps.PartsAPI.data],
-        properties: {
-            loading: {
-                type: Boolean
-            },
-            progressValue: {
-                type: Number,
-                computed: 'computeProgress(loading)'
-            }
-        },
         ready () {
             this.appModules = Kano.AppModules;
-        },
-        computeProgress (loading) {
-            return loading ? 1 : 0;
         },
         start () {
             Kano.MakeApps.PartsAPI.data.start.apply(this, arguments);
@@ -74,3 +18,4 @@
         }
     });
 </script>
+

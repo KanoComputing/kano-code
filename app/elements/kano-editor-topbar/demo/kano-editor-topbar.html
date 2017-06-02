@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/web-components/kano-style/typography.html">
+        <link rel="import" href="../kano-editor-topbar.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--font-body);
+            }
+            demo-snippet {
+                --demo-snippet-demo: {
+                    
+                };
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container centered">
+            <h3>Bar to position on top of an editor. Logged out</h3>
+            <demo-snippet>
+                <template>
+                    <kano-editor-topbar exit-url="https://kano.me"></kano-editor-topbar>
+                </template>
+            </demo-snippet>
+            <h3>Bar to position on top of an editor. Logged in</h3>
+            <demo-snippet>
+                <template>
+                    <template is="dom-bind" id="bind">
+                        <kano-editor-topbar exit-url="https://kano.me" user="[[user]]" profile="[[profile]]"></kano-editor-topbar>
+                    </template>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let bind = document.getElementById('bind');
+
+                            bind.user = {
+                                username: 'Dio',
+                                avatar: {
+                                    urls: {
+                                        circle: 'https://s3-eu-west-1.amazonaws.com/world.kano.me/users/avatars/563890fec4d6960800c721f7/avatar-circle.png'
+                                    }
+                                }
+                            };
+                            bind.profile = {
+                                level: 4,
+                                xp: 200
+                            };
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

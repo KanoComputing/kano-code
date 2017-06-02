@@ -1,18 +1,22 @@
 <link rel="import" href="../kano-ui-customizer/kano-ui-customizer.html">
+<link rel="import" href="../inputs/kano-input/kano-input.html">
+<link rel="import" href="../inputs/kano-input-range/kano-input-range.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/input.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <dom-module id="kano-ui-configuration">
     <style is="custom-style" include="input-range"></style>
     <style>
     :host {
-        @apply(--layout-vertical);
-        padding: 35px 20px 15px 0px;
+        @apply --layout-vertical;
     }
     :host .name-edit input {
-        @apply(--kano-light-input);
+        @apply --kano-light-input;
         font-size: 1.4em;
     }
     :host .input-line {
-        margin-top: 5px;
+        height: 64px;
+        @apply --layout-vertical;
+        @apply --layout-center-justified;
     }
     :host .label {
         display: block;
@@ -25,30 +29,25 @@
     }
     </style>
     <template>
+        <kano-input type="text" label="Name" value="{{element.name}}"></kano-input>
         <kano-ui-customizer id="properties"
             customizable="{{element.customizable.properties}}"
-            user-values="{{element.userProperties}}">
-        </kano-ui-customizer>
+            user-values="{{element.userProperties}}"></kano-ui-customizer>
         <kano-ui-customizer id="style"
             customizable="{{element.customizable.style}}"
-            user-values="{{element.userStyle}}">
-        </kano-ui-customizer>
+            user-values="{{element.userStyle}}"></kano-ui-customizer>
         <div hidden$="[[!element.showDefaultConfiguration]]">
             <div class="input-line" hidden$="[[element.positionDisabled]]">
-                <kano-input-range value="{{element.position.x}}" label="X Position" min="0" max="[[mode.workspace.viewport.width]]">
-                </kano-input-range>
+                <kano-input-range value="{{element.position.x}}" label="X Position" min="0" max="[[mode.workspace.viewport.width]]"></kano-input-range>
             </div>
             <div class="input-line" hidden$="[[element.positionDisabled]]">
-                <kano-input-range value="{{element.position.y}}" label="Y Position" min="0" max="[[mode.workspace.viewport.height]]">
-                </kano-input-range>
+                <kano-input-range value="{{element.position.y}}" label="Y Position" min="0" max="[[mode.workspace.viewport.height]]"></kano-input-range>
             </div>
             <div class="input-line" hidden$="[[element.rotationDisabled]]">
-                <kano-input-range value="{{element.rotation}}" label="Rotation" min="0" max="360" symbol="°">
-                </kano-input-range>
+                <kano-input-range value="{{element.rotation}}" label="Rotation" min="0" max="360" symbol="°"></kano-input-range>
             </div>
             <div class="input-line" hidden$="[[element.scaleDisabled]]">
-                <kano-input-range value="{{element.scale}}" label="Scale" min="1" max="500" symbol="%">
-                </kano-input-range>
+                <kano-input-range value="{{element.scale}}" label="Scale" min="1" max="500" symbol="%"></kano-input-range>
             </div>
         </div>
     </template>

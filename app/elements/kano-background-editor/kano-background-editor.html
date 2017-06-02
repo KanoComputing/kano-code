@@ -1,10 +1,43 @@
+<link rel="import" href="../behaviors/kano-media-query-behavior.html">
+<link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
 <dom-module id="kano-background-editor">
-    <style>
-    :host {
-        display: block;
+    <style include="kano-code-shared-styles">
+    :host .title-bar {
+        @apply --layout-horizontal;
+        @apply --layout-center;
+        @apply --layout-justified;
+        text-align: left;
+        font-family: var(--font-body);
+        font-weight: bold;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.5);
+        border-bottom: 1px solid #202428;
+        padding: var(--kano-modal-header-padding-large);
+    }
+    :host([medium-screen]) .title-bar {
+        padding: var(--kano-modal-header-padding-small);
+    }
+    :host .type-display {
+        width: 80px;
+        margin-right: 8px;
+    };
+    :host button {
+        @apply --kano-button;
+        @apply --layout-self-center;
+        text-shadow: none;
+        font-weight: bold;
+    }
+    :host .done-button {
+        background-color: var(--color-grassland);
+    }
+    :host .done-button:hover {
+        background-color: var(--color-sushi);
     }
     :host .background {
-        padding: 25px;
+        padding: var(--kano-modal-content-padding-large);
+    }
+    :host([medium-screen]) .background {
+        padding: var(--kano-modal-content-padding-small);
     }
     :host .head {
         background: var(--color-orange);
@@ -19,6 +52,10 @@
     }
     </style>
     <template>
+        <div class="title-bar">
+            <div class="type-display">Background</div>
+            <button class="done-button" type="button" dialog-dismiss>Done</button>
+        </div>
         <template is="dom-if" if="{{isNormalMode}}">
             <div name="background" class="background" id="background">
                 <kano-ui-customizer id="background_style" customizable="{{backgroundOptions}}" user-values="{{background.userStyle}}"></kano-ui-customizer>
@@ -35,6 +72,9 @@
 
     Polymer({
         is: 'kano-background-editor',
+        behaviors: [
+            Kano.Behaviors.MediaQueryBehavior
+        ],
         properties: {
             background: {
                 type: Object,
@@ -62,8 +102,8 @@
         attached () {
             this.set('backgroundOptions', [{
                 key: 'background',
-                type: 'background',
-                label: 'Background'
+                type: 'color',
+                label: 'Color'
             }]);
         }
     });

@@ -1,0 +1,540 @@
+{
+    "steps": [
+        {
+			"banner": {
+				"text":"We hope you 💖 your pixel kit! <br>Are you ready to control light with sound?",
+				"next_button": true
+			},
+			"beacon": {
+                "target": "banner-button"
+            }
+		},
+        {
+            "banner": {
+                "text": "A microphone can pick up all kinds of sounds, and how loud they are. <br /> Let's add one to the code! Click on 'Add part'."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "arrow":{
+                "target": "add-part-button",
+                "angle": 210,
+                "size": 80
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Mic</b> to add it to your code."
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-microphone"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "microphone",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! You're about to make a volume detector. <br>Next, we'll use a loop. Do you remember where to find them?"
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block repeats, or loops, your code every second. Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect the blocks."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's add some text, to show how loud the sound is."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard_text"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This one!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#light_show_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#light_show_text",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now connect it to your loop. This code will check the volume every second."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "{d9+g1k7)s$|[BL4cw};"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "{d9+g1k7)s$|[BL4cw};",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "{d9+g1k7)s$|[BL4cw};"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Can you find a block to control the microphone?"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block means the text will show how loud the sound is. Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "get_volume"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "get_volume",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the text block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "l4eRxA}4aIKY!`fc1D:4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "l4eRxA}4aIKY!`fc1D:4",
+                            "inputName": "TEXT"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "l4eRxA}4aIKY!`fc1D:4"
+                    }
+                },
+                "target": "TEXT"
+            }
+        },
+        {
+            "banner": {
+                "text": "Every second, the text tells you how loud the sound is. <br>Next, let's use colour to show us when things are too loud.",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the microphone code again."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block of code wakes up when the microphone hears a loud noise."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "threshold"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "threshold",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it in your Every second loop."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "l4eRxA}4aIKY!`fc1D:4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "l4eRxA}4aIKY!`fc1D:4"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "l4eRxA}4aIKY!`fc1D:4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "You need one more text block."
+            },
+            "beacon": {
+                "target": {
+                    "category": "lightboard_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "lightboard_text"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "lightboard#light_show_text"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "lightboard#light_show_text",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it here, inside the microphone block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "TyAL5MJhueWU[2e?h!tg"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "TyAL5MJhueWU[2e?h!tg",
+                            "inputName": "DO"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "TyAL5MJhueWU[2e?h!tg"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "You’ll need another microphone volume block too."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the mic volume block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "get_volume"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "get_volume",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the last text block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "t}RT.I8VhII-k#]{eYYF"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "t}RT.I8VhII-k#]{eYYF",
+                            "inputName": "TEXT"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "t}RT.I8VhII-k#]{eYYF"
+                    }
+                },
+                "target": "TEXT"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's make the text shine red when the micrphone hears a loud noise. <br>Pick a your favorite <kano-value-preview><span>#ff0000</span></kano-value-preview> color."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_4"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Try it out. Make some noise, clap your hands.. give a whoop whoop!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Well done! You've made an amazing volume detector!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "microphone"
+    ],
+    "modules": [
+        "control"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "control": [
+            "every_x_seconds"
+        ],
+        "lightboard": [
+            "light_show_text"
+        ],
+        "mic": [
+            "get_volume",
+            "threshold"
+        ]
+    },
+    "mode": "lightboard"
+}

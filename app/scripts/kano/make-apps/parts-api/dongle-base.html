@@ -1,0 +1,61 @@
+<link rel="import" href="./base.html">
+<script>
+    (function (Kano) {
+
+        let DongleBase, PartsAPI;
+
+        Kano.MakeApps = Kano.MakeApps || {};
+        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+
+        // @polymerBehavior
+        DongleBase = {
+            _listeners: [],
+            handlers: [],
+            onCreated () {
+                Kano.MakeApps.PartsAPI.Base.onCreated.apply(this);
+                this.mappingChangedEventListener = this.mappingChangedEventListener.bind(this);
+                if (this.model && this.handlers) {
+                    this.appModules.getModule(this.module).on(this.model.id + '-mapping-changed', this.mappingChangedEventListener);
+                }
+            },
+            onDestroyed () {
+                if (this.model && this.handlers) {
+                    this.appModules.getModule(this.module).removeListener(this.model.id + '-mapping-changed', this.mappingChangedEventListener);
+                    this.remapListeners(this.appModules.getModule(this.module).getDeviceForPart(this.model.id), null);
+                }
+            },
+            start () {
+                PartsAPI.Base.start.apply(this, arguments);
+            },
+            mappingChangedEventListener (e) {
+                this.remapListeners(e.detail.oldDevice, e.detail.newDevice, true);
+                if (!this.isRunning && this.model.connected !== !!e.detail.newDevice) {
+                    this.set('model.connected', !!e.detail.newDevice);
+                }
+            },
+            remapListeners (oldDevice, newDevice, notify) {
+
+                if (oldDevice) {
+                    Object.keys(this.handlers).forEach((eventName) => {
+                        oldDevice.removeListener(eventName, this.handlers[eventName]);
+                    });
+                }
+
+                if (newDevice) {
+                    Object.keys(this.handlers).forEach((eventName) => {
+                        newDevice.on(eventName, this.handlers[eventName]);
+                    });
+                }
+
+                if (notify && this.model.connected !== !!newDevice) {
+                    this.set('model.connected', !!newDevice);
+                }
+            },
+            stop () {
+                PartsAPI.Base.stop.apply(this, arguments);
+            }
+        };
+
+        Kano.MakeApps.PartsAPI.DongleBase = Object.assign({}, PartsAPI.Base, DongleBase);
+    })(window.Kano = window.Kano || {});
+</script>

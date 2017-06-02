@@ -1,0 +1,440 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/polymer-sortablejs/polymer-sortablejs.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../ui/kano-ui-viewport/kano-ui-viewport.html">
+<link rel="import" href="../kano-icons/kc-base.html">
+<link rel="import" href="../kano-workspace-toolbar/kano-workspace-toolbar.html">
+<link rel="import" href="../kano-add-parts/kano-add-parts.html">
+<link rel="import" href="../kano-part-list-item/kano-part-list-item.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
+<link rel="import" href="../behaviors/kano-app-editor-behavior.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+
+<dom-module id="kano-default-workspace">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            :host kano-workspace-head {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+            :host .fullscreen-close {
+                position: fixed;
+                top: 0px;
+                right: 0px;
+                color: #fff;
+                background-color: transparent;
+                z-index: 101;
+                border: none;
+                width: 56px;
+                height: 56px;
+                font-size: 50px;
+                outline: none;
+                cursor: pointer;
+            }
+            :host .fullscreen-close div {
+                transition: all 0.2s ease;
+                transform: translate(0, -7px);
+            }
+            :host .fullscreen-close div:hover {
+                transform: translate(0, -9px);
+                color: #eaeaea;
+            }
+            :host(.fullscreen) #content {
+                position: fixed;
+                top: 200px;
+                left: 0px;
+                width: 100%;
+                height: calc(100% - 400px);
+                z-index: 101;
+                padding: 0;
+            }
+            :host #content {
+                position: relative;
+                width: auto;
+                margin: 14px 40px 0;
+                transition: background linear 150ms;
+            }
+            :host.running #content {
+                --kano-ui-viewport: {
+                    border: none;
+                };
+            }
+            .pause-overlay {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                @apply(--layout-center-justified);
+            }
+            .pause-overlay iron-image {
+                width: 40%;
+                height: 40%;
+                cursor: pointer;
+            }
+            #workspace-placeholder {
+                height: 100%;
+            }
+            #workspace-placeholder>* {
+                animation: fade-in 200ms linear;
+            }
+            kano-workspace-toolbar {
+                padding: 32px 40px;
+            }
+            .controls {
+                @apply --layout-vertical;
+                @apply --layout-justified;
+                @apply --layout-flex-auto;
+                box-sizing: border-box;
+            }
+            :host(:not(.fullscreen)) .overlay {
+                display: none;
+            }
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 100;
+                background: var(--kano-app-editor-workspace-background, #f2f2f2);
+            }
+            .overlay kano-workspace-toolbar {
+                position: absolute;
+                bottom: 0px;
+                width: 100%;
+            }
+            .add-parts {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                height: 46px;
+                border-top: 1px solid #202428;
+                border-bottom: 1px solid #202428;
+                margin: 0 40px;
+            }
+            .add-parts .label {
+                text-transform: uppercase;
+                @apply --layout-flex;
+                color: #fff;
+                font-size: 14px;
+                letter-spacing: 0.03em;
+                padding: 10px 0;
+            }
+            .add-parts .action {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+            .add-parts .action label {
+                margin-right: 12px;
+                font-size: 14px;
+                color: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+                transition: color 0.2s;
+            }
+            .add-parts button {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                @apply --layout-self-end;
+                @apply --kano-button;
+                text-shadow: none;
+                padding: 0px;
+                font-size: 18px;
+                font-family: monospace;
+                font-weight: bold;
+                width: 24px;
+                height: 24px;
+                background: rgba(255, 255, 255, 0.25);
+                color: rgba(255, 255, 255, 0.75);
+            }
+            .add-parts .action:hover label {
+                color: #fff;
+            }
+            .add-parts .action:hover button {
+                color: #fff;
+                background: rgba(255, 255, 255, 0.5);
+            }
+            paper-dialog {
+                background: transparent;
+            }
+            kano-add-parts#add-parts {
+                margin: 0px;
+                max-width: 680px;
+                width: 680px;
+                border-radius: 3px;
+                font-family: var(--font-body);
+            }
+            .part-list {
+                @apply --layout-flex;
+                @apply --layout-vertical;
+                overflow: auto;
+                padding: 0 40px;
+            }
+            .part, ::slotted(.part) {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                border-bottom: 1px solid #202428;
+                height: 40px;
+                color: #fff;
+            }
+            .part.sortable-ghost {
+                opacity: 0.3;
+            }
+            .part.sortable-drag {
+                background-color: var(--kano-app-editor-workspace-background);
+                box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.75);
+            }
+            kano-part-list-item {
+                @apply --layout-flex;
+                cursor: pointer;
+                max-width: 100%;
+            }
+            iron-icon {
+                --iron-icon-width: 12px;
+                --iron-icon-height: 12px;
+                --iron-icon-fill-color: #8F9195;
+            }
+            .handle {
+                cursor: move;
+            }
+            button.remove {
+                background: inherit;
+                cursor: pointer;
+                line-height: 0;
+                border: 0;
+                padding: 0;
+                margin: 0 12px;
+            }
+            .remove:hover iron-icon {
+                fill: var(--color-rhubarb);
+            }
+            iron-icon.handle:hover {
+                fill: #fff;
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
+        <kano-ui-viewport mode="scaled"
+                    view-width="[[width]]"
+                    view-height="[[height]]"
+                    id="content">
+            <div id="workspace-placeholder">
+                <slot name="workspace"></slot>
+            </div>
+        </kano-ui-viewport>
+        <div class="controls">
+            <kano-workspace-toolbar running="[[running]]"
+                                    no-part-controls
+                                    show-settings
+                                    on-pause-run-button-clicked="_runButtonClicked"
+                                    on-fullscreen-button-clicked="_toggleFullscreen"
+                                    on-reset-button-clicked="_resetAppState"
+                                    show-mouse-position="[[showMousePosition]]"
+                                    mouse-x="[[mouseX]]"
+                                    mouse-y="[[mouseY]]"></kano-workspace-toolbar>
+            <div class="add-parts">
+                <div class="label">[[localize('PARTS', 'Parts')]]</div>
+                <div class="action" on-tap="_addPartsTapped">
+                    <label for="add-part-button">[[localize('ADD_PART', 'Add Part')]]</label>
+                    <button id="add-part-button" type="button">+</button>
+                </div>
+            </div>
+            <div class="part-list">
+                <slot name="extra-parts"></slot>
+                <sortable-js handle=".handle" animation="150">
+                    <template is="dom-repeat" items="{{parts}}" as="part" on-dom-change="_partsElementsRepeaterChanged">
+                        <div class="part" id$="part-[[part.id]]">
+                            <kano-part-list-item model="{{part}}" on-tap="_partItemTapped"></kano-part-list-item>
+                            <button type="button" class="remove">
+                                <iron-icon icon="kc-base:close" on-tap="_removePart"></iron-icon>
+                            </button>
+                            <iron-icon class="handle" icon="kc-base:handle"></iron-icon>
+                        </div>
+                    </template>
+                </sortable-js>
+            </div>
+        </div>
+        <div class="overlay">
+            <button class="fullscreen-close" on-tap="_toggleFullscreen">
+                <iron-icon icon="kc-base:close"></iron-icon>
+            </button>
+            <kano-workspace-toolbar running="[[running]]"
+                                    no-part-controls
+                                    on-pause-run-button-clicked="_runButtonClicked"
+                                    on-fullscreen-button-clicked="_toggleFullscreen"
+                                    on-reset-button-clicked="_resetAppState"></kano-workspace-toolbar>
+        </div>
+        <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-default-workspace',
+            behaviors: [
+                Kano.Behaviors.I18nBehavior,
+                Kano.Behaviors.AppEditorBehavior,
+                Kano.Behaviors.AppElementRegistryBehavior,
+                Polymer.IronResizableBehavior
+            ],
+            properties: {
+                running: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                editableLayout: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                width: {
+                    type: Number
+                },
+                height: {
+                    type: Number
+                },
+                mouseX: {
+                    type: Number,
+                    value: 0
+                },
+                mouseY: {
+                    type: Number,
+                    value: 0
+                },
+                showMousePosition: {
+                    type: Boolean,
+                    value: false
+                },
+                partsMenuOpen: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                noPlayerBar: {
+                    type: Boolean
+                },
+                noPartsControls: {
+                    type: Boolean
+                },
+                fullscreen: {
+                    type: Boolean,
+                    value: false
+                },
+                challengeState: {
+                    type: Object
+                },
+                parts: {
+                    type: Array,
+                    value: () => {
+                        return [];
+                    },
+                    notify: true
+                }
+            },
+            observers: [
+                '_partsAddedOrRemoved(parts.splices)'
+            ],
+            listeners: {
+                'iron-resize': '_setViewportHeight'
+            },
+            _partsAddedOrRemoved (changeRecord) {
+                if (changeRecord && changeRecord.keySplices) {
+                    changeRecord.keySplices.forEach(splice => {
+                        const added = splice.added,
+                              removed = splice.removed;
+                        added.forEach(key => {
+                            const part = this.get(`parts.${key}`);
+                            if (!part) {
+                                return;
+                            }
+                            this._partsToAnimateIn.push(part);
+                        });
+                    });
+                }
+            },
+            _partsElementsRepeaterChanged () {
+                let allPartsEl = Polymer.dom(this.root).querySelectorAll('.part'),
+                    partEl, partElId;
+                for (let i = 0; i < allPartsEl.length; i++) {
+                    partEl = allPartsEl[i];
+                    partElId = partEl.getAttribute('id');
+                    this._registerElement(`parts-controls-${partElId}`, partEl);
+                }
+                this._partsToAnimateIn.forEach(part => {
+                    let partEl = this.$$(`#part-${part.id}`),
+                        partInlineControlsEl;
+                    if (!partEl) {
+                        return;
+                    }
+                    partEl.querySelector('kano-part-list-item').animate({
+                        opacity: [0, 1]
+                    }, {
+                        duration: 300,
+                        fill: 'forwards'
+                    });
+                });
+                this._partsToAnimateIn = [];
+            },
+            _setViewportHeight () {
+                const aspectRatio = this.height / this.width;
+                window.requestAnimationFrame(() => this.$.content.style['height'] =
+                        `${(this.offsetWidth - 80) * aspectRatio}px`);
+                        this.$.content.resizeView();
+            },
+            ready () {
+                this._partsToAnimateIn = [];
+            },
+            attached () {
+                this.target = document.body;
+                this._registerElement('add-part-button', this.$['add-part-button']);
+                this._registerElement('parts-controls', this);
+            },
+            _toggleFullscreen () {
+                this.toggleClass('fullscreen');
+                this.$.content.resizeView();
+                this.fullscreen = !this.fullscreen;
+            },
+            _resetAppState () {
+                this.fire('reset-app-state');
+            },
+            _runButtonClicked () {
+                this.fire('run-button-clicked');
+            },
+            _isPauseOverlayHidden (running, editableLayout) {
+                return running || editableLayout;
+            },
+            getViewportScale () {
+                return this.$.content.getScale();
+            },
+            _editLayoutClicked () {
+                this.fire('editable-layout-clicked');
+            },
+            _addPartsTapped () {
+                this._openPartsModal();
+            },
+            _openPartsModal () {
+                this.fire('open-parts-modal');
+            },
+            _removePart (e) {
+                let part = e.model.get('part');
+                this.fire('remove-part', part);
+            },
+            _partItemTapped (e) {
+                e.preventDefault();
+                let part = e.model.get('part');
+                this.fire('part-selected', part);
+            }
+        });
+    </script>
+</dom-module>

@@ -1,0 +1,490 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Have you remembered to plug your Tilt sensor in?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            },
+            "validation": {
+                "add-part": {
+                    "type": "gyro-accelerometer",
+                    "id": "tilt_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Now, bring your motion painting app to life with color.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's use a variable to store the color value. <br>Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "^Y,$;l9N7DFXmIc;=rL{"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "^Y,$;l9N7DFXmIc;=rL{"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "^Y,$;l9N7DFXmIc;=rL{"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Change this from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>hue</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_4"
+                        },
+                        "value": "hue"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's set this to zero as a starting point. <br>Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Z`=Fl@W6$ukugQ$sUn14"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "Z`=Fl@W6$ukugQ$sUn14",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Z`=Fl@W6$ukugQ$sUn14"
+                    }
+                },
+                "target": "VALUE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice. Now, let's change the color of our brush. <br>Open the Color tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block changes numbers into colors."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "create_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "create_color",
+                        "id": "block_11"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "Xz[!4#Z}M:hRC3cFS?=F"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "Xz[!4#Z}M:hRC3cFS?=F",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "Xz[!4#Z}M:hRC3cFS?=F"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "We want to create a rainbow of color. <br> Change <kano-value-preview><span>rgb</span></kano-value-preview> to <kano-value-preview><span>hsv</span></kano-value-preview> to use the right palette."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "hsv"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, let's set our hue variable. <br>Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_12"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "ho|-xI~3edx]_p$5b*#;"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_11",
+                            "rawId": "ho|-xI~3edx]_p$5b*#;",
+                            "inputName": "1"
+                        },
+                        "target": "block_12"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "ho|-xI~3edx]_p$5b*#;"
+                    }
+                },
+                "target": "1"
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice. Now change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>hue</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_12"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_12"
+                        },
+                        "value": "hue"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "We only have one color right now, because our hue variable doesn't change.<br> Now open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block adds a number to a variable."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_27"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "a{x4,F!0f_;;lKVxWu#x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "a{x4,F!0f_;;lKVxWu#x"
+                        },
+                        "target": "block_27"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "a{x4,F!0f_;;lKVxWu#x"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change it to <kano-value-preview><span>hue</span></kano-value-preview>.<br> If you increase the hue variable every frame, the color will change too!"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_27"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_27"
+                        },
+                        "value": "hue"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Awesome... you just made your very own Pixel app! <br>Now tilt your lightboard and paint with motion! 🖌🌈",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "gyro-accelerometer"
+    ],
+    "modules": [
+        "variables",
+        "control",
+        "color",
+        "math"
+    ],
+    "variables": [
+        "brushX",
+        "brushY",
+        "hue"
+    ],
+    "filterBlocks": {
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ],
+        "control": [
+            "every_x_seconds"
+        ],
+        "lightboard": [
+            "turn_on",
+            "light_x_y"
+        ],
+        "color": [
+            "create_color"
+        ],
+        "math": [
+            "unary",
+            "math_constrain"
+        ],
+        "tilt1": [
+            "accelerometer_value"
+        ]
+    },
+    "mode": "lightboard",
+    "defaultApp": "{\"parts\":[{\"id\":\"tilt1\",\"name\":\"Tilt 1\",\"type\":\"gyro-accelerometer\",\"tagName\":\"kano-part-gyro-accelerometer\",\"userStyle\":{},\"userProperties\":{},\"nonvolatileProperties\":[],\"position\":{\"x\":233,\"y\":161},\"partType\":\"hardware\"}],\"code\":{\"snapshot\":{\"javascript\":\"var brushY, brushX;\\n\\n\\nglobal.when('start', function () {\\n  brushX = 8;\\n  brushY = 4;\\n  time.every(1, 'frames', function () {\\n    devices.get('lightboard').turnOn({\\n                                type: 'single',\\n                                x: brushX-1,\\n                                y: brushY-1\\n                            }, \\\"#ffffff\\\");\\n    brushX += devices.get('tilt1').getAccelerometerData('x');\\n    brushY -= devices.get('tilt1').getAccelerometerData('y');\\n    brushX = Math.min(Math.max(brushX, 1), 16);\\n    brushY = Math.min(Math.max(brushY, 1), 8);\\n  });\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n  brushX = 8;\\n  brushY = 4;\\n  time.every(1, 'frames', function () {\\n    devices.get('lightboard').turnOn({\\n                                type: 'single',\\n                                x: brushX-1,\\n                                y: brushY-1\\n                            }, \\\"#ffffff\\\");\\n    brushX += devices.get('tilt1').getAccelerometerData('x');\\n    brushY -= devices.get('tilt1').getAccelerometerData('y');\\n    brushX = Math.min(Math.max(brushX, 1), 16);\\n    brushY = Math.min(Math.max(brushY, 1), 8);\\n  });\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"204\\\" y=\\\"43\\\"><field name=\\\"EVENT\\\">global.start<\/field><statement name=\\\"DO\\\"><block type=\\\"variables_set\\\" id=\\\"e}kqI=e|:{FAw%8qpY,6\\\"><field name=\\\"VAR\\\">brushX<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"kqL2HeYMt^#Uh7c;2A[_\\\"><field name=\\\"NUM\\\">8<\/field><\/block><\/value><next><block type=\\\"variables_set\\\" id=\\\"^Y,$;l9N7DFXmIc;=rL{\\\"><field name=\\\"VAR\\\">brushY<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_number\\\" id=\\\"H|8Gc#5zq?%:W?0p`^zj\\\"><field name=\\\"NUM\\\">4<\/field><\/block><\/value><next><block type=\\\"every_x_seconds\\\" id=\\\"N\/M#5@id7*_WX|kK2g:I\\\"><field name=\\\"UNIT\\\">frames<\/field><value name=\\\"INTERVAL\\\"><shadow type=\\\"math_number\\\" id=\\\"%gWyz:44tBcGf-B1).o|\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><statement name=\\\"DO\\\"><block type=\\\"lightboard#turn_on\\\" id=\\\"Xz[!4#Z}M:hRC3cFS?=F\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#light_x_y\\\" id=\\\"BBj(dGEm69Hpv}%NWmu\/\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"JyOY$y_0Ki]R;.z?,^-7\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"variables_get\\\" id=\\\"Ei+DGHlR|IU920;q3UXL\\\"><field name=\\\"VAR\\\">brushX<\/field><\/block><\/value><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"#WpVcSK0vo_Y5C{7,yMx\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"variables_get\\\" id=\\\"m^j7JCDe(r-1e0-urRY|\\\"><field name=\\\"VAR\\\">brushY<\/field><\/block><\/value><\/block><\/value><next><block type=\\\"unary\\\" id=\\\"[vA=%fe32#p7*EtzqC0Y\\\"><field name=\\\"LEFT_HAND\\\">brushX<\/field><field name=\\\"OPERATOR\\\">+=<\/field><value name=\\\"RIGHT_HAND\\\"><shadow type=\\\"math_number\\\" id=\\\"[4Q]O#AI\/{iOXsqNs;rn\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"tilt1#accelerometer_value\\\" id=\\\"2\/XxFjdpJ|Cf-[fDZ@xv\\\"><field name=\\\"AXIS\\\">x<\/field><\/block><\/value><next><block type=\\\"unary\\\" id=\\\"SG5dVBlad4QI`jt;2a[x\\\"><field name=\\\"LEFT_HAND\\\">brushY<\/field><field name=\\\"OPERATOR\\\">-=<\/field><value name=\\\"RIGHT_HAND\\\"><shadow type=\\\"math_number\\\" id=\\\"[4Q]O#AI\/{iOXsqNs;rn\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><block type=\\\"tilt1#accelerometer_value\\\" id=\\\"@,{-_7EU#d{[vnRz|+e.\\\"><field name=\\\"AXIS\\\">y<\/field><\/block><\/value><next><block type=\\\"variables_set\\\" id=\\\"CAJ9@:i(+iH8^CdW7R:q\\\"><field name=\\\"VAR\\\">brushX<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_constrain\\\" id=\\\".mjWz4_5S%udM:6)v9T_\\\"><value name=\\\"VALUE\\\"><block type=\\\"variables_get\\\" id=\\\"~D`pVoHXuzEbQ;ZgjJm%\\\"><field name=\\\"VAR\\\">brushX<\/field><\/block><\/value><value name=\\\"LOW\\\"><block type=\\\"math_number\\\" id=\\\"-^GP+vm%~p`nC5qF_x9@\\\"><field name=\\\"NUM\\\">1<\/field><\/block><\/value><value name=\\\"HIGH\\\"><block type=\\\"math_number\\\" id=\\\".r]cK07(=eZZQyizPYE5\\\"><field name=\\\"NUM\\\">16<\/field><\/block><\/value><\/block><\/value><next><block type=\\\"variables_set\\\" id=\\\"a{x4,F!0f_;;lKVxWu#x\\\"><field name=\\\"VAR\\\">brushY<\/field><value name=\\\"VALUE\\\"><block type=\\\"math_constrain\\\" id=\\\"HC,))2F=.f.;F*=[BmnQ\\\"><value name=\\\"VALUE\\\"><block type=\\\"variables_get\\\" id=\\\"1c|OPeB_7|y]SnK8xwc\/\\\"><field name=\\\"VAR\\\">brushY<\/field><\/block><\/value><value name=\\\"LOW\\\"><block type=\\\"math_number\\\" id=\\\"`XM3R%+o7qlBSghIE#BZ\\\"><field name=\\\"NUM\\\">1<\/field><\/block><\/value><value name=\\\"HIGH\\\"><block type=\\\"math_number\\\" id=\\\"tc3?CQA#~qxat$WzmDRc\\\"><field name=\\\"NUM\\\">8<\/field><\/block><\/value><\/block><\/value><\/block><\/next><\/block><\/next><\/block><\/next><\/block><\/next><\/block><\/statement><\/block><\/next><\/block><\/next><\/block><\/statement><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

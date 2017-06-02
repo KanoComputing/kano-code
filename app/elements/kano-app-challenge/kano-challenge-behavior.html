@@ -11,12 +11,12 @@
             },
             step: {
                 type: Number,
-                value: 0,
                 notify: true
             },
             selectedStep: {
                 type: Object,
-                computed: 'computeSelectedStep(steps, step, started)'
+                computed: 'computeSelectedStep(steps, step, started)',
+                notify: true
             },
             started: {
                 type: Boolean,
@@ -31,7 +31,12 @@
                     };
                 },
                 notify: true
-            }
+            },
+            sceneVariables: Object
+        },
+        forceReloadStep () {
+            this.started = false;
+            this.started = true;
         },
         computeSelectedStep () {
             let selectedStep;
@@ -45,12 +50,22 @@
                 return null;
             }
 
+            // We arrived at the last step of the challenge, which acknowledges the completion.
+            if (this.step === this.steps.length - 1) {
+                selectedStep.isLast = true;
+                this.fire('scene-done');
+            }
+
             // Deep clone the step to not change the original step when updating the ids
             selectedStep = JSON.parse(JSON.stringify(selectedStep));
 
-            // Update hint count
+            // Update stats if step includes optional hint
             if (selectedStep['set-state'] && selectedStep['set-state'].hints && selectedStep['set-state'].hints.enabled === false) {
                 this.set('hints.total', this.hints.total + 1);
+            }
+
+            if (selectedStep.banner && selectedStep.banner.text) {
+                selectedStep.banner.text = this._processMarkdown(selectedStep.banner.text);
             }
 
             if (selectedStep.tooltips) {
@@ -63,6 +78,9 @@
             if (selectedStep.arrow) {
                 selectedStep.arrow.source = this.processLocation(selectedStep.arrow.source);
                 selectedStep.arrow.target = this.processLocation(selectedStep.arrow.target);
+            }
+            if (selectedStep.beacon) {
+                selectedStep.beacon.target = this.processLocation(selectedStep.beacon.target);
             }
             selectedStep.highlight = this.processLocation(selectedStep.highlight);
             if (selectedStep.phantom_block) {
@@ -119,8 +137,10 @@
             return location;
         },
         _processMarkdown (text) {
-            let reg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
-            return text.replace(reg, (match, before, type, after) => {
+            let processedText = text,
+                blockReg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
+
+            processedText = processedText.replace(blockReg, (match, before, type, after) => {
                 let pieces = type.split('#');
                 if (pieces.length > 1) {
                     pieces[0] = this.stepIds[pieces[0]] || pieces[0];
@@ -128,6 +148,13 @@
                 type = pieces.join('#');
                 return `<kano-blockly-block${before}type="${type}"${after}></kano-blockly-block>`;
             });
+
+            //Inject variables to markdown syntax
+            processedText = Object.keys(this.sceneVariables).reduce((acc, key) => {
+                return acc.replace(new RegExp('\\$\\{' + key + '\\}', 'g'), this.sceneVariables[key] || '');
+            }, text);
+
+            return processedText;
         },
         /**
          * Move to the next step or set the challenge as done
@@ -152,17 +179,51 @@
         stepChanged () {
             this.selectedStep = this.computeSelectedStep();
         },
-        _prevStep () {
-            if (this.step > 0) {
-                this.step--;
+        _prevStep (n=1) {
+            this._goToStep(Math.max(0, this.step - n));
+        },
+        _getStateAt (index) {
+            let state = {
+                hints: {
+                    enabled: true
+                }
+            };
+            for (let i = 0; i < this.steps.length; i++) {
+                if ('set-state' in this.steps[i]) {
+                    Object.assign(state, this.steps[i]['set-state']);
+                }
             }
+            return state;
         },
         _goToStep (index) {
-            // Force a change notification
-            if (this.step === index) {
-                this.set('step', index - 1);
+            let step = index,
+                start = Math.min(this.step, index),
+                end = Math.max(this.step, index),
+                diff = index - this.step,
+                direction = 1,
+                state;
+            // Compute the direction of the jump
+            if (diff !== 0) {
+                direction = (diff / Math.abs(diff));
             }
-            this.set('step', index);
+            // Calculate real diff by adding the steps to skip
+            for (; start < end; start++) {
+                if ('set-state' in this.steps[start]) {
+                    // Add the steps to skip in the diff
+                    diff += direction;
+                    end += direction;
+                }
+            }
+            step = this.step + diff;
+            // Jumping through step time means that the state can be wrong. Get the state at that point
+            state = this._getStateAt(step);
+            // Force a change notification
+            if (this.step === step) {
+                this.set('step', step - 1);
+            }
+            // Apply the latest state
+            this.set('state', state);
+            this.set('step', step);
         },
         _injectStep (step, offset) {
             let index = this.step + (typeof offset === 'undefined' ? 1 : offset);

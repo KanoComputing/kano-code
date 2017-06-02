@@ -36,7 +36,13 @@
     <template>
         <iron-lazy-pages class="scene" attr-for-selected="name" selected="[[name]]" restamp>
             <template is="iron-lazy-page" name="editor">
-                <kano-scene-editor store="{{store}}" story-name="[[storyName]]" scene="[[sceneData]]" extensions="{{extensions}}" on-scene-done="sceneCompleted" next-story="{{nextStory}}" ended="[[scene.ended]]"></kano-scene-editor>
+                <kano-scene-editor user="[[user]]"
+                                   store="{{store}}"
+                                   story="[[story]]"
+                                   scene="[[sceneData]]"
+                                   on-scene-done="sceneCompleted"
+                                   ended="[[scene.ended]]"
+                                   added-parts="{{addedParts}}"></kano-scene-editor>
             </template>
             <template is="iron-lazy-page" name="empty"></template>
         </iron-lazy-pages>
@@ -60,12 +66,11 @@
                     return {};
                 }
             },
-            storyName: {
-                type: String,
-                value: ''
-            },
-            nextStory: {
-                type: Object
+            story: {
+                type: Object,
+                value: () => {
+                    return {};
+                }
             },
             store: {
                 type: Object,
@@ -75,11 +80,21 @@
             },
             extensions: {
                 type: Array
+            },
+            user: Object,
+            addedParts: { /* This property is used by HardwareAPI in the view */
+                type: Array,
+                notify: true
             }
         },
         observers: [
             'componentChanged(scene.component)'
         ],
+        ready () {
+            this.overlayDone = this.overlayDone.bind(this);
+            this.overlayHidden = true;
+        },
+
         _parseSceneComponent (sceneComponent) {
             let pieces, component = {};
             // Cut using '/'
@@ -90,10 +105,6 @@
             component.common = component.prefix === 'common';
             return component;
         },
-        ready () {
-            this.overlayDone = this.overlayDone.bind(this);
-            this.overlayHidden = true;
-        },
         sceneCompleted (e) {
             if (this.scene.overlay_after) {
                 e.stopPropagation();
@@ -101,7 +112,12 @@
             } else if (this.scene.show_remix_options) {
                 this.set('sceneData.completed', true);
             }
-            this.fire('track-event', {
+
+            if (this.scene['autoshare_disabled']) {
+                this.set('sceneData.autoshareDisabled', true);
+            }
+
+            this.fire('ga-tracking-event', {
                 event: 'worldTutorialCompleted'
             });
         },
@@ -114,6 +130,7 @@
             this.setupOverlay(scene.overlay_before);
             component = this._parseSceneComponent(scene.component);
             this.sceneData = Object.assign({}, scene.data);
+
             // Let the end of the overlay load the data
             if (!this.scene.overlay_before) {
                 this.set('sceneData.started', true);

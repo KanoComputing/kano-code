@@ -1,80 +1,36 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../kano-ui-behavior.html">
-<link rel="import" href="../../kano-ui-item/kano-ui-item.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/motion-sensor.html">
-<dom-module id="kano-part-motion-sensor">
-    <style>
-    :host {
-        display: block;
-    }
+<script type="text/javascript">
+    /* globals Polymer, Kano */
 
-    kano-ui-item {
-        animation-iteration-count: infinite;
-        border-radius: 100%;
-    }
-    @keyframes rolling {
-        0% {
-            transform: translate(3px, 0px) rotate(15deg);
-        }
-        50% {
-            transform: translate(-3px, 0px) rotate(-15deg);
-        }
-        100% {
-            transform: translate(3px, 0px) rotate(15deg);
-        }
-    }
-    @keyframes seismic {
-        0% {
-            transform: translate(6px, -2px) rotate(5deg);
-        }
-        50% {
-            transform: translate(-6px, 0px) rotate(-5deg);
-        }
-        100% {
-            transform: translate(6px, 0px) rotate(5deg);
-        }
-    }
-    :host .animation-rolling {
-        animation-name: rolling;
-        animation-duration: 1.2s;
-        transition: box-shadow 1s;
-        box-shadow: none;
-    }
-    :host .animation-seismic {
-        animation-name: seismic;
-        animation-duration: 0.11s;
-        transition: box-shadow 0s;
-        box-shadow: 0 0 0 6px rgba(0, 0, 0, 0.1);
-    }
-    </style>
-    <template>
-        <kano-ui-item class$="{{computeAnimationClass(movement)}}" model="[[model]]"
-            size="50"
-            id$="part-[[model.id]]"
-            colour="[[model.colour]]"
-            instance no-label></kano-ui-item>
-    </template>
-    <script type="text/javascript">
-        /* globals Polymer, Kano */
-
-        Polymer({
-            is: 'kano-part-motion-sensor',
-            behaviors: [Kano.MakeApps.PartsAPI['motion-sensor'],
-                        Kano.Behaviors.UIBehavior],
-            properties: {
-                movement: {
-                    type: Boolean,
-                    value: false
-                }
-            },
-            attached () {
-                Kano.AppModules.getModule('motionSensor').connect({
-                    name: 'Make Apps'
-                });
-            },
-            computeAnimationClass (movement) {
-                return movement ? 'animation-seismic' : 'animation-rolling';
+    Polymer({
+        is: 'kano-part-motion-sensor',
+        behaviors: [
+            Kano.MakeApps.PartsAPI['motion-sensor'],
+            Kano.Behaviors.UIBehavior
+        ],
+        observers: [
+            '_reconfigure(model.userProperties.mode, model.userProperties.updateInterval)',
+            '_onConnectedChange(model.connected)'
+        ],
+        _onConnectedChange (connected) {
+            if (!connected) {
+                this.set('model.lastProximityValue', 0);
             }
-        });
-    </script>
-</dom-module>
+        },
+        _reconfigure (mode, interval) {
+            this.debounce('reconfigure', () => {
+                if (mode !== this.lastMode) {
+                    this.lastMode = this.model.userProperties.mode;
+                    this.setMode(this.model.userProperties.mode);
+                }
+
+                if (interval !== this.lastUpdateInterval) {
+                    this.lastUpdateInterval = this.model.userProperties.updateInterval;
+                    this.setUpdateInterval(this.model.userProperties.updateInterval);
+                }
+            }, 250);
+        }
+    });
+</script>

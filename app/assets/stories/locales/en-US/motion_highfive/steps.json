@@ -1,0 +1,720 @@
+{
+    "steps": [
+      {
+          "banner": {
+              "text": "Please plug in a Tilt sensor for this challenge",
+              "next_button": true
+          },
+          "beacon": {
+              "target": "banner-button",
+              "offset": 0
+          },
+          "validation": {
+              "add-part": {
+                  "type": "motion-sensor",
+                  "id": "motion_0"
+              }
+          }
+      },
+        {
+            "banner": {
+                "text": "Open the Control tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Sticker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "sticker"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "sticker"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "sticker#ui_show_hide"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "sticker#ui_show_hide",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "L?^w]f6l=.!L@}w34ahc"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "L?^w]f6l=.!L@}w34ahc",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "L?^w]f6l=.!L@}w34ahc"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>show</span></kano-value-preview> to <kano-value-preview><span>hide</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_1"
+                        },
+                        "value": "hide"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Motion tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "motion_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "motion_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "motion_0",
+                        "type": "motion_when"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "motion_0",
+                        "type": "motion_when",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drop the block anywhere on your code space"
+            },
+            "beacon": {
+                "target": "blocks-panel",
+                "offset": 300,
+                "angle": 200
+            },
+            "validation": {
+                "blockly": {
+                    "drop": {
+                        "target": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        },
+                        "value": "5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Sticker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "sticker"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "sticker"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "sticker#ui_show_hide"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "sticker#ui_show_hide",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "kgWaHarYGvV`f;1v5^?H"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "kgWaHarYGvV`f;1v5^?H",
+                            "inputName": "DO"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "kgWaHarYGvV`f;1v5^?H"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open this tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#set_background_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#set_background_color",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "r]%#B8lF4km[u2?)aQkt"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "r]%#B8lF4km[u2?)aQkt"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "r]%#B8lF4km[u2?)aQkt"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Color tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "random_colour"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "random_colour",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "_Hhxnu9$v$:6w1n(Ld,h"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "_Hhxnu9$v$:6w1n(Ld,h",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "_Hhxnu9$v$:6w1n(Ld,h"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let’s add a clap sound effect, click here to add a part."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Speaker</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-speaker"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "speaker",
+                    "id": "part_2"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_2",
+                        "type": "speaker_play"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_2",
+                        "type": "speaker_play",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "_Hhxnu9$v$:6w1n(Ld,h"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "_Hhxnu9$v$:6w1n(Ld,h"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "_Hhxnu9$v$:6w1n(Ld,h"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_2",
+                        "type": "speaker_sample"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_2",
+                        "type": "speaker_sample",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "79VrS%e9K]C0,W]KSAzc"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "79VrS%e9K]C0,W]KSAzc",
+                            "inputName": "SAMPLE"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "79VrS%e9K]C0,W]KSAzc"
+                    }
+                },
+                "target": "SAMPLE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>drum machine</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_7"
+                        },
+                        "value": "drum machine"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>hand_clap</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_7"
+                        },
+                        "value": "hand_clap"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "You can now test the app",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "motion-sensor",
+        "speaker"
+    ],
+    "modules": [
+        "control",
+        "color"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "control": [
+            "every_x_seconds"
+        ],
+        "sticker": [
+            "ui_show_hide"
+        ],
+        "motion": [
+            "motion_when"
+        ],
+        "normal": [
+            "set_background_color"
+        ],
+        "color": [
+            "random_colour"
+        ],
+        "speaker": [
+            "speaker_play",
+            "speaker_sample"
+        ]
+    },
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[{\"id\":\"sticker\",\"name\":\"Sticker\",\"type\":\"sticker\",\"tagName\":\"kano-ui-sticker\",\"userStyle\":{},\"userProperties\":{\"size\":100,\"src\":\"http:\/\/localhost:4000\/assets\/part\/stickers\/other\/other-clap.svg\",\"undefined\":0},\"nonvolatileProperties\":[\"src\",\"size\"],\"position\":{\"x\":209,\"y\":135},\"partType\":\"ui\",\"excludeDefaultBlocks\":false,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"src\",\"type\":\"image\",\"label\":\"Image\",\"options\":{\"files\":\"stickers\"}},{\"key\":\"size\",\"type\":\"range\",\"label\":\"Size\",\"symbol\":\"px\"}],\"style\":[]},\"rotation\":45,\"scale\":317,\"visible\":true}],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start<\/field><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"normal\"}"
+}

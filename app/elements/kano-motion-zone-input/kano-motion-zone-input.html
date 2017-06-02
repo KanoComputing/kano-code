@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="kano-motion-zone-input">
+    <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+            }
+            svg {
+                @apply --layout-flex;
+            }
+            #zones path {
+                opacity: 0.4;
+                cursor: pointer;
+            }
+            #zones path:hover,
+            #zones path.selected {
+                opacity: 1;
+            }
+            svg path.red {
+                fill: red;
+            }
+            svg path.orange {
+                fill: orange;
+            }
+        </style>
+        <svg>
+            <g id="zones">
+                <path id="1" class$="orange [[_computeSelectedClass(value, 1)]]" on-tap="_chooseZone" d="M 0,0 l 40, 0 l -10 20 l -20 0"></path>
+                <path id="0" class$="red [[_computeSelectedClass(value, 0)]]" on-tap="_chooseZone" transform="translate(0, 25)" d="M 10,0 l 20, 0 l -8 14 l -5 0"></path>
+            </g>
+        </svg>
+    </template>
+    <script>
+        (function () {
+
+            const COLORS = {
+                '0': 'red',
+                '1': 'orange'
+            };
+
+            window.KanoMotionZoneInput = Polymer({
+                is:'kano-motion-zone-input',
+                properties: {
+                    value: {
+                        type: Number,
+                        value: 0,
+                        notify: true
+                    }
+                },
+                _chooseZone (e) {
+                    const target = e.path ? e.path[0] : e.target,
+                        id = Number(target.getAttribute('id'));
+                    
+                    this.value = id;
+                },
+                _computeSelectedClass (value, expected) {
+                    return value === Number(expected) ? 'selected' : '';
+                },
+                
+            });
+
+            window.KanoMotionZoneInput.getColorForValue  = (value) => {
+                return COLORS[value];
+            };
+
+        })();
+    </script>
+</dom-module>

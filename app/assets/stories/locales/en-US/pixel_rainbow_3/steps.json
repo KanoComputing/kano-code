@@ -1,0 +1,509 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Sometimes random colors don't look great together. <br>Let's use code to make a proper rainbow 🌈!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "First, you'll need a variable block. Open the tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to the 'When app starts' block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change it from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>hue</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "hue"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now we're going to add some more colour. <br> Open the Variables tray..."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and drag this block into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Great! Connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "w+_vj^0ZY@C~WsRFBfxp"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "w+_vj^0ZY@C~WsRFBfxp",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "w+_vj^0ZY@C~WsRFBfxp"
+                    }
+                },
+                "target": "VALUE"
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "text": "Let's delete our random color block.<br> Drag it to the trashcan.",
+                    "position": "right",
+                    "location": {
+                        "block": {
+                            "rawId": "%/?yDnspZ|`/~YR~A#6B"
+                        }
+                    }
+                }
+            ],
+            "arrow": {
+                "target": "blockly-bin",
+                "angle": 210,
+                "size": 80
+            },
+            "validation": {
+                "blockly": {
+                    "delete": {
+                        "target": {
+                            "rawId": "%/?yDnspZ|`/~YR~A#6B"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Awesome... now replace it with a regular color block. <br> Open the Color tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "create_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "create_color",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "...and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "}:N^fbDBY(C7Fvrq|^GN",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "Instead of mixing red, blue and green, let's use a different color spectrum. <br> Change <kano-value-preview><span>rgb</span></kano-value-preview> to <kano-value-preview><span>hsv</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_6"
+                        },
+                        "value": "hsv"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "The hue value is a number that points to a specific color on a spectrum.<br> Let's add a variable block to <b>hue</b>."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block into your code space..."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "... and connect it to this block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "#Ex#Y{vyFDPK$,REjR+!"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "#Ex#Y{vyFDPK$,REjR+!",
+                            "inputName": "1"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "#Ex#Y{vyFDPK$,REjR+!"
+                    }
+                },
+                "target": "1"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>hue</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_7"
+                        },
+                        "value": "hue"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Right now, the hue value is pointing to a red color. <br> Let's find out what else we can do.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's change the hue value by adding <b>1</b>. <br>Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Every time the code runs, this block will add <b>1</b> to your variable."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "}:N^fbDBY(C7Fvrq|^GN"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>hue</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_8"
+                        },
+                        "value": "hue"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now, doesn't that look better? <br> Next you'll turn the whole lightboard into a dancing rainbow!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [],
+    "modules": [
+        "variables",
+        "control",
+        "math",
+        "color"
+    ],
+    "variables": [
+        "hue"
+    ],
+    "filterBlocks": {
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ],
+        "control": [
+            "every_x_seconds"
+        ],
+        "lightboard": [
+            "turn_on",
+            "light_x_y"
+        ],
+        "math": [
+            "math_random",
+            "unary"
+        ],
+        "color": [
+            "create_color"
+        ]
+    },
+    "mode": "lightboard",
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n  time.every(1, 'frames', function () {\\n    devices.get('lightboard').turnOn({\\n                                type: 'single',\\n                                x: math.random(0, 16)-1,\\n                                y: 5-1\\n                            }, colour.random());\\n  });\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n  time.every(1, 'frames', function () {\\n    devices.get('lightboard').turnOn({\\n                                type: 'single',\\n                                x: math.random(0, 16)-1,\\n                                y: 5-1\\n                            }, colour.random());\\n  });\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"200\\\" y=\\\"40\\\"><field name=\\\"EVENT\\\">global.start<\/field><statement name=\\\"DO\\\"><block type=\\\"every_x_seconds\\\" id=\\\"pN\/\/yl~e%?Jm-*e82[R(\\\"><field name=\\\"UNIT\\\">frames<\/field><value name=\\\"INTERVAL\\\"><shadow type=\\\"math_number\\\" id=\\\"*tP7h0Ya%`6\/q%^-O%hg\\\"><field name=\\\"NUM\\\">1<\/field><\/shadow><\/value><statement name=\\\"DO\\\"><block type=\\\"lightboard#turn_on\\\" id=\\\"}:N^fbDBY(C7Fvrq|^GN\\\"><value name=\\\"TARGET\\\"><block type=\\\"lightboard#light_x_y\\\" id=\\\"[`bC5Y#fl}HU*gt,HiY4\\\"><value name=\\\"X\\\"><shadow type=\\\"math_number\\\" id=\\\"Ki?t,4DcM83M8*kvj\/6T\\\"><field name=\\\"NUM\\\">8<\/field><\/shadow><block type=\\\"math_random\\\" id=\\\"+ItNwLiXb]?V.z,73#;Z\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"_5yaXl8^$\/5aP`:fM|?[\\\"><field name=\\\"NUM\\\">0<\/field><\/shadow><\/value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"gR{x!gR|hvQaQ^~V=8i]\\\"><field name=\\\"NUM\\\">16<\/field><\/shadow><\/value><\/block><\/value><value name=\\\"Y\\\"><shadow type=\\\"math_number\\\" id=\\\"wUA1:tPl=9b{N,eoqh:@\\\"><field name=\\\"NUM\\\">5<\/field><\/shadow><\/value><\/block><\/value><value name=\\\"COLOR\\\"><block type=\\\"random_colour\\\" id=\\\"%\/?yDnspZ|`\/~YR~A#6B\\\"><\/block><\/value><\/block><\/statement><\/block><\/statement><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"lightboard\"}"
+}

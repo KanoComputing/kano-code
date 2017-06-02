@@ -1,26 +1,45 @@
 <link rel="import" href="../behaviors.html">
 <link rel="import" href="../kano-input-color/kano-input-color.html">
-<link rel="import" href="../kano-input-size/kano-input-size.html">
 <link rel="import" href="../kano-input-range/kano-input-range.html">
 <link rel="import" href="../kano-input-text/kano-input-text.html">
-<link rel="import" href="../kano-input-font-size/kano-input-font-size.html">
-<link rel="import" href="../kano-input-font-weight/kano-input-font-weight.html">
-<link rel="import" href="../kano-input-background/kano-input-background.html">
 <link rel="import" href="../kano-input-list/kano-input-list.html">
 <link rel="import" href="../kano-input-toggle/kano-input-toggle.html">
 <link rel="import" href="../kano-input-image/kano-input-image.html">
-<link rel="import" href="../kano-input-font-family/kano-input-font-family.html">
-<link rel="import" href="../kano-input-light-animation/kano-input-light-animation.html">
 <link rel="import" href="../kano-input-wave/kano-input-wave.html">
+<link rel="import" href="../../../bower_components/web-components/kano-style/kano-style.html">
+<!--
+### Styling
 
+The following custom properties and mixins are available for styling:
+
+Custom property | Description | Default
+----------------|-------------|----------
+--kano-input-label`
+-->
 <dom-module id="kano-input">
     <style>
-    :host {
-        display: block;
-    }
+        :host {
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            min-height: 64px;
+        }
+        :host label {
+            width: 82px;
+            color: rgba(255, 255, 255, 0.5);
+            text-align: left;
+            font-size: 14px;
+            font-family: var(--font-body);
+            font-weight: bold;
+            margin-right: 40px;
+            @apply --kano-input-label;
+        }
+        :host #input-container {
+            @apply --layout-flex;
+        }
     </style>
     <template>
-
+        <label hidden$="[[noLabel]]">[[label]]</label>
+        <div id="input-container"></div>
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -40,7 +59,7 @@
             let inputTagName = this._getTagName(),
                 root = Polymer.dom(this.root);
             let template = document.createElement('template');
-            template.innerHTML = `<${inputTagName} value="{{value}}" label="[[label]]" symbol="[[symbol]]" min="[[min]]" max="[[max]]" options="[[options]]"></${inputTagName}>`;
+            template.innerHTML = `<${inputTagName} class="kano-input" value="{{value}}" symbol="[[symbol]]" min="[[min]]" max="[[max]]" options="[[options]]" no-label></${inputTagName}>`;
 
             this.templatize(template);
 
@@ -52,7 +71,7 @@
                 options: this.options
             });
 
-            Polymer.dom(this.root).appendChild(this.instance.root);
+            this.$['input-container'].appendChild(this.instance.root);
         },
         _forwardInstanceProp (inst, prop, value) {
             this.set(prop, value);

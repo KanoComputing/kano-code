@@ -5,8 +5,11 @@
 <link rel="import" href="../../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <link rel="import" href="./import.html">
+<link rel="import" href="../kano-style/dialog.html">
 <link rel="import" href="../kano-blockly-omnibox/kano-blockly-omnibox.html">
 <link rel="import" href="../kano-blockly-toolbox/kano-blockly-toolbox.html">
+<link rel="import" href="../kano-animation/animations/from-big-animation.html">
+<link rel="import" href="./kano-blockly-style.html">
 
 <!--
 
@@ -26,215 +29,106 @@ Example:
 @demo ./demo/index.html
 -->
 <dom-module id="kano-blockly">
-    <style>
-        :host {
-            display: block;
-            position: relative;
-        }
-        #workspace {
-            position: absolute;
-            top: 0px;
-            bottom: 0px;
-            left: 0px;
-            right: 0px;
-            @apply(--layout-horizontal);
-            background-color: var(--kano-blockly-background, white);
-        }
-        #toolbox {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            box-sizing: border-box;
-            --kano-blockly-toolbox-background: var(--kano-blockly-background, white);
-        }
-        #svg {
-            @apply --layout-flex;
-            height: 100%;
-        }
-        .gutter {
-            width: 20px;
-            color: rgb(85, 100, 109);
-            @apply(--layout-vertical);
-            padding-top: 22px;
-            padding-left: 22px;
-        }
-
-        .gutter div {
-            height: 22px;
-            font-weight: 400;
-            @apply(--layout-horizontal);
-            @apply(--layout-center);
-        }
-
-        .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"]), ::slotted(* .blocklyTreeRoot>div[role="group"]>div:not([role="treeitem"])) {
-            display: none;
-        }
-
-        .blocklyEditableText>rect, ::slotted(*.blocklyEditableText>rect) {
-            fill: white;
-            fill-opacity: 0.6;
-        }
-
-        .blocklyLookupField>text,
-        ::slotted(*.blocklyLookupField>text) {
-            font-family: monospace;
-            cursor: pointer;
-            fill: #223541;
-        }
-
-        .blocklySearchOutput>text,
-        ::slotted(*.blocklySearchOutput>text) {
-            font-size: 28px;
-            transform: translateY(15px);
-            fill: #bbbbbb;
-        }
-
-        .searchPlus,
-        ::slotted(* .searchPlus) {
-            cursor: pointer;
-        }
-
-        .searchPlus rect,
-        ::slotted(* .searchPlus rect) {
-            fill: #bbbbbb;
-            stroke: #737373;
-            rx: 4;
-            ry: 4;
-        }
-
-        .searchPlus text,
-        ::slotted(* .searchPlus text) {
-            fill: #eaeaea;
-        }
-
-        .blocklyPathDark,
-        .blocklyPathLight,
-        ::slotted(* .blocklyPathDark),
-        ::slotted(* .blocklyPathLight) {
-            fill: transparent !important;
-            stroke-width: 0px !important;
-        }
-        .blocklySelected > .blocklyPath, ::slotted(* .blocklySelected > .blocklyPath) {
-            stroke-width: 1px !important;
-            stroke: rgba(0, 0, 0, 0.5) !important;
-            stroke-linejoin: round !important;
-        }
-        .blocklyHighlightedConnectionPath, ::slotted(* .blocklyHighlightedConnectionPath) {
-            stroke-width: 2px !important;
-        }
-        text.blocklyText, ::slotted(* text.blocklyText) {
-            font-family: bariol;
-            font-size: 1em;
-        }
-        .blocklyEditableText:hover > rect, ::slotted(* .blocklyEditableText:hover > rect) {
-            stroke-width: 1px !important;
-        }
-        .blocklyEditableText .blocklyText, ::slotted(* .blocklyEditableText .blocklyText) {
-            font-size: 1em !important;
-        }
-        div.blocklyTreeRoot, ::slotted(* div.blocklyTreeRoot) {
-            padding: 0px;
-        }
-        span.blocklyTreeLabel, ::slotted(* span.blocklyTreeLabel) {
-            font-family: bariol;
-            font-size: 14px;
-        }
-        div.blocklyTreeRow, ::slotted(* div.blocklyTreeRow) {
-            position: relative;
-            height: auto !important;
-            line-height: 20px !important;
-            padding: 9px 12px !important;
-            margin: 0px;
-            color: white;
-            font-size: 1em;
-        }
-        div.blocklyTreeRow:hover,
-        span.blocklyTreeLabel:hover,
-        ::slotted(* div.blocklyTreeRow:hover),
-        ::slotted(* span.blocklyTreeLabel:hover) {
-            cursor: pointer;
-        }
-        div.blocklyTriangle {
-            position: absolute;
-            left: 130px;
-            top: 0px;
-            display: none;
-            border: 12px solid transparent;
-            border-left: 0px;
-            border-right-width: 10px;
-            border-right-color: #E8E8E8;
-        }
-        span.blocklyTreeIcon, ::slotted(* span.blocklyTreeIcon) {
-            width: 0px;
-        }
-        div.blocklyToolboxDiv, ::slotted(* div.blocklyToolboxDiv) {
-            background-color: transparent;
-            position: absolute;
-        }
-        div.goog-tree-item, ::slotted(* div.goog-tree-item) {
-            border: 0px;
-            visibility: hidden;
-        }
-        path.blocklyFlyoutBackground, ::slotted(* path.blocklyFlyoutBackground) {
-            fill: #E8E8E8;
-            fill-opacity: 1;
-        }
-        rect.blocklyMainBackground, ::slotted(* rect.blocklyMainBackground) {
-            opacity: 0 !important;
-        }
-        .buttons button {
-            @apply(--kano-button);
-            background-color: var(--color-green, green);
-        }
-        .container input {
-            @apply(--kano-input);
-            width: 100%;
-            border: 2px solid var(--color-lightgrey, grey);
-            padding: 5px;
-            font-size: 17px;
-            box-sizing: border-box;
-        }
-        .container input:focus {
-            outline: none;
-            border: 2px solid var(--color-orange, orange);
-        }
-        .container {
-            padding: 8px 24px 8px 24px;
-        }
-        .buttons {
-            padding: 8px 24px 16px 24px
-        }
-        .omnibox-wrapper {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-            display: none;
-            /* 150px is half the max size of the flyout */
-            padding-top: calc(50% - 150px);
-        }
-    </style>
     <template>
-        <div id="workspace">
+        <style include="kano-blockly-style"></style>
+        <style include="kano-style-dialog"></style>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+            }
+            #workspace {
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                @apply(--layout-horizontal);
+                background-color: var(--kano-blockly-background, white);
+            }
+            #toolbox {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                box-sizing: border-box;
+                --kano-blockly-toolbox-background: var(--kano-blockly-background, white);
+            }
+            #svg {
+                @apply --layout-flex;
+                height: 100%;
+            }
+            .gutter {
+                width: 20px;
+                color: rgb(85, 100, 109);
+                @apply(--layout-vertical);
+                padding-top: 22px;
+                padding-left: 22px;
+            }
+
+            .gutter div {
+                height: 22px;
+                font-weight: 400;
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+            }
+            .buttons button {
+                @apply(--kano-button);
+                background-color: var(--color-green, green);
+            }
+            .container input {
+                @apply(--kano-input);
+                width: 100%;
+                border: 2px solid var(--color-lightgrey, grey);
+                padding: 5px;
+                font-size: 17px;
+                box-sizing: border-box;
+            }
+            .container input:focus {
+                outline: none;
+                border: 2px solid var(--color-orange, orange);
+            }
+            .container {
+                padding: 16px 8px 8px 8px;
+            }
+            .omnibox-wrapper {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                display: none;
+                /* 150px is half the max size of the flyout */
+                padding-top: calc(50% - 150px);
+            }
+            paper-dialog .buttons .confirm {
+                background: var(--color-grassland);
+                color: white;
+            }
+            #dialog-content {
+                min-width: 320px;
+            }
+        </style>
+        <div id="workspace" class="injectionDiv">
             <kano-blockly-toolbox id="toolbox" toolbox="[[toolbox]]" on-block-created="_onToolboxBlockCreated" auto-close hidden$="{{noToolbox}}"></kano-blockly-toolbox>
             <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
         <div class="omnibox-wrapper" id="omnibox-wrapper" on-tap="_omniboxWrapperTapped">
             <kano-blockly-omnibox id="omnibox" on-close="_closeOmnibox"></kano-blockly-omnibox>
         </div>
-        <paper-dialog id="var-modal" entry-animation="scale-up-animation" exit-animation="fade-out-animation" on-iron-overlay-opened="_focusOnInput">
-            <h2>[[modalText]]</h2>
-            <div class="container">
-                <input id="var-input" type="text" name="name" value="{{modalInput::input}}">
+        <paper-dialog id="dialog" entry-animation="from-big-animation" fit-into="[[svg]]" with-backdrop>
+            <div id="dialog-content">
+                <h2>[[dialog.message]]</h2>
+                <div class="container" hidden$="[[dialog.noInput]]">
+                    <kano-input-text id="dialog-input" value="{{dialog.input}}" no-label autofocus on-keydown="_dialogKeydown"></kano-input-text>
+                </div>
+                <div class="buttons">
+                    <button dialog-confirm class="confirm">Confirm</button>
+                    <button dialog-dismiss hidden$="[[dialog.noCancel]]">Cancel</button>
+                </div>
             </div>
-            <div class="buttons">
-                <button dialog-confirm>Confirm</button>
-            </div>
-            <iron-a11y-keys keys="esc" on-keys-pressed="_closeVarModal" target="[[varModal]]"></iron-a11y-keys>
         </paper-dialog>
         <iron-a11y-keys keys="meta+f" on-keys-pressed="_openOmnibox" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="esc" on-keys-pressed="_closeOmnibox" target="[[target]]"></iron-a11y-keys>
@@ -282,8 +176,12 @@ Example:
                 value: false
             }
         },
+        listeners: {
+            'toolbox.scroll': '_onToolboxScroll'
+        },
         ready () {
             this.codeRelatedEvents = [Blockly.Events.CREATE, Blockly.Events.MOVE, Blockly.Events.CHANGE];
+            this._blurInput = this._blurInput.bind(this);
         },
         /**
          * Inject blockly to the workspace div
@@ -291,7 +189,9 @@ Example:
 
         attached () {
             let options, defs;
-            this.varModal = this.$['var-modal'];
+            this.dialog = {
+                element: this.$.dialog
+            };
             this.target = document.body;
             this.visible = false;
             options = new Blockly.Options({
@@ -308,10 +208,12 @@ Example:
                     scaleSpeed: 1.2
                 }
             });
-            defs = Blockly.utils.createSvgElement('defs', {}, this.$.svg);
+            this.svg = this.$.svg;
+            defs = Blockly.utils.createSvgElement('defs', {}, this.svg);
             options.gridPattern = Blockly.utils.createSvgElement('pattern', {'id': 'blocklyGridPattern' + String(Math.random()).substring(2), 'patternUnits': 'userSpaceOnUse'}, defs);
             // Load CSS.
             Blockly.Css.inject(options.hasCss, options.pathToMedia);
+            this._setupDialogs();
             this.workspace = this._createWorkspace(this.$.svg, options);
             this.workspace.toolbox = this.$.toolbox;
             this._initWorkspace();
@@ -320,7 +222,6 @@ Example:
             Blockly.svgResize(this.workspace);
             Polymer.dom(this.root).appendChild(Blockly.Css.styleSheet_.ownerNode.cloneNode(true));
             this.workspace.componentRoot_ = Polymer.dom(this.root);
-            this.workspace.options.modalFunction = this._blocklyVarModal.bind(this);
             this.workspace.addChangeListener(this.onBlocklyChange.bind(this));
 
             this.$.omnibox.targetWorkspace = this.workspace;
@@ -340,10 +241,32 @@ Example:
             });
 
             document.body.style.overflow = 'hidden';
+            document.addEventListener('iron-overlay-opened', this._blurInput);
         },
         detached () {
             this.workspace.dispose();
             document.body.style.overflow = undefined;
+            document.removeEventListener('iron-overlay-opened', this._blurInput);
+        },
+        _setupDialogs () {
+            Blockly.prompt = (message, defaultValue, callback) => {
+                this._openDialog(message, defaultValue, { inputSelect: true }).then(answer => {
+                    if (!answer.length) {
+                        return callback(null);
+                    }
+                    callback(answer);
+                });
+            };
+            Blockly.confirm = (message, callback) => {
+                this._openDialog(message, defaultValue, { noInput: true }).then(callback);
+            };
+            Blockly.alert = (message, callback) => {
+                this._openDialog(message, defaultValue, { noInput: true, noCancel: true }).then(callback);
+            };
+        },
+        _preventSubmit (e) {
+            e.preventDefault();
+            e.stopPropagation();
         },
         _onToolboxBlockCreated () {
             this.$.svg.style.zIndex = 1;
@@ -441,34 +364,39 @@ Example:
                 this._closeOmnibox();
             }
         },
-        _blocklyVarModal (promptText, defaultText) {
+        _openDialog (message, defaultValue, opts) {
+            let options = Object.assign({
+                noInput: false,
+                noCancel: false,
+                inputSelect: false
+            }, opts || {});
             return new Promise((resolve, reject) => {
-                let modal = this.$['var-modal'],
-                onModalClose = function (e) {
+                let dialog = this.dialog.element,
+                onDialogClose = (e) => {
                     let reason = e.detail,
-                        varName = this.modalInput;
-                    modal.removeEventListener('iron-overlay-closed', onModalClose);
+                        answer = this.dialog.input;
+                    dialog.removeEventListener('iron-overlay-closed', onDialogClose);
                     if (reason.canceled) {
                         return resolve(null);
                     }
-                    if (!varName.length) {
-                        varName = null;
-                    }
-                    return resolve(varName);
-                }.bind(this);
-                this.modalText = promptText;
-                this.modalInput = defaultText;
-                modal.addEventListener('iron-overlay-closed', onModalClose);
-                modal.open();
+                    return resolve(answer);
+                };
+                this.set('dialog.message', message);
+                this.set('dialog.input', defaultValue);
+                this.set('dialog.noInput', options.noInput);
+                this.set('dialog.noCancel', options.noCancel);
+                this.$['dialog-input'].focus();
+                if (options.inputSelect) {
+                    this.$['dialog-input'].select();
+                }
+                dialog.addEventListener('iron-overlay-closed', onDialogClose);
+                dialog.open();
             });
         },
-        _focusOnInput () {
-            this.$['var-input'].focus();
-        },
-        _closeVarModal (e) {
-            this.$['var-modal'].cancel();
-            e.stopPropagation();
-            e.preventDefault();
+        _dialogKeydown (e) {
+            if (e.keyCode === 13) {
+                this.dialog.element.close();
+            }
         },
         /**
          * Triggers the resize event on the window
@@ -540,7 +468,12 @@ Example:
         onBlocklyChange (e) {
             if (e.type === Blockly.Events.OPEN_SEARCHBOX) {
                 this._openOmnibox();
-
+                return;
+            }
+            if (e.type === Blockly.Events.SCROLL) {
+                this.debounce('workspacePan', () => {
+                    this.fire('workspace-scroll');
+                }, 200);
                 return;
             }
             if (e.type === Blockly.Events.CREATE) {
@@ -560,6 +493,9 @@ Example:
                     this.workspace.fireChangeListener(ev);
                     this.lastCreated = null;
                     this._onToolboxEndDrag();
+                } else if (e.type === Blockly.Events.MOVE) {
+                    // The event type is `move` and the block concerned was not just created
+                    this.fire('block-move');
                 }
             }
             this.fire('change', e);
@@ -629,11 +565,19 @@ Example:
             }
             this._checkDefaultBlocks();
         },
+        _blurInput () {
+            Blockly.WidgetDiv.hide();
+        },
         getWorkspace () {
             return this.workspace;
         },
         getToolbox () {
             return this.$.toolbox;
+        },
+        _onToolboxScroll (e) {
+            this.debounce('scrollEvent', () => {
+                this.fire('toolbox-scroll');
+            }, 200);
         }
     });
 </script>

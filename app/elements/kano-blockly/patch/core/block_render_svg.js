@@ -4,6 +4,7 @@
 
 Blockly.BlockSvg.ROW_PADDING_X = 5;
 Blockly.BlockSvg.ROW_PADDING_Y = 5;
+Blockly.BlockSvg.STATEMENT_SPACING = 16;
 
 /**
  * Horizontal space between elements.
@@ -693,7 +694,7 @@ Blockly.BlockSvg.prototype.renderDrawRight_ = function(steps, highlightSteps,
       // END
       steps.push('H', cursorX);
       steps.push(Blockly.BlockSvg.INNER_TOP_LEFT_CORNER);
-      steps.push('v', row.height - 2 * Blockly.BlockSvg.CORNER_RADIUS);
+      steps.push('v', (row.height - 2 * Blockly.BlockSvg.CORNER_RADIUS) + Blockly.BlockSvg.STATEMENT_SPACING);
       steps.push(Blockly.BlockSvg.INNER_BOTTOM_LEFT_CORNER);
       // CUSTOM CODE
       var h = inputRows.rightEdge;
@@ -747,6 +748,7 @@ Blockly.BlockSvg.prototype.renderDrawRight_ = function(steps, highlightSteps,
         }
         cursorY += Blockly.BlockSvg.SEP_SPACE_Y;
       }
+      cursorY += Blockly.BlockSvg.STATEMENT_SPACING;
     }
     cursorY += row.height;
   }

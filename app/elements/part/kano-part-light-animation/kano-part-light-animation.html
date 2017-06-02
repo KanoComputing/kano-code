@@ -18,55 +18,105 @@
     </style>
     <template>
         <div class="container" running$="[[isRunning]]">
-            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" bitmap="[[bitmap]]" pixel-size="21" spacing="3"></kano-bitmap-renderer>
+            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" bitmap="[[bitmap]]" pixel-size="25" spacing="1"></kano-bitmap-renderer>
         </div>
     </template>
     <script type="text/javascript">
         /* globals Polymer, Kano */
-
         Polymer({
             is: 'kano-part-light-animation',
             behaviors: [Kano.MakeApps.PartsAPI['light-animation'], Kano.Behaviors.LightShapeBehavior],
             observers: [
-                '_sizeChanged(model.userProperties.width, model.userProperties.height)'
+                '_sizeChanged(model.userProperties.width, model.userProperties.height)',
+                '_onBitmapsChanged(model.userProperties.bitmaps.*)'
             ],
-            ready () {
-                this.frameIndex = 0;
+            properties: {
+                storedBitmaps: Array
+            },
+            _onBitmapsChanged (e) {
+                //Lock observer while resetting the observed property
+                if (this.lock) {
+                    return;
+                }
+                this.lock = true;
+    
+                if (e.path.search(/splices/) !== -1) {
+                    this._setBitmaps();
+                }
+                this.async(() => this.lock = false);
+            },
+            _setBitmaps () {
+                this.set('storedBitmaps', this.storeBitmaps());
+                this.set('model.userProperties.bitmaps',
+                    this.storedBitmaps.map(this._adjustBitmapForDisplay.bind(this)));
+            },
+            storeBitmaps () {
+                return this.model.userProperties.bitmaps.map(this._adjustBitmapForStorage.bind(this));
             },
             _sizeChanged () {
-                let newBitmaps = this.model.userProperties.bitmaps || [],
-                    width = this.model.userProperties.width,
-                    height = this.model.userProperties.height;
-
-                if (this.prevSize) {
-                    newBitmaps = this.model.userProperties.bitmaps.map(this._updateBitmapSize.bind(this));
+                if (this.model.userProperties.bitmaps.length === 0) {
+                    this._generateEmptyFrame();
+                    return;
                 }
-
-                this.prevSize = {
-                    width: width,
-                    height: height
-                };
-
-                this.set('model.userProperties.bitmaps', newBitmaps);
+                this.storedBitmaps = this.storedBitmaps || this.storeBitmaps();
+                this.set('model.userProperties.bitmaps',
+                        this.storedBitmaps.map(this._adjustBitmapForDisplay.bind(this)));
             },
-            _updateBitmapSize (bitmap) {
+            _adjustBitmapForStorage (bitmap) {
                 let newBitmap = [],
                     width = this.model.userProperties.width,
                     height = this.model.userProperties.height;
+
+                for (let i = 0; i < 128; i++) {
+                    newBitmap.push('#000000');
+                }
+
+                bitmap.forEach((color, i) => {
+                    let x = i % width,
+                        y = Math.floor(i / width),
+                        storedPos = x + y * 16;
+                    if (storedPos < 128) {
+                        newBitmap[storedPos] = color;
+                    }
+                });
+                return newBitmap;
+            },
+            _adjustBitmapForDisplay (bitmap) {
+                let newBitmap = [],
+                    width = this.model.userProperties.width,
+                    height = this.model.userProperties.height;
+
                 for (let i = 0; i < height * width; i++) {
                     newBitmap.push('#000000');
                 }
 
                 bitmap.forEach((color, i) => {
-                    let y = Math.floor(i / this.prevSize.width),
-                        x = i % this.prevSize.width,
-                        newPos = x + y * width;
-                    if (newPos < newBitmap.length) {
-                        newBitmap[newPos] = color;
+                    let x = i % 16,
+                        y = Math.floor(i / 16),
+                        realPos = x + y * width;
+                    if (realPos < newBitmap.length) {
+                        newBitmap[realPos] = color;
                     }
                 });
-
                 return newBitmap;
+            },
+            _generateEmptyFrame () {
+                let emptyFrame = [];
+                for (let i = 0; i < this.model.userProperties.height * this.model.userProperties.width; i++) {
+                    emptyFrame.push('#000000');
+                }
+                this.set('model.userProperties.bitmaps', [emptyFrame]);
+            },
+            detached () {
+                // Firing a regular event won't do much as this is detached and the workspace will not receive it.
+                // This make iron-signals dispatch the event to the interested elements
+                document.dispatchEvent(new CustomEvent('iron-signal', {
+                    bubbles: false,
+                    detail: {
+                        name: 'remove-shape',
+                        data: this.model.id
+                    }
+                }));
             }
         });
     </script>

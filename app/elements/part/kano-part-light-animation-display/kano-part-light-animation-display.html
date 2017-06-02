@@ -18,7 +18,7 @@
     </style>
     <template>
         <div class="container" running$="[[isRunning]]">
-            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" bitmap="[[bitmap]]" pixel-size="21" spacing="3"></kano-bitmap-renderer>
+            <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" bitmap="[[bitmap]]" pixel-size="22" spacing="1"></kano-bitmap-renderer>
         </div>
     </template>
     <script type="text/javascript">
@@ -32,6 +32,17 @@
             },
             attached () {
                 this._updateAnimation();
+            },
+            detached () {
+                // Firing a regular event won't do much as this is detached and the workspace will not receive it.
+                // This make iron-signals dispatch the event to the interested elements
+                document.dispatchEvent(new CustomEvent('iron-signal', {
+                    bubbles: false,
+                    detail: {
+                        name: 'remove-shape',
+                        data: this.model.id
+                    }
+                }));
             }
         });
     </script>

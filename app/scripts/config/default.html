@@ -1,6 +1,7 @@
 <script>
     (function (Kano) {
         Kano.MakeApps = Kano.MakeApps || {};
+        Kano.MakeApps.config = Kano.MakeApps.config || {};
 
         Kano.MakeApps.config.WORKSPACE_FULL_SIZE = {
             "width": 512,
@@ -10,6 +11,9 @@
         Kano.MakeApps.config.VOICE_API_KEY = "65b85d9c94094d62bddfd37acd5786b4";
         Kano.MakeApps.config.WEATHER_API_KEY = "79f483fba81614f1e7d1fea5a28b9750";
         Kano.MakeApps.config.HARDWARE_API_URL = "http://localhost:3000";
+        Kano.MakeApps.config.TRACKING = {
+            SCHEMA: "kano_code"
+        }
 
     })(window.Kano = window.Kano || {});
 </script>

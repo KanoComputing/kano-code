@@ -1,30 +1,17 @@
 <link rel="import" href="../kano-ui-customizer/kano-ui-customizer.html">
+<link rel="import" href="../inputs/kano-input/kano-input.html">
+<link rel="import" href="../inputs/kano-input-range/kano-input-range.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/input.html">
 <dom-module id="kano-light-shape-configuration">
     <style is="custom-style" include="input-range"></style>
     <style>
-    :host {
-        @apply(--layout-vertical);
-        padding: 35px 20px 15px 0px;
-    }
-    :host .name-edit input {
-        @apply(--kano-light-input);
-        font-size: 1.4em;
-    }
-    :host .input-line {
-        margin-top: 5px;
-    }
-    :host .label {
-        display: block;
-    }
-    :host .value {
-        font-weight: bold;
-    }
-    *[hidden] {
-        display: none !important;
-    }
+        :host {
+            @apply --layout-horizontal;
+        }
     </style>
     <template>
+        <kano-input type="text" label="Name" value="{{element.name}}"></kano-input>
         <kano-ui-customizer id="properties"
             customizable="{{element.customizable.properties}}"
             user-values="{{element.userProperties}}">
@@ -33,12 +20,8 @@
             customizable="{{element.customizable.style}}"
             user-values="{{element.userStyle}}">
         </kano-ui-customizer>
-        <div class="input-line">
-            <kano-input-range value="{{position.x}}" label="X Position" min="1" max="[[maxX]]"></kano-input-range>
-        </div>
-        <div class="input-line">
-            <kano-input-range value="{{position.y}}" label="Y Position" min="1" max="[[maxY]]"></kano-input-range>
-        </div>
+        <kano-input-range value="{{position.x}}" label="X Position" min="1" max="[[maxX]]"></kano-input-range>
+        <kano-input-range value="{{position.y}}" label="Y Position" min="1" max="[[maxY]]"></kano-input-range>
     </template>
 </dom-module>
 
@@ -94,13 +77,13 @@
         },
         _positionChanged () {
             if (this.element) {
-                this.set('position.x', Math.round(this.element.position.x / 27));
-                this.set('position.y', Math.round(this.element.position.y / 27));
+                this.set('position.x', Math.round(this.element.position.x / 27) + 1);
+                this.set('position.y', Math.round(this.element.position.y / 27) + 1);
             }
         },
         _virtualPositionChanged () {
-            this.set('element.position.x', (Math.round(this.position.x)) * 27);
-            this.set('element.position.y', (Math.round(this.position.y)) * 27);
+            this.set('element.position.x', (Math.round(this.position.x - 1)) * 27);
+            this.set('element.position.y', (Math.round(this.position.y - 1)) * 27);
         },
         computeRoundPosition () {
             let pos;

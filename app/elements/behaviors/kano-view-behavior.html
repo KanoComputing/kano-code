@@ -24,8 +24,11 @@
                 this.fire('view-loaded');
             }
             this.async(() => {
-                this.fire('track-page', {
+                this.fire('ga-page-tracking-event', {
                     title: document.title,
+                    path: window.location.pathname
+                });
+                this.fire('track-page-view', {
                     path: window.location.pathname
                 });
             });

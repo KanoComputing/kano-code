@@ -1,0 +1,1575 @@
+{
+    "steps": [
+        {
+            "validation": {
+                "open-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "Let's start with a map and a button.<br>Click here to find them."
+            }
+        },
+        {
+            "arrow": {
+                "target": "parts-panel-part-map"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "map",
+                    "id": "part_0"
+                }
+            },
+            "beacon": {
+                "target": "parts-panel-part-map"
+            },
+            "banner": {
+                "text": "Drag the Map to your app"
+            }
+        },
+        {
+            "arrow": {
+                "target": "parts-panel-part-button"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "button",
+                    "id": "part_1"
+                }
+            },
+            "beacon": {
+                "target": "parts-panel-part-button"
+            },
+            "banner": {
+                "text": "Drag a button to your app"
+            }
+        },
+        {
+            "validation": {
+                "close-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "That's all the parts.<br />Close the drawer."
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "lat"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "UOMzl.jr.i:Ptm#t]-5_",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "UOMzl.jr.i:Ptm#t]-5_"
+                    }
+                },
+                "target": "VALUE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "UOMzl.jr.i:Ptm#t]-5_"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to your lat variable"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_1"
+                        },
+                        "value": "51"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Set the lat value to <kano-value-preview><span>51</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open 'variables' again"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "UOMzl.jr.i:Ptm#t]-5_"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "UOMzl.jr.i:Ptm#t]-5_"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "UOMzl.jr.i:Ptm#t]-5_"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it under this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        },
+                        "value": "long"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "One more time."
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_3"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "aH!-W4%pX=pEe.-gYg(-",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "aH!-W4%pX=pEe.-gYg(-"
+                    }
+                },
+                "target": "VALUE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "aH!-W4%pX=pEe.-gYg(-"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to your 'long' variable"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Map tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "show_marker",
+                        "id": "block_4"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "show_marker"
+                    }
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "This block moves the marker<br />on the map. Grab it."
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "aH!-W4%pX=pEe.-gYg(-"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "aH!-W4%pX=pEe.-gYg(-"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "aH!-W4%pX=pEe.-gYg(-"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect beneath your variables"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "Dj1ic4VkY62^pYwg6O8y",
+                            "inputName": "LATITUDE"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Dj1ic4VkY62^pYwg6O8y"
+                    }
+                },
+                "target": "LATITUDE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Dj1ic4VkY62^pYwg6O8y"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to the first map input block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_5"
+                        },
+                        "value": "lat"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_6"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "Dj1ic4VkY62^pYwg6O8y",
+                            "inputName": "LONGITUDE"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Dj1ic4VkY62^pYwg6O8y"
+                    }
+                },
+                "target": "LONGITUDE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Dj1ic4VkY62^pYwg6O8y"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to the second map input"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_6"
+                        },
+                        "value": "long"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "events"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "events"
+                }
+            },
+            "banner": {
+                "text": "Open the Events tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "part_event",
+                        "id": "block_7"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "part_event"
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "drop": {
+                        "target": "block_7"
+                    }
+                }
+            },
+            "beacon": {
+                "target": "blocks-panel"
+            },
+            "banner": {
+                "text": "Drop the block anywhere on your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_7"
+                        },
+                        "value": "button.clicked"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>Button is clicked</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "banner": {
+                "text": "Open the Math tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_8"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "/w6L~7|zWk5UNM|Xb1Cz",
+                            "inputName": "DO"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "/w6L~7|zWk5UNM|Xb1Cz"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "/w6L~7|zWk5UNM|Xb1Cz"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it the button clicked event"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_8"
+                        },
+                        "value": "lat"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>lat</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "RIGHT_HAND",
+                            "id": "block_8"
+                        },
+                        "value": "0.3"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "RIGHT_HAND",
+                        "id": "block_8"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>0.3</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Map tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "show_marker",
+                        "id": "block_9"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "show_marker"
+                    }
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"part_0#show_marker\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_8",
+                            "rawId": "ijSrN:g^BaC9?2ZRGnXp"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "ijSrN:g^BaC9?2ZRGnXp"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "ijSrN:g^BaC9?2ZRGnXp"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it under this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Variables again"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_10"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_9",
+                            "rawId": "x{Ip3k=|5z1z2mq6l!1J",
+                            "inputName": "LATITUDE"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "x{Ip3k=|5z1z2mq6l!1J"
+                    }
+                },
+                "target": "LATITUDE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "x{Ip3k=|5z1z2mq6l!1J"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to first map input"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_10"
+                        },
+                        "value": "lat"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_11"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_9",
+                            "rawId": "x{Ip3k=|5z1z2mq6l!1J",
+                            "inputName": "LONGITUDE"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "x{Ip3k=|5z1z2mq6l!1J"
+                    }
+                },
+                "target": "LONGITUDE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9",
+                        "rawId": "x{Ip3k=|5z1z2mq6l!1J"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "long"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>"
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "Nice work! Click the buttons to move<br />the marker up the map. Next we'll add another button to move it right.",
+                "next_button": true
+            }
+        },
+        {
+            "validation": {
+                "open-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "Open the parts tray again"
+            }
+        },
+        {
+            "arrow": {
+                "target": "parts-panel-part-button"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "button",
+                    "id": "part_2"
+                }
+            },
+            "beacon": {
+                "target": "parts-panel-part-button"
+            },
+            "banner": {
+                "text": "Drag another button to your app"
+            }
+        },
+        {
+            "validation": {
+                "close-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "Close"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "events"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "events"
+                }
+            },
+            "banner": {
+                "text": "Open the Events tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "part_event",
+                        "id": "block_12"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "part_event"
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "drop": {
+                        "target": "block_12"
+                    }
+                }
+            },
+            "beacon": {
+                "target": "blocks-panel"
+            },
+            "banner": {
+                "text": "Drop the block anywhere on your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_12"
+                        },
+                        "value": "button1.clicked"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_12"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>Button 1 is clicked</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "banner": {
+                "text": "Open the Math tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_13"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_12",
+                            "rawId": "%o%!FY=r}6!-?:gZsNlT",
+                            "inputName": "DO"
+                        },
+                        "target": "block_13"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_12",
+                        "rawId": "%o%!FY=r}6!-?:gZsNlT"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_12",
+                        "rawId": "%o%!FY=r}6!-?:gZsNlT"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_13"
+                        },
+                        "value": "long"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_13"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>long</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "RIGHT_HAND",
+                            "id": "block_13"
+                        },
+                        "value": "0.3"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "RIGHT_HAND",
+                        "id": "block_13"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>0.3</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Map tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "show_marker",
+                        "id": "block_14"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "show_marker"
+                    }
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_13",
+                            "rawId": "MHobD6Ovr0yaM3V[Px/~"
+                        },
+                        "target": "block_14"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_13",
+                        "rawId": "MHobD6Ovr0yaM3V[Px/~"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_13",
+                        "rawId": "MHobD6Ovr0yaM3V[Px/~"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_15"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                },
+                "angle": 70
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_14",
+                            "rawId": "}OUQcl3rf)OB]G4[+|PE",
+                            "inputName": "LATITUDE"
+                        },
+                        "target": "block_15"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "}OUQcl3rf)OB]G4[+|PE"
+                    }
+                },
+                "target": "LATITUDE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "}OUQcl3rf)OB]G4[+|PE"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to the first map input"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_15"
+                        },
+                        "value": "lat"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_15"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "One last time"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_16"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                },
+                "angle": 70
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_14",
+                            "rawId": "}OUQcl3rf)OB]G4[+|PE",
+                            "inputName": "LONGITUDE"
+                        },
+                        "target": "block_16"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "}OUQcl3rf)OB]G4[+|PE"
+                    }
+                },
+                "target": "LONGITUDE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "}OUQcl3rf)OB]G4[+|PE"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_16"
+                        },
+                        "value": "long"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_16"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>"
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "Challenge complete! Now you can move up and right.<br />Complete your app by adding two<br />more buttons to move left and down!",
+                "next_button": true
+            }
+        }
+    ],
+    "parts": [
+        "map",
+        "button"
+    ],
+    "modules": [
+        "variables",
+        "events",
+        "math"
+    ],
+    "variables": [
+        "lat",
+        "long"
+    ],
+    "mode": "normal"
+}

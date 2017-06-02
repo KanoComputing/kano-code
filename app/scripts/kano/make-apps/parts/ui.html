@@ -7,7 +7,7 @@
             'background-color': {
                 key: 'background-color',
                 type: 'color',
-                label: 'Background color'
+                label: 'Background'
             },
             'color': {
                 key: 'color',
@@ -16,17 +16,17 @@
             },
             'width': {
                 key: 'width',
-                type: 'size',
+                type: 'range',
                 label: 'Width',
                 boundTo: 'width',
-                symbol: 'pixels'
+                symbol: 'px'
             },
             'height': {
                 key: 'height',
-                type: 'size',
+                type: 'range',
                 label: 'Height',
                 boundTo: 'height',
-                symbol: 'pixels'
+                symbol: 'px'
             },
             'background': {
                 key: 'background',
@@ -35,9 +35,12 @@
             },
             'font-size': {
                 key: 'font-size',
-                type: 'font-size',
+                type: 'range',
                 label: 'Text size',
-                symbol: 'em'
+                symbol: 'em',
+                min: 1,
+                max: 20,
+                step: 1
             },
             'font-weight': {
                 key: 'font-weight',
@@ -46,8 +49,20 @@
             },
             'font-family': {
                 key: 'font-family',
-                type: 'font-family',
-                label: 'Text font'
+                type: 'list',
+                label: 'Text font',
+                options: [{
+                    value: 'Bariol',
+                    label: 'Bariol'
+                },
+                {
+                    value: 'Serif',
+                    label: 'Serif'
+                },
+                {
+                    value: 'Monospace',
+                    label: 'Monospace'
+                }]
             }
         };
 
@@ -112,57 +127,59 @@
                         };
                     }
                 });
-                this.blocks.push({
-                    block: (ui) => {
-                        return {
-                            id: 'ui_rotate',
-                            message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_ROTATE}`,
-                            args0: [{
-                                type: 'field_dropdown',
-                                name: 'DIR',
-                                options: [
-                                    ['\u21BB', 'cw'],
-                                    ['\u21BA', 'ccw'],
-                                    ['to', 'absolute']
-                                ]
-                            },{
-                                type: 'input_value',
-                                name: 'DEG'
-                            }],
-                            inputsInline: true,
-                            previousStatement: null,
-                            nextStatement: null
-                        };
-                    },
-                    javascript: (ui) => {
-                        return function (block) {
-                            let dir = block.getFieldValue('DIR'),
-                                deg = Blockly.JavaScript.valueToCode(block, 'DEG') || 0,
-                                method = 'rotate',
-                                code;
-                            if (dir === 'ccw') {
-                                deg *= -1;
-                            }
-                            if (dir === 'absolute') {
-                                method = 'absolute_rotate';
-                            }
-                            code = `devices.get('${ui.id}').${method}(${deg});\n`;
-                            return code;
-                        };
-                    },
-                    pseudo: (ui) => {
-                        return function (block) {
-                            let dir = block.getFieldValue('DIR'),
-                                deg = Blockly.Pseudo.valueToCode(block, 'DEG') || 0,
-                                code;
-                            if (dir === 'ccw') {
-                                deg *= -1;
-                            }
-                            code = `devices.get('${ui.id}').rotate(${deg});\n`;
-                            return code;
-                        };
-                    }
-                });
+                if (!this.rotationDisabled) {
+                    this.blocks.push({
+                        block: (ui) => {
+                            return {
+                                id: 'ui_rotate',
+                                message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_ROTATE}`,
+                                args0: [{
+                                    type: 'field_dropdown',
+                                    name: 'DIR',
+                                    options: [
+                                        ['\u21BB', 'cw'],
+                                        ['\u21BA', 'ccw'],
+                                        ['to', 'absolute']
+                                    ]
+                                },{
+                                    type: 'input_value',
+                                    name: 'DEG'
+                                }],
+                                inputsInline: true,
+                                previousStatement: null,
+                                nextStatement: null
+                            };
+                        },
+                        javascript: (ui) => {
+                            return function (block) {
+                                let dir = block.getFieldValue('DIR'),
+                                    deg = Blockly.JavaScript.valueToCode(block, 'DEG') || 0,
+                                    method = 'rotate',
+                                    code;
+                                if (dir === 'ccw') {
+                                    deg *= -1;
+                                }
+                                if (dir === 'absolute') {
+                                    method = 'absolute_rotate';
+                                }
+                                code = `devices.get('${ui.id}').${method}(${deg});\n`;
+                                return code;
+                            };
+                        },
+                        pseudo: (ui) => {
+                            return function (block) {
+                                let dir = block.getFieldValue('DIR'),
+                                    deg = Blockly.Pseudo.valueToCode(block, 'DEG') || 0,
+                                    code;
+                                if (dir === 'ccw') {
+                                    deg *= -1;
+                                }
+                                code = `devices.get('${ui.id}').rotate(${deg});\n`;
+                                return code;
+                            };
+                        }
+                    });
+                }
                 this.legacyBlocks.push({
                     block: (ui) => {
                         return {
@@ -258,37 +275,39 @@
                         };
                     }
                 });
-                this.blocks.push({
-                    block: (ui) => {
-                        return {
-                            id: 'ui_scale',
-                            message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_SCALE}`,
-                            args0: [{
-                                type: 'input_value',
-                                name: 'FACTOR'
-                            }],
-                            inputsInline: true,
-                            previousStatement: null,
-                            nextStatement: null
-                        };
-                    },
-                    javascript: (ui) => {
-                        return function (block) {
-                            let factor = Blockly.JavaScript.valueToCode(block, 'FACTOR') || 0,
-                                code;
-                            code = `devices.get('${ui.id}').scale(${factor});\n`;
-                            return code;
-                        };
-                    },
-                    pseudo: (ui) => {
-                        return function (block) {
-                            let factor = Blockly.Pseudo.valueToCode(block, 'FACTOR') || 0,
-                                code;
-                            code = `${ui.id}.setSizeTo(${factor});\n`;
-                            return code;
-                        };
-                    }
-                });
+                if (!this.scaleDisabled) {
+                    this.blocks.push({
+                        block: (ui) => {
+                            return {
+                                id: 'ui_scale',
+                                message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_SCALE}`,
+                                args0: [{
+                                    type: 'input_value',
+                                    name: 'FACTOR'
+                                }],
+                                inputsInline: true,
+                                previousStatement: null,
+                                nextStatement: null
+                            };
+                        },
+                        javascript: (ui) => {
+                            return function (block) {
+                                let factor = Blockly.JavaScript.valueToCode(block, 'FACTOR') || 0,
+                                    code;
+                                code = `devices.get('${ui.id}').scale(${factor});\n`;
+                                return code;
+                            };
+                        },
+                        pseudo: (ui) => {
+                            return function (block) {
+                                let factor = Blockly.Pseudo.valueToCode(block, 'FACTOR') || 0,
+                                    code;
+                                code = `${ui.id}.setSizeTo(${factor});\n`;
+                                return code;
+                            };
+                        }
+                    });
+                }
                 this.legacyBlocks.push({
                     block: (ui) => {
                         return {
@@ -515,44 +534,48 @@
                         };
                     }
                 });
-                this.blocks.push({
-                    block: (ui) => {
-                        return {
-                            id: 'ui_size',
-                            message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_SIZE}`,
-                            output: 'Number'
-                        };
-                    },
-                    javascript: (ui) => {
-                        return function () {
-                            return [`devices.get('${ui.id}').getSize()`];
-                        };
-                    },
-                    pseudo: (ui) => {
-                        return function () {
-                            return [`${ui.id}.size`];
-                        };
-                    }
-                });
-                this.blocks.push({
-                    block: (ui) => {
-                        return {
-                            id: 'ui_rotation',
-                            message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_ROTATION}`,
-                            output: 'Number'
-                        };
-                    },
-                    javascript: (ui) => {
-                        return function () {
-                            return [`devices.get('${ui.id}').getRotation()`];
-                        };
-                    },
-                    pseudo: (ui) => {
-                        return function () {
-                            return [`${ui.id}.rotation`];
-                        };
-                    }
-                });
+                if (!this.scaleDisabled) {
+                    this.blocks.push({
+                        block: (ui) => {
+                            return {
+                                id: 'ui_size',
+                                message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_SIZE}`,
+                                output: 'Number'
+                            };
+                        },
+                        javascript: (ui) => {
+                            return function () {
+                                return [`devices.get('${ui.id}').getSize()`];
+                            };
+                        },
+                        pseudo: (ui) => {
+                            return function () {
+                                return [`${ui.id}.size`];
+                            };
+                        }
+                    });
+                }
+                if (!this.rotationDisabled) {
+                    this.blocks.push({
+                        block: (ui) => {
+                            return {
+                                id: 'ui_rotation',
+                                message0: `${ui.name}: ${Blockly.Msg.BLOCK_UI_ROTATION}`,
+                                output: 'Number'
+                            };
+                        },
+                        javascript: (ui) => {
+                            return function () {
+                                return [`devices.get('${ui.id}').getRotation()`];
+                            };
+                        },
+                        pseudo: (ui) => {
+                            return function () {
+                                return [`${ui.id}.rotation`];
+                            };
+                        }
+                    });
+                }
             }
             toJSON () {
                 let plain = super.toJSON.call(this);

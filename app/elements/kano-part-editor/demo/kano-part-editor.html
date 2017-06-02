@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
+        <link rel="import" href="../../../bower_components/web-components/kano-style/typography.html">
+        <link rel="import" href="../kano-part-editor.html">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-family: var(--font-body);
+            }
+            demo-snippet {
+                --demo-snippet-demo: {
+                };
+            }
+        </style>
+    </head>
+    <body unresolved>
+        <div class="vertical-section-container">
+            <h3>Button or other UI elements</h3>
+            <demo-snippet>
+                <template>
+                    <template is="dom-bind" id="bind">
+                        <kano-part-editor selected="{{part}}"></kano-part-editor>
+                    </template>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let b = document.getElementById('bind');
+                            b.part = {
+                                type: 'button',
+                                name: 'Button',
+                                customizable: {
+                                    properties: [{
+                                        key: 'label',
+                                        type: 'text',
+                                        label: 'Label'
+                                    }],
+                                    style: ['background-color']
+                                },
+                                userProperties: {
+                                    label: 'Click me'
+                                },
+                                userStyle: {
+                                    'background-color': '#70C222'
+                                },
+                                configPanel: 'kano-ui-editor'
+                            }
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+            <h3>Button or other UI elements</h3>
+            <demo-snippet>
+                <template>
+                    <template is="dom-bind" id="bind2">
+                        <link rel="import" href="../../kano-light-animation-editor/kano-light-animation-editor.html">
+                        <kano-part-editor selected="{{part}}"></kano-part-editor>
+                    </template>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            let b = document.getElementById('bind2');
+                            b.part = {
+                                type: 'light-animation',
+                                name: 'Light Animation',
+                                configPanel: 'kano-light-animation-editor',
+                                customizable: {
+                                    properties: [{
+                                        key: 'width',
+                                        type: 'range',
+                                        label: 'Width'
+                                    },{
+                                        key: 'height',
+                                        type: 'range',
+                                        label: 'Height'
+                                    },{
+                                        key: 'speed',
+                                        type: 'range',
+                                        label: 'Speed',
+                                        min: 1,
+                                        max: 30
+                                    },{
+                                        key: 'bitmaps',
+                                        type: 'bitmap-animation',
+                                        label: 'Bitmaps'
+                                    }],
+                                    style: []
+                                },
+                                userProperties: {
+                                    width: 5,
+                                    height: 5,
+                                    speed: 15,
+                                    bitmaps: [['#000000']]
+                                },
+                            }
+                        });
+                    </script>
+                </template>
+            </demo-snippet>
+        </div>
+    </body>
+</html>

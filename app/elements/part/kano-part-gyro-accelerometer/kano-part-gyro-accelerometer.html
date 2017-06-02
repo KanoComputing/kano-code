@@ -1,59 +1,36 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
 <link rel="import" href="../kano-ui-behavior.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/gyro-accelerometer.html">
-<dom-module id="kano-part-gyro-accelerometer">
-    <style>
-    :host {
-        display: block;
-    }
+<script type="text/javascript">
+    /* globals Polymer, Kano */
 
-    :host .gyro-accel-vis {
-        border-radius: 50%;
-        width: 70px;
-        height: 70px;
-    }
-    </style>
-    <template>
-        <div class="gyro-accel-vis" style$="background-color: [[model.colour]]; {{getVisStyle(lastAccelVector)}}">
-        </div>
-    </template>
-    <script type="text/javascript">
-        /* globals Polymer, Kano */
-
-        Polymer({
-            is: 'kano-part-gyro-accelerometer',
-            behaviors: [Kano.MakeApps.PartsAPI['gyro-accelerometer'],
-                        Kano.Behaviors.UIBehavior],
-            properties: {
-                lastGyroVector: {
-                    type: Object,
-                    value: {x: 0.0, y: 0.0, z: 0.0}
-                },
-                lastAccelVector: {
-                    type: Object,
-                    value: {x: 0.0, y: 0.0, z: 0.0}
-                }
+    Polymer({
+        is: 'kano-part-gyro-accelerometer',
+        behaviors: [
+            Kano.MakeApps.PartsAPI['gyro-accelerometer'],
+            Kano.Behaviors.UIBehavior
+        ],
+        properties: {
+            lastGyroVector: {
+                type: Object,
+                value: {x: 0.0, y: 0.0, z: 0.0}
             },
-            attached () {
-                Kano.AppModules.getModule('gyroAccelerometer').connect({
-                    name: 'Make Apps'
-                });
-            },
-            getVisStyle (accel) {
-                return `background-image: linear-gradient(${this.getAngle(accel)}deg, white 50%, transparent 50%)`;
-            },
-            getAngle (vec) {
-                let ref = {x: 1, y: 0},
-                    dot = (ref.x * vec.x + ref.y * vec.y),
-                    det = (ref.x * vec.y + ref.y * vec.x),
-                    angleRad = Math.atan2(det, dot);
-
-                if (isNaN(angleRad)) {
-                    return 0;
-                } else {
-                    return angleRad * 180 / Math.PI;
-                }
+            lastAccelVector: {
+                type: Object,
+                value: {x: 0.0, y: 0.0, z: 0.0}
             }
-        });
-    </script>
-</dom-module>
+        },
+        getAngle (vec) {
+            let ref = {x: 1, y: 0},
+                dot = (ref.x * vec.x + ref.y * vec.y),
+                det = (ref.x * vec.y + ref.y * vec.x),
+                angleRad = Math.atan2(det, dot);
+
+            if (isNaN(angleRad)) {
+                return 0;
+            } else {
+                return angleRad * 180 / Math.PI;
+            }
+        }
+    });
+</script>

@@ -1,20 +1,23 @@
 <script type="text/javascript">
 
     (function (Kano){
-        let REGISTERY = {};
+        let REGISTRY = {};
 
         Kano.Behaviors = Kano.Behaviors || {};
-        
+
         // @polymerBehavior
         Kano.Behaviors.AppElementRegistryBehavior = {
             _registerElement (id, el) {
-                REGISTERY[id] = el;
+                REGISTRY[id] = el;
             },
             _getElement (id) {
-                return REGISTERY[id];
+                return REGISTRY[id];
+            },
+            _getElementList () {
+                return Object.keys(REGISTRY).filter(id => !!REGISTRY[id]);
             }
         };
-        
+
     })(window.Kano = window.Kano || {});
-    
+
 </script>

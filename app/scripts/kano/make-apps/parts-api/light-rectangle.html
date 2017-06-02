@@ -8,6 +8,8 @@
 
         LightRectangle = {
             setWidth (w) {
+                let x = this.getX();
+                    w = this.limitValue(this.model, 'width', w);
                 this.set('model.userProperties.width', w);
                 this._updateLightboard();
             },
@@ -15,6 +17,7 @@
                 return parseInt(this.get('model.userProperties.width'));
             },
             setHeight (h) {
+                h = this.limitValue(this.model, 'height', h);
                 this.set('model.userProperties.height', h);
                 this._updateLightboard();
             },
@@ -39,6 +42,7 @@
                             width: parseInt(this.model.userProperties.width),
                             height: parseInt(this.model.userProperties.height),
                             color: this.model.userProperties.color,
+                            visible: this.model.visible,
                             type: 'rectangle',
                             force
                         };

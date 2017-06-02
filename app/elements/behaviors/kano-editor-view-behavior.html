@@ -20,6 +20,9 @@
         listeners: {
             'mode-ready': '_onModeReady'
         },
+        attached () {
+            this.exitUrl = Kano.MakeApps.config.PROJECTS_URL;
+        },
         _onModeReady () {
             Kano.MakeApps.Parts.init(Kano.MakeApps.config);
             Kano.MakeApps.Blockly.register(window.Blockly);

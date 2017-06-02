@@ -9,6 +9,7 @@
 
 <link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
 <link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
+<link rel="import" href="../../elements/kano-editor-topbar/kano-editor-topbar.html">
 
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
@@ -30,6 +31,12 @@
     }
     paper-dialog {
         border-radius: 5px;
+        overflow: hidden;
+        background: transparent;
+    }
+    paper-dialog#share-modal kano-share-modal {
+        padding: 0px;
+        margin: 0px;
     }
     :host(.dragging) * {
         pointer-events: none;
@@ -60,16 +67,6 @@
         font-size: 32px;
         font-weight: 200;
     }
-    @media screen and (max-width: 1200px) {
-         #share-modal {
-            max-width: 900px;
-         }
-    }
-    @media screen and (max-width: 960px) {
-          #share-modal {
-              max-width: 330px;
-          }
-    }
     </style>
     <template>
         <kano-app-editor
@@ -82,8 +79,14 @@
             on-share="_pauseAndShare"
             mode="[[mode]]"
             remix-mode="[[remixMode]]"
-            show-share-button></kano-app-editor>
-        <paper-dialog id='error-dialog' with-backdrop>
+            show-share-button>
+            <kano-editor-topbar
+                exit-url="[[exitUrl]]"
+                user="[[user]]"
+                profile="[[user.profile]]"
+                slot="above-code"></kano-editor-topbar>
+        </kano-app-editor>
+        <paper-dialog id="error-dialog" with-backdrop>
             <h2 class="title">{{error.title}}</h2>
             <p class="description">{{error.description}}</p>
         </paper-dialog>
@@ -96,7 +99,13 @@
         </paper-dialog>
         <div class="dragoverlay" id="dropoverlay">
             <p id="overlay-text">Drop a file here to load the app</p>
-            <iron-image id="overlay-character" src="/assets/stories/background_color/color-character.png" preload sizing="contain" width="300" height="400"></iron-image>
+            <iron-image
+                id="overlay-character"
+                src="/assets/stories/background_color/color-character.png"
+                preload
+                sizing="contain"
+                width="300"
+                height="400"></iron-image>
         </div>
     </template>
 </dom-module>
@@ -105,7 +114,10 @@
     /* globals Polymer, Kano */
     Polymer({
         is: 'kano-view-editor',
-        behaviors: [Kano.Behaviors.SharingBehavior, Kano.Behaviors.EditorViewBehavior],
+        behaviors: [
+            Kano.Behaviors.SharingBehavior,
+            Kano.Behaviors.EditorViewBehavior
+        ],
         properties: {
             context: Object,
             addedParts: {
@@ -135,6 +147,12 @@
                 },
                 notify: true
             }
+        },
+        observers: [
+            '_onAddedPartsChanged(addedParts.splices)'
+        ],
+        listeners: {
+            'parts-changed': '_partsChanged'
         },
         attached () {
             this._onDragover = this._onDragover.bind(this);
@@ -208,6 +226,9 @@
         },
         _onDragenter (e) {
             let target = e.path ? e.path[0] : e.target;
+            if (e.dataTransfer.effectAllowed === 'move') {
+                return;
+            }
             if (target !== this) {
                 this.toggleClass('dragging', true);
             } else {
@@ -351,6 +372,7 @@
                             this.set('mode', Kano.MakeApps.Mode.modes[json.mode]);
                             this._filterParts();
                             this.editor.load(json, Kano.MakeApps.Parts.list);
+                            this.remixedShare = res.body.item;
                         }).catch(err => {
                             console.error('loading failed', err);
                             this.set('error.title', 'Loading failed');
@@ -378,22 +400,37 @@
             return modeFromQs ? modeFromQs : 'normal';
         },
         ready () {
-            let hardwareAPI = new Kano.MakeApps.HardwareAPI();
+            Kano.MakeApps.config.HOST = Kano.Util.Router.parseQsParam(this.context.querystring, 'host') || Kano.MakeApps.config.HOST;
+            Kano.MakeApps.config.PORT = Kano.Util.Router.parseQsParam(this.context.querystring, 'port') || Kano.MakeApps.config.PORT;
+            Kano.MakeApps.config.WORLD_URL = Kano.Util.Router.parseQsParam(this.context.querystring, 'worldUrl') || Kano.MakeApps.config.WORLD_URL;
+
             this.loaded = false;
             this.editor = this.$.editor;
             this.editor.addEventListener('change', this.save.bind(this));
             this.modal = this.$['share-modal'];
 
-            Kano.MakeApps.config.HOST = Kano.Util.Router.parseQsParam(this.context.querystring, 'host') || Kano.MakeApps.config.HOST;
-            Kano.MakeApps.config.PORT = Kano.Util.Router.parseQsParam(this.context.querystring, 'port') || Kano.MakeApps.config.PORT;
-
-            hardwareAPI.config(Kano.MakeApps.config);
+            this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
+            this.hardwareAPI.on('new-part-request', (e) => {
+                this.fire('iron-signal', { name: 'new-part-request', data: e.detail });
+            });
 
             Kano.MakeApps.Mode.init(Kano.MakeApps.config);
             Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
-            Kano.AppModules.init(Object.assign({ hardwareAPI }, Kano.MakeApps.config));
+            Kano.AppModules.init(Object.assign({ hardwareAPI: this.hardwareAPI }, Kano.MakeApps.config));
 
             this.mode = Kano.MakeApps.Mode.modes[this._getMode(this.context)];
+        },
+        _onAddedPartsChanged () {
+            if (this.hardwareAPI) {
+                this.hardwareAPI.setParts(this.addedParts);
+            }
+        },
+        _partsChanged () {
+            this.debounce('parts-changed', () => {
+                if (this.hardwareAPI) {
+                    this.hardwareAPI.requestDeviceUpdate();
+                }
+            }, 300);
         },
         save () {
             let modeId = this.mode.id;

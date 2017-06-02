@@ -1,5 +1,5 @@
 <link rel="import" href="./app-module.html">
-<script src="../pixel-font.js"></script>
+<link rel="import" href="../pixel-font.html">
 <script>
     (function (Kano) {
         class LightboardModule extends Kano.AppModules.AppModule {
@@ -8,6 +8,8 @@
                 this.backgroundColor = '#000000';
                 this.lights = new Array(128);
                 this.shapes = {};
+                this.scrolling = false;
+                this.scrollStack = [];
                 this.debounceId = null;
                 this.bitmap = new Array(128);
 
@@ -20,8 +22,9 @@
                 this.addMethod('scroll', '_scroll');
                 this.addMethod('on', '_on');
                 this.addMethod('removeListener', '_removeListener');
+                this.addMethod('removeAllListeners', '_removeAllListeners');
                 this.addMethod('updateOrCreateShape', '_updateOrCreateShape');
-                this.addMethod('connect', '_connect');
+                this.addMethod('removeShape', '_removeShape');
                 this.addMethod('getBitmap', '_getBitmap');
                 this.addMethod('clear', '_clear');
             }
@@ -34,7 +37,10 @@
                 this.lights = new Array(128);
                 this.bitmap = new Array(128);
                 this.shapes = {};
-                this.currentAnimation = null;
+                this.scrollStack = [];
+                this.scrolling = false;
+                clearTimeout(this.scrollNextTimeout);
+                clearTimeout(this.animateFrameTimeout);
             }
             static getIndex (x, y) {
                 return LightboardModule.coordToIndex(x, y, 16);
@@ -51,8 +57,21 @@
                 };
             }
 
+            /* The UI doesn't allow more than one lightboard at the minute so
+             * get all connected lightboards and do the action on all of them.
+             */
+            _getAllLightboards () {
+                return this.api.getAllDevices().filter((dev) => {
+                    return dev.product === 'lightboard';
+                });
+            }
+
             drawLights () {
-                return this.api.light.on(this.bitmap.slice(0));
+                let bitmap = this.bitmap.slice(0);
+
+                this._getAllLightboards().forEach((lightboard) => {
+                    lightboard.drawBitmap(bitmap);
+                });
             }
 
             updateAndSync (force, cb) {
@@ -64,7 +83,7 @@
                     this.throttle('updateAndSync', () => {
                         this.drawLights();
                         cb(this.bitmap);
-                    }, 1000 / 20);
+                    }, 1000 / 15);
                 }
             }
 
@@ -78,18 +97,22 @@
                 // Generate a bitmap combining background color, shapes and lights
                 Object.keys(this.shapes).forEach((key) => {
                     shape = this.shapes[key];
+                    if (!shape.visible) {
+                        return;
+                    }
                     if (shape.type === 'rectangle') {
-                        for (let x = shape.x; x < shape.x + shape.width; x++) {
-                            for (let y = shape.y; y < shape.y + shape.height; y++) {
+                        for (var x = shape.x; x < shape.x + shape.width; x++) {
+                            for (var y = shape.y; y < shape.y + shape.height; y++) {
                                 shapesBitmap[LightboardModule.getIndex(x, y)] = shape.color;
                             }
                         }
                     } else if (shape.type === 'circle') {
                         let distance,
                             index;
-                        for (let x = -shape.radius; x <= shape.radius; x++) {
-                            for (let y = -shape.radius; y <= shape.radius; y++) {
-                                distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+
+                        for (var x = -shape.radius; x <= shape.radius; x++) {
+                            for (var y = -shape.radius; y <= shape.radius; y++) {
+                                distance = Math.sqrt(x * x + y * y);
                                 if (shape.radius >= distance &&
                                     shape.x + x <= 15 &&
                                     shape.x + x >= 0 &&
@@ -125,6 +148,11 @@
             _updateOrCreateShape (id, shape, cb) {
                 this.shapes[id] = shape;
                 this.updateAndSync(shape.force, cb);
+            }
+
+            _removeShape (id, cb) {
+                delete this.shapes[id];
+                this.updateAndSync(true, cb);
             }
 
             _turnOn (light, color, cb) {
@@ -173,13 +201,13 @@
                 this.updateAndSync(false, cb);
             }
 
-            _animateText (animationFrames, animationTime, speed, callback) {
-                if (animationFrames.length && this.currentAnimation === animationTime){
+            _animateText (animationFrames, speed, callback) {
+                if (animationFrames.length) {
                     this.bitmap = animationFrames.shift();
                     this.drawLights();
-                    setTimeout(() => {
+                    this.animateFrameTimeout = setTimeout(() => {
                         callback(this.bitmap);
-                        this._animateText(animationFrames, animationTime, speed, callback);
+                        this._animateText(animationFrames, speed, callback);
                     }, speed);
                 }
 
@@ -187,39 +215,59 @@
 
             _clear (cb) {
                 this.lights = new Array(128);
-                this.bitmap = new Array(128);
                 this.updateAndSync(false, cb);
             }
 
             _scroll (text, color, backgroundColor, speed, callback) {
-                speed = (100 / speed) * 250;
-                let animationFrames = Kano.PixelFont.generateAnimation(text, color, backgroundColor);
-
-                this.currentAnimation = Date.now();
-                this._animateText(animationFrames, this.currentAnimation, speed, callback);
+                let scrollItem = {
+                    text: text,
+                    color: color,
+                    backgroundColor: backgroundColor,
+                    speed: speed,
+                    callback: callback
+                }
+                this.scrollStack.push(scrollItem);
+                if (!this.scrolling) {
+                    this._scrollNext();
+                }
             }
 
-            _on () {
-                this.api.on.apply(this.api, arguments);
+            _scrollNext () {
+                let item = this.scrollStack.shift();
+                if (!item) {
+                    this.scrolling = false;
+                    return;
+                }
+                this.scrolling = true;
+                item.speed = (100 / item.speed) * 250;
+                let animationFrames = Kano.PixelFont.generateAnimation(item.text, item.color, item.backgroundColor);
+                this._animateText(animationFrames, item.speed, item.callback);
+
+                this.scrollNextTimeout = setTimeout(() => {
+                    this._scrollNext();
+                }, item.speed * animationFrames.length);
             }
 
-            _removeListener () {
-                this.api.removeListener.apply(this.api, arguments);
+            _on (name, callback) {
+                this._getAllLightboards().forEach((lightboard) => {
+                    lightboard.on(name, callback);
+                });
             }
 
-            /**
-             * This method will only be called by Kano Code in a remote context to connect to the socket.io server
-             * But anyways, the abstract version of the Hardware API implements stub methods to fail silently
-             */
-            _connect (info) {
-                this.api.connect();
-                this.api.on('connect', () => {
-                    this.api.emit('lightboard:init', info);
+            _removeListener (name, callback) {
+                this._getAllLightboards().forEach((lightboard) => {
+                    lightboard.removeListener(name, callback);
+                });
+            }
+
+            _removeAllListeners (name) {
+                this._getAllLightboards().forEach((lightboard) => {
+                    lightboard.removeAllListeners(name);
                 });
             }
         }
 
-        Kano.AppModules.modules['lightboard'] = new LightboardModule();
+        Kano.AppModules.modules.lightboard = new LightboardModule();
 
     })(window.Kano = window.Kano || {});
 </script>

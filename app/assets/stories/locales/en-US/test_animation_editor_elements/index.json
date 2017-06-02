@@ -1,0 +1,250 @@
+{
+    "id": "test_animation_editor_elements",
+    "name": "Animation editor",
+    "description": "",
+    "scenes": [{
+        "id": "_0",
+        "component": "common/editor",
+        "data": {
+            "steps": [{
+                "banner": {
+                    "text": "open the parts thingy"
+                },
+                "beacon": {
+                    "target": "add-part-button"
+                },
+                "validation": {
+                    "open-parts": true
+                }
+            },{
+                "beacon": {
+                    "target": "parts-panel-light-animation"
+                },
+                "tooltips": [{
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Add a light animation"
+                }],
+                "validation": {
+                    "add-part": {
+                        "type": "light-animation",
+                        "id": "light_part"
+                    }
+                }
+            },{
+                "beacon": {
+                    "target": {
+                        "path": "parts-controls",
+                        "part": "light_part"
+                    },
+                    "angle": 180,
+                    "offset": 30
+                },
+                "banner": {
+                    "text": "Click on the thingy to open the dialog"
+                },
+                "validation": {
+                    "open-part-settings": {
+                        "target": "light_part"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-width-slider",
+                    "position": "top",
+                    "text": "Change the width mate"
+                }],
+                "validation": {
+                    "selected-part-change": {
+                        "property": "userProperties.width",
+                        "count": 6
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-height-slider",
+                    "position": "top",
+                    "text": "Change the height mate"
+                }],
+                "validation": {
+                    "selected-part-change": {
+                        "property": "userProperties.height",
+                        "count": 6
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-speed-slider",
+                    "position": "top",
+                    "text": "Change the speed mate"
+                }],
+                "validation": {
+                    "selected-part-change": {
+                        "property": "userProperties.speed",
+                        "count": 6
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-palette",
+                    "position": "top",
+                    "text": "This is the palette, you can do things with it",
+                    "next_button": true
+                }]
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-brush-button",
+                    "position": "top",
+                    "text": "This is the brush button. To brush things",
+                    "next_button": true
+                }]
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-bucket-button",
+                    "position": "top",
+                    "text": "This is the bucket button. Click on it to bucket"
+                }],
+                "validation": {
+                    "light-animation-tool-changed": {
+                        "value": "fill"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-colors",
+                    "position": "top",
+                    "text": "Colorful stuff there. Choose one"
+                }],
+                "validation": {
+                    "light-animation-color-changed": true
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-add-color-button",
+                    "position": "top",
+                    "text": "You can also add your color and stuff"
+                }],
+                "validation": {
+                    "light-animation-wheel-open": true
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-color-wheel",
+                    "position": "top",
+                    "text": "Just click somewhere"
+                }],
+                "validation": {
+                    "light-animation-wheel-close": true
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-canvas",
+                    "position": "top",
+                    "text": "Just pain the background with the bucket"
+                }],
+                "validation": {
+                    "light-animation-paint": {
+                        "tool": "fill"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor",
+                    "position": "top",
+                    "text": "Now choose the brush"
+                }],
+                "validation": {
+                    "light-animation-tool-changed": {
+                        "value": "draw"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor",
+                    "position": "top",
+                    "text": "Pick a different color"
+                }],
+                "validation": {
+                    "light-animation-color-changed": true
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-canvas",
+                    "position": "top",
+                    "text": "Paint something here"
+                }],
+                "validation": {
+                    "light-animation-paint": {
+                        "tool": "draw"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-add-frame-button",
+                    "position": "top",
+                    "text": "Add a frame with this"
+                }],
+                "validation": {
+                    "light-animation-add-frame": true
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-canvas",
+                    "position": "top",
+                    "text": "Now paint more stuff on this frame"
+                }],
+                "validation": {
+                    "light-animation-paint": {
+                        "tool": "draw"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor",
+                    "position": "top",
+                    "text": "This button starts your animation. Try it out"
+                }],
+                "beacon": {
+                    "target": "animation-editor-preview-button"
+                },
+                "validation": {
+                    "light-animation-preview-changed": {
+                        "value": "running"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor",
+                    "position": "top",
+                    "text": "Click again when you want to stop"
+                }],
+                "beacon": {
+                    "target": "animation-editor-preview-button"
+                },
+                "validation": {
+                    "light-animation-preview-changed": {
+                        "value": "stopped"
+                    }
+                }
+            },{
+                "tooltips": [{
+                    "location": "animation-editor-frames",
+                    "position": "top",
+                    "text": "Here are your frames, you can choose one to change what's on it. Have fun and close when you're finished",
+                    "next_button": true
+                }]
+            },{
+                "validation": {
+                    "close-part-settings": true
+                }
+            },{
+                "banner": {
+                    "text": "FIN"
+                }
+            }],
+            "parts": ["light-animation"],
+            "mode": "lightboard",
+            "modules": []
+        }
+    }]
+}

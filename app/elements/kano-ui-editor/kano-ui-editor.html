@@ -4,18 +4,18 @@
 <dom-module id="kano-ui-editor">
     <style>
     :host {
-        display: block;
-        @apply(--layout-vertical);
+        display: flex;
         position: relative;
+    }
+    kano-ui-configuration {
+        flex: 1 0 auto;
     }
     </style>
     <template>
-        <div class="content">
-            <kano-ui-configuration id="look"
-                        element="{{selected}}"
-                        mode="[[mode]]"
-                        name="config"></kano-ui-configuration>
-        </div>
+        <kano-ui-configuration id="look"
+                                element="{{selected}}"
+                                mode="[[mode]]"
+                                name="config"></kano-ui-configuration>
     </template>
 </dom-module>
 <script type="text/javascript">
