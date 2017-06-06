@@ -14,6 +14,7 @@
                 this.bitmap = new Array(128);
 
                 this.addLifecycleStep('stop', '_stop');
+                this.addLifecycleStep('start', '_start');
 
                 this.addMethod('turnOn', '_turnOn');
                 this.addMethod('turnOff', '_turnOff');
@@ -33,7 +34,22 @@
                 this.api = opts.hardwareAPI;
             }
 
+            _start () {
+                this.invalidated = false;
+                this.onNextRender = () => {};
+                // Start a rendering loop every 3 frames,
+                // whatever rendering is asked, it will only displayed on next paint
+                this.renderingLoop = setInterval(() => {
+                    if (!this.invalidated) {
+                        return;
+                    }
+                    this.paint();
+                    this.onNextRender(this.bitmap);
+                }, 1000 / 20);
+            }
+
             _stop () {
+                this.invalidated = false;
                 this.lights = new Array(128);
                 this.bitmap = new Array(128);
                 this.shapes = {};
@@ -41,6 +57,7 @@
                 this.scrolling = false;
                 clearTimeout(this.scrollNextTimeout);
                 clearTimeout(this.animateFrameTimeout);
+                clearInterval(this.renderingLoop);
             }
             static getIndex (x, y) {
                 return LightboardModule.coordToIndex(x, y, 16);
@@ -66,6 +83,11 @@
                 });
             }
 
+            paint () {
+                this.updateBitmap();
+                this.drawLights();
+            }
+
             drawLights () {
                 let bitmap = this.bitmap.slice(0);
 
@@ -74,17 +96,10 @@
                 });
             }
 
+            // Force was used before but not anymore. We keep it here to not break the API
             updateAndSync (force, cb) {
-                this.updateBitmap();
-                if (force) {
-                    this.drawLights();
-                    cb(this.bitmap);
-                } else {
-                    this.throttle('updateAndSync', () => {
-                        this.drawLights();
-                        cb(this.bitmap);
-                    }, 1000 / 15);
-                }
+                this.invalidated = true;
+                this.onNextRender = cb;
             }
 
             _getBitmap () {
@@ -101,8 +116,8 @@
                         return;
                     }
                     if (shape.type === 'rectangle') {
-                        for (var x = shape.x; x < shape.x + shape.width; x++) {
-                            for (var y = shape.y; y < shape.y + shape.height; y++) {
+                        for (var x = shape.x; x < shape.x + shape.width; x = x + 1) {
+                            for (var y = shape.y; y < shape.y + shape.height; y = y + 1) {
                                 shapesBitmap[LightboardModule.getIndex(x, y)] = shape.color;
                             }
                         }
@@ -110,8 +125,8 @@
                         let distance,
                             index;
 
-                        for (var x = -shape.radius; x <= shape.radius; x++) {
-                            for (var y = -shape.radius; y <= shape.radius; y++) {
+                        for (var x = -shape.radius; x <= shape.radius; x = x + 1) {
+                            for (var y = -shape.radius; y <= shape.radius; y = y + 1) {
                                 distance = Math.sqrt(x * x + y * y);
                                 if (shape.radius >= distance &&
                                     shape.x + x <= 15 &&
@@ -158,7 +173,7 @@
             _turnOn (light, color, cb) {
                 if (light.type === 'all') {
                     // Set all the saved lights to the color
-                    for (let i = 0; i < 128; i++) {
+                    for (let i = 0; i < 128; i = i + 1) {
                         this.lights[i] = color;
                     }
                     this.updateAndSync(false, cb);

@@ -114,7 +114,8 @@ Polymer({
         'save-button-clicked': 'share',
         'open-parts-modal': '_openPartsModal',
         'edit-background': '_openBackgroundDialog',
-        'iron-resize': '_refitPartModal'
+        'iron-resize': '_refitPartModal',
+        'feature-not-available-offline': '_openOfflineDialog'
     },
     _openBackgroundDialog () {
         this.$['edit-background-dialog'].open();
@@ -392,7 +393,14 @@ Polymer({
             e.detail.keyboardEvent.preventDefault();
             e.detail.keyboardEvent.stopPropagation();
         }
-        this.fire('share', this.compileApp());
+
+        Kano.MakeApps.Utils.onLine().then((isOnline) => {
+            if (isOnline) {
+                this.fire('share', this.compileApp());
+            } else {
+                this._openOfflineDialog();
+            }
+        });
     },
     compileApp () {
         return {
@@ -835,5 +843,8 @@ Polymer({
         setTimeout(() => {
             this.running = true;
         }, 0);
-    }
+    },
+    _openOfflineDialog () {
+        this._openDialog('feature-not-available-offline');
+    },
 });

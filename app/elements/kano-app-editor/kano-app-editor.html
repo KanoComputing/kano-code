@@ -291,6 +291,18 @@ Example:
                         </div>
                     </div>
                 </div>
+                <div name="feature-not-available-offline">
+                    <div id="badge">
+                        <iron-icon src="/assets/icons/exclamation.svg"></iron-icon>
+                    </div>
+                    <div id="dialog-content">
+                        <h2>[[localize('SHARING_NOT_AVAILABLE', "This feature isn't available offline")]]</h2>
+                        <div>[[localize('CONNECT_TO_INTERNET', "Make sure you're connected to the internet.")]]</div>
+                        <div class="buttons" id="buttons">
+                            <button dialog-confirm class="confirm">[[localize('GOT_IT', 'Got it')]]</button>
+                        </div>
+                    </div>
+                </div>
             </iron-pages>
         </paper-dialog>
         <paper-dialog id="edit-part-dialog" entry-animation="from-big-animation" no-cancel-on-outside-click on-iron-overlay-closed="_partEditorDialogClosed">

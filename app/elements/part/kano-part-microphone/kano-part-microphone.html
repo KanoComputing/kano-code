@@ -1,5 +1,5 @@
 <link rel="import" href="../kano-ui-behavior.html">
-<link rel="import" href="../../../scripts/kano/make-apps/parts-api/base.html">
+<link rel="import" href="../../../scripts/kano/make-apps/parts-api/microphone.html">
 <link rel="import" href="../../../scripts/kano/microphone.html">
 
 <script type="text/javascript">
@@ -7,7 +7,7 @@
 
     Polymer({
         is: 'kano-part-microphone',
-        behaviors: [Kano.MakeApps.PartsAPI.Base, Kano.Behaviors.UIBehavior],
+        behaviors: [Kano.MakeApps.PartsAPI.microphone, Kano.Behaviors.UIBehavior],
         properties: {
             model: {
                 type: Object,
@@ -19,9 +19,7 @@
             this.reset();
         },
         attached () {
-            Kano.Microphone.start().then(() => {
-                this._update();
-            }).catch(error => {
+            Kano.Microphone.start().catch(error => {
                 let message;
                 if (error.name === 'PermissionDeniedError') {
                     message = 'Kano Code needs permission to use your microphone. You can allow access from your browser settings.';
@@ -36,64 +34,25 @@
                 });
             });
         },
-        detached () {
-            clearTimeout(this.timeoutId);
-        },
         start () {
-            Kano.MakeApps.PartsAPI.Base.start.apply(this, arguments);
+            Kano.MakeApps.PartsAPI['microphone'].start.apply(this, arguments);
             this.reset();
         },
         stop () {
-            Kano.MakeApps.PartsAPI.Base.stop.apply(this, arguments);
+            Kano.MakeApps.PartsAPI['microphone'].stop.apply(this, arguments);
             this.reset();
         },
-        _update () {
-            this.volume = Kano.Microphone.getVolume();
-            this.pitch = Kano.Microphone.getPitch();
-
-            if (this.isRunning) {
-                this._executeThresholds();
-            }
-
-            this.timeoutId = setTimeout(this._update.bind(this), 32);
+        get volume() {
+            return Kano.Microphone.getVolume();
         },
-        _executeThresholds () {
-            this.thresholds.forEach((threshold, index, self) => {
-                if (this.volume > threshold.top) {
-                    if (threshold.over && !threshold.isOver) {
-                        self[index].isOver = true;
-                        threshold.cb.call({});
-                    } else if (!threshold.over && threshold.isUnder) {
-                        self[index].isUnder = false;
-                    }
-                } else if (this.volume < threshold.bottom) {
-                    if (threshold.over && threshold.isOver) {
-                        self[index].isOver = false;
-                    } else if (!threshold.over && !threshold.isUnder) {
-                        self[index].isUnder = true;
-                        threshold.cb.call({});
-                    }
-                }
-            });
-        },
-        onVolumeThreshold (value, over, cb) {
-            let threshold = {
-                value: Math.max(0, Math.min(100, value)),
-                over,
-                cb
-            };
-            threshold.top = Math.min(100 - 2.5, threshold.value + 2.5);
-            threshold.bottom = Math.max(2.5, threshold.value - 2.5);
-            this.thresholds.push(threshold);
+        get pitch() {
+            return Kano.Microphone.getPitch();
         },
         getvolume () {
-            return this.volume
+            return this.volume;
         },
         getpitch () {
             return this.pitch;
-        },
-        reset () {
-            this.thresholds = [];
         }
     });
 </script>

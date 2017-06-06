@@ -24,15 +24,19 @@
         Polymer({
             is:'kano-ic-motion',
             properties: {
-                model: Object
-            },
-            attached () {
-                this._updateInterval = setInterval(() => {
-                    this.set('value', Math.round(this.model.lastProximityValue));
-                }, 100);
+                model: {
+                    type: Object,
+                    observer: '_modelChanged'
+                }
             },
             detached () {
                 clearInterval(this._updateInterval);
+            },
+            _modelChanged (model) {
+                clearInterval(this._updateInterval);
+                this._updateInterval = setInterval(() => {
+                    this.set('value', Math.round(this.model.lastProximityValue));
+                }, 100);
             }
         });
     </script>

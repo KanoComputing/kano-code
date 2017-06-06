@@ -102,5 +102,23 @@
             });
         };
 
+        /**
+         * Check for internet connection and return a promise that will
+         * yield a boolean.
+         */
+        Utils.onLine = function () {
+            return fetch(Kano.MakeApps.config.API_URL + "/ping").then((res) => {
+                if (res.ok) {
+                    return res.text().then((body) => {
+                        return body.trim() === 'pong';
+                    });
+                } else {
+                    return false;
+                }
+            }).catch((e) => {
+                return false;
+            });
+        };
+
     })(window.Kano = window.Kano || {});
 </script>

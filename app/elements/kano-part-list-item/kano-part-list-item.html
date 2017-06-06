@@ -96,7 +96,9 @@
 
                 this.templatize(template);
 
-                this.instance = this.stamp();
+                this.instance = this.stamp({
+                    model: this.model
+                });
 
                 while (this.$.controls.firstChild) {
                     this.$.controls.removeChild(this.$.controls.firstChild);

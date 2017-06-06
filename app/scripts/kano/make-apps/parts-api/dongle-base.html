@@ -16,6 +16,7 @@
                 this.mappingChangedEventListener = this.mappingChangedEventListener.bind(this);
                 if (this.model && this.handlers) {
                     this.appModules.getModule(this.module).on(this.model.id + '-mapping-changed', this.mappingChangedEventListener);
+                    this.remapListeners(null, this.appModules.getModule(this.module).getDeviceForPart(this.id), true);
                 }
             },
             onDestroyed () {

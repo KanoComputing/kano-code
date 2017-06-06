@@ -29,14 +29,14 @@
             }
 
             _socketOn (name, cb) {
-                if (this.master.socket) {
-                    this.master.socket.on(name, cb);
+                if (this.master.powerUpSocket) {
+                    this.master.powerUpSocket.on(name, cb);
                 }
             }
 
             _socketRemoveListener (name, cb) {
-                if (this.master.socket) {
-                    this.master.socket.removeListener(name, cb);
+                if (this.master.powerUpSocket) {
+                    this.master.powerUpSocket.removeListener(name, cb);
                 }
             }
 
@@ -70,11 +70,11 @@
             }
 
             setMode (mode) {
-                this.master.socket.emit(`motion-sensor:${this.number}:set-mode`, {mode});
+                this.master.powerUpSocket.emit(`motion-sensor:${this.number}:set-mode`, {mode});
             }
 
             setUpdateInterval (interval) {
-                this.master.socket.emit(`motion-sensor:${this.number}:set-update-interval`, {interval});
+                this.master.powerUpSocket.emit(`motion-sensor:${this.number}:set-update-interval`, {interval});
             }
         }
 
@@ -127,20 +127,21 @@
                         this.networkSocket = HardwareAPI.connect(this.url);
                     }
                     this.socket = this.serial ? this.serialSocket : this.networkSocket;
+                    this.powerUpSocket = this.networkSocket;
 
                     this.updateDevices().then(() => {
-                        this.socket.on('device-added', (info) => {
+                        this.networkSocket.on('device-added', (info) => {
                             const device = HardwareAPI.instanciateDevice(info, this);
                             this.hwapi.addDevice(device);
                         });
 
-                        this.socket.on('device-removed', (info) => {
-                            let device = this.getDeviceById(info.id);
+                        this.networkSocket.on('device-removed', (info) => {
+                            let device = this.hwapi.getDeviceById(this.id + '-' + info.id);
                             this.hwapi.removeDevice(device);
                         });
                     });
 
-                    this.socket.on('disconnect', () => {});
+                    this.networkSocket.on('disconnect', () => {});
 
                     // Tells the Kano Code App to enable OTG control on the Kit
                     if (this.serialSocket) {
@@ -157,7 +158,7 @@
                 const socket = this.socket;
                 // No socket, can't query devices
                 if (socket) {
-                    let ensureConnected = () => {
+                    let ensureConnected = (socket) => {
                         if (!socket.connected) {
                             return new Promise((resolve, reject) => {
                                 socket.on('connect', () => {
@@ -167,7 +168,7 @@
                         }
                         return Promise.resolve();
                     };
-                    return ensureConnected().then(() => {
+                    return ensureConnected(this.networkSocket).then(() => {
                         return HardwareAPI.getTopDevices(this.networkSocket);
                     }).then(devices => {
                         this.devices = devices.map(d => {
@@ -333,6 +334,7 @@
 
                 // Connect to the Kano Code App
                 this.socket = HardwareAPI.connect(this.url);
+                this.powerUpSocket = this.socket;
 
                 ensureConnectionIsOpened = () => {
                     if (!this.socket.connected) {
@@ -443,9 +445,8 @@
                                 newDevice: null
                             }
                         });
-                        delete this.partsToDevicesMap[partId];
 
-                        let part = this._getPartById(partId);
+                        delete this.partsToDevicesMap[partId];
                     }
                 });
             }

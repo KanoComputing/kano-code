@@ -191,10 +191,14 @@
             }
         },
         _displayUserReward (hints) {
+            Kano.MakeApps.Utils.onLine().then((isOnline) => {
+                /* Enable/disable gamification based on internet availability */
+                this._doDisplayUserReward(hints, isOnline);
+            });
+        },
+        _doDisplayUserReward (hints, gamificationEnabled) {
             let headers = new Headers(),
                 flags = Kano.MakeApps.config.getFlags(),
-                //FIXME for demo we turn the gamification enabled always true on this branch
-                gamificationEnabled = true || flags.experiments.indexOf('gamification_modal') !== -1,
                 payload,
                 fakeGamificationData,
                 trackingData = {

@@ -86,8 +86,10 @@
                 width: w + 'px',
                 colour: COLOURS[this.colour]
             };
-            this.setBlockStyle(this.blockCache[this.current.line][this.current.block],
-                        this.state[this.current.line][this.current.block]);
+            this.setBlockStyle(
+                this.blockCache[this.current.line][this.current.block],
+                this.state[this.current.line][this.current.block]
+            );
             this.blockCache[this.current.line][this.current.block].className = 'block last';
 
             this.colour = (this.colour + 1) % COLOURS.length;

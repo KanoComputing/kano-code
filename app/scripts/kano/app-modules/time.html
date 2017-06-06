@@ -7,7 +7,9 @@
                 super();
                 this.timeouts = [];
                 this.intervals = [];
-                this.frames = [];
+                this.frames = {};
+
+                this.incr = 0;
 
                 this.addMethod('every', '_every');
                 this.addMethod('later', '_later');
@@ -15,34 +17,39 @@
                 this.addLifecycleStep('stop', '_stop');
             }
 
+            getId () {
+                return this.incr++;
+            }
+
             _every (interval, unit, callback) {
                 if (unit === 'frames') {
-                    let id,
-                        counter = 0,
-                        oldIdIndex,
-                        func;
+                    let loopId = this.getId(),
+                        startTimestamp,
+                        func, dt, diff;
                     // Round and min to 1
                     interval = Math.max(1, Math.round(interval));
-                    func = () => {
+                    // Time interval between frames
+                    dt = (1000 / 60) * interval;
+                    func = (timestamp) => {
                         // Stop right here is the code is not running
                         if (!this.isRunning) {
+                            startTimestamp = null;
                             return;
                         }
-                        // Only execute the callback on the right frames
-                        if (counter % interval === 0) {
+                        // First time in the loop, start right away
+                        if (!startTimestamp) {
+                            startTimestamp = timestamp;
                             callback();
                         }
-                        counter++;
-                        // Update the id, so that we can cancel the frame at any time
-                        id = requestAnimationFrame(func);
-                        oldIdIndex = this.frames.indexOf(id);
-                        if (this.frames[oldIdIndex]) {
-                            this.frames[oldIdIndex] = id;
-                        } else {
-                            this.frames.push(id);
+                        diff = timestamp - startTimestamp;
+                        // Enough time passed since last frame, execute the code
+                        if (diff >= dt) {
+                            startTimestamp = timestamp;
+                            callback();
                         }
+                        this.frames[loopId] = requestAnimationFrame(func);
                     };
-                    func();
+                    this.frames[loopId] = requestAnimationFrame(func);
                 } else {
                     // Round and min to 1
                     interval = unit === 'milliseconds' ? interval : interval * 1000;
@@ -61,7 +68,11 @@
             _stop () {
                 this.timeouts.forEach((id) => clearTimeout(id));
                 this.intervals.forEach((id) => clearInterval(id));
-                this.frames.forEach((id) => cancelAnimationFrame(id));
+                Object.keys(this.frames).forEach(loopId => cancelAnimationFrame(this.frames[loopId]));
+                this.timeouts = [];
+                this.intervals = [];
+                this.frames = {};
+                this.incr = 0;
             }
         }
 
