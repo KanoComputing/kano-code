@@ -475,6 +475,9 @@ Polymer({
         this.splice('addedParts', index, 1);
         Kano.MakeApps.Parts.freeId(part);
         this.$.workspace.clearSelection();
+
+        // Save the app to localStorage after part is removed
+        localStorage.setItem(`savedApp-${this.mode.id}`, JSON.stringify(this.save()));
     },
     _onPartsSet (parts) {
         if (!this.queuedHardware) {
