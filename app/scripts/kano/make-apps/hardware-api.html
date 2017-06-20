@@ -141,9 +141,6 @@
                         });
                     });
 
-                    this.networkSocket.on('volume', (volume) => {
-                        this.volume = volume;
-                    });
                     this.networkSocket.on('disconnect', () => {});
 
                     // Tells the Kano Code App to enable OTG control on the Kit
@@ -183,38 +180,27 @@
                 }
             }
 
-            getSocket (socketType) {
-                let socket = this.socket;
-                if (socketType) {
-                    socket = this[socketType];
-                }
-                return socket;
-            }
-
             emit (name, detail) {
                 if (this.socket) {
                     this.socket.emit(name, detail);
                 }
             }
 
-            on (name, cb, socketType) {
-                let socket = this.getSocket(socketType);
-                if (socket) {
-                    socket.on(name, cb);
+            on (name, cb) {
+                if (this.socket) {
+                    this.socket.on(name, cb);
                 }
             }
 
-            removeListener (name, cb, socketType) {
-                let socket = this.getSocket(socketType);
-                if (socket) {
-                    socket.removeListener(name, cb);
+            removeListener (name, cb) {
+                if (this.socket) {
+                    this.socket.removeListener(name, cb);
                 }
             }
 
-            removeAllListeners (name, socketType) {
-                let socket = this.getSocket(socketType);
-                if (socket) {
-                    socket.removeAllListeners(name);
+            removeAllListeners (name) {
+                if (this.socket) {
+                    this.socket.removeAllListeners(name);
                 }
             }
         }
