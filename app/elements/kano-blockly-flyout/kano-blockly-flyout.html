@@ -1,5 +1,8 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../kano-blockly/kano-blockly-style.html">
 <dom-module id="kano-blockly-flyout">
     <template>
+        <style include="kano-blockly-style"></style>
         <style>
             :host {
                 display: block;
@@ -8,346 +11,410 @@
             svg {
                 width: 0px;
             }
-            svg path.blocklyPathDark, svg path.blocklyPathLight {
-                display: none;
-            }
-            svg text.blocklyText {
-                fill: white;
-            }
-            svg g.blocklyEditableText {
-                fill: white;
-                fill-opacity: 0.6;
-            }
-            svg .blocklyEditableText text.blocklyText {
-                fill: black;
-                font-size: 16px;
-            }
-            svg .blocklyDraggable {
-                cursor: pointer;
-            }
         </style>
         <div>
             <svg id="svg"></svg>
         </div>
     </template>
     <script>
-        Polymer({
-            is: 'kano-blockly-flyout',
-            properties: {
-                toolbox: {
-                    type: Array,
-                    observer: '_toolboxChanged'
-                },
-                targetWorkspace: {
-                    type: Object
-                },
-                paddingLeft: {
-                    type: Number,
-                    value: 20
-                },
-                separators: {
-                    type: Boolean,
-                    value: false
-                },
-                autoClose: {
-                    type: Boolean,
-                    value: false
-                },
-                noDrag: {
-                    type: Boolean,
-                    value: false
-                }
-            },
-            ready () {
-                this._listeners = [];
-                this._separators = [];
-                this._blockDB = {};
-            },
-            attached () {
-                this._render();
-            },
-            _createWorkspace () {
-                this.ws = new Blockly.WorkspaceSvg({});
-                this.ws.isFlyout = true;
-                this.wsDom = this.ws.createDom();
-                this.svgGroup = Blockly.utils.createSvgElement('g', { 'class': 'kanoBlocklyFlyout' }, null);
-                this.svgGroup.appendChild(this.wsDom);
-                this.$.svg.appendChild(this.svgGroup);
-            },
-            _toolboxChanged (toolbox) {
-                let xmlString,
-                    content,
-                    xml;
 
-                toolbox = toolbox || [];
+        (function () {
 
-                xmlString = toolbox.map(block => {
-                    content = '';
-                    if (block.shadow) {
-                        content = Object.keys(block.shadow).map(field => `<value name="${field}">${block.shadow[field]}</value>`);
+            const BLOCK_SPACING_Y = 12;
+
+            Polymer({
+                is: 'kano-blockly-flyout',
+                properties: {
+                    toolbox: {
+                        type: Array,
+                        observer: '_toolboxChanged'
+                    },
+                    targetWorkspace: {
+                        type: Object
+                    },
+                    paddingLeft: {
+                        type: Number,
+                        value: 20
+                    },
+                    separators: {
+                        type: Boolean,
+                        value: false
+                    },
+                    autoClose: {
+                        type: Boolean,
+                        value: false
+                    },
+                    noDrag: {
+                        type: Boolean,
+                        value: false
                     }
-                    return `<block type="${block.id}">${content}</block>`;
-                }).join('');
+                },
+                ready () {
+                    this._listeners = [];
+                    this._separators = [];
+                    this._rectPool = [];
+                    this._blockDB = {};
+                },
+                attached () {
+                    this.dragAngleRange_ = 70;
+                    Polymer.dom(this.root).appendChild(Blockly.Css.styleSheet_.ownerNode.cloneNode(true));
+                    this._render();
+                },
+                _createRect (opts) {
+                    if (this._rectPool.length) {
+                        return this._rectPool.pop();
+                    } else {
+                        return Blockly.utils.createSvgElement('rect', opts, null);
+                    }
+                },
+                _recycleRect (rect) {
+                    return this._rectPool.push(rect);
+                },
+                _createWorkspace () {
+                    this.ws = new Blockly.WorkspaceSvg({});
+                    this.ws.isFlyout = true;
+                    this.wsDom = this.ws.createDom();
+                    this.svgGroup = Blockly.utils.createSvgElement('g', { 'class': 'kanoBlocklyFlyout' }, null);
+                    this.svgGroup.appendChild(this.wsDom);
+                    this.$.svg.appendChild(this.svgGroup);
+                },
+                _toolboxChanged (toolbox) {
+                    let xmlString,
+                        content,
+                        xml;
 
-                xmlString = `<xml>${xmlString}</xml>`
-                    
-                xml = Blockly.Xml.textToDom(xmlString);
-                this.xmlList = xml.children;
+                    toolbox = toolbox || [];
 
-                if (this.ws) {
+                    xmlString = toolbox.map(block => {
+                        content = '';
+                        if (block.shadow) {
+                            content = Object.keys(block.shadow).map(field => `<value name="${field}">${block.shadow[field]}</value>`);
+                        }
+                        return `<block type="${block.id}">${content}</block>`;
+                    }).join('');
+
+                    xmlString = `<xml>${xmlString}</xml>`
+                        
+                    xml = Blockly.Xml.textToDom(xmlString);
+                    this.xmlList = xml.children;
+
+                    if (this.ws) {
+                        this._renderBlocks();
+                    }
+                },
+                _render () {
+                    this._createWorkspace();
+                    this.ws.scale = this.targetWorkspace.scale;
                     this._renderBlocks();
-                }
-            },
-            _render () {
-                this._createWorkspace();
-                this.ws.scale = this.targetWorkspace.scale;
-                this._renderBlocks();
-            },
-            _updateDB () {
-                this._blockDB = {};
-                this.ws.getAllBlocks().forEach(block => {
-                    this._blockDB[block.type] = block;
-                });
-            },
-            getBlockByType (type) {
-                return this._blockDB[type];
-            },
-            render () {
-                this._renderBlocks();
-            },
-            _renderBlocks () {
-                let cursorX = this.paddingLeft + Blockly.BlockSvg.TAB_WIDTH,
-                    cursorY = 0,
-                    maxWidth = 0,
-                    thisRect, rect, canvas, allBlocks, root, sep, hw, height;
-
-                if (!this.xmlList) {
-                    return;
-                }
-
-                this._clearOldBlocks();
-                this._clearOldSeparators();
-
-                this.$.svg.style.width = '500px';
-                this.$.svg.style.height = '2000px';
-
-                this.blocks = [];
-                for (let i = 0; i < this.xmlList.length; i++) {
-                    this.blocks.push(Blockly.Xml.domToBlock(this.xmlList[i], this.ws));
-                }
-
-                this.blocks.forEach(block => {
-                    hw = block.getHeightWidth();
-                    if (hw.width > maxWidth) {
-                        maxWidth = hw.width;
-                    }
-                });
-
-                maxWidth = Math.max(maxWidth + this.paddingLeft + 20, 200);
-
-                canvas = this.ws.getCanvas();
-                if (!canvas) {
-                    return;
-                }
-
-                canvas.setAttribute('transform', `scale(${this.ws.scale})`);
-
-                for (let i = 0; i < this.blocks.length; i++) {
-                    let block = this.blocks[i];
-                    allBlocks = block.getDescendants();
-                    allBlocks.forEach(child => {
-                        child.isInFlyout = true;
+                },
+                _updateDB () {
+                    this._blockDB = {};
+                    this.ws.getAllBlocks().forEach(block => {
+                        this._blockDB[block.type] = block;
                     });
-                    if (this.separators) {
-                        sep = Blockly.utils.createSvgElement('rect', { height: 1, width: maxWidth, fill: '#37454d' }, null);
-                        sep.setAttribute('transform', `translate(0, ${cursorY})`);
-                        canvas.insertBefore(sep, root);
-                        this._separators.push(sep);
+                },
+                getBlockByType (type) {
+                    return this._blockDB[type];
+                },
+                render () {
+                    this._renderBlocks();
+                },
+                _renderBlocks () {
+                    let cursorX = this.paddingLeft + Blockly.BlockSvg.TAB_WIDTH,
+                        cursorY = 0,
+                        maxWidth = 0,
+                        thisRect, rect, canvas, allBlocks, root, sep, hw, height;
+
+                    if (!this.xmlList) {
+                        return;
                     }
 
-                    cursorY += 12;
-                    
-                    hw = block.getHeightWidth();
-                    block.moveBy(cursorX, cursorY);
-                    cursorY += hw.height + 12;
-                    rect = Blockly.utils.createSvgElement('rect', { 'fill-opacity': 0 }, null);
-                    rect.setAttribute('x', cursorX);
-                    rect.setAttribute('y', cursorY);
-                    rect.setAttribute('width', hw.width);
-                    rect.setAttribute('height', hw.height);
-                    rect.tooltip = block;
-                    Blockly.Tooltip.bindMouseEvents(rect);
-                    root = block.getSvgRoot();
-                    canvas.insertBefore(rect, root);
-                    block.flyoutRect_ = rect;
-                    this._addBlockListeners(root, block, rect);
-                }
-                height = (cursorY + 20) * this.ws.scale;
-                this.$.svg.style.width = maxWidth;
-                this.$.svg.style.height = height;
-                this.fire('size-changed', {
-                    width: maxWidth,
-                    height
-                });
-                this._updateDB();
-            },
-            _clearOldBlocks () {
-                let oldBlocks = this.ws.getTopBlocks(false);
+                    this._clearOldBlocks();
+                    this._clearOldSeparators();
 
-                oldBlocks.forEach(block => {
-                    if (block.workspace === this.ws) {
-                        block.dispose(false, false);
+                    this.$.svg.style.width = '500px';
+                    this.$.svg.style.height = '2000px';
+
+                    this.ws.scale = this.targetWorkspace.scale;
+
+                    this.blocks = [];
+                    for (let i = 0; i < this.xmlList.length; i++) {
+                        this.blocks.push(Blockly.Xml.domToBlock(this.xmlList[i], this.ws));
                     }
-                });
-            },
-            _clearOldSeparators () {
-                if (this._separators) {
-                    this._separators.forEach(sep => {
-                        if (sep.parentNode) {
-                            sep.parentNode.removeChild(sep);
+
+                    this.blocks.forEach(block => {
+                        hw = block.getHeightWidth();
+                        if (hw.width > maxWidth) {
+                            maxWidth = hw.width;
                         }
                     });
-                }
-                this._separators = [];
-            },
-            _addBlockListeners (root, block, rect) {
-                this._listeners = this._listeners || [];
-                this._listeners.push(Blockly.bindEvent_(root, 'mousedown', null, this._blockMouseDown(block)));
-                this._listeners.push(Blockly.bindEvent_(rect, 'mousedown', null, this._blockMouseDown(block)));
-                this._listeners.push(Blockly.bindEvent_(root, 'mouseover', block, block.addSelect));
-                this._listeners.push(Blockly.bindEvent_(root, 'mouseout', block, block.removeSelect));
-                this._listeners.push(Blockly.bindEvent_(rect, 'mouseover', block, block.addSelect));
-                this._listeners.push(Blockly.bindEvent_(rect, 'mouseout', block, block.removeSelect));
-            },
-            _blockMouseDown (block) {
-                return (e) => {
-                    if (this.noDrag) {
-                        this.fire('block-clicked', block);
+
+                    maxWidth = Math.max(maxWidth + this.paddingLeft + 20, 200);
+
+                    canvas = this.ws.getCanvas();
+                    if (!canvas) {
                         return;
                     }
-                    Blockly.terminateDrag_();
-                    // maybe close itself?
-                    //Blockly.hideChaff(true);
-                    if (Blockly.utils.isRightButton(e)) {
-                        // Right-click.
-                        block.showContextMenu_(e);
-                    } else {
-                        // Left-click (or middle click)
-                        Blockly.Css.setCursor(Blockly.Css.Cursor.CLOSED);
-                        // Record the current mouse position.
-                        this.startDragMouseY_ = e.clientY;
-                        this.startDragMouseX_ = e.clientX;
-                        Blockly.Flyout.startDownEvent_ = e;
-                        Blockly.Flyout.startBlock_ = block;
-                        Blockly.Flyout.startFlyout_ = this;
-                        Blockly.Flyout.onMouseUpWrapper_ = Blockly.bindEvent_(document, 'mouseup', this, this._onMouseUp);
-                        Blockly.Flyout.onMouseMoveBlockWrapper_ = Blockly.bindEvent_(document, 'mousemove', this, this._onMouseMoveBlock);
+
+                    canvas.setAttribute('transform', `scale(${this.ws.scale})`);
+
+                    for (let i = 0; i < this.blocks.length; i++) {
+                        let block = this.blocks[i],
+                            hasOutputConnection = !!block.outputConnection;
+                        allBlocks = block.getDescendants();
+                        allBlocks.forEach(child => {
+                            child.isInFlyout = true;
+                        });
+                        if (this.separators) {
+                            sep = this._createRect({ height: 1, width: maxWidth, fill: '#37454d' });
+                            sep.setAttribute('transform', `translate(0, ${cursorY})`);
+                            canvas.insertBefore(sep, root);
+                            this._separators.push(sep);
+                        }
+
+                        cursorY += BLOCK_SPACING_Y;
+                        
+                        hw = block.getHeightWidth();
+                        block.moveBy(cursorX, cursorY);
+                        rect = this._createRect({ 'fill-opacity': 0 });
+                        rect.setAttribute('x', cursorX - (hasOutputConnection ? 6 : 0));
+                        rect.setAttribute('y', cursorY);
+                        rect.setAttribute('width', hw.width);
+                        rect.setAttribute('height', hw.height);
+                        rect.tooltip = block;
+                        Blockly.Tooltip.bindMouseEvents(rect);
+                        root = block.getSvgRoot();
+                        canvas.insertBefore(rect, root);
+                        block.flyoutRect_ = rect;
+                        this._addBlockListeners(root, block, rect);
+                        cursorY += hw.height + 12;
                     }
-                    // This event has been handled.  No need to bubble up to the document.
-                    e.stopPropagation();
-                    e.preventDefault();
-                };
-            },
-            _onMouseUp (e) {
-                if (!this.targetWorkspace.isDragging()) {
-                    // This was a click, not a drag.  End the gesture.
-                    Blockly.Touch.clearTouchIdentifier();
-                    if (this.autoClose) {
+                    height = (cursorY + 20) * this.ws.scale;
+                    this.$.svg.style.width = maxWidth;
+                    this.$.svg.style.height = height;
+                    this.fire('size-changed', {
+                        width: maxWidth,
+                        height
+                    });
+                    this._updateDB();
+                },
+                _clearOldBlocks () {
+                    let oldBlocks = this.ws.getTopBlocks(false);
+
+                    oldBlocks.forEach(block => {
+                        block.flyoutRect_.parentNode.removeChild(block.flyoutRect_);
+                        this._recycleRect(block.flyoutRect_);
+                        if (block.workspace === this.ws) {
+                            block.dispose(false, false);
+                        }
+                    });
+                },
+                _clearOldSeparators () {
+                    if (this._separators) {
+                        this._separators.forEach(sep => {
+                            if (sep.parentNode) {
+                                sep.parentNode.removeChild(sep);
+                            }
+                            this._recycleRect(sep);
+                        });
+                    }
+                    this._separators = [];
+                },
+                _addBlockListeners (root, block, rect) {
+                    this._listeners = this._listeners || [];
+                    this._listeners.push(Blockly.bindEvent_(root, 'mousedown', null, this._blockMouseDown(block)));
+                    this._listeners.push(Blockly.bindEvent_(rect, 'mousedown', null, this._blockMouseDown(block)));
+                    this._listeners.push(Blockly.bindEvent_(root, 'mouseover', block, block.addSelect));
+                    this._listeners.push(Blockly.bindEvent_(root, 'mouseout', block, block.removeSelect));
+                    this._listeners.push(Blockly.bindEvent_(rect, 'mouseover', block, block.addSelect));
+                    this._listeners.push(Blockly.bindEvent_(rect, 'mouseout', block, block.removeSelect));
+                },
+                _blockMouseDown (block) {
+                    return (e) => {
+                        if (this.noDrag) {
+                            this.fire('block-clicked', block);
+                            return;
+                        }
+                        Blockly.terminateDrag_();
+                        // maybe close itself?
+                        //Blockly.hideChaff(true);
+                        if (Blockly.utils.isRightButton(e)) {
+                            // Right-click.
+                            block.showContextMenu_(e);
+                        } else {
+                            // Left-click (or middle click)
+                            Blockly.Css.setCursor(Blockly.Css.Cursor.CLOSED);
+                            // Record the current mouse position.
+                            this.startDragMouseY_ = e.clientY;
+                            this.startDragMouseX_ = e.clientX;
+                            Blockly.Flyout.startDownEvent_ = e;
+                            Blockly.Flyout.startBlock_ = block;
+                            Blockly.Flyout.startFlyout_ = this;
+                            Blockly.Flyout.onMouseUpWrapper_ = Blockly.bindEvent_(document, 'mouseup', this, this._onMouseUp);
+                            Blockly.Flyout.onMouseMoveBlockWrapper_ = Blockly.bindEvent_(document, 'mousemove', this, this._onMouseMoveBlock);
+                        }
+                        // This event has been handled.  No need to bubble up to the document.
                         e.stopPropagation();
                         e.preventDefault();
-                    } else if (!Blockly.WidgetDiv.isVisible()) {
-                        Blockly.Events.fire(new Blockly.Events.Ui(Blockly.Flyout.startBlock_, 'click', undefined, undefined));
+                    };
+                },
+                _onMouseUp (e) {
+                    if (!this.targetWorkspace.isDragging()) {
+                        // This was a click, not a drag.  End the gesture.
+                        Blockly.Touch.clearTouchIdentifier();
+                        if (this.autoClose) {
+                            e.stopPropagation();
+                            e.preventDefault();
+                        } else if (!Blockly.WidgetDiv.isVisible()) {
+                            Blockly.Events.fire(new Blockly.Events.Ui(Blockly.Flyout.startBlock_, 'click', undefined, undefined));
+                        }
                     }
-                }
-                Blockly.terminateDrag_();
-            },
-            _onMouseMoveBlock (e) {
-                if (e.type == 'mousemove' && e.clientX <= 1 && e.clientY == 0 && e.button == 0) {
-                    /* HACK:
-                    Safari Mobile 6.0 and Chrome for Android 18.0 fire rogue mousemove events
-                    on certain touch actions. Ignore events with these signatures.
-                    This may result in a one-pixel blind spot in other browsers,
-                    but this shouldn't be noticeable. */
+                    Blockly.terminateDrag_();
+                },
+                _onMouseMoveBlock (e) {
+                    if (e.type == 'mousemove' && e.clientX <= 1 && e.clientY == 0 && e.button == 0) {
+                        /* HACK:
+                        Safari Mobile 6.0 and Chrome for Android 18.0 fire rogue mousemove events
+                        on certain touch actions. Ignore events with these signatures.
+                        This may result in a one-pixel blind spot in other browsers,
+                        but this shouldn't be noticeable. */
+                        e.stopPropagation();
+                        return;
+                    }
+                    var dx = e.clientX - Blockly.Flyout.startDownEvent_.clientX;
+                    var dy = e.clientY - Blockly.Flyout.startDownEvent_.clientY;
+
+                    var createBlock = this.determineDragIntention_(dx, dy);
+                    if (createBlock) {
+                        Blockly.longStop_();
+                        this._createBlockFunc(Blockly.Flyout.startBlock_)(Blockly.Flyout.startDownEvent_);
+                    } else if (this.dragMode_ == Blockly.DRAG_FREE) {
+                        Blockly.longStop_();
+                        // Do a scroll.
+                        this.onMouseMove_(e);
+                    }
                     e.stopPropagation();
-                    return;
-                }
-                var dx = e.clientX - Blockly.Flyout.startDownEvent_.clientX;
-                var dy = e.clientY - Blockly.Flyout.startDownEvent_.clientY;
-
-                this._createBlockFunc(Blockly.Flyout.startBlock_)(Blockly.Flyout.startDownEvent_);
-                e.stopPropagation();
-            },
-            _createBlockFunc (originBlock) {
-                return (e) => {
-                    if (Blockly.utils.isRightButton(e)) {
-                        // Right-click.  Don't create a block, let the context menu show.
-                        return;
+                },
+                determineDragIntention_ (dx, dy) {
+                    if (this.dragMode_ == Blockly.DRAG_FREE) {
+                        // Once in free mode, always stay in free mode and never create a block.
+                        return false;
                     }
-                    if (originBlock.disabled) {
-                        // Beyond capacity.
-                        return;
+                    var dragDistance = Math.sqrt(dx * dx + dy * dy);
+                    if (dragDistance < this.DRAG_RADIUS) {
+                        // Still within the sticky drag radius.
+                        this.dragMode_ = Blockly.DRAG_STICKY;
+                        return false;
+                    } else {
+                        if (this.isDragTowardWorkspace_(dx, dy)) {
+                            // Immediately create a block.
+                            return true;
+                        } else {
+                            // Immediately move to free mode - the drag is away from the workspace.
+                            this.dragMode_ = Blockly.DRAG_FREE;
+                            return false;
+                        }
                     }
-                    Blockly.Events.disable();
-                    try {
-                        var block = this._placeNewBlock(originBlock);
-                    } finally {
-                        Blockly.Events.enable();
+                },
+                isDragTowardWorkspace_ (dx, dy) {
+                    // Direction goes from -180 to 180, with 0 toward the right and 90 on top.
+                    const dragDirection = Math.atan2(dy, dx) / Math.PI * 180;
+
+                    const range = this.dragAngleRange_;
+                    // Check for left or right dragging.
+                    if ((dragDirection < range && dragDirection > -range) || (dragDirection < -180 + range || dragDirection > 180 - range)) {
+                        return true;
                     }
-                    if (Blockly.Events.isEnabled()) {
-                        Blockly.Events.setGroup(true);
-                        Blockly.Events.fire(new Blockly.Events.Create(block));
+                    return false;
+                },
+                _createBlockFunc (originBlock) {
+                    return (e) => {
+                        if (Blockly.utils.isRightButton(e)) {
+                            // Right-click.  Don't create a block, let the context menu show.
+                            return;
+                        }
+                        if (originBlock.disabled) {
+                            // Beyond capacity.
+                            return;
+                        }
+                        Blockly.Events.disable();
+                        try {
+                            var block = this._placeNewBlock(originBlock);
+                        } finally {
+                            Blockly.Events.enable();
+                        }
+                        if (Blockly.Events.isEnabled()) {
+                            Blockly.Events.setGroup(true);
+                            Blockly.Events.fire(new Blockly.Events.Create(block));
+                        }
+                        this.fire('block-created');
+                        // Start a dragging operation on the new block.
+                        block.onMouseDown_(e);
+                        Blockly.dragMode_ = Blockly.DRAG_FREE;
+                        block.setDragging_(true);
+                    };
+                },
+                _placeNewBlock (originBlock) {
+                    const svgRootOld = originBlock.getSvgRoot();
+                    const svgRootOldPos = Blockly.utils.getRelativeXY(svgRootOld);
+                    if (!svgRootOld) {
+                        throw 'originBlock is not rendered.';
                     }
-                    this.fire('block-created');
-                    // Start a dragging operation on the new block.
-                    block.onMouseDown_(e);
-                    Blockly.dragMode_ = Blockly.DRAG_FREE;
-                    block.setDragging_(true);
-                };
-            },
-            _placeNewBlock (originBlock) {
-                var targetWorkspace = this.targetWorkspace;
-                var svgRootOld = originBlock.getSvgRoot();
-                if (!svgRootOld) {
-                    throw 'originBlock is not rendered.';
+
+                    const targetWorkspace = this.targetWorkspace;
+
+                    // Create the new block by cloning the block in the flyout (via XML).
+                    const xml = Blockly.Xml.blockToDom(originBlock);
+                    const block = Blockly.Xml.domToBlock(xml, targetWorkspace);
+                    const svgRootNew = block.getSvgRoot();
+                    if (!svgRootNew) {
+                        throw 'block is not rendered.';
+                    }
+                    // Offset of the flyout itself
+                    const ownOffset = {
+                        x: this.paddingLeft + Blockly.BlockSvg.TAB_WIDTH,
+                        y: BLOCK_SPACING_Y
+                    };
+
+                    // Retrieve the absolute position of the target workspace
+                    const targetWorkspaceRoot = targetWorkspace.getParentSvg();
+                    const targetWorkspaceRect = targetWorkspaceRoot.getBoundingClientRect();
+
+                    // Retrieve the absolute position of the current workspace
+                    const workspaceRoot = this.ws.svgGroup_;
+                    const workspaceRect = workspaceRoot.getBoundingClientRect();
+
+                    // Compute the offset between the two workspaces
+                    const offset = {
+                        x: workspaceRect.left - targetWorkspaceRect.left,
+                        y: workspaceRect.top - targetWorkspaceRect.top,
+                    };
+
+                    // Position in flyout
+                    const oldPos = {
+                        x: (svgRootOldPos.x - ownOffset.x) * this.ws.scale,
+                        y: (svgRootOldPos.y - ownOffset.y) * this.ws.scale
+                    };
+
+                    // Retrieve the position of the newly created block
+                    const newBlockRect = svgRootNew.getBoundingClientRect();
+                    const newBlockPos = {
+                        // Position the block at 0,0 relatively to the target workspace add the position of the origin block
+                        // and cancel the applied scale
+                        x: (-newBlockRect.left + oldPos.x + workspaceRect.left) * (1 / targetWorkspace.scale),
+                        y: (-newBlockRect.top + oldPos.y + workspaceRect.top) * (1 / targetWorkspace.scale)
+                    };
+
+                    block.moveBy(newBlockPos.x, newBlockPos.y);
+                    return block;
+                },
+                detached () {
+                    while (this.$.svg.firstChild) {
+                        this.$.svg.removeChild(this.$.svg.firstChild);
+                    }
                 }
-                // Figure out where the original block is on the screen, relative to the upper
-                // left corner of the main workspace.
-                var xyOld = Blockly.getSvgXY_(svgRootOld, this.ws);
+            });
 
-                var wsRect = this.ws.getParentSvg().getBoundingClientRect(),
-                    targetWsRect = targetWorkspace.getParentSvg().getBoundingClientRect();
-
-                var x = wsRect.left - targetWsRect.left;
-                var y = wsRect.top - targetWsRect.top;
-
-                xyOld.x += x * targetWorkspace.scale;
-                xyOld.y += y * targetWorkspace.scale;
-
-                // Create the new block by cloning the block in the flyout (via XML).
-                var xml = Blockly.Xml.blockToDom(originBlock);
-                var block = Blockly.Xml.domToBlock(xml, targetWorkspace);
-                var svgRootNew = block.getSvgRoot();
-                if (!svgRootNew) {
-                    throw 'block is not rendered.';
-                }
-                // Figure out where the new block got placed on the screen, relative to the
-                // upper left corner of the workspace.  This may not be the same as the
-                // original block because the flyout's origin may not be the same as the
-                // main workspace's origin.
-                var xyNew = Blockly.getSvgXY_(svgRootNew, targetWorkspace);
-                // Scale the scroll (getSvgXY_ did not do this).
-                xyNew.x += targetWorkspace.scrollX / targetWorkspace.scale - targetWorkspace.scrollX;
-                xyNew.y += targetWorkspace.scrollY / targetWorkspace.scale - targetWorkspace.scrollY;
-
-                // Move the new block to where the old block is.
-                block.moveBy(xyOld.x - xyNew.x, xyOld.y - xyNew.y);
-                return block;
-            },
-            detached () {
-                while (this.$.svg.firstChild) {
-                    this.$.svg.removeChild(this.$.svg.firstChild);
-                }
-            }
-        });
+        })();
     </script>
 </dom-module>
