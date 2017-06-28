@@ -111,7 +111,6 @@
             update (options) {
                 this.url = options.url || null;
                 this.serial = options.serial || false;
-                this.devices = [];
 
                 if (this.url || this.serial) {
                     if (this.socket) {
@@ -179,6 +178,7 @@
                         this.devices = devices.map(d => {
                             return HardwareAPI.instanciateDevice(d, this);
                         });
+                        this.hwapi.reassignDevices();
                     });
                 }
             }
@@ -425,7 +425,7 @@
             }
 
             /**
-             * Ask a socket the connected devices. Times out after 6 seconds
+             * Ask a socket the connected devices. Times out after 20 seconds
              */
             static getTopDevices (socket) {
                 return new Promise((resolve, reject) => {
@@ -438,8 +438,8 @@
                     socket.on('device-update', deviceUpdateCallback);
                     timeoutId = setTimeout(() => {
                         socket.removeListener('device-update', deviceUpdateCallback);
-                        throw new Error('Could not get devices over web sockets after 6 seconds');
-                    }, 6000);
+                        throw new Error('Could not get devices over web sockets after 20 seconds');
+                    }, 20000);
                     socket.emit('request-device-update');
                 });
             }
@@ -501,19 +501,18 @@
              * Find an available match for a device
              */
             _findFreeMatchingPartForDevice (dev) {
-                const preferredPart = HardwareAPI.bindingHistory[dev.serialNumber];
+                const preferredPart = HardwareAPI.bindingHistory[dev.serialNumber],
+                    parts = this.parts || [];
                 if (preferredPart && this._partIsFreeAndMatchesDevice(preferredPart, dev)) {
-                    if (this.parts.indexOf(preferredPart) > -1) {
+                    if (parts.indexOf(preferredPart) > -1) {
                         return preferredPart;
                     } else {
                         delete HardwareAPI.bindingHistory[dev.serialNumber];
                     }
                 }
-                for (let i = 0; i < this.parts.length; i++) {
-                    let part = this.parts[i];
-
-                    if (this._partIsFreeAndMatchesDevice(part, dev)) {
-                        return part;
+                for (let i = 0; i < parts.length; i++) {
+                    if (this._partIsFreeAndMatchesDevice(parts[i], dev)) {
+                        return parts[i];
                     }
                 }
 
@@ -595,7 +594,7 @@
              * Wipe all the bindings between parts and devices and rematch them all
              */
             reassignDevices () {
-                if (!this.parts) {
+                if (!this.parts || this.anyKitDeviceNotReady(this.devices)) {
                     return;
                 }
                 this.debounce('reassign-devices', () => {
@@ -642,16 +641,26 @@
                 return null;
             }
 
+            /**
+             * Returns true if a device is a KitDevice and the slave devices are not setup yet
+             */
+            anyKitDeviceNotReady (devices) {
+                for (let i = 0; i < devices.length; i++) {
+                    if (devices[i] instanceof KitDevice && !devices[i].devices) {
+                        return true;
+                    }
+                }
+            }
+
             _doGetAllDevices (root) {
                 let result = [];
 
                 root.forEach((device) => {
                     result.push(device);
-
-                    if (device instanceof KitDevice) {
-                        this._doGetAllDevices(device.devices).forEach((slave) => {
-                            result.push(slave);
-                        });
+                    if (device instanceof KitDevice && device.devices) {
+                                this._doGetAllDevices(device.devices).forEach((slave) => {
+                                    result.push(slave);
+                                });
                     }
                 });
 

@@ -107,14 +107,16 @@
         listeners: {
             'parts-changed': '_partsChanged',
             'opened-changed': '_onModalChanged',
-            'mode-ready': '_completeHardwareAPISetup'
+            'mode-ready': '_setupHardwareParts'
         },
         observers: [
-            '_addedPartsChanged(addedParts.splices)'
+            '_setupHardwareParts(addedParts.splices)'
         ],
         ready () {
             this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
-            this.setupComplete = false;
+            this.hardwareAPI.on('new-part-request', (e) => {
+                this.fire('iron-signal', { name: 'new-part-request', data: e.detail });
+            });
 
             this.modal = this.$['share-modal'];
 
@@ -156,18 +158,7 @@
                 })
                 .then((progress) => this.updateExtensions(progress));
         },
-        _completeHardwareAPISetup () {
-            if (!this.setupComplete) {
-                this.hardwareAPI.on('new-part-request', (e) => {
-                    this.fire('iron-signal', { name: 'new-part-request', data: e.detail });
-                });
-
-                this.hardwareAPI.setParts(this.addedParts);
-
-                this.setupComplete = true;
-            }
-        },
-        _addedPartsChanged () {
+        _setupHardwareParts () {
             if (this.hardwareAPI) {
                 this.hardwareAPI.setParts(this.addedParts);
             }

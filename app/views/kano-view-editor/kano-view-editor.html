@@ -169,12 +169,30 @@
             }
         },
         observers: [
-            '_onAddedPartsChanged(addedParts.splices)'
+            '_setupHardwareParts(addedParts.splices)',
+            '_setupHardwareParts(hardwareAPI)'
         ],
         listeners: {
             'parts-changed': '_partsChanged',
             'share-successful': '_deactivateSavePrompt',
             'share-attempted': '_deactivateSavePrompt'
+        },
+        ready () {
+            this.loaded = false;
+            this.editor = this.$.editor;
+            this.editor.addEventListener('change', this.save.bind(this));
+            this.modal = this.$['share-modal'];
+
+            this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
+            this.hardwareAPI.on('new-part-request', (e) => {
+                this.fire('iron-signal', { name: 'new-part-request', data: e.detail });
+            });
+
+            Kano.MakeApps.Mode.init(Kano.MakeApps.config);
+            Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
+            Kano.AppModules.init(Object.assign({ hardwareAPI: this.hardwareAPI }, Kano.MakeApps.config));
+
+            this.mode = Kano.MakeApps.Mode.modes[this._getMode(this.context)];
         },
         attached () {
             this._onDragover = this._onDragover.bind(this);
@@ -421,25 +439,8 @@
             var modeFromQs = Kano.Util.Router.parseQsParam(this.context.querystring, 'mode');
             return modeFromQs ? modeFromQs : 'normal';
         },
-        ready () {
-            this.loaded = false;
-            this.editor = this.$.editor;
-            this.editor.addEventListener('change', this.save.bind(this));
-            this.modal = this.$['share-modal'];
-
-            this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
-            this.hardwareAPI.on('new-part-request', (e) => {
-                this.fire('iron-signal', { name: 'new-part-request', data: e.detail });
-            });
-
-            Kano.MakeApps.Mode.init(Kano.MakeApps.config);
-            Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
-            Kano.AppModules.init(Object.assign({ hardwareAPI: this.hardwareAPI }, Kano.MakeApps.config));
-
-            this.mode = Kano.MakeApps.Mode.modes[this._getMode(this.context)];
-        },
-        _onAddedPartsChanged () {
-            if (this.hardwareAPI) {
+        _setupHardwareParts () {
+            if (this.hardwareAPI && this.loaded) {
                 this.hardwareAPI.setParts(this.addedParts);
             }
         },
