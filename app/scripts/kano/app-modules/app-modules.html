@@ -109,11 +109,11 @@
                                     var hwAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config),
                                         self = this;
                                     hwAPI.setParts(Object.keys(this.parts).map(id => this.parts[id]));
-
+                                    this.hwAPI = hwAPI;
                                     this.workspace = this.$['${mode.id}'];
                                     this.appModules = Kano.AppModules.createStandalone();
                                     this.appModules.init(Object.assign({
-                                        hardwareAPI: hwAPI,
+                                        hardwareAPI: this.hwAPI,
                                         restartCodeHandler: function () {
                                             self.fire('restart-code');
                                         }
@@ -131,6 +131,7 @@
                                 },
                                 detached () {
                                     this.appModules.stop();
+                                    this.hwAPI.tearDown();
                                 },
                                 start () {
                                     ${code}

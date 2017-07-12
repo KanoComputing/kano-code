@@ -164,6 +164,10 @@
             removeAllListeners () {
                 this._listeners = {};
             }
+
+            close () {
+                this._socket.close();
+            }
         }
 
         class KitDevice extends Device {
@@ -308,6 +312,15 @@
                 let socket = this.getSocket(socketType);
                 if (socket) {
                     socket.removeAllListeners(name);
+                }
+            }
+
+            tearDown () {
+                if (this.networkSocket) {
+                    this.networkSocket.close();
+                }
+                if (this.serialSocket) {
+                    this.serialSocket.close();
                 }
             }
         }
@@ -458,7 +471,7 @@
 
             // Returns an already opened connection if exists, otherwise creates a new one and returns it
             static connect (url, nativeWS) {
-                if (!HardwareAPI.sockets[url]) {
+                if (!HardwareAPI.sockets[url] || !HardwareAPI.sockets[url].connected) {
                     HardwareAPI.sockets[url] = nativeWS ? new NativeWebSocket(url) : io.connect(url);
                 }
                 return HardwareAPI.sockets[url];
@@ -537,7 +550,7 @@
                             this.removeDevice(device);
                         }
                     });
-
+                    this.emit('ready');
                 });
             }
 
@@ -800,6 +813,13 @@
                 } else {
                     return c.HARDWARE_API_URL;
                 }
+            }
+
+            tearDown () {
+                this.getAllDevices().forEach((device) => {
+                    device.tearDown();
+                });
+                this.socket.close();
             }
         }
 

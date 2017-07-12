@@ -340,6 +340,16 @@
             stop () {
                 Kano.MakeApps.PartsAPI.lightboard.stop.apply(this);
                 this.reset();
+                // IF I AM A SHARE STOP HARDWARE API
+                // This is a dirty check that will be true if inside a share
+                // Newer shares take care of tearing themselves down automatically
+                // this allows older shares to disconnect from hardware once they are detached
+                if (
+                    this.parentNode.tagName.toLowerCase() === 'kano-ui-viewport'
+                    && this.appModules.modules.lightboard.api
+                ) {
+                    this.appModules.modules.lightboard.api.tearDown();
+                }
             },
             reset () {
                 this.clear();
