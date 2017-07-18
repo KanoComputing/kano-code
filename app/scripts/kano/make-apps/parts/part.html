@@ -51,6 +51,8 @@
                 this.removable = typeof opts.removable === 'undefined' ? true : opts.removable;
                 this.supportedHardware = opts.supportedHardware || [];
                 this.fullscreenEdit = opts.fullscreenEdit || false;
+                // Define whether a part can be added more than once in an app
+                this.singleton = opts.singleton || false;
 
             }
             getUniqueName (value, inc=1) {

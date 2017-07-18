@@ -138,6 +138,7 @@
     Kano.MakeApps.Msg.PART_TALKING_FACE_NAME = "Talking face";
     Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_NAME = "Tilt";
     Kano.MakeApps.Msg.PART_MOTION_SENSOR_NAME = "Motion";
+    Kano.MakeApps.Msg.PART_TERMINAL_NAME = "Terminal";
 
     Kano.MakeApps.Msg.BLOCK_TEXT_INPUT_TYPE_IN = "Type in here...";
 

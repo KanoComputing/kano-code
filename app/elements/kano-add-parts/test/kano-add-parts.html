@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../bower_components/web-component-tester/browser.js"></script>
+        <script src="../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+
+        <link rel="import" href="../kano-add-parts.html">
+    </head>
+    <body>
+        <test-fixture id="default">
+            <template>
+                <kano-add-parts></kano-add-parts>
+            </template>
+        </test-fixture>
+        <script>
+
+            function listenOnce (el, event, cb) {
+                let onEvent = function (e) {
+                    el.removeEventListener(event, onEvent);
+                    cb(e);
+                }
+                el.addEventListener(event, onEvent);
+            }
+
+            function eventNotTriggered (el, event, timeout, cb) {
+                let timeoutId;
+                timeout = timeout || 10;
+                listenOnce(el, event, () => {
+                    clearTimeout(timeoutId);
+                });
+                timeoutId = setTimeout(cb, timeout);
+            }
+
+            /* globals suite, test, assert, setup, fixture */
+            suite('<kano-add-parts>', () => {
+                let element;
+                setup(() => {
+                    element = fixture('default');
+                });
+                test('default behaviour', (done) => {
+                    element.availableParts = [{
+                        partType: 'ui',
+                        type: 'box',
+                        label: 'Box'
+                    }];
+
+                    listenOnce(element, 'dom-change', () => {
+                        let itemElement = element.$$('#box'),
+                            button;
+                        assert.isNotNull(itemElement);
+                        button = itemElement.$$('.body');
+                        // Make sure the part-tap event is triggered
+                        listenOnce(itemElement, 'part-tap', () => {
+                            done();
+                        });
+                        MockInteractions.tap(button);
+                    });
+
+                });
+                test('disabled used singletons', (done) => {
+                    element.availableParts = [{
+                        partType: 'ui',
+                        type: 'box',
+                        label: 'Box',
+                        singleton: true
+                    }];
+
+                    element.usedParts = [{
+                        type: 'box'
+                    }];
+
+                    listenOnce(element, 'dom-change', () => {
+                        let itemElement = element.$$('#box'),
+                            button;
+                        assert.isNotNull(itemElement);
+                        button = itemElement.$$('.body');
+                        assert.isNotNull(itemElement.getAttribute('disabled'));
+                        // Make sure the part-tap event is not triggered
+                        eventNotTriggered(itemElement, 'part-tap', 100, () => {
+                            done();
+                        });
+                        MockInteractions.tap(button);
+                    });
+                    
+                });
+                test('Custom UI when set to empty', () => {
+                    let categoriesElement,
+                        customUI;
+                    element = fixture('default');
+
+                    element.empty = true;
+
+                    categoriesElement = element.$$('.categories');
+                    customUI = element.$$('.no-part');
+
+                    assert.isNotNull(categoriesElement.getAttribute('hidden'));
+                    assert.isNull(customUI.getAttribute('hidden'));
+
+                });
+            });
+        </script>
+    </body>
+</html>

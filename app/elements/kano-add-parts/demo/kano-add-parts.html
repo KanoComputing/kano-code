@@ -36,7 +36,7 @@
             <demo-snippet>
                 <template>
                     <template is="dom-bind" id="bind">
-                        <kano-add-parts available-parts="[[availableParts]]"></kano-add-parts>
+                        <kano-add-parts available-parts="[[availableParts]]" used-parts="[[usedParts]]"></kano-add-parts>
                     </template>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
@@ -49,15 +49,20 @@
                             },{
                                 partType: 'ui',
                                 type: 'box',
-                                label: 'Box'
+                                label: 'Box',
+                                singleton: true
                             },{
                                 partType: 'data',
                                 type: 'rss',
                                 label: 'RSS'
                             },{
                                 partType: 'hardware',
-                                type: 'gesture-sensor',
-                                label: 'Gesture'
+                                type: 'motion-sensor',
+                                label: 'Motion'
+                            }];
+
+                            b.usedParts = [{
+                                type: 'box'
                             }];
                         });
                     </script>

@@ -150,6 +150,13 @@
     Blockly.Msg.BLOCK_TEXT_SET  = "set text to %1";
     Blockly.Msg.BLOCK_TEXT_TEXT = "text";
 
+    Blockly.Msg.BLOCK_TERMINAL_TOGGLE  = "toggle %1";
+    Blockly.Msg.BLOCK_TERMINAL_ON = 'on';
+    Blockly.Msg.BLOCK_TERMINAL_OFF = 'off';
+    Blockly.Msg.BLOCK_TERMINAL_PRINT_LINE = 'print line %1';
+    Blockly.Msg.BLOCK_TERMINAL_PRINT = 'print %1';
+    Blockly.Msg.BLOCK_TERMINAL_CLEAR = 'clear';
+
     Blockly.Msg.BLOCK_TEXT_INPUT_CHANGED         = "has changed";
     Blockly.Msg.BLOCK_TEXT_INPUT_PLACEHOLDER     = "placeholder";
     Blockly.Msg.BLOCK_TEXT_INPUT_SET_VALUE       = "set value to %1";

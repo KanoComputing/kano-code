@@ -1,0 +1,19 @@
+<link rel="import" href="./base.html">
+<script>
+    (function (Kano) {
+        let Oscillator, PartsAPI;
+
+        Kano.MakeApps = Kano.MakeApps || {};
+        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+
+        Terminal = {
+            toggle () {},
+            printLine () {},
+            print () {},
+            clear () {}
+        };
+
+        // @polymerBehavior
+        Kano.MakeApps.PartsAPI['terminal'] = Object.assign({}, PartsAPI.Base, Terminal);
+    })(window.Kano = window.Kano || {});
+</script>

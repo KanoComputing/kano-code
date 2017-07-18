@@ -42,6 +42,7 @@ pipeline {
             steps {
                 sh "gulp validate-challenges"
                 sh "xvfb-run --auto-servernum gulp wct"
+                junit allowEmptyResults: true, testResults: 'test-results.xml'
                 // Remove the test folder
                 sh "rm -rf www"
             }

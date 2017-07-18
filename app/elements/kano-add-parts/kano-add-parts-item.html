@@ -12,6 +12,10 @@
                 color: white;
                 overflow: hidden;
             }
+            :host([disabled]) {
+                opacity: 0.4;
+                cursor: default;
+            }
             #label {
                 color: white;
             }
@@ -26,6 +30,9 @@
                 font-family: var(--font-body);
                 cursor: pointer;
                 outline: none;
+            }
+            button[disabled] {
+                cursor: default;
             }
             .number {
                 width: 20px;
@@ -58,14 +65,10 @@
                 display: none !important;
             }
         </style>
-        <button type="button" class="body" on-tap="_tapped">
-            <div class="number" hidden$="[[!count]]">[[count]]</div>
+        <button type="button" class="body" on-tap="_tapped" disabled$="[[disabled]]">
             <div id="content">
                 <iron-icon id="part-icon" icon="parts:[[type]]"></iron-icon>
                 <div id="label">[[label]]</div>
-            </div>
-            <div type="button" class="bin" on-tap="_binTapped" hidden$="[[_isCountZero(count)]]">
-                <iron-icon icon="close" class="clear"></iron-icon>
             </div>
         </button>
     </template>
@@ -74,54 +77,33 @@
             is:'kano-add-parts-item',
             properties: {
                 label: String,
-                count: {
-                    type: Number,
-                    value: 0,
-                    observer: '_countChanged'
-                },
                 type: String,
-                colorFill: String
+                colorFill: String,
+                disabled: Boolean
             },
             listeners: {
                 'mouseenter': '_applyColor',
                 'mouseleave': '_unApplyColor'
             },
             _applyColor () {
+                if (this.disabled) {
+                    return;
+                }
                 this.$['part-icon'].style.fill = this.colorFill;
             },
             _unApplyColor () {
+                if (this.disabled) {
+                    return;
+                }
                 this.$['part-icon'].style.fill = '#8f9195';
             },
             _tapped (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                this.fire('part-tap', this.type);
-            },
-            _binTapped (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                this.fire('bin-tap', this.type);
-            },
-            _countChanged (newValue, oldValue) {
-                this.updateStyles();
-                if (!oldValue && newValue === 1) {
-                    this.$.content.animate({
-                        transform: ['translateX(-20px)', 'translateX(0px)']
-                    }, {
-                        duration: 200,
-                        easing: 'ease-in'
-                    });
-                } else if (!newValue && oldValue == 1) {
-                    this.$.content.animate({
-                        transform: ['translateX(20px)', 'translateX(0px)']
-                    }, {
-                        duration: 200,
-                        easing: 'ease-out'
-                    });
+                if (this.disabled) {
+                    return;
                 }
-            },
-            _isCountZero (count) {
-                return !count;
+                this.fire('part-tap', this.type);
             }
         });
     </script>

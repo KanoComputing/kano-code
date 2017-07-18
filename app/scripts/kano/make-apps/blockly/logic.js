@@ -28,8 +28,8 @@
                         this.appendStatementInput('DO')
                             .appendField(Blockly.Msg.CONTROLS_IF_MSG_THEN);
 
-                        this.setPreviousStatement(null);
-                        this.setNextStatement(null);
+                        this.setPreviousStatement(true);
+                        this.setNextStatement(true);
 
                         this.setColour("%{BKY_LOGIC_HUE}");
                     },
