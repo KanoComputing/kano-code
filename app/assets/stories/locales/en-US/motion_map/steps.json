@@ -1,0 +1,372 @@
+{
+    "steps": [
+       {
+           "banner": {
+               "text": "Please plug in a Motion sensor for this challenge"
+           },
+           "validation": {
+               "add-part": {
+                   "type": "motion-sensor",
+                   "id": "motion_0"
+               }
+           }
+       },
+       {
+           "banner": {
+               "text": "Let's code an app where we use the sensor to control a map",
+               "next_button": true
+           },
+           "beacon": {
+               "target": "banner-button",
+               "offset": 0
+           }
+       },
+        {
+            "banner": {
+                "text": "We can make the map more interesting by using satellite view, open the Map tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "map"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "map"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block changes the display of the map, drag it onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "map#map_type"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "map",
+                        "type": "map#map_type",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>Map</span></kano-value-preview> to <kano-value-preview><span>Satellite</span></kano-value-preview> to display the satellite images"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "satellite"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's make the map zoom in using the sensor, open the Events tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "events"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "events"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Add an event the activates every time the sensor updates, drag this block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "part_event"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "part_event",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drop the block anywhere on your code space"
+            },
+            "beacon": {
+                "target": "blocks-panel",
+                "offset": 300,
+                "angle": 200
+            },
+            "validation": {
+                "blockly": {
+                    "drop": {
+                        "target": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Motion reads data</span></kano-value-preview> so all the code within it is run when the sensor updates"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_1"
+                        },
+                        "value": "motion.proximity-update"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to control the zoom, open the Map tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "map"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "map"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block controls the map zoom level, drag it onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "map#map_zoom"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "map",
+                        "type": "map#map_zoom",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "[tcgiAQt]3.Zh:GX{jw]"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "[tcgiAQt]3.Zh:GX{jw]",
+                            "inputName": "DO"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "[tcgiAQt]3.Zh:GX{jw]"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to use the sensor data, open the Motion tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "motion_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "motion_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "motion_0",
+                        "type": "motion_sensor_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "motion_0",
+                        "type": "motion_sensor_value",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "WGUW~h%t+})3Jr~:r?LB"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "WGUW~h%t+})3Jr~:r?LB",
+                            "inputName": "ZOOM"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "WGUW~h%t+})3Jr~:r?LB"
+                    }
+                },
+                "target": "ZOOM"
+            }
+        },
+        {
+            "banner": {
+                "text": "Move your hand over the sensor and watch the map zoom in",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "You can use latitude and longitude to change the location of the map",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "map",
+        "motion-sensor"
+    ],
+    "modules": [
+        "events"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "map": [
+            "map_type",
+            "map_zoom"
+        ],
+        "events": [
+            "part_event"
+        ],
+        "motion": [
+            "motion_sensor_value"
+        ]
+    },
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[{\"id\":\"map\",\"name\":\"Map\",\"type\":\"map\",\"tagName\":\"kano-ui-map\",\"userStyle\":{\"width\":\"512px\",\"height\":\"384px\"},\"userProperties\":{},\"nonvolatileProperties\":[],\"position\":{\"x\":0,\"y\":0},\"partType\":\"ui\",\"supportedHardware\":[],\"excludeDefaultBlocks\":false,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[],\"style\":[\"width\",\"height\"]},\"rotation\":0,\"scale\":100,\"visible\":true}],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start<\/field><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\"}},\"mode\":\"normal\"}"
+}
