@@ -2,7 +2,17 @@
     "steps": [
        {
            "banner": {
-               "text": "Open the Variables tray"
+               "text": "Let's use list blocks to animate the strings, lists are a way of storing multiple variables in a single place",
+               "next_button": true
+           },
+           "beacon": {
+               "target": "banner-button",
+               "offset": 0
+           }
+       },
+       {
+           "banner": {
+               "text": "Let's create a list, open the Variables tray"
            },
            "beacon": {
                "target": {
@@ -69,7 +79,7 @@
        },
        {
            "banner": {
-               "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringOffsets</span></kano-value-preview>"
+               "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringOffsets</span></kano-value-preview>, this will hold how much each string should shake"
            },
            "beacon": {
                "target": {
@@ -91,7 +101,7 @@
        },
        {
            "banner": {
-               "text": "Open the Lists tray"
+               "text": "We need to set the variable as a list, open the Lists tray"
            },
            "beacon": {
                "target": {
@@ -106,7 +116,7 @@
        },
        {
            "banner": {
-               "text": "Drag the block onto your code space"
+               "text": "This block creates a new list, drag it onto your code space"
            },
            "beacon": {
                "target": {
@@ -124,7 +134,7 @@
        },
        {
            "banner": {
-               "text": "Connect it to this block"
+               "text": "Connect it to the variable"
            },
            "beacon": {
                "target": {
@@ -158,7 +168,7 @@
        },
        {
            "banner": {
-               "text": "Open the Variables tray"
+               "text": "We need some starting values, open the Variables tray"
            },
            "beacon": {
                "target": {
@@ -173,7 +183,7 @@
        },
        {
            "banner": {
-               "text": "Drag the block onto your code space"
+               "text": "This means all the list values will start at 0, drag it onto your code space"
            },
            "beacon": {
                "target": {
@@ -225,7 +235,7 @@
        },
        {
            "banner": {
-               "text": "Open the Variables tray"
+               "text": "Now we need to choose how long the list will be, open the Variables tray"
            },
            "beacon": {
                "target": {
@@ -292,7 +302,7 @@
        },
        {
            "banner": {
-               "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>"
+               "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>, 5 list items for the 5 strings"
            },
            "beacon": {
                "target": {
@@ -314,7 +324,7 @@
        },
        {
            "banner": {
-               "text": "Open this tray"
+               "text": "We'll be using the move by block to move the strings, open this tray"
            },
            "beacon": {
                "target": {
@@ -329,7 +339,7 @@
        },
        {
            "banner": {
-               "text": "Drag the block onto your code space"
+               "text": "This block moves from the current pen position, drag it onto your code space"
            },
            "beacon": {
                "target": {
@@ -347,7 +357,7 @@
        },
        {
            "banner": {
-               "text": "Connect it to this block"
+               "text": "Connect it to this block so we move the pen before drawing the string"
            },
            "beacon": {
                "target": {
@@ -400,7 +410,7 @@
        },
        {
            "banner": {
-               "text": "Open the Math tray"
+               "text": "Now to add shake to the strings with random, open the Math tray"
            },
            "beacon": {
                "target": {
@@ -467,7 +477,17 @@
        },
        {
            "banner": {
-               "text": "Open the Lists tray"
+               "text": "Look at them shake! This is the effect we want but only when the string is strummed",
+               "next_button": true
+           },
+           "beacon": {
+               "target": "banner-button",
+               "offset": 0
+           }
+       },
+       {
+           "banner": {
+               "text": "Use the list we made to only shake the strings that are played, open the Lists tray"
            },
            "beacon": {
                "target": {
@@ -482,7 +502,7 @@
        },
        {
            "banner": {
-               "text": "Drag the block onto your code space"
+               "text": "This block will read variables from the list, drag it onto your code space"
            },
            "beacon": {
                "target": {
@@ -534,7 +554,7 @@
        },
        {
            "banner": {
-               "text": "Open the Variables tray"
+               "text": "We need to tell it which list to read, open the Variables tray"
            },
            "beacon": {
                "target": {
@@ -601,7 +621,7 @@
        },
        {
            "banner": {
-               "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringOffsets</span></kano-value-preview>"
+               "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringOffsets</span></kano-value-preview> so it uses the list we set up"
            },
            "beacon": {
                "target": {
@@ -623,7 +643,7 @@
        },
        {
            "banner": {
-               "text": "Open the Variables tray"
+               "text": "We will use the stringNumber variable so we know which string is being drawn, open the Variables tray"
            },
            "beacon": {
                "target": {
@@ -710,9 +730,19 @@
                }
            }
        },
+       {
+           "banner": {
+               "text": "They stopped shaking but this just means we have more control over them",
+               "next_button": true
+           },
+           "beacon": {
+               "target": "banner-button",
+               "offset": 0
+           }
+       },
         {
             "banner": {
-                "text": "Open the Lists tray"
+                "text": "We'll change the list each time a sound is played, open the Lists tray"
             },
             "beacon": {
                 "target": {
@@ -745,7 +775,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to this block so it activates with the first string"
             },
             "beacon": {
                 "target": {
@@ -841,7 +871,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringOffsets</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringOffsets</span></kano-value-preview> to access the list"
             },
             "beacon": {
                 "target": {
@@ -863,7 +893,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Now to choose the string to animate, open the Variables tray"
             },
             "beacon": {
                 "target": {
@@ -930,7 +960,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>1</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>1</span></kano-value-preview> to animate the first string"
             },
             "beacon": {
                 "target": {
@@ -952,7 +982,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Now we set how much to vibrate by, open the Variables tray"
             },
             "beacon": {
                 "target": {
@@ -1019,7 +1049,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview> so it shakes by 50 pixels"
             },
             "beacon": {
                 "target": {
@@ -1037,6 +1067,26 @@
                         "value": "50"
                     }
                 }
+            }
+        },
+        {
+            "banner": {
+                "text": "Put your hand over the sensor and strum the strings, notice how the top one now shakes.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Don't worry we'll make it stop shaking later. We need to set up the others first",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
             }
         },
         {
@@ -1259,7 +1309,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>2</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>2</span></kano-value-preview> for the second string"
             },
             "beacon": {
                 "target": {
@@ -1348,7 +1398,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview> to shake by 50 pixels"
             },
             "beacon": {
                 "target": {
@@ -1588,7 +1638,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>3</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>3</span></kano-value-preview> for the third string"
             },
             "beacon": {
                 "target": {
@@ -1917,7 +1967,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>4</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>4</span></kano-value-preview> for the fourth string"
             },
             "beacon": {
                 "target": {
@@ -2006,7 +2056,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview> to shake it by 50 pixels"
             },
             "beacon": {
                 "target": {
@@ -2246,7 +2296,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview> for the final string"
             },
             "beacon": {
                 "target": {
@@ -2335,7 +2385,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview> to shake it by 50 pixels"
             },
             "beacon": {
                 "target": {
@@ -2357,7 +2407,17 @@
         },
         {
             "banner": {
-                "text": "Open the Lists tray"
+                "text": "Put your hand over the sensor again, all the strings now shake. Let's make it so they stop shaking as the sound fades",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's access the stringOffsets list again, open the Lists tray"
             },
             "beacon": {
                 "target": {
@@ -2390,7 +2450,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block LAST LIST LAST LIST LAST LIST LAST LIST LAST LIST LAST LIST LAST LIST LAST LIST "
+                "text": "Connect it to this block"
             },
             "beacon": {
                 "target": {
@@ -2419,7 +2479,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "We need to reference each string in the loop, open the Variables tray"
             },
             "beacon": {
                 "target": {
@@ -2508,7 +2568,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "We need to reference each string in the loop, open the Variables tray"
             },
             "beacon": {
                 "target": {
@@ -2575,7 +2635,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringNumber</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>stringNumber</span></kano-value-preview> to reference each string"
             },
             "beacon": {
                 "target": {
@@ -2597,7 +2657,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "We'll use a math block to soften the string shaking, open the Math tray"
             },
             "beacon": {
                 "target": {
@@ -2686,7 +2746,7 @@
         },
         {
             "banner": {
-                "text": "Open the Lists tray"
+                "text": "We need to reference the current value again, open the Lists tray"
             },
             "beacon": {
                 "target": {
@@ -2753,7 +2813,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Reference our stringOffsets list again, open the Variables tray"
             },
             "beacon": {
                 "target": {
@@ -2842,7 +2902,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Also need to know which string we're drawing, open the Variables tray"
             },
             "beacon": {
                 "target": {
@@ -2931,7 +2991,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Now to grab a number, open the Variables tray"
             },
             "beacon": {
                 "target": {
@@ -2998,7 +3058,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>0.9</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>0.9</span></kano-value-preview> so the value gets smaller every frame"
             },
             "beacon": {
                 "target": {
@@ -3020,7 +3080,7 @@
         },
         {
             "banner": {
-                "text": "You can now test the app",
+                "text": "Put your hand over the sensor and play your guitar, see how the strings shake like they're really being played",
                 "next_button": true
             },
             "beacon": {
@@ -3030,7 +3090,7 @@
         },
         {
             "banner": {
-                "text": "You can now test the app",
+                "text": "Why not change the sounds that play when the strings are strummed",
                 "next_button": true
             },
             "beacon": {
