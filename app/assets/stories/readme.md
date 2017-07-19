@@ -544,6 +544,24 @@ You can also target categories added with parts
 }
 ```
 
+### Available UI elements:
+
+ - `motion-editor-mode-toggle`: Toggle button controlling the mode of a motion sensor
+ - `animation-editor`: The animation editor dialog
+ - `animation-editor-width-slider`: Slider controlling the width of an animation
+ - `animation-editor-height-slider`: Slider controlling the height of an animation
+ - `animation-editor-speed-slider`: Slider controlling the speed of an animation
+ - `animation-editor-canvas`: The painting canvas for the current animation
+ - `animation-editor-preview-button`: The preview button in the animation editor
+ - `animation-editor-add-frame-button`: The button adding a frame
+ - `animation-editor-frames`: The list of frames
+ - `animation-editor-palette`: The colors palette
+ - `animation-editor-draw-button`: The button switching to draw mode
+ - `animation-editor-fill-button`: The button switching to fill mode
+ - `animation-editor-colors`: The user's palette
+ - `animation-editor-add-color-button`: The button opening the color wheel
+ - `animation-editor-color-wheel`: The color wheel
+
 ### Available blocks
 
 > Control (`control`)
