@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../../bower_components/web-component-tester/browser.js"></script>
+        <script src="../../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+        <link rel="import" href="../kano-input-toggle.html">
+    </head>
+    <body>
+        <test-fixture id="default">
+            <template>
+                <kano-input-toggle></kano-input-toggle>
+            </template>
+        </test-fixture>
+        <script>
+
+            /* globals suite, test, assert, setup, fixture */
+            suite('<kano-input-toggle>', () => {
+                let input;
+                setup((done) => {
+                    input = fixture('default');
+                    done();
+                });
+                test('is unchecked by default', () => {
+                    assert.isFalse(input.checked);
+                });
+                test('changes value on click', () => {
+                    let containerElement = input.$$('.toggle-container');
+
+                    assert.isFalse(input.checked);
+                    
+                    MockInteractions.tap(containerElement);
+
+                    assert.isTrue(input.checked);
+                });
+            });
+        </script>
+    </body>
+</html>

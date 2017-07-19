@@ -1,0 +1,126 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/color.html">
+<link rel="import" href="../../bower_components/web-components/kano-style/typography.html">
+<link rel="import" href="../inline-controls/kano-value-rendering/kano-value-rendering.html">
+<link rel="import" href="../inputs/kano-input-toggle/kano-input-toggle.html">
+<link rel="import" href="../kano-part-editor-topbar/kano-part-editor-topbar.html">
+<link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+<dom-module id="kano-motion-sensor-part-editor">
+    <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                font-family: var(--font-body);
+            }
+            kano-part-editor-topbar {
+                border-color: #202428;
+            }
+            footer {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                padding: 24px 0px;
+                border-top: 1px solid #202428;
+            }
+            footer span:not([selected]) {
+                color: var(--color-grey);
+                font-weight: normal;
+            }
+            footer span {
+                @apply --layout-flex;
+                transition: color 120ms linear;
+                font-weight: bold;
+                cursor: pointer;
+            }
+            footer span.distance {
+                text-align: right;
+                padding-right: 32px;
+            }
+            footer span.swipe {
+                padding-left: 32px;
+            }
+            .visualisation {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                padding: 48px 52px 32px;
+            }
+            .data {
+                background: #202428;
+                width: 140px;
+                height: 60px;
+                border-radius: 3px;
+            }
+            .motion-big {
+                width: 100%;
+                height: 200px;
+                margin-bottom: 32px;
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
+        <kano-part-editor-topbar icon="motion-sensor" label="[[selected.label]]" theme="[[theme]]"></kano-part-editor-topbar>
+        <div class="visualisation">
+            <iron-image class="motion-big" src="/assets/part/motion-big.svg" sizing="contain"></iron-image>
+            <div class="data">
+                <kano-value-rendering width="140"
+                                      height="60"
+                                      value="[[_proximityData]]"
+                                      font="bold 52px Bariol"
+                                      color="white"
+                                      hidden$="[[_isSelected(selected.userProperties.mode, 'gesture')]]"></kano-value-rendering>
+            </div>
+        </div>
+        <div></div>
+        <footer>
+            <span class="distance" on-tap="_selectProximity" selected$="[[_isSelected(selected.userProperties.mode, 'proximity')]]">Distance mode</span>
+            <kano-input-toggle id="toggle" checked="{{_toggleChecked}}"></kano-input-toggle>
+            <span class="swipe" on-tap="_selectGesture" selected$="[[_isSelected(selected.userProperties.mode, 'gesture')]]">Swipe mode</span>
+        </footer>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-motion-sensor-part-editor',
+            behaviors: [Kano.Behaviors.AppElementRegistryBehavior],
+            properties: {
+                selected: {
+                    type: Object,
+                    notify: true
+                },
+                _toggleChecked: {
+                    type: Boolean,
+                    observer: '_toggleStateChanged'
+                }
+            },
+            observers: [
+                '_modeChanged(selected.userProperties.mode)'
+            ],
+            attached () {
+                this._registerElement('motion-editor-mode-toggle', this.$.toggle);
+                this.intervalId = setInterval(() => {
+                    this._proximityData = this.selected.lastProximityValue;
+                }, 100);
+            },
+            _toggleStateChanged () {
+                this.set('selected.userProperties.mode', this._toggleChecked ? 'gesture' : 'proximity');
+            },
+            _modeChanged () {
+                this.set('_toggleChecked', this.selected.userProperties.mode === 'gesture');
+            },
+            _isSelected (mode, expected) {
+                return mode === expected;
+            },
+            _selectProximity () {
+                this._toggleChecked = false;
+            },
+            _selectGesture () {
+                this._toggleChecked = true;
+            },
+            detached () {
+                clearInterval(this.intervalId);
+            }
+        });
+    </script>
+</dom-module>

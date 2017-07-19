@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../bower_components/web-component-tester/browser.js"></script>
+        <script src="../../../bower_components/iron-test-helpers/mock-interactions.js"></script>
+        <link rel="import" href="../kano-motion-sensor-part-editor.html">
+    </head>
+    <body>
+        <test-fixture id="default">
+            <template>
+                <kano-motion-sensor-part-editor></kano-motion-sensor-part-editor>
+            </template>
+        </test-fixture>
+        <script>
+
+            /* globals suite, test, assert, setup, fixture */
+            suite('<kano-motion-sensor-part-editor>', () => {
+                let element;
+                setup((done) => {
+                    element = fixture('default');
+                    element.selected = {
+                        partType: 'hardware',
+                        type: 'motion-sensor',
+                        label: 'Motion',
+                        userProperties: {
+                            mode: 'proximity'
+                        },
+                        lastProximityValue: 54
+                    };
+                    done();
+                });
+                test('clicking on labels, changes the mode', () => {
+                    let swipeElement = element.$$('.swipe'),
+                        distanceElement = element.$$('.distance'),
+                        toggleElement = element.$$('kano-input-toggle');
+                    assert.isNotNull(swipeElement);
+                    assert.isNotNull(distanceElement);
+                    assert.isFalse(toggleElement.value);
+                    MockInteractions.tap(swipeElement);
+                    assert.isTrue(toggleElement.value);
+                    MockInteractions.tap(distanceElement);
+                    assert.isFalse(toggleElement.value);
+                });
+            });
+        </script>
+    </body>
+</html>
