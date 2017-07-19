@@ -1,0 +1,1121 @@
+{
+    "steps": [
+       {
+           "banner": {
+               "text": "Please plug in a Motion sensor for this challenge"
+           },
+           "validation": {
+               "add-part": {
+                   "type": "motion-sensor",
+                   "id": "motion_0"
+               }
+           }
+       },
+       {
+           "banner": {
+               "text": "Let's use the Motion Sense to stretch sound effects",
+               "next_button": true
+           },
+           "beacon": {
+               "target": "banner-button",
+               "offset": 0
+           }
+       },
+        {
+            "banner": {
+                "text": "First we add a speaker to make some noise<br>Click here to see all the parts."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Speaker</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-speaker"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "speaker",
+                    "id": "part_1"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Set up a loop to keep playing sounds, open the Control tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now let's code how much to stretch it by, open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_1",
+                        "type": "speaker_playback_rate"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "speaker_playback_rate",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "1:`(2~{W`f6$lF`gPHP="
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "1:`(2~{W`f6$lF`gPHP=",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "1:`(2~{W`f6$lF`gPHP="
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's use a lerp block to tweak the sensor value, open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_lerp"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_lerp",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "^FYXxJ@?J#Fe55OH}(~y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "^FYXxJ@?J#Fe55OH}(~y",
+                            "inputName": "RATE"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "^FYXxJ@?J#Fe55OH}(~y"
+                    }
+                },
+                "target": "RATE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to hook up the sensor, open the Motion tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "motion_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "motion_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "motion_0",
+                        "type": "motion_sensor_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "motion_0",
+                        "type": "motion_sensor_value",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "lHL:qpo!NvY1J6i1P^$="
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "lHL:qpo!NvY1J6i1P^$=",
+                            "inputName": "PERCENT"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "lHL:qpo!NvY1J6i1P^$="
+                    }
+                },
+                "target": "PERCENT"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's play a sound at that pitch, open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_1",
+                        "type": "speaker_play"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "speaker_play",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "^FYXxJ@?J#Fe55OH}(~y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "^FYXxJ@?J#Fe55OH}(~y"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "^FYXxJ@?J#Fe55OH}(~y"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to choose a sample, open the Speaker tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_1",
+                        "type": "speaker_sample"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "speaker_sample",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "}?md%*-HAYU([cR)f)_{"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "}?md%*-HAYU([cR)f)_{",
+                            "inputName": "SAMPLE"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "}?md%*-HAYU([cR)f)_{"
+                    }
+                },
+                "target": "SAMPLE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>drum machine</span></kano-value-preview> to <kano-value-preview><span>sounds</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_5"
+                        },
+                        "value": "sounds"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Put your hand over the sensor and hear how the sound it changed by the sensor",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's draw some visuals to match the sound, open the Draw tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block moves the pen to a random position, drag it onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move_to_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move_to_random",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "}?md%*-HAYU([cR)f)_{"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "}?md%*-HAYU([cR)f)_{"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "}?md%*-HAYU([cR)f)_{"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Choose a color, open the Draw tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#color",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "tOC{s*k*]9;o(c*lfdKM"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "tOC{s*k*]9;o(c*lfdKM"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "tOC{s*k*]9;o(c*lfdKM"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's use a lerp to blend some colors, open the Color tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "color_lerp"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "color_lerp",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "rT2y6j~gI~EQ%3:K;hJB"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "rT2y6j~gI~EQ%3:K;hJB",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "rT2y6j~gI~EQ%3:K;hJB"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "Choose any color, a dark one works well like <kano-value-preview><span>#cc6600</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "FROM",
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "FROM",
+                            "id": "block_8"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Choose any light color, something like <kano-value-preview><span>#ffff99</span></kano-value-preview> works well"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "TO",
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "TO",
+                            "id": "block_8"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to use the sensor to change the color, open the Motion tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "motion_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "motion_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "motion_0",
+                        "type": "motion_sensor_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "motion_0",
+                        "type": "motion_sensor_value",
+                        "id": "block_9"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "d$5;;-Wh02-TW0=Rh}Lx"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_8",
+                            "rawId": "d$5;;-Wh02-TW0=Rh}Lx",
+                            "inputName": "PERCENT"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "d$5;;-Wh02-TW0=Rh}Lx"
+                    }
+                },
+                "target": "PERCENT"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let's use transparency to blend the shapes together, open the Draw tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {                                     
+                "text": "This block changes the transparency of anything we draw, drag it onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#set_transparency"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#set_transparency",
+                        "id": "block_10"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "rT2y6j~gI~EQ%3:K;hJB"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "rT2y6j~gI~EQ%3:K;hJB"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "rT2y6j~gI~EQ%3:K;hJB"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>100</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "ALPHA",
+                        "id": "block_10"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "ALPHA",
+                            "id": "block_10"
+                        },
+                        "value": "50"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to draw something, open the Draw tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#circle"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#circle",
+                        "id": "block_11"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "rc*x{J0.UBSXxPk}Db%9"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_10",
+                            "rawId": "rc*x{J0.UBSXxPk}Db%9"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "rc*x{J0.UBSXxPk}Db%9"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Motion tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "motion_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "motion_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "motion_0",
+                        "type": "motion_sensor_value"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "motion_0",
+                        "type": "motion_sensor_value",
+                        "id": "block_12"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "|H}8_A~v+CV[K8b]2yT~"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_11",
+                            "rawId": "|H}8_A~v+CV[K8b]2yT~",
+                            "inputName": "RADIUS"
+                        },
+                        "target": "block_12"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "|H}8_A~v+CV[K8b]2yT~"
+                    }
+                },
+                "target": "RADIUS"
+            }
+        },
+        {
+            "banner": {
+                "text": "Put your hand over the sensor and make weird sounds",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Why not try changing what sound is played",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "motion-sensor",
+        "speaker"
+    ],
+    "modules": [
+        "control",
+        "math",
+        "color"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "control": [
+            "every_x_seconds"
+        ],
+        "speaker": [
+            "speaker_playback_rate",
+            "speaker_play",
+            "speaker_sample"
+        ],
+        "math": [
+            "math_lerp"
+        ],
+        "motion": [
+            "motion_sensor_value"
+        ],
+        "normal": [
+            "move_to_random",
+            "color",
+            "set_transparency",
+            "circle"
+        ],
+        "color": [
+            "color_lerp"
+        ]
+    },
+    "mode": "normal"
+}
