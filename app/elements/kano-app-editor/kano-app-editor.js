@@ -432,7 +432,7 @@ Polymer({
         this.set('addedParts', addedParts);
         // Force a color update and a register block to make sure the loaded code will be
         // rendered with the right colors
-        this.updateColors();
+        Kano.MakeApps.Utils.updatePartsColors(this.addedParts);
         this.$['root-view'].computeBlocks();
         this.set('code', savedApp.code);
         this.set('background', savedApp.background);
