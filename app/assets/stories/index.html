@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>
+            window.Polymer = {
+                dom: 'shadow'
+            };
+        </script>
+        <script src="../../scripts/kano/make-apps/msg/en.js"></script>
+        <script src="../../scripts/kano/make-apps/blockly/msg/en.js"></script>
+        <link rel="import" href="../../scripts/kano/make-apps/utils.html">
+        <link rel="import" href="../../elements/kano-blockly-block/kano-blockly-block.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/box.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/button.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/clock.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/data.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/hardware.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/map.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/microphone.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/mouse.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/oscillator.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/part.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/picture-list.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/scrolling-text.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/slider.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/speaker.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/sticker.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/synth.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/text-input.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/text.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/ui.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/data/rss.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/data/sports.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/data/kano/share.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/data/space/iss.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/data/weather/weather.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/lightboard/light-animation-display.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/lightboard/light-animation.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/lightboard/light-circle.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/lightboard/light-frame.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/lightboard/light-rectangle.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/powerups/gyro-accelerometer.html">
+        <link rel="import" href="../../scripts/kano/make-apps/parts/powerups/motion-sensor.html">
+        <link rel="import" href="../../scripts/kano/make-apps/files/samples.html">
+        <style>
+            .block-info {
+                display: flex;
+                align-items: center;
+            }
+            .block-info span {
+                margin-left: 24px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container"></div>
+        <script>
+            let container = document.getElementById('container');
+            let allParts = Kano.MakeApps.Parts.list.map(partDef => {
+                return Kano.MakeApps.Parts.create(partDef, { width: 0, height: 0 });
+            });
+            Kano.MakeApps.Utils.updatePartsColors(allParts);
+            let blocks = allParts.reduce((acc, part) => {
+                let heading = document.createElement('h1');
+                heading.innerText = part.name;
+                container.appendChild(heading);
+                let blocks = part.blocks.map(blockDef => {
+                    let block;
+                    if (blockDef && typeof blockDef !== 'string') {
+                        block = blockDef.block(part);
+                        block.id = `${part.id}#${block.id}`;
+                        block.colour = part.colour;
+                        if (!block.doNotRegister) {
+                            Blockly.Blocks[block.id] = {
+                                init: function () {
+                                    this.jsonInit(block);
+                                }
+                            };
+                        }
+                        return block.id;
+                    }
+                }).filter(block => !!block);
+                blocks.forEach(blockId => {
+                    let div = document.createElement('div'),
+                        el = document.createElement('kano-blockly-block');
+                    el.type = blockId;
+                    div.className = 'block-info';
+                    div.appendChild(el);
+                    container.appendChild(div);
+                })
+                return acc.concat(blocks);
+            }, []);
+
+            setTimeout(() => {
+                let blockEls = document.querySelectorAll('kano-blockly-block'),
+                    el, block, inputs, infoEl;
+                for (let i = 0; i < blockEls.length; i++) {
+                    el = blockEls[i];
+                    block = el.getBlock();
+                    inputs = [];
+                    block.inputList.forEach(input => {
+                        if (input.name) {
+                            inputs.push(input.name);
+                        }
+                        input.fieldRow.forEach(field => {
+                            if (field.name) {
+                                inputs.push(field.name);
+                            }
+                        });
+                    });
+                    infoEl = document.createElement('span');
+                    infoEl.innerText = inputs.join(', ');
+                    el.parentNode.appendChild(infoEl);
+                }
+            });
+
+        </script>
+    </body>
+</html>

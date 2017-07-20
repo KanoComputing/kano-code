@@ -1,25 +1,29 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../kano-blockly/import.html">
+<link rel="import" href="../kano-blockly/kano-blockly-style.html">
 <dom-module id="kano-blockly-block">
-    <style>
-    :host {
-        display: block;
-        pointer-events: none;
-    }
-    svg path.blocklyPathDark, svg path.blocklyPathLight {
-        display: none;
-    }
-    svg text.blocklyText {
-        fill: white;
-    }
-    svg g.blocklyEditableText {
-        fill: white;
-        fill-opacity: 0.6;
-    }
-    svg .blocklyEditableText text.blocklyText {
-        fill: black;
-        font-size: 16px;
-    }
-    </style>
     <template>
+        <style include="kano-blockly-style"></style>
+        <style>
+            :host {
+                display: block;
+                pointer-events: none;
+            }
+            svg path.blocklyPathDark, svg path.blocklyPathLight {
+                display: none;
+            }
+            svg text.blocklyText {
+                fill: white;
+            }
+            svg g.blocklyEditableText {
+                fill: white;
+                fill-opacity: 0.6;
+            }
+            svg .blocklyEditableText text.blocklyText {
+                fill: black;
+                font-size: 16px;
+            }
+        </style>
         <svg xmlns="http://www.w3.org/2000/svg" id="svg"></svg>
     </template>
     <script type="text/javascript">
@@ -47,7 +51,9 @@
                 this.async(() => {
                     try {
                         Blockly.Xml.domToWorkspace(xml, this.ws);
-                    } catch (e) {} // Ignore loading errors
+                    } catch (e) {
+                        console.log(e);
+                    } // Ignore loading errors
                     this._updateSvgSize();
                 });
             },
@@ -55,6 +61,9 @@
                 let rect = this.wsDom.getBoundingClientRect();
                 this.$.svg.style.width = `${rect.width + 10}px`;
                 this.$.svg.style.height = `${rect.height}px`;
+            },
+            getBlock () {
+                return this.ws.getAllBlocks()[0];
             },
             detached () {
                 if (this.ws) {
