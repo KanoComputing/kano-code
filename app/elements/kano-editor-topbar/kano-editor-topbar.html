@@ -137,9 +137,9 @@
         <div class="user-profile" id="profile-container">
             <button id="user-button" type="button" on-tap="_userOptionsTapped">
                 <iron-image src="[[avatar]]" sizing="contain" hidden$="[[!user]]"></iron-image>
-                <div class="login" hidden$="[[user]]">[[localize('LOGIN', 'login')]]</div>
+                <div class="login" hidden$="[[loggedIn]]">[[localize('LOGIN', 'login')]]</div>
             </button>
-            <kano-tooltip id="tooltip" target="[[tooltipTarget]]" position="bottom" auto-close>
+            <kano-tooltip id="tooltip" position="bottom" auto-close>
                 <ul>
                     <li class="user">
                         <iron-image src="[[avatar]]" sizing="contain" hidden$="[[!user]]"></iron-image>
@@ -168,6 +168,10 @@
                     type: Object,
                     value: null
                 },
+                loggedIn: {
+                    type: Boolean,
+                    computed: '_computeLoggedIn(user)'
+                },
                 avatar: {
                     type: String,
                     computed: '_computeAvatar(user)'
@@ -176,7 +180,10 @@
             ready () {
                 this.disableLogout = Kano.MakeApps.config.DISABLE_LOGOUT;
             },
-            _computeAvatar(user) {
+            _computeLoggedIn (user) {
+                return !!user;
+            },
+            _computeAvatar (user) {
                 if (user && user.avatar && user.avatar.urls) {
                     return user.avatar.urls.circle || '/assets/avatar/judoka-face.svg';
                 }
@@ -189,7 +196,7 @@
                 this.$.tooltip.close();
             },
             _openTooltip () {
-                this.tooltipTarget = this.$['user-button'];
+                this.$.tooltip.target = this.$['user-button'].getBoundingClientRect();
                 this.$.tooltip.open();
             },
             _userOptionsTapped () {
