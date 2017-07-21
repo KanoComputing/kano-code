@@ -15,7 +15,6 @@ hooks = function () {
         }
     });
 
-    // Log the user on each scenario
     this.Before({ order: 1 }, () => {
         world.loginUser();
     });
@@ -25,7 +24,7 @@ hooks = function () {
     });
 
     // Take a screeshot if the scenario failed and attach it to the scenario report
-    /*this.After((scenario, callback) => {
+    this.After((scenario, callback) => {
         if (scenario.isFailed()) {
             world.getDriver().takeScreenshot().then((stream) => {
                 scenario.attach(stream, 'image/png', callback);
@@ -33,14 +32,19 @@ hooks = function () {
         } else {
             callback();
         }
-    });*/
+    });
 
-    this.After((e, callback) => {
-        world.getDriver().manage().logs().get('browser')
-            .then((logs) => {
-                //logs.forEach((log) => console.log(`${log.level.name_}: ${log.message}`));
-                callback();
-            });
+    this.After((scenario, callback) => {
+        let driver = world.getDriver();
+        if (scenario.isFailed()) {
+            driver.manage().logs().get('browser')
+                .then((logs) => {
+                    logs.forEach((log) => console.log(`${log.level.name_}: ${log.message}`));
+                    callback();
+                }).catch(callback);
+        } else {
+            callback();
+        }
     });
 
     // Close the browser

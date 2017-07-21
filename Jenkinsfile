@@ -41,10 +41,12 @@ pipeline {
         stage('test') {
             steps {
                 sh "gulp validate-challenges"
+                sh "mkdir -p test-results"
                 sh "xvfb-run --auto-servernum gulp wct"
-                junit allowEmptyResults: true, testResults: 'test-results.xml'
+                junit allowEmptyResults: true, testResults: 'test-results/wct.xml'
+                cucumber 'test-results/cucumber.json'
                 // Remove the test folder
-                sh "rm -rf www"
+                sh "rm -rf www test-results"
             }
         }
 

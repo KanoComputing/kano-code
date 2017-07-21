@@ -125,12 +125,12 @@
        */
       _showPageThunk (name) {
           return (ctx) => {
-              this.context = ctx;
+              this.set('context', ctx);
               // Set the page to null, before the real value to force a restamp of the view
               if (this.page === name) {
-                  this.page = null;
+                  this.set('page', null);
               }
-              this.page = name;
+              this.set('page', name);
           };
       },
       _computeLoadingClass (loading) {
