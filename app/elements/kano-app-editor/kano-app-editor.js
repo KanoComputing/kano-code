@@ -30,7 +30,8 @@ Polymer({
         },
         workspaceTab: {
             type: String,
-            value: 'workspace'
+            value: 'workspace',
+            observer: '_workspaceTabChanged'
         },
         remixMode: {
             type: Boolean,
@@ -207,9 +208,8 @@ Polymer({
         };
         part = Kano.MakeApps.Parts.create(model, this.mode.workspace.viewport);
         this.push('addedParts', part);
-        this.fire('change', {
-            type: 'add-part',
-            part
+        this.notifyChange('add-part', {
+            part: model
         });
     },
     _onModeReady () {
@@ -259,6 +259,9 @@ Polymer({
     },
     _removePartInitiated (part) {
         this.toBeRemoved = part;
+        this.fire('tracking-event', {
+            name: 'part_remove_dialog_opened'
+        })
         if (this.checkBlockDependency(part)) {
             this.$['dialog-external-use'].open();
         } else {
@@ -281,11 +284,29 @@ Polymer({
                     break;
                 }
             }
+        } else {
+            switch (Polymer.dom(e).rootTarget.id) {
+                case 'dialog-confirm-delete': {
+                    this.fire('tracking-event', {
+                        name: 'part_remove_dialog_closed'
+                    });
+                    break;
+                }
+                case 'dialog-reset-warning': {
+                    this.fire('tracking-event', {
+                        name: 'workspace_reset_dialog_closed'
+                    });
+                    break;
+                }
+            }
         }
     },
     _dialogConfirmedDelete () {
         this._closePartSettings();
         this._deletePart(this.toBeRemoved);
+        this.notifyChange('remove-part', {
+            part: this.toBeRemoved
+        });
     },
     _dialogConfirmedReset () {
         this.set('addedParts', []);
@@ -295,6 +316,9 @@ Polymer({
             userStyle: {
                 background: '#ffffff'
             }
+        });
+        this.fire('tracking-event', {
+            name: 'workspace_reset_dialog_confirmed'
         });
         this.save();
         Kano.MakeApps.Parts.Part.clear();
@@ -597,6 +621,9 @@ Polymer({
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+        this.fire('tracking-event', {
+            name: 'app_exported'
+        });
     },
     _importApp () {
         this.fileInput = document.createElement('input');
@@ -619,6 +646,9 @@ Polymer({
         });
         document.body.appendChild(this.fileInput);
         this.fileInput.click();
+        this.fire('tracking-event', {
+            name: 'app_imported'
+        });
     },
     _setCodeDisplay(code, workspaceTab) {
         if (workspaceTab === 'workspace') {
@@ -674,6 +704,9 @@ Polymer({
         };
     },
     _runButtonClicked () {
+        this.fire('tracking-event', {
+            name: this.running ? 'app_paused' : 'app_played'
+        })
         this.toggleRunning();
     },
     toggleRunning (state) {
@@ -710,8 +743,7 @@ Polymer({
                 onmove: this.getDragMoveListener(true),
                 onend: (e) => {
                     let model = e.target.model;
-                    this.fire('change', {
-                        type: 'move-part',
+                    this.notifyChange('move-part', {
                         part: model
                     });
                 },
@@ -834,11 +866,25 @@ Polymer({
         setTimeout(() => {
             this.running = true;
         }, 0);
+
+        this.fire('tracking-event', {
+            name: 'app_restarted'
+        });
     },
     _openOfflineDialog () {
         this.$['dialog-offline'].open();
     },
     isModeSimple (mode) {
         return mode.id === "simple";
+    },
+    _workspaceTabChanged (current, previous) {
+        if (current && previous) {
+            this.fire('tracking-event', {
+                name: 'workspace_view_changed',
+                data: {
+                    view: current
+                }
+            });
+        }
     }
 });

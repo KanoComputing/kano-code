@@ -111,7 +111,7 @@ Custom property | Description | Default
         </style>
             <div class="action-container">
                 <slot name="label"></slot>
-                <div on-tap="addFrame" class$="[[_computeButtonClass(running)]]">
+                <div on-tap="addFrameTap" class$="[[_computeButtonClass(running)]]">
                     <slot name="add-button"></slot>
                 </div>
                 <div on-tap="duplicateFrame" class$="[[_computeButtonClass(running)]]">
@@ -264,6 +264,9 @@ Custom property | Description | Default
                 this.selectedIndex++;
                 this.splice('bitmaps', this.selectedIndex, 0, copy);
                 this.set('selected', copy.slice(0));
+                this.fire('tracking-event', {
+                      name: 'bitmap_frame_duplicated'
+                });
             },
             addFrame () {
                 this.debounce('add-frame', () => {
@@ -281,6 +284,12 @@ Custom property | Description | Default
                     this.notifyChange('light-animation-add-frame');
                 }, 100);
             },
+            addFrameTap () {
+                this.addFrame();
+                this.fire('tracking-event', {
+                      name: 'bitmap_frame_added'
+                });
+            },
             deleteFrame () {
                 this.splice('bitmaps', this.selectedIndex, 1);
 
@@ -290,6 +299,9 @@ Custom property | Description | Default
                     this.selectedIndex = this.selectedIndex === 0 ?
                             this.selectedIndex : this.selectedIndex - 1;
                     this.set('selected', this.bitmaps[this.selectedIndex].slice(0));
+                    this.fire('tracking-event', {
+                          name: 'bitmap_frame_removed'
+                    });
                 }
             },
             deleteAllFrames () {
@@ -310,6 +322,9 @@ Custom property | Description | Default
             },
             confirmDeleteAll () {
                 this.set('bitmaps', []);
+                this.fire('tracking-event', {
+                      name: 'all_bitmap_frames_removed'
+                });
             },
             _moveToSelected () {
                 const target = Polymer.dom(this.root).querySelector('.selected');

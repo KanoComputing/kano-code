@@ -183,6 +183,9 @@
                 return '/assets/avatar/judoka-face.svg';
             },
             _exitButtonTapped () {
+                this.fire('tracking-event', {
+                    name: 'ide_exit'
+                });
                 this.fire('exit');
             },
             _closeTooltip () {

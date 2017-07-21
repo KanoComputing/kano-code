@@ -105,7 +105,13 @@ Custom property | Description | Default
 
     </style>
     <template>
-        <input type="range" min="[[min]]" max="[[max]]" value-as-number="{{value::input}}" id="fader" step="1">
+        <input type="range"
+               min="[[min]]"
+               max="[[max]]"
+               value-as-number="{{value::input}}"
+               id="fader"
+               step="1"
+               on-change="_handleChange">
     </template>
 </dom-module>
 <script type="text/javascript">
@@ -122,6 +128,9 @@ Custom property | Description | Default
               type: String,
               observer: '_onThemeChanged'
             }
+        },
+        _handleChange () {
+            this.fire('slider-changed');
         },
         _onThemeChanged (theme) {
             this.updateStyles({

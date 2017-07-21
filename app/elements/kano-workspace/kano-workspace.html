@@ -346,6 +346,10 @@
         },
         _partSelected (e) {
             let part = e.detail;
+            this.fire('change', {
+                type: 'select-part',
+                part
+            });
             if (this.selected && part.id === this.selected.id) {
                 this.fire('close-settings');
                 this.clearSelection();
@@ -510,6 +514,9 @@
             if (this.dropzone) {
                 this.dropzone.clear();
             }
+            this.fire('tracking-event', {
+                name: 'workspace_reset'
+            });
         }
     });
 </script>

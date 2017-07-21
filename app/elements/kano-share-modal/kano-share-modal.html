@@ -610,7 +610,8 @@
         observers: [
             '_shareSlugChanged(shareInfo.slug)',
             '_pageChanged(shareInfo.page)',
-            '_updateUI(shareInfo.*, inChallenge)'
+            '_updateUI(shareInfo.*, inChallenge)',
+            '_shareAttributesChanged(shareInfo.*)'
         ],
         _isHeaderHidden (page) {
             return page === 'success';
@@ -723,6 +724,9 @@
         },
         dismiss () {
             this.fire('dismiss');
+            this.fire('tracking-event', {
+                name: 'share_dialog_closed'
+            });
         },
         loadingChanged () {
             this.toggleClass('loading', this.loading);
@@ -874,6 +878,9 @@
             }
             input.select();
             document.execCommand('copy');
+            this.fire('tracking-event', {
+                name: 'share_link_copied'
+            });
         },
         _socialShareTwitter () {
             this._socialShare('twitter');
@@ -883,6 +890,9 @@
         },
         _socialShareLink () {
             this._socialShare('link');
+            this.fire('tracking-event', {
+                name: 'share_link_clicked'
+            });
         },
         _socialShare (socialTarget) {
             if (!this._checkTitleInput()) {
@@ -928,12 +938,26 @@
                 // Force a change on the src to reload the app from the beginning
                 this.$['app-preview'].src = null;
                 this.$['app-preview'].src = this.shareInfo.app.src;
+                this.fire('tracking-event', {
+                    name: 'share_dialog_opened'
+                });
             } else if (!opened && wasOpened) {
                 this.interrupted = true;
                 this.gifSrc = null;
                 this.spriteSrc = null;
                 this.loading = false;
                 this._resetCoverGenerator();
+            }
+        },
+        _shareAttributesChanged (shareInfo) {
+            let changesToTrack = {
+                'shareInfo.title': 'share_title_changed',
+                'shareInfo.description': 'share_description_changed'
+            }
+            if (shareInfo && shareInfo.path && changesToTrack[shareInfo.path]) {
+                this.fire('tracking-event', {
+                      name: changesToTrack[shareInfo.path]
+                });
             }
         }
     });

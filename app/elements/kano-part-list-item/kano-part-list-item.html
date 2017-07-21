@@ -67,6 +67,7 @@
                 model: Object
             },
             observers: [
+                '_mutedChanged(model.muted)',
                 '_typeChanged(model.type)'
             ],
             listeners: {
@@ -98,6 +99,12 @@
                 } else if (this.model.partType === 'hardware') {
                     return connected === false ? '(disconnected)' : '';
                 }
+            },
+            _mutedChanged (muted) {
+                this.fire('change', {
+                    type: 'change-part-volume',
+                    part: this.model
+                });
             },
             _typeChanged (type) {
                 let template = this.$[type];

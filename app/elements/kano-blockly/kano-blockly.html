@@ -495,6 +495,9 @@ Example:
          * @return {[type]}   [description]
          */
         onBlocklyChange (e) {
+            let block,
+                blockTypeAvailabe,
+                blockType;
             if (e.type === Blockly.Events.OPEN_SEARCHBOX) {
                 this._openOmnibox();
                 return;
@@ -507,10 +510,22 @@ Example:
             }
             if (e.type === Blockly.Events.CREATE) {
                 this.lastCreated = e.blockId;
+                block = this.workspace.getBlockById(e.blockId);
+                if (block) {
+                    blockType = block.type;
+                }
+            }
+            if (e.type === Blockly.Events.DELETE) {
+                blockTypeAvailabe = e.oldXml &&
+                                    e.oldXml.attributes &&
+                                    e.oldXml.attributes.type;
+                if (blockTypeAvailabe) {
+                    blockType = e.oldXml.attributes.type.value;
+                }
             }
             if ((e.type === Blockly.Events.MOVE || e.type === Blockly.Events.UI && e.element === 'click')) {
-                let block = this.workspace.getBlockById(e.blockId),
-                    coord, dimensions, toolboxRect;
+                let coord, dimensions, toolboxRect;
+                block = this.workspace.getBlockById(e.blockId);
                 // If there is a move event or a click event, we check if it matches the last block created
                 if (this.lastCreated === e.blockId) {
                     // The block targetted by the last event matches the last created,
@@ -526,8 +541,13 @@ Example:
                     // The event type is `move` and the block concerned was not just created
                     this.fire('block-move');
                 }
+                if (block) {
+                    blockType = block.type;
+                }
             }
             this.updateFunctions(e);
+            /** Enrich the event for tracking purposes */
+            e.blockType = blockType;
             this.fire('change', e);
             if (this.codeRelatedEvents.indexOf(e.type) !== -1) {
                 this.set('code', this.getCode(this.language));

@@ -308,6 +308,9 @@ Custom property | Description | Default
             _addCustomColor (e) {
                 this.$['custom-palette'].addColor(e.detail.value);
                 this.$.tooltip.close();
+                this.fire('tracking-event', {
+                    name: 'custom_color_added'
+                });
             },
             _computePalette (colors) {
                 this.debounce('palette', () => {
@@ -331,11 +334,18 @@ Custom property | Description | Default
                     return;
                 }
                 const target = e.currentTarget ? e.currentTarget : Polymer.dom(e).rootTarget;
+                let penType = target.getAttribute('name');
                 this.controlPanel = 'palette';
-                this.set('_penType', target.getAttribute('name'));
+                this.set('_penType', penType);
+                this.fire('tracking-event', {
+                    name: `${penType}_tool_selected`
+                });
             },
             _settingsTapped () {
                 this.controlPanel = 'settings';
+                this.fire('tracking-event', {
+                    name: 'pixel_editor_settings_opened'
+                });
             },
             _onControlPanelChanged (panel, penType) {
                 if (panel === 'palette' && this._isShiftPressed) {
@@ -363,6 +373,9 @@ Custom property | Description | Default
                 this.async(() => {
                     this.$.tooltip.set('target', target.getBoundingClientRect());
                     this.$.tooltip.open();
+                });
+                this.fire('tracking-event', {
+                    name: 'custom_color_wheel_opened'
                 });
             },
             _renderWheel () {

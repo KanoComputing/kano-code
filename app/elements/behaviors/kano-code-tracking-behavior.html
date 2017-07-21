@@ -11,6 +11,10 @@
     // @polymerBehavior
     let KanoCodeBehavior = {
         properties: {
+            blocklyInitialized: {
+                type: Boolean,
+                value: false
+            },
             path: {
                 type: String,
                 value: ''
@@ -21,8 +25,25 @@
             }
         },
         listeners: {
+            'change': '_trackChanges',
             'track-page-view': '_trackPageView',
             'track-challenge-event': '_trackChallengeEvent'
+        },
+        _getObjectProperty (obj, str) {
+            /** Convert indices to properties */
+            str = str.replace(/\[(\w+)\]/g, '.$1');
+            /** Strip out leading dots */
+            str = str.replace(/^\./, '');
+            let arr = str.split('.');
+            arr.forEach((item, index) => {
+                let prop = arr[index];
+                if (prop in obj) {
+                    obj = obj[prop];
+                } else {
+                    return;
+                }
+            });
+            return obj;
         },
         _trackChallengeAttempt (challengeAttempts, challenge) {
             let idString = this.browserId + Date.now().toString(),
@@ -75,6 +96,101 @@
             }
             if (eventType === 'complete') {
                 this._trackChallengeCompletion(challengeAttempts, challenge);
+            }
+        },
+        _trackBlocklyEvents (e) {
+            let blockDetails,
+                blockTypeAvailabe;
+            /**
+             * Only initialize Blockly event tracking after the user has
+             * interacted, to exclude the setup of default and saved blocks.
+             */
+            if (e.type === Blockly.Events.UI ||
+                e.type === Blockly.Events.OPEN_FLYOUT && !this.blocklyInitialized) {
+                this.blocklyInitialized = true;
+            }
+            if (!this.blocklyInitialized) {
+                return;
+            }
+            if (e.type === Blockly.Events.CREATE) {
+                this._dispatchEvent({
+                    name: 'workspace_block_created',
+                    data: {
+                        block_type: e.blockType
+                    }
+                });
+            }
+            if (e.type === Blockly.Events.DELETE) {
+                this._dispatchEvent({
+                    name: 'workspace_block_deleted',
+                    data: {
+                        block_type: e.blockType
+                    }
+                });
+            }
+            if (e.type === Blockly.Events.OPEN_FLYOUT) {
+                this._dispatchEvent({
+                    name: 'workspace_toolbox_panel_opened',
+                    data: {
+                        panel_type: e.categoryId
+                    }
+                });
+            }
+        },
+        _trackChanges (e) {
+            if (!e.detail.type) {
+                return;
+            }
+            let trackableChanges = {
+                'open-parts': {
+                      eventName: 'parts_tray_opened'
+                },
+                'close-parts': {
+                    eventName: 'parts_tray_closed'
+                },
+                'add-part': {
+                    eventName: 'part_added',
+                    fields: {
+                        part_name: 'part.label'
+                    }
+                },
+                'remove-part': {
+                    eventName: 'part_removed',
+                    fields: {
+                        part_name: 'part.label'
+                    }
+                },
+                'select-part': {
+                    eventName: 'part_selected',
+                    fields: {
+                        part_name: 'part.label'
+                    }
+                },
+                'change-part-volume': {
+                    eventName: 'part_volume_changed',
+                    fields: {
+                        part_name: 'part.label',
+                        muted: 'part.muted'
+                    }
+                }
+            }
+            if (e.detail.type === 'blockly') {
+                this._trackBlocklyEvents(e.detail.event);
+            } else if (trackableChanges[e.detail.type]) {
+                let name = trackableChanges[e.detail.type].eventName,
+                    data = {};
+                if (trackableChanges[e.detail.type].fields) {
+                    let fields = Object.keys(trackableChanges[e.detail.type].fields);
+                    fields.forEach(field => {
+                        let path = trackableChanges[e.detail.type].fields[field],
+                            property = this._getObjectProperty(e.detail, path);
+                        data[field] = property;
+                    });
+                }
+                this._dispatchEvent({
+                    name,
+                    data
+                });
             }
         },
         _trackPageView (e) {

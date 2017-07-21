@@ -195,6 +195,9 @@ Custom property | Description | Default
         },
         _selectColorOnTap (e) {
             this.selectColor(this.$.palette.indexForElement(Polymer.dom(e).rootTarget));
+            this.fire('tracking-event', {
+                name: 'color_selected'
+            });
         },
         selectColor (index) {
             this.selectedIndex = index;
