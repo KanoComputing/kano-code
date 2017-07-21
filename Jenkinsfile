@@ -42,7 +42,7 @@ pipeline {
             steps {
                 sh "gulp validate-challenges"
                 sh "mkdir -p test-results"
-                sh "xvfb-run --auto-servernum gulp wct"
+                sh "xvfb-run --auto-servernum npm run test"
                 junit allowEmptyResults: true, testResults: 'test-results/wct.xml'
                 cucumber 'test-results/cucumber.json'
                 // Remove the test folder
