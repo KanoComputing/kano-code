@@ -1,6 +1,8 @@
 <link rel="import" href="../kano-ui-behavior.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/base.html">
 <link rel="import" href="../../../scripts/kano/music/monotron/monotron.html">
+<link rel="import" href="../../../scripts/kano/make-apps/utils.html">
+
 <dom-module id="kano-part-synth">
     <style>
     :host {
@@ -78,7 +80,13 @@
 
                 return monotron;
             },
+            _limitNumericValue (value, min, max) {
+                return Math.min(Math.max(value, min), max);
+            },
             playFrequency (freq, length) {
+                freq = this._limitNumericValue(freq, 0, 100);
+                length = this._limitNumericValue(length, 0, 1000 * 60 * 5);
+
                 let monotron = this._createMonotron();
 
                 freq = OSCILLATOR_FREQ_RANGE_LOW + ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
@@ -105,6 +113,8 @@
                 }
             },
             setSynthFrequency (freq) {
+                freq = this._limitNumericValue(freq, 0, 100);
+
                 if (this.synth) {
                     freq = OSCILLATOR_FREQ_RANGE_LOW + ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
                     this.synth.noteOn(freq);

@@ -50,16 +50,16 @@
                },
                javascript: (part) => {
                    return (block) => {
-                       let volume = Blockly.JavaScript.valueToCode(block, 'VOLUME') || 100,
-                           code = `parts.get('${part.id}').setVolume(${volume});\n`;
-                       return code;
+                       let volume = Blockly.JavaScript.valueToCode(block, 'VOLUME') || 100;
+
+                       return `parts.get('${part.id}').setVolume(${volume});\n`;
                    };
                },
                pseudo: (part) => {
                    return (block) => {
-                       let volume = Blockly.Pseudo.valueToCode(block, 'VOLUME') || 100,
-                           code = `parts.get('${part.id}').setVolume(${volume});\n`;
-                       return code;
+                       let volume = Blockly.JavaScript.valueToCode(block, 'VOLUME') || 100;
+
+                       return `parts.get('${part.id}').setVolume(${volume});\n`;
                    };
                }
            },{
@@ -87,53 +87,17 @@
                 javascript: (part) => {
                     return (block) => {
                         let freq = Blockly.JavaScript.valueToCode(block, 'FREQUENCY') || 25,
-                            duration = Blockly.JavaScript.valueToCode(block, 'DURATION') || 100,
-                            code;
+                            duration = Blockly.JavaScript.valueToCode(block, 'DURATION') || 100;
 
-                        if (freq > 100) {
-                            freq = 100;
-                        }
-
-                        if (freq < 0) {
-                            freq = 0;
-                        }
-
-                        if (duration > 1000 * 60 * 5) {
-                            duration = 1000 * 60 * 5;
-                        }
-
-                        if (duration < 0) {
-                            duration = 0;
-                        }
-
-                        code = `parts.get('${part.id}').playFrequency(${freq}, ${duration});\n`;
-                        return code;
+                        return `parts.get('${part.id}').playFrequency(${freq}, ${duration});\n`;
                     };
                 },
                 pseudo: (part) => {
                     return (block) => {
                         let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25,
-                            duration = Blockly.Pseudo.valueToCode(block, 'DURATION') || 100,
-                            code;
+                            duration = Blockly.Pseudo.valueToCode(block, 'DURATION') || 100;
 
-                        if (freq > 100) {
-                            freq = 100;
-                        }
-
-                        if (freq < 0) {
-                            freq = 0;
-                        }
-
-                        if (duration > 1000 * 60 * 5) {
-                            duration = 1000 * 60 * 5;
-                        }
-
-                        if (duration < 0) {
-                            duration = 0;
-                        }
-
-                        code = `parts.get('${part.id}').playFrequency(${freq}, ${duration});\n`;
-                        return code;
+                        return `parts.get('${part.id}').playFrequency(${freq}, ${duration});\n`;
                     };
                 }
             }, {
@@ -198,30 +162,12 @@
                javascript: (part) => {
                    return (block) => {
                        let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25;
-
-                       if (freq > 100) {
-                           freq = 100;
-                       }
-
-                       if (freq < 0) {
-                           freq = 0;
-                       }
-
                        return `parts.get('${part.id}').setSynthFrequency(${freq});\n`;
                    };
                },
                pseudo: (part) => {
                    return (block) => {
                        let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25;
-
-                       if (freq > 100) {
-                           freq = 100;
-                       }
-
-                       if (freq < 0) {
-                           freq = 0;
-                       }
-
                        return `parts.get('${part.id}').setSynthFrequency(${freq});\n`;
                    };
                }
@@ -241,13 +187,13 @@
                },
                javascript: (part) => {
                    return (block) => {
-                       let wave = Blockly.Pseudo.valueToCode(block, 'WAVE') || 'sine';
+                       let wave = Blockly.Pseudo.valueToCode(block, 'WAVE') || "'sine'";
                        return `parts.get('${part.id}').setSynthWave(${wave});\n`;
                    };
                },
                pseudo: (part) => {
                    return (block) => {
-                       let wave = Blockly.Pseudo.valueToCode(block, 'WAVE') || 'sine';
+                       let wave = Blockly.Pseudo.valueToCode(block, 'WAVE') || "'sine'";
                        return `parts.get('${part.id}').setSynthWave(${wave});\n`;
                    };
                }
