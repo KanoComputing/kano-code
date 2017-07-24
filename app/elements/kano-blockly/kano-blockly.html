@@ -486,7 +486,14 @@ Example:
             if (!this.workspace) {
                 return;
             }
+            /**
+            * Temporarily disable events to prevent profusion of deletion
+            * events being fired
+            */
+            Blockly.Events.disable();
             this.workspace.clear();
+            /** Re-enable events */
+            Blockly.Events.enable();
         },
         /**
          * Update the code on any blockly change and

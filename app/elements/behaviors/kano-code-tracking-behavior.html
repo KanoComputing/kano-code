@@ -29,6 +29,12 @@
             'track-page-view': '_trackPageView',
             'track-challenge-event': '_trackChallengeEvent'
         },
+        attached () {
+            this._dispatchEvent({
+                name: 'ide_opened',
+                data: {}
+            });
+        },
         _getObjectProperty (obj, str) {
             /** Convert indices to properties */
             str = str.replace(/\[(\w+)\]/g, '.$1');
