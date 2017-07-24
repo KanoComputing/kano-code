@@ -1,0 +1,579 @@
+{
+    "steps": [
+       {
+           "banner": {
+               "text": "Please plug in a Motion sensor for this challenge"
+           },
+           "validation": {
+               "add-part": {
+                   "type": "motion-sensor",
+                   "id": "motion_0"
+               }
+           }
+       },
+       {
+           "banner": {
+               "text": "Your Motion Sensor can do more than sense proximity, it can detect gestures too",
+               "next_button": true
+           },
+           "beacon": {
+               "target": "banner-button",
+               "offset": 0
+           }
+       },
+       {
+         "banner":{
+           "text":"Let's enable Gesture Detection, click on the Motion sensor part to open the settings"
+         },
+         "beacon":{
+           "target":{
+             "path":"parts-controls",
+             "part":"motion_0"
+           },
+           "angle":180,
+           "offset":30
+         },
+         "validation":{
+           "open-part-settings":{
+             "target":"motion_0"
+           }
+         }
+       },
+       {
+         "tooltips":[
+           {
+             "text":"Toggle this switch to choose Gesture",
+             "location":"motion-editor-mode-toggle",
+             "position":"top"
+           }
+         ],
+         "beacon": {
+             "target": "motion-editor-mode-toggle",
+             "offset": 0
+         },      
+          "validation": {
+              "selected-part-change": {
+                  "property": "userProperties.mode",
+                  "value": "gesture"
+              }
+          }
+         
+       },
+       {
+         "tooltips":[
+           {
+             "location":"part-editor-done-button",
+             "position":"bottom",
+             "text":"Let's code with gestures. Click the <strong>Done</strong> button"
+           }
+         ],
+         "validation":{
+           "close-part-settings":true
+         }
+       },
+       {
+           "banner": {
+               "text": "Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Motion gesture left</span></kano-value-preview>, this makes the code within run when a gesture is detected"
+           },
+           "beacon": {
+               "target": {
+                   "block": {
+                      "rawId": "default_part_event_id"
+                   }
+               }
+           },
+           "validation": {
+               "blockly": {
+                   "value": {
+                       "target": {
+                          "rawId": "default_part_event_id"
+                       },
+                       "value": "motion.gesture-left"
+                   }
+               }
+           }
+       },
+       {
+           "banner": {
+               "text": "Open the Arrow tray"
+           },
+           "beacon": {
+               "target": {
+                   "category": "arrow"
+               }
+           },
+           "validation": {
+               "blockly": {
+                   "open-flyout": "arrow"
+               }
+           }
+       },
+       {
+           "banner": {
+               "text": "Drag the block onto your code space"
+           },
+           "beacon": {
+               "target": {
+                   "flyout_block": "arrow#ui_rotate"
+               }
+           },
+           "validation": {
+               "blockly": {
+                   "create": {
+                       "target": "arrow",
+                       "type": "arrow#ui_rotate",
+                       "id": "block_0"
+                   }
+               }
+           }
+       },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>↻</span></kano-value-preview> to <kano-value-preview><span>to</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_0"
+                        },
+                        "value": "absolute"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "@k`Ik`;FNLBdfuW4DV0x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "@k`Ik`;FNLBdfuW4DV0x",
+                            "inputName": "DEG"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "@k`Ik`;FNLBdfuW4DV0x"
+                    }
+                },
+                "target": "DEG"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>90</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_1"
+                        },
+                        "value": "90"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Swipe your hand over the sensor from right to left and see the arrow turn",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Events tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "events"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "events"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "part_event"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "part_event",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drop the block anywhere on your code space"
+            },
+            "beacon": {
+                "target": "blocks-panel",
+                "offset": 300,
+                "angle": 200
+            },
+            "validation": {
+                "blockly": {
+                    "drop": {
+                        "target": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Motion gesture right</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        },
+                        "value": "motion.gesture-right"
+                    }
+                }
+            }
+        },
+       {
+           "banner": {
+               "text": "Open the Arrow tray"
+           },
+           "beacon": {
+               "target": {
+                   "category": "arrow"
+               }
+           },
+           "validation": {
+               "blockly": {
+                   "open-flyout": "arrow"
+               }
+           }
+       },
+       {
+           "banner": {
+               "text": "Drag the block onto your code space"
+           },
+           "beacon": {
+               "target": {
+                   "flyout_block": "arrow#ui_rotate"
+               }
+           },
+           "validation": {
+               "blockly": {
+                   "create": {
+                       "target": "arrow",
+                       "type": "arrow#ui_rotate",
+                       "id": "block_3"
+                   }
+               }
+           }
+       },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "#vv_63k)+%nm6Dd?v,Gy"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "#vv_63k)+%nm6Dd?v,Gy",
+                            "inputName": "DO"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "#vv_63k)+%nm6Dd?v,Gy"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>↻</span></kano-value-preview> to <kano-value-preview><span>to</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "absolute"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "_-~|B9;hdpJB6|vyX}s#"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "_-~|B9;hdpJB6|vyX}s#",
+                            "inputName": "DEG"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "_-~|B9;hdpJB6|vyX}s#"
+                    }
+                },
+                "target": "DEG"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>270</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_4"
+                        },
+                        "value": "270"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Try swiping your hand left and right over the sensor and see how the gestures turn the arrow",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Next we'll make something more with gestures",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "motion-sensor",
+        "sticker"
+    ],
+    "modules": [
+        "variables",
+        "events"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "arrow": [
+            "ui_rotate"
+        ],
+        "variables": [
+            "math_number"
+        ],
+        "events": [
+            "part_event"
+        ]
+    },
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[{\"id\":\"arrow\",\"name\":\"Arrow\",\"type\":\"sticker\",\"tagName\":\"kano-ui-sticker\",\"userStyle\":{\"width\":\"512px\",\"height\":\"384px\"},\"userProperties\":{\"size\":100,\"src\":\"http:\/\/localhost:4000\/assets\/part\/stickers\/kano\/arrow.svg\",\"undefined\":null},\"nonvolatileProperties\":[\"src\",\"size\"],\"position\":{\"x\":204,\"y\":140},\"partType\":\"ui\",\"supportedHardware\":[],\"excludeDefaultBlocks\":false,\"showDefaultConfiguration\":true,\"customizable\":{\"properties\":[{\"key\":\"src\",\"type\":\"image\",\"label\":\"Image\",\"options\":{\"files\":\"stickers\"}},{\"key\":\"size\",\"type\":\"range\",\"label\":\"Size\",\"symbol\":\"px\",\"min\":0,\"max\":100}],\"style\":[]},\"rotation\":0,\"scale\":198,\"visible\":true}],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http:\/\/www.w3.org\/1999\/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start<\/field><\/block><\/xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#59b3d0\"}},\"mode\":\"normal\"}"
+}
