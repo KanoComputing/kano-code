@@ -5,20 +5,23 @@
         <style>
             svg.blocklyMainWorkspaceScrollbar, ::slotted(svg.blocklyMainWorkspaceScrollbar) {
                 z-index: 0;
+                cursor: pointer;
             }
             svg.blocklyMainWorkspaceScrollbar .blocklyScrollbarHandle,
             ::slotted(svg.blocklyMainWorkspaceScrollbar .blocklyScrollbarHandle) {
                 fill: var(--kano-blockly-scrollbars-color);
-                rx: 0;
-                ry: 0;
+                rx: 3;
+                ry: 3;
+                opacity: 0.5;
             }
             svg.blocklyMainWorkspaceScrollbar .blocklyScrollbarBackground:hover+.blocklyScrollbarHandle,
-            svg.blocklyMainWorkspaceScrollbar .blocklyScrollbarHandle:hover,
+            svg.blocklyMainWorkspaceScrollbar:hover .blocklyScrollbarHandle,
             ::slotted(svg.blocklyMainWorkspaceScrollbar .blocklyScrollbarBackground:hover+.blocklyScrollbarHandle),
-            ::slotted(svg.blocklyMainWorkspaceScrollbar .blocklyScrollbarHandle:hover) {
+            ::slotted(svg.blocklyMainWorkspaceScrollbar:hover .blocklyScrollbarHandle) {
                 fill: var(--kano-blockly-scrollbars-color);
-                rx: 0;
-                ry: 0;
+                rx: 3;
+                ry: 3;
+                opacity: 1;
             }
             .blocklyTrash, ::slotted(*.blocklyTrash),
             .blocklyZoom, ::slotted(*.blocklyZoom) {

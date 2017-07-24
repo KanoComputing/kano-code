@@ -15,19 +15,19 @@ Blockly.Scrollbar = function(workspace, horizontal, opt_pair, opt_class) {
 
   if (horizontal) {
     this.svgHandle_.setAttribute('height',
-        Blockly.Scrollbar.scrollbarThickness - 5);
+        Blockly.Scrollbar.scrollbarThickness - 7);
     this.svgHandle_.setAttribute('y', 0);
 
   } else {
     this.svgHandle_.setAttribute('width',
-        Blockly.Scrollbar.scrollbarThickness - 5);
+        Blockly.Scrollbar.scrollbarThickness - 7);
     this.svgHandle_.setAttribute('x', 0);
   }
 };
 
 goog.inherits(Blockly.Scrollbar, Blockly.OriginalScrollbar);
 
-Blockly.Scrollbar.scrollbarThickness = 10;
+Blockly.Scrollbar.scrollbarThickness = 12;
 Blockly.Scrollbar.metricsAreEquivalent_ = Blockly.OriginalScrollbar.metricsAreEquivalent_;
 
 /**
