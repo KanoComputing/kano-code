@@ -80,7 +80,6 @@
             mode="[[mode]]"
             remix-mode="[[remixMode]]"
             unsaved-changes="{{showSavePrompt}}"
-            on-change="_trackChanges"
             on-share="_pauseAndShare"
             on-exit="_exit"
             show-share-button>
@@ -497,29 +496,6 @@
         },
         _openSignup () {
             this.fire('signup');
-        },
-        _trackChanges (e) {
-            // console.log('CHH-CHHH-CHHANNGEES');
-            // // console.log(e.detail);
-            // if (e.detail.event) {
-            //     // console.log(e.detail.event.constructor === Object);
-            //     // console.log(e.detail.event.constructor === Blockly.Events.Create);
-            // }
-            // if (e.detail.type && e.detail.type === 'blockly' && e.detail.event) {
-            //     console.log(e.detail.event.type);
-            //     if (e.detail.type === 'create') {
-            //         console.log(e.detail);
-            //     }
-            // }
-            // console.log('===================');
-            // if (e.detail.type && e.detail.type === 'open-flyout') {
-            //     this.fire('tracking-event', {
-            //         name: 'toolbox_panel_opened',
-            //         data: {
-            //             panel_name: e.detail.categoryId
-            //         }
-            //     });
-            // }
         }
     });
 </script>
