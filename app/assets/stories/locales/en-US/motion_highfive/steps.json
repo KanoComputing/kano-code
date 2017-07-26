@@ -18,7 +18,7 @@
       },
         {
             "banner": {
-                "text": "Open the Control tray"
+                "text": "We're animating something so let's set up a loop, open the Control tray"
             },
             "beacon": {
                 "target": {
@@ -85,7 +85,7 @@
         },
         {
             "banner": {
-                "text": "Open the Sticker tray"
+                "text": "We want to show the sticker when you high-five the sensor so we need to first hide it, open the Sticker tray"
             },
             "beacon": {
                 "target": {
@@ -100,7 +100,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block hides the sticker, drag it onto your code space"
             },
             "beacon": {
                 "target": {
@@ -175,7 +175,7 @@
         },
         {
             "banner": {
-                "text": "Open the Motion tray"
+                "text": "Now let's use the Motion Sensor, open the Motion tray"
             },
             "beacon": {
                 "target": {
@@ -194,7 +194,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block runs the code inside it when your hand is a certain distance from the sensor, drag it onto your code space"
             },
             "beacon": {
                 "target": {
@@ -233,7 +233,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>, so it activates close to the sensor"
             },
             "beacon": {
                 "target": {
@@ -323,7 +323,7 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "Let's make it cooler by changing the background color, open this tray"
             },
             "beacon": {
                 "target": {
@@ -632,29 +632,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>drum machine</span></kano-value-preview>"
-            },
-            "beacon": {
-                "target": {
-                    "block": {
-                        "id": "block_7"
-                    }
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "value": {
-                        "target": {
-                            "id": "block_7"
-                        },
-                        "value": "drum machine"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>hand_clap</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>boot_up_v2</span></kano-value-preview> to <kano-value-preview><span>hand_clap</span></kano-value-preview>"
             },
             "beacon": {
                 "target": {
@@ -676,7 +654,17 @@
         },
         {
             "banner": {
-                "text": "You can now test the app",
+                "text": "Put your hand close to the sensor to get a high-five!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Why not try changing the sticker and sound effect.",
                 "next_button": true
             },
             "beacon": {
