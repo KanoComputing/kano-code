@@ -80,7 +80,7 @@
             mode="[[mode]]"
             remix-mode="[[remixMode]]"
             unsaved-changes="{{showSavePrompt}}"
-            on-share="_pauseAndShare"
+            on-share="share"
             on-exit="_exit"
             show-share-button>
             <kano-editor-topbar
@@ -172,7 +172,8 @@
         },
         observers: [
             '_setupHardwareParts(addedParts.splices)',
-            '_setupHardwareParts(hardwareAPI)'
+            '_setupHardwareParts(hardwareAPI)',
+            '_pauseApp(shareOpened)'
         ],
         listeners: {
             'parts-changed': '_partsChanged',
@@ -224,9 +225,14 @@
             this.removeEventListener('dragenter', this._onDragenter);
             this.removeEventListener('dragleave', this._onDragleave);
         },
-        _pauseAndShare (e) {
-            this.running = false;
-            this.share(e);
+        _pauseApp(modalOpen) {
+            if (modalOpen) {
+                this._wasRunning = this.running;
+                this.running = false;
+            } else {
+                this.running = this._wasRunning;
+                this._wasRunning = undefined;
+            }
         },
         _onDragover (e) {
             e.preventDefault();
