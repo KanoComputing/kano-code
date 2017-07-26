@@ -1,0 +1,45 @@
+<link rel="import" href="../../app-modules/app-modules.html">
+<link rel="import" href="./base.html">
+<script>
+    (function (Kano) {
+        let Speaker, PartsAPI;
+
+        Kano.MakeApps = Kano.MakeApps || {};
+        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+
+        Speaker = {
+            onCreated () {
+                PartsAPI.Base.onCreated.apply(this);
+                this.reset();
+                this._update();
+            },
+            _update () {
+                if (this.isRunning) {
+                    return;
+                }
+
+                clearTimeout(this.timeoutId);
+                this.timeoutId = setTimeout(this._update.bind(this), 32);
+            },
+            onDestroyed () {
+                clearTimeout(this.timeoutId);
+            },
+            reset () {
+                return;
+            },
+            play () {
+                return;
+            },
+            say () {
+                return;
+            },
+            loop () {
+                return;
+            }
+        };
+
+
+        // @polymerBehavior
+        Kano.MakeApps.PartsAPI['speaker'] = Kano.MakeApps.PartsAPI.Base.applyMixins({}, PartsAPI.Base, Speaker);
+    })(window.Kano = window.Kano || {});
+</script>
