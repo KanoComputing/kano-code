@@ -160,7 +160,8 @@
             });
         },
         setupOverlay (overlayConfig) {
-            let component;
+            let component,
+                previewComponent;
             if (!overlayConfig || !overlayConfig.component) {
                 return;
             }
@@ -169,7 +170,7 @@
             if (overlayConfig.data.appPreview) {
                 let slug = Date.now().toString();
 
-                overlayConfig.data.example_story_url = Kano.AppModules.generateStandaloneComponent(
+                previewComponent = Kano.AppModules.generateStandaloneComponent(
                     slug,
                     this.store.current.app.parts,
                     this.store.current.app.background,
@@ -177,7 +178,8 @@
                     this.store.current.app.code
                 );
                 overlayConfig.data.example_story_slug = slug;
-                overlayConfig.data.example_story_url = 'data:text/html;base64,' + window.btoa(overlayConfig.data.example_story_url);
+                overlayConfig.data.example_story_url = 'data:text/html;base64,' +
+                    window.btoa(unescape(encodeURIComponent(previewComponent)));
             }
 
             this.set('overlayScene', overlayConfig.data);
