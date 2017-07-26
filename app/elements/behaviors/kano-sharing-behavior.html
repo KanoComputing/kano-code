@@ -287,6 +287,7 @@ var SharingBehavior = {
             appData.background,
             Kano.MakeApps.Mode.modes[appData.mode],
             appData.code);
+
         shareInfo = {
             animation: animation,
             page: 'sharing-form',
@@ -298,7 +299,8 @@ var SharingBehavior = {
             code: app.code,
             app: {
                 slug,
-                src: 'data:text/html;base64,' + window.btoa(component)
+                src: 'data:text/html;base64,' +
+                     window.btoa(unescape(encodeURIComponent(component)))
             },
             workspaceInfo: JSON.stringify(app),
             mode
@@ -351,7 +353,8 @@ var SharingBehavior = {
             app.code);
         shareInfo = {
             app: {
-                src: 'data:text/html;base64,' + window.btoa(component),
+                src: 'data:text/html;base64,' +
+                     window.btoa(unescape(encodeURIComponent(component))),
                 slug
             },
             workspaceInfo: e.detail.workspaceInfo,
