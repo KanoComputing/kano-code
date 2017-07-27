@@ -69,7 +69,7 @@ Custom property | Description | Default
                 border: 2px solid #fff;
             }
             .index-number {
-                width: 18px;
+                min-width: 18px;
                 height: 18px;
                 position: absolute;
                 bottom: 4px;
@@ -152,8 +152,8 @@ Custom property | Description | Default
             <iron-icon class="end-arrow" icon="kano-icons:arrow" slot="right-button" carousel-control-right></iron-icon>
         </x-carousel>
         <kano-alert id="delete-all-alert"
-                    heading="Do you want to start again?"
-                    text="You are about to delete all your frames!">
+                    heading="Do you mean to start again?"
+                    text="You are about to delete all the frames!">
             <div slot="actions">
                 <button class="kano-alert-primary" on-tap="confirmDeleteAll" dialog-confirm>Confirm</button>
                 <button class="kano-alert-secondary" dialog-dismiss>Cancel</button>
@@ -260,6 +260,9 @@ Custom property | Description | Default
                 return selectedIndex === index ? 'selected' : '';
             },
             duplicateFrame () {
+                if (this._isFrameLimitReached()) {
+                    return;
+                }
                 const copy = this.bitmaps[this.selectedIndex].slice(0);
                 this.selectedIndex++;
                 this.splice('bitmaps', this.selectedIndex, 0, copy);
@@ -270,6 +273,9 @@ Custom property | Description | Default
             },
             addFrame () {
                 this.debounce('add-frame', () => {
+                    if (this._isFrameLimitReached()) {
+                        return;
+                    }
                     let frame = this.getEmptyFrame();
 
                     if (this.bitmaps.length) {
@@ -305,20 +311,9 @@ Custom property | Description | Default
                 }
             },
             deleteAllFrames () {
-                if (this.bitmaps && this._bitmapsNotEmpty()) {
+                if (this.bitmaps.length > 1) {
                     this.$['delete-all-alert'].open();
                 }
-            },
-            _bitmapsNotEmpty () {
-                //returns true if there is more than an empty frame in the list
-                let allColors = this.bitmaps.reduce((acc, bitmap, index, bitmaps) => {
-                    if (bitmaps.indexOf(bitmap) === index) {
-                        return acc.concat(bitmap);
-                    }
-                }, []);
-                return allColors.some((value) => {
-                    return value !== '#000000'
-                });
             },
             confirmDeleteAll () {
                 this.set('bitmaps', []);
@@ -342,6 +337,12 @@ Custom property | Description | Default
 
                 if (!running && wasRunning) {
                     this._moveToSelected();
+                }
+            },
+            _isFrameLimitReached () {
+                if (this.bitmaps.length >= 512) {
+                    this.fire('frame-limit-reached');
+                    return true;
                 }
             },
             getEmptyFrame () {
