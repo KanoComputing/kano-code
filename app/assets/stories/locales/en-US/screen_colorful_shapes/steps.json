@@ -1,575 +1,527 @@
 {
-	"steps": [
-		{
-			"banner": {
-				"text":"We can use code to turn on groups of pixels...<br><img src='/assets/stories/screen_colorful_shapes/square.png' width='330' /><br>This gives the power to draw shapes!",
-				"next_button": true
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Start by grabbing the block that repeats our code...",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "control"
-					},
-					"position": "right",
-					"text": "Open the Control tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "control"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "repeat_x_times"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"repeat_x_times\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "repeat_x_times"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "repeat_x_times",
-						"id": "block_1"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": null,
-							"rawId": "default_part_event_id"
-						}
-					},
-					"position": "left",
-					"text": "Great! Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": null,
-							"rawId": "default_part_event_id",
-							"inputName": "DO"
-						},
-						"target": "block_1"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": null,
-						"rawId": "default_part_event_id"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Just like last time, let's move to a random point each time...",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#move_to_random"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#move_to_random\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#move_to_random"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#move_to_random",
-						"id": "block_2"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "DTuehhI:^;K,7`l2$uzK"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_1",
-							"rawId": "DTuehhI:^;K,7`l2$uzK",
-							"inputName": "DO"
-						},
-						"target": "block_2"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_1",
-						"rawId": "DTuehhI:^;K,7`l2$uzK"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Before we draw a shape, we need to tell the computer<br>what <b>color</b> to <b>fill</b> the shape with...<br>Can you find the block that does this?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#color"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#color\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#color"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#color",
-						"id": "block_3"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_2",
-							"rawId": "3emroy[@tk!+ek5riiX3"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_2",
-							"rawId": "3emroy[@tk!+ek5riiX3"
-						},
-						"target": "block_3"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_2",
-						"rawId": "3emroy[@tk!+ek5riiX3"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Now, we need a special code block that picks a different color<br>every time we use it...Can you find it?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "color"
-					},
-					"position": "right",
-					"text": "Open the Color tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "color"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "random_colour"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"random_colour\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "random_colour"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "random_colour",
-						"id": "block_4"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_3",
-							"rawId": "2(lpb`clLfkW?~bceAnz"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_3",
-							"rawId": "2(lpb`clLfkW?~bceAnz",
-							"inputName": "COLOR"
-						},
-						"target": "block_4"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_3",
-						"rawId": "2(lpb`clLfkW?~bceAnz"
-					}
-				},
-				"target": "COLOR"
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Time to turn on many pixels at once with a shape block!<br>Can you find the block to draw <b>squares</b>?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#square"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#square\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#square"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#square",
-						"id": "block_5"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_3",
-							"rawId": "2(lpb`clLfkW?~bceAnz"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_3",
-							"rawId": "2(lpb`clLfkW?~bceAnz"
-						},
-						"target": "block_5"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_3",
-						"rawId": "2(lpb`clLfkW?~bceAnz"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "SIZE",
-							"id": "block_5"
-						}
-					},
-					"position": "top",
-					"text": "Look at those squares! How about making them bigger?<br>Change to <kano-value-preview><span>20</span></kano-value-preview> pixels"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "SIZE",
-							"id": "block_5"
-						},
-						"value": "20"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "N",
-							"id": "block_1"
-						}
-					},
-					"position": "top",
-					"text": "Cool, but let's fill the screen!<br>Change to <kano-value-preview><span>10000</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "N",
-							"id": "block_1"
-						},
-						"value": "10000"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "workspace-panel",
-					"position": "left",
-					"text": "<kano-blockly-block type=\"normal#color\"></kano-blockly-block><br><kano-blockly-block type=\"random_colour\"></kano-blockly-block><br><kano-blockly-block type=\"normal#square\"></kano-blockly-block><br>Unlocked!<br><br>Awesome! You have the power to create colorful shapes!",
-					"next_button": true
-				}
-			]
-		},
-		{
-			"banner": {
-				"text":"Play with different shapes and sizes, maybe huge circles<br>Click NEXT when you're done",
-				"next_button": true
-			}
-		}
-	],
-	"parts": [],
-	"modules": [
-		"control",
-		"color"
-	],
-	"variables": [],
-	"filterBlocks": {
-		"normal": [
-			"set_background_color",
-			"move_to_random",
-			"color",
-			"square",
-			"circle"
-		],
-		"control": [
-			"repeat_x_times"
-		],
-		"color": [
-			"random_colour"
-		]
-	},
-	"mode": "normal",
-	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#000000 \"}},\"mode\":\"normal\"}"
+    "steps": [
+        {
+            "banner": {
+                "text": "We can use code to turn on groups of pixels...<br><img src='/assets/stories/screen_colorful_shapes/square.png' width='330' /><br>This gives the power to draw shapes!",
+                "next_button": true
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Start by grabbing the block that repeats our code...",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "banner": {
+                "text": "Open the Control tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "repeat_x_times",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "repeat_x_times"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"repeat_x_times\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Great! Connect it to this block"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Just like last time, let's move to a random point each time...",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move_to_random",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move_to_random"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"normal#move_to_random\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "DTuehhI:^;K,7`l2$uzK",
+                            "inputName": "DO"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "DTuehhI:^;K,7`l2$uzK"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "DTuehhI:^;K,7`l2$uzK"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Before we draw a shape, we need to tell the computer<br>what <b>color</b> to <b>fill</b> the shape with...<br>Can you find the block that does this?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#color",
+                        "id": "block_3"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#color"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"normal#color\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "3emroy[@tk!+ek5riiX3"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "3emroy[@tk!+ek5riiX3"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "3emroy[@tk!+ek5riiX3"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Now, we need a special code block that picks a different color<br>every time we use it...Can you find it?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "banner": {
+                "text": "Open the Color tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "random_colour",
+                        "id": "block_4"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "random_colour"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"random_colour\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "2(lpb`clLfkW?~bceAnz",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "2(lpb`clLfkW?~bceAnz"
+                    }
+                },
+                "target": "COLOR"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "2(lpb`clLfkW?~bceAnz"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Time to turn on many pixels at once with a shape block!<br>Can you find the block to draw <b>squares</b>?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#square",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#square"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"normal#square\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "2(lpb`clLfkW?~bceAnz"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "2(lpb`clLfkW?~bceAnz"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "2(lpb`clLfkW?~bceAnz"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "SIZE",
+                            "id": "block_5"
+                        },
+                        "value": "20"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "SIZE",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Look at those squares! How about making them bigger?<br>Change to <kano-value-preview><span>20</span></kano-value-preview> pixels"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "N",
+                            "id": "block_1"
+                        },
+                        "value": "10000"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "N",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Cool, but let's fill the screen!<br>Change to <kano-value-preview><span>10000</span></kano-value-preview>"
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "<kano-blockly-block type=\"normal#color\"></kano-blockly-block><br><kano-blockly-block type=\"random_colour\"></kano-blockly-block><br><kano-blockly-block type=\"normal#square\"></kano-blockly-block><br>Unlocked!<br><br>Awesome! You have the power to create colorful shapes!",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Play with different shapes and sizes, maybe huge circles<br>Click NEXT when you're done",
+                "next_button": true
+            }
+        }
+    ],
+    "parts": [],
+    "modules": [
+        "control",
+        "color"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "normal": [
+            "set_background_color",
+            "move_to_random",
+            "color",
+            "square",
+            "circle"
+        ],
+        "control": [
+            "repeat_x_times"
+        ],
+        "color": [
+            "random_colour"
+        ]
+    },
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#000000 \"}},\"mode\":\"normal\"}"
 }

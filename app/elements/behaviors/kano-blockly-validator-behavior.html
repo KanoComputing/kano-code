@@ -49,6 +49,10 @@
                 this._updateStep(step);
             },
             _deleteNotExpected (validation, detail) {
+                // Ignore delete events from shadow blocks
+                if (detail.oldXml.tagName.toLowerCase() === 'shadow') {
+                    return;
+                }
                 this._prevStep(3);
             },
             _createNotExpected (validation, detail) {
@@ -192,12 +196,15 @@
             _matchBlocklyValue (validation, event) {
                 let targetId = this.getTargetBlock(validation.target).id,
                     block = event,
-                    failed = false;
+                    failed = false,
+                    workspaceBlock, newValue;
                 // Check that the element that changed is the one we target
                 if (block.blockId === targetId) {
+                    workspaceBlock = this.editor.getBlocklyWorkspace().getBlockById(block.blockId)
+                    newValue = workspaceBlock.getFieldValue(block.name);
                     if (validation.minLength &&
-                            block.newValue.length &&
-                            block.newValue.length < validation.minLength) {
+                        newValue.length &&
+                        newValue.length < validation.minLength) {
                         failed = true;
                     }
                     // Check that
@@ -209,7 +216,7 @@
                         if (value.event_from) {
                             value = `${this.stepIds[value.event_from]}.${value.event}`;
                         }
-                        if (block.newValue != value) {
+                        if (newValue != value) {
                             failed = true;
                         }
                     }

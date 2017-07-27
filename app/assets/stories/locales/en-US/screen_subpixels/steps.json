@@ -1,552 +1,500 @@
 {
-	"steps": [
-		{
-			"banner": {
-				"text":"We can do more than just turn pixels on.<br>Let’s learn the power to change their color!",
-				"next_button": true
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "A faster way to turn on all the pixels is to use the <b>background color</b> block<br>Can you find it?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#set_background_color"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#set_background_color\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#set_background_color"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#set_background_color",
-						"id": "block_0"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": null,
-							"rawId": "default_part_event_id"
-						}
-					},
-					"position": "bottom",
-					"text": "Sweet!<br>Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": null,
-							"rawId": "default_part_event_id",
-							"inputName": "DO"
-						},
-						"target": "block_0"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": null,
-						"rawId": "default_part_event_id"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"banner": {
-				"text":"Hidden inside each pixel are three tiny lights called subpixels...<br><img src='/assets/stories/screen_subpixels/subpixel.png' width='100' /><br>There is a red, green and blue subpixel (RGB)",
-				"next_button": true
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "We can tell these subpixels to make any color we want!<br>Can you find a block to create a new color?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "color"
-					},
-					"position": "right",
-					"text": "Open the Color tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "color"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "create_color"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"create_color\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "create_color"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "create_color",
-						"id": "block_1"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_0",
-							"rawId": "NGoA?+=y2JVQtW]]W|9@"
-						}
-					},
-					"position": "bottom",
-					"text": "Awesome!<br>Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_0",
-							"rawId": "NGoA?+=y2JVQtW]]W|9@",
-							"inputName": "COLOR"
-						},
-						"target": "block_1"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_0",
-						"rawId": "NGoA?+=y2JVQtW]]W|9@"
-					}
-				},
-				"target": "COLOR"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "Now we need some numbers...<br>Open the Variables tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_number"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "math_number"
-				},
-				"angle": 80,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "math_number",
-						"id": "block_2"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "8cKf:_D{8K~j5Z~TG`P?"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to red"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_1",
-							"rawId": "8cKf:_D{8K~j5Z~TG`P?",
-							"inputName": "1"
-						},
-						"target": "block_2"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_1",
-						"rawId": "8cKf:_D{8K~j5Z~TG`P?"
-					}
-				},
-				"target": "1"
-			},
-			"reward":true
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "Open the Variables tray again"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_number"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "math_number"
-				},
-				"angle": 80,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "math_number",
-						"id": "block_3"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "8cKf:_D{8K~j5Z~TG`P?"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to green"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_1",
-							"rawId": "8cKf:_D{8K~j5Z~TG`P?",
-							"inputName": "2"
-						},
-						"target": "block_3"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_1",
-						"rawId": "8cKf:_D{8K~j5Z~TG`P?"
-					}
-				},
-				"target": "2"
-			},
-			"reward":true
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "Nearly there. Open the Variables tray once more"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_number"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "math_number"
-				},
-				"angle": 80,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "math_number",
-						"id": "block_4"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "8cKf:_D{8K~j5Z~TG`P?"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to blue"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_1",
-							"rawId": "8cKf:_D{8K~j5Z~TG`P?",
-							"inputName": "3"
-						},
-						"target": "block_4"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_1",
-						"rawId": "8cKf:_D{8K~j5Z~TG`P?"
-					}
-				},
-				"target": "3"
-			},
-			"reward":true
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_2"
-						}
-					},
-					"position": "left",
-					"text": "Let's turn on all the red subpixels!<br>Change to <kano-value-preview><span>100</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_2"
-						},
-						"value": "100"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_3"
-						}
-					},
-					"position": "left",
-					"text": "Now, how about the green subpixels?<br>Change to <kano-value-preview><span>100</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_3"
-						},
-						"value": "100"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_4"
-						}
-					},
-					"position": "top",
-					"text": "Finally, turn on the blue subpixels!<br>Change to <kano-value-preview><span>100</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_4"
-						},
-						"value": "100"
-					}
-				}
-			}
-		},
-		{
-			"banner": {
-				"text":"Blending together red, green and blue makes white!<br><img src='/assets/stories/screen_subpixels/rgb.png' width='200' />",
-				"next_button": true
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "workspace-panel",
-					"position": "left",
-					"text": "<kano-blockly-block type=\"normal#set_background_color\"></kano-blockly-block><br>and<br><kano-blockly-block type=\"create_color\"></kano-blockly-block><br>Unlocked!<br><br>Stunning! You now have power over colors!",
-					"next_button": true
-				}
-			]
-		},
-		{
-			"banner": {
-				"text":"Try different numbers in red, green, and blue to mix any color!<br>When you're ready click NEXT to unlock new shape powers...",
-				"next_button": true
-			}
-		}
-	],
-	"parts": [],
-	"modules": [
-		"color",
-		"variables"
-	],
-	"variables": [],
-	"filterBlocks": {
-		"normal": [
-			"set_background_color"
-		],
-		"color": [
-			"create_color"
-		],
-		"variables": [
-			"math_number"
-		]
-	},
-	"mode": "normal",
-	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"190\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"mode\":\"normal\"}"
+    "steps": [
+        {
+            "banner": {
+                "text": "We can do more than just turn pixels on.<br>Let’s learn the power to change their color!",
+                "next_button": true
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "A faster way to turn on all the pixels is to use the <b>background color</b> block<br>Can you find it?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#set_background_color",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#set_background_color"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Sweet!<br>Connect it to this block"
+            }
+        },
+        {
+            "banner": {
+                "text": "Hidden inside each pixel are three tiny lights called subpixels...<br><img src='/assets/stories/screen_subpixels/subpixel.png' width='100' /><br>There is a red, green and blue subpixel (RGB)",
+                "next_button": true
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "We can tell these subpixels to make any color we want!<br>Can you find a block to create a new color?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "banner": {
+                "text": "Open the Color tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "create_color",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "create_color"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"create_color\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "NGoA?+=y2JVQtW]]W|9@",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "NGoA?+=y2JVQtW]]W|9@"
+                    }
+                },
+                "target": "COLOR"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "NGoA?+=y2JVQtW]]W|9@"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Awesome!<br>Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Now we need some numbers...<br>Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 80
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "8cKf:_D{8K~j5Z~TG`P?",
+                            "inputName": "1"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "8cKf:_D{8K~j5Z~TG`P?"
+                    }
+                },
+                "target": "1"
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "8cKf:_D{8K~j5Z~TG`P?"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to red"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray again"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_3"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 80
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "8cKf:_D{8K~j5Z~TG`P?",
+                            "inputName": "2"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "8cKf:_D{8K~j5Z~TG`P?"
+                    }
+                },
+                "target": "2"
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "8cKf:_D{8K~j5Z~TG`P?"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to green"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Nearly there. Open the Variables tray once more"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_4"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 80
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "8cKf:_D{8K~j5Z~TG`P?",
+                            "inputName": "3"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "8cKf:_D{8K~j5Z~TG`P?"
+                    }
+                },
+                "target": "3"
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "8cKf:_D{8K~j5Z~TG`P?"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to blue"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        },
+                        "value": "100"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Let's turn on all the red subpixels!<br>Change to <kano-value-preview><span>100</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "100"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Now, how about the green subpixels?<br>Change to <kano-value-preview><span>100</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_4"
+                        },
+                        "value": "100"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Finally, turn on the blue subpixels!<br>Change to <kano-value-preview><span>100</span></kano-value-preview>"
+            }
+        },
+        {
+            "banner": {
+                "text": "Blending together red, green and blue makes white!<br><img src='/assets/stories/screen_subpixels/rgb.png' width='200' />",
+                "next_button": true
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "<kano-blockly-block type=\"normal#set_background_color\"></kano-blockly-block><br>and<br><kano-blockly-block type=\"create_color\"></kano-blockly-block><br>Unlocked!<br><br>Stunning! You now have power over colors!",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Try different numbers in red, green, and blue to mix any color!<br>When you're ready click NEXT to unlock new shape powers...",
+                "next_button": true
+            }
+        }
+    ],
+    "parts": [],
+    "modules": [
+        "color",
+        "variables"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "normal": [
+            "set_background_color"
+        ],
+        "color": [
+            "create_color"
+        ],
+        "variables": [
+            "math_number"
+        ]
+    },
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"190\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"mode\":\"normal\"}"
 }

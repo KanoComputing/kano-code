@@ -19,7 +19,7 @@ Blockly.FieldVariable.dropdownCreate = function () {
     if (this.sourceBlock_ && this.sourceBlock_.workspace) {
         // Get a copy of the list, so that adding rename and new variable options
         // doesn't modify the workspace's list.
-        variableList = this.sourceBlock_.workspace.variableList.slice(0);
+        variableList = Blockly.Variables.allVariables(this.sourceBlock_.workspace).map(variableModel => variableModel.name);
     } else {
         variableList = [];
     }
