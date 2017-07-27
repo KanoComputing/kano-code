@@ -1,1465 +1,1309 @@
 {
-	"steps": [
-		{
-			"banner": {
-				"text":"Time to put all your new pixel powers together<br> to create an amazing scene set in space!",
-				"next_button": true
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "add-part-button",
-					"position": "top",
-					"text": "Don't forget the sticker<br>Open the parts drawer."
-				}
-			],
-			"validation": {
-				"open-parts": true
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "parts-panel-part-sticker",
-					"position": "right",
-					"text": "Drag the Sticker onto your space scene"
-				}
-			],
-			"highlight": "parts-panel-part-sticker",
-			"arrow": {
-				"source": "parts-panel-part-sticker",
-				"target": "workspace-panel",
-				"size": 120
-			},
-			"validation": {
-				"add-part": {
-					"type": "sticker",
-					"id": "part_0"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "add-part-button",
-					"position": "top",
-					"text": "Now we can start coding.<br>Hit the close button"
-				}
-			],
-			"validation": {
-				"close-parts": true
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "First challenge: Can you change the sticker to be a random space picture?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "right",
-					"text": "Open the Sticker tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "set_sticker"
-						}
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"part_0#set_sticker\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "set_sticker"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "set_sticker",
-						"id": "block_8"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"rawId": "rP+$rO`0i-;Jz+;nW2KJ"
-						}
-					},
-					"position": "right",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"rawId": "rP+$rO`0i-;Jz+;nW2KJ",
-							"inputName": "DO"
-						},
-						"target": "block_8"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"rawId": "rP+$rO`0i-;Jz+;nW2KJ"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "right",
-					"text": "Open the Sticker tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "random_from_set"
-						}
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"part_0#random_from_set\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "random_from_set"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "random_from_set",
-						"id": "block_9"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_8",
-							"rawId": "n]C3LnT::26#)Gy*97u3"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_8",
-							"rawId": "n]C3LnT::26#)Gy*97u3",
-							"inputName": "PICTURE"
-						},
-						"target": "block_9"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_8",
-						"rawId": "n]C3LnT::26#)Gy*97u3"
-					}
-				},
-				"target": "PICTURE"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_9"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview><span>space</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_9"
-						},
-						"value": "space"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"banner": {
-				"text":"To make the space object look like it's moving through space<br>we're going to be playing with the size of the sticker<br>We need to store the <b>size</b> in a <b>variable</b>",
-				"next_button": true
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Can you find a block to set a variable?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "Open the Variables tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "variables_set"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "variables_set"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "variables_set",
-						"id": "block_10"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_8",
-							"rawId": "n]C3LnT::26#)Gy*97u3"
-						}
-					},
-					"position": "right",
-					"text": "Good job! Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_8",
-							"rawId": "n]C3LnT::26#)Gy*97u3"
-						},
-						"target": "block_10"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_8",
-						"rawId": "n]C3LnT::26#)Gy*97u3"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_10"
-						}
-					},
-					"position": "top",
-					"text": "We want to change the name of our variable to size.<br>Change item to <kano-value-preview><span>size</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_10"
-						},
-						"value": "size"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "Open the Variables tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_number"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "math_number"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "math_number",
-						"id": "block_11"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_10",
-							"rawId": "Or7XH}pzH`jZyN_z;P;`"
-						}
-					},
-					"position": "right",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_10",
-							"rawId": "Or7XH}pzH`jZyN_z;P;`",
-							"inputName": "VALUE"
-						},
-						"target": "block_11"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_10",
-						"rawId": "Or7XH}pzH`jZyN_z;P;`"
-					}
-				},
-				"target": "VALUE"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_11"
-						}
-					},
-					"position": "top",
-					"text": "In the beginning our sticker's size will be 100%<br>so let's type <kano-value-preview><span>100</span></kano-value-preview> in here"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_11"
-						},
-						"value": "100"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Can you set up a loop that runs every 1 frame?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "control"
-					},
-					"position": "right",
-					"text": "Open the Control tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "control"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "every_x_seconds"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "every_x_seconds"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "every_x_seconds",
-						"id": "block_12"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_10",
-							"rawId": "Or7XH}pzH`jZyN_z;P;`"
-						}
-					},
-					"position": "right",
-					"text": "Nice! Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_10",
-							"rawId": "Or7XH}pzH`jZyN_z;P;`"
-						},
-						"target": "block_12"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_10",
-						"rawId": "Or7XH}pzH`jZyN_z;P;`"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_12"
-						}
-					},
-					"position": "top",
-					"text": "Since we're going to animate our sticker...<br>...change to <kano-value-preview><span>frames</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_12"
-						},
-						"value": "frames"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Now for the animating!<br>Can you move the sticker?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "right",
-					"text": "Open the Sticker tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "ui_move_by"
-						}
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"part_0#ui_move_by\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "ui_move_by"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "ui_move_by",
-						"id": "block_move"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_12",
-							"rawId": "Oct!*:3b-{IB.|01jI!l"
-						}
-					},
-					"position": "bottom",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_12",
-							"rawId": "Oct!*:3b-{IB.|01jI!l",
-							"inputName": "DO"
-						},
-						"target": "block_move"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_12",
-						"rawId": "Oct!*:3b-{IB.|01jI!l"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "Open the Variables tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_number"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "math_number"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "math_number",
-						"id": "block_move_distance"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_move"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_move",
-							"inputName": "pixels"
-						},
-						"target": "block_move_distance"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_move"
-					}
-				},
-				"target": "pixels"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_move_distance"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview><span>1</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_move_distance"
-						},
-						"value": "1"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Next can you make the sticker turn?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "right",
-					"text": "Open the Sticker tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "ui_rotate"
-						}
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"part_0#ui_rotate\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "ui_rotate"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "ui_rotate",
-						"id": "block_rotate"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_move"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_move"
-						},
-						"target": "block_rotate"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_move"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "We need it to turn a certain amount<br>Open the Variables tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_number"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "math_number"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "math_number",
-						"id": "block_rotate_angle"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_rotate"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_rotate",
-							"inputName": "DEG"
-						},
-						"target": "block_rotate_angle"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_rotate"
-					}
-				},
-				"target": "DEG"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_rotate_angle"
-						}
-					},
-					"position": "top",
-					"text": "Try playing with this number!<br>It's fun to put a really big number in<br>When you're ready, change to <kano-value-preview><span>2</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_rotate_angle"
-						},
-						"value": "2"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "To make our spacey object look like its flying through space,<br>we're going to make it get smaller and smaller.<br>Can you find a block to change the sticker's size?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "right",
-					"text": "Open the Sticker tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "ui_scale"
-						}
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"part_0#ui_scale\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "ui_scale"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "ui_scale",
-						"id": "block_scale"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_rotate"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_rotate"
-						},
-						"target": "block_scale"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_rotate"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Can you connect this scale block to our size variable?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "variables"
-					},
-					"position": "right",
-					"text": "Open the Variables tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "variables"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "variables_get"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "variables_get"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "variables_get",
-						"id": "block_14"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_scale",
-							"rawId": "fr58-#O5B7Qe.kc60D+F"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_scale",
-							"rawId": "fr58-#O5B7Qe.kc60D+F",
-							"inputName": "FACTOR"
-						},
-						"target": "block_14"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_scale",
-						"rawId": "fr58-#O5B7Qe.kc60D+F"
-					}
-				},
-				"target": "FACTOR"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_14"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview><span>size</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_14"
-						},
-						"value": "size"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Finally, we need to make the size a bit smaller<br>whenever there is a frame in the animation.<br>Can you find the block to change the value of a variable?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "math"
-					},
-					"position": "right",
-					"text": "Open the Math tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "math"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "unary"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"unary\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "unary"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "unary",
-						"id": "block_15"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_scale",
-							"rawId": "fr58-#O5B7Qe.kc60D+F"
-						}
-					},
-					"position": "left",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_scale",
-							"rawId": "fr58-#O5B7Qe.kc60D+F"
-						},
-						"target": "block_15"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_scale",
-						"rawId": "fr58-#O5B7Qe.kc60D+F"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_15"
-						}
-					},
-					"position": "top",
-					"text": "Change from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>size</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_15"
-						},
-						"value": "size"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_15"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview><span>*=</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_15"
-						},
-						"value": "*="
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "RIGHT_HAND",
-							"id": "block_15"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview><span>0.99</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "RIGHT_HAND",
-							"id": "block_15"
-						},
-						"value": "0.99"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "workspace-panel",
-					"position": "left",
-					"text": "Look, it's falling through space!<br>How good do your new powers feel?",
-					"next_button": true
-				}
-			]
-		},
-		{
-			"tooltips": [
-				{
-					"location": "workspace-panel",
-					"position": "left",
-					"text": "<kano-blockly-block type=\"variables_set\"></kano-blockly-block><br><kano-blockly-block type=\"part_0#ui_scale\"></kano-blockly-block><br>Unlocked!<br><br>You can store data in variables<br>and shrink your stickers!",
-					"next_button": true
-				}
-			]
-		},
-		{
-			"banner": {
-				"text":"Play with your new powers. Change numbers to make the sticker move in crazy ways!<br>Or maybe swap space for animals!<br>When you're done, click Save to share your creation with the world!",
-				"next_button": true
-			}
-		}
-	],
-	"parts": [
-		"sticker"
-	],
-	"modules": [
-		"events",
-		"control",
-		"math",
-		"variables"
-	],
-	"variables": [
-		"size"
-	],
-	"filterBlocks": {
-		"events": [
-			"part_event"
-		],
-		"normal": [
-			"set_background_color",
-			"color",
-			"move_to_random",
-			"circle"
-		],
-		"control": [
-			"repeat_x_times",
-			"every_x_seconds"
-		],
-		"math": [
-			"math_random",
-			"unary"
-		],
-		"sticker": [
-			"set_sticker",
-			"random_from_set",
-			"ui_scale",
-			"ui_move_by",
-			"ui_rotate"
-		],
-		"variables": [
-			"variables_set",
-			"math_number",
-			"variables_get"
-		]
-	},
-	"mode": "normal",
-	"defaultApp":"{\"parts\":[],\"code\":{\"snapshot\":{\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"178\\\" y=\\\"45\\\"><field name=\\\"EVENT\\\">global.start</field><statement name=\\\"DO\\\"><block type=\\\"normal#set_background_color\\\" id=\\\"rf%Q1|}X~CXIp^tdg:%x\\\"><value name=\\\"COLOR\\\"><shadow type=\\\"colour_picker\\\" id=\\\"NgSTh.FU]u$m$xh7`eb[\\\"><field name=\\\"COLOUR\\\">#000000</field></shadow></value><next><block type=\\\"normal#color\\\" id=\\\"u(FD%AmAAeq/g5mLEwg9\\\"><value name=\\\"COLOR\\\"><shadow type=\\\"colour_picker\\\" id=\\\"?B}#T%tKJzpYwV{]=8p7\\\"><field name=\\\"COLOUR\\\">#ffffff</field></shadow></value><next><block type=\\\"repeat_x_times\\\" id=\\\"jg2H9NcJ75yIVNvI~/+s\\\"><value name=\\\"N\\\"><shadow type=\\\"math_number\\\" id=\\\"+N4Oip/`1Ko#]38lL0Hq\\\"><field name=\\\"NUM\\\">200</field></shadow></value><statement name=\\\"DO\\\"><block type=\\\"normal#move_to_random\\\" id=\\\"z8zh/`pNjI`ZT]cVD(#O\\\"><next><block type=\\\"normal#circle\\\" id=\\\"[3}qc*})bhl=wjJ!(z^o\\\"><value name=\\\"RADIUS\\\"><shadow type=\\\"math_number\\\" id=\\\"_0GD*;ukOCBSUflG0]GP\\\"><field name=\\\"NUM\\\">5</field></shadow><block type=\\\"math_random\\\" id=\\\"[CO_l,du7xnB5f:c_9NO\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"4p/hO9iHnc{F|B8k_r_/\\\"><field name=\\\"NUM\\\">1</field></shadow></value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"P+`k$~m`A.Q6Us7W-Jn]\\\"><field name=\\\"NUM\\\">3</field></shadow></value></block></value></block></next></block></statement></block></next></block></next></block></statement></block><block type=\\\"part_event\\\" id=\\\"rP+$rO`0i-;Jz+;nW2KJ\\\" x=\\\"176\\\" y=\\\"273\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\",\"undefined\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
+    "steps": [
+        {
+            "banner": {
+                "text": "Time to put all your new pixel powers together<br> to create an amazing scene set in space!",
+                "next_button": true
+            }
+        },
+        {
+            "validation": {
+                "open-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "Don't forget the sticker<br>Open the parts drawer."
+            }
+        },
+        {
+            "validation": {
+                "add-part": {
+                    "type": "sticker",
+                    "id": "part_0"
+                }
+            },
+            "beacon": {
+                "target": "parts-panel-sticker"
+            },
+            "tooltips": [{
+                "text": "Add the Sticker",
+                "location": "parts-panel",
+                "position": "top"
+            }]
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "First challenge: Can you change the sticker to be a random space picture?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Sticker tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "set_sticker",
+                        "id": "block_8"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "set_sticker"
+                    }
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"part_0#set_sticker\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "rP+$rO`0i-;Jz+;nW2KJ",
+                            "inputName": "DO"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "rP+$rO`0i-;Jz+;nW2KJ"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "rP+$rO`0i-;Jz+;nW2KJ"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Sticker tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "assets_random_sticker_from",
+                        "id": "block_9"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "assets_random_sticker_from"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"assets_random_sticker_from\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_8",
+                            "rawId": "n]C3LnT::26#)Gy*97u3",
+                            "inputName": "PICTURE"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "n]C3LnT::26#)Gy*97u3"
+                    }
+                },
+                "target": "PICTURE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "n]C3LnT::26#)Gy*97u3"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_9"
+                        },
+                        "value": "space"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_9"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>space</span></kano-value-preview>"
+            }
+        },
+        {
+            "banner": {
+                "text": "To make the space object look like it's moving through space<br>we're going to be playing with the size of the sticker<br>We need to store the <b>size</b> in a <b>variable</b>",
+                "next_button": true
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Can you find a block to set a variable?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_10"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_8",
+                            "rawId": "n]C3LnT::26#)Gy*97u3"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "n]C3LnT::26#)Gy*97u3"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "n]C3LnT::26#)Gy*97u3"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Good job! Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_10"
+                        },
+                        "value": "size"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10"
+                    }
+                }
+            },
+            "banner": {
+                "text": "We want to change the name of our variable to size.<br>Change item to <kano-value-preview><span>size</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_11"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_10",
+                            "rawId": "Or7XH}pzH`jZyN_z;P;`",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "Or7XH}pzH`jZyN_z;P;`"
+                    }
+                },
+                "target": "VALUE"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "Or7XH}pzH`jZyN_z;P;`"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "100"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "banner": {
+                "text": "In the beginning our sticker's size will be 100%<br>so let's type <kano-value-preview><span>100</span></kano-value-preview> in here"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Can you set up a loop that runs every 1 frame?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "banner": {
+                "text": "Open the Control tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_12"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_10",
+                            "rawId": "Or7XH}pzH`jZyN_z;P;`"
+                        },
+                        "target": "block_12"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "Or7XH}pzH`jZyN_z;P;`"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_10",
+                        "rawId": "Or7XH}pzH`jZyN_z;P;`"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Nice! Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_12"
+                        },
+                        "value": "frames"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_12"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Since we're going to animate our sticker...<br>...change to <kano-value-preview><span>frames</span></kano-value-preview>"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Now for the animating!<br>Can you move the sticker?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Sticker tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "ui_move_by",
+                        "id": "block_move"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "ui_move_by"
+                    }
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"part_0#ui_move_by\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_12",
+                            "rawId": "Oct!*:3b-{IB.|01jI!l",
+                            "inputName": "DO"
+                        },
+                        "target": "block_move"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_12",
+                        "rawId": "Oct!*:3b-{IB.|01jI!l"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_12",
+                        "rawId": "Oct!*:3b-{IB.|01jI!l"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_move_distance"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_move",
+                            "inputName": "pixels"
+                        },
+                        "target": "block_move_distance"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_move"
+                    }
+                },
+                "target": "pixels"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_move"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_move_distance"
+                        },
+                        "value": "1"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_move_distance"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>1</span></kano-value-preview>"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Next can you make the sticker turn?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Sticker tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "ui_rotate",
+                        "id": "block_rotate"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "ui_rotate"
+                    }
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"part_0#ui_rotate\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_move"
+                        },
+                        "target": "block_rotate"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_move"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_move"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "We need it to turn a certain amount<br>Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_rotate_angle"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_rotate",
+                            "inputName": "DEG"
+                        },
+                        "target": "block_rotate_angle"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_rotate"
+                    }
+                },
+                "target": "DEG"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_rotate"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_rotate_angle"
+                        },
+                        "value": "2"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_rotate_angle"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Try playing with this number!<br>It's fun to put a really big number in<br>When you're ready, change to <kano-value-preview><span>2</span></kano-value-preview>"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "To make our spacey object look like its flying through space,<br>we're going to make it get smaller and smaller.<br>Can you find a block to change the sticker's size?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Open the Sticker tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "ui_scale",
+                        "id": "block_scale"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "ui_scale"
+                    }
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"part_0#ui_scale\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_rotate"
+                        },
+                        "target": "block_scale"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_rotate"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_rotate"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Can you connect this scale block to our size variable?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "banner": {
+                "text": "Open the Variables tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_14"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_scale",
+                            "rawId": "fr58-#O5B7Qe.kc60D+F",
+                            "inputName": "FACTOR"
+                        },
+                        "target": "block_14"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_scale",
+                        "rawId": "fr58-#O5B7Qe.kc60D+F"
+                    }
+                },
+                "target": "FACTOR"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_scale",
+                        "rawId": "fr58-#O5B7Qe.kc60D+F"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_14"
+                        },
+                        "value": "size"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_14"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>size</span></kano-value-preview>"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Finally, we need to make the size a bit smaller<br>whenever there is a frame in the animation.<br>Can you find the block to change the value of a variable?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "banner": {
+                "text": "Open the Math tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "unary",
+                        "id": "block_15"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "unary"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"unary\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_scale",
+                            "rawId": "fr58-#O5B7Qe.kc60D+F"
+                        },
+                        "target": "block_15"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_scale",
+                        "rawId": "fr58-#O5B7Qe.kc60D+F"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_scale",
+                        "rawId": "fr58-#O5B7Qe.kc60D+F"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_15"
+                        },
+                        "value": "size"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_15"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>size</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_15"
+                        },
+                        "value": "*="
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_15"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>*=</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "RIGHT_HAND",
+                            "id": "block_15"
+                        },
+                        "value": "0.99"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "RIGHT_HAND",
+                        "id": "block_15"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>0.99</span></kano-value-preview>"
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "Look, it's falling through space!<br>How good do your new powers feel?",
+                "next_button": true
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "<kano-blockly-block type=\"variables_set\"></kano-blockly-block><br><kano-blockly-block type=\"part_0#ui_scale\"></kano-blockly-block><br>Unlocked!<br><br>You can store data in variables<br>and shrink your stickers!",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Play with your new powers. Change numbers to make the sticker move in crazy ways!<br>Or maybe swap space for animals!<br>When you're done, click Save to share your creation with the world!",
+                "next_button": true
+            }
+        }
+    ],
+    "parts": [
+        "sticker"
+    ],
+    "modules": [
+        "events",
+        "control",
+        "math",
+        "variables"
+    ],
+    "variables": [
+        "size"
+    ],
+    "filterBlocks": {
+        "events": [
+            "part_event"
+        ],
+        "normal": [
+            "set_background_color",
+            "color",
+            "move_to_random",
+            "circle"
+        ],
+        "control": [
+            "repeat_x_times",
+            "every_x_seconds"
+        ],
+        "math": [
+            "math_random",
+            "unary"
+        ],
+        "sticker": [
+            "set_sticker",
+            "random_from_set",
+            "ui_scale",
+            "ui_move_by",
+            "ui_rotate",
+            "assets_random_sticker_from"
+        ],
+        "variables": [
+            "variables_set",
+            "math_number",
+            "variables_get"
+        ]
+    },
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"178\\\" y=\\\"45\\\"><field name=\\\"EVENT\\\">global.start</field><statement name=\\\"DO\\\"><block type=\\\"normal#set_background_color\\\" id=\\\"rf%Q1|}X~CXIp^tdg:%x\\\"><value name=\\\"COLOR\\\"><shadow type=\\\"colour_picker\\\" id=\\\"NgSTh.FU]u$m$xh7`eb[\\\"><field name=\\\"COLOUR\\\">#000000</field></shadow></value><next><block type=\\\"normal#color\\\" id=\\\"u(FD%AmAAeq/g5mLEwg9\\\"><value name=\\\"COLOR\\\"><shadow type=\\\"colour_picker\\\" id=\\\"?B}#T%tKJzpYwV{]=8p7\\\"><field name=\\\"COLOUR\\\">#ffffff</field></shadow></value><next><block type=\\\"repeat_x_times\\\" id=\\\"jg2H9NcJ75yIVNvI~/+s\\\"><value name=\\\"N\\\"><shadow type=\\\"math_number\\\" id=\\\"+N4Oip/`1Ko#]38lL0Hq\\\"><field name=\\\"NUM\\\">200</field></shadow></value><statement name=\\\"DO\\\"><block type=\\\"normal#move_to_random\\\" id=\\\"z8zh/`pNjI`ZT]cVD(#O\\\"><next><block type=\\\"normal#circle\\\" id=\\\"[3}qc*})bhl=wjJ!(z^o\\\"><value name=\\\"RADIUS\\\"><shadow type=\\\"math_number\\\" id=\\\"_0GD*;ukOCBSUflG0]GP\\\"><field name=\\\"NUM\\\">5</field></shadow><block type=\\\"math_random\\\" id=\\\"[CO_l,du7xnB5f:c_9NO\\\"><value name=\\\"MIN\\\"><shadow type=\\\"math_number\\\" id=\\\"4p/hO9iHnc{F|B8k_r_/\\\"><field name=\\\"NUM\\\">1</field></shadow></value><value name=\\\"MAX\\\"><shadow type=\\\"math_number\\\" id=\\\"P+`k$~m`A.Q6Us7W-Jn]\\\"><field name=\\\"NUM\\\">3</field></shadow></value></block></value></block></next></block></statement></block></next></block></next></block></statement></block><block type=\\\"part_event\\\" id=\\\"rP+$rO`0i-;Jz+;nW2KJ\\\" x=\\\"176\\\" y=\\\"273\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#ffffff\",\"undefined\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
 }

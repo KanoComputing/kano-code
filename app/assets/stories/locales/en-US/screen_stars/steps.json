@@ -1,753 +1,692 @@
 {
-	"steps": [
-		{
-			"banner": {
-				"text":"Let's use our drawing powers to create a night sky",
-				"next_button": true
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "First can you make the background black?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#set_background_color"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#set_background_color\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#set_background_color"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#set_background_color",
-						"id": "block_0"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": null,
-							"rawId": "default_part_event_id"
-						}
-					},
-					"position": "bottom",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": null,
-							"rawId": "default_part_event_id",
-							"inputName": "DO"
-						},
-						"target": "block_0"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": null,
-						"rawId": "default_part_event_id"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "COLOR",
-							"id": "block_0"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview><span>#000000</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "COLOR",
-							"id": "block_0"
-						},
-						"value": "#000000"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "We want sparkling stars, so let's set the <b>draw: fill color</b> to white",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#color"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#color\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#color"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#color",
-						"id": "block_1"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_0",
-							"rawId": "xBv/R[mC;+{kMwLoU1-M"
-						}
-					},
-					"position": "bottom",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_0",
-							"rawId": "xBv/R[mC;+{kMwLoU1-M"
-						},
-						"target": "block_1"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_0",
-						"rawId": "xBv/R[mC;+{kMwLoU1-M"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "COLOR",
-							"id": "block_1"
-						}
-					},
-					"position": "top",
-					"text": "Change to <kano-value-preview><span>#ffffff</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "COLOR",
-							"id": "block_1"
-						},
-						"value": "#ffffff"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "To draw the stars we need to <b>repeat</b> our code...<br>Can you find the block that does this?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "control"
-					},
-					"position": "right",
-					"text": "Open the Control tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "control"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "repeat_x_times"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"repeat_x_times\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "repeat_x_times"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "repeat_x_times",
-						"id": "block_2"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "pZAmo-`Im[)LZS2wV%D*"
-						}
-					},
-					"position": "right",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_1",
-							"rawId": "pZAmo-`Im[)LZS2wV%D*"
-						},
-						"target": "block_2"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_1",
-						"rawId": "pZAmo-`Im[)LZS2wV%D*"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "N",
-							"id": "block_2"
-						}
-					},
-					"position": "top",
-					"text": "Higher numbers mean more stars.<br>Change to <kano-value-preview><span>200</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "N",
-							"id": "block_2"
-						},
-						"value": "200"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Just like the colorful shape challenge, we need to move<br>to a random point...",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#move_to_random"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#move_to_random\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#move_to_random"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#move_to_random",
-						"id": "block_3"
-					}
-				}
-			},
-			"reward": true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_2",
-							"rawId": "o$/JYroc4pU|g7Ms0|$-"
-						}
-					},
-					"position": "right",
-					"text": "Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_2",
-							"rawId": "o$/JYroc4pU|g7Ms0|$-",
-							"inputName": "DO"
-						},
-						"target": "block_3"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_2",
-						"rawId": "o$/JYroc4pU|g7Ms0|$-"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Stars are fiery spheres in space. But you can draw them with circles.<br>Can you find the code block you need?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "normal"
-					},
-					"position": "right",
-					"text": "Open this tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "normal"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "normal#circle"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"normal#circle\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "normal#circle"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "normal#circle",
-						"id": "block_4"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_3",
-							"rawId": "yIMD9+-k#y}r*.ndx7`+"
-						}
-					},
-					"position": "top",
-					"text": "Drop it here to change the circle sizes"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_3",
-							"rawId": "yIMD9+-k#y}r*.ndx7`+"
-						},
-						"target": "block_4"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_3",
-						"rawId": "yIMD9+-k#y}r*.ndx7`+"
-					}
-				}
-			}
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": false,
-					"disabled-banner": {
-						"text": "Oh, all the stars are the same size. That's not right. <br> We want to make them different sizes...and for that <br>we'll need some <b>random numbers</b>. Can you find them?",
-						"hint_button": true
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": "math"
-					},
-					"position": "right",
-					"text": "Open the Math tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": "math"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": "math_random"
-					},
-					"position": "right",
-					"text": "Drag the <kano-blockly-block type=\"math_random\"></kano-blockly-block> block onto your code space"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": "math_random"
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"type": "math_random",
-						"id": "block_5"
-					}
-				}
-			},
-			"reward":true
-		},
-		{
-			"set-state": {
-				"hints": {
-					"enabled": true
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_4",
-							"rawId": "~{GQJW{)/l|d2^_tf1AY"
-						}
-					},
-					"position": "bottom",
-					"text": "Mathmazing! Connect it to this block"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_4",
-							"rawId": "~{GQJW{)/l|d2^_tf1AY",
-							"inputName": "RADIUS"
-						},
-						"target": "block_5"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_4",
-						"rawId": "~{GQJW{)/l|d2^_tf1AY"
-					}
-				},
-				"target": "RADIUS"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "MIN",
-							"id": "block_5"
-						}
-					},
-					"position": "top",
-					"text": "We want the smallest stars to be 1 pixel wide<br>Change to <kano-value-preview><span>1</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "MIN",
-							"id": "block_5"
-						},
-						"value": "1"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "MAX",
-							"id": "block_5"
-						}
-					},
-					"position": "top",
-					"text": "And we want the biggest to be 3 pixels wide<br>Change to <kano-value-preview><span>3</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "MAX",
-							"id": "block_5"
-						},
-						"value": "3"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "workspace-panel",
-					"position": "left",
-					"text": "Sparkling! You just made your computer screen show a starry sky.",
-					"next_button": true
-				}
-			]
-		},
-		{
-			"tooltips": [
-				{
-					"location": "workspace-panel",
-					"position": "left",
-					"text": "<kano-blockly-block type=\"normal#circle\"></kano-blockly-block><br>Unlocked!<br><br>Now you have the power to build<br>beautiful circular shapes!",
-					"next_button": true
-				}
-			]
-		},
-		{
-			"banner": {
-				"text":"Next let's combine all your new powers to make something amazing!",
-				"next_button": true
-			}
-		}
-	],
-	"parts": [],
-	"modules": [
-		"control",
-		"math"
-	],
-	"variables": [],
-	"filterBlocks": {
-		"normal": [
-			"set_background_color",
-			"color",
-			"move_to_random",
-			"circle"
-		],
-		"control": [
-			"repeat_x_times"
-		],
-		"math": [
-			"math_random"
-		]
-	},
-	"mode": "normal",
-	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"190\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"mode\":\"normal\"}"
+    "steps": [
+        {
+            "banner": {
+                "text": "Let's use our drawing powers to create a night sky",
+                "next_button": true
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "First can you make the background black?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#set_background_color",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#set_background_color"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"normal#set_background_color\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_0"
+                        },
+                        "value": "#000000"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>#000000</span></kano-value-preview>"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "We want sparkling stars, so let's set the <b>draw: fill color</b> to white",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#color",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#color"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"normal#color\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "xBv/R[mC;+{kMwLoU1-M"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "xBv/R[mC;+{kMwLoU1-M"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "xBv/R[mC;+{kMwLoU1-M"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_1"
+                        },
+                        "value": "#ffffff"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Change to <kano-value-preview><span>#ffffff</span></kano-value-preview>"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "To draw the stars we need to <b>repeat</b> our code...<br>Can you find the block that does this?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "banner": {
+                "text": "Open the Control tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "repeat_x_times",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "repeat_x_times"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"repeat_x_times\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "pZAmo-`Im[)LZS2wV%D*"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "pZAmo-`Im[)LZS2wV%D*"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "pZAmo-`Im[)LZS2wV%D*"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "N",
+                            "id": "block_2"
+                        },
+                        "value": "200"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "N",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Higher numbers mean more stars.<br>Change to <kano-value-preview><span>200</span></kano-value-preview>"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Just like the colorful shape challenge, we need to move<br>to a random point...",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move_to_random",
+                        "id": "block_3"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move_to_random"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"normal#move_to_random\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "o$/JYroc4pU|g7Ms0|$-",
+                            "inputName": "DO"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "o$/JYroc4pU|g7Ms0|$-"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "o$/JYroc4pU|g7Ms0|$-"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Stars are fiery spheres in space. But you can draw them with circles.<br>Can you find the code block you need?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
+                "text": "Open this tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#circle",
+                        "id": "block_4"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#circle"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"normal#circle\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "yIMD9+-k#y}r*.ndx7`+"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "yIMD9+-k#y}r*.ndx7`+"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "yIMD9+-k#y}r*.ndx7`+"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Drop it here to change the circle sizes"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": false,
+                    "disabled-banner": {
+                        "text": "Oh, all the stars are the same size. That's not right. <br> We want to make them different sizes...and for that <br>we'll need some <b>random numbers</b>. Can you find them?",
+                        "hint_button": true
+                    }
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "banner": {
+                "text": "Open the Math tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "reward": true,
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                },
+                "angle": 120
+            },
+            "banner": {
+                "text": "Drag the <kano-blockly-block type=\"math_random\"></kano-blockly-block> block onto your code space"
+            }
+        },
+        {
+            "set-state": {
+                "hints": {
+                    "enabled": true
+                }
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "~{GQJW{)/l|d2^_tf1AY",
+                            "inputName": "RADIUS"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "~{GQJW{)/l|d2^_tf1AY"
+                    }
+                },
+                "target": "RADIUS"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "~{GQJW{)/l|d2^_tf1AY"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Mathmazing! Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MIN",
+                            "id": "block_5"
+                        },
+                        "value": "1"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MIN",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "banner": {
+                "text": "We want the smallest stars to be 1 pixel wide<br>Change to <kano-value-preview><span>1</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_5"
+                        },
+                        "value": "3"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "banner": {
+                "text": "And we want the biggest to be 3 pixels wide<br>Change to <kano-value-preview><span>3</span></kano-value-preview>"
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "Sparkling! You just made your computer screen show a starry sky.",
+                "next_button": true
+            }
+        },
+        {
+            "beacon": {
+                "target": "workspace-panel"
+            },
+            "banner": {
+                "text": "<kano-blockly-block type=\"normal#circle\"></kano-blockly-block><br>Unlocked!<br><br>Now you have the power to build<br>beautiful circular shapes!",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Next let's combine all your new powers to make something amazing!",
+                "next_button": true
+            }
+        }
+    ],
+    "parts": [],
+    "modules": [
+        "control",
+        "math"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "normal": [
+            "set_background_color",
+            "color",
+            "move_to_random",
+            "circle"
+        ],
+        "control": [
+            "repeat_x_times"
+        ],
+        "math": [
+            "math_random"
+        ]
+    },
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"190\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"mode\":\"normal\"}"
 }

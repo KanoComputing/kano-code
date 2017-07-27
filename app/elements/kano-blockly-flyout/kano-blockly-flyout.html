@@ -354,6 +354,7 @@
                     };
 
                     block.moveBy(newBlockPos.x, newBlockPos.y);
+                    block.initialXY_ = newBlockPos;
                     return block;
                 },
                 detached () {

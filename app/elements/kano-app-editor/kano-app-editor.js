@@ -437,7 +437,8 @@ Polymer({
      */
     load (savedApp, parts) {
         let addedParts,
-            part;
+            part,
+            partsDict;
         if (!savedApp) {
             return;
         }
@@ -455,6 +456,11 @@ Polymer({
         });
         savedApp.code = this._formatCode(savedApp.code);
         this.set('addedParts', addedParts);
+
+        // Update AppModules
+        partsDict = this.$.workspace.getPartsDict();
+        Kano.AppModules.loadParts(partsDict);
+
         // Force a color update and a register block to make sure the loaded code will be
         // rendered with the right colors
         Kano.MakeApps.Utils.updatePartsColors(this.addedParts);
@@ -779,9 +785,6 @@ Polymer({
     },
     applyHiddenClass () {
         return this.running ? '' : 'hidden';
-    },
-    _getRunningStatus (running) {
-        return running ? 'running' : 'stopped';
     },
     getMakeButtonLabel () {
         if (this.running) {
