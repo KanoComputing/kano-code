@@ -8,25 +8,6 @@
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         Speaker = {
-            onCreated () {
-                PartsAPI.Base.onCreated.apply(this);
-                this.reset();
-                this._update();
-            },
-            _update () {
-                if (this.isRunning) {
-                    return;
-                }
-
-                clearTimeout(this.timeoutId);
-                this.timeoutId = setTimeout(this._update.bind(this), 32);
-            },
-            onDestroyed () {
-                clearTimeout(this.timeoutId);
-            },
-            reset () {
-                return;
-            },
             play () {
                 return;
             },
@@ -34,6 +15,15 @@
                 return;
             },
             loop () {
+                return;
+            },
+            stop () {
+                return;
+            },
+            setPlaybackRate () {
+                return;
+            },
+            setVolume () {
                 return;
             }
         };
