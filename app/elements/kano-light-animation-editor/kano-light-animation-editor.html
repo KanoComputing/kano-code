@@ -14,6 +14,7 @@
   <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
   <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
   <link rel="import" href="../behaviors/kano-light-bitmap-behavior.html">
+  <link rel="import" href="../kano-tooltip/kano-tooltip.html">
   <!--
   @group Kano Elements
   @hero hero.svg
@@ -131,6 +132,17 @@
               @apply --layout-flex;
               overflow: hidden;
           }
+          kano-tooltip {
+              z-index: 10;
+          }
+          kano-tooltip span.tooltip-text {
+            color: var(--color-chateau);
+            text-transform: initial;
+            font-size: 14px;
+            font-family: var(--font-body);
+            text-decoration: none;
+            padding: 6px 12px;
+          }
           [hidden] {
               display: none !important;
           }
@@ -217,7 +229,8 @@
                                 selected-index="{{selectedIndex}}"
                                 running="[[running]]"
                                 width="[[width]]"
-                                height="[[height]]">
+                                height="[[height]]"
+                                on-frame-limit-reached="_onFrameLimitReached">
                   <label id="bitmap-label" slot="label">Animate</label>
                   <button id="add-frame-button" type="button" slot="add-button" disabled$="[[running]]">
                       <iron-icon icon="kc-ui:add"></iron-icon>
@@ -236,6 +249,10 @@
                       <span>Delete all</span>
                   </button>
               </kano-bitmap-list>
+              <kano-tooltip id="tooltip"
+                            position="top">
+                  <span class="tooltip-text">Frame limit reached!</span>
+              </kano-tooltip>
           </div>
       </template>
       <script type="text/javascript">
@@ -484,6 +501,13 @@
               },
               _previewStateChanged () {
                   this.notifyChange('light-animation-preview-changed', { value: this.previewState });
+              },
+              _onFrameLimitReached () {
+                if (!this.$.tooltip.opened) {
+                  this.$.tooltip.set('target', this.$['bitmap-label'].getBoundingClientRect());
+                  this.$.tooltip.open();
+                  this.async(() => this.$.tooltip.close(), 1600);
+                }
               },
               _onPaintAction () {
                   this.notifyChange('light-animation-paint', { tool: this.penType });
