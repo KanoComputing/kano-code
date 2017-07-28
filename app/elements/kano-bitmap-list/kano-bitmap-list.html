@@ -155,7 +155,7 @@ Custom property | Description | Default
                     heading="Do you mean to start again?"
                     text="You are about to delete all the frames!">
             <div slot="actions">
-                <button class="kano-alert-primary" on-tap="confirmDeleteAll" dialog-confirm>Confirm</button>
+                <button class="kano-alert-primary" on-tap="_confirmDeleteAll" dialog-confirm>Confirm</button>
                 <button class="kano-alert-secondary" dialog-dismiss>Cancel</button>
             </div>
         </kano-alert>
@@ -311,11 +311,27 @@ Custom property | Description | Default
                 }
             },
             deleteAllFrames () {
-                if (this.bitmaps.length > 1) {
+                //alert user
+                if (Array.isArray(this.bitmaps)
+                        && this.bitmaps.length > 1
+                                && this._bitmapsNotEmpty()) {
                     this.$['delete-all-alert'].open();
+                //there's only one frame or all frames are empty - delete without alert
+                } else {
+                    this._confirmDeleteAll();
                 }
             },
-            confirmDeleteAll () {
+            _bitmapsNotEmpty () {
+                let allColors = this.bitmaps.reduce((acc, bitmap, index, bitmaps) => {
+                    if (bitmaps.indexOf(bitmap) === index) {
+                        return acc.concat(bitmap);
+                    }
+                }, []);
+                return allColors.some(value => {
+                    return value !== '#000000'
+                });
+            },
+            _confirmDeleteAll () {
                 this.set('bitmaps', []);
                 this.fire('tracking-event', {
                       name: 'all_bitmap_frames_removed'
