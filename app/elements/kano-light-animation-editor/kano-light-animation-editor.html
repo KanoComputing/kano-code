@@ -11,7 +11,6 @@
   <link rel="import" href="../kano-bitmap-list/kano-bitmap-list.html">
   <link rel="import" href="../kano-pixel-canvas/kano-pixel-canvas.html">
   <link rel="import" href="../inputs/kano-input-range/kano-input-range.html">
-  <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
   <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
   <link rel="import" href="../behaviors/kano-light-bitmap-behavior.html">
   <!--
@@ -243,7 +242,6 @@
               is: 'kano-light-animation-editor',
               behaviors: [
                   PolymerFilters.FilterBehavior,
-                  Kano.Behaviors.AppElementRegistryBehavior,
                   Kano.Behaviors.AppEditorBehavior,
                   Kano.Behaviors.LightBitmapBehavior
               ],
@@ -318,24 +316,6 @@
                   document.addEventListener('keyup', this._onKeyup);
 
                   this.previewState = 'stopped';
-
-                  this.async(() => {
-                      panelElements = this.$['pixel-editor'].getElementsRegistry();
-                      this._registerElement('animation-editor', this);
-                      this._registerElement('animation-editor-width-slider', this.$['width-slider']);
-                      this._registerElement('animation-editor-height-slider', this.$['height-slider']);
-                      this._registerElement('animation-editor-speed-slider', this.$['speed-slider']);
-                      this._registerElement('animation-editor-canvas', this.$['canvas-area']);
-                      this._registerElement('animation-editor-preview-button', this.$['preview-button']);
-                      this._registerElement('animation-editor-add-frame-button', this.$['add-frame-button']);
-                      this._registerElement('animation-editor-frames', this.$['frames']);
-                      this._registerElement('animation-editor-palette', panelElements['palette']);
-                      this._registerElement('animation-editor-draw-button', panelElements['draw-button']);
-                      this._registerElement('animation-editor-fill-button', panelElements['fill-button']);
-                      this._registerElement('animation-editor-colors', panelElements['colors']);
-                      this._registerElement('animation-editor-add-color-button', panelElements['add-color-button']);
-                      this._registerElement('animation-editor-color-wheel', panelElements['color-wheel']);
-                  });
               },
               detached () {
                   document.removeEventListener('keydown', this._onKeydown);
@@ -492,6 +472,23 @@
                             name: `${this.penType}_tool_used`
                       });
                       this.toolsUsed[this.penType] = true;
+                  }
+              },
+              getElementsRegistry () {
+                  const panelElements = this.$['pixel-editor'].getElementsRegistry();
+                  return {
+                      'width-slider': this.$['width-slider'],
+                      'height-slider': this.$['height-slider'],
+                      'speed-slider': this.$['speed-slider'],
+                      'add-frame-button': this.$['add-frame-button'],
+                      'canvas': this.$.canvas,
+                      'frames': this.$.frames,
+                      'palette': panelElements['palette'],
+                      'draw-button': panelElements['draw-button'],
+                      'fill-button': panelElements['fill-button'],
+                      'colors': panelElements['colors'],
+                      'add-color-button': panelElements['add-color-button'],
+                      'color-wheel': panelElements['color-wheel']
                   }
               },
               _trackHeight () {
