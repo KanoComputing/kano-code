@@ -220,6 +220,12 @@
                     this.networkSocket.on('volume', (volume) => {
                         this.volume = volume;
                     });
+
+                    // Volume events from the RPK
+                    this.networkSocket.on('mic', mic => {
+                        this.volume = mic.value;
+                    });
+
                     this.networkSocket.on('disconnect', () => {});
 
                     // Tells the Kano Code App to enable OTG control on the Kit
