@@ -106,6 +106,7 @@
 
                 this._socket.onopen = () => {
                     this.connected = true;
+                    this._startHeartbeat();
                     this._listeners['connect'].forEach(callback => {
                         callback();
                     });
@@ -177,8 +178,22 @@
                 this._listeners = {};
             }
 
+            _stopHeartbeat () {
+                clearInterval(this._rpkHeartbeat);
+            }
+
+            _startHeartbeat () {
+                this._stopHeartbeat();
+                this._rpkHeartbeat = setInterval(() => {
+                    // TODO find a way to have this specific to the rpk
+                    // and not global to every native ws connection
+                    this.emit('lightboard:init');
+                }, 9000);
+            }
+
             close () {
                 this._socket.close();
+                this._stopHeartbeat();
             }
         }
 
