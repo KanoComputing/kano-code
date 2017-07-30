@@ -119,28 +119,15 @@
                 };
 
                 this._socket.onmessage = (message) => {
-                    let messageData = message.data;
-                    if (typeof messageData === 'string') {
-                        messageData = JSON.parse(message.data.toString().replace(/\0/g, ""));
-                    }
-
-                    switch(messageData.type) {
+                    switch(message.data.type) {
                         case 'rpc-response':
-                            if (this._listeners[message.id]) {
-                                this._listeners[message.id].forEach(cb => {
-                                    cb(message.value);
-                                });
-                            }
-                            break;
+                            this._listeners[message.id].forEach(cb => {
+                                cb(message.value);
+                            });
                         case 'event':
-                            if (this._listeners[messageData.name]) {
-                                this._listeners[messageData.name].forEach(cb => {
-                                    cb(messageData.detail);
-                                });
-                            }
-                            break;
-                        default:
-                            break;
+                            this._listeners[message.name].forEach(cb => {
+                                cb(message.detail);
+                            });
                     }
                 };
             }
