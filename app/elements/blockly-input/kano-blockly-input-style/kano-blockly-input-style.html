@@ -13,11 +13,34 @@
                 @apply --shadow-elevation-8dp;
             }
             header {
-                background: #292f35;
-                padding: 6px 18px;
-                border: 1px solid var(--color-black-line);
                 font-size: 14px;
                 text-transform: uppercase;
+                position: relative;
+                float: left;
+            }
+            .func-header {
+                position: relative;
+                background: #292f35;
+                border: 1px solid var(--color-black-line);
+                padding: 6px 10px 6px 18px;
+            }
+            a.boxclose{
+                position: relative;
+                float: right;
+                width: 8px;
+                height: 8px;
+                cursor: pointer;
+                color: #fff;
+                border: 1px solid #83898D;
+                border-radius: 5px;
+                background: #83898D;
+                font-size: 22px;
+                font-weight: bold;
+                line-height: 2px;
+                padding: 5px 5px 6px 6px;
+            }
+            .boxclose:before {
+                content: "×";
             }
             .controls {
                 padding: 6px 18px 12px;

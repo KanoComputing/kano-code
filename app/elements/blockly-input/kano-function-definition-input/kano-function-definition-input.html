@@ -44,7 +44,6 @@
             #else-ifs button span {
                 color: #A4A7AA;
             }
-
             label input {
                 display: none;/* <-- hide the default checkbox */
             }
@@ -61,8 +60,8 @@
             [type=checkbox]:checked + span:before {/* <-- style its checked state..with a ticked icon */
                 content: '\2714';
                 position: absolute;
-                top: -5px;
-                left: 0;
+                top: -2px;
+                left: 2px;
             }
             #cb-label{
                 position: relative;
@@ -71,29 +70,23 @@
                 display: inline-block;
                 color: white;
             }
-            a.boxclose{
-                width: 8px;
-                height: 8px;
-                margin-top: -27px;
-                margin-left: 270px;
-                cursor: pointer;
-                color: #fff;
-                border: 1px solid #83898D;
-                border-radius: 5px;
-                background: #83898D;
-                font-size: 22px;
-                font-weight: bold;
-                line-height: 2px;
-                padding: 5px 5px 6px 6px;
-            }
-            .boxclose:before {
-                content: "×";
+            .arrow-down {
+                width: 0;
+                height: 0;
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+                border-top: 12px solid var(--color-abbey);
+                position: absolute;
+                top: 300px;
+                left: 11px;
             }
 
         </style>
-        <header>Function</header>
 
-            <a class="boxclose" id="boxclose" on-tap="_decr"></a>
+        <div class="func-header">
+            <header>Function</header>
+            <a class="boxclose" id="boxclose" on-tap="_close"></a>
+        </div>
 
         <div class="controls">
             <div>
@@ -117,6 +110,7 @@
                                     padding-left="0"
                                     min-width="300"></kano-blockly-flyout>
         </div>
+        <div class="arrow-down"></div>
     </template>
     <script>
         Polymer({
@@ -140,6 +134,9 @@
             },
             _incr () {
                 this.setBoundsParameters(this.value.parameters + 1);
+            },
+            _close () {
+                //this.parentElement.setAttribute("hidden", true);
             },
             setBoundsParameters (value) {
                 this.set('value.parameters', Math.max(0, value));

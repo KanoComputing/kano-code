@@ -18,7 +18,8 @@
             rx: 4,
             ry: 4,
             width: `${this._width + 4}px`,
-            height: `${this._height}px`
+            height: `${this._height}px`,
+            fill: '#253916'
         }, this._container);
         this._dot1 = Blockly.utils.createSvgElement('circle', {
             cx: 6,
@@ -108,7 +109,7 @@
 
         var size = this.customEl.getBoundingClientRect();
 
-        xy.y -= 300;
+        xy.y -= 320;
         if (this.sourceBlock_.RTL) {
             xy.x += borderBBox.width;
             xy.x -= 300;
