@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "npm install && bower install",
-    "start": "node_modules/.bin/gulp serve-prod",
+    "start": "gulp serve-prod",
     "test": "gulp wct && cucumber-js tests",
     "build": "gulp build",
     "dev": "gulp dev",
+    "watch": "gulp watch",
     "content-snap": "bash kano-content-package.sh",
-    "postinstall": "bower install && gulp build"
+    "install:all": "npm install && bower install",
+    "install:all:build": "npm install && bower install && gulp build"
   },
   "engines": {
     "node": "4.5.0"
