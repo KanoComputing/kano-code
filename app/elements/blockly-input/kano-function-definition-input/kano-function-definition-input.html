@@ -13,20 +13,51 @@
                 background: var(--color-abbey);
                 @apply --layout-flex;
             }
+            label[for=else]{
+                text-transform: capitalize;
+                color: white;
+                position: relative;
+                top: -2px;
+            }
+            #else-ifs {
+                width: 62px;
+                height: 20px;
+                padding: 5px;
+                background: #464C51;
+                border-radius: 5px;
+                margin: 5px 0 5px 0;
+            }
+            #else-ifs button {
+                background-color: #464C51;
+                border-color: #464C51;
+                color: #A4A7AA;
+                border-style: none;
+                font-size: 14px;
+                height: 20px;
+            }
+            #else-ifs span {
+                color: white;
+                font-size: 14px;
+                display: inline-block;
+                width: 10px;
+            }
+            #else-ifs button span {
+                color: #A4A7AA;
+            }
         </style>
         <header>Function</header>
         <div class="controls">
             <div>
                 <label for="else-ifs">Parameters</label>
                 <div id="else-ifs">
-                    <button type="button" on-tap="_decr">-</button>
+                    <button type="button" on-tap="_decr"><span>-</span></button>
                     <span>[[value.parameters]]</span>
-                    <button type="button" on-tap="_incr">+</button>
+                    <button type="button" on-tap="_incr"><span>+</span></button>
                 </div>
             </div>
             <div>
-                <label for="else">Returns</label>
                 <input id="else" type="checkbox" checked="{{value.returns::change}}">
+                <label for="else">Returns</label>
             </div>
         </div>
         <div class="blocks">

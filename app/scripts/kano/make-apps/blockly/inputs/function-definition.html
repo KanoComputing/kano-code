@@ -18,8 +18,25 @@
             rx: 4,
             ry: 4,
             width: `${this._width + 4}px`,
-            height: `${this._height}px`,
-            stroke: 'white'
+            height: `${this._height}px`
+        }, this._container);
+        this._dot1 = Blockly.utils.createSvgElement('circle', {
+            cx: 6,
+            cy: 8,
+            r: 1,
+            fill: '#FFFFFF'
+        }, this._container);
+        this._dot2 = Blockly.utils.createSvgElement('circle', {
+            cx: 10,
+            cy: 8,
+            r: 1,
+            fill: '#FFFFFF'
+        }, this._container);
+        this._dot3 = Blockly.utils.createSvgElement('circle', {
+            cx: 14,
+            cy: 8,
+            r: 1,
+            fill: '#FFFFFF'
         }, this._container);
         this.sourceBlock_.getSvgRoot().appendChild(this._container);
         this.setValue(this.getValue());
