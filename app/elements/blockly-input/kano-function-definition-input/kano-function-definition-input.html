@@ -44,8 +44,57 @@
             #else-ifs button span {
                 color: #A4A7AA;
             }
+
+            label input {
+                display: none;/* <-- hide the default checkbox */
+            }
+            label span {/* <-- style the artificial checkbox */
+                    height: 12px;
+                    width: 12px;
+                    border: 1px solid #464C51;
+                    background-color: #464C51;
+                    border-radius: 3px;
+                    display: inline-block;
+                    margin-right: 5px;
+                    position: relative;
+            }
+            [type=checkbox]:checked + span:before {/* <-- style its checked state..with a ticked icon */
+                content: '\2714';
+                position: absolute;
+                top: -5px;
+                left: 0;
+            }
+            #cb-label{
+                position: relative;
+                top: -2px;
+                text-transform: capitalize;
+                display: inline-block;
+                color: white;
+            }
+            a.boxclose{
+                width: 8px;
+                height: 8px;
+                margin-top: -27px;
+                margin-left: 270px;
+                cursor: pointer;
+                color: #fff;
+                border: 1px solid #83898D;
+                border-radius: 5px;
+                background: #83898D;
+                font-size: 22px;
+                font-weight: bold;
+                line-height: 2px;
+                padding: 5px 5px 6px 6px;
+            }
+            .boxclose:before {
+                content: "×";
+            }
+
         </style>
         <header>Function</header>
+
+            <a class="boxclose" id="boxclose" on-tap="_decr"></a>
+
         <div class="controls">
             <div>
                 <label for="else-ifs">Parameters</label>
@@ -56,8 +105,10 @@
                 </div>
             </div>
             <div>
-                <input id="else" type="checkbox" checked="{{value.returns::change}}">
-                <label for="else">Returns</label>
+                <label>
+                    <input d="else" type="checkbox" checked="{{value.returns::change}}">
+                    <span></span><div id="cb-label">Returns</div>
+                </label>
             </div>
         </div>
         <div class="blocks">
