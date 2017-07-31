@@ -445,11 +445,13 @@
                             id="title_input"
                             value="{{shareInfo.title::change}}"
                             placeholder="Title"
+                            disabled$="[[autosharing]]"
                             autofocus />
                     <textarea rows="4"
                             cols="40"
                             value="{{shareInfo.description::change}}"
-                            placeholder="Description"></textarea>
+                            placeholder="Description"
+                            disabled$="[[autosharing]]"></textarea>
 
                     <hr>
 
@@ -930,8 +932,8 @@
             this.popup.document.write("<p>Fetching your link...</p>")
         },
         _updateUI () {
-            const autoshare = this.shareInfo.autoshare;
-            this.nextHidden = typeof autoshare === 'undefined' || !autoshare || !this.inChallenge;
+            this.autosharing = this.shareInfo && this.shareInfo.autoshare;
+            this.nextHidden = !this.autosharing || !this.inChallenge;
         },
         _nextStory () {
             this.fire('next-story');
