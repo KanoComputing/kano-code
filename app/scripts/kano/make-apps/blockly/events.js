@@ -69,21 +69,20 @@
                     this.setColour(COLOR);
                 },
                 getFirstPartOptions: function () {
-                    let options = Blockly.Blocks.collision_event.getParts()
-                        .map(this.formatPartOption);
+                    let parts = Blockly.Blocks.collision_event.getParts() || [],
+                        options = parts.map(this.formatPartOption);
 
                     if (!options.length) {
-                        options.push(['', 'null']);
+                        options.push(['No available part', '']);
                     }
 
                     return options;
                 },
                 getSecondPartOptions: function () {
-                    let options = Blockly.Blocks.collision_event.getParts()
-                        .filter(part => {
+                    let parts = Blockly.Blocks.collision_event.getParts() || [],
+                        options = parts.filter(part => {
                             return `parts.get('${part.id}')` !== this.getFieldValue('PART1');
-                        })
-                        .map(this.formatPartOption);
+                        }).map(this.formatPartOption);
 
                     // The @ here is to make sure no part id will collide with this name
                     options.push(['Top Edge', "'@top-edge'"]);
@@ -131,7 +130,7 @@
             let part1Id = block.getFieldValue('PART1'),
                 part2Id = block.getFieldValue('PART2'),
                 statement = Blockly.JavaScript.statementToCode(block, 'DO'),
-                code = `parts.whenCollisionBetween(${part1Id}, ${part2Id}, function () {\n${statement}});\n`;
+                code = `parts.whenCollisionBetween(${part1Id ? part1Id : null}, ${part2Id}, function () {\n${statement}});\n`;
             return code;
         };
 
@@ -139,7 +138,7 @@
             let part1Id = block.getFieldValue('PART1'),
                 part2Id = block.getFieldValue('PART2'),
                 statement = Blockly.Pseudo.statementToCode(block, 'DO'),
-                code = `parts.whenCollisionBetween(${part1Id}, ${part2Id}, function () {\n${statement}});\n`;
+                code = `parts.whenCollisionBetween(${part1Id ? part1Id : null}, ${part2Id}, function () {\n${statement}});\n`;
             return code;
         };
 

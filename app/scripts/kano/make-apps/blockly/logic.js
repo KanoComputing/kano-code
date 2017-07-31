@@ -166,21 +166,20 @@
                 this.setColour(COLOR);
             },
             getFirstPartOptions: function () {
-                let options = Blockly.Blocks.collision_event.getParts()
-                    .map(this.formatPartOption);
+                let parts = Blockly.Blocks.collision_event.getParts() || [],
+                    options = parts.map(this.formatPartOption);
 
                 if (!options.length) {
-                    options.push(['No available part', null]);
+                    options.push(['No available part', '']);
                 }
 
                 return options;
             },
             getSecondPartOptions: function () {
-                let options = Blockly.Blocks.collision_event.getParts()
-                    .filter(part => {
+                let parts = Blockly.Blocks.collision_event.getParts() || [],
+                    options = parts.filter(part => {
                         return part.id !== this.getFieldValue('PART1');
-                    })
-                    .map(this.formatPartOption);
+                    }).map(this.formatPartOption);
 
                 // The @ here is to make sure no part id will collide with this name
                 options.push(['Top Edge', "'@top-edge'"]);
@@ -198,7 +197,7 @@
         Blockly.JavaScript.if_collides = (block) => {
             let part1Id = block.getFieldValue('PART1'),
                 part2Id = block.getFieldValue('PART2'),
-                code    = `parts.collisionBetween(${part1Id}, ${part2Id})`;
+                code    = `parts.collisionBetween(${part1Id ? part1Id : null}, ${part2Id})`;
             return [code];
         };
 
