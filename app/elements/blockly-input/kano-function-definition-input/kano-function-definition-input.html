@@ -136,7 +136,7 @@
                 this.setBoundsParameters(this.value.parameters + 1);
             },
             _close () {
-                //this.parentElement.setAttribute("hidden", true);
+                Blockly.WidgetDiv.hide( this.parentElement );
             },
             setBoundsParameters (value) {
                 this.set('value.parameters', Math.max(0, value));
