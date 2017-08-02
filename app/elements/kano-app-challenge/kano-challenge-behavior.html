@@ -51,12 +51,6 @@
                 return null;
             }
 
-            // We arrived at the last step of the challenge, which acknowledges the completion.
-            if (this.step === this.steps.length - 1) {
-                selectedStep.isLast = true;
-                this.fire('scene-done');
-            }
-
             // Deep clone the step to not change the original step when updating the ids
             selectedStep = JSON.parse(JSON.stringify(selectedStep));
 
@@ -170,7 +164,10 @@
             } else {
                 if (this.step < this.steps.length - 1) {
                     this.step++;
-                } else {
+                }
+                // Check if it's the last step
+                if (this.step === this.steps.length - 1) {
+                    this.set('selectedStep.isLast', true);
                     this.set('done', true);
                     this.fire('scene-done', {
                         hints: this.hints

@@ -54,20 +54,8 @@ Example:
                 value: false
             }
         },
-        observers: [
-            'doneChanged(done)'
-        ],
         listeners: {
             'change': '_editorChanged'
-        },
-        doneChanged (done) {
-            if (done) {
-                // Set to an out of bound index to get an undefined step
-                this.step = -1;
-                if (this.editor.running) {
-                    this.editor.toggleRunning();
-                }
-            }
         },
         _editorChanged (e) {
             // Store current step object

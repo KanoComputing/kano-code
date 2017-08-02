@@ -36,7 +36,7 @@
         </div>
         <kano-blockly id="code-editor"
                 toolbox="[[toolbox]]"
-                on-change="saveCode"
+                on-change="_onBlocklyChanged"
                 default-blocks="[[mode.defaultBlocks]]"
                 on-blockly-ready="_onBlocklyReady"
                 no-trashcan="[[simple]]"
@@ -109,7 +109,7 @@
             }
             return options;
         },
-        saveCode (e) {
+        _onBlocklyChanged (e) {
             // Check if a create event follows a close-flyout event. If so, do not notify
             // of the close-flyout event
             if (e.detail.type === 'close-flyout') {
@@ -125,13 +125,14 @@
                 this.notifyChange('blockly', { event: e.detail });
             }
             this.debounce('saveCode', () => {
-                let codeEditor = this.$['code-editor'];
-
-                codeEditor.save().then((snapshot) => {
-                    snapshot.pseudo = snapshot.pseudo.trim().length ? snapshot.pseudo : '// Edit me to add code';
-                    this.set('code.snapshot', snapshot);
-                });
+                this.saveCode();
             }, 300);
+        },
+        saveCode () {
+            this.$['code-editor'].save().then(snapshot => {
+                snapshot.pseudo = snapshot.pseudo.trim().length ? snapshot.pseudo : '// Edit me to add code';
+                this.set('code.snapshot', snapshot);
+            });
         },
         ready () {
             this.toolboxReady = false;
@@ -162,7 +163,6 @@
                     this.jsonInit(json);
                 }
             };
-            this.$['code-editor'].load(this.code.snapshot);
         },
         computeBlocks () {
             let events = [];
@@ -324,7 +324,7 @@
                     // Update the collision block with the new parts
                     Blockly.Blocks.collision_event.setParts(this.parts);
                 }
-                // If the id changed, we nee to upgrade the blocks already added
+                // If the id changed, we need to upgrade the blocks already added
                 if (idChanged) {
                     this.debounce('reloadAfterIdChanged', () => {
                         let key = e.path.replace('parts.#', '').split('.').shift(),
