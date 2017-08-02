@@ -105,6 +105,9 @@
         this.customEl.addEventListener('value-changed', (e) => {
             this.setValue(this.customEl.value);
         });
+        this.customEl.addEventListener('close-tapped', (e) => {
+            Blockly.WidgetDiv.hide();
+        });
 
         div.appendChild(this.customEl);
 
