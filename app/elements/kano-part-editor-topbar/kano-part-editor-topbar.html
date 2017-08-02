@@ -53,7 +53,7 @@
         <div class="title">[[label]]</div>
         <div class="action">
             <slot name="action"></slot>
-            <button id="done" type="button" dialog-dismiss>Done</button>
+            <button id="done" type="button" data-animate$="[[_computeDataAnimate('450', visible)]]" dialog-dismiss>Done</button>
         </div>
     </template>
     <script type="text/javascript">
@@ -68,7 +68,7 @@
                     value: null
                 },
                 label: String,
-                theme: String,
+                theme: String
             },
             observers: [
                 '_onThemeChanged(theme)'

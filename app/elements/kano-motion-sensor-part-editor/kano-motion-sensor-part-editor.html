@@ -76,7 +76,7 @@
         <div></div>
         <footer>
             <span class="distance" on-tap="_selectProximity" selected$="[[_isSelected(selected.userProperties.mode, 'proximity')]]">Distance mode</span>
-            <kano-input-toggle id="toggle" checked="{{_toggleChecked}}"></kano-input-toggle>
+            <kano-input-toggle id="toggle" checked="{{_toggleChecked}}" data-animate$="[[_computeDataAnimate('450', visible)]]"></kano-input-toggle>
             <span class="swipe" on-tap="_selectGesture" selected$="[[_isSelected(selected.userProperties.mode, 'gesture')]]">Swipe mode</span>
         </footer>
     </template>
