@@ -1,410 +1,371 @@
 {
-	"steps": [
-		{
-			"tooltips": [
-				{
-					"location": "add-part-button",
-					"position": "top",
-					"text": "You're going to use code to connect<br/>a microphone, a speaker, and a clock.<br/>Click on **ADD PARTS** and drag them in."
-				}
-			],
-			"validation": {
-				"open-parts": true
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "parts-panel-part-microphone",
-					"position": "right",
-					"text": "Drag the mic onto your app first"
-				}
-			],
-			"highlight": "parts-panel-part-microphone",
-			"arrow": {
-				"source": "parts-panel-part-microphone",
-				"target": "workspace-panel",
-				"size": 120
-			},
-			"validation": {
-				"add-part": {
-					"type": "microphone",
-					"id": "part_0"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "parts-panel-part-speaker",
-					"position": "right",
-					"text": "Now add the speaker"
-				}
-			],
-			"highlight": "parts-panel-part-speaker",
-			"arrow": {
-				"source": "parts-panel-part-speaker",
-				"target": "workspace-panel",
-				"size": 120
-			},
-			"validation": {
-				"add-part": {
-					"type": "speaker",
-					"id": "part_1"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "parts-panel-part-clock",
-					"position": "right",
-					"text": "Finally, add a clock"
-				}
-			],
-			"highlight": "parts-panel-part-clock",
-			"arrow": {
-				"source": "parts-panel-part-clock",
-				"target": "workspace-panel",
-				"size": 120
-			},
-			"validation": {
-				"add-part": {
-					"type": "clock",
-					"id": "part_2"
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "add-part-button",
-					"position": "top",
-					"text": "Close the drawer"
-				}
-			],
-			"validation": {
-				"close-parts": true
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_0"
-						}
-					},
-					"position": "right",
-					"text": "We want to make the computer talk when we clap<br>Open the Mic tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_0"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_0",
-							"type": "threshold"
-						}
-					},
-					"position": "right",
-					"text": "This block will trigger some commands<br>when there is a loud noise"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_0",
-						"type": "threshold"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_0",
-						"type": "threshold",
-						"id": "block_0"
-					}
-				}
-			}
-		},
-		{
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": null,
-							"rawId": "default_part_event_id",
-							"inputName": "DO"
-						},
-						"target": "block_0"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": null,
-						"rawId": "default_part_event_id"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"shadow": "VALUE",
-							"id": "block_0"
-						}
-					},
-					"position": "top",
-					"text": "Make sure only super loud sounds trigger it...<br>Change to <kano-value-preview><span>90</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"shadow": "VALUE",
-							"id": "block_0"
-						},
-						"value": "90"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_1"
-						}
-					},
-					"position": "right",
-					"text": "Now to tell the computer to speak!<br>Open the Speaker tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_1"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_1",
-							"type": "say"
-						}
-					},
-					"position": "right",
-					"text": "This block tells the computer to talk!"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_1",
-						"type": "say"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_1",
-						"type": "say",
-						"id": "block_1"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_0",
-							"rawId": "`f37(i,jdKPbij6gFV%R"
-						}
-					},
-					"position": "right",
-					"text": "Drop inside of here so that it runs after we clap"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_0",
-							"rawId": "`f37(i,jdKPbij6gFV%R",
-							"inputName": "DO"
-						},
-						"target": "block_1"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_0",
-						"rawId": "`f37(i,jdKPbij6gFV%R"
-					}
-				},
-				"target": "DO"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"category": {
-							"part": "part_2"
-						}
-					},
-					"position": "right",
-					"text": "Now to get the time<br>Open the Clock tray"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"open-flyout": {
-						"part": "part_2"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"flyout_block": {
-							"part": "part_2",
-							"type": "get_formatted_time"
-						}
-					},
-					"position": "right",
-					"text": "This grabs data from the clock"
-				}
-			],
-			"arrow": {
-				"target": {
-					"flyout_block": {
-						"part": "part_2",
-						"type": "get_formatted_time"
-					}
-				},
-				"angle": 120,
-				"size": 80
-			},
-			"validation": {
-				"blockly": {
-					"create": {
-						"target": "part_2",
-						"type": "get_formatted_time",
-						"id": "block_2"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_1",
-							"rawId": "blDFeEs^*48a7%AX)Z_;"
-						}
-					},
-					"position": "right",
-					"text": "Drop it here to tell the computer what to say"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"connect": {
-						"parent": {
-							"id": "block_1",
-							"rawId": "blDFeEs^*48a7%AX)Z_;",
-							"inputName": "TEXT"
-						},
-						"target": "block_2"
-					}
-				}
-			},
-			"phantom_block": {
-				"location": {
-					"block": {
-						"id": "block_1",
-						"rawId": "blDFeEs^*48a7%AX)Z_;"
-					}
-				},
-				"target": "TEXT"
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": {
-						"block": {
-							"id": "block_2"
-						}
-					},
-					"position": "top",
-					"text": "Let's use the time not the date...<br>Change to <kano-value-preview><span>time</span></kano-value-preview>"
-				}
-			],
-			"validation": {
-				"blockly": {
-					"value": {
-						"target": {
-							"id": "block_2"
-						},
-						"value": "time"
-					}
-				}
-			}
-		},
-		{
-			"tooltips": [
-				{
-					"location": "workspace-panel",
-					"position": "left",
-					"text": "Clap your hands!",
-					"next_button": true
-				}
-			]
-		}
-	],
-	"parts": [
-		"microphone",
-		"speaker",
-		"clock"
-	],
-	"modules": [],
-	"variables": [],
-	"mode": "normal",
-	"defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
+    "steps": [
+        {
+            "validation": {
+                "open-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "You're going to use code to connect<br/>a microphone, a speaker, and a clock.<br/>Click on **ADD PARTS** and drag them in."
+            }
+        },
+        {
+            "validation": {
+                "add-part": {
+                    "type": "microphone",
+                    "id": "part_0"
+                }
+            },
+            "beacon": {
+                "target": "parts-panel-microphone"
+            },
+            "tooltips": [{
+                "text": "Add the mic onto your app first",
+                "position": "top",
+                "location": "parts-panel"
+            }]
+        },
+        {
+            "validation": {
+                "open-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "Now for the speaker"
+            }
+        },
+        {
+            "validation": {
+                "add-part": {
+                    "type": "speaker",
+                    "id": "part_1"
+                }
+            },
+            "beacon": {
+                "target": "parts-panel-speaker"
+            },
+            "tooltips": [{
+                "text": "Now add the speaker",
+                "position": "top",
+                "lcoation": "parts-panel"
+            }]
+        },
+        {
+            "validation": {
+                "open-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "Now for the clock"
+            }
+        },
+        {
+            "validation": {
+                "add-part": {
+                    "type": "clock",
+                    "id": "part_2"
+                }
+            },
+            "beacon": {
+                "target": "parts-panel-clock"
+            },
+            "tooltips": [{
+                "text": "Finally, add a clock",
+                "position": "top",
+                "location": "parts-panel"
+            }]
+        },
+        {
+            "validation": {
+                "close-parts": true
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "banner": {
+                "text": "Close the drawer"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "We want to make the computer talk when we clap<br>Open the Mic tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "threshold",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "threshold"
+                    }
+                }
+            },
+            "banner": {
+                "text": "This block will trigger some commands<br>when there is a loud noise"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": null,
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_0"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": null,
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "VALUE",
+                            "id": "block_0"
+                        },
+                        "value": "90"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "VALUE",
+                        "id": "block_0"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Make sure only super loud sounds trigger it...<br>Change to <kano-value-preview><span>90</span></kano-value-preview>"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_1"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_1"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Now to tell the computer to speak!<br>Open the Speaker tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_1",
+                        "type": "say",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_1",
+                        "type": "say"
+                    }
+                }
+            },
+            "banner": {
+                "text": "This block tells the computer to talk!"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_0",
+                            "rawId": "`f37(i,jdKPbij6gFV%R",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "`f37(i,jdKPbij6gFV%R"
+                    }
+                },
+                "target": "DO"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_0",
+                        "rawId": "`f37(i,jdKPbij6gFV%R"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Drop inside of here so that it runs after we clap"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_2"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_2"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Now to get the time<br>Open the Clock tray"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_2",
+                        "type": "get_formatted_time",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_2",
+                        "type": "get_formatted_time"
+                    }
+                }
+            },
+            "banner": {
+                "text": "This grabs data from the clock"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "blDFeEs^*48a7%AX)Z_;",
+                            "inputName": "TEXT"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "blDFeEs^*48a7%AX)Z_;"
+                    }
+                },
+                "target": "TEXT"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "blDFeEs^*48a7%AX)Z_;"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Drop it here to tell the computer what to say"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        },
+                        "value": "time"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Let's use the time not the date...<br>Change to <kano-value-preview><span>time</span></kano-value-preview>"
+            }
+        },
+        {
+            "banner": {
+                "text": "Clap your hands!",
+                "next_button": true
+            }
+        }
+    ],
+    "parts": [
+        "microphone",
+        "speaker",
+        "clock"
+    ],
+    "modules": [],
+    "variables": [],
+    "mode": "normal",
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
 }
