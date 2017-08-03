@@ -21,9 +21,11 @@
             "beacon": {
                 "target": "parts-panel-map"
             },
-            "banner": {
-                "text": "Drag the Map to your app"
-            }
+            "tooltips": [{
+                "text": "Add the Map to your app",
+                "position": "top",
+                "location": "parts-panel"
+            }]
         },
 		{
             "validation": {
@@ -46,9 +48,11 @@
             "beacon": {
                 "target": "parts-panel-button"
             },
-            "banner": {
-                "text": "Drag a button to your app"
-            }
+            "tooltips": [{
+                "text": "Add a Button to your app",
+                "position": "top",
+                "location": "parts-panel"
+            }]
         },
         {
             "validation": {
@@ -77,8 +81,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_set"
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
@@ -167,8 +170,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "math_number"
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
@@ -257,8 +259,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_set"
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
@@ -345,8 +346,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "math_number"
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -418,8 +418,7 @@
                         "part": "part_0",
                         "type": "show_marker"
                     }
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "This block moves the marker<br />on the map. Grab it."
@@ -484,8 +483,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_get"
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
@@ -574,8 +572,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_get"
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -661,8 +658,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "part_event"
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -674,7 +670,9 @@
                 }
             },
             "beacon": {
-                "target": "blocks-panel"
+                "target": "blocks-panel",
+                "offset": 300,
+                "angle": 200
             },
             "banner": {
                 "text": "Drop the block anywhere on your code space"
@@ -729,8 +727,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "unary"
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -848,8 +845,7 @@
                         "part": "part_0",
                         "type": "show_marker"
                     }
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"part_0#show_marker\"></kano-blockly-block> block onto your code space"
@@ -914,8 +910,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_get"
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -1001,8 +996,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_get"
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
@@ -1065,9 +1059,6 @@
             }
         },
         {
-            "beacon": {
-                "target": "workspace-panel"
-            },
             "banner": {
                 "text": "Nice work! Click the buttons to move<br />the marker up the map. Next we'll add another button to move it right.",
                 "next_button": true
@@ -1094,9 +1085,11 @@
             "beacon": {
                 "target": "parts-panel-button"
             },
-            "banner": {
-                "text": "Drag another button to your app"
-            }
+            "tooltips": [{
+                "text": "Add another Button to your app",
+                "position": "top",
+                "location": "parts-panel"
+            }]
         },
         {
             "validation": {
@@ -1136,8 +1129,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "part_event"
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
@@ -1152,7 +1144,9 @@
                 }
             },
             "beacon": {
-                "target": "blocks-panel"
+                "target": "blocks-panel",
+                "offset": 300,
+                "angle": 200
             },
             "banner": {
                 "text": "Drop the block anywhere on your code space"
@@ -1165,7 +1159,7 @@
                         "target": {
                             "id": "block_12"
                         },
-                        "value": "button1.clicked"
+                        "value": "button2.clicked"
                     }
                 }
             },
@@ -1177,7 +1171,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>Button 1 is clicked</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>Button 2 is clicked</span></kano-value-preview>"
             }
         },
         {
@@ -1207,8 +1201,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "unary"
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -1326,8 +1319,7 @@
                         "part": "part_0",
                         "type": "show_marker"
                     }
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -1389,8 +1381,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_get"
-                },
-                "angle": 70
+                }
             }
         },
         {
@@ -1476,8 +1467,7 @@
             "beacon": {
                 "target": {
                     "flyout_block": "variables_get"
-                },
-                "angle": 70
+                }
             },
             "banner": {
                 "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
@@ -1540,9 +1530,6 @@
             }
         },
         {
-            "beacon": {
-                "target": "workspace-panel"
-            },
             "banner": {
                 "text": "Challenge complete! Now you can move up and right.<br />Complete your app by adding two<br />more buttons to move left and down!",
                 "next_button": true
