@@ -113,7 +113,7 @@
                     }).join('');
 
                     xmlString = `<xml>${xmlString}</xml>`
-                        
+
                     xml = Blockly.Xml.textToDom(xmlString);
                     this.xmlList = xml.children;
 
@@ -130,7 +130,9 @@
                 _updateDB () {
                     this._blockDB = {};
                     this.ws.getAllBlocks().forEach(block => {
-                        this._blockDB[block.type] = block;
+                        if (!block.isShadow()) {
+                            this._blockDB[block.type] = block;
+                        }
                     });
                 },
                 getBlockByType (type) {
@@ -156,12 +158,12 @@
                     this.$.svg.style.height = '2000px';
 
                     this.ws.scale = this.targetWorkspace.scale;
-                    
+
                     this.blocks = [];
                     for (let i = 0; i < this.xmlList.length; i++) {
                         this.blocks.push(Blockly.Xml.domToBlock(this.xmlList[i], this.ws));
                     }
-                    
+
                     this.blocks.forEach(block => {
                         hw = block.getHeightWidth();
                         if (hw.width > maxWidth) {
@@ -170,16 +172,16 @@
                     });
 
                     this.maxBlockWidth = maxWidth;
-                    
+
                     maxWidth = Math.max(maxWidth + this.paddingLeft + 20, this.minWidth + Blockly.BlockSvg.TAB_WIDTH);
-                    
+
                     canvas = this.ws.getCanvas();
                     if (!canvas) {
                         return;
                     }
-                    
+
                     canvas.setAttribute('transform', `scale(${this.ws.scale})`);
-                    
+
                     for (let i = 0; i < this.blocks.length; i++) {
                         let block = this.blocks[i],
                         hasOutputConnection = !!block.outputConnection;
@@ -193,9 +195,9 @@
                             canvas.insertBefore(sep, root);
                             this._separators.push(sep);
                         }
-                        
+
                         cursorY += BLOCK_SPACING_Y;
-                        
+
                         hw = block.getHeightWidth();
                         if (this.align === 'right') {
                             cursorX = maxWidth - hw.width;
