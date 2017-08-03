@@ -21,9 +21,9 @@
 
                 this.spring = new Kano.MakeApps.Spring(1, 400, 20);
                 this.spring.snap(0);
+                this.reset();
             },
             start () {
-                this.reset();
                 PartsAPI.DongleBase.start.apply(this, arguments);
                 this._updateLoop = requestAnimationFrame(this._generateUpdate);
             },
@@ -33,7 +33,9 @@
                 this.reset();
             },
             reset () {
-                this.set('model.lastProximityValue', 0);
+                if (this.model && this.model.lastProximityValue) {
+                    this.set('model.lastProximityValue', 0);
+                }
                 this._listeners = [];
             },
             _generateUpdate () {
