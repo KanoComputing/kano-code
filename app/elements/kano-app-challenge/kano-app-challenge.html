@@ -169,6 +169,10 @@ Example:
                     return false;
                 }
             }
+            if (typeof validation.value !== 'undefined') {
+                return this.matchValue(validation, event);
+            }
+
             return true;
         },
         matchValue (validation, event) {
