@@ -66,17 +66,9 @@
                     const id = 'motion_when';
                     Blockly.Blocks[`${part.id}#${id}`] = {
                         init: function () {
-                            const options = [
-                                ['1', '1'],
-                                ['2', '2'],
-                                ['3', '3'],
-                                ['4', '4'],
-                                ['5', '5']
-                            ];
                             this.appendDummyInput()
                                 .appendField(`${part.name}: ${Blockly.Msg.BLOCK_MOTION_WHEN}`)
-                                // .appendField(new Blockly.FieldMotionZone())
-                                .appendField(new Blockly.FieldDropdown(options), 'ZONE')
+                                .appendField(new Blockly.FieldMotionZone(1, part), 'ZONE')
                                 .appendField(Blockly.Msg.BLOCK_MOTION_IS_TRIGGERED);
 
                             this.appendStatementInput('DO');

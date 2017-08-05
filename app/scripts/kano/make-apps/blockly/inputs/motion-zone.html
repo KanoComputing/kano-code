@@ -1,60 +1,10 @@
 <link rel="import" href="../../../../../elements/kano-motion-zone-input/kano-motion-zone-input.html">
 <script>
-    Blockly.FieldMotionZone = function (value) {
-        this.setValue(value || 0);
-        this._width = 16;
-        this._height = 16;
+    Blockly.FieldMotionZone = function (value, part, opt_validator) {
+        this._part = part;
+        Blockly.FieldDropdown.superClass_.constructor.call(this, value || 1, opt_validator);
     };
-    goog.inherits(Blockly.FieldMotionZone, Blockly.Field);
-
-    Blockly.FieldMotionZone.prototype.init = function () {
-        if (this._container) {
-            // Image has already been initialized once.
-            return;
-        }
-        // Build the DOM.
-        this._container = Blockly.utils.createSvgElement('g', {}, null);
-        this._rect = Blockly.utils.createSvgElement('rect', {
-            rx: 4,
-            ry: 4,
-            width: `${this._width + 4}px`,
-            height: `${this._height}px`,
-            stroke: 'white'
-        }, this._container);
-        this.sourceBlock_.getSvgRoot().appendChild(this._container);
-        this.setValue(this.getValue());
-        Blockly.bindEvent_(this._container, 'mousedown', this, this._onMouseDown);
-    };
-
-    Blockly.FieldMotionZone.prototype._onMouseDown = function (e) {
-        if (Blockly.WidgetDiv.isVisible()) {
-            Blockly.WidgetDiv.hide();
-        } else if (!this.sourceBlock_.isInFlyout) {
-            this.showEditor_();
-            e.preventDefault();
-            e.stopPropagation();
-        }
-    };
-
-    Blockly.FieldMotionZone.prototype.getSvgRoot = function () {
-        return this._container;
-    };
-
-    Blockly.FieldMotionZone.prototype.getSize = function () {
-        return {
-            width: this._width + 4,
-            height: this._height,
-        };
-    };
-
-    Blockly.FieldMotionZone.prototype.getAbsoluteXY_ = function () {
-        return goog.style.getPageOffset(this._container);
-    };
-
-    Blockly.FieldMotionZone.prototype.getScaledBBox_ = function() {
-        let bbox = this._container.getBBox();
-        return new goog.math.Size(bbox.width * this.sourceBlock_.workspace.scale, bbox.height * this.sourceBlock_.workspace.scale)
-    };
+    goog.inherits(Blockly.FieldMotionZone, Blockly.FieldDropdown);
 
     Blockly.FieldMotionZone.prototype.showEditor_ = function () {
         Blockly.WidgetDiv.show(this, this.sourceBlock_.RTL, Blockly.FieldMotionZone.widgetDispose_);
@@ -68,14 +18,18 @@
         var div = Blockly.WidgetDiv.DIV;
         
         customEl = document.createElement('kano-motion-zone-input');
-        customEl.style.minWidth = '200px';
-        customEl.style.minHeight = '200px';
-        customEl.value = this.getValue();
+        customEl.style.background = 'white';
+        customEl.style.borderRadius = '6px';
+        customEl.value = parseInt(this.getValue());
 
         customEl.addEventListener('value-changed', (e) => {
             this.setValue(e.detail.value);
             Blockly.WidgetDiv.hide();
         });
+
+        this._gaugePoll = setInterval(() => {
+            customEl.gauge = this._part.lastProximityValue;
+        }, 50);
 
         div.appendChild(customEl);
 
@@ -103,21 +57,19 @@
         Blockly.WidgetDiv.position(xy.x, xy.y, windowSize, scrollOffset, this.sourceBlock_.RTL);
     };
 
+    Blockly.FieldMotionZone.widgetDispose_ = function () {
+        clearInterval(this._gaugePoll);
+    };
+
     Blockly.FieldMotionZone.prototype.setValue = function (value) {
         if (value === null) {
             // No change if null.
             return;
         }
-        if (this.sourceBlock_ && Blockly.Events.isEnabled() && this._value != value) {
-            Blockly.Events.fire(new Blockly.Events.Change(this.sourceBlock_, 'field', this.name, this._value, value));
+        if (this.sourceBlock_ && Blockly.Events.isEnabled() && this.value_ != value) {
+            Blockly.Events.fire(new Blockly.Events.Change(this.sourceBlock_, 'field', this.name, this.value_, value));
         }
-        this._value = value;
-        if (this._rect) {
-            this._rect.setAttribute('fill', KanoMotionZoneInput.getColorForValue(value));
-        }
-    };
-
-    Blockly.FieldMotionZone.prototype.getValue = function () {
-        return this._value;
+        this.value_ = value.toString();
+        this.setText(this.value_);
     };
 </script>
