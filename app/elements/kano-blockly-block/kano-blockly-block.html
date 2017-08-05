@@ -48,6 +48,7 @@
                 }
                 let xml = Blockly.Xml.textToDom(`<xml><block type="${type}"></block></xml>`);
                 this.ws.clear();
+                this.ws.scale = 0.9;
                 this.async(() => {
                     try {
                         Blockly.Xml.domToWorkspace(xml, this.ws);

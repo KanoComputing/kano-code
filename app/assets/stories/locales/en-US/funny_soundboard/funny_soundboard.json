@@ -267,6 +267,9 @@
                     }
                 },
                 "target": "SAMPLE"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -298,7 +301,7 @@
                         "target": {
                             "id": "block_1"
                         },
-                        "value": "perc_bell"
+                        "value": "misc_crow"
                     }
                 }
             },
@@ -428,6 +431,9 @@
                         "type": "speaker_play"
                     }
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -451,6 +457,9 @@
                     }
                 },
                 "target": "DO"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -489,6 +498,9 @@
                         "type": "speaker_sample"
                     }
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -512,6 +524,9 @@
                     }
                 },
                 "target": "SAMPLE"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -651,6 +666,9 @@
                         "type": "speaker_play"
                     }
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -674,6 +692,9 @@
                     }
                 },
                 "target": "DO"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -712,6 +733,9 @@
                         "type": "speaker_sample"
                     }
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -735,6 +759,9 @@
                     }
                 },
                 "target": "SAMPLE"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -778,7 +805,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>swash</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>Swash</span></kano-value-preview>"
             }
         },
         {
@@ -795,7 +822,13 @@
     "modules": [
         "events"
     ],
+    "filterBlocks": {
+        "speaker": [
+            "speaker_play",
+            "speaker_sample"
+        ]
+    },
     "variables": [],
     "mode": "normal",
-    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"60\\\" y=\\\"68\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
 }

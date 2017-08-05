@@ -92,7 +92,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Sticker tray"
+                "text": "Our first sticker will trigger some tunes.<br>Let's change it to look like a music note!"
             }
         },
         {
@@ -114,7 +114,7 @@
                 }
             },
             "banner": {
-                "text": "Our first sticker will trigger some tunes.<br>Let's change it to look like a music note!<br>Drag the <kano-blockly-block type=\"part_0#set_sticker\"></kano-blockly-block> block onto your code space"
+                "text": "Drag the <kano-blockly-block type=\"part_0#set_sticker\"></kano-blockly-block> block onto your code space"
             }
         },
         {
@@ -138,6 +138,9 @@
                     }
                 },
                 "target": "DO"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -204,7 +207,7 @@
                 }
             },
             "banner": {
-                "text": "The second sticker will stop the sounds...<br>so we want a lightning bolt sticker<br>Open the Sticker 2 tray"
+                "text": "The second sticker will stop the sounds...<br>so we want a lightning bolt sticker"
             }
         },
         {
@@ -248,6 +251,9 @@
                         "rawId": "wh_rVK8#~y;_TlzYqy|#"
                     }
                 }
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -310,7 +316,7 @@
                 }
             },
             "banner": {
-                "text": "Next we want to do something when the<br>music note is clicked.<br>Open the Events tray"
+                "text": "Next we want to do something when the<br>music note is clicked."
             }
         },
         {
@@ -427,6 +433,9 @@
                     }
                 },
                 "target": "DO"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -465,6 +474,9 @@
                         "type": "speaker_sample"
                     }
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -488,6 +500,9 @@
                     }
                 },
                 "target": "SAMPLE"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -663,6 +678,9 @@
                     }
                 },
                 "target": "DO"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -725,6 +743,9 @@
                         "rawId": "^vKWc@cE*[h.(L_%R-C-"
                     }
                 }
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -763,6 +784,9 @@
                         "type": "speaker_sample"
                     }
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -786,6 +810,9 @@
                     }
                 },
                 "target": "SAMPLE"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -846,7 +873,18 @@
     "modules": [
         "events"
     ],
+    "filterBlocks": {
+        "speaker": [
+            "speaker_play",
+            "speaker_loop",
+            "speaker_stop",
+            "speaker_sample"
+        ],
+        "sticker": [
+            "set_sticker"
+        ]
+    },
     "variables": [],
     "mode": "normal",
-    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"60\\\" y=\\\"68\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
 }

@@ -81,6 +81,9 @@
                     }
                 },
                 "target": "DO"
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -183,6 +186,9 @@
                         "rawId": "`8*u[W%@ULYO%%#6qBmw"
                     }
                 }
+            },
+            "banner": {
+                "text": "Drop after the previous block"
             }
         },
         {
@@ -236,6 +242,9 @@
                 "target": {
                     "flyout_block": "normal#stroke"
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -257,6 +266,9 @@
                         "rawId": "ACR2tsPl0HX?=e^iu~-6"
                     }
                 }
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -271,7 +283,7 @@
                 }
             },
             "banner": {
-                "text": "Great colors!<br>Now let's start drawing.<br>To start we need a <em>loop</em>"
+                "text": "Great colors!<br>Now let's start drawing. To start we need a <em>loop</em>"
             }
         },
         {
@@ -311,6 +323,9 @@
                         "rawId": "F#ArBE7^H=0DvaR_jN:L"
                     }
                 }
+            },
+            "banner": {
+                "text": "Drop it there"
             }
         },
         {
@@ -478,6 +493,9 @@
                 "target": {
                     "flyout_block": "normal#ellipse"
                 }
+            },
+            "banner": {
+                "text": "Grab this block"
             }
         },
         {
@@ -611,10 +629,24 @@
         "microphone"
     ],
     "modules": [
-        "color",
         "control"
     ],
+    "filterBlocks": {
+        "normal": [
+            "move_to",
+            "move",
+            "color",
+            "stroke",
+            "ellipse"
+        ],
+        "microphone": [
+            "get_volume"
+        ],
+        "control": [
+            "every_x_seconds"
+        ]
+    },
     "variables": [],
     "mode": "normal",
-    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"290\\\" y=\\\"120\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
+    "defaultApp": "{\"parts\":[],\"code\":{\"snapshot\":{\"javascript\":\"global.when('start', function () {\\n});\\n\",\"pseudo\":\"global.when('start', function () {\\n});\\n\",\"blocks\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"part_event\\\" id=\\\"default_part_event_id\\\" x=\\\"60\\\" y=\\\"68\\\"><field name=\\\"EVENT\\\">global.start</field></block></xml>\"}},\"background\":{\"name\":\"My app\",\"userStyle\":{\"background\":\"#FFFFFF\"}},\"mode\":\"normal\"}"
 }
