@@ -7,24 +7,17 @@
     let category,
         register = (Blockly) => {
 
-        let flags = Kano.MakeApps.config.getFlags();
+        Blockly.Blocks.colour_picker = {
+            init: function () {
+                this.appendDummyInput()
+                    .appendField(new Blockly.FieldCustomColor("#ff0000"), 'COLOUR');
 
-        for (let i = 0; i < flags.experiments.length; i++) {
-            if (flags.experiments[i] === 'functions') {
-                Blockly.Blocks.colour_picker = {
-                    init: function () {
-                        this.appendDummyInput()
-                            .appendField(new Blockly.FieldCustomColor("#ff0000"), 'COLOUR');
-
-                        this.setOutput('Colour');
-                        this.setHelpUrl("%{BKY_COLOUR_PICKER_HELPURL}");
-                        this.setColour("%{BKY_COLOUR_HUE}");
-                        this.setTooltip("%{BKY_COLOUR_PICKER_TOOLTIP}");
-                    }
-                };
-                break;
+                this.setOutput('Colour');
+                this.setHelpUrl("%{BKY_COLOUR_PICKER_HELPURL}");
+                this.setColour("%{BKY_COLOUR_HUE}");
+                this.setTooltip("%{BKY_COLOUR_PICKER_TOOLTIP}");
             }
-        }
+        };
 
         Blockly.Blocks.random_colour = {
             init: function () {

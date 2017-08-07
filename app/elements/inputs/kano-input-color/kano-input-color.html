@@ -194,13 +194,12 @@ Custom property | Description | Default
             this.toggleClass(hoverClass, false, target);
         },
         _selectColorOnTap (e) {
-            this.selectColor(this.$.palette.indexForElement(Polymer.dom(e).rootTarget));
+            this.selectColor(e.model.index);
             this.fire('tracking-event', {
                 name: 'color_selected'
             });
         },
         selectColor (index) {
-            this.selectedIndex = index;
             this.set('value', this.colors[index]);
             this.fire('change', this.value);
         },
