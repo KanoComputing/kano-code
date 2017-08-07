@@ -109,6 +109,7 @@
             }
         }
         Blockly.WidgetDiv.position(xy.x, xy.y, windowSize, scrollOffset, this.sourceBlock_.RTL);
+        div.style.height = size.height + 'px';
         if ('animate' in HTMLElement.prototype) {
             div.style.transformOrigin = '0 0';
             div.animate({
