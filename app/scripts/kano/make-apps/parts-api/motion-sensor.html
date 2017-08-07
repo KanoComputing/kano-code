@@ -57,7 +57,7 @@
                 }
             },
             _triggerListeners (newValue, oldValue) {
-                const zoneSize = 100 / 6;                 // 100 is the whole span, 5 is the number of zones
+                const zoneSize = 100 / 5;                 // 100 is the whole span, 5 is the number of zones
                 this._listeners.forEach(listener => {
                     let zoneClamp = [(listener.zone - 1) * zoneSize, listener.zone * zoneSize];
                     // Was outside of the clamp and now is inside
