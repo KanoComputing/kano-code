@@ -15,7 +15,9 @@
             '_onConnectedChange(model.connected)'
         ],
         _onConnectedChange (connected) {
-            if (!connected) {
+            if (connected) {
+                this.setMode(this.model.userProperties.mode);
+            } else {
                 this.set('model.lastProximityValue', 0);
             }
         },
