@@ -9,17 +9,18 @@
     <template>
         <style>
             :host {
-                display: block;
+                @apply --layout-vertical;
+                max-height: inherit;
                 color: white;
                 background-color: var(--kano-app-editor-workspace-background);
                 font-family: var(--font-body);
                 border-radius: 6px;
             }
-            .categories {
-                @apply --layout-horizontal;
+            .category-box {
+                overflow: auto;
                 padding: 24px 32px;
             }
-            .categories h2 {
+            .category-box h2 {
                 font-weight: normal;
                 font-size: 16px;
                 margin: 0;
@@ -30,27 +31,31 @@
                 border-radius: 6px;
                 margin: 24px 0;
             }
-            .categories>* {
+            .categories {
+                @apply --layout-horizontal;
+            }
+            .category-box .categories>* {
                 width: 238px;
                 @apply --layout-vertical;
                 @apply --layout-start-justified;
                 @apply --layout-flex;
             }
-            .categories>*:not(:first-of-type) {
+            .category-box .categories>*:not(:first-of-type) {
                 margin-left: 32px;
             }
-            .categories .ui .underline {
+            .category-box .categories .ui .underline {
                 background-color: #00d9c7;
             }
-            .categories .data .underline {
+            .category-box .categories .data .underline {
                 background-color: #9b61bd;
             }
-            .categories .hardware .underline {
+            .category-box .categories .hardware .underline {
                 background-color: #ef5285;
             }
             header {
                 @apply --layout-horizontal;
                 @apply --layout-center;
+                flex-shrink: 0;
                 height: 58px;
                 padding: 0 16px;
                 border-bottom: 2px solid #252A30;
@@ -143,45 +148,47 @@
             </div>
             <button dialog-confirm class="confirm">[[localize('GOT_IT', 'Got it')]]</button>
         </div>
-        <div class="categories" hidden$="[[empty]]">
-            <div class="ui">
-                <h2>Interface</h2>
-                <div class="underline"></div>
-                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('ui')]]" as="part" on-dom-change="_repeaterChanged">
-                    <kano-add-parts-item id$="[[part.type]]"
-                                            label="[[part.label]]"
-                                            type="[[part.type]]"
-                                            color-fill="#00d9c7"
-                                            data-animate="150"
-                                            on-part-tap="_addPart"
-                                            disabled$="[[_isPartDisabled(part, _usedParts)]]"></kano-add-parts-item>
-                </template>
-            </div>
-            <div class="data">
-                <h2>Data</h2>
-                <div class="underline"></div>
-                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('data')]]" as="part" on-dom-change="_repeaterChanged">
-                    <kano-add-parts-item id$="[[part.type]]"
-                                            label="[[part.label]]"
-                                            type="[[part.type]]"
-                                            color-fill="#9b61bd"
-                                            data-animate="150"
-                                            on-part-tap="_addPart"
-                                            disabled$="[[_isPartDisabled(part, _usedParts)]]"></kano-add-parts-item>
-                </template>
-            </div>
-            <div class="hardware">
-                <h2>Hardware</h2>
-                <div class="underline"></div>
-                <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('hardware')]]" as="part" on-dom-change="_repeaterChanged">
-                    <kano-add-parts-item id$="[[part.type]]"
-                                            label="[[part.label]]"
-                                            type="[[part.type]]"
-                                            color-fill="#ef5285"
-                                            data-animate="150"
-                                            on-part-tap="_addPart"
-                                            disabled$="[[_isPartDisabled(part, _usedParts)]]"></kano-add-parts-item>
-                </template>
+        <div class="category-box" hidden$="[[empty]]">
+            <div class="categories">
+                <div class="ui">
+                    <h2>Interface</h2>
+                    <div class="underline"></div>
+                    <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('ui')]]" as="part" on-dom-change="_repeaterChanged">
+                        <kano-add-parts-item id$="[[part.type]]"
+                                                label="[[part.label]]"
+                                                type="[[part.type]]"
+                                                color-fill="#00d9c7"
+                                                data-animate="150"
+                                                on-part-tap="_addPart"
+                                                disabled$="[[_isPartDisabled(part, _usedParts)]]"></kano-add-parts-item>
+                    </template>
+                </div>
+                <div class="data">
+                    <h2>Data</h2>
+                    <div class="underline"></div>
+                    <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('data')]]" as="part" on-dom-change="_repeaterChanged">
+                        <kano-add-parts-item id$="[[part.type]]"
+                                                label="[[part.label]]"
+                                                type="[[part.type]]"
+                                                color-fill="#9b61bd"
+                                                data-animate="150"
+                                                on-part-tap="_addPart"
+                                                disabled$="[[_isPartDisabled(part, _usedParts)]]"></kano-add-parts-item>
+                    </template>
+                </div>
+                <div class="hardware">
+                    <h2>Hardware</h2>
+                    <div class="underline"></div>
+                    <template is="dom-repeat" items="[[availableParts]]" filter="[[_getFilter('hardware')]]" as="part" on-dom-change="_repeaterChanged">
+                        <kano-add-parts-item id$="[[part.type]]"
+                                                label="[[part.label]]"
+                                                type="[[part.type]]"
+                                                color-fill="#ef5285"
+                                                data-animate="150"
+                                                on-part-tap="_addPart"
+                                                disabled$="[[_isPartDisabled(part, _usedParts)]]"></kano-add-parts-item>
+                    </template>
+                </div>
             </div>
         </div>
     </template>

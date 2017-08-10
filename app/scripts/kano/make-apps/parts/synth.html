@@ -161,7 +161,7 @@
                },
                javascript: (part) => {
                    return (block) => {
-                       let freq = Blockly.Pseudo.valueToCode(block, 'FREQUENCY') || 25;
+                       let freq = Blockly.JavaScript.valueToCode(block, 'FREQUENCY') || 25;
                        return `parts.get('${part.id}').setSynthFrequency(${freq});\n`;
                    };
                },
