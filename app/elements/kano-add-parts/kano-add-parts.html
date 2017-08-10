@@ -17,14 +17,7 @@
             }
             .categories {
                 @apply --layout-horizontal;
-                max-height: 80vh;
-                overflow: auto;
-                box-sizing: border-box;
-                padding: 24px 32px 0;
-            }
-            .categories .ui>*:nth-last-child(2) {
-                margin-bottom: 24px; /* <-- use margin on the last item instead of
-                                            bottom-padding for consistency when scrolling */
+                padding: 24px 32px;
             }
             .categories h2 {
                 font-weight: normal;
@@ -39,6 +32,9 @@
             }
             .categories>* {
                 width: 238px;
+                @apply --layout-vertical;
+                @apply --layout-start-justified;
+                @apply --layout-flex;
             }
             .categories>*:not(:first-of-type) {
                 margin-left: 32px;

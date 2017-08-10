@@ -5,7 +5,6 @@
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
 <link rel="import" href="../../bower_components/web-components/kano-alert/kano-alert.html">
@@ -155,8 +154,7 @@
             background: #292f35;
         }
         :host #edit-part-dialog-content,
-        :host #background-editor,
-        :host #add-parts {
+        :host #background-editor {
             margin: 0;
         }
         .code-overlay {
@@ -180,6 +178,9 @@
         }
         paper-dialog > * {
             border-radius: 6px;
+        }
+        kano-add-parts#add-parts {
+            margin: 0px;
         }
     </style>
     <template>
