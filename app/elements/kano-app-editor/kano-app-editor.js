@@ -538,6 +538,16 @@ Polymer({
         this.async(() => {
             let product,
                 partTypes;
+
+            // Unqueue any parts that have been set already
+            this.addedParts.forEach((p) => {
+                for (var i = 0; i < this.queuedHardware.length; i++) {
+                    if (this.queuedHardware[i].product === p.type) {
+                        this.splice('queuedHardware', i, 1);
+                    }
+                }
+            });
+
             for (var i = 0; i < this.queuedHardware.length; i++) {
                 product = this.queuedHardware[i].product;
                 partTypes = this.parts.map(p => p.type);
