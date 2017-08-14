@@ -352,7 +352,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"part_1#ui_scale\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -506,7 +506,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -601,7 +601,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"part_1#ui_move_by\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -757,7 +757,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"controls_if\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -822,7 +822,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"logic_compare\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -1083,7 +1083,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"part_1#ui_set_x_y\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -1519,6 +1519,68 @@
                 }
             },
             "banner": {
+                "text": "Now we need to define a stroke for the string"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#stroke",
+                        "id": "block_101"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#stroke"
+                }
+            },
+            "banner": {
+                "text": "Drag this block onto your code space"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_18"
+                        },
+                        "target": "block_101"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_18"
+                    }
+                }
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_18"
+                    }
+                }
+            },
+            "banner": {
+                "text": "Connect it to this block"
+            }
+        },
+        {
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "banner": {
                 "text": "A Move To block will keep the string steady"
             }
         },
@@ -1537,7 +1599,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"normal#move_to\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -1545,8 +1607,7 @@
                 "blockly": {
                     "connect": {
                         "parent": {
-                            "id": "block_18",
-                            "rawId": "FVB_V|QFAeJKC9g|6J.;"
+                            "id": "block_101"
                         },
                         "target": "block_19"
                     }
@@ -1555,16 +1616,14 @@
             "phantom_block": {
                 "location": {
                     "block": {
-                        "id": "block_18",
-                        "rawId": "FVB_V|QFAeJKC9g|6J.;"
+                        "id": "block_101"
                     }
                 }
             },
             "beacon": {
                 "target": {
                     "block": {
-                        "id": "block_18",
-                        "rawId": "FVB_V|QFAeJKC9g|6J.;"
+                        "id": "block_101"
                     }
                 }
             },
@@ -1602,7 +1661,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"math_arithmetic\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -1833,7 +1892,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"math_arithmetic\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -2064,7 +2123,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"normal#line_to\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -2222,7 +2281,8 @@
             "set_background_color",
             "clear",
             "move_to",
-            "line_to"
+            "line_to",
+            "stroke"
         ],
         "speaker": [
             "speaker_loop",
