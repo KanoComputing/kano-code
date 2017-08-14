@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
 <link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../kano-tooltip/kano-tooltip.html">
 <!--
@@ -17,21 +18,31 @@
                 background: #394148;
                 color: rgba(255, 255, 255, 0.5);
                 height: 32px;
-                padding: 0px 4px 0px 0px;
+                padding: 0px 8px;
                 border-bottom: 1px solid var(--kano-app-editor-workspace-border, #22272d);
             }
             .title {
                 height: 100%;
                 width: 44px;
             }
-            .back {
+            a.back {
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                text-transform: uppercase;
                 text-decoration: none;
+                cursor: pointer;
+                opacity: 0.5;
+                transition: opacity 150ms ease-in;
+            }
+            a.back:hover {
+                opacity: 1;
+            }
+            a.back span {
                 font-size: 12px;
+                line-height: 12px;
                 font-weight: bold;
-                color: rgba(255, 255, 255, 0.5);
+                text-transform: uppercase;
+                color: #fff;
+                margin: 0 8px;
             }
             .user-profile {
                 @apply --layout-horizontal;
@@ -39,11 +50,9 @@
             }
             .user-profile button {
                 background: transparent;
-                border: 0px;
+                border: 0;
                 cursor: pointer;
-                color: rgba(255, 255, 255, 0.5);
-                font-family: var(--font-body);
-                padding: 0px;
+                padding: 0;
             }
             .user-profile button iron-image {
                 width: 24px;
@@ -52,21 +61,28 @@
                 box-sizing: border-box;
                 border: 1px solid transparent;
             }
-            .user-profile button:focus {
+            .user-profile button:focus,
+            .user-profile button:active {
                 outline: none;
+                border: none;
             }
-            .user-profile button:focus iron-image {
-                border-color: rgba(255, 255, 255, 0.6);
-            }
-            .login {
+            .user-profile button .login {
+                color: #fff;
+                font-weight: bold;
+                font-family: var(--font-body);
                 text-transform: uppercase;
+                opacity: 0.5;
+                transition: opacity 150ms ease-in;
+            }
+            .user-profile button .login:hover {
+                opacity: 1;
             }
             kano-tooltip {
                 box-sizing: border-box;
             }
             ul {
-                margin: 0px;
-                padding-left: 0px;
+                margin: 0;
+                padding-left: 0;
                 color: black;
                 min-width: 200px;
             }
@@ -115,22 +131,17 @@
                 --iron-icon-height: 14px;
                 margin-right: 14px;
             }
-            .back {
+            .back iron-icon {
                 --iron-icon-width: 16px;
                 --iron-icon-height: 16px;
-                padding-right: 8px;
-                padding-left: 4px;
-                cursor: pointer;
-            }
-            a.back:hover {
-                background-color: rgba(255, 255, 255, 0.1);
+                --iron-icon-fill-color: #fff;
             }
             [hidden] {
                 display: none !important;
             }
         </style>
         <a class="back" on-tap="_exitButtonTapped">
-            <iron-icon class="back" src="/assets/icons/back.svg"></iron-icon>
+            <iron-icon id="back-icon" icon="kano-icons:back"></iron-icon>
             <span>[[localize('BACK', 'Back')]]</span>
         </a>
         <iron-image class="title" src="/assets/kano-logo-simple.svg" sizing="contain"></iron-image>
