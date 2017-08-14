@@ -14,9 +14,8 @@
     (function() {
         Kano.AudioContext = Kano.AudioContext || new AudioContext();
 
-        const OSCILLATOR_FREQ_RANGE_LOW = 20,
-              OSCILLATOR_FREQ_RANGE_HI = 5000,
-              DEFAULT_FREQ = 0.25 * OSCILLATOR_FREQ_RANGE_HI;
+        const OSCILLATOR_FREQ_RANGE_LOW = 55, // --> A0 note in pitch standard tuning
+              DEFAULT_FREQ = 220 // --> A2
 
         Polymer({
             is: 'kano-part-synth',
@@ -63,7 +62,8 @@
             setVolume (volume) {
                 let value;
                 this.volume = Math.min(Math.max(volume, 0), 100);
-                value = this.model.muted ? 0 : (this.volume * 0.01);
+                //the maximum value is limited to an ear-friendly sound pressure level
+                value = this.model.muted ? 0 : (this.volume * 0.00075);
                 if (this.gainControl) {
                     this.gainControl.gain.value = value;
                 }
@@ -88,7 +88,8 @@
 
                 let monotron = this._createMonotron();
 
-                freq = OSCILLATOR_FREQ_RANGE_LOW + ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
+                //each cent increments the frequency with a quarter note
+                freq = OSCILLATOR_FREQ_RANGE_LOW * Math.pow(2, freq / 24);
                 monotron.noteOn(freq);
                 monotron.noteOff(this.ctx.currentTime + length / 1000);
 
@@ -115,7 +116,8 @@
                 freq = this._limitNumericValue(freq, 0, 100);
 
                 if (this.synth) {
-                    freq = OSCILLATOR_FREQ_RANGE_LOW + ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
+                    //each cent increments the frequency with a quarter note
+                    freq = OSCILLATOR_FREQ_RANGE_LOW * Math.pow(2, freq / 24);
                     this.synth.noteOn(freq);
                 }
             },

@@ -453,7 +453,9 @@
             this.elements[key] = element;
             this.dropzone.appendChild(element);
             if (this.soundReady) {
-                this.playSound('/assets/audio/sounds/pop.wav');
+                this.debounce('playStartupSound', () => {
+                    this.playSound('/assets/audio/sounds/pop.wav');
+                }, 100);
             }
             this._registerElement(`workspace-part-${model.id}`, element);
         },

@@ -129,7 +129,8 @@
             setVolume (volume) {
                 let value;
                 this.volume = Math.min(Math.max(volume, 0), 100);
-                value = this.model.muted ? 0 : (this.volume * 0.01);
+                //the maximum value is limited to an ear-friendly sound pressure level
+                value = this.model.muted ? 0 : (this.volume * 0.004);
                 if (this.gainControl) {
                     this.gainControl.gain.value = value;
                 }
