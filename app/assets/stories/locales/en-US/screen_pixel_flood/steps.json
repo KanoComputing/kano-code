@@ -38,7 +38,7 @@
                 "hints": {
                     "enabled": false,
                     "disabled-banner": {
-                        "text": "We need a block that gets our computer to <b>repeat</b><br>a command over and over. Can you find it?<br>Almost there...",
+                        "text": "We need a block that gets our computer to <b>repeat</b> a command over and over. <br>Can you find it?",
                         "hint_button": true
                     }
                 }
@@ -57,18 +57,17 @@
             "beacon": {
                 "target": {
                     "flyout_block": "repeat_x_times"
-                },
-                "angle": 120
+                }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"repeat_x_times\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
             "set-state": {
                 "hints": {
                     "enabled": true
-                }
+                } 
             }
         },
         {
@@ -132,7 +131,7 @@
                 "hints": {
                     "enabled": false,
                     "disabled-banner": {
-                        "text": "Next we need a block to <b>move to a random point</b><br>Can you find it?<br>Almost there...",
+                        "text": "Next we need a block to <b>move to a random point</b><br>Can you find it? Almost there...",
                         "hint_button": true
                     }
                 }
@@ -151,11 +150,10 @@
             "beacon": {
                 "target": {
                     "flyout_block": "normal#move_to_random"
-                },
-                "angle": 120
+                }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"normal#move_to_random\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -199,15 +197,11 @@
                 "text": "That's the one!<br>Connect it to this block"
             }
         },
+
         {
-            "set-state": {
-                "hints": {
-                    "enabled": false,
-                    "disabled-banner": {
-                        "text": "Now draw a pixel at that random point!",
-                        "hint_button": true
-                    }
-                }
+            "banner": {
+                "text": "Now let's draw a pixel at that random point!",
+                "next_button": true
             }
         },
         {
@@ -238,11 +232,10 @@
             "beacon": {
                 "target": {
                     "flyout_block": "normal#pixel"
-                },
-                "angle": 120
+                }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"normal#pixel\"></kano-blockly-block> block onto your code space"
+                "text": "Drag this block onto your code space"
             }
         },
         {
@@ -289,7 +282,7 @@
                 "target": "workspace-panel"
             },
             "banner": {
-                "text": "High-Five! <img src='/assets/icons/emoji/raised_hand.png' width='20' alt='🖐' /><br>You made the computer turn on 10 pixels at once!",
+                "text": "High-Five! <img src='/assets/icons/emoji/raised_hand.png' height='18' alt='🖐' /> You made the computer turn on 10 pixels at once!",
                 "next_button": true
             }
         },
@@ -351,20 +344,14 @@
             }
         },
         {
-            "beacon": {
-                "target": "workspace-panel"
-            },
             "banner": {
                 "text": "That's what 100,000 pixels look like!<br>Doesn’t it feel great to bring your screen to life?",
                 "next_button": true
             }
         },
         {
-            "beacon": {
-                "target": "workspace-panel"
-            },
             "banner": {
-                "text": "<kano-blockly-block type=\"repeat_x_times\"></kano-blockly-block><br>and<br><kano-blockly-block type=\"normal#move_to_random\"></kano-blockly-block><br>Unlocked!<br><br>You now have the power to repeat commands<br>thousands of times in the blink of an eye!",
+                "text": "You now have the power to repeat commands thousands of times in the blink of an eye!",
                 "next_button": true
             }
         }
