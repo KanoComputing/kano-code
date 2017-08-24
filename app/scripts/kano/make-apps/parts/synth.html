@@ -57,7 +57,7 @@
                },
                pseudo: (part) => {
                    return (block) => {
-                       let volume = Blockly.JavaScript.valueToCode(block, 'VOLUME') || 100;
+                       let volume = Blockly.Pseudo.valueToCode(block, 'VOLUME') || 100;
 
                        return `parts.get('${part.id}').setVolume(${volume});\n`;
                    };
@@ -187,7 +187,7 @@
                },
                javascript: (part) => {
                    return (block) => {
-                       let wave = Blockly.Pseudo.valueToCode(block, 'WAVE') || "'sine'";
+                       let wave = Blockly.JavaScript.valueToCode(block, 'WAVE') || "'sine'";
                        return `parts.get('${part.id}').setSynthWave(${wave});\n`;
                    };
                },
