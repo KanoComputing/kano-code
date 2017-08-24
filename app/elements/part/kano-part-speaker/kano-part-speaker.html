@@ -53,6 +53,7 @@
                     this.oscillatorsGain = this.ctx.createGain();
                     this.oscillatorsGain.connect(this.output);
                     this.oscillatorsGain.gain.value = 0.2;
+                    this.setVolume(this.volume);
                 } catch (e) {
                     this.webAudioSupported = false;
                 }
@@ -127,6 +128,10 @@
                 return source;
             },
             setVolume (volume) {
+                if (!this.model || !this.gainControl) {
+                    return;
+                }
+
                 let value;
                 this.volume = Math.min(Math.max(volume, 0), 100);
                 //the maximum value is limited to an ear-friendly sound pressure level

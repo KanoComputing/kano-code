@@ -37,6 +37,7 @@
                     this.gainControl = this.ctx.createGain();
                     this.gainControl.connect(this.ctx.destination);
                     this.output = this.gainControl;
+                    this.setVolume(this.volume);
                 } catch (e) {
                     this.webAudioSupported = false;
                 }
@@ -60,6 +61,9 @@
                 this.setVolume(this.volume);
             },
             setVolume (volume) {
+                if (!this.model || !this.gainControl) {
+                    return;
+                }
                 let value;
                 this.volume = Math.min(Math.max(volume, 0), 100);
                 //the maximum value is limited to an ear-friendly sound pressure level
