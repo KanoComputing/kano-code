@@ -514,7 +514,9 @@ Example:
                     block;
                 if (target &&
                         (target.top + target.height > workspaceRect.top + workspaceRect.height) ||
-                        (target.left + target.width > workspaceRect.left + workspaceRect.width)) {
+                        (target.left + target.width > workspaceRect.left + workspaceRect.width) ||
+                        (target.top < 0) ||
+                        (target.left < 0)) {
                     block = this.getTargetBlock(location.block);
                     workspace.scrollBlockIntoView(block, true);
                 }
