@@ -1,0 +1,813 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "Blocks of code are kept in these trays. Click 'Draw' to see the code blocks inside."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block changes the background color. Drag it into your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#set_background_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#set_background_color",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the \"When app starts\" block. Code inside this block runs <em>when the app starts</em>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Click on <kano-value-preview><span>#FFFFFF</span></kano-value-preview> to change the background color. Try to pick a dark color."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_1"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice! Now open the Control tray to see its code blocks."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This one creates a loop. Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it under your background color block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "D#%s~h)AZWpSnunF4Kjg"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "D#%s~h)AZWpSnunF4Kjg"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "D#%s~h)AZWpSnunF4Kjg"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Code inside this block will currently run <em>every 1 second</em>.<br>Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview> to make it go much faster"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_2"
+                        },
+                        "value": "frames"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "OK! Now for the code to go inside your <em>every 1 frame</em> loop. Open this tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block lets you pick a color to draw with. Grab one!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#color",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the <em>every 1 frame</em> loop."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "m!S*}~J0z(wt-fgArT?$"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "m!S*}~J0z(wt-fgArT?$",
+                            "inputName": "DO"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "m!S*}~J0z(wt-fgArT?$"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Click <kano-value-preview><span>#000000</span></kano-value-preview> to change the value. Pick a light color."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_3"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the drawing tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block moves the pen to a random place, ready to draw. Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move_to_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move_to_random",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to under the <em>fill color</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "@TFJcoI7lPJul*Nq.o{*"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "@TFJcoI7lPJul*Nq.o{*"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "@TFJcoI7lPJul*Nq.o{*"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Finally we’re ready to draw something… like a circle."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the block that draws a circle."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#circle"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#circle",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the loop so you draw a new circle every frame."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Z`/rj1Ji.[zY5XD1GBK7"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "Z`/rj1Ji.[zY5XD1GBK7"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "Z`/rj1Ji.[zY5XD1GBK7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nicely done! Lots of little dots. Next we’ll mix it up so they don’t all look the same.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Math functions are the core of most programming. Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block returns a random number. Use it when you want to mix things up!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the circle block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "t]36:Gcrld2X9(V7@F*a"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": "t]36:Gcrld2X9(V7@F*a",
+                            "inputName": "RADIUS"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": "t]36:Gcrld2X9(V7@F*a"
+                    }
+                },
+                "target": "RADIUS"
+            }
+        },
+        {
+            "banner": {
+                "text": "We want a random number between 0 and 20. Change the second number to <kano-value-preview><span>20</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_6"
+                        },
+                        "value": "20"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "OK! Different sizes, done. Now it would be nice to mix up the colors too.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Color tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "color"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block lets you mix your own color. Grab it."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "create_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "create_color",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the <em>fill color</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "@TFJcoI7lPJul*Nq.o{*"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "@TFJcoI7lPJul*Nq.o{*",
+                            "inputName": "COLOR"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "@TFJcoI7lPJul*Nq.o{*"
+                    }
+                },
+                "target": "COLOR"
+            }
+        },
+        {
+            "banner": {
+                "text": "Huh. The dots turned black.<br>That’s because we need to give the color mix block some values.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray to find the <em>random number</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the <em>% green</em> input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "?YMi88jgpAP.T}G}uEw/"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "?YMi88jgpAP.T}G}uEw/",
+                            "inputName": "2"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "?YMi88jgpAP.T}G}uEw/"
+                    }
+                },
+                "target": "2"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change the second value to <kano-value-preview><span>100</span></kano-value-preview> to use the full range of greens."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_5"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_5"
+                        },
+                        "value": "100"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab another <em>random number</em> block from the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>random number</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the <em>% blue</em> input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "?YMi88jgpAP.T}G}uEw/"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "?YMi88jgpAP.T}G}uEw/",
+                            "inputName": "3"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "?YMi88jgpAP.T}G}uEw/"
+                    }
+                },
+                "target": "3"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change the second number to 100 again to use the full range of blues."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_6"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_6"
+                        },
+                        "value": "100"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "You survived this speedy introduction, and you’ve already used loops, random numbers and drawing!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Next up, make a spray can to take control of your art.",
+                "next_button": true
+            }
+        }
+    ],
+    "parts": [],
+    "modules": [
+        "events",
+        "control",
+        "color",
+        "math"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "events": [
+            "part_event"
+        ],
+        "normal": [
+            "set_background_color",
+            "color",
+            "move_to_random",
+            "circle"
+        ],
+        "control": [
+            "every_x_seconds"
+        ],
+        "color": [
+            "create_color"
+        ],
+        "math": [
+            "math_random"
+        ]
+    },
+    "mode": "normal"
+}

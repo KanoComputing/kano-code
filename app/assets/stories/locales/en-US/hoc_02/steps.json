@@ -1,0 +1,671 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "First you’re going to set up the style of your spray paint. Open the Draw tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the <em>transparency</em> block onto your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#set_transparency"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#set_transparency",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the <em>when app starts</em> block. (Remember, code in this block is executed once when the app starts)."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "This value sets how see-through your drawing is going to be. Change the transparency from <kano-value-preview><span>100</span></kano-value-preview> to <kano-value-preview><span>70</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "ALPHA",
+                        "id": "block_1"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "ALPHA",
+                            "id": "block_1"
+                        },
+                        "value": "70"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to set up the color you’re going to draw with. Open the Draw tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>fill color</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#color",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it under the transparency block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "b8C(/g:D/76%hZ0c*7s!"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "b8C(/g:D/76%hZ0c*7s!"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "b8C(/g:D/76%hZ0c*7s!"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Click the color to change it. Pick any color you want to paint with."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_2"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "OK! That's the style of spray paint set up. Now to draw with it. First, you’ll need another code loop. Open the Control tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>Every 1 second</em> block …"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "… and connect it under your style blocks."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "hHW{Nby.:!q(4Hy;l,bU"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "hHW{Nby.:!q(4Hy;l,bU"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "hHW{Nby.:!q(4Hy;l,bU"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "We want the code loop to run faster so the spray is smooth. Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "frames"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Next: the drawing. Finally! Open the draw tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Remember the <em>move to</em> block moves the pen to the place you want to draw. Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move_to"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move_to",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the <em>every 1 frame</em> loop."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "](PdTRc]5KSpAtnA!6w,"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "](PdTRc]5KSpAtnA!6w,",
+                            "inputName": "DO"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "](PdTRc]5KSpAtnA!6w,"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Ready to use your first code part? <em>Parts</em> are a grat way of adding advanced functionality to your creation.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Add the mouse part by clicking 'Add Part' (it’s on the right)."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Mouse</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-mouse"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "mouse",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "A tray has been added for the mouse code. Open it!"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block will return the current <em>mouse X position</em> (the X-axis goes side to side). Grab it."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_x",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the <em>move to</em> x input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "IFBkTEkcMd}7$anq}Lg~",
+                        "inputName": "X"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "IFBkTEkcMd}7$anq}Lg~",
+                            "inputName": "X"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "IFBkTEkcMd}7$anq}Lg~"
+                    }
+                },
+                "target": "X"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now do the same for the Y position. Open the Mouse tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block will return the current <em>mouse Y position</em> (the Y-axis goes up and down). Grab one."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_y",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the <em>move to</em> Y input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "IFBkTEkcMd}7$anq}Lg~",
+                        "inputName": "Y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "IFBkTEkcMd}7$anq}Lg~",
+                            "inputName": "Y"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "IFBkTEkcMd}7$anq}Lg~"
+                    }
+                },
+                "target": "Y"
+            }
+        },
+        {
+            "banner": {
+                "text": "You’ve moved the pen to the right place, now to draw something. Open the draw tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the block to draw a circle."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#circle"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#circle",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it under the <em>move to</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "IFBkTEkcMd}7$anq}Lg~"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "IFBkTEkcMd}7$anq}Lg~"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "IFBkTEkcMd}7$anq}Lg~"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Try it out by moving your mouse over the canvas (the picture).",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Looks good, but maybe make the spray a bit bigger. Change <kano-value-preview><span>5</span></kano-value-preview> to <kano-value-preview><span>20</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "RADIUS",
+                        "id": "block_7"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "RADIUS",
+                            "id": "block_7"
+                        },
+                        "value": "20"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Nice work! See if you can write your name with your new spray can. Try playing with the values for the transparency, color, and circle size.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "You’re on your way to becoming a code artist! Ready to add some special effects?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "mouse"
+    ],
+    "modules": [
+        "events",
+        "control"
+    ],
+    "variables": [],
+    "filterBlocks": {
+        "events": [
+            "part_event"
+        ],
+        "normal": [
+            "set_transparency",
+            "color",
+            "move_to",
+            "circle"
+        ],
+        "control": [
+            "every_x_seconds"
+        ],
+        "mouse": [
+            "mouse_x",
+            "mouse_y"
+        ]
+    },
+    "mode": "normal"
+}
