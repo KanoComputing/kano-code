@@ -388,7 +388,7 @@ Custom property | Description | Default
             },
             _onColorChange (e) {
                 if (e.detail.value) {
-                    this.customPaletteActive = Polymer.dom(e).rootTarget.id === 'custom-palette';
+                    this.customPaletteActive = Polymer.dom(e).localTarget.id === 'custom-palette';
                     this.penColor = e.detail.value;
                 }
             },

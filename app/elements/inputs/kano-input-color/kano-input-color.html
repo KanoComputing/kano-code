@@ -1,12 +1,6 @@
 <link rel="import" href="../../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
-<link rel="import" href="../../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../../../bower_components/kwc-color-picker/kwc-color-picker.html">
 <link rel="import" href="../behaviors.html">
-<link rel="import" href="../../kano-color-wheel/kano-color-wheel.html">
-<link rel="import" href="../../kano-tooltip/kano-tooltip.html">
-<link rel="import" href="../../kano-icons/kc-ui.html">
-<link rel="import" href="../../kano-code-shared-styles/kano-code-shared-styles.html">
 <!--
 `kano-input-color` Display a color palette and allows selection by clicking on one of them
 Example:
@@ -25,110 +19,36 @@ Custom property | Description | Default
 @demo demo/kano-input-color.html
 -->
 <dom-module id="kano-input-color">
-    <style include="kano-code-shared-styles">
-    :host {
-        display: block;
-        /*1px padding ensures select-frame is not cropped regardless of overflow*/
-        padding: 1px;
-    }
-    label {
-        @apply --kano-part-editor-label;
-    }
-    #input-field {
-        cursor: pointer;
-        margin: 0 auto;
-        @apply --kano-color-input-field;
-    }
-    #colors {
-        @apply --layout-horizontal;
-        @apply --layout-wrap;
-        position: relative;
-    }
-    #select-frame {
-        @apply --layout-horizontal;
-        @apply --layout-center-justified;
-        @apply --layout-center;
-        position: absolute;
-        top: calc(var(--kano-input-color-margin, 0.5px) * -2);
-        left: calc(var(--kano-input-color-margin, 0.5px) * -2);
-        width: var(--kano-input-color-size, 32px);
-        height: var(--kano-input-color-size, 32px);
-        z-index: 3;
-        outline: 3px solid #aaa;
-        outline-offset: -1px;
-        margin: var(--kano-input-color-margin, 0.5px);
-    }
-    #tick {
-        opacity: 0;
-        transition: opacity 100ms linear;
-    }
-    #tick.visible {
-        opacity: 1;
-    }
-    .color {
-        width: var(--kano-input-color-size, 32px);
-        height: var(--kano-input-color-size, 32px);
-        margin: var(--kano-input-color-margin, 0.5px);
-        transition: transform 150ms;
-        outline-offset: -1px;
-        box-sizing: border-box;
-    }
-    .color.hover-dark {
-        z-index: 2;
-        outline: 3px solid #fff;
-    }
-    .color.hover-light {
-        z-index: 2;
-        outline: 3px solid #aaa;
-    }
-    iron-icon {
-        --iron-icon-height: calc(var(--kano-input-color-size, 32px) / 1.5);
-        --iron-icon-width: calc(var(--kano-input-color-size, 32px) / 1.5);
-        fill: #fff;
-    }
-    [hidden] {
-        display: none !important;
-    }
+    <style>
+        :host {
+            display: block;
+        }
+        label {
+            @apply --kano-part-editor-label;
+        }
+        kwc-color-picker {
+            width: 100%;
+            height: 100%;
+            @apply --kano-color-input-field;
+        }
+        [hidden] {
+            display: none !important;
+        }
     </style>
     <template>
         <label hidden$="[[!label]]">[[label]]</label>
-        <div id="input-field">
-            <div id="colors" data-animate="450">
-                <div id="select-frame" hidden$="[[_hideSelectFrame(colors.*, idle, firstHighlight)]]">
-                    <iron-icon id="tick" icon="kc-ui:tick"></iron-icon>
-                </div>
-                <template id="palette" is="dom-repeat" items="{{colors}}" as="color">
-                    <div id$="color-[[index]]" class="color" style$="[[_computeColor(color)]]" on-tap="_selectColorOnTap" on-mouseenter="_hoverOn" on-mouseleave="_hoverOff"></div>
-                </template>
-            </div>
-        </div>
+        <kwc-color-picker id="picker" value="{{value}}" colors="[[colors]]" idle="[[idle]]" row-size="[[rowSize]]"></kwc-color-picker>
     </template>
 </dom-module>
 <script type="text/javascript">
     Polymer({
         is: 'kano-input-color',
         behaviors: [
-            Kano.Behaviors.Input,
-            Polymer.IronResizableBehavior
+            Kano.Behaviors.Input
         ],
         properties: {
             colors: {
-                type: Array,
-                value: () => [
-                    '#ffffff',  // White
-                    '#000000',  // Black
-                    '#e95c5a',  // Red
-                    '#ff842a',  // Kano Orange
-                    '#f8eb1e',  // Yellow
-                    '#3caa36',  // Green
-                    '#0e6633',  // Dark Green
-                    '#59b3d0',  // Light Blue
-                    '#2a3080',  // Dark Blue
-                    '#642682',  // Violet
-                    '#db7d92',  // Pink
-                    '#683d12'   // Brown
-                ],
-                observer: '_onColorsSet'
+                type: Array
             },
             value: {
                 type: String,
@@ -139,165 +59,29 @@ Custom property | Description | Default
                 type: Number,
                 value: 12
             },
-            selectedIndex: {
-                type: Number,
-                observer: '_highlightSelected'
-            },
             idle: {
                 type: Boolean,
-                value: false,
-                observer: '_onIdleChanged'
+                value: false
             },
             visible: {
                 type: Boolean,
                 value: false
             }
         },
-        observers: [
-            '_updateSelected(colors.splices)',
-            '_setSize(rowSize, isAttached)'
-        ],
-        listeners: {
-            'iron-resize': '_onResize'
+        attached () {
+            this.colors = this.$.picker.colors;
         },
-        _setSize (rowSize, isAttached) {
-            if (!isAttached) {
-                return;
-            }
-            const colorSize = this.getComputedStyleValue('--kano-input-color-size') || '32px',
-                margin = this.getComputedStyleValue('--kano-input-color-margin') || '0.5px';
-            this.$['input-field'].style.width = `${(parseFloat(colorSize, 10) + 2 *
-                    parseFloat(margin, 10)) * this.rowSize}px`;
-        },
-        addColor (color) {
-            if (this._isHex(color)) {
-                this.splice('colors', this.colors.length, 0, color);
-            }
-        },
-        removeColor (index) {
-            this.splice('colors', index, 1);
-        },
-        _hoverOn (e) {
-            const target = Polymer.dom(e).rootTarget,
-                color = this.$.palette.modelForElement(target).get('color'),
-                index = this.$.palette.indexForElement(target),
-                brightness = this.getBrightness(color),
-                highlightClass = brightness > 210 ? 'hover-light' : 'hover-dark';
-
-            if (index !== this.selectedIndex) {
-                this.toggleClass(highlightClass, true, target);
-            }
-        },
-        _hoverOff (e) {
-            const target = Polymer.dom(e).rootTarget,
-            hoverClass = /hover-dark|hover-light/.exec(target.classList);
-            this.toggleClass(hoverClass, false, target);
-        },
-        _selectColorOnTap (e) {
-            this.selectColor(e.model.index);
+        _onValueChanged (value) {
             this.fire('tracking-event', {
                 name: 'color_selected'
             });
         },
-        selectColor (index) {
-            this.set('value', this.colors[index]);
-            this.fire('change', this.value);
-        },
-        _highlightSelected () {
-            const target = this.$$(`#color-${this.selectedIndex}`);
-            if (!target || !this.visible) {
-                return;
-            }
-            const brightness = this.getBrightness(this.colors[this.selectedIndex]),
-                frame = this.$['select-frame'],
-                currentFrameOffset = {
-                    top: frame.getBoundingClientRect().top -
-                            this.$.colors.getBoundingClientRect().top,
-                    left: frame.getBoundingClientRect().left -
-                            this.$.colors.getBoundingClientRect().left
-                };
-            frame.style['outline-color'] = this.$.tick.style.fill =
-                    brightness > 210 ? '#aaa' : '#fff';
-            frame.animate({
-                transform: [
-                    `translate(${currentFrameOffset.left}px, ${currentFrameOffset.top}px)`,
-                    `translate(${target.offsetLeft}px, ${target.offsetTop}px)`
-                ]
-            }, {
-                duration: (this.firstHighlight && !this.idle) ? 200 : 0,
-                easing: 'ease-out',
-                fill: 'forwards'
-            }).onfinish = () => {
-                this.firstHighlight = true;
-                this.toggleClass('visible', true, this.$.tick);
-            };
-        },
-        _updateSelected () {
-            if (this.isAttached) {
-                //wait until dom-repeat updates
-                Polymer.RenderStatus.afterNextRender(this, () => {
-                    this.selectColor(this.colors.length - 1);
-                });
-            }
-        },
-        _computeColor (color, value) {
-            return `background-color: ${color};`;
-        },
-        _hideSelectFrame () {
-            return !this.colors || !this.colors.length || !this.firstHighlight || this.idle;
-        },
-        getIndexByValue (value) {
-            return Math.max(0, this.colors.indexOf(value));
-        },
-        getBrightness (hexCode) {
-            let r, g, b;
-            hexCode = hexCode.replace('#', '');
-            r = parseInt(hexCode.substr(0, 2),16);
-            g = parseInt(hexCode.substr(2, 2),16);
-            b = parseInt(hexCode.substr(4, 2),16);
-            return ((r * 299) + (g * 587) + (b * 114)) / 1000;
-        },
-        _isHex (value) {
-            return /^#[0-9A-F]{6}$/i.test(value);
-        },
-        _onValueChanged (value) {
-            if (this._isHex(value)) {
-                this.selectedIndex = this.getIndexByValue(value);
-            }
-        },
-        _onColorsSet (colors) {
-            //Colors are set/reset. Find the value's index in the new array.
-            let newIndex = this.getIndexByValue(this.value);
-            if (newIndex !== this.selectedIndex) {
-                this.selectColor(newIndex);
-            }
-        },
-        _onIdleChanged (idle) {
-            if (idle) {
-                this.firstHighlight = false;
-                this.selectedIndex = this.value = null;
-            }
-        },
-        _onResize () {
-            //Iron-resize will call this function on resize, including when element has become hidden/unhidden.
-            //We delay the clientRect reading as the css values will be applied in the next cycle.
-            Polymer.RenderStatus.afterNextRender(this, () => {
-                this.resize();
-            });
-        },
-        resize () {
-            this.visible = this.getBoundingClientRect().width !== 0 &&
-                    this.getBoundingClientRect().height !== 0;
-
-            if (this.visible && !this.idle) {
-                this._highlightSelected();
-            } else {
-                this.firstHighlight = false;
-            }
+        addColor (c) {
+            this.$.picker.addColor(c);
         },
         // Returns the color palette for outside access
         getColorField () {
-            return this.$.colors;
+            return this.$.picker.getColorField();
         }
     });
 </script>
