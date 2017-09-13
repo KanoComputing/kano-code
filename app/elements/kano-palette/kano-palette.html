@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+<link rel="import" href="../../bower_components/kwc-color-wheel/kwc-color-wheel.html">
 <link rel="import" href="../behaviors/kano-media-query-behavior.html">
 <link rel="import" href="../kano-media-query/kano-media-query.html">
 <link rel="import" href="../kano-tooltip/kano-tooltip.html">
@@ -153,6 +154,9 @@ Custom property | Description | Default
             @apply(--shadow-elevation-2dp);
         };
     }
+    kwc-color-wheel {
+        --kwc-color-wheel-magn-border: 1px solid var(--color-dark);
+    }
     </style>
     <template>
         <kano-media-query small-screen="{{smallScreen}}" medium-screen="{{mediumScreen}}" large-screen="{{largeScreen}}">
@@ -181,7 +185,7 @@ Custom property | Description | Default
             </div>
         </div>
         <kano-tooltip id="tooltip" class="tooltip" position="right" target="[[tooltipTarget]]" auto-close opened="{{wheelOpened}}">
-            <kano-color-wheel id="wheel" value="{{penColor}}" on-value-changed="_penColorChanged" render-later></kano-color-wheel>
+            <kwc-color-wheel id="wheel" value="{{penColor}}" on-value-changed="_penColorChanged" render-later></kwc-color-wheel>
         </kano-tooltip>
     </template>
     <script type="text/javascript">

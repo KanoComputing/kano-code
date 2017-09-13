@@ -10,11 +10,11 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
 <link rel="import" href="../../bower_components/web-components/kano-style/kano-style.html">
+<link rel="import" href="../../bower_components/kwc-color-wheel/kwc-color-wheel.html">
 <link rel="import" href="../../scripts/kano/app-modules/lightboard.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
 <link rel="import" href="../inputs/kano-input-text/kano-input-text.html">
 <link rel="import" href="../inputs/kano-input-color/kano-input-color.html">
-<link rel="import" href="../kano-color-wheel/kano-color-wheel.html">
 <link rel="import" href="../kano-icons/parts.html">
 <link rel="import" href="../kano-icons/kc-ui.html">
 <link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
@@ -199,6 +199,9 @@ Custom property | Description | Default
         button.add-frame:disabled {
             opacity: 0.3;
         }
+        kwc-color-wheel {
+            --kwc-color-wheel-magn-border: 1px solid var(--color-dark);
+        }
     </style>
     <template>
         <div class="center-panel">
@@ -236,9 +239,9 @@ Custom property | Description | Default
                                           target="[[tooltipTarget]]"
                                           opened="{{wheelOpened}}"
                                           auto-close>
-                                <kano-color-wheel id="wheel"
+                                <kwc-color-wheel id="wheel"
                                                   on-value-changed="_addCustomColor"
-                                                  render-later></kano-color-wheel>
+                                                  render-later></kwc-color-wheel>
                             </kano-tooltip>
                             <button id="custom-colour-add" type="button" on-tap="_openWheel">
                                 <iron-icon class="add-icon" icon="kc-ui:add"></iron-icon>
