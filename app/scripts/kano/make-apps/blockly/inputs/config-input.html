@@ -38,7 +38,6 @@
             r: 1
         }, this._container);
         this.sourceBlock_.getSvgRoot().appendChild(this._container);
-        this.setValue(this.getValue());
         Blockly.bindEvent_(this._container, 'mousedown', this, this._onMouseDown);
     };
 
