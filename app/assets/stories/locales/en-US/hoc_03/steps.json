@@ -2,7 +2,7 @@
     "steps": [
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "Time to code some rainbow paint!<br />Start by opening the draw tray."
             },
             "beacon": {
                 "target": {
@@ -17,7 +17,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the block to set your background color …"
             },
             "beacon": {
                 "target": {
@@ -35,7 +35,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it inside you <em>when app starts</em> event."
             },
             "beacon": {
                 "target": {
@@ -66,7 +66,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>#212121</span></kano-value-preview>"
+                "text": "Click the color block <kano-value-preview><span>#ffffff</span></kano-value-preview> and pick out a color for your background (your rainbow paint will show up best on a dark color)."
             },
             "beacon": {
                 "target": {
@@ -82,15 +82,14 @@
                         "target": {
                             "shadow": "COLOR",
                             "id": "block_1"
-                        },
-                        "value": "#212121"
+                        }
                     }
                 }
             }
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "In this challenge, you’re going to use a <em>variable</em>. You can think of variables as tiny buckets for storing a piece of data while the app is running. Open the tray."
             },
             "beacon": {
                 "target": {
@@ -105,7 +104,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block sets the value of the variable (the data its going to keep for you). Grab it!"
             },
             "beacon": {
                 "target": {
@@ -123,7 +122,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it beneath this block."
             },
             "beacon": {
                 "target": {
@@ -155,7 +154,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>colorCount</span></kano-value-preview>"
+                "text": "Change the drop down from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>colorCount</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -177,7 +176,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray again."
             },
             "beacon": {
                 "target": {
@@ -192,7 +191,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Let’s use this simple little number block to set the <em>value</em> of our variable.<br>Drag it onto your code space …"
             },
             "beacon": {
                 "target": {
@@ -210,7 +209,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it to the <em>set colorCount to</em> block."
             },
             "beacon": {
                 "target": {
@@ -244,7 +243,17 @@
         },
         {
             "banner": {
-                "text": "Open the Control tray"
+                "text": "The line of code you just created is really important! It creates a variable called \"colorCount\" and puts one little piece of data inside it: the number 0.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to add a code loop. Open the events tray."
             },
             "beacon": {
                 "target": {
@@ -259,7 +268,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Drag <em>Every 1 second</em> block into your code space …"
             },
             "beacon": {
                 "target": {
@@ -277,7 +286,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it under your variable code."
             },
             "beacon": {
                 "target": {
@@ -309,7 +318,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>"
+                "text": "Change the loop to run every <kano-value-preview><span>frame</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -331,7 +340,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "In the loop, you’re going to change the value of your variable every time the code runs (<em>every 1 frame</em>). Open the Math tray."
             },
             "beacon": {
                 "target": {
@@ -346,7 +355,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block changes the value of your variable. Grab it …"
             },
             "beacon": {
                 "target": {
@@ -364,7 +373,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it inside your code loop."
             },
             "beacon": {
                 "target": {
@@ -398,7 +407,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>colorCount</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>colorCount</span></kano-value-preview> so you the right variable is being updated."
             },
             "beacon": {
                 "target": {
@@ -420,7 +429,17 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "Now the value stored in your <em>colorCount</em> variable is increased by one <em>every frame</em>.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the draw tray …"
             },
             "beacon": {
                 "target": {
@@ -435,7 +454,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "… and grab the <em>fill color</em> block."
             },
             "beacon": {
                 "target": {
@@ -453,7 +472,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it inside the loop."
             },
             "beacon": {
                 "target": {
@@ -485,7 +504,7 @@
         },
         {
             "banner": {
-                "text": "Open the Color tray"
+                "text": "Now to set the color. Open the Color tray."
             },
             "beacon": {
                 "target": {
@@ -500,7 +519,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the block to create your own colors."
             },
             "beacon": {
                 "target": {
@@ -518,7 +537,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>fill color</em> block."
             },
             "beacon": {
                 "target": {
@@ -552,7 +571,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>rgb</span></kano-value-preview> to <kano-value-preview><span>hsv</span></kano-value-preview>"
+                "text": "Currently, this block is set to RGB (Red, Green, Blue). To make a rainbow brush, set it to <kano-value-preview><span>HSV</span></kano-value-preview> (Hue, Saturation, Value)."
             },
             "beacon": {
                 "target": {
@@ -574,7 +593,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray."
             },
             "beacon": {
                 "target": {
@@ -589,7 +608,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block <em>returns</em> the value of your variable. It’s a way of getting back the value you stored in the variable."
             },
             "beacon": {
                 "target": {
@@ -663,7 +682,27 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "Read through your code. What do you think is happening?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Yup. Every frame, the value stored in <em>colorCount</em> goes up by one. Then we set the drawing hue using that value. Now let’s draw with that color.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the draw tray."
             },
             "beacon": {
                 "target": {
@@ -678,7 +717,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>move to</em> block …"
             },
             "beacon": {
                 "target": {
@@ -696,7 +735,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it under the color block."
             },
             "beacon": {
                 "target": {
@@ -742,7 +781,7 @@
                 {
                     "location": "parts-panel",
                     "position": "top",
-                    "text": "Click on <b>Mouse</b> to add it to your app"
+                    "text": "Click on <b>Mouse</b> to add it to your app."
                 }
             ],
             "beacon": {
@@ -757,7 +796,7 @@
         },
         {
             "banner": {
-                "text": "Open the Mouse tray"
+                "text": "Open the Mouse tray."
             },
             "beacon": {
                 "target": {
@@ -776,7 +815,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>Mouse X position</em> block."
             },
             "beacon": {
                 "target": {
@@ -798,7 +837,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>move to</em> x input."
             },
             "beacon": {
                 "target": {
@@ -832,7 +871,7 @@
         },
         {
             "banner": {
-                "text": "Open the Mouse tray"
+                "text": "Now do the same for the mouse Y position."
             },
             "beacon": {
                 "target": {
@@ -851,7 +890,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>Mouse Y position</em> block …"
             },
             "beacon": {
                 "target": {
@@ -873,7 +912,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it to the <em>move to</em> y input."
             },
             "beacon": {
                 "target": {
@@ -907,7 +946,7 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "You’ve moved the paint brush. Now to draw something. Open the draw tray."
             },
             "beacon": {
                 "target": {
@@ -922,7 +961,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the ellipse block."
             },
             "beacon": {
                 "target": {
@@ -940,7 +979,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it under the move to block."
             },
             "beacon": {
                 "target": {
@@ -972,7 +1011,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>5</span></kano-value-preview> to <kano-value-preview><span>25</span></kano-value-preview>"
+                "text": "Change the ellipse height from <kano-value-preview><span>5</span></kano-value-preview> to <kano-value-preview><span>25</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -996,7 +1035,7 @@
         },
         {
             "banner": {
-                "text": "Try it out by moving your mouse over the canvas. Do you see the colors cycle?",
+                "text": "Try it out by moving your mouse over the canvas. Do you see the colors cycle to make rainbow paint?",
                 "next_button": true
             },
             "beacon": {
@@ -1016,7 +1055,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Open the Math tray."
             },
             "beacon": {
                 "target": {
@@ -1031,7 +1070,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the random number block."
             },
             "beacon": {
                 "target": {
@@ -1049,7 +1088,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>ellipse</em> width input."
             },
             "beacon": {
                 "target": {
@@ -1131,7 +1170,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "One more time. Open the Math tray again."
             },
             "beacon": {
                 "target": {
@@ -1146,7 +1185,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Drag the <em>random number</em> block onto your code space."
             },
             "beacon": {
                 "target": {
@@ -1164,7 +1203,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>ellipse</em> height input."
             },
             "beacon": {
                 "target": {
