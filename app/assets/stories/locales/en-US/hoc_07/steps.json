@@ -1,0 +1,3578 @@
+{
+    "steps": [
+        {
+            "banner": {
+                "text": "OK! Final challenge. We’re going to put everything together to make a paint splatter based on how fast your move the mouse.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "We’re using the mouse again. Start by clicking 'Add Parts'."
+            },
+            "beacon": {
+                "target": "add-part-button"
+            },
+            "validation": {
+                "open-parts": true
+            }
+        },
+        {
+            "tooltips": [
+                {
+                    "location": "parts-panel",
+                    "position": "top",
+                    "text": "Click on <b>Mouse</b> to add it to your app"
+                }
+            ],
+            "beacon": {
+                "target": "parts-panel-mouse"
+            },
+            "validation": {
+                "add-part": {
+                    "type": "mouse",
+                    "id": "part_0"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open this tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#set_background_color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#set_background_color",
+                        "id": "block_1"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "rawId": "default_part_event_id",
+                            "inputName": "DO"
+                        },
+                        "target": "block_1"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "rawId": "default_part_event_id"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Let’s set the mouse cursor to a paint brush. Open the mouse tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>set cursor</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_set_cursor"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_set_cursor",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it up."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "^pGkg(omTdN[-xYGLS9y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_1",
+                            "rawId": "^pGkg(omTdN[-xYGLS9y"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_1",
+                        "rawId": "^pGkg(omTdN[-xYGLS9y"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "To make the cursor into a little paintbrush, change <kano-value-preview><span>animals</span></kano-value-preview> to <kano-value-preview><span>other</span></kano-value-preview> …"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "CURSOR",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "CURSOR",
+                            "id": "block_2"
+                        },
+                        "value": "other"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "… and change <kano-value-preview><span>Avocado</span></kano-value-preview> to <kano-value-preview><span>paintbrush</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "CURSOR",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "CURSOR",
+                            "id": "block_2"
+                        },
+                        "value": "other-paintbrush"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Control tray to find a loop."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>Every 1 second</em> loop."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "every_x_seconds"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "every_x_seconds",
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it up."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "VsJ6f1FM|vH}_j@/8Xy7"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_2",
+                            "rawId": "VsJ6f1FM|vH}_j@/8Xy7"
+                        },
+                        "target": "block_3"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_2",
+                        "rawId": "VsJ6f1FM|vH}_j@/8Xy7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "To make the loop run fast, change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_3"
+                        },
+                        "value": "frames"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now for the paint color. Open the Draw tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the <em>fill color</em> block into your code …"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#color",
+                        "id": "block_4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "… and connect it up inside the loop."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "H5p/M{b13*yZ_hzguer."
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3",
+                            "rawId": "H5p/M{b13*yZ_hzguer.",
+                            "inputName": "DO"
+                        },
+                        "target": "block_4"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "H5p/M{b13*yZ_hzguer."
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "Click the <em>fill color</em> color picker and select a bright color. Yellow works really well!"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_4"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_4"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "OK. The next bit uses some really clever maths. In order to know how fast the mouse is moving, we need to do some <strong>trigonometry</strong>. Ready?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>set</em> variable block …"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "… and connect it inside your loop."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "VN#uoZyhJ%fIa~@3d)!u"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_4",
+                            "rawId": "VN#uoZyhJ%fIa~@3d)!u"
+                        },
+                        "target": "block_5"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_4",
+                        "rawId": "VN#uoZyhJ%fIa~@3d)!u"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>distance</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_5"
+                        },
+                        "value": "distance"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>square root</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_single"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_single",
+                        "id": "block_6"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to your variable."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": ";]6u6J$t5}%f!6{l${r+"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": ";]6u6J$t5}%f!6{l${r+",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_6"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": ";]6u6J$t5}%f!6{l${r+"
+                    }
+                },
+                "target": "VALUE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This block lets you add two numbers together. Grab it!"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to your <em>square root</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "B{5p%(j.0CM@iBd.CEI$"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_6",
+                            "rawId": "B{5p%(j.0CM@iBd.CEI$",
+                            "inputName": "NUM"
+                        },
+                        "target": "block_7"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_6",
+                        "rawId": "B{5p%(j.0CM@iBd.CEI$"
+                    }
+                },
+                "target": "NUM"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab <em>another</em> of those adding blocks."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_8"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This bit’s tricky. Connect the block inside the first input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "aq*n73I^P*z=vER{H]02"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "aq*n73I^P*z=vER{H]02",
+                            "inputName": "A"
+                        },
+                        "target": "block_8"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "aq*n73I^P*z=vER{H]02"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>+</span></kano-value-preview> to <kano-value-preview><span>× multiply</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_8"
+                        },
+                        "value": "MULTIPLY"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now open the Mouse tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>X speed</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_speed_x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_speed_x",
+                        "id": "block_9"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the multiplication block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "clwZ`.()VW[RRb{8qN/J"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_8",
+                            "rawId": "clwZ`.()VW[RRb{8qN/J",
+                            "inputName": "A"
+                        },
+                        "target": "block_9"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "clwZ`.()VW[RRb{8qN/J"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Mouse tray to get another of those blocks."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab another <em>X speed</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_speed_x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_speed_x",
+                        "id": "block_10"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the other input. (This will multiply the mouse X position by itself)."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "clwZ`.()VW[RRb{8qN/J"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_8",
+                            "rawId": "clwZ`.()VW[RRb{8qN/J",
+                            "inputName": "B"
+                        },
+                        "target": "block_10"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_8",
+                        "rawId": "clwZ`.()VW[RRb{8qN/J"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray train again!"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab <em>another</em> of these math blocks."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_11"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the other input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "aq*n73I^P*z=vER{H]02"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_7",
+                            "rawId": "aq*n73I^P*z=vER{H]02",
+                            "inputName": "B"
+                        },
+                        "target": "block_11"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_7",
+                        "rawId": "aq*n73I^P*z=vER{H]02"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>+</span></kano-value-preview> to <kano-value-preview><span>× multiply</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_11"
+                        },
+                        "value": "MULTIPLY"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Mouse tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "This time, grab the <em>Y speed</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_speed_y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_speed_y",
+                        "id": "block_12"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Plug it into your second multiplication block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "4sV(*N]zd]50~ahjAzmn"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_11",
+                            "rawId": "4sV(*N]zd]50~ahjAzmn",
+                            "inputName": "A"
+                        },
+                        "target": "block_12"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "4sV(*N]zd]50~ahjAzmn"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Last bit of the trigonometry equation, open the mouse tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab another <em>Y speed</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_speed_y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_speed_y",
+                        "id": "block_13"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Plug it into the last gap."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "4sV(*N]zd]50~ahjAzmn"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_11",
+                            "rawId": "4sV(*N]zd]50~ahjAzmn",
+                            "inputName": "B"
+                        },
+                        "target": "block_13"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_11",
+                        "rawId": "4sV(*N]zd]50~ahjAzmn"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "OK! That’s a long line of code. It works out how far the mouse has travelled in the last frame and saves it in the <em>distance</em> variable.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Now to use that distance! Open the logic tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "logic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "logic"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the <em>if</em> block to your code."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "controls_if"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "controls_if",
+                        "id": "block_14"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it under your trigonometry blocks."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": ";]6u6J$t5}%f!6{l${r+"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_5",
+                            "rawId": ";]6u6J$t5}%f!6{l${r+"
+                        },
+                        "target": "block_14"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_5",
+                        "rawId": ";]6u6J$t5}%f!6{l${r+"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Logic tray again …"
+            },
+            "beacon": {
+                "target": {
+                    "category": "logic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "logic"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "… and grab this block, which is called a <em>comparator</em>."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "logic_compare"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "logic_compare",
+                        "id": "block_15"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the if block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "|mVkw?v})O)Qht`wGit("
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_14",
+                            "rawId": "|mVkw?v})O)Qht`wGit(",
+                            "inputName": "IF0"
+                        },
+                        "target": "block_15"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "|mVkw?v})O)Qht`wGit("
+                    }
+                },
+                "target": "IF0"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>=</span></kano-value-preview> to <kano-value-preview><span>> greater than</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_15"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_15"
+                        },
+                        "value": "GT"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab this block. It returns the little piece of data stored in the variable."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_16"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to the first space in your <em>if</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_15",
+                        "rawId": "4c.7qWdp2c7G`rmK5f7l"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_15",
+                            "rawId": "4c.7qWdp2c7G`rmK5f7l",
+                            "inputName": "A"
+                        },
+                        "target": "block_16"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_15",
+                        "rawId": "4c.7qWdp2c7G`rmK5f7l"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change the variable block from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>distance</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_16"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_16"
+                        },
+                        "value": "distance"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray gain."
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Bring in one of these number blocks."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_17"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it into the second gap of the <em>if</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_15",
+                        "rawId": "4c.7qWdp2c7G`rmK5f7l"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_15",
+                            "rawId": "4c.7qWdp2c7G`rmK5f7l",
+                            "inputName": "B"
+                        },
+                        "target": "block_17"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_15",
+                        "rawId": "4c.7qWdp2c7G`rmK5f7l"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>15</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_17"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_17"
+                        },
+                        "value": "15"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Now this line of code checks to see <em>if</em> the value of your distance variable is <em>greater than</em> 15. When it is, the next code runs.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Let’s write the code that will run when the <em>if</em> statement is true. Open the Control tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "control"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "control"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the repeat block into your code."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "repeat_x_times"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "repeat_x_times",
+                        "id": "block_18"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside your <em>if</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "|mVkw?v})O)Qht`wGit("
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_14",
+                            "rawId": "|mVkw?v})O)Qht`wGit(",
+                            "inputName": "DO0"
+                        },
+                        "target": "block_18"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_14",
+                        "rawId": "|mVkw?v})O)Qht`wGit("
+                    }
+                },
+                "target": "DO0"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>15</span></kano-value-preview>."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "N",
+                        "id": "block_18"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "N",
+                            "id": "block_18"
+                        },
+                        "value": "15"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the draw tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the <em>move to</em> block into your code."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move_to"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move_to",
+                        "id": "block_19"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it inside the repeat loop."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_18",
+                        "rawId": "5mLaDO;NSJecGJiru,j5"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_18",
+                            "rawId": "5mLaDO;NSJecGJiru,j5",
+                            "inputName": "DO"
+                        },
+                        "target": "block_19"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_18",
+                        "rawId": "5mLaDO;NSJecGJiru,j5"
+                    }
+                },
+                "target": "DO"
+            }
+        },
+        {
+            "banner": {
+                "text": "You’re going to move the drawing pen to the mouse cursor. Open the mouse tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the <em>X position</em> block onto your code space."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_x",
+                        "id": "block_20"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Plug it into the <em>move to</em> X."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_19",
+                        "rawId": "4*!~n!-WS:JB;kL9c)Ys"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_19",
+                            "rawId": "4*!~n!-WS:JB;kL9c)Ys",
+                            "inputName": "X"
+                        },
+                        "target": "block_20"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_19",
+                        "rawId": "4*!~n!-WS:JB;kL9c)Ys"
+                    }
+                },
+                "target": "X"
+            }
+        },
+        {
+            "banner": {
+                "text": "Now for the Y position. Open the Mouse tray again."
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>Y position</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_y",
+                        "id": "block_21"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Plug it into the <em>move to</em> Y input."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_19",
+                        "rawId": "4*!~n!-WS:JB;kL9c)Ys"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_19",
+                            "rawId": "4*!~n!-WS:JB;kL9c)Ys",
+                            "inputName": "Y"
+                        },
+                        "target": "block_21"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_19",
+                        "rawId": "4*!~n!-WS:JB;kL9c)Ys"
+                    }
+                },
+                "target": "Y"
+            }
+        },
+        {
+            "banner": {
+                "text": "You’ve moved set the drawing pen position. Here’s a cool trick though: move it again by a random number to put it in a different place every time the <em>repeat</em> block loops.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_set"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_set",
+                        "id": "block_22"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_19",
+                        "rawId": "4*!~n!-WS:JB;kL9c)Ys"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_19",
+                            "rawId": "4*!~n!-WS:JB;kL9c)Ys"
+                        },
+                        "target": "block_22"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_19",
+                        "rawId": "4*!~n!-WS:JB;kL9c)Ys"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>randomness</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_22"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_22"
+                        },
+                        "value": "randomness"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_23"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_22",
+                        "rawId": "_u3^vQ1W+iv629|g||$V"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_22",
+                            "rawId": "_u3^vQ1W+iv629|g||$V",
+                            "inputName": "VALUE"
+                        },
+                        "target": "block_23"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_22",
+                        "rawId": "_u3^vQ1W+iv629|g||$V"
+                    }
+                },
+                "target": "VALUE"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>25</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_23"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_23"
+                        },
+                        "value": "25"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open this tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move",
+                        "id": "block_24"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_22",
+                        "rawId": "_u3^vQ1W+iv629|g||$V"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_22",
+                            "rawId": "_u3^vQ1W+iv629|g||$V"
+                        },
+                        "target": "block_24"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_22",
+                        "rawId": "_u3^vQ1W+iv629|g||$V"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_25"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_24",
+                        "rawId": "L[#OJZXCd+5N8c;GgTc!"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_24",
+                            "rawId": "L[#OJZXCd+5N8c;GgTc!",
+                            "inputName": "X"
+                        },
+                        "target": "block_25"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_24",
+                        "rawId": "L[#OJZXCd+5N8c;GgTc!"
+                    }
+                },
+                "target": "X"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>ADD</span></kano-value-preview> to <kano-value-preview><span>/</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_25"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_25"
+                        },
+                        "value": "DIVIDE"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Mouse tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_speed_x"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_speed_x",
+                        "id": "block_26"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_25",
+                        "rawId": "c5N4:5zA=Nchv$o#mN|`"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_25",
+                            "rawId": "c5N4:5zA=Nchv$o#mN|`",
+                            "inputName": "A"
+                        },
+                        "target": "block_26"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_25",
+                        "rawId": "c5N4:5zA=Nchv$o#mN|`"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_27"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_25",
+                        "rawId": "c5N4:5zA=Nchv$o#mN|`"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_25",
+                            "rawId": "c5N4:5zA=Nchv$o#mN|`",
+                            "inputName": "B"
+                        },
+                        "target": "block_27"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_25",
+                        "rawId": "c5N4:5zA=Nchv$o#mN|`"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>ADD</span></kano-value-preview> to <kano-value-preview><span>/</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_27"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_27"
+                        },
+                        "value": "DIVIDE"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_28"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_27",
+                        "rawId": "-!|B#^V)TMfF#ZNh`M$o"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_27",
+                            "rawId": "-!|B#^V)TMfF#ZNh`M$o",
+                            "inputName": "A"
+                        },
+                        "target": "block_28"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_27",
+                        "rawId": "-!|B#^V)TMfF#ZNh`M$o"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>randomness</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_28"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_28"
+                        },
+                        "value": "randomness"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_29"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_27",
+                        "rawId": "-!|B#^V)TMfF#ZNh`M$o"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_27",
+                            "rawId": "-!|B#^V)TMfF#ZNh`M$o",
+                            "inputName": "B"
+                        },
+                        "target": "block_29"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_27",
+                        "rawId": "-!|B#^V)TMfF#ZNh`M$o"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>7</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_29"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_29"
+                        },
+                        "value": "7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_30"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_24",
+                        "rawId": "L[#OJZXCd+5N8c;GgTc!"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_24",
+                            "rawId": "L[#OJZXCd+5N8c;GgTc!",
+                            "inputName": "Y"
+                        },
+                        "target": "block_30"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_24",
+                        "rawId": "L[#OJZXCd+5N8c;GgTc!"
+                    }
+                },
+                "target": "Y"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>ADD</span></kano-value-preview> to <kano-value-preview><span>/</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_30"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_30"
+                        },
+                        "value": "DIVIDE"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Mouse tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": {
+                        "part": "part_0"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": {
+                        "part": "part_0"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": {
+                        "part": "part_0",
+                        "type": "mouse_speed_y"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "target": "part_0",
+                        "type": "mouse_speed_y",
+                        "id": "block_31"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_30",
+                        "rawId": "]Gn@IBiCqoutmy1MvRWr"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_30",
+                            "rawId": "]Gn@IBiCqoutmy1MvRWr",
+                            "inputName": "A"
+                        },
+                        "target": "block_31"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_30",
+                        "rawId": "]Gn@IBiCqoutmy1MvRWr"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_32"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_30",
+                        "rawId": "]Gn@IBiCqoutmy1MvRWr"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_30",
+                            "rawId": "]Gn@IBiCqoutmy1MvRWr",
+                            "inputName": "B"
+                        },
+                        "target": "block_32"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_30",
+                        "rawId": "]Gn@IBiCqoutmy1MvRWr"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>ADD</span></kano-value-preview> to <kano-value-preview><span>/</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_32"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_32"
+                        },
+                        "value": "DIVIDE"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_33"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_32",
+                        "rawId": "9H#$ePpctmeL~]f,dzd+"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_32",
+                            "rawId": "9H#$ePpctmeL~]f,dzd+",
+                            "inputName": "A"
+                        },
+                        "target": "block_33"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_32",
+                        "rawId": "9H#$ePpctmeL~]f,dzd+"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>randomness</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_33"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_33"
+                        },
+                        "value": "randomness"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_34"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_32",
+                        "rawId": "9H#$ePpctmeL~]f,dzd+"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_32",
+                            "rawId": "9H#$ePpctmeL~]f,dzd+",
+                            "inputName": "B"
+                        },
+                        "target": "block_34"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_32",
+                        "rawId": "9H#$ePpctmeL~]f,dzd+"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>7</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_34"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_34"
+                        },
+                        "value": "7"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open this tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#move"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#move",
+                        "id": "block_35"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_24",
+                        "rawId": "L[#OJZXCd+5N8c;GgTc!"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_24",
+                            "rawId": "L[#OJZXCd+5N8c;GgTc!"
+                        },
+                        "target": "block_35"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_24",
+                        "rawId": "L[#OJZXCd+5N8c;GgTc!"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_36"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_35",
+                        "rawId": "z=o]dR;X1$f51^!E$q/K"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_35",
+                            "rawId": "z=o]dR;X1$f51^!E$q/K",
+                            "inputName": "X"
+                        },
+                        "target": "block_36"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_35",
+                        "rawId": "z=o]dR;X1$f51^!E$q/K"
+                    }
+                },
+                "target": "X"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>-5</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MIN",
+                        "id": "block_36"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MIN",
+                            "id": "block_36"
+                        },
+                        "value": "-5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_36"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_36"
+                        },
+                        "value": "5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_random"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_random",
+                        "id": "block_37"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_35",
+                        "rawId": "z=o]dR;X1$f51^!E$q/K"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_35",
+                            "rawId": "z=o]dR;X1$f51^!E$q/K",
+                            "inputName": "Y"
+                        },
+                        "target": "block_37"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_35",
+                        "rawId": "z=o]dR;X1$f51^!E$q/K"
+                    }
+                },
+                "target": "Y"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>-5</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MIN",
+                        "id": "block_37"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MIN",
+                            "id": "block_37"
+                        },
+                        "value": "-5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>5</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "MAX",
+                        "id": "block_37"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "MAX",
+                            "id": "block_37"
+                        },
+                        "value": "5"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open this tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#circle"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#circle",
+                        "id": "block_38"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_35",
+                        "rawId": "z=o]dR;X1$f51^!E$q/K"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_35",
+                            "rawId": "z=o]dR;X1$f51^!E$q/K"
+                        },
+                        "target": "block_38"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_35",
+                        "rawId": "z=o]dR;X1$f51^!E$q/K"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Math tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "math"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "math"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_arithmetic"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_arithmetic",
+                        "id": "block_39"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_38",
+                        "rawId": "tgg}zHHnm@Y.i4ob}5eN"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_38",
+                            "rawId": "tgg}zHHnm@Y.i4ob}5eN",
+                            "inputName": "RADIUS"
+                        },
+                        "target": "block_39"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_38",
+                        "rawId": "tgg}zHHnm@Y.i4ob}5eN"
+                    }
+                },
+                "target": "RADIUS"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>ADD</span></kano-value-preview> to <kano-value-preview><span>/</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_39"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_39"
+                        },
+                        "value": "DIVIDE"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "variables_get"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "variables_get",
+                        "id": "block_40"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_39",
+                        "rawId": ",r/oUv6x2`m~jMHU+x`?"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_39",
+                            "rawId": ",r/oUv6x2`m~jMHU+x`?",
+                            "inputName": "A"
+                        },
+                        "target": "block_40"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_39",
+                        "rawId": ",r/oUv6x2`m~jMHU+x`?"
+                    }
+                },
+                "target": "A"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>randomness</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_40"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_40"
+                        },
+                        "value": "randomness"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Variables tray"
+            },
+            "beacon": {
+                "target": {
+                    "category": "variables"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "variables"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Drag the block onto your code space"
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "math_number"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "math_number",
+                        "id": "block_41"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it to this block"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_39",
+                        "rawId": ",r/oUv6x2`m~jMHU+x`?"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_39",
+                            "rawId": ",r/oUv6x2`m~jMHU+x`?",
+                            "inputName": "B"
+                        },
+                        "target": "block_41"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_39",
+                        "rawId": ",r/oUv6x2`m~jMHU+x`?"
+                    }
+                },
+                "target": "B"
+            }
+        },
+        {
+            "banner": {
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>4</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_41"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "id": "block_41"
+                        },
+                        "value": "4"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "You can now test the app",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        }
+    ],
+    "parts": [
+        "mouse"
+    ],
+    "modules": [
+        "events",
+        "control",
+        "variables",
+        "math",
+        "logic"
+    ],
+    "variables": [
+        "distance",
+        "randomness"
+    ],
+    "filterBlocks": {
+        "events": [
+            "part_event"
+        ],
+        "normal": [
+            "set_background_color",
+            "color",
+            "move_to",
+            "move",
+            "circle"
+        ],
+        "mouse": [
+            "mouse_set_cursor",
+            "mouse_speed_x",
+            "mouse_speed_y",
+            "mouse_x",
+            "mouse_y"
+        ],
+        "control": [
+            "every_x_seconds",
+            "repeat_x_times"
+        ],
+        "variables": [
+            "variables_set",
+            "variables_get",
+            "math_number"
+        ],
+        "math": [
+            "math_single",
+            "math_arithmetic",
+            "math_random"
+        ],
+        "logic": [
+            "controls_if",
+            "logic_compare"
+        ]
+    },
+    "mode": "normal"
+}
