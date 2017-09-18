@@ -1,8 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../../bower_components/web-components/kano-alert/kano-alert.html">
 <link rel="import" href="../../scripts/kano/make-apps/utils.html">
 <link rel="import" href="../../scripts/kano/util/router.html">
+<link rel="import" href="/elements/kano-animation/animations/from-big-animation.html">
 <script src="../../scripts/util/client.js"></script>
 <script src="../../bower_components/page/page.js"></script>
 
@@ -43,6 +45,13 @@
           opacity: 1;
       }
     </style>
+    <kano-alert id="mobile-info-dialog"
+                heading="Kano Code is best with lots of room to code."
+                text="We recommend using a tablet, laptop, or desktop."
+                entry-animation="from-big-animation"
+                with-backdrop>
+        <button class="kano-alert-primary" dialog-confirm slot="actions">Got it</button>
+    </kano-alert>
     <iron-lazy-pages selected="[[page]]" attr-for-selected="name" loading="{{loading}}" restamp>
         <template is="iron-lazy-page" name="story" path="/views/kano-view-story/kano-view-story.html">
             <kano-view-story context="[[context]]" user="{{user}}" show-save-prompt={{leaveAlert}}></kano-view-story>
@@ -136,10 +145,17 @@
       _computeLoadingClass (loading) {
           return loading ? 'loading' : '';
       },
+      _isMobile () {
+          let viewportWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+          return viewportWidth < 600;
+      },
       _loadingChanged (newValue, oldValue) {
           // When loading goes from true to false, trigger an event to notify a page load end
           if (oldValue === true && newValue === false) {
               this.fire('kano-routing-load-finish');
+              if (this._isMobile()) {
+                  this.$['mobile-info-dialog'].open();
+              }
           }
       },
       _onLeaveAlertChanged (alert) {

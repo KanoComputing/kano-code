@@ -32,67 +32,26 @@
         }
     };
 
-    MobileAlert.hideSplash = function () {
-        var splash = document.getElementById('splash');
-        splash.style.opacity = 0;
-        setTimeout(function () {
-            clearTimeout(window.splashTimeoutId);
-            splash.parentNode.removeChild(splash);
-        }, 400);
-    };
-
-    MobileAlert.showAlertBox = function (showed) {
-        var alertBox = document.getElementById('alert'),
-            blocks = document.getElementById('blocks');
-        if (showed) {
-            blocks.parentNode.removeChild(blocks);
-            alertBox.style.display = "flex";
-        } else {
-            alertBox.style.display = "none";
-        }
-    }
-
-    MobileAlert.showContinueButton = function () {
-        var button = document.getElementById('close-btn');
-        button.style.display = 'inline-block';
-        button.addEventListener('click', function () {
-            MobileAlert.hideSplash();
-        });
-    };
-
-    MobileAlert.isMobile = function () {
-        var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-        return width < 600;
-    };
-
-    MobileAlert.show = function (showButton) {
-        if (MobileAlert.isMobile()) {
-            if (!showButton) {
-                MobileAlert.showAlertBox(true);
-            } else {
-                MobileAlert.showContinueButton();
-            }
-        } else {
-            if (showButton) {
-                MobileAlert.hideSplash();
-            }
-        }
-    };
-
-    MobileAlert.show(false);
-
     /**
      * Makes the transition between the splash and the app itself
      * Makes sure that the splash is displayed at least 1.5s to prevent flashing
      */
     Bootstrap.onFirstPageLoaded = function () {
-        var duration = new Date() - Bootstrap.started;
+        var duration = new Date() - Bootstrap.started,
+            splash = document.getElementById('splash');
         if (duration < 1500) {
             Bootstrap.timeout = setTimeout(Bootstrap.onFirstPageLoaded, 1500 - duration);
             return;
         }
         document.removeEventListener('kano-routing-load-finish', Bootstrap.onFirstPageLoaded);
-        MobileAlert.show(true);
+
+        // Hide and delete splash animation
+        splash.style.opacity = 0;
+        setTimeout(function () {
+            clearTimeout(window.splashTimeoutId);
+            splash.parentNode.removeChild(splash);
+        }, 400);
+
         Bootstrap.loaded = true;
     }
 
