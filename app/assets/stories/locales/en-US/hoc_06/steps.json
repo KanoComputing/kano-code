@@ -2,7 +2,7 @@
     "steps": [
         {
             "banner": {
-                "text": "To build the interface of the app, we need parts<br>Click here to see all the parts."
+                "text": "This time we need two parts for our app.<br>Click 'Add Parts' on the right."
             },
             "beacon": {
                 "target": "add-part-button"
@@ -31,7 +31,7 @@
         },
         {
             "banner": {
-                "text": "We'll start by adding parts to our app.<br>Click here to see all the parts."
+                "text": "A sticker has been added to your canvas! Click 'Add Parts' again to add the mouse part."
             },
             "beacon": {
                 "target": "add-part-button"
@@ -45,7 +45,7 @@
                 {
                     "location": "parts-panel",
                     "position": "top",
-                    "text": "Click on <b>Mouse</b> to add it to your app"
+                    "text": "Click on <b>Mouse</b> to add it to your app."
                 }
             ],
             "beacon": {
@@ -60,57 +60,7 @@
         },
         {
             "banner": {
-                "text": "Open the Events tray"
-            },
-            "beacon": {
-                "target": {
-                    "category": "events"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "open-flyout": "events"
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Drag the block onto your code space"
-            },
-            "beacon": {
-                "target": {
-                    "flyout_block": "part_event"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "create": {
-                        "type": "part_event",
-                        "id": "block_0"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Drop the block anywhere on your code space"
-            },
-            "beacon": {
-                "target": "blocks-panel",
-                "offset": 300,
-                "angle": 200
-            },
-            "validation": {
-                "blockly": {
-                    "drop": {
-                        "target": "block_0"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Open the Sticker tray"
+                "text": "Now let’s add some code to style the sticker. Open the sticker tray."
             },
             "beacon": {
                 "target": {
@@ -129,7 +79,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Drag the <em>set sticker</em> block into your code."
             },
             "beacon": {
                 "target": {
@@ -151,12 +101,11 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it inside the <em>app starts</em> event."
             },
             "beacon": {
                 "target": {
                     "block": {
-                        "id": "block_0",
                         "rawId": "default_part_event_id"
                     }
                 }
@@ -165,7 +114,6 @@
                 "blockly": {
                     "connect": {
                         "parent": {
-                            "id": "block_0",
                             "rawId": "default_part_event_id",
                             "inputName": "DO"
                         },
@@ -176,7 +124,6 @@
             "phantom_block": {
                 "location": {
                     "block": {
-                        "id": "block_0",
                         "rawId": "default_part_event_id"
                     }
                 },
@@ -185,7 +132,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>music</span></kano-value-preview>"
+                "text": "Change the first input from <kano-value-preview><span>animals</span></kano-value-preview> to <kano-value-preview><span>music</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -209,7 +156,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>music-trumpet</span></kano-value-preview>"
+                "text": "Change the second input from <kano-value-preview><span>Bell</span></kano-value-preview> to <kano-value-preview><span>Trumpet</span></kano-value-preview>"
             },
             "beacon": {
                 "target": {
@@ -233,96 +180,7 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
-            },
-            "beacon": {
-                "target": {
-                    "category": "normal"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "open-flyout": "normal"
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Drag the block onto your code space"
-            },
-            "beacon": {
-                "target": {
-                    "flyout_block": "normal#color"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "create": {
-                        "type": "normal#color",
-                        "id": "block_2"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Connect it to this block"
-            },
-            "beacon": {
-                "target": {
-                    "block": {
-                        "id": "block_1",
-                        "rawId": "Esp;5Gi3)-w6TVKiF_=."
-                    }
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "connect": {
-                        "parent": {
-                            "id": "block_1",
-                            "rawId": "Esp;5Gi3)-w6TVKiF_=."
-                        },
-                        "target": "block_2"
-                    }
-                }
-            },
-            "phantom_block": {
-                "location": {
-                    "block": {
-                        "id": "block_1",
-                        "rawId": "Esp;5Gi3)-w6TVKiF_=."
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>#FDD835</span></kano-value-preview>"
-            },
-            "beacon": {
-                "target": {
-                    "block": {
-                        "shadow": "COLOR",
-                        "id": "block_2"
-                    }
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "value": {
-                        "target": {
-                            "shadow": "COLOR",
-                            "id": "block_2"
-                        },
-                        "value": "#FDD835"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Open the Sticker tray"
+                "text": "Open the Sticker tray again."
             },
             "beacon": {
                 "target": {
@@ -341,7 +199,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>set size</em> block."
             },
             "beacon": {
                 "target": {
@@ -363,13 +221,12 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect under the last block."
             },
             "beacon": {
                 "target": {
                     "block": {
-                        "id": "block_2",
-                        "rawId": "mlUC{^]jtxt`O+K`I,8/"
+                        "id": "block_1"
                     }
                 }
             },
@@ -377,8 +234,7 @@
                 "blockly": {
                     "connect": {
                         "parent": {
-                            "id": "block_2",
-                            "rawId": "mlUC{^]jtxt`O+K`I,8/"
+                            "id": "block_1"
                         },
                         "target": "block_3"
                     }
@@ -387,15 +243,14 @@
             "phantom_block": {
                 "location": {
                     "block": {
-                        "id": "block_2",
-                        "rawId": "mlUC{^]jtxt`O+K`I,8/"
+                        "id": "block_1"
                     }
                 }
             }
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray to get a simple number block."
             },
             "beacon": {
                 "target": {
@@ -410,7 +265,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the number block."
             },
             "beacon": {
                 "target": {
@@ -428,7 +283,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Plug it inside the <em>set size</em> block."
             },
             "beacon": {
                 "target": {
@@ -462,7 +317,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>130</span></kano-value-preview>"
+                "text": "This number will set the size of the sticker (as a % of its original size).<br>Change it from <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>130</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -484,7 +339,93 @@
         },
         {
             "banner": {
-                "text": "Open the Control tray"
+                "text": "Now to set up some styles for drawing. Open the draw tray."
+            },
+            "beacon": {
+                "target": {
+                    "category": "normal"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "open-flyout": "normal"
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Grab the <em>fill color</em> block."
+            },
+            "beacon": {
+                "target": {
+                    "flyout_block": "normal#color"
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "create": {
+                        "type": "normal#color",
+                        "id": "block_2"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Connect it beneath the last block."
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "id": "block_3",
+                        "rawId": "Esp;5Gi3)-w6TVKiF_=."
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "connect": {
+                        "parent": {
+                            "id": "block_3"
+                        },
+                        "target": "block_2"
+                    }
+                }
+            },
+            "phantom_block": {
+                "location": {
+                    "block": {
+                        "id": "block_3"
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Click to change the color. Pick any color you like! <kano-value-preview><span>#FFDC00</span></kano-value-preview><kano-value-preview><span>#DC00FF</span></kano-value-preview><kano-value-preview><span>#00FFDC</span></kano-value-preview>"
+            },
+            "beacon": {
+                "target": {
+                    "block": {
+                        "shadow": "COLOR",
+                        "id": "block_2"
+                    }
+                }
+            },
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": {
+                            "shadow": "COLOR",
+                            "id": "block_2"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Control tray to set up your animation loop."
             },
             "beacon": {
                 "target": {
@@ -499,7 +440,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>every 1 second</em> block."
             },
             "beacon": {
                 "target": {
@@ -517,13 +458,12 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it beneath your last block."
             },
             "beacon": {
                 "target": {
                     "block": {
-                        "id": "block_3",
-                        "rawId": "BCCf_Y.(^*Uev2:VPFYN"
+                        "id": "block_2"
                     }
                 }
             },
@@ -531,8 +471,7 @@
                 "blockly": {
                     "connect": {
                         "parent": {
-                            "id": "block_3",
-                            "rawId": "BCCf_Y.(^*Uev2:VPFYN"
+                            "id": "block_2"
                         },
                         "target": "block_5"
                     }
@@ -541,15 +480,14 @@
             "phantom_block": {
                 "location": {
                     "block": {
-                        "id": "block_3",
-                        "rawId": "BCCf_Y.(^*Uev2:VPFYN"
+                        "id": "block_2"
                     }
                 }
             }
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -571,7 +509,7 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "Now to set up a really quick paint effect! Open the draw tray."
             },
             "beacon": {
                 "target": {
@@ -586,7 +524,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Remember that to draw with code, you move the pen first.<br>Grab the <em>move to</em> block."
             },
             "beacon": {
                 "target": {
@@ -604,7 +542,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it inside the loop."
             },
             "beacon": {
                 "target": {
@@ -638,7 +576,7 @@
         },
         {
             "banner": {
-                "text": "Open the Mouse tray"
+                "text": "We’re going to move the drawing pen to the mouse coordinates again. Open the Mouse tray."
             },
             "beacon": {
                 "target": {
@@ -657,7 +595,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>X position</em> block."
             },
             "beacon": {
                 "target": {
@@ -679,7 +617,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>move to</em> x input."
             },
             "beacon": {
                 "target": {
@@ -713,7 +651,7 @@
         },
         {
             "banner": {
-                "text": "Open the Mouse tray"
+                "text": "Now for the Y position. Open the Mouse tray again."
             },
             "beacon": {
                 "target": {
@@ -732,7 +670,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>Y position</em> block."
             },
             "beacon": {
                 "target": {
@@ -754,7 +692,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>move to</em> y input."
             },
             "beacon": {
                 "target": {
@@ -788,7 +726,7 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "Open the draw tray …"
             },
             "beacon": {
                 "target": {
@@ -803,7 +741,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "… and grab the <em>circle</em> block."
             },
             "beacon": {
                 "target": {
@@ -821,7 +759,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it beneath the <em>move to</em>."
             },
             "beacon": {
                 "target": {
@@ -853,7 +791,17 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Try it out by moving your mouse around on the canvas. It leaves a trail, but all the circles are the same size.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Let’s add some randomness to the circle radius! Open the Math tray."
             },
             "beacon": {
                 "target": {
@@ -868,7 +816,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the random number block."
             },
             "beacon": {
                 "target": {
@@ -886,7 +834,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it up to the circle radius input."
             },
             "beacon": {
                 "target": {
@@ -920,7 +868,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>20</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>20</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -944,7 +892,7 @@
         },
         {
             "banner": {
-                "text": "Mouse your mouse around on the canvas to try out your paint splatter brush.",
+                "text": "Try it out again by moving your mouse around on the canvas. That’s more like it!",
                 "next_button": true
             },
             "beacon": {
@@ -954,7 +902,17 @@
         },
         {
             "banner": {
-                "text": "Open the Events tray"
+                "text": "Now we’re going to add some clever logic to build a sticker game. Ready?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Events tray."
             },
             "beacon": {
                 "target": {
@@ -969,7 +927,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab an event block."
             },
             "beacon": {
                 "target": {
@@ -987,7 +945,7 @@
         },
         {
             "banner": {
-                "text": "Drop the block anywhere on your code space"
+                "text": "Drop the block anywhere on your code space. It’s a good idea to put it below the code block you’ve already written."
             },
             "beacon": {
                 "target": "blocks-panel",
@@ -1004,7 +962,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>global.start</span></kano-value-preview> to <kano-value-preview><span>sticker.clicked</span></kano-value-preview>"
+                "text": "Change the event from <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Sticker is clicked</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -1026,7 +984,17 @@
         },
         {
             "banner": {
-                "text": "Open the Sticker tray"
+                "text": "Now any code you put inside this block will run <em>when the sticker is clicked</em>.<br>This is going to eb the basis of our simple game!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Sticker tray."
             },
             "beacon": {
                 "target": {
@@ -1045,7 +1013,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>move to</em> block."
             },
             "beacon": {
                 "target": {
@@ -1067,7 +1035,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it inside your new event."
             },
             "beacon": {
                 "target": {
@@ -1101,7 +1069,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Now open the Math tray to get another random number block."
             },
             "beacon": {
                 "target": {
@@ -1116,7 +1084,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the random number block."
             },
             "beacon": {
                 "target": {
@@ -1134,7 +1102,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>move to</em> x input."
             },
             "beacon": {
                 "target": {
@@ -1168,7 +1136,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>450</span></kano-value-preview>"
+                "text": "Change the second number from <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>450</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -1192,7 +1160,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Now for the Y position. Open the math tray again."
             },
             "beacon": {
                 "target": {
@@ -1207,7 +1175,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab another random number block."
             },
             "beacon": {
                 "target": {
@@ -1225,7 +1193,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect this one to the <em>move to</em> y input."
             },
             "beacon": {
                 "target": {
@@ -1259,7 +1227,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>325</span></kano-value-preview>"
+                "text": "Change the second number from <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>325</span></kano-value-preview> on this one."
             },
             "beacon": {
                 "target": {
@@ -1283,7 +1251,17 @@
         },
         {
             "banner": {
-                "text": "Open this tray"
+                "text": "Have a look at that line of code. What do you think will happen when you click on the sticker? Try it out!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "When you click the sticker, let’s also change the color of your paint brush.<br>Open the draw tray."
             },
             "beacon": {
                 "target": {
@@ -1298,7 +1276,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>fill color</em> block."
             },
             "beacon": {
                 "target": {
@@ -1316,7 +1294,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it under your last block."
             },
             "beacon": {
                 "target": {
@@ -1348,7 +1326,7 @@
         },
         {
             "banner": {
-                "text": "Open the Color tray"
+                "text": "Open the Color tray …"
             },
             "beacon": {
                 "target": {
@@ -1363,7 +1341,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "… and grab a <em>color with</em> block."
             },
             "beacon": {
                 "target": {
@@ -1381,7 +1359,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the fill color input (place it over the top of the placeholder color block that’s there)."
             },
             "beacon": {
                 "target": {
@@ -1415,7 +1393,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>rgb</span></kano-value-preview> to <kano-value-preview><span>hsv</span></kano-value-preview>"
+                "text": "Change the color mode from <kano-value-preview><span>rgb</span></kano-value-preview> (red, green, blue) to <kano-value-preview><span>hsv</span></kano-value-preview> (hue, saturation, value)."
             },
             "beacon": {
                 "target": {
@@ -1437,7 +1415,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Open the Math tray again."
             },
             "beacon": {
                 "target": {
@@ -1452,7 +1430,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the random number block."
             },
             "beacon": {
                 "target": {
@@ -1470,7 +1448,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>color with</em> hue input."
             },
             "beacon": {
                 "target": {
@@ -1504,7 +1482,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>35</span></kano-value-preview>"
+                "text": "Change the second value from <kano-value-preview><span>10</span></kano-value-preview> to <kano-value-preview><span>35</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -1528,7 +1506,27 @@
         },
         {
             "banner": {
-                "text": "Open the Sticker tray"
+                "text": "Try clicking the sticker a few times now. Do you see the paint color change?",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Finally, when you click the sticker, we’ll use a random number to decide if the sticker changes or not. This kind of probability is the basis of thousands of computer games.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Open the Sticker tray."
             },
             "beacon": {
                 "target": {
@@ -1547,7 +1545,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>set to</em> block."
             },
             "beacon": {
                 "target": {
@@ -1569,7 +1567,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it beneath the <em>fill color</em> block."
             },
             "beacon": {
                 "target": {
@@ -1601,7 +1599,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>music</span></kano-value-preview>"
+                "text": "Change the first value from <kano-value-preview><span>animals</span></kano-value-preview> to <kano-value-preview><span>music</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -1625,7 +1623,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>music-trumpet</span></kano-value-preview>"
+                "text": "Change the second value from <kano-value-preview><span>Bell</span></kano-value-preview> to <kano-value-preview><span>Trumpet</span></kano-value-preview>"
             },
             "beacon": {
                 "target": {
@@ -1649,7 +1647,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Now for the random number. Open the Variables tray."
             },
             "beacon": {
                 "target": {
@@ -1664,7 +1662,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>set</em> variable block."
             },
             "beacon": {
                 "target": {
@@ -1682,7 +1680,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it beneath your other code."
             },
             "beacon": {
                 "target": {
@@ -1714,7 +1712,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Open the Math tray again."
             },
             "beacon": {
                 "target": {
@@ -1729,7 +1727,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>random number</em> block."
             },
             "beacon": {
                 "target": {
@@ -1747,7 +1745,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>set</em> variable input."
             },
             "beacon": {
                 "target": {
@@ -1781,7 +1779,7 @@
         },
         {
             "banner": {
-                "text": "Open the Logic tray"
+                "text": "Open the Logic tray."
             },
             "beacon": {
                 "target": {
@@ -1796,7 +1794,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>if</em> block …"
             },
             "beacon": {
                 "target": {
@@ -1814,7 +1812,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it beneath your other code."
             },
             "beacon": {
                 "target": {
@@ -1846,7 +1844,7 @@
         },
         {
             "banner": {
-                "text": "Open the Logic tray"
+                "text": "Now for the other part of our <em>if</em> code. Open the Logic tray again."
             },
             "beacon": {
                 "target": {
@@ -1861,7 +1859,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab this block …"
             },
             "beacon": {
                 "target": {
@@ -1879,7 +1877,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "… and connect it to the <em>if</em> block input."
             },
             "beacon": {
                 "target": {
@@ -1913,7 +1911,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>EQ</span></kano-value-preview> to <kano-value-preview><span>></span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>=</span></kano-value-preview> to <kano-value-preview><span>> greater than</span></kano-value-preview>"
             },
             "beacon": {
                 "target": {
@@ -1935,7 +1933,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray."
             },
             "beacon": {
                 "target": {
@@ -1950,7 +1948,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the item block."
             },
             "beacon": {
                 "target": {
@@ -1968,7 +1966,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the left hand input of your <em>if</em> statement."
             },
             "beacon": {
                 "target": {
@@ -2002,7 +2000,7 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray again."
             },
             "beacon": {
                 "target": {
@@ -2017,7 +2015,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab a simple number block."
             },
             "beacon": {
                 "target": {
@@ -2035,7 +2033,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Plug it into the right hand side of your <em>if</em> statement."
             },
             "beacon": {
                 "target": {
@@ -2069,7 +2067,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>9</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>9</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -2091,7 +2089,17 @@
         },
         {
             "banner": {
-                "text": "Open the Sticker tray"
+                "text": "Now any code you put inside the if block will run <em>if</em> the random number is above 9.<br>That means the code will run one time in ten.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Now for the code to put inside the <em>if</em> statement. Open the Sticker tray."
             },
             "beacon": {
                 "target": {
@@ -2110,7 +2118,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "Grab the <em>set sticker</em> block."
             },
             "beacon": {
                 "target": {
@@ -2132,7 +2140,7 @@
         },
         {
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it inside your <em>if</em> block."
             },
             "beacon": {
                 "target": {
@@ -2166,7 +2174,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>music</span></kano-value-preview>"
+                "text": "Change the first value from <kano-value-preview><span>animals</span></kano-value-preview> to <kano-value-preview><span>music</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -2190,7 +2198,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>undefined</span></kano-value-preview> to <kano-value-preview><span>music-sax</span></kano-value-preview>"
+                "text": "Change the second value from <kano-value-preview><span>Bell</span></kano-value-preview> to <kano-value-preview><span>Sax</span></kano-value-preview>."
             },
             "beacon": {
                 "target": {
@@ -2214,62 +2222,18 @@
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
-            },
-            "beacon": {
-                "target": {
-                    "category": "variables"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "open-flyout": "variables"
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Drag the block onto your code space"
-            },
-            "beacon": {
-                "target": {
-                    "flyout_block": "variables_get"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "create": {
-                        "type": "variables_get",
-                        "id": "block_26"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Drop the block anywhere on your code space"
-            },
-            "beacon": {
-                "target": "blocks-panel",
-                "offset": 300,
-                "angle": 200
-            },
-            "validation": {
-                "blockly": {
-                    "drop": {
-                        "target": "block_26"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "You can now test the app",
+                "text": "Try it out! Count how many times you have to click the sticker before it changes. Challenge a friend to see if they can change the sticker in less clicks!",
                 "next_button": true
             },
             "beacon": {
                 "target": "banner-button",
                 "offset": 0
+            }
+        },
+        {
+            "banner": {
+                "text": "Great work! You’ve used logic, drawing, events, and random numbers to make a game.",
+                "next_button": true
             }
         }
     ],
