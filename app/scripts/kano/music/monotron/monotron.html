@@ -2,24 +2,34 @@
     (function (Kano) {
 
         class Monotron {
-            constructor (ctx) {
-                this.ctx = ctx;
+            constructor (opts) {
+                this.ctx = opts.ctx;
                 this.vco = this.ctx.createOscillator();
-                this.lfo = this.ctx.createOscillator();
-                this.lfoGain = this.ctx.createGain();
-                this.vcf = this.ctx.createBiquadFilter();
                 this.output = this.ctx.createGain();
-
-                this.vco.connect(this.vcf);
-                this.vcf.connect(this.output);
-                this.lfo.connect(this.lfoGain);
-                this.lfoGain.connect(this.vcf.frequency);
-
                 this.output.gain.value = 0;
-                this.vco.type = 'sawtooth';
-                this.lfo.type = 'triangle';
+
+                this.vcf = this.ctx.createBiquadFilter();
+                this.vcf.type = 'bandpass';
+                this.vcf.frequency.value = 5000;
+                this.vcf.Q.value = 10;
+
+                this.setWaveType(opts.waveType);
+
+                this.vco.connect(this.output);
                 this.vco.start(this.ctx.currentTime);
-                this.lfo.start(this.ctx.currentTime);
+            }
+
+            setWaveType (wave) {
+                // Connect the vcf filter depending on the wave type
+                if (this.filterOn && (wave === 'sine' || wave === 'triangle')) {
+                    this.vco.disconnect(this.vcf);
+                    this.filterOn = false;
+                } else if (!this.filterOn && (wave === 'square' || wave === 'sawtooth')) {
+                    this.vco.connect(this.vcf);
+                    this.filterOn = true;
+                }
+
+                this.vco.type = wave;
             }
 
             noteOn (freq, time) {

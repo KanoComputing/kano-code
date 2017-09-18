@@ -27,6 +27,14 @@
                 volume: {
                     type: Number,
                     value: 100
+                },
+                waveType: {
+                    type: String,
+                    value: 'sine'
+                },
+                volumeAttenuation: {
+                    type: Number,
+                    value: 0.00075
                 }
             },
             ready () {
@@ -66,19 +74,20 @@
                 }
                 let value;
                 this.volume = Math.min(Math.max(volume, 0), 100);
-                //the maximum value is limited to an ear-friendly sound pressure level
-                value = this.model.muted ? 0 : (this.volume * 0.00075);
+                //the maximum value is limited to an ear-friendly volume
+                this.volumeAttenuation = /sine|triangle/.test(this.waveType) ? 0.00185 : 0.00075;
+                value = this.model.muted ? 0 : (this.volume * this.volumeAttenuation);
                 if (this.gainControl) {
                     this.gainControl.gain.value = value;
                 }
             },
             _createMonotron () {
-                let monotron = new Kano.Music.Monotron(this.ctx);
-
-                monotron.lfo.frequency.value = 30;
-                monotron.lfoGain.gain.value = 100;
-                monotron.vcf.frequency.value = 2500;
-
+                let opts = {
+                    ctx: this.ctx,
+                    waveType: this.waveType
+                };
+                this.setVolume(this.volume);
+                let monotron = new Kano.Music.Monotron(opts);
                 monotron.connect(this.output);
 
                 return monotron;
@@ -126,9 +135,14 @@
                 }
             },
             setSynthWave (wave) {
-                if (this.synth) {
-                    this.synth.vco.type = wave;
+                this.waveType = wave;
+                if (!this.synth) {
+                    return;
                 }
+                this.synth.setWaveType(wave);
+
+                // Set volume as the attenuation depends on the wave type
+                this.setVolume(this.volume);
             }
         });
     })();
