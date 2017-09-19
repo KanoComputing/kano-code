@@ -389,19 +389,19 @@
                     let aspectRatio = this.height / this.width,
                         style = this.$.content.style;
                     if (this.fullscreen) {
-                        //Set the width first only there's enough height not to crop
+                        // Portrait
                         if (window.innerHeight > window.innerWidth * aspectRatio) {
                             style.width = '70vw';
                             style.height = `calc(70vw * ${aspectRatio})`;
                             style.top = `calc(50% - (70vw * ${aspectRatio} / 2))`;
                             style.left = `calc(50% - 35vw)`;
                         } else {
-                            //Else set the height first
+                            // Landscape
                             aspectRatio = 1 / aspectRatio;
                             style.height = '70vh';
-                            style.width += `width: calc(70vh * ${aspectRatio})`;
-                            style.width += `top: calc(50% - 35vh)`;
-                            style.width += `left: calc(50% - (70vh * ${aspectRatio} / 2))`;
+                            style.width = `calc(70vh * ${aspectRatio})`;
+                            style.top = `calc(50% - 35vh)`;
+                            style.left = `calc(50% - (70vh * ${aspectRatio} / 2))`;
                         }
                     } else {
                         //We are not fullscreen so set the viewport height relative to the width of the workspace
