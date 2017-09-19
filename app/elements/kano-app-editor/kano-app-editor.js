@@ -484,7 +484,9 @@ Polymer({
         Kano.MakeApps.Utils.updatePartsColors(this.addedParts);
         this.$['root-view'].computeBlocks();
         this.set('code', savedApp.code);
-        this.set('background', savedApp.background);
+        if (savedApp.background) {
+            this.set('background', savedApp.background);
+        }
         this.unsavedChanges = false;
     },
     _formatCode (code) {
