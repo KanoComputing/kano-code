@@ -12,7 +12,6 @@
 <dom-module id="kano-workspace-toolbar">
     <style>
         :host {
-            display: block;
             @apply --layout-horizontal;
             @apply --layout-center;
             @apply --layout-center-justified;
@@ -22,9 +21,6 @@
         }
         :host>div {
             @apply --layout-horizontal;
-        }
-        [hidden] {
-            display: none !important;
         }
         .fullscreen,
         .pause {
@@ -60,13 +56,6 @@
                 transition: all ease-in-out 200ms;
             }
         }
-        .icon {
-            display: flex;
-            padding: 0px;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
         kano-tooltip {
             box-sizing: border-box;
             --kano-tooltip-caret-width: 12px;
@@ -94,16 +83,21 @@
             background-color: rgba(255, 255, 255, 0.5);
             outline: none;
         }
+        button.square {
+            width: 32px;
+            height: 32px;
+            padding: 0px;
+            cursor: pointer;
+        }
+        button.square>* {
+            margin: 0 auto;
+        }
         button span.x {
             display: none;
         }
         button.open span.x {
             display: inline-block;
             transform: translate(0px, -2px);
-        }
-        .icon {
-            width: 32px;
-            height: 32px;
         }
         button#play-pause {
             background: #7CC74C;
@@ -162,13 +156,16 @@
             --iron-icon-fill-color: black;
             margin-right: 14px;
         }
+        [hidden] {
+            display: none !important;
+        }
     </style>
     <template>
-        <button id="settings" type="button" class="icon settings" hidden$="[[!showSettings]]" on-tap="_openTooltip">
+        <button id="settings" type="button" class="square settings" hidden$="[[!showSettings]]" on-tap="_openTooltip">
             <iron-icon icon="settings"></iron-icon>
         </button>
         <kano-tooltip id="save-tooltip" class="fly" position="top" offset="16"><div class="text">Save</div></kano-tooltip>
-        <button id="save" type="button" class="icon" on-tap="_save" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
+        <button id="save" type="button" class="square" on-tap="_save" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
             <iron-icon src="/assets/icons/save.svg"></iron-icon>
         </button>
         <div class="spacer" hidden$="[[!showSettings]]"></div>
@@ -191,15 +188,15 @@
         </div>
         <div class="player-bar" hidden$="[[noPlayerBar]]">
             <kano-tooltip id="fullscreen-tooltip" class="fly" position="top" offset="16"><div class="text">[[localize('FULLSCREEN', 'Fullscreen')]]</div></kano-tooltip>
-            <button id="fullscreen" class="icon" type="button" on-tap="fullscreenClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
+            <button id="fullscreen" class="square" type="button" on-tap="fullscreenClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
                 <img src="/assets/icons/fullscreen-icon.svg" alt="Fullscreen mode" />
             </button>
             <kano-tooltip id="restart-tooltip" class="fly" position="top" offset="16"><div class="text">[[localize('RESTART', 'Restart')]]</div></kano-tooltip>
-            <button id="restart" class="icon" type="button" on-tap="restartClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
+            <button id="restart" class="square" type="button" on-tap="restartClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
                 <img src="/assets/icons/reset-icon.svg" alt="Restart app" />
             </button>
             <kano-tooltip id="play-pause-tooltip" class="fly" position="top" offset="16"><div class="text">[[playPauseLabel]]</div></kano-tooltip>
-            <button id="play-pause" class="icon" type="button" on-tap="_runButtonClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
+            <button id="play-pause" class="square" type="button" on-tap="_runButtonClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
                 <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}"></kano-animated-svg>
             </button>
         </div>

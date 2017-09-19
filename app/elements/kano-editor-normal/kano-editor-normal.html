@@ -23,7 +23,13 @@
             display: none;
         }
         .part {
+            @apply --layout-flex-none;
+            @apply --layout-horizontal;
+            @apply --layout-center;
+            height: 40px;
             font-size: 14px;
+            color: #fff;
+            border-bottom: 1px solid #202428;
             cursor: pointer;
         }
         .part .background-icon {

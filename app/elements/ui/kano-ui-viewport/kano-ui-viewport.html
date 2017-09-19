@@ -47,16 +47,12 @@ the content out of proportions to make it fit inside the available space.
         :host {
             display: block;
             width: 100%;
-            position: relative;
             overflow: hidden;
         }
         #view {
-            position: absolute;
-            top: 0;
-            left: 0;
             transform-origin: 0 0 0;
             background-color: transparent;
-            @apply(--kano-ui-viewport);
+            @apply --kano-ui-viewport;
         }
         :host([no-overflow]) #view {
             overflow: hidden;

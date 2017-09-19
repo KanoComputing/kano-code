@@ -19,7 +19,7 @@
     }
     :host {
         position: relative;
-        @apply(--layout-vertical);
+        @apply --layout-vertical;
         border: 0px;
         overflow: hidden;
     }
@@ -28,9 +28,11 @@
         position: relative;
     }
     #workspace-placeholder {
-        height: 100%;
+        @apply --layout-flex-auto;
+        @apply --layout-vertical;
     }
     #workspace-placeholder>* {
+        @apply --layout-flex-auto;
         animation: fade-in 200ms linear;
     }
     *[hidden] {
@@ -269,8 +271,10 @@
                     importedWorkspaces[modeId] = true;
                     tagName = `kano-editor-${modeId}`;
                     template = document.createElement('template');
+
+                    // We add 'kano-workspace' class manually to preserve shady DOM styling scope
                     template.innerHTML = `<${tagName} id$="[[mode.id]]"
-                                                        class="dropzone"
+                                                        class="dropzone kano-workspace"
                                                         width="[[mode.workspace.viewport.width]]"
                                                         height="[[mode.workspace.viewport.height]]"
                                                         running="[[running]]"

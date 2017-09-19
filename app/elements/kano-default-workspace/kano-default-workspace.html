@@ -121,9 +121,6 @@
             }
             button#add-part-button,
             button#fullscreen-close {
-                @apply --layout-horizontal;
-                @apply --layout-center;
-                @apply --layout-center-justified;
                 @apply --layout-self-end;
                 @apply --kano-button;
                 background: rgba(255, 255, 255, 0.25);
@@ -140,6 +137,9 @@
                 top: 16px;
                 right: 16px;
                 padding: 6px;
+            }
+            button>* {
+                margin: 0 auto;
             }
             .add-parts .action:hover button#add-part-button,
             button#fullscreen-close:hover {
@@ -164,7 +164,7 @@
                 overflow: auto;
                 padding-bottom: 40px;
             }
-            .part, ::slotted(.part) {
+            .part {
                 @apply --layout-flex-none;
                 @apply --layout-horizontal;
                 @apply --layout-center;
@@ -387,28 +387,30 @@
             _setViewportHeight () {
                 window.requestAnimationFrame(() => {
                     let aspectRatio = this.height / this.width,
-                        style = '';
+                        style = this.$.content.style;
                     if (this.fullscreen) {
                         //Set the width first only there's enough height not to crop
                         if (window.innerHeight > window.innerWidth * aspectRatio) {
-                            style += 'width: 70vw;';
-                            style += `height: calc(70vw * ${aspectRatio});`;
-                            style += `top: calc(50% - (70vw * ${aspectRatio} / 2));`;
-                            style += `left: calc(50% - 35vw);`;
+                            style.width = '70vw';
+                            style.height = `calc(70vw * ${aspectRatio})`;
+                            style.top = `calc(50% - (70vw * ${aspectRatio} / 2))`;
+                            style.left = `calc(50% - 35vw)`;
                         } else {
                             //Else set the height first
                             aspectRatio = 1 / aspectRatio;
-                            style += 'height: 70vh;';
-                            style += `width: calc(70vh * ${aspectRatio});`;
-                            style += `top: calc(50% - 35vh);`;
-                            style += `left: calc(50% - (70vh * ${aspectRatio} / 2));`;
+                            style.height = '70vh';
+                            style.width += `width: calc(70vh * ${aspectRatio})`;
+                            style.width += `top: calc(50% - 35vh)`;
+                            style.width += `left: calc(50% - (70vh * ${aspectRatio} / 2))`;
                         }
                     } else {
                         //We are not fullscreen so set the viewport height relative to the width of the workspace
-                        style += 'width: auto;';
-                        style += `height: ${this.offsetWidth * aspectRatio}px;`;
+                        style.width = 'auto';
+                        style.height = `${this.offsetWidth * aspectRatio}px`;
+                        style.top = 'auto';
+                        style.left = 'auto';
+
                     }
-                    this.$.content.style = style;
                 });
                 this.$.content.resizeView();
             },
