@@ -1,4 +1,4 @@
-# Make Apps
+# Kano Code
 
 ## Make it work
 
@@ -83,7 +83,7 @@ If you'd like to quickly try things out, there's a test station in the office:
 * vnc pass: online
 
 You can ssh/vnc into it and try things out. There's a cron job that keeps our nightly
-builds of Make Apps up-to-date on it if you just want to check that `master` works.
+builds of Kano Code up-to-date on it if you just want to check that `master` works.
 For testing features you're working on, see the workflow above.
 
 # I18N
