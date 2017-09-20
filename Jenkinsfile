@@ -48,23 +48,19 @@ pipeline {
                     if (env.BRANCH_NAME == "jenkins") {
                         echo 'deploy skipped'
                     } else if (env.BRANCH_NAME == "prod") {
-                        bucket = 'make-apps-prod-site.kano.me'
-                        deploy('./www', bucket)
-                        archive(bucket)
+                        kart("production", false)
+
                         // Rebuild the config of the index with the kit's target env
                         env.TARGET = "osonline"
-                        sh 'gulp copy-index'
-                        deploy('./www', 'make-apps-kit-site.kano.me')
+                        sh "gulp copy-index"
+                        kart("production-kit", false)
                     } else if (env.BRANCH_NAME == "rc") {
-                        bucket = 'apps-rc.kano.me'
-                        deploy('./www', bucket)
-                        archive(bucket)
+                        kart("rc", true)
                     } else if (env.NODE_ENV=="staging") {
-                        bucket = 'make-apps-staging-site.kano.me'
-                        deploy('./www', bucket)
-                        archive(bucket)
-                        sh 'gulp doc'
-                        deploy('./www-doc', 'make-apps-doc')
+                        kart("staging", true)
+
+                        sh "gulp doc"
+                        sh "kart archive ./www-doc -a releases.kano.me -r . --name kano-code-doc --channel main --release"
                     }
                 }
             }
@@ -74,15 +70,6 @@ pipeline {
     post {
         failure {
             notify_failure_to_committers()
-        }
-        success {
-            script {
-                if (env.BRANCH_NAME == "jenkins") {
-                    echo 'archive skipped'
-                } else {
-                    release_archive(env)
-                }
-            }
         }
     }
 
@@ -118,23 +105,12 @@ def run_tests () {
     sh "rm -rf www test-results"
 }
 
-def release_archive (env) {
-    def rev = env.NODE_ENV == 'production' ? null : env.BUILD_NUMBER
-    publish_to_releases {
-        dir = './www'
-        repo = 'kano-code'
-        channel = env.NODE_ENV
-        version = get_npm_package_version()
-        revision = rev
+def kart(branch, release) {
+    def cmd = "kart archive ./www -a releases.kano.me -r . --channel ${branch}"
+
+    if (release) {
+        cmd = cmd + " --release"
     }
-}
 
-def archive(bucket) {
-    def filename = "kc-build-latest.tar.gz"
-    sh "tar -czf ${filename} ./www"
-    sh "aws s3 cp ${filename} s3://${bucket} --region eu-west-1"
-}
-
-def deploy(dir, bucket) {
-    sh "aws s3 sync ${dir} s3://${bucket} --region eu-west-1 --cache-control \"max-age=600\" --only-show-errors"
+    sh cmd
 }
