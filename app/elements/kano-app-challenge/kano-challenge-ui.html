@@ -34,159 +34,159 @@ Example:
 @demo ./demo/kano-challenge-ui.html
 -->
 <dom-module id="kano-challenge-ui">
-    <style>
-        @keyframes pulse {
-            0% {
-                transform: scale(1, 1);
-            }
-            10% {
-                transform: scale(1.3, 1.3);
-            }
-            100% {
-                transform: scale(1, 1);
-            }
-        }
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 1;
-            }
-            75% {
-                transform: scale(0, 0);
-                opacity: 1;
-            }
-            85% {
-                opacity: 0;
-            }
-            100% {
-                transform: scale(1.5, 1.5);
-                opacity: 0;
-            }
-        }
-    :host {
-        @apply --layout-vertical;
-        flex: 1;
-        --tooltip-color: white;
-    }
-    :host .instruction-overlay {
-        @apply --layout-horizontal;
-        @apply --layout-center;
-        @apply --layout-center-justified;
-        padding: 5px;
-    }
-    :host button {
-        @apply --kano-button;
-        background-color: var(--color-grassland);
-        color: #fff;
-        text-shadow: none;
-        font-size: 14px;
-        font-weight: bold;
-        line-height: 18px;
-        border-radius: 3px;
-        padding: 7px 24px;
-        margin-left: 12px;
-    }
-    :host #modal {
-        border-radius: 4px;
-    }
-    :host .modal-content {
-        @apply --layout-vertical;
-        @apply --layout-center;
-        @apply --layout-center-justified;
-        font-family: var(--font-body, Arial);
-        font-size: 16px;
-        color: black;
-    }
-    :host .modal-content button {
-        @apply --kano-button;
-        margin: 15px 0 0;
-        color: #435055;
-    }
-    :host .tooltip-content {
-        @apply --layout-vertical;
-        @apply --layout-center;
-    }
-    :host .tooltip-content button {
-        margin: 12px 0 0 0;
-    }
-    kano-tooltip {
-        z-index: 201;
-        --kano-tooltip-background-color: var(--tooltip-color);
-        --kano-tooltip-border-color: white;
-        --kano-tooltip-border-width: 1px;
-        color: black;
-        font-family: var(--font-body);
-        --kano-tooltip: {
-            padding: 16px 26px 16px;
-        };
-    }
-    kano-arrow {
-        z-index: 201;
-    }
-    [slot="markdown-html"] p {
-        line-height: 18px;
-    }
-    [slot="markdown-html"] img {
-        max-height: 50px;
-    }
-    [slot="markdown-html"] img:not(:first-child) {
-        margin-top: 12px;
-    }
-    .markdown-html kano-blockly-block {
-        line-height: 0px;
-        vertical-align: middle;
-        display: inline-block;
-    }
-    .beacon-wrapper {
-        position: relative;
-        @apply --layout-vertical;
-        @apply --layout-center;
-        @apply --layout-center-justified;
-    }
-    .beacon {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: rgba(253, 226, 61, 0.25);
-        @apply --layout-vertical;
-        @apply --layout-center;
-        @apply --layout-center-justified;
-    }
-    .beacon.animate {
-        animation: 1s ease-out infinite pulse;
-    }
-    .beacon .core {
-        font-size: 24px;
-        margin-bottom: 4px;
-        color: #fde23d;
-    }
-    .beacon-wrapper .ring {
-        position: absolute;
-        width: 800px;
-        height: 800px;
-        border-radius: 50%;
-        border: 10px solid #fde23d;
-        transform: scale(0, 0);
-    }
-    .beacon-wrapper .ring.animate {
-        animation: 5s ease-out ripple;
-        animation-delay: 400ms;
-        animation-iteration-count: infinite;
-    }
-    .markdown-html p {
-        margin: 0px;
-    }
-    .tooltip-content .emoji, .modal-content .emoji {
-        max-width: 18px;
-        max-height: 18px;
-        transform: translateY(4px);
-    }
-    [hidden] {
-        visibility: hidden !important;
-        opacity: 0 !important;
-    }
-    </style>
     <template>
+        <style>
+            @keyframes pulse {
+                0% {
+                    transform: scale(1, 1);
+                }
+                10% {
+                    transform: scale(1.3, 1.3);
+                }
+                100% {
+                    transform: scale(1, 1);
+                }
+            }
+            @keyframes ripple {
+                0% {
+                    transform: scale(0, 0);
+                    opacity: 1;
+                }
+                75% {
+                    transform: scale(0, 0);
+                    opacity: 1;
+                }
+                85% {
+                    opacity: 0;
+                }
+                100% {
+                    transform: scale(1.5, 1.5);
+                    opacity: 0;
+                }
+            }
+            :host {
+                @apply --layout-vertical;
+                flex: 1;
+                --tooltip-color: white;
+            }
+            :host .instruction-overlay {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                padding: 5px;
+            }
+            :host button {
+                @apply --kano-button;
+                background-color: var(--color-grassland);
+                color: #fff;
+                text-shadow: none;
+                font-size: 14px;
+                font-weight: bold;
+                line-height: 18px;
+                border-radius: 3px;
+                padding: 7px 24px;
+                margin-left: 12px;
+            }
+            :host #modal {
+                border-radius: 4px;
+            }
+            :host .modal-content {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                font-family: var(--font-body, Arial);
+                font-size: 16px;
+                color: black;
+            }
+            :host .modal-content button {
+                @apply --kano-button;
+                margin: 15px 0 0;
+                color: #435055;
+            }
+            :host .tooltip-content {
+                @apply --layout-vertical;
+                @apply --layout-center;
+            }
+            :host .tooltip-content button {
+                margin: 12px 0 0 0;
+            }
+            kano-tooltip {
+                z-index: 201;
+                --kano-tooltip-background-color: var(--tooltip-color);
+                --kano-tooltip-border-color: white;
+                --kano-tooltip-border-width: 1px;
+                color: black;
+                font-family: var(--font-body);
+                --kano-tooltip: {
+                    padding: 16px 26px 16px;
+                };
+            }
+            kano-arrow {
+                z-index: 201;
+            }
+            [slot="markdown-html"] p {
+                line-height: 18px;
+            }
+            [slot="markdown-html"] img {
+                max-height: 50px;
+            }
+            [slot="markdown-html"] img:not(:first-child) {
+                margin-top: 12px;
+            }
+            .markdown-html kano-blockly-block {
+                line-height: 0px;
+                vertical-align: middle;
+                display: inline-block;
+            }
+            .beacon-wrapper {
+                position: relative;
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+            }
+            .beacon {
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                background-color: rgba(253, 226, 61, 0.25);
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+            }
+            .beacon.animate {
+                animation: 1s ease-out infinite pulse;
+            }
+            .beacon .core {
+                font-size: 24px;
+                margin-bottom: 4px;
+                color: #fde23d;
+            }
+            .beacon-wrapper .ring {
+                position: absolute;
+                width: 800px;
+                height: 800px;
+                border-radius: 50%;
+                border: 10px solid #fde23d;
+                transform: scale(0, 0);
+            }
+            .beacon-wrapper .ring.animate {
+                animation: 5s ease-out ripple;
+                animation-delay: 400ms;
+                animation-iteration-count: infinite;
+            }
+            .markdown-html p {
+                margin: 0px;
+            }
+            .tooltip-content .emoji, .modal-content .emoji {
+                max-width: 18px;
+                max-height: 18px;
+                transform: translateY(4px);
+            }
+            [hidden] {
+                visibility: hidden !important;
+                opacity: 0 !important;
+            }
+        </style>
         <slot name="editor" id="content"></slot>
         <kano-highlight id="highlight" x="[[highlight.x]]" y="[[highlight.y]]" width="[[highlight.width]]" height="[[highlight.height]]" hidden$="[[idle]]"></kano-highlight>
         <kano-arrow source="[[arrow.source]]" target="[[arrow.target]]" angle="[[arrow.angle]]" id="arrow" hidden$="[[idle]]">
@@ -824,6 +824,10 @@ Example:
                 delayingElements = [],
                 currentDelay,
                 longestDelay;
+
+                if (!step) {
+                    return 0;
+                }
 
                 if (step.tooltips) {
                     step.tooltips.forEach(tooltip => delayingElements.push(this._getTargetElement(tooltip.location)));

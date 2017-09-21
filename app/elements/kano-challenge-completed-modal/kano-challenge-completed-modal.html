@@ -14,84 +14,85 @@
 -->
 
 <dom-module id="kano-challenge-completed-modal">
-    <style>
-        :host {
-            display: block;
+    <template>
+        <style>
+            :host {
+                display: block;
 
-            --paper-dialog-title: {
+                --paper-dialog-title: {
+                    font-family: 'Bariol', sans-serif;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+            }
+            :host paper-dialog {
+                display: flex;
+                flex-direction: row;
+
+                border-radius: 3px;
+                overflow: hidden;
+                background: white;
+            }
+            :host .image {
+                margin-top: 0px !important;
+                width: 100px;
+
+                display: flex;
+                flex-direction: row;
+
+                align-items: center;
+                justify-content: center;
+
                 font-family: 'Bariol', sans-serif;
                 font-weight: bold;
-                margin-bottom: 5px;
             }
-        }
-        :host paper-dialog {
-            display: flex;
-            flex-direction: row;
+            :host .xp-num {
+                background-color: var(--color-yellow);
+            }
+            :host .star {
+                background-color: var(--color-grey-mid);
+            }
+            :host .star img {
+                max-width: 80px;
+            }
+            :host .image .plus {
+                font-size: 20px;
+                margin-top: -5px;
+                margin-right: -2px;
+            }
+            :host .image .amount {
+                font-size: 50px;
+            }
+            :host .image .xp {
+                font-size: 20px;
+                margin-top: -5px;
+            }
+            :host .content {
+                margin: 20px 40px 20px 0px !important;
 
-            border-radius: 3px;
-            overflow: hidden;
-        }
-        :host .image {
-            margin-top: 0px !important;
-            width: 100px;
+                flex: 1;
 
-            display: flex;
-            flex-direction: row;
-
-            align-items: center;
-            justify-content: center;
-
-            font-family: 'Bariol', sans-serif;
-            font-weight: bold;
-        }
-        :host .xp-num {
-            background-color: var(--color-yellow);
-        }
-        :host .star {
-            background-color: var(--color-grey-mid);
-        }
-        :host .star img {
-            max-width: 80px;
-        }
-        :host .image .plus {
-            font-size: 20px;
-            margin-top: -5px;
-            margin-right: -2px;
-        }
-        :host .image .amount {
-            font-size: 50px;
-        }
-        :host .image .xp {
-            font-size: 20px;
-            margin-top: -5px;
-        }
-        :host .content {
-            margin: 20px 40px 20px 0px !important;
-
-            flex: 1;
-
-            font-family: 'Bariol', sans-serif;
-        }
-        :host .content button {
-            background-color: var(--color-green, green);
-            @apply(--kano-button);
-            padding: 12px 50px;
-            font-size: 14px;
-            border-radius: 3px;
-        }
-        :host .content button:hover {
-            background-color: var(--color-lighter-green);
-        }
-        :host .content h2:first-child {
-            margin: 0;
-        }
-        :host .content .small-text {
-            font-size: 16px;
-            margin-bottom: 10px;
-            line-height: 22px;
-        }
-    </style>
-    <template>
+                font-family: 'Bariol', sans-serif;
+            }
+            :host .content button {
+                background-color: var(--color-green, green);
+                @apply --kano-button;
+                padding: 12px 50px;
+                font-size: 14px;
+                border-radius: 3px;
+            }
+            :host .content button:hover {
+                background-color: var(--color-lighter-green);
+            }
+            :host .content h2:first-child {
+                margin: 0;
+            }
+            :host .content .small-text {
+                font-size: 16px;
+                margin-bottom: 10px;
+                line-height: 22px;
+            }
+        </style>
         <paper-dialog id="modal" opened="{{opened}}">
             <div class$="image {{computeImageClass(xp)}}">
                 <template is="dom-if" if="{{xp}}">

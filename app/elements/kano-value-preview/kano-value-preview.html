@@ -1,23 +1,23 @@
 <dom-module id="kano-value-preview">
-    <style>
-    :host {
-        display: inline-block;
-    }
-    :host .color-value {
-        border-radius: 3px;
-        border: 1px solid rgba(0, 0, 0, 0.55);
-        width: 24px;
-        height: 18px;
-    }
-    :host #input {
-        border-radius: 3px;
-        color: black;
-        background: rgba(255, 255, 255, 0.7);
-        padding: 2px 6px;
-        line-height: 1;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+            :host .color-value {
+                border-radius: 3px;
+                border: 1px solid rgba(0, 0, 0, 0.55);
+                width: 24px;
+                height: 18px;
+            }
+            :host #input {
+                border-radius: 3px;
+                color: black;
+                background: rgba(255, 255, 255, 0.7);
+                padding: 2px 6px;
+                line-height: 1;
+            }
+        </style>
         <div id="display" class$="[[type]]">
             <div id="input">
                 <slot></slot>

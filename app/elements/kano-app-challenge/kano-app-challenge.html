@@ -21,15 +21,15 @@ Example:
 @demo demo/kano-app-challenge.html
 -->
 <dom-module id="kano-app-challenge">
-    <style>
-        :host {
-            display: flex;
-        }
-        #content {
-            flex: 1;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: flex;
+            }
+            #content {
+                flex: 1;
+            }
+        </style>
         <kano-challenge-ui id="ui" step="[[selectedStep]]" on-next-step="nextStep" blocks-panel="{{blocksPanel}}" state="{{state}}" mode-ready="[[modeReady]]" idle="[[idle]]">
             <slot name="editor" id="content"></slot>
         </kano-challenge-ui>

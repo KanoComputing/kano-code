@@ -20,104 +20,104 @@ Custom property | Description | Default
 `--kano-workspace-head-progress` | Mixin for the progress bar| {}
 -->
 <dom-module id="kano-workspace-head">
-    <style>
-        :host {
-            display: block;
-        }
-        [hidden] {
-            display: none !important;
-        }
-        :host .head-controls {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-        }
-        :host kano-glint-animation {
-            margin-right: 6px;
-            border-radius: 22px;
-        }
-        :host .progress-bar {
-            height: 44px;
-            position: relative;
-
-            color: white;
-            background-color: var(--kano-app-editor-workspace-controls, black);
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            min-width: 200px;
-
-            transform: scale(0, 1);
-            transform-origin: left;
-            @apply --kano-workspace-head-progress;
-        }
-        .progress-bar .progress-wrap {
-            position: absolute;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-        .progress-bar .progress {
-            background-color: var(--color-orange);
-            transition: width 0.3s ease;
-
-            height: 100%;
-            border-radius: 3px
-        }
-        .done {
-            background-color: var(--color-green);
-            cursor: pointer;
-        }
-        .done:hover {
-            background-color: var(--color-lighter-green);
-        }
-        .progress-bar h1 {
-            font-size: 14px;
-            margin: 0px 25px;
-            position: relative;
-        }
-        :host .head-controls button {
-            height: 44px;
-            width: 44px;
-            border-radius: 50%;
-            border: none;
-            color: white;
-            background-color: var(--kano-app-editor-workspace-controls, black);
-            margin-right: 6px;
-            font-family: 'bariol';
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            outline: none;
-            padding: 0px;
-        }
-        :host .head-controls button:last-child {
-            margin-right: 0px;
-        }
-        :host .head-controls button:hover {
-            transition: opacity .3s ease;
-            background-color: var(--kano-app-editor-workspace-controls-hover, black);
-        }
-        :host .settings img {
-            width: 20px;
-            margin-top: 4px;
-            transition: all 0.3s ease;
-            transform: rotate(0deg);
-        }
-        :host .settings:hover img {
-            transform: rotate(30deg);
-        }
-        [hidden] {
-            display: none !important;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+            [hidden] {
+                display: none !important;
+            }
+            :host .head-controls {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+            }
+            :host kano-glint-animation {
+                margin-right: 6px;
+                border-radius: 22px;
+            }
+            :host .progress-bar {
+                height: 44px;
+                position: relative;
+
+                color: white;
+                background-color: var(--kano-app-editor-workspace-controls, black);
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                min-width: 200px;
+
+                transform: scale(0, 1);
+                transform-origin: left;
+                @apply --kano-workspace-head-progress;
+            }
+            .progress-bar .progress-wrap {
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                width: 100%;
+                height: 100%;
+                border-radius: 20px;
+                overflow: hidden;
+            }
+            .progress-bar .progress {
+                background-color: var(--color-orange);
+                transition: width 0.3s ease;
+
+                height: 100%;
+                border-radius: 3px
+            }
+            .done {
+                background-color: var(--color-green);
+                cursor: pointer;
+            }
+            .done:hover {
+                background-color: var(--color-lighter-green);
+            }
+            .progress-bar h1 {
+                font-size: 14px;
+                margin: 0px 25px;
+                position: relative;
+            }
+            :host .head-controls button {
+                height: 44px;
+                width: 44px;
+                border-radius: 50%;
+                border: none;
+                color: white;
+                background-color: var(--kano-app-editor-workspace-controls, black);
+                margin-right: 6px;
+                font-family: 'bariol';
+                font-size: 14px;
+                font-weight: bold;
+                cursor: pointer;
+                outline: none;
+                padding: 0px;
+            }
+            :host .head-controls button:last-child {
+                margin-right: 0px;
+            }
+            :host .head-controls button:hover {
+                transition: opacity .3s ease;
+                background-color: var(--kano-app-editor-workspace-controls-hover, black);
+            }
+            :host .settings img {
+                width: 20px;
+                margin-top: 4px;
+                transition: all 0.3s ease;
+                transform: rotate(0deg);
+            }
+            :host .settings:hover img {
+                transform: rotate(30deg);
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
         <div class="head-controls">
             <kano-glint-animation running="[[_isHighlightEnabled(challengeState.ended, highlight)]]">
                 <div id="progress-bar"

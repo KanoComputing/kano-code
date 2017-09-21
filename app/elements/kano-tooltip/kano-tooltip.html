@@ -4,102 +4,102 @@
 <link rel="import" href="../behaviors/kano-animatable-behavior.html">
 <script src="../../scripts/util/dom.js"></script>
 <dom-module id="kano-tooltip">
-    <style>
-    :host {
-        display: inline-block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1;
-        visibility: hidden;
-        text-align: center;
-        --kano-tooltip-border-width: 0px;
-        --kano-tooltip-border-color: transparent;
-        --kano-tooltip-caret-width: 13px;
-    }
-    :host([position="top"]) {
-        transform-origin: 50% 100%;
-    }
-    :host([position="right"]) {
-        transform-origin: 0% 50%;
-    }
-    :host([position="bottom"]) {
-        transform-origin: 50% 0%;
-    }
-    :host([position="left"]) {
-        transform-origin: 100% 50%;
-    }
-    :host .tooltip {
-        @apply --layout-vertical;
-        @apply --layout-center-justified;
-        @apply --layout-center;
-        position: relative;
-        background-color: var(--kano-tooltip-background-color, white);
-        border-radius: 4px;
-        border: solid;
-        border-color: var(--kano-tooltip-border-color);
-        border-width: var(--kano-tooltip-border-width);
-        font-size: 16px;
-        line-height: 16px;
-        @apply --kano-tooltip;
-    }
-    :host([position="top"]) .tooltip {
-        box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.1);
-    }
-    :host([position="bottom"]) .tooltip {
-        box-shadow: 0 1px 4px 2px rgba(0, 0, 0, 0.1);
-    }
-    :host([position="left"]) .tooltip,
-    :host([position="right"]) .tooltip {
-        box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.1);
-    }
-    :host .tooltip .caret-shadow {
-        position: absolute;
-        width: calc(var(--kano-tooltip-caret-width));
-        height: calc(var(--kano-tooltip-caret-width));
-        background: #fff;
-        padding: 0px;
-        transform: rotate(45deg);
-        @apply --kano-tooltip-caret;
-    }
-    :host([position="top"]) .tooltip .caret-shadow {
-        top: 99%;
-        left: 50%;
-        border-bottom-right-radius: 2px;
-        box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.1);
-        margin-left: calc(-var(--kano-tooltip-caret-width) / 2);
-        margin-top: calc(-var(--kano-tooltip-caret-width) / 2);
-    }
-    :host([position="right"]) .tooltip .caret-shadow {
-        top: 50%;
-        right: 99%;
-        border-bottom-left-radius: 2px;
-        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
-        margin-top: calc(-var(--kano-tooltip-caret-width) / 2);
-        margin-right: calc(-var(--kano-tooltip-caret-width) / 2);
-    }
-    :host([position="bottom"]) .tooltip .caret-shadow {
-        bottom: 99%;
-        left: 50%;
-        border-top-left-radius: 2px;
-        box-shadow: -4px -4px 4px -4px rgba(0, 0, 0, 0.1);
-        margin-left: calc(-var(--kano-tooltip-caret-width) / 2);
-        margin-bottom: calc(-var(--kano-tooltip-caret-width) / 2);
-    }
-    :host([position="left"]) .tooltip .caret-shadow {
-        top: 50%;
-        left: 99%;
-        border-top-right-radius: 2px;
-        box-shadow: 2px 0 2px -1px rgba(0, 0, 0, 0.1);
-        margin-top: calc(-var(--kano-tooltip-caret-width) / 2);
-        margin-left: calc(-var(--kano-tooltip-caret-width) / 2);
-    }
-    :host.no-animations {
-        animation: none;
-        transition: none;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: inline-block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                visibility: hidden;
+                text-align: center;
+                --kano-tooltip-border-width: 0px;
+                --kano-tooltip-border-color: transparent;
+                --kano-tooltip-caret-width: 13px;
+            }
+            :host([position="top"]) {
+                transform-origin: 50% 100%;
+            }
+            :host([position="right"]) {
+                transform-origin: 0% 50%;
+            }
+            :host([position="bottom"]) {
+                transform-origin: 50% 0%;
+            }
+            :host([position="left"]) {
+                transform-origin: 100% 50%;
+            }
+            :host .tooltip {
+                @apply --layout-vertical;
+                @apply --layout-center-justified;
+                @apply --layout-center;
+                position: relative;
+                background-color: var(--kano-tooltip-background-color, white);
+                border-radius: 4px;
+                border: solid;
+                border-color: var(--kano-tooltip-border-color);
+                border-width: var(--kano-tooltip-border-width);
+                font-size: 16px;
+                line-height: 16px;
+                @apply --kano-tooltip;
+            }
+            :host([position="top"]) .tooltip {
+                box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.1);
+            }
+            :host([position="bottom"]) .tooltip {
+                box-shadow: 0 1px 4px 2px rgba(0, 0, 0, 0.1);
+            }
+            :host([position="left"]) .tooltip,
+            :host([position="right"]) .tooltip {
+                box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.1);
+            }
+            :host .tooltip .caret-shadow {
+                position: absolute;
+                width: var(--kano-tooltip-caret-width);
+                height: var(--kano-tooltip-caret-width);
+                background: #fff;
+                padding: 0px;
+                transform: rotate(45deg);
+                @apply --kano-tooltip-caret;
+            }
+            :host([position="top"]) .tooltip .caret-shadow {
+                top: 99%;
+                left: 50%;
+                border-bottom-right-radius: 2px;
+                box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.1);
+                margin-left: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
+            }
+            :host([position="right"]) .tooltip .caret-shadow {
+                top: 50%;
+                right: 99%;
+                border-bottom-left-radius: 2px;
+                box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-right: calc(var(--kano-tooltip-caret-width) / -2);
+            }
+            :host([position="bottom"]) .tooltip .caret-shadow {
+                bottom: 99%;
+                left: 50%;
+                border-top-left-radius: 2px;
+                box-shadow: -4px -4px 4px -4px rgba(0, 0, 0, 0.1);
+                margin-left: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-bottom: calc(var(--kano-tooltip-caret-width) / -2);
+            }
+            :host([position="left"]) .tooltip .caret-shadow {
+                top: 50%;
+                left: 99%;
+                border-top-right-radius: 2px;
+                box-shadow: 2px 0 2px -1px rgba(0, 0, 0, 0.1);
+                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-left: calc(var(--kano-tooltip-caret-width) / -2);
+            }
+            :host.no-animations {
+                animation: none;
+                transition: none;
+            }
+        </style>
         <div class$="tooltip [[position]]" id="tooltip">
             <div class="caret-shadow" hidden$="{{caretHidden(position)}}"></div>
             <slot></slot>
