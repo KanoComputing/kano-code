@@ -48,16 +48,16 @@ pipeline {
                     if (env.BRANCH_NAME == "jenkins") {
                         echo 'deploy skipped'
                     } else if (env.BRANCH_NAME == "prod") {
-                        kart("production", false)
+                        deploy("production", false)
 
                         // Rebuild the config of the index with the kit's target env
                         env.TARGET = "osonline"
                         sh "gulp copy-index"
-                        kart("production-kit", false)
+                        deploy("production-kit", false)
                     } else if (env.BRANCH_NAME == "rc") {
-                        kart("rc", true)
+                        deploy("rc", true)
                     } else if (env.NODE_ENV=="staging") {
-                        kart("staging", true)
+                        deploy("staging", true)
 
                         sh "gulp doc"
                         sh "kart archive ./www-doc -a releases.kano.me -r . --name kano-code-doc --channel main --release"
@@ -105,7 +105,7 @@ def run_tests () {
     sh "rm -rf www test-results"
 }
 
-def kart(branch, release) {
+def deploy(branch, release) {
     def cmd = "kart archive ./www -a releases.kano.me -r . --channel ${branch}"
 
     if (release) {
