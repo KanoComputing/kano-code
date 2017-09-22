@@ -452,11 +452,13 @@
             if (this.remix) {
                 cats = Kano.MakeApps.Blockly.categories;
             } else {
-                this.scene.modules.forEach(id => {
+                cats.events = Object.assign({}, Kano.MakeApps.Blockly.categories.events);
+                Object.keys(Kano.MakeApps.Blockly.categories).filter(key => {
+                    return this.scene.modules.indexOf(key) >= 0;
+                }).forEach(id => {
                     // Clone the object, because we might change its blocks
                     cats[id] = Object.assign({}, Kano.MakeApps.Blockly.categories[id]);
                 });
-                cats.events = Object.assign({}, Kano.MakeApps.Blockly.categories.events);
 
                 // Do not filter blocks if the list is not defined
                 if (this.scene.filterBlocks) {
