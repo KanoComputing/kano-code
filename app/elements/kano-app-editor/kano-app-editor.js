@@ -329,12 +329,7 @@ Polymer({
     _dialogConfirmedReset () {
         this.set('addedParts', []);
         this.set('code', this._formatCode({}));
-        this.set('background', {
-            name: 'My app',
-            userStyle: {
-                background: '#ffffff'
-            }
-        });
+        this.set('background', this.properties.background.value());
         this.fire('tracking-event', {
             name: 'workspace_reset_dialog_confirmed'
         });
@@ -484,7 +479,9 @@ Polymer({
         Kano.MakeApps.Utils.updatePartsColors(this.addedParts);
         this.$['root-view'].computeBlocks();
         this.set('code', savedApp.code);
-        this.set('background', savedApp.background);
+
+        // If there is no background, fall back to the default value
+        this.set('background', savedApp.background ? savedApp.background : this.properties.background.value());
         this.unsavedChanges = false;
     },
     _formatCode (code) {
@@ -774,7 +771,8 @@ Polymer({
             if (!draggable.model) {
                 return;
             }
-            restrictEl = draggable.model.restrict === 'workspace' ? this.$.workspace.getViewport().getRestrictElement() : this.$['workspace-panel'];
+            restrictEl = draggable.model.restrict === 'workspace' ?
+                this.$.workspace.getViewport().getRestrictElement() : this.$['workspace-panel'];
             interact(draggable).draggable({
                 onmove: this.getDragMoveListener(true),
                 onend: (e) => {

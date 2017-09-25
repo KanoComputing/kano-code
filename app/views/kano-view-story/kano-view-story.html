@@ -331,6 +331,7 @@
             }
 
             if (this.story.next) {
+                window.history.pushState(null, null, `/story/${this.story}`);
                 page.redirect(`/story/${this.story.next}`);
             }
         },

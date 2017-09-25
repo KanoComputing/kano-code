@@ -19,12 +19,28 @@
             this._onMouseMove = this._onMouseMove.bind(this);
             this._onMouseDown = this._onMouseDown.bind(this);
             this._onMouseUp = this._onMouseUp.bind(this);
+            this._onResize = this._onResize.bind(this);
             this.mouseX = 0;
             this.mouseY = 0;
             this.mouseDeltaX = 0;
             this.mouseDeltaY = 0;
             this.listeners = [];
             this._imageCache = {};
+            window.addEventListener('resize', this._onResize);
+            this._onResize();
+        },
+        detached () {
+            window.removeEventListener('resize', this._onResize);
+            this._removeMouseListeners();
+        },
+        _removeMouseListeners () {
+            this.listeners.forEach(listener => {
+                this.removeEventListener(listener.eventName, listener.cb);
+            });
+            this.listeners = [];
+        },
+        _onResize () {
+            this.workspaceRect = this.workspace.getBoundingClientRect();
         },
         start () {
             this.workspace.addEventListener('mousemove', this._onMouseMove);
@@ -37,10 +53,7 @@
             this.workspace.removeEventListener('mousedown', this._onMouseDown);
             this.workspace.removeEventListener('mouseup', this._onMouseUp);
 
-            this.listeners.forEach(listener => {
-                this.removeEventListener(listener.eventName, listener.cb);
-            });
-            this.listeners = [];
+            this._removeMouseListeners();
         },
         on (type, cb) {
             let eventName = `mouse-${type}`;
@@ -48,7 +61,7 @@
             this.listeners.push({ eventName, cb });
         },
         _onMouseMove (e) {
-            let rect = this.workspace.getBoundingClientRect(),
+            let rect = this.workspaceRect,
                 scalingFactor = rect.width / this.workspace.width,
                 x, y;
 

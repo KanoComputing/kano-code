@@ -13,41 +13,45 @@
                 background: var(--kano-blockly-toolbox-background, white);
                 overflow-y: auto;
                 @apply --kano-blockly-toolbox;
-                /* Promoto to it's own layer is it is a prime element */
+                /* Promote layer as a prime element */
                 transform: translateZ(0);
             }
             :host([hidden]) {
                 display: none !important;
             }
-            .category {
-                @apply --layout-horizontal;
-                @apply --layout-center;
-                padding-left: 12px;
-                padding-right: 22px;
+            button.category {
+                display: block;
                 width: 100%;
                 background: transparent;
                 color: var(--kano-blockly-toolbox-color, black);
-                border: 0;
-                margin-right: 12px;
+                text-align: left;
                 font-family: var(--font-body, Arial);
                 font-size: 16px;
                 font-weight: bold;
+                border: 0;
                 cursor: pointer;
+                padding: 0;
+                padding: 2px 32px 3px 12px;
                 transition: border-color linear 100ms;
+
             }
-            .category:hover {
+            button.category>* {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            button.category:hover {
                 background-color: var(--kano-blockly-toolbox-selected-color, #f2f2f2);;
             }
             .separator {
                 height: 16px;
             }
-            .category>* {
+            button.category>* {
                 pointer-events: none;
             }
-            .category.selected {
+            button.category.selected {
                 background-color: var(--kano-blockly-toolbox-selected-color, #f2f2f2);
             }
-            .category:focus {
+            button.category:focus {
                 outline: none;
             }
             @keyframes fade-in {
@@ -57,6 +61,10 @@
                 to {
                     opacity: 1;
                 }
+            }
+            .category-label {
+                line-height: 24px;
+                margin: 7px 0 6px;
             }
             #flyout {
                 position: absolute;
@@ -68,18 +76,17 @@
                 display: none;
                 margin-left: 12px;
             }
-            .category.selected .color {
+            button.category.selected .color {
                 box-shadow: 0 0 0 1px var(--kano-blockly-toolbox-selected-color, #f2f2f2),
                             0 0 0 2px var(--selected-color, black);
             }
             .color {
                 width: 12px;
                 height: 12px;
-                margin: 12px;
-                margin-left: 2px;
                 border-radius: 50%;
                 box-shadow: none;
                 transition: box-shadow linear 150ms;
+                margin: 0 8px 0 2px;
             }
             :host([opened]) {
                 @apply --kano-blockly-toolbox-opened;
@@ -95,11 +102,6 @@
                 height: 100%;
                 background: inherit;
                 display: none;
-            }
-            /* SAFARIX to center the label */
-            .category-label {
-                display: flex;
-                align-items: center;
             }
         </style>
         <kano-blockly-flyout id="flyout"
