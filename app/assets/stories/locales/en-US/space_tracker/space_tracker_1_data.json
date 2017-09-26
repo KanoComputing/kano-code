@@ -8,7 +8,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "This app needs a map<br />and the Space Station data parts"
+                "text": "This app needs a map and the Space Station data parts. Click 'Add Part' to begin."
             }
         },
         {
@@ -35,7 +35,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "We also need a data part"
+                "text": "You also need a data part. Open the 'Add Part' menu again."
             }
         },
         {
@@ -49,7 +49,7 @@
                 "target": "parts-panel-iss"
             },
             "tooltips": [{
-				"text": "Drag the ISS (International Space Station)<br />data in too",
+				"text": "Click the ISS (International Space Station) part.",
 				"position": "top",
 				"location": "parts-panel"
             }]
@@ -66,7 +66,7 @@
                 }
             },
             "banner": {
-                "text": "We want to grab data every second.<br>Open the Control tray so we can get a <em>loop</em>"
+                "text": "We want to grab some data from NASA every second.<br>Open the Control tray to find a loop block"
             }
         },
         {
@@ -84,7 +84,7 @@
                 }
             },
             "banner": {
-                "text": "Drag in this <em>loop</em>"
+                "text": "Drag in the <em>every 1 second</em> loop."
             }
         },
         {
@@ -115,7 +115,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it here so the loop is triggered when the app starts"
+                "text": "Connect it inside the event block so it runs when the app starts."
             }
         },
         {
@@ -134,7 +134,7 @@
                 }
             },
             "banner": {
-                "text": "Next we need to refresh the data<br>The code to control it is in the ISS tray"
+                "text": "Next we need to refresh the data. The code to control it is in the ISS tray."
             }
         },
         {
@@ -156,7 +156,7 @@
                 }
             },
             "banner": {
-                "text": "Drag in this block to refresh the data"
+                "text": "Grab the <em>refresh data</em> block."
             }
         },
         {
@@ -185,12 +185,12 @@
                 }
             },
             "banner": {
-                "text": "Drop it inside the loop so it runs every second"
+                "text": "Connect it inside the loop so that it runs every second."
             }
         },
         {
             "banner": {
-                "text": "You've made the data refresh every second.",
+                "text": "Now new data is being sent from NASA to your computer <em>every second</em>!",
                 "next_button": true
             }
         },
@@ -206,7 +206,7 @@
                 }
             },
             "banner": {
-                "text": "Finally let's update the map when the data is updated<br>Open the Events tray"
+                "text": "Finally let’s update the map when the data is updated.<br>Open the Events tray."
             }
         },
         {
@@ -224,7 +224,7 @@
                 }
             },
             "banner": {
-                "text": "Drag in this block to trigger the map update"
+                "text": "Grab an <em>app starts</em> event."
             }
         },
         {
@@ -254,7 +254,7 @@
                 }
             },
             "banner": {
-                "text": "We want it to trigger when the data is updated<br>Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>ISS updated</span></kano-value-preview>"
+                "text": "Now you’ll use a new kind of event: a <em>data event</em>. We want some code to run when new data comes back from NASA! Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>ISS updated</span></kano-value-preview>."
             }
         },
         {
@@ -295,7 +295,7 @@
                 }
             },
             "banner": {
-                "text": "Grab this block"
+                "text": "Grab the <em>marker</em> block."
             }
         },
         {
@@ -324,7 +324,7 @@
                 }
             },
             "banner": {
-                "text": "Drop it inside the event so it triggers<br>when the latest data arrives"
+                "text": "Connect it inside the event so it triggers every time the data updates."
             }
         },
         {
@@ -343,7 +343,7 @@
                 }
             },
             "banner": {
-                "text": "Next we want to move it to the ISS's position<br>Let's grab the data from the ISS tray"
+                "text": "Now to connect it to the International Space Station's position. Open the ISS tray."
             }
         },
         {
@@ -365,7 +365,7 @@
                 }
             },
             "banner": {
-                "text": "Drag out the latitude block"
+                "text": "Grab the <em>latitude</em> block."
             }
         },
         {
@@ -394,7 +394,7 @@
                 }
             },
             "banner": {
-                "text": "Move the map's latitude to the ISS's latitude"
+                "text": "Connect it to the map <em>lat</em> input."
             }
         },
         {
@@ -413,7 +413,7 @@
                 }
             },
             "banner": {
-                "text": "Open the ISS tray again"
+                "text": "Open the ISS tray again."
             }
         },
         {
@@ -435,7 +435,7 @@
                 }
             },
             "banner": {
-                "text": "Let’s grab another of those blocks: <kano-blockly-block type=\"part_1#get_value\"></kano-blockly-block>"
+                "text": "Grab another of the <em>latitude</em> blocks."
             }
         },
         {
@@ -464,7 +464,7 @@
                 }
             },
             "banner": {
-                "text": "Plug it in here"
+                "text": "Plug it into the map <em>long</em> input."
             }
         },
         {
@@ -482,12 +482,18 @@
                 }
             },
             "banner": {
-                "text": "Change <kano-value-preview><span>latitude</span></kano-value-preview> to <kano-value-preview><span>longitude</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>latitude</span></kano-value-preview> to <kano-value-preview><span>longitude</span></kano-value-preview>."
             }
         },
         {
             "banner": {
-                "text": "<strong>You did it!</strong> The space station is 400km above the marker.<br />You can make the map bigger by clicking 'edit layout', then clicking on the map.",
+                "text": "<strong>You did it!</strong> The space station is 400km above the marker.<br />",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Now see if you can make the map bigger by clicking on 'Map' in the parts list (under your creation).",
                 "next_button": true
             }
         }

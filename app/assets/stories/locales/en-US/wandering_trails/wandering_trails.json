@@ -1,18 +1,13 @@
 {
     "steps": [
         {
-            "validation": {
-                "blockly": {
-                    "open-flyout": "control"
-                }
+            "banner": {
+                "text": "In this challenge, you’re going to code some squares that animate themselves using random directions. Ready?",
+                "next_button": true
             },
             "beacon": {
-                "target": {
-                    "category": "control"
-                }
-            },
-            "banner": {
-                "text": "First set up a loop.<br />The block is in here."
+                "target": "banner-button",
+                "offset": 0
             }
         },
         {
@@ -30,7 +25,7 @@
                 }
             },
             "banner": {
-                "text": "<kano-blockly-block type=\"every_x_seconds\"></kano-blockly-block><br />This block repeats code for you. Grab it."
+                "text": "Like all animations, we need a loop. Grab the <em>every 1 second</em> block."
             }
         },
         {
@@ -64,7 +59,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to your event block"
+                "text": "Connect it inside your event block."
             }
         },
         {
@@ -86,7 +81,7 @@
                 }
             },
             "banner": {
-                "text": "Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>milliseconds</span></kano-value-preview><br />to make your code repeat really fast."
+                "text": "Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>milliseconds</span></kano-value-preview> >to make your code repeat really fast."
             }
         },
         {
@@ -101,7 +96,7 @@
                 }
             },
             "banner": {
-                "text": "Open the drawing commands"
+                "text": "Open the drawing commands."
             }
         },
         {
@@ -119,7 +114,7 @@
                 }
             },
             "banner": {
-                "text": "<kano-blockly-block type=\"normal#move\"></kano-blockly-block><br />This block moves the pen by a set number of pixels.<br />You can use it to make awesome drawings. Grab it."
+                "text": "Grab the <em>move by</em> block. It moves the pen by a set number of pixels. You can use it to make awesome drawings. Grab it."
             }
         },
         {
@@ -153,7 +148,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it here"
+                "text": "Connect it here inside your code loop."
             }
         },
         {
@@ -168,7 +163,7 @@
                 }
             },
             "banner": {
-                "text": "Open the math tray"
+                "text": "Open the math tray."
             }
         },
         {
@@ -186,7 +181,7 @@
                 }
             },
             "banner": {
-                "text": "<kano-blockly-block type=\"math_random\"></kano-blockly-block><br />A very useful block, this picks a random number. Grab it!"
+                "text": "This is a very useful block: it picks a random number. Grab it!"
             }
         },
         {
@@ -220,7 +215,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to 'move by x'"
+                "text": "Connect it to the <em>move by</em> x input."
             }
         },
         {
@@ -244,7 +239,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>-10</span></kano-value-preview>"
+                "text": "Change the first number from <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>-10</span></kano-value-preview>"
             }
         },
         {
@@ -259,7 +254,7 @@
                 }
             },
             "banner": {
-                "text": "Get another random block"
+                "text": "Get another random block from the math tray."
             }
         },
         {
@@ -308,7 +303,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to 'move by y'"
+                "text": "Connect it to <em>move by</em> y input."
             }
         },
         {
@@ -332,7 +327,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>-10</span></kano-value-preview>"
+                "text": "Change the first number from <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>-10</span></kano-value-preview> again."
             }
         },
         {
@@ -347,7 +342,7 @@
                 }
             },
             "banner": {
-                "text": "Back to the drawing tray"
+                "text": "Back to the drawing tray."
             }
         },
         {
@@ -365,7 +360,7 @@
                 }
             },
             "banner": {
-                "text": "<kano-blockly-block type=\"normal#stroke\"></kano-blockly-block><br />Grab one of these to change the outline of the shapes you draw."
+                "text": "Grab an <em>stroke</em> block to change the outline of the shapes you draw."
             }
         },
         {
@@ -397,7 +392,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it under the move block"
+                "text": "Connect it under the <em>move by</em> block."
             }
         },
         {
@@ -412,7 +407,7 @@
                 }
             },
             "banner": {
-                "text": "Next, open the Color tray"
+                "text": "Next, open the Color tray."
             }
         },
         {
@@ -430,7 +425,7 @@
                 }
             },
             "banner": {
-                "text": "Grab one of these blocks<br /><kano-blockly-block type=\"random_colour\"></kano-blockly-block><br />Can you guess what it does?"
+                "text": "Grab a <kano-blockly-block type=\"random_colour\"></kano-blockly-block> block."
             }
         },
         {
@@ -488,7 +483,7 @@
                 }
             },
             "banner": {
-                "text": "Change the stroke thickness to <kano-value-preview><span>3</span></kano-value-preview>"
+                "text": "Change the stroke thickness to <kano-value-preview><span>3</span></kano-value-preview>."
             }
         },
         {
@@ -503,7 +498,7 @@
                 }
             },
             "banner": {
-                "text": "Open this tray"
+                "text": "Open the draw tray."
             }
         },
         {
@@ -521,7 +516,7 @@
                 }
             },
             "banner": {
-                "text": "Drag in a <kano-blockly-block type=\"normal#square\"></kano-blockly-block> block"
+                "text": "Drag in a <kano-blockly-block type=\"normal#square\"></kano-blockly-block>&nbsp; block."
             }
         },
         {
@@ -553,7 +548,17 @@
                 }
             },
             "banner": {
-                "text": "Connect it here"
+                "text": "Connect it under your <em>stroke</em> block."
+            }
+        },
+        {
+            "banner": {
+                "text": "Woah! Your square is moving all by itself. Every frame, it moves by up to ten pixels in any direction!",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
             }
         },
         {
@@ -617,7 +622,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to the square size"
+                "text": "Plug it into the square size parameter."
             }
         },
         {
@@ -628,7 +633,7 @@
                             "shadow": "MAX",
                             "id": "block_7"
                         },
-                        "value": "22"
+                        "value": "20"
                     }
                 }
             },
@@ -641,12 +646,18 @@
                 }
             },
             "banner": {
-                "text": "Change the max square size to <kano-value-preview><span>22</span></kano-value-preview>"
+                "text": "Change the max square size to <kano-value-preview><span>20</span></kano-value-preview>"
             }
         },
         {
             "banner": {
                 "text": "Crazy trails! A new square is being drawn every millisecond.<br />Try changing the numbers to see what happens.",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Nicely done! You’ve completed this challenge set.",
                 "next_button": true
             }
         }

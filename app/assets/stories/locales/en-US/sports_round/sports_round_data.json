@@ -8,7 +8,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "This app needs two parts:<br />scrolling text and sports news data"
+                "text": "This app needs two parts: sports news data and a scroller to show the news! Click 'Add Part'."
             }
         },
         {
@@ -35,7 +35,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "Now let's add the scrolling text"
+                "text": "Now let's add the scroller."
             }
         },
         {
@@ -49,7 +49,7 @@
                 "target": "parts-panel-scrolling-text"
             },
             "tooltips": [{
-                "text": "Add a scroller too",
+                "text": "Click on 'Scroller'.",
                 "position": "top",
                 "location": "parts-panel"
             }]
@@ -76,9 +76,15 @@
                 }
             },
             "banner": {
-                "text": "This is your event block.<br />Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Sports updated</span></kano-value-preview>"
+                "text": "This is your event block.<br />Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Sports updated</span></kano-value-preview>."
             }
         },
+        {
+            "banner": {
+                "text": "That's a small but important change to your code! Now any code inside this block will run every time the sports data is updated.",
+                "next_button": true
+            }
+        }
         {
             "validation": {
                 "blockly": {
@@ -95,7 +101,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Sports tray"
+                "text": "Open the Sports tray."
             }
         },
         {
@@ -117,7 +123,7 @@
                 }
             },
             "banner": {
-                "text": "Grab this block"
+                "text": "Grab the <em>for each item in sports</em> block."
             }
         },
         {
@@ -167,7 +173,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Scroller tray"
+                "text": "Open the Scroller tray."
             }
         },
         {
@@ -189,7 +195,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"part_1#scroll\"></kano-blockly-block> block onto your code space"
+                "text": "Drag the <em>scroll</em> block into your code."
             }
         },
         {
@@ -218,7 +224,7 @@
                 }
             },
             "banner": {
-                "text": "Connect the blocks"
+                "text": "Connect it inside the <em>for each item</em> loop."
             }
         },
         {
@@ -237,7 +243,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Sports tray again"
+                "text": "Open the Sports tray again."
             }
         },
         {
@@ -259,7 +265,7 @@
                 }
             },
             "banner": {
-                "text": "Drag out the <kano-blockly-block type=\"part_0#get_value_at\"></kano-blockly-block> block"
+                "text": "Grab the <em>Sports title</em> block."
             }
         },
         {
@@ -288,12 +294,18 @@
                 }
             },
             "banner": {
-                "text": "Connect the blocks"
+                "text": "Connect it to the scroller <em>scroll</em> block."
             }
         },
         {
             "banner": {
-                "text": "<strong>You did it!</strong><br />Your text scroller shows the latest sports news.<br /> Click the 'edit layout' button to change the layout.",
+                "text": "Nice work! This clever loop goes through all the sports headlines and queues them up to scroll across the page!",
+                "next_button": true
+            }
+        }
+        {
+            "banner": {
+                "text": "Now your text scroller shows the latest sports news, but it could look a lot better. Click 'Scroller' in the Parts list (under your creation) and change the style settings.",
                 "next_button": true
             }
         }

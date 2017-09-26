@@ -1,6 +1,16 @@
 {
     "steps": [
         {
+            "banner": {
+                "text": "Let’s make an app that controls a map.",
+                "next_button": true
+            },
+            "beacon": {
+                "target": "banner-button",
+                "offset": 0
+            }
+        },
+        {
             "validation": {
                 "open-parts": true
             },
@@ -8,7 +18,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "Let's start with a map and a button.<br>Click here to find them."
+                "text": "Let’s start with a map and a button. Click 'Add Part'."
             }
         },
         {
@@ -35,7 +45,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "Open this menu again."
+                "text": "Click Add Part again."
             }
         },
         {
@@ -49,7 +59,7 @@
                 "target": "parts-panel-button"
             },
             "tooltips": [{
-                "text": "Add a Button to your app",
+                "text": "Add a Button this time",
                 "position": "top",
                 "location": "parts-panel"
             }]
@@ -66,7 +76,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray."
             }
         },
         {
@@ -84,7 +94,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
+                "text": "Grab the <em>set item</em> block."
             }
         },
         {
@@ -118,7 +128,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it inside the <em>app starts</em> event."
             }
         },
         {
@@ -140,7 +150,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>. Lat is short for 'latitude'."
             }
         },
         {
@@ -155,7 +165,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray again."
             }
         },
         {
@@ -173,7 +183,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block onto your code space"
+                "text": "Grab the <kano-blockly-block type=\"math_number\"></kano-blockly-block> block."
             }
         },
         {
@@ -207,7 +217,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to your lat variable"
+                "text": "Connect it to your lat variable."
             }
         },
         {
@@ -229,7 +239,7 @@
                 }
             },
             "banner": {
-                "text": "Set the lat value to <kano-value-preview><span>51</span></kano-value-preview>"
+                "text": "Set the value of your lat value to <kano-value-preview><span>51</span></kano-value-preview>."
             }
         },
         {
@@ -244,7 +254,7 @@
                 }
             },
             "banner": {
-                "text": "Open 'variables' again"
+                "text": "Open 'variables' again."
             }
         },
         {
@@ -262,7 +272,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"variables_set\"></kano-blockly-block> block onto your code space"
+                "text": "Grab another set variable block."
             }
         },
         {
@@ -294,7 +304,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it under this block"
+                "text": "Connect it under the other block."
             }
         },
         {
@@ -316,7 +326,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>. It stands for longitude."
             }
         },
         {
@@ -331,7 +341,7 @@
                 }
             },
             "banner": {
-                "text": "One more time."
+                "text": "Go to the variables tray again."
             }
         },
         {
@@ -380,7 +390,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to your 'long' variable"
+                "text": "Connect it to your 'long' variable."
             }
         },
         {
@@ -399,7 +409,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Map tray"
+                "text": "Open the Map tray."
             }
         },
         {
@@ -421,7 +431,7 @@
                 }
             },
             "banner": {
-                "text": "This block moves the marker<br />on the map. Grab it."
+                "text": "This block moves the marker on the map. Grab it."
             }
         },
         {
@@ -453,7 +463,7 @@
                 }
             },
             "banner": {
-                "text": "Connect beneath your variables"
+                "text": "Connect it beneath your variables."
             }
         },
         {
@@ -468,7 +478,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray."
             }
         },
         {
@@ -486,7 +496,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
+                "text": "Grab the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block."
             }
         },
         {
@@ -520,7 +530,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to the first map input block"
+                "text": "Connect it to the first map input block (lat)."
             }
         },
         {
@@ -542,7 +552,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>."
             }
         },
         {
@@ -557,7 +567,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray."
             }
         },
         {
@@ -606,7 +616,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to the second map input"
+                "text": "Connect it to the second map input."
             }
         },
         {
@@ -628,7 +638,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>."
             }
         },
         {
@@ -643,7 +653,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Events tray"
+                "text": "Open the Events tray."
             }
         },
         {
@@ -675,7 +685,7 @@
                 "angle": 200
             },
             "banner": {
-                "text": "Drop the block anywhere on your code space"
+                "text": "Drop the block anywhere on your code space."
             }
         },
         {
@@ -697,7 +707,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>Button is clicked</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Button is clicked</span></kano-value-preview>."
             }
         },
         {
@@ -712,7 +722,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Open the Math tray."
             }
         },
         {
@@ -728,6 +738,9 @@
                 "target": {
                     "flyout_block": "unary"
                 }
+            },
+            "banner": {
+                "text": "Grab this math block."
             }
         },
         {
@@ -761,7 +774,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it the button clicked event"
+                "text": "Connect it inside the button clicked event."
             }
         },
         {
@@ -783,7 +796,7 @@
                 }
             },
             "banner": {
-                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>lat</span></kano-value-preview>"
+                "text": "Change the variable from <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>lat</span></kano-value-preview>."
             }
         },
         {
@@ -807,7 +820,7 @@
                 }
             },
             "banner": {
-                "text": "Change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>0.3</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>0.3</span></kano-value-preview>."
             }
         },
         {
@@ -826,7 +839,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Map tray"
+                "text": "Open the Map tray."
             }
         },
         {
@@ -848,7 +861,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"part_0#show_marker\"></kano-blockly-block> block onto your code space"
+                "text": "Grab the <em>move marker to</em> block."
             }
         },
         {
@@ -880,7 +893,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it under this block"
+                "text": "Connect it under this block."
             }
         },
         {
@@ -895,7 +908,7 @@
                 }
             },
             "banner": {
-                "text": "Variables again"
+                "text": "Variables again."
             }
         },
         {
@@ -944,7 +957,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to first map input"
+                "text": "Same as before. Connect it to first map input."
             }
         },
         {
@@ -966,7 +979,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>."
             }
         },
         {
@@ -981,7 +994,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray."
             }
         },
         {
@@ -999,7 +1012,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
+                "text": "Grab another <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block."
             }
         },
         {
@@ -1033,7 +1046,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the longitude input."
             }
         },
         {
@@ -1055,12 +1068,12 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>long</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>long</span></kano-value-preview>."
             }
         },
         {
             "banner": {
-                "text": "Nice work! Click the buttons to move<br />the marker up the map. Next we'll add another button to move it right.",
+                "text": "Nice work! Click the button in the app to try it out. Next add another button to move it right.",
                 "next_button": true
             }
         },
@@ -1072,7 +1085,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "Open the parts tray again"
+                "text": "Open the parts tray again."
             }
         },
         {
@@ -1093,17 +1106,6 @@
         },
         {
             "validation": {
-                "close-parts": true
-            },
-            "beacon": {
-                "target": "add-part-button"
-            },
-            "banner": {
-                "text": "Close"
-            }
-        },
-        {
-            "validation": {
                 "blockly": {
                     "open-flyout": "events"
                 }
@@ -1114,7 +1116,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Events tray"
+                "text": "Open the Events tray."
             }
         },
         {
@@ -1132,7 +1134,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"part_event\"></kano-blockly-block> block onto your code space"
+                "text": "Grab an event block."
             }
         },
         {
@@ -1149,7 +1151,7 @@
                 "angle": 200
             },
             "banner": {
-                "text": "Drop the block anywhere on your code space"
+                "text": "Drop the block anywhere on your code space."
             }
         },
         {
@@ -1171,7 +1173,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>Button 2 is clicked</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>app starts</span></kano-value-preview> to <kano-value-preview><span>Button 2 is clicked</span></kano-value-preview>."
             }
         },
         {
@@ -1186,7 +1188,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Open the Math tray."
             }
         },
         {
@@ -1202,6 +1204,9 @@
                 "target": {
                     "flyout_block": "unary"
                 }
+            },
+            "banner": {
+                "text": "Grab the block."
             }
         },
         {
@@ -1235,7 +1240,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it inside the <em>button 2 is clicked</em> event."
             }
         },
         {
@@ -1257,7 +1262,7 @@
                 }
             },
             "banner": {
-                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>long</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>item</span></kano-value-preview> to <kano-value-preview><span>long</span></kano-value-preview>."
             }
         },
         {
@@ -1281,7 +1286,7 @@
                 }
             },
             "banner": {
-                "text": "Change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>0.3</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>1</span></kano-value-preview> to <kano-value-preview><span>0.3</span></kano-value-preview>."
             }
         },
         {
@@ -1300,7 +1305,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Map tray"
+                "text": "Open the Map tray."
             }
         },
         {
@@ -1320,6 +1325,9 @@
                         "type": "show_marker"
                     }
                 }
+            },
+            "banner": {
+                "text": "Grab the <em>move marker</em> block."
             }
         },
         {
@@ -1351,7 +1359,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect the blocks."
             }
         },
         {
@@ -1366,7 +1374,7 @@
                 }
             },
             "banner": {
-                "text": "Open the Variables tray"
+                "text": "Open the Variables tray."
             }
         },
         {
@@ -1382,6 +1390,9 @@
                 "target": {
                     "flyout_block": "variables_get"
                 }
+            },
+            "banner": {
+                "text": "Grab the variable block."
             }
         },
         {
@@ -1415,7 +1426,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to the first map input"
+                "text": "Connect it to the first map input."
             }
         },
         {
@@ -1437,7 +1448,7 @@
                 }
             },
             "banner": {
-                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>"
+                "text": "Change to <kano-value-preview><span>lat</span></kano-value-preview>."
             }
         },
         {
@@ -1452,7 +1463,7 @@
                 }
             },
             "banner": {
-                "text": "One last time"
+                "text": "One last time... Open the variables tray again."
             }
         },
         {
@@ -1470,7 +1481,7 @@
                 }
             },
             "banner": {
-                "text": "Drag the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block onto your code space"
+                "text": "Grab the <kano-blockly-block type=\"variables_get\"></kano-blockly-block> block."
             }
         },
         {
@@ -1504,7 +1515,7 @@
                 }
             },
             "banner": {
-                "text": "Connect it to this block"
+                "text": "Connect it to the <em>long</em> input."
             }
         },
         {
@@ -1531,7 +1542,13 @@
         },
         {
             "banner": {
-                "text": "Challenge complete! Now you can move up and right.<br />Complete your app by adding two<br />more buttons to move left and down!",
+                "text": "Challenge complete! Now you can move up and right with the buttons. Complete your app by adding two more buttons to move left and down!",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "The map is a little small. Click 'map' in the parts list to open the editor.",
                 "next_button": true
             }
         }

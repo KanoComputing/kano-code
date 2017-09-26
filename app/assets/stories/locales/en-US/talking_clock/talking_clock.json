@@ -8,7 +8,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "You're going to use code to connect a microphone, a speaker, and a clock.<br/>Click on **ADD PARTS** and drag them in."
+                "text": "A talking clock! Hrm... You’re going to need ta microphone, a speaker, and a clock. Click on <em>Add Part</em>."
             }
         },
         {
@@ -22,7 +22,7 @@
                 "target": "parts-panel-microphone"
             },
             "tooltips": [{
-                "text": "Add the mic onto your app first",
+                "text": "Add the mic first",
                 "position": "top",
                 "location": "parts-panel"
             }]
@@ -35,7 +35,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "Now for the speaker"
+                "text": "Now for the speaker. Click <em>Add Part</em> again."
             }
         },
         {
@@ -62,7 +62,7 @@
                 "target": "add-part-button"
             },
             "banner": {
-                "text": "Now for the clock"
+                "text": "Now for the clock. Click <em>Add Part</em> again."
             }
         },
         {
@@ -76,21 +76,10 @@
                 "target": "parts-panel-clock"
             },
             "tooltips": [{
-                "text": "Finally, add a clock",
+                "text": "Click the clock part",
                 "position": "top",
                 "location": "parts-panel"
             }]
-        },
-        {
-            "validation": {
-                "close-parts": true
-            },
-            "beacon": {
-                "target": "add-part-button"
-            },
-            "banner": {
-                "text": "Close the drawer"
-            }
         },
         {
             "validation": {
@@ -108,7 +97,7 @@
                 }
             },
             "banner": {
-                "text": "We want to make the computer talk when we clap<br>Open the Mic tray"
+                "text": "When you clap, your creation will tell you the time. Open the Mic tray."
             }
         },
         {
@@ -130,7 +119,7 @@
                 }
             },
             "banner": {
-                "text": "This block will trigger some commands<br>when there is a loud noise"
+                "text": "This block will trigger some code when there is a loud noise."
             }
         },
         {
@@ -156,7 +145,7 @@
                 "target": "DO"
             },
             "banner": {
-                "text": "Drop it there"
+                "text": "Connect it inside the <em>app start</em> event block."
             }
         },
         {
@@ -180,7 +169,7 @@
                 }
             },
             "banner": {
-                "text": "Make sure only super loud sounds trigger it...<br>Change to <kano-value-preview><span>90</span></kano-value-preview>"
+                "text": "Make sure only loud sounds (like clapping) trigger your clock... Change the volume <em>threshold</em> from 70 to <kano-value-preview><span>90</span></kano-value-preview>"
             }
         },
         {
@@ -199,7 +188,7 @@
                 }
             },
             "banner": {
-                "text": "Now to tell the computer to speak!<br>Open the Speaker tray"
+                "text": "Now to tell the computer to speak!<br>Open the Speaker tray."
             }
         },
         {
@@ -255,7 +244,7 @@
                 }
             },
             "banner": {
-                "text": "Drop inside of here so that it runs after we clap"
+                "text": "Connect it inside the mic trigger so that it runs whenever you clap."
             }
         },
         {
@@ -274,7 +263,7 @@
                 }
             },
             "banner": {
-                "text": "Now to get the time<br>Open the Clock tray"
+                "text": "Now to get the time. Open the Clock tray."
             }
         },
         {
@@ -296,7 +285,7 @@
                 }
             },
             "banner": {
-                "text": "This grabs data from the clock"
+                "text": "This grabs data from the clock part."
             }
         },
         {
@@ -330,7 +319,7 @@
                 }
             },
             "banner": {
-                "text": "Drop it here to tell the computer what to say"
+                "text": "Connect it to the speaker <em>say</em> block to tell the computer what to say."
             }
         },
         {
@@ -352,12 +341,18 @@
                 }
             },
             "banner": {
-                "text": "Let's use the time not the date...<br>Change to <kano-value-preview><span>time</span></kano-value-preview>"
+                "text": "Let's use the time not the date... Change Date to <kano-value-preview><span>Time</span></kano-value-preview>."
             }
         },
         {
             "banner": {
-                "text": "Clap your hands!",
+                "text": "Clap your hands to try it out!",
+                "next_button": true
+            }
+        },
+        {
+            "banner": {
+                "text": "Did you hear the time? Now you know how to make your computer talk when you clap!",
                 "next_button": true
             }
         }
