@@ -73,7 +73,6 @@ pipeline {
         }
         always {
             updateGithubCommitStatus('Just testing https://localhost:50000')
-            sleep 20
         }
     }
 
@@ -124,6 +123,7 @@ def updateGithubCommitStatus(message) {
   step([
     $class: 'GitHubCommitStatusSetter',
     reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/KanoComputing/kano-codes"],
+    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: 'continuous-integration/jenkins/pr-merge/checkout'],
     errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
     statusResultSource: [
       $class: 'ConditionalStatusResultSource',
