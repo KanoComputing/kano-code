@@ -94,8 +94,10 @@ pipeline {
 }
 
 def prepare_env () {
-    if (env.BRANCH_NAME=="master" || env.BRANCH_NAME=="jenkins" || env.BRANCH_NAME=="rc") {
+    if (env.BRANCH_NAME=="master" || env.BRANCH_NAME=="jenkins") {
         env.DEV_ENV = "staging"
+    } else if (env.BRANCH_NAME=="rc") {
+        env.DEV_ENV = "rc"
     } else if (env.BRANCH_NAME=="prod") {
         env.DEV_ENV = "production"
     }
