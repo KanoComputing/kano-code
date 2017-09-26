@@ -122,6 +122,7 @@ def updateGithubCommitStatus(message) {
  
   step([
     $class: 'GitHubCommitStatusSetter',
+    reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/KanoComputing/kano-codes"],
     errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
     statusResultSource: [
       $class: 'ConditionalStatusResultSource',
