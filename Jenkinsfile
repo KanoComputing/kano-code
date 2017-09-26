@@ -121,15 +121,10 @@ def deploy(branch, release) {
 def updateGithubCommitStatus(message) {
  
   step([
-    $class: 'GitHubCommitStatusSetter',
-    reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/KanoComputing/kano-codes"],
-    contextSource: [$class: "ManuallyEnteredCommitContextSource", context: 'continuous-integration/jenkins/pr-merge/checkout'],
-    errorHandlers: [[$class: 'ShallowAnyErrorHandler']],
-    statusResultSource: [
-      $class: 'ConditionalStatusResultSource',
-      results: [
-        [$class: 'AnyBuildResult', result: 'SUCCESS', state: 'SUCCESS', message: message]
-      ]
-    ]
-  ])
+      $class: "GitHubCommitStatusSetter",
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/KanoComputing/kano-code"],
+      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: 'SUCCESS']] ]
+  ]);
 }
