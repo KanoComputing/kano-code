@@ -72,7 +72,7 @@ pipeline {
             notify_failure_to_committers()
         }
         always {
-            updateGithubCommitStatus('Just testing https://localhost:50000')
+            updateGithubCommitStatus('Just testing')
         }
     }
 
