@@ -73,6 +73,7 @@ pipeline {
         }
         always {
             updateGithubCommitStatus('Just testing https://localhost:50000')
+            sleep 20
         }
     }
 
