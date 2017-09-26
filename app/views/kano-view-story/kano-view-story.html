@@ -211,7 +211,8 @@
             });
         },
         _doDisplayUserReward (hints, gamificationEnabled) {
-            let headers = new Headers(),
+            let sharedStorage = Kano.MakeApps.SharedStorage,
+                headers = new Headers(),
                 flags = Kano.MakeApps.config.getFlags(),
                 fakeGamificationData,
                 payload = {
@@ -243,6 +244,7 @@
                     }
                 })
                 .catch(res => {
+                    sharedStorage.saveProgressEvent(payload);
                     let fakeGamificationData = {
                         'update': {
                             'levels': {
