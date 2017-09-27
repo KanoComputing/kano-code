@@ -11,10 +11,10 @@
             sharedStorage,
             storedProgress = localStorage.getItem('progress') || JSON.stringify({});
         // Just grab the cross-storage instance here so nothing changes.
-        if (Kano.MakeApps.SharedStorage){
-            sharedStorage = Kano.MakeApps.SharedStorage._client
+        if (Kano.MakeApps.SharedStorage) {
+            sharedStorage = Kano.MakeApps.SharedStorage._client;
         }
-        if (!sharedStorage){
+        if (!sharedStorage) {
             throw new Error("Failed to initiate shared storage client.");
         }
         const LOAD_DEBOUNCE_DELAY = 3000;
