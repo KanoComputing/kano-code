@@ -1,0 +1,9 @@
+<link rel="import" href="../../../bower_components/kano-shared-storage-client/kano-shared-storage-client.html">
+<link rel="import" href="../../config/config.html">
+<script>
+    ((Kano) => {
+        let options = {};
+        options.sharedStorageURL = Kano.MakeApps.config.SHARED_STORAGE_URL;
+        Kano.MakeApps.SharedStorage = Kano.MakeApps.SharedStorage || new Kano.KanoSharedStorageClient(options);
+    })(window.Kano = window.Kano || {})
+</script>

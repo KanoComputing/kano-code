@@ -1,7 +1,6 @@
 <script src="../../scripts/util/client.js"></script>
 <link rel="import" href="../../scripts/kano/make-apps/sdk.html">
 <link rel="import" href="../../scripts/config/config.html">
-<link rel="import" href="../../bower_components/kano-shared-storage-client/kano-shared-storage-client.html">
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
@@ -17,11 +16,6 @@
 <link rel="import" href="../behaviors/kano-code-ga-tracking-behavior.html">
 <link rel="import" href="../behaviors/kano-code-tracking-behavior.html">
 <link rel="import" href="../kano-try-chrome/kano-try-chrome.html">
-<script>
-    let options = {};
-    options.sharedStorageURL = Kano.MakeApps.config.SHARED_STORAGE_URL;
-    Kano.MakeApps.SharedStorage = Kano.MakeApps.SharedStorage || new Kano.KanoSharedStorageClient(options);
-</script>
 <link rel="import" href="../../scripts/kano/make-apps/progress.html">
 <!--
 `kano-app` provides the whole Make apps app.
