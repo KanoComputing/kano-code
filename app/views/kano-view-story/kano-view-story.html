@@ -235,7 +235,10 @@
             });
             this._triggerGamificationEngine(payload)
                 .then(res => {
-                    if (gamificationEnabled) {
+                    // FIXME this is a temp hack for release. We want to show the legacy modal until
+                    // new gamification system is not ready.
+                    // TODO remove hint count
+                    if (false && gamificationEnabled) {
                         this._trackRewards(res.update);
                         this.$['reward-modal'].open(res, this.user);
                         this.fire('update-user-progress', res.update);

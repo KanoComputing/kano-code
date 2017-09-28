@@ -107,9 +107,10 @@
                 <h2>[[localize('CHALLENGE_COMPLETED','Challenge Completed')]]</h2>
                 <div class="small-text">
                     [[compliment]] <span hidden$="{{!xp}}">[[localize('XP_EARNED', "You've just earned")]] {{xp}} [[localize('XP','XP')]].</span>
-                    <div hidden$="[[!hints.total]]">
+                    <!-- FIXME Hint count disabled for release -->
+                    <!-- <div hidden$="[[!hints.total]]">
                         [[hintSummary]]
-                    </div>
+                    </div> -->
                 </div>
                 <button class="next" on-tap="close">[[localize('GOT_IT','GOT IT')]]</button>
             </div>
@@ -173,7 +174,8 @@
             };
         },
         open () {
-            this.computeHintSummary();
+            // FIXME Hint count disabled for release
+            // this.computeHintSummary();
             this.$.modal.open();
             this.previouslyOpened = true;
         },
