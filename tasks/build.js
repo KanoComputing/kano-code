@@ -42,6 +42,7 @@ module.exports = (gulp, $) => {
             file.path.indexOf('web-components') !== -1 ||
             file.path.indexOf('lazy-imports') !== -1 ||
             file.path.indexOf('kwc-') !== -1 ||
+            file.path.indexOf('kano-shared-storage-client') !== -1 ||
             file.path.indexOf('Sortable') !== -1) ||
             file.path.indexOf('polymer-sortablejs') !== -1;
         return needTranspile;
