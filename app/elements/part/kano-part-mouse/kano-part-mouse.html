@@ -43,7 +43,6 @@
         },
         _onResize () {
             this.debounce('resize', () => {
-                console.log('resize');
                 this.workspaceRect = this.workspace.getBoundingClientRect();
             }, 100);
         },
