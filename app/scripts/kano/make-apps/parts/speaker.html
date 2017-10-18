@@ -136,10 +136,10 @@
                     };
                 }
             },{
-                block: () => {
+                block: (part) => {
                     return {
                         id: 'speaker_stop',
-                        message0: 'Speaker: stop',
+                        message0: `${part.name}: stop`,
                         previousStatement: null,
                         nextStatement: null
                     };
