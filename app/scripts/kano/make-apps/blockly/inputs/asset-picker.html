@@ -11,6 +11,9 @@
 
     Blockly.FieldAssetPicker.prototype.showEditor_ = function () {
         this.customEl = document.createElement('kc-asset-picker-dialog');
+        this.customEl.updateStyles({
+            '--kc-asset-picker-highlight-color': this.sourceBlock_.getColour()
+        });
         this.customEl.style.maxHeight = '600px';
         this.customEl.style.height = '80vh';
         this.customEl.withBackdrop = true;
@@ -41,7 +44,11 @@
             Blockly.Events.fire(new Blockly.Events.Change(this.sourceBlock_, 'field', this.name, this.value_, value));
         }
         this.value_ = value;
-        this.setText(this.value_);
+        const parts = this._expandedValue.path.split('/');
+        parts.shift();
+        parts.shift();
+        parts.push(this._expandedValue.item.name);
+        this.setText(parts.join(' ▸ '));
     };
 
     Blockly.FieldAssetPicker.prototype.getExtendedValue = function (value) {

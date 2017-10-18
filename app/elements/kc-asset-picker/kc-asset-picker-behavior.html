@@ -67,13 +67,6 @@
                     return;
                 }
                 this.preloadSample(item.filename)
-                    .then(data => {
-                        return new Promise((resolve, reject) => {
-                            Kano.Music.AudioPlayer.context.decodeAudioData(data, (buffer) => {
-                                return resolve(buffer);
-                            });
-                        });
-                    })
                     .then(buffer => {
                         if (this._player) {
                             this._player.stop();
