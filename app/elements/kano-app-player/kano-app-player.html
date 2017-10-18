@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
 <link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
 <link rel="import" href="../kano-app-player-toolbar/kano-app-player-toolbar.html">
+<link rel="import" href="../../scripts/kano/make-apps/utils.html">
 <!--
 @group Kano Elements
 @hero hero.svg
@@ -245,6 +246,8 @@
                 this.toggleClass('fullscreen');
                 this.component.$$('kano-ui-viewport').resizeView();
                 this.fullscreen = !this.fullscreen;
+
+                Kano.MakeApps.Utils.triggerResize();
             },
             _toolbarLayout  (layout, fullscreen) {
                 return layout === 'vertical' || fullscreen ? 'horizontal' : 'vertical';

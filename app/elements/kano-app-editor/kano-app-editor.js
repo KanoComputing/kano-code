@@ -229,7 +229,7 @@ Polymer({
     },
     _onModeReady () {
         this.modeReady = true;
-        this.triggerResize();
+        Kano.MakeApps.Utils.triggerResize();
     },
     _partEditorDialogClosed (e) {
         let target = e.path ? e.path[0] : e.target;
@@ -609,9 +609,6 @@ Polymer({
                                     clone);
             }
         });
-    },
-    triggerResize () {
-        window.dispatchEvent(new Event('resize'));
     },
     bindEvents () {
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);

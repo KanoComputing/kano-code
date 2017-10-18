@@ -12,6 +12,7 @@
 <link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+<link rel="import" href="../../scripts/kano/make-apps/utils.html">
 
 <dom-module id="kano-default-workspace">
     <template>
@@ -432,6 +433,8 @@
                 });
                 this.fullscreen = !this.fullscreen;
                 this._setViewportHeight();
+
+                Kano.MakeApps.Utils.triggerResize();
             },
             _resetAppState () {
                 this.fire('reset-app-state');

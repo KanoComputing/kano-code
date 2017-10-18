@@ -26,8 +26,9 @@
             this.mouseDeltaY = 0;
             this.listeners = [];
             this._imageCache = {};
+            this._lastRefresh = Date.now();
             window.addEventListener('resize', this._onResize);
-            this._onResize();
+            this.async(this._onResize, 250);
         },
         detached () {
             window.removeEventListener('resize', this._onResize);
@@ -41,7 +42,10 @@
             this.workspace.style.cursor = 'initial';
         },
         _onResize () {
-            this.workspaceRect = this.workspace.getBoundingClientRect();
+            this.debounce('resize', () => {
+                console.log('resize');
+                this.workspaceRect = this.workspace.getBoundingClientRect();
+            }, 100);
         },
         start () {
             this.workspace.addEventListener('mousemove', this._onMouseMove);
@@ -64,12 +68,22 @@
         _onMouseMove (e) {
             let rect = this.workspaceRect,
                 scalingFactor = rect.width / this.workspace.width,
-                x, y;
+                x, y,
+                now = Date.now();
 
             x = Math.max(0, Math.min(this.workspace.width, parseInt(e.x - rect.left) / scalingFactor));
             y = Math.max(0, Math.min(this.workspace.height, parseInt(e.y - rect.top) / scalingFactor));
-            this.mouseDeltaX = x - this.mouseX;
-            this.mouseDeltaY = y - this.mouseY;
+
+            /* Reset mouse speed when off the canvas for more than 100ms */
+            if (now - this._lastRefresh > 100) {
+                this.mouseDeltaX = 0;
+                this.mouseDeltaY = 0;
+            } else {
+                this.mouseDeltaX = x - this.mouseX;
+                this.mouseDeltaY = y - this.mouseY;
+            }
+            this._lastRefresh = now;
+
             this.mouseX = x;
             this.mouseY = y;
 

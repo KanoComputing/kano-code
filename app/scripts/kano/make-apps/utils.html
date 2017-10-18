@@ -185,6 +185,10 @@
             }
             return _out;
         };
+
+        Utils.triggerResize = function () {
+            window.dispatchEvent(new Event('resize'));
+        };
         
     })(window.Kano = window.Kano || {});
 </script>
