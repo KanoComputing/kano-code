@@ -1,4 +1,18 @@
 (function (Kano) {
+    /**
+     * Set the widget div's position and height.  This function does nothing clever:
+     * it will not ensure that your widget div ends up in the visible window.
+     * @param {number} x Horizontal location (window coordinates, not body).
+     * @param {number} y Vertical location (window coordinates, not body).
+     * @param {number} height The height of the widget div (pixels).
+     * @private
+     */
+    Blockly.WidgetDiv.positionInternal_ = function(x, y, height) {
+        const windowSize = goog.dom.getViewportSize();
+        Blockly.WidgetDiv.DIV.style.left = x + 'px';
+        Blockly.WidgetDiv.DIV.style.top = Math.max(0, y) + 'px';
+        Blockly.WidgetDiv.DIV.style.height = Math.min(height, windowSize.height) + 'px';
+    };
     Kano.MakeApps = Kano.MakeApps || {};
     Kano.MakeApps.Blockly = Kano.MakeApps.Blockly || {};
 
