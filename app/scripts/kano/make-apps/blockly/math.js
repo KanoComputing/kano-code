@@ -7,18 +7,25 @@
 
         Blockly.Blocks.math_arithmetic = {
             init: function () {
-                let options = [
-                    { label: "%{BKY_MATH_ADDITION_SYMBOL} add", textLabel: "%{BKY_MATH_ADDITION_SYMBOL}", value: "ADD" },
-                    { label: "%{BKY_MATH_SUBTRACTION_SYMBOL} substract", textLabel: "%{BKY_MATH_SUBTRACTION_SYMBOL}", value: "MINUS" },
-                    { label: "%{BKY_MATH_MULTIPLICATION_SYMBOL} multiply", textLabel: "%{BKY_MATH_MULTIPLICATION_SYMBOL}", value: "MULTIPLY" },
-                    { label: "%{BKY_MATH_DIVISION_SYMBOL} divide", textLabel: "%{BKY_MATH_DIVISION_SYMBOL}", value: "DIVIDE" },
-                    { label: "%{BKY_MATH_POWER_SYMBOL} to the power of", textLabel: "%{BKY_MATH_POWER_SYMBOL}", value: "POWER" }
-                ]
+                const options = [
+                    ["%{BKY_MATH_ADDITION_SYMBOL}", "ADD"],
+                    ["%{BKY_MATH_SUBTRACTION_SYMBOL}", "MINUS"],
+                    ["%{BKY_MATH_MULTIPLICATION_SYMBOL}", "MULTIPLY"],
+                    ["%{BKY_MATH_DIVISION_SYMBOL}", "DIVIDE"],
+                    ["%{BKY_MATH_POWER_SYMBOL}", "POWER"]
+                ];
+                const labels = {
+                    "ADD": "%{BKY_MATH_ADDITION_SYMBOL} add",
+                    "MINUS": "%{BKY_MATH_SUBTRACTION_SYMBOL} substract",
+                    "MULTIPLY": "%{BKY_MATH_MULTIPLICATION_SYMBOL} multiply",
+                    "DIVIDE": "%{BKY_MATH_DIVISION_SYMBOL} divide",
+                    "POWER": "%{BKY_MATH_POWER_SYMBOL} to the power of"
+                };
                 this.appendValueInput('A')
                     .setCheck('Number');
 
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldCustomDropdown(options), 'OP');
+                    .appendField(new Blockly.FieldCustomDropdown(options, labels), 'OP');
 
                 this.appendValueInput('B')
                     .setCheck('Number');

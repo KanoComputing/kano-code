@@ -10,18 +10,26 @@
 
         Blockly.Blocks.logic_compare = {
             init: function () {
-                let options = [
-                    { label: "= equal", textLabel: "=", value: "EQ" },
-                    { label: "\u2260 not equal", textLabel: "\u2260", value: "NEQ" },
-                    { label: "< less than", textLabel: "<", value: "LT" },
-                    { label: "\u2264 less than or equal", textLabel: "\u2264", value: "LTE" },
-                    { label: "> greater than", textLabel: ">", value: "GT" },
-                    { label: "\u2265 greater than or equal", textLabel: "\u2265", value: "GTE" }
-                ]
+                const options = [
+                    ["=", "EQ"],
+                    ["\u2260", "NEQ"],
+                    ["<", "LT"],
+                    ["\u2264", "LTE"],
+                    [">", "GT"],
+                    ["\u2265", "GTE"]
+                ];
+                const labels = {
+                    "EQ" : "= equal",
+                    "NEQ" : "\u2260 not equal",
+                    "LT" : "< less than",
+                    "LTE" : "\u2264 less than or equal",
+                    "GT" : "> greater than",
+                    "GTE" : "\u2265 greater than or equal"
+                };
                 this.appendValueInput('A');
 
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldCustomDropdown(options), 'OP');
+                    .appendField(new Blockly.FieldCustomDropdown(options, labels), 'OP');
 
                 this.appendValueInput('B');
 

@@ -13,59 +13,59 @@ Custom property | Description | Default
 `--kano-input-range-label`
 -->
 <dom-module id="kano-input-range">
-    <style is="custom-style" include="input-range kano-code-shared-styles"></style>
-    <style>
-        :host {
-            @apply --layout-vertical;
-        }
-        label {
-            @apply --kano-part-editor-label;
-        }
-        .slider-container {
-            background: #484d53;
-            border-radius: 3px;
-            padding: 8px 6px 5px;
-        }
-        :host .display {
-            @apply --layout-horiztonal;
-            @apply --layout-center-justified;
-            position: relative;
-            color: #fff;
-            font-size: 14px;
-            font-weight: bold;
-            margin: 0 0 5px 4px;
-            overflow: hidden;
-            @apply --kano-input-range-display;
-        }
-        :host .display span.symbol {
-            font-size: 12px;
-            text-transform: none;
-        }
-    </style>
     <template>
+        <style include="input-range kano-code-shared-styles">
+            :host {
+                @apply --layout-vertical;
+                font-family: var(--font-body);
+            }
+            label {
+                @apply --kano-part-editor-label;
+            }
+            .slider-container {
+                background: #484d53;
+                border-radius: 3px;
+                padding: 8px 6px 5px;
+            }
+            :host .display {
+                @apply --layout-horiztonal;
+                @apply --layout-center-justified;
+                position: relative;
+                color: #fff;
+                font-size: 14px;
+                font-weight: bold;
+                margin: 0 0 5px 4px;
+                overflow: hidden;
+                @apply --kano-input-range-display;
+            }
+            :host .display span.symbol {
+                font-size: 12px;
+                text-transform: none;
+            }
+        </style>
         <label hidden$="[[!label]]">[[label]]</label>
-            <div class="slider-container">
-                <div id="display" class="display">[[_roundValue(value)]]<span hidden$=[[!symbol]] class="symbol"> [[symbol]]</span></div>
-                <kano-slider
-                      id="slider"
-                      min="[[min]]"
-                      max="[[max]]"
-                      value="{{value}}"
-                      theme="[[theme]]"></kano-slider>
-            </div>
+        <div class="slider-container">
+            <div id="display" class="display">[[_roundValue(value)]]<span hidden$=[[!symbol]] class="symbol"> [[symbol]]</span></div>
+            <kano-slider
+                    id="slider"
+                    min="[[min]]"
+                    max="[[max]]"
+                    value="{{value}}"
+                    theme="[[theme]]"></kano-slider>
+        </div>
     </template>
-</dom-module>
-<script type="text/javascript">
-    /* globals Polymer, Kano */
+    <script type="text/javascript">
+        /* globals Polymer, Kano */
 
-    Polymer({
-        is: 'kano-input-range',
-        behaviors: [Kano.Behaviors.Input],
-        properties: {
-            theme: String
-        },
-        _roundValue (value) {
-            return Math.round(parseFloat(value));
-        }
-    });
-</script>
+        Polymer({
+            is: 'kano-input-range',
+            behaviors: [Kano.Behaviors.Input],
+            properties: {
+                theme: String
+            },
+            _roundValue (value) {
+                return Math.round(parseFloat(value));
+            }
+        });
+    </script>
+</dom-module>
