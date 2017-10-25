@@ -183,11 +183,26 @@
                         },
                         createInputs_: function (option) {
                             let samples = Kano.MakeApps.Files.samples,
-                                options = Object.keys(samples[option]).map(key => [samples[option][key], key]),
-                                dropdown = new Blockly.FieldDropdown(options, () => {
-                                    // Preload the cache with the sample
-                                    this.preloadSample();
+                                options,
+                                dropdown;
+
+                            /* In case the sample pack doesn't exist, do a case-insensitive match
+                               against all keys in the object. We need to do that because old shares
+                               and exported apps all have been saved with the ids in lowercase. */
+                            if (!samples[option]) {
+                                Object.keys(samples).forEach((key) => {
+                                    if (key.toLowerCase() === option.toLowerCase()) {
+                                        option = key;
+                                    }
                                 });
+                            }
+
+                            options = Object.keys(samples[option]).map(key => [samples[option][key], key]),
+                            dropdown = new Blockly.FieldDropdown(options, () => {
+                                // Preload the cache with the sample
+                                this.preloadSample();
+                            });
+
                             this.appendDummyInput('SAMPLE')
                                 .appendField(dropdown, 'SAMPLE');
                             this.preloadSample();

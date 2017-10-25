@@ -538,7 +538,7 @@
         // Convert the file structure to the old structure to support legacy blocks relying on it
         Kano.MakeApps.Files.samples = Kano.MakeApps.Files.samplesDir.children.reduce((acc, item) => {
             if (LEGACY_CATEGORIES.indexOf(item.name) !== -1) {
-                acc[item.name] = acc[item.name.toLowerCase()] = item.children.reduce((acc, item) => {
+                acc[item.name] = item.children.reduce((acc, item) => {
                     acc[item.filename] = item.name;
                     return acc;
                 }, {});
