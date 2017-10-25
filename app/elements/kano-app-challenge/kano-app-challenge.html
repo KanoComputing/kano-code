@@ -209,9 +209,6 @@ Example:
             //tell UI and validator separately that step has finished
             this.$.ui.finishStep();
             Kano.Behaviors.ChallengeBehavior.nextStep.call(this);
-        },
-        hintUsed () {
-            this.set('hints.used', this.hints.used + 1);
         }
     });
 </script>

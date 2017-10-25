@@ -70,14 +70,12 @@
                             step="{{currentStep}}"
                             started="[[scene.started]]"
                             idle="[[story.paused]]"
-                            hint-stats="{{hintStats}}"
                             selected-step="{{selectedStep}}"
                             state="{{state}}"
                             scene-variables="{{sceneVariables}}"
                             on-save="saveApp"
                             on-save-to-storage="saveToStorage"
-                            on-load="loadApp"
-                            hints="{{hints}}">
+                            on-load="loadApp">
             <kano-app-editor id="editor"
                              added-parts="{{addedParts}}"
                              parts="[[parts]]"
@@ -155,10 +153,6 @@
             sceneVariables: {
                 type: Object,
                 computed: '_computeSceneVariables(categories)'
-            },
-            hintStats: {
-                type: Object,
-                notify: true
             },
             state: {
                 type: Object,
@@ -308,7 +302,6 @@
             this.set('banner', null);
             this.computeBanner(this.selectedStep);
             this.set('state.hints', { enabled: true });
-            this.$.challenge.hintUsed();
         },
         _pauseAndShare (e) {
             this.running = false;
@@ -382,8 +375,6 @@
         },
         _sceneChanged () {
             this._loadVariables();
-            //async for correct data-binding with child element
-            this.async(this.resetHints, 0);
         },
         _loadVariables () {
             let workspace = this.$.editor.getBlocklyWorkspace();
@@ -412,10 +403,6 @@
                 return 1;
             }
             return (currentStep + 1) / scene.steps.length;
-        },
-        resetHints () {
-            this.set('hints.total', 0);
-            this.set('hints.used', 0);
         },
         ready () {
             this.remix = false;

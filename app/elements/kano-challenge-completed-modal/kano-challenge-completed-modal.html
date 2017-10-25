@@ -107,10 +107,6 @@
                 <h2>[[localize('CHALLENGE_COMPLETED','Challenge Completed')]]</h2>
                 <div class="small-text">
                     [[compliment]] <span hidden$="{{!xp}}">[[localize('XP_EARNED', "You've just earned")]] {{xp}} [[localize('XP','XP')]].</span>
-                    <!-- FIXME Hint count disabled for release -->
-                    <!-- <div hidden$="[[!hints.total]]">
-                        [[hintSummary]]
-                    </div> -->
                 </div>
                 <button class="next" on-tap="close">[[localize('GOT_IT','GOT IT')]]</button>
             </div>
@@ -133,17 +129,9 @@
                 observer: 'openedChanged',
                 notify: true
             },
-            hints: {
-                type: Object,
-                value: null
-            },
             compliment: {
                 type: String,
                 value: 'Nice work!'
-            },
-            hintSummary: {
-                type: String,
-                value: null
             }
         },
         ready () {
@@ -174,8 +162,6 @@
             };
         },
         open () {
-            // FIXME Hint count disabled for release
-            // this.computeHintSummary();
             this.$.modal.open();
             this.previouslyOpened = true;
         },
@@ -190,19 +176,6 @@
         },
         computeImageClass (xp) {
             return xp ? 'xp-num' : 'star';
-        },
-        computeHintSummary () {
-            if (!this.hints.total) {
-                return;
-            }
-            if (this.hints.used === 1) {
-                this.hintSummary = `You used a hint. Think you can complete it without?`;
-            } else if (this.hints.used) {
-                this.hintSummary = `You used ${this.hints.used} of ${this.hints.total} hints. Think you can complete it without any hints?`;
-            } else {
-                this.compliment = 'Congratulations!';
-                this.hintSummary = 'You finished the challenge without using any hints!';
-            }
         }
     });
 </script>

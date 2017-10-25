@@ -23,16 +23,6 @@
                 type: Boolean,
                 value: false
             },
-            hints: {
-                type: Object,
-                value: () => {
-                    return {
-                        total: 0,
-                        used: 0
-                    };
-                },
-                notify: true
-            },
             sceneVariables: Object
         },
         forceReloadStep () {
@@ -53,11 +43,6 @@
 
             // Deep clone the step to not change the original step when updating the ids
             selectedStep = JSON.parse(JSON.stringify(selectedStep));
-
-            // Update stats if step includes optional hint
-            if (selectedStep['set-state'] && selectedStep['set-state'].hints && selectedStep['set-state'].hints.enabled === false) {
-                this.set('hints.total', this.hints.total + 1);
-            }
 
             if (selectedStep.banner && selectedStep.banner.text) {
                 selectedStep.banner.text = this._processMarkdown(selectedStep.banner.text);
@@ -170,9 +155,7 @@
                 if (this.step === this.steps.length - 1) {
                     this.set('selectedStep.isLast', true);
                     this.set('done', true);
-                    this.fire('scene-done', {
-                        hints: this.hints
-                    });
+                    this.fire('scene-done');
                 }
             }
         },

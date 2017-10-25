@@ -232,8 +232,7 @@
         isSelected (index) {
             return index === this.selected;
         },
-        nextScene (e) {
-            let hints = e.detail && e.detail.hints;
+        nextScene () {
             this.trackUserProgress(this.story.id);
             if (this.selected < this.story.scenes.length - 1) {
                 this.selected++;
@@ -244,16 +243,16 @@
                 Kano.MakeApps.Progress.updateProgress(progress.group, progress.storyNo, extension, this.story.id)
                     .then((progress) => this.updateExtensions(progress));
                 this.customAlert = false;
-                this._displayUserReward(hints);
+                this._displayUserReward();
             }
         },
-        _displayUserReward (hints) {
+        _displayUserReward () {
             Kano.MakeApps.Utils.onLine().then((isOnline) => {
                 /* Enable/disable gamification based on internet availability */
-                this._doDisplayUserReward(hints, isOnline);
+                this._doDisplayUserReward(isOnline);
             });
         },
-        _doDisplayUserReward (hints, gamificationEnabled) {
+        _doDisplayUserReward (gamificationEnabled) {
             let sharedStorage = Kano.MakeApps.SharedStorage,
                 headers = new Headers(),
                 flags = Kano.MakeApps.config.getFlags(),
@@ -277,15 +276,11 @@
             });
             this._triggerGamificationEngine(payload)
                 .then(res => {
-                    // FIXME this is a temp hack for release. We want to show the legacy modal until
-                    // new gamification system is not ready.
-                    // TODO remove hint count
-                    if (false && gamificationEnabled) {
+                    if (gamificationEnabled) {
                         this._trackRewards(res.update);
                         this.$['reward-modal'].open(res, this.user);
                         this.fire('update-user-progress', res.update);
                     } else {
-                        this.$['challenge-completed'].set('hints', hints);
                         this.$['challenge-completed'].open();
                     }
                 })
@@ -321,7 +316,6 @@
                     if (gamificationEnabled) {
                         this.$['reward-modal'].open(fakeGamificationData);
                     } else {
-                        this.$['challenge-completed'].set('hints', hints);
                         this.$['challenge-completed'].open();
                     }
                 });
