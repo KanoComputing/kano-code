@@ -130,10 +130,10 @@ module.exports = (gulp, $) => {
 
     gulp.task('blockly-media', () => {
         return gulp.src([
-            'app/assets/vendor/google-blockly/media/**/*',
-            'app/assets/vendor/google-blockly/msg/**/*'
-        ], { base: 'app' })
-            .pipe(gulp.dest('www'));
+            'app/bower_components/kwc-blockly/blockly_built/media/**/*',
+            'app/bower_components/kwc-blockly/blockly_built/msg/**/*'
+        ], { base: 'app/bower_components/kwc-blockly/blockly_built/' })
+            .pipe(gulp.dest('www/blockly_built'));
     });
 
     gulp.task('assets', () => {
