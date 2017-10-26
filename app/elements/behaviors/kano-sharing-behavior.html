@@ -1,4 +1,5 @@
 <link rel="import" href="./kano-view-behavior.html">
+<link rel="import" href="./kano-gamification-behavior.html">
 <script src="./file_utils.js"></script>
 <link rel="import" href="../../scripts/kano/make-apps/sdk.html">
 <script type="text/javascript">
@@ -206,7 +207,7 @@ var SharingBehavior = {
                         }
                     }
                 ];
-                this._triggerGamificationEngine(payload)
+                this.triggerGamificationEngine(payload)
                     .then((response) => {
                         this.set('gamificationResponse', response);
                     });
@@ -216,26 +217,6 @@ var SharingBehavior = {
             console.error(e);
             this.fire('share-attempted');
             this._goToPage('failure');
-        });
-    },
-    _triggerGamificationEngine (payload) {
-        return new Promise(function (resolve, reject) {
-            let headers = new Headers(),
-                token = Kano.MakeApps.sdk.auth.getToken();
-            if (token) {
-                headers.append('Content-Type', 'application/json');
-                headers.append('Authorization', token);
-                fetch(`${Kano.MakeApps.config.API_URL}/progress`, {
-                    method: 'POST',
-                    headers,
-                    body: JSON.stringify(payload)
-                }).then(r => r.json())
-                .then(r => {
-                    resolve(r);
-                });
-            } else {
-                reject(new Error('No auth token found.'));
-            }
         });
     },
     _generateAppFromAnimation (animation) {
@@ -437,5 +418,8 @@ var SharingBehavior = {
     }
 };
 // @polymerBehavior
-Kano.Behaviors.SharingBehavior = [window.Kano.Behaviors.ViewBehavior, SharingBehavior];
+Kano.Behaviors.SharingBehavior = [
+    Kano.Behaviors.ViewBehavior,
+    Kano.Behaviors.GamificationBehavior,
+    SharingBehavior];
 </script>

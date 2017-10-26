@@ -14,6 +14,7 @@
 <link rel="import" href="../behaviors/kano-view-behavior.html">
 <link rel="import" href="../behaviors/kano-code-ga-tracking-behavior.html">
 <link rel="import" href="../behaviors/kano-code-tracking-behavior.html">
+<link rel="import" href="../behaviors/kano-gamification-behavior.html">
 <link rel="import" href="../kano-try-chrome/kano-try-chrome.html">
 <link rel="import" href="../../scripts/kano/make-apps/progress.html">
 <link rel="import" href="../../scripts/kano/make-apps/store.html">
@@ -108,7 +109,8 @@ Example:
         behaviors: [
             Kano.Behaviors.Tracking.GABehavior,
             Kano.Behaviors.Tracking.KanoCodeBehavior,
-            Kano.MakeApps.Store.ProviderBehavior
+            Kano.MakeApps.Store.ProviderBehavior,
+            Kano.Behaviors.GamificationBehavior
         ],
         properties: {
             user: {
@@ -300,6 +302,8 @@ Example:
             this.fire('tracking-event', {
                 name: 'logged_in'
             });
+
+            this.syncCachedProgress();
         },
         _populateUser () {
             this._updateProfile();

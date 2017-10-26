@@ -1,0 +1,80 @@
+<link rel="import" href="../../bower_components/kano-local-progress/kano-local-progress.html">
+<link rel="import" href="../../scripts/kano/make-apps/shared-storage.html">
+<link rel="import" href="../../config/config.html">
+
+<script type="text/javascript">
+
+/* globals Kano */
+
+window.Kano = window.Kano || {};
+
+window.Kano.Behaviors = window.Kano.Behaviors || {};
+
+var GamificationBehavior = {
+    triggerGamificationEngine (payload) {
+        return new Promise(function (resolve, reject) {
+            let headers = new Headers(),
+                token = Kano.MakeApps.sdk.auth.getToken();
+            if (token) {
+                headers.append('Content-Type', 'application/json');
+                headers.append('Authorization', token);
+                fetch(`${Kano.MakeApps.config.API_URL}/progress`, {
+                    method: 'POST',
+                    headers,
+                    body: JSON.stringify(payload)
+                }).then(r => r.json())
+                .then(r => {
+                    resolve(r);
+                });
+            } else {
+                let sharedStorage = Kano.MakeApps.SharedStorage,
+                    sharedStorageURL = Kano.MakeApps.config.SHARED_STORAGE_URL,
+                    gamification = new Kano.LocalProgress(sharedStorageURL);
+                
+                // Log the event so we can replay it later
+                sharedStorage.saveProgressEvent(payload);
+        
+                // Process it through the local gamification engine
+                gamification.start().then(() => {
+                    if (!Array.isArray(payload)) {
+                        payload = [payload];
+                    }
+                    return gamification.transaction(payload);
+                }).then((res) => {
+                    resolve({update: res});
+                    return gamification.save();
+                });
+            }
+        });
+    },
+    syncCachedProgress () {
+        let sharedStorage = Kano.MakeApps.SharedStorage,
+            sharedStorageURL = Kano.MakeApps.config.SHARED_STORAGE_URL,
+            token = Kano.MakeApps.sdk.auth.getToken();
+
+        // Is logged in?
+        if (token) {
+            return sharedStorage.getProgressEvents().then((events) => {
+                try {
+                    events = JSON.parse(events);
+                } catch (e) {
+                    events = [];
+                }
+
+                // Upload cached events and delete them along with localGamificationState
+                if (events.length > 0) {
+                    return this.triggerGamificationEngine(events)
+                        .then((res) => {
+                            sharedStorage.deleteProgressEvents();
+                            sharedStorage.deleteLocalGamificationState();
+                        });
+                }
+            });
+        }
+
+        return Promise.reject(new Error('Not logged in.'));
+    }
+};
+// @polymerBehavior
+Kano.Behaviors.GamificationBehavior = GamificationBehavior;
+</script>
