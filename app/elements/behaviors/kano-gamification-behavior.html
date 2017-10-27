@@ -1,4 +1,4 @@
-<link rel="import" href="../../bower_components/kano-local-progress/kano-local-progress.html">
+<link rel="import" href="../../bower_components/gamification-engine/gamification-engine.html">
 <link rel="import" href="../../scripts/kano/make-apps/shared-storage.html">
 <link rel="import" href="../../config/config.html">
 
@@ -26,8 +26,10 @@ var GamificationBehavior = {
             }).then(r => r.json());
         } else {
             let sharedStorage = Kano.MakeApps.SharedStorage,
-                sharedStorageURL = Kano.MakeApps.config.SHARED_STORAGE_URL,
-                gamification = new Kano.LocalProgress(sharedStorageURL);
+                gamification = new Kano.GamificationEngine.Engine(
+                    Kano.GamificationEngine.RULES,
+                    new Kano.GamificationEngine.BrowserStorage({client: sharedStorage})
+                );
 
             // Log the event so we can replay it later
             sharedStorage.saveProgressEvent(payload);
@@ -47,7 +49,6 @@ var GamificationBehavior = {
     },
     syncCachedProgress () {
         let sharedStorage = Kano.MakeApps.SharedStorage,
-            sharedStorageURL = Kano.MakeApps.config.SHARED_STORAGE_URL,
             token = Kano.MakeApps.sdk.auth.getToken();
 
         // Is logged in?
