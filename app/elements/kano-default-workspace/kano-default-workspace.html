@@ -92,34 +92,13 @@
             .add-parts {
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                height: 46px;
-                border-top: 1px solid #202428;
                 border-bottom: 1px solid #202428;
             }
-            .add-parts .label {
-                text-transform: uppercase;
-                @apply --layout-flex;
-                color: #fff;
-                font-size: 14px;
-                font-weight: bold;
-                letter-spacing: 0.03em;
-                padding: 10px 0;
-            }
-            .add-parts .action {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+            .add-parts label {
+                margin: 0;
                 cursor: pointer;
-                transition: background 0.2s;
             }
-            .add-parts .action label {
-                margin-right: 12px;
-                font-size: 14px;
-                font-weight: bold;
-                color: rgba(255, 255, 255, 0.5);
-                cursor: pointer;
-                transition: color 0.2s;
-            }
-            button#add-part-button,
+            button#add-parts-button,
             button#fullscreen-close {
                 @apply --layout-self-end;
                 @apply --kano-button;
@@ -127,10 +106,19 @@
                 color: rgba(255, 255, 255, 0.75);
                 border-radius: 3px;
             }
-            button#add-part-button {
-                width: 24px;
-                height: 24px;
-                padding: 0px;
+            button#add-parts-button {
+                @apply --layout-horizontal;
+                padding: 6px 10px;
+                font-size: 12px;
+                cursor: pointer;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            button#add-parts-button:hover {
+                background: #fd6a21;
+            }
+            button#add-parts-button:hover > label {
+                color: white;
             }
             button#fullscreen-close {
                 position: fixed;
@@ -141,12 +129,8 @@
             button>* {
                 margin: 0 auto;
             }
-            .add-parts .action:hover button#add-part-button,
             button#fullscreen-close:hover {
                 background: rgba(255, 255, 255, 0.5);
-            }
-            .add-parts .action:hover label {
-                color: #fff;
             }
             paper-dialog {
                 background: transparent;
@@ -189,17 +173,18 @@
                 --iron-icon-height: 27px;
                 --iron-icon-fill-color: #8F9195;
             }
-            button#add-part-button iron-icon,
+            button#add-parts-button iron-icon,
             button#fullscreen-close iron-icon {
                 fill: rgba(255, 255, 255, 0.75);
             }
-            button#add-part-button:hover iron-icon,
+            button#add-parts-button:hover iron-icon,
             button#fullscreen-close:hover iron-icon {
                 fill: rgba(255, 255, 255, 1);
             }
-            button#add-part-button iron-icon {
-                --iron-icon-width: 18px;
-                --iron-icon-height: 18px;
+            button#add-parts-button iron-icon {
+                --iron-icon-width: 16px;
+                --iron-icon-height: 16px;
+                margin-right: 0px;
             }
             button#fullscreen-close iron-icon {
                 --iron-icon-width: 20px;
@@ -244,13 +229,10 @@
                                     mouse-x="[[mouseX]]"
                                     mouse-y="[[mouseY]]"></kano-workspace-toolbar>
             <div class="add-parts">
-                <div class="label">[[localize('PARTS', 'Parts')]]</div>
-                <div class="action" on-tap="_addPartsTapped">
-                    <label for="add-part-button">[[localize('ADD_PART', 'Add Part')]]</label>
-                    <button id="add-part-button" type="button">
-                        <iron-icon icon="kc-ui:add"></iron-icon>
-                    </button>
-                </div>
+                <button id="add-parts-button" type="button" on-tap="_addPartsTapped">
+                    <label for="add-parts-button">[[localize('ADD_PARTS', 'Add Parts')]]</label>
+                    <iron-icon icon="kc-ui:add"></iron-icon>
+                </button>
             </div>
             <div class="part-list">
                 <slot name="extra-parts"></slot>
