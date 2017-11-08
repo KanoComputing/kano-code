@@ -19,11 +19,6 @@
             :host {
                 display: block;
             }
-            :host kano-workspace-head {
-                position: absolute;
-                right: 10px;
-                top: 10px;
-            }
             :host(.fullscreen) #content {
                 position: fixed;
                 top: 0;
@@ -64,7 +59,7 @@
                 animation: fade-in 200ms linear;
             }
             kano-workspace-toolbar {
-                padding: 32px 0;
+                padding: 20px 0;
             }
             .controls {
                 @apply --layout-vertical;
@@ -108,7 +103,7 @@
             }
             button#add-part-button {
                 @apply --layout-horizontal;
-                padding: 6px 10px;
+                padding: 8px 10px;
                 font-size: 12px;
                 cursor: pointer;
                 width: 100%;
@@ -227,7 +222,8 @@
                                     on-restart-button-clicked="_resetAppState"
                                     show-mouse-position="[[showMousePosition]]"
                                     mouse-x="[[mouseX]]"
-                                    mouse-y="[[mouseY]]"></kano-workspace-toolbar>
+                                    mouse-y="[[mouseY]]"
+                                    fullscreen="[[fullscreen]]"></kano-workspace-toolbar>
             <div class="add-parts">
                 <button id="add-part-button" type="button" on-tap="_addPartsTapped">
                     <label for="add-part-button">[[localize('ADD_PARTS', 'Add Parts')]]</label>
@@ -257,7 +253,8 @@
                                     no-part-controls
                                     on-pause-run-button-clicked="_runButtonClicked"
                                     on-fullscreen-button-clicked="_toggleFullscreen"
-                                    on-restart-button-clicked="_resetAppState"></kano-workspace-toolbar>
+                                    on-restart-button-clicked="_resetAppState"
+                                    fullscreen=[[fullscreen]]></kano-workspace-toolbar>
         </div>
         <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
     </template>

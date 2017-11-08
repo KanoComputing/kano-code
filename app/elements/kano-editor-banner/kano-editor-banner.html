@@ -5,6 +5,7 @@
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../../bower_components/web-components/kano-glint-animation/kano-glint-animation.html">
 <link rel="import" href="../behaviors/kano-i18n-behavior.html">
+<link rel="import" href="../kano-icons/kc-ui.html">
 <dom-module id="kano-editor-banner">
     <style>
         @keyframes eye-movement {
@@ -110,8 +111,8 @@
             margin: 0 10px;
         }
         #banner-save-button iron-icon {
-            --iron-icon-width: 14px;
-            --iron-icon-height: 14px;
+            --iron-icon-width: 24px;
+            --iron-icon-height: 24px;
             opacity: 0.75;
             margin-right: 8px;
         }
@@ -231,7 +232,7 @@
                 </div>
             </div>
             <button id="banner-save-button" type="button" class="button" hidden$="[[!showSaveButton]]" on-tap="_saveTapped">
-                <iron-icon class="save-icon" src="/assets/icons/save.svg"></iron-icon>
+                <iron-icon class="save-icon" icon="kc-ui:save"></iron-icon>
                 <div>[[localize('SAVE', 'Save')]]</div>
             </button>
             <kano-glint-animation id="banner-button-container" running="[[_computeGlint(buttonLabel, buttonState)]]">

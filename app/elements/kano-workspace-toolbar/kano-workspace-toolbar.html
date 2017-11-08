@@ -79,7 +79,7 @@
         }
         button:hover,
         button:focus {
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: var(--color-orange);
             outline: none;
         }
         button.square {
@@ -99,12 +99,11 @@
             transform: translate(0px, -2px);
         }
         button#play-pause {
-            background: #7CC74C;
             margin: 0;
         }
         iron-icon {
-            --iron-icon-width: 20px;
-            --iron-icon-height: 20px;
+            --iron-icon-width: 24px;
+            --iron-icon-height: 24px;
             opacity: 0.75;
         }
         button:hover iron-icon,
@@ -112,8 +111,6 @@
             opacity: 1;
         }
         button#save iron-icon {
-            --iron-icon-width: 14px;
-            --iron-icon-height: 14px;
             --iron-icon-fill-color: #fff;
         }
         ul {
@@ -145,14 +142,14 @@
             text-decoration: none;
             padding: 6px 12px;
         }
-        ul li .inline:hover {
+        ul li .inline:hover,
+        ul li .inline:focus {
             opacity: 1;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.10);
         }
         ul li .inline iron-icon {
-            --iron-icon-width: 14px;
-            --iron-icon-height: 14px;
-            --iron-icon-fill-color: black;
+            --iron-icon-width: 20px;
+            --iron-icon-height: 20px;
             margin-right: 14px;
         }
         [hidden] {
@@ -161,11 +158,11 @@
     </style>
     <template>
         <button id="settings" type="button" class="square settings" hidden$="[[!showSettings]]" on-tap="_openTooltip">
-            <iron-icon icon="settings"></iron-icon>
+            <iron-icon icon="kc-ui:settings"></iron-icon>
         </button>
         <kano-tooltip id="save-tooltip" class="fly" position="top" offset="16"><div class="text">Save</div></kano-tooltip>
         <button id="save" type="button" class="square" on-tap="_save" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
-            <iron-icon src="/assets/icons/save.svg"></iron-icon>
+            <iron-icon icon="kc-ui:save"></iron-icon>
         </button>
         <div class="spacer" hidden$="[[!showSettings]]"></div>
 
@@ -188,11 +185,11 @@
         <div class="player-bar" hidden$="[[noPlayerBar]]">
             <kano-tooltip id="fullscreen-tooltip" class="fly" position="top" offset="16"><div class="text">[[localize('FULLSCREEN', 'Fullscreen')]]</div></kano-tooltip>
             <button id="fullscreen" class="square" type="button" on-tap="fullscreenClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
-                <img src="/assets/icons/fullscreen-icon.svg" alt="Fullscreen mode" />
+                <iron-icon icon="kc-ui:{{_getMinMaxIcon(fullscreen)}}"></iron-icon>
             </button>
             <kano-tooltip id="restart-tooltip" class="fly" position="top" offset="16"><div class="text">[[localize('RESTART', 'Restart')]]</div></kano-tooltip>
             <button id="restart" class="square" type="button" on-tap="restartClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
-                <img src="/assets/icons/reset-icon.svg" alt="Restart app" />
+                <iron-icon icon="kc-ui:reset"></iron-icon>
             </button>
             <kano-tooltip id="play-pause-tooltip" class="fly" position="top" offset="16"><div class="text">[[playPauseLabel]]</div></kano-tooltip>
             <button id="play-pause" class="square" type="button" on-tap="_runButtonClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
@@ -203,25 +200,25 @@
             <ul>
                 <li>
                     <button type="button" class="inline text" on-tap="_reset">
-                        <iron-icon src="/assets/icons/reset.svg"></iron-icon>
+                        <iron-icon icon="kc-ui:reset"></iron-icon>
                         <div>[[localize('RESET_WORKSPACE', 'Reset Workspace')]]</div>
                     </button>
                 </li>
                 <li>
                     <button type="button" class="inline text" on-tap="_export">
-                        <iron-icon src="/assets/icons/export.svg"></iron-icon>
+                        <iron-icon icon="kc-ui:export"></iron-icon>
                         <div>[[localize('EXPORT', 'Export')]]</div>
                     </button>
                 </li>
                 <li>
                     <button type="button" class="inline text" on-tap="_import">
-                        <iron-icon src="/assets/icons/import.svg"></iron-icon>
+                        <iron-icon icon="kc-ui:import"></iron-icon>
                         <div>[[localize('IMPORT', 'Import')]]</div>
                     </button>
                 </li>
                 <li>
                     <a href="https://insights.hotjar.com/s?siteId=119134&surveyId=9857" target="_blank" class="inline text">
-                        <iron-icon src="/assets/icons/feedback.svg"></iron-icon>
+                        <iron-icon icon="kc-ui:feedback"></iron-icon>
                         <div>[[localize('GIVE_FEEDBACK', 'Give Feedback')]]</div>
                     </a>
                 </li>
@@ -273,6 +270,10 @@
             playPauseLabel: {
                 typs: String,
                 value: 'Pause'
+            },
+            fullscreen: {
+                type: Boolean,
+                value: false
             }
         },
         ready () {
@@ -360,6 +361,9 @@
         _save () {
             this.$['settings-tooltip'].close();
             this.fire('save-button-clicked');
+        },
+        _getMinMaxIcon(fullscreen) {
+            return fullscreen ? 'minimize' : 'maximize';
         }
     });
 </script>
