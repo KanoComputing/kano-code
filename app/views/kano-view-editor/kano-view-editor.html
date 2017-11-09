@@ -386,7 +386,7 @@
                 });
             } else {
                 appToLoad = JSON.parse(localStorage.getItem(`savedApp-${modeId}`));
-                this.dispatch({ type: 'LOAD_EDITOR_APP', data: appToLoad });
+                this.dispatch({ type: 'LOAD_EDITOR_APP', data: appToLoad, mode: modeId });
             }
         },
         _filterParts () {

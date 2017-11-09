@@ -1,13 +1,11 @@
 <link rel="import" href="../../bower_components/web-components/kano-alert/kano-alert.html">
 <link rel="import" href="../../scripts/kano/make-apps/mode/mode.html">
 <link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
-<link rel="import" href="../../scripts/kano/make-apps/utils.html">
 <link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
 <link rel="import" href="../../scripts/kano/util/router.html">
 <link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
 <link rel="import" href="../../scripts/kano/app-modules/index.html">
 <link rel="import" href="../../scripts/kano/make-apps/stories.html">
-<link rel="import" href="../../scripts/kano/make-apps/shared-storage.html">
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-view-drop-file-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
@@ -247,14 +245,7 @@
             }
         },
         _displayUserReward () {
-            Kano.MakeApps.Utils.onLine().then((isOnline) => {
-                /* Enable/disable gamification based on internet availability */
-                this._doDisplayUserReward(isOnline);
-            });
-        },
-        _doDisplayUserReward (gamificationEnabled) {
-            let sharedStorage = Kano.MakeApps.SharedStorage,
-                headers = new Headers(),
+            let headers = new Headers(),
                 flags = Kano.MakeApps.config.getFlags(),
                 fakeGamificationData,
                 payload = {
@@ -274,52 +265,14 @@
                 type: 'complete',
                 data: trackingData
             });
-            this._triggerGamificationEngine(payload)
+            this.$['story-scene'].disableBannerButton();
+            this.triggerGamificationEngine(payload)
                 .then(res => {
-                    if (gamificationEnabled) {
-                        this._trackRewards(res.update);
-                        this.$['reward-modal'].open(res, this.user);
-                        this.fire('update-user-progress', res.update);
-                    } else {
-                        this.$['challenge-completed'].open();
-                    }
-                })
-                .catch(res => {
-                    sharedStorage.saveProgressEvent(payload);
-                    let fakeGamificationData = {
-                        'update': {
-                            'levels': {
-                                'progress': {
-                                    'level': 1
-                                },
-                                'changes': {
-                                    'total-xp': {
-                                        'oldValue': 0,
-                                        'newValue': 100
-                                    },
-                                    'level': {
-                                        'oldValue': 1,
-                                        'newValue': 2
-                                    },
-                                    'xp-offset': {
-                                        'oldValue': 0,
-                                        'newValue': 100
-                                    },
-                                    'next-threshold': {
-                                        'oldValue': 100,
-                                        'newValue': 260
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (gamificationEnabled) {
-                        this.$['reward-modal'].open(fakeGamificationData);
-                    } else {
-                        this.$['challenge-completed'].open();
-                    }
+                    this.$['story-scene'].enableBannerButton();
+                    this._trackRewards(res.update);
+                    this.$['reward-modal'].open(res, this.user);
+                    this.fire('update-user-progress', res.update);
                 });
-
         },
         _trackRewards (update) {
             let levelChanges = update.levels && update.levels.changes,

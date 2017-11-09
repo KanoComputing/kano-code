@@ -458,13 +458,40 @@
             });
             element.model = model;
             this.elements[key] = element;
-            this.dropzone.appendChild(element);
+            this._attachPartElementToDOM(element);
             if (this.soundReady) {
                 this.debounce('playStartupSound', () => {
                     this.playSound('/assets/audio/sounds/pop.wav');
                 }, 100);
             }
             this._registerElement(`workspace-part-${model.id}`, element);
+        },
+        /*
+         * Insert the element to the dropzone by reverse-sorting it
+         * into the DOM so z-indexes match the order in the parts
+         * array (e.g., the part with index 0 will be rendered on
+         * top, which means it needs to be last the DOM).
+         */
+        _attachPartElementToDOM (element) {
+            let model = element.model,
+                reverseParts = this.parts.slice().reverse(),
+                index = reverseParts.indexOf(model);
+
+            if (index < reverseParts.indexOf(this.dropzone.lastChild.model)) {
+                /* If the element doesn't belong at the end,
+                   find the right element to insert it before */
+                for (let i = 0; i < this.dropzone.children.length; i++) {
+                    let child = this.dropzone.children[i],
+                    childIndex = reverseParts.indexOf(child.model);
+                    if (childIndex > index) {
+                        this.dropzone.insertBefore(element, child);
+                        break;
+                    }
+                }
+            } else {
+                /* If ll existing elements come before this one, append it. */
+                this.dropzone.appendChild(element);
+            }
         },
         removePart (key) {
             let element = this.elements[key];

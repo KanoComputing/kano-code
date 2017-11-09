@@ -42,6 +42,7 @@ module.exports = (gulp, $) => {
             file.path.indexOf('web-components') !== -1 ||
             file.path.indexOf('lazy-imports') !== -1 ||
             file.path.indexOf('kano-shared-storage-client') !== -1 ||
+            file.path.indexOf('gamification-engine') !== -1 ||
             file.path.indexOf('flow-down') !== -1 ||
             (file.path.indexOf('kwc-') !== -1 && file.path.indexOf('blockly_built') === -1) ||
             file.path.indexOf('Sortable') !== -1) ||

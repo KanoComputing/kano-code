@@ -145,6 +145,25 @@
             max-height: 18px;
             transform: translateY(4px);
         }
+        .button paper-spinner-lite {
+            --paper-spinner-color: white;
+            --paper-spinner-stroke-width: 2px;
+
+            width: 18px;
+            height: 18px;
+            display: block;
+            margin: 0px 7px;
+        }
+        .button.active paper-spinner-lite {
+            display: none;
+        }
+        .button.hidden {
+            display: none;
+        }
+        .button.inactive {
+            filter: grayscale(100%);
+            cursor: wait;
+        }
     </style>
     <template>
         <div class="avatar">
@@ -215,8 +234,18 @@
                 <iron-icon class="save-icon" src="/assets/icons/save.svg"></iron-icon>
                 <div>[[localize('SAVE', 'Save')]]</div>
             </button>
-            <kano-glint-animation id="banner-button-container" running="[[glint]]">
-                <button id="banner-button" class="button" type="button" hidden$="[[!showButton]]" on-tap="_buttonTapped" data-animate="300">[[buttonLabel]]</button>
+            <kano-glint-animation id="banner-button-container" running="[[_computeGlint(buttonLabel, buttonState)]]">
+                <button id="banner-button"
+                        class$="button [[_computeButtonClass(buttonState)]]"
+                        type="button"
+                        on-tap="_buttonTapped"
+                        data-animate="300">
+                    <paper-spinner-lite active="[[_buttonInactive(buttonState)]]"></paper-spinner-lite>
+                    <span hidden$="[[!_buttonActive(buttonState)]]">
+                        [[buttonLabel]]
+                    </span>
+                    </template>
+                </button>
             </kano-glint-animation>
         </div>
     </template>
@@ -249,10 +278,10 @@
                 type: String,
                 observer: '_onButtonLabelChanged'
             },
-            showButton: {
-                type: Boolean,
-                value: false,
-                observer: '_showButtonChanged'
+            buttonState: {
+                type: String,
+                value: null, /* values = { "active", "inactive", "hidden" || null } */
+                observer: '_buttonStateChanged'
             },
             showSaveButton: {
                 type: Boolean,
@@ -327,15 +356,33 @@
             });
         },
         _buttonTapped () {
-            this.fire('button-tapped');
+            if (this.buttonState !== "inactive") {
+                this.fire('button-tapped');
+            }
         },
         _saveTapped () {
             this.fire('save-button-clicked');
         },
-        _showButtonChanged (value, oldValue) {
+        _buttonStateChanged (value, oldValue) {
             if (value && !oldValue && !this.showSaveButton) {
                 this._fadeInButton('banner-button', 200);
             }
+        },
+        _buttonHidden (state) {
+            return !state || state === "hidden";
+        },
+        _buttonActive (state) {
+            return state === 'active';
+        },
+        _buttonInactive (state) {
+            return state === 'inactive';
+        },
+        _computeButtonClass (state) {
+            if (state) {
+                return state;
+            }
+
+            return 'hidden';
         },
         _showSaveButtonChanged (value) {
             if (value) {
@@ -345,9 +392,12 @@
         },
         _onButtonLabelChanged (label) {
             //FIXME this should consider localization
-            let isGreen = label === 'Next' || this.showSaveButton;
-            this.glint = isGreen || label === 'Hints';
-            this.toggleClass('green-cta', isGreen);
+            this.toggleClass('green-cta', label === 'Next' || this.showSaveButton);
+        },
+        _computeGlint (label, buttonState) {
+            //FIXME this should consider localization
+            return buttonState !== "inactive" &&
+                   (label === 'Next' || this.showSaveButton || label === 'Hints');
         }
     });
 </script>

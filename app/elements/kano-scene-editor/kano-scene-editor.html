@@ -208,7 +208,16 @@
                         this.set('banner.head', step.banner.head);
                         this.set('banner.text', step.banner.text);
                         this.set('banner.buttonLabel', step.banner.next_button ? label : null);
-                        this.$.banner.showButton = !!this.banner.buttonLabel;
+
+                        if (this.banner.buttonLabel) {
+                            if (this.bannerButtonInactive) {
+                               this.$.banner.buttonState = 'inactive';
+                            } else {
+                               this.$.banner.buttonState = 'active';
+                            }
+                        } else {
+                            this.$.banner.buttonState = 'hidden';
+                        }
                     } else {
                         this.banner = null;
                     }
@@ -220,7 +229,11 @@
                         this.set('banner.text', bannerProps.text);
                         this.set('banner.buttonLabel', this.localize('HINTS', 'Hints'));
                         this.showButtonTimeout = setTimeout(() => {
-                            this.$.banner.showButton = true;
+                            if (this.bannerButtonInactive) {
+                               this.$.banner.buttonState = 'inactive';
+                            } else {
+                               this.$.banner.buttonState = 'active';
+                            }
                         }, 6000);
                     } else {
                         this.banner = null;
@@ -257,6 +270,14 @@
                     }
                 }
             }, 200);
+        },
+        enableBannerButton () {
+            this.bannerButtonInactive = false;
+            this.computeBanner(this.selectedStep);
+        },
+        disableBannerButton () {
+            this.bannerButtonInactive = true;
+            this.computeBanner(this.selectedStep);
         },
         _bannerButtonTapped () {
             if (this.selectedStep.isLast) {
@@ -407,6 +428,8 @@
         ready () {
             this.remix = false;
             this.code = {};
+
+            this.bannerButtonInactive = false;
 
             this.debounce('saveApp', () => {
                 this.editor = this.$.editor;

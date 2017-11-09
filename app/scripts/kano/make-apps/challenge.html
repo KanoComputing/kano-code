@@ -274,12 +274,33 @@
          */
         Challenge.prototype.fieldToSteps = function (node, fieldDefault) {
             let parent = node.parentNode,
-                parentTagName = parent.tagName,
                 parentBlockType = Challenge.parseBlockType(parent.getAttribute('type')),
+                parentTagName = parent.tagName,
                 steps = [],
                 fieldValue,
                 inputName,
-                fieldName, commentData;
+                fieldName, commentData,
+                shadowSelector, absoluteParentId;
+
+            let ptag = parentTagName;
+            let absParent = parent;
+            // Lookup the absolute parent. We can have a chain of nested shadow block and need to build the shadow selector
+            // from the parent block
+            while (ptag !== 'block') {
+                absParent = absParent.parentNode;
+                ptag = absParent.tagName;
+                if (ptag === 'value') {
+                    if (!shadowSelector) {
+                        shadowSelector = absParent.getAttribute('name')
+                    } else {
+                        shadowSelector = {
+                            name: absParent.getAttribute('name'),
+                            shadow: shadowSelector.shadow || shadowSelector
+                        };
+                    }
+                }
+            }
+
 
             commentData = this.parseComment(parent);
 
@@ -294,7 +315,7 @@
             if (parentBlockType.block === 'variables_set' && this.data.variables.indexOf(node.firstChild.nodeValue) === -1) {
                 this.data.variables.push(node.firstChild.nodeValue);
             }
-            if (node.firstChild.nodeValue !== null) {
+            if (!!node.firstChild && node.firstChild.nodeValue !== null) {
                 if (parentTagName === 'shadow') {
                     inputName = parent.parentNode.getAttribute('name');
                     fieldName = inputName;
@@ -308,16 +329,19 @@
                         console.log('missing default field: ', parentBlockType.block, fieldName);
                     } else {
                         fieldDefault = Challenge.fieldDefaults[parentBlockType.block][fieldName];
+                        while (typeof fieldDefault === 'object' && 'shadow' in fieldDefault && 'default' in fieldDefault) {
+                            fieldDefault = fieldDefault.default;
+                        }
                     }
                 }
                 // Loose check of the value
                 if (node.firstChild.nodeValue != fieldDefault) {
-                    let challengeId = parent.getAttribute('challengeId'),
-                        rawId = parent.getAttribute('id'),
+                    let challengeId = absParent.getAttribute('challengeId'),
+                        rawId = absParent.getAttribute('id'),
                         bannerText, fieldPreview, currentFieldPreview;
                     let selector = {
-                        shadow: inputName
-                    },
+                            shadow: shadowSelector
+                        },
                         step;
                     if (challengeId) {
                         selector.id = challengeId
@@ -353,8 +377,8 @@
                     }
                     steps.push(step);
                 }
-                return steps;
             }
+            return steps;
         };
 
         /**
