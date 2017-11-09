@@ -3,20 +3,19 @@
 
 <dom-module id="kano-part-talking-face">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        justify-content: center;
-        align-content: center;
-    }
-    .container {
-        margin: auto;
-    }
-
-    </style>
     <template>
+        <style>
+            :host {
+                display: flex;
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                align-content: center;
+            }
+            .container {
+                margin: auto;
+            }
+        </style>
         <div class="container">
             <kano-bitmap-renderer width="16" height="8" bitmap="[[bitmap]]" pixel-size="25" spacing="1" fps="30" loop></kano-bitmap-renderer>
         </div>

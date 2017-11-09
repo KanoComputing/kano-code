@@ -4,13 +4,13 @@
 <link rel="import" href="../../../bower_components/web-components/kano-style/part.html">
 
 <dom-module id="kano-part-slider">
-    <style is="custom-style" include="input-range"></style>
-    <style>
-    :host {
-        display: block;
-    }
-    </style>
     <template>
+        <style is="custom-style" include="input-range"></style>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
         <input type="range"
                 min="{{model.userProperties.min}}"
                 max="{{model.userProperties.max}}"

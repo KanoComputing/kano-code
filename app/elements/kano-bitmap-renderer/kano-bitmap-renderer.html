@@ -1,14 +1,14 @@
 <dom-module id="kano-bitmap-renderer">
-    <style>
-    :host, canvas {
-        display: block;
-    }
-    canvas {
-        border: 0px;
-        @apply(--kano-bitmap-renderer-canvas);
-    }
-    </style>
     <template>
+        <style>
+        :host, canvas {
+            display: block;
+        }
+        canvas {
+            border: 0px;
+            @apply(--kano-bitmap-renderer-canvas);
+        }
+        </style>
         <canvas id="canvas" width$="[[_canvasSize(width, pixelSize, spacing)]]" height$="[[_canvasSize(height, pixelSize, spacing)]]"></canvas>
     </template>
     <script type="text/javascript">

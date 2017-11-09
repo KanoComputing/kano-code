@@ -9,85 +9,85 @@
 @demo demo/index.html
 -->
 <dom-module id="kano-app-player">
-    <style>
-        :host([layout="vertical"]) {
-            @apply --layout-vertical-reverse;
-            @apply --layout-center;
-        }
-        :host([layout="horizontal"]) {
-            padding: 16px 60px;
-            position: relative;
-            @apply --layout-horizontal;
-            @apply --layout-center;
-        }
-        :host .user-app {
-            @apply --layout-flex;
-            @apply --layout-self-stretch;
-            height: 100%;
-            width: 100%;
-        }
-        :host(.fullscreen) {
-            padding: 20vh 16px;
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            max-width: 100%;
-            width: 100%;
-            height: 100%;
-            z-index: 100;
-            background-color: var(--color-chateau);
-        }
-        :host([layout="horizontal"].fullscreen) {
-            @apply --layout-vertical-reverse;
-            @apply --layout-justified;
-            @apply --layout-center;
-        }
-        :host(.fullscreen) .user-app {
-            width: 60%;
-            height: 40%;
-            margin: auto;
-        }
-        :host(.fullscreen) kano-app-player-toolbar {
-            margin: 0 auto 40px auto;
-            width: 40%;
-        }
-        :host(.fullscreen) .close {
-            cursor: pointer;
-            color: var(--color-porcelain);
-            height: 16px;
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            width: 16px;
-        }
-        #container {
-            @apply(--layout-vertical);
-            @apply(--layout-flex);
-            @apply(--layout-center);
-            @apply(--layout-center-justified);
-            position: relative;
-            height: calc(100% - 40px);
-        }
-        h1.error {
-            color: var(--color-red, red);
-        }
-        :host([layout="vertical"]) kano-app-player-toolbar {
-            width: 100%;
-        }
-        :host([layout="horizontal"]) kano-app-player-toolbar {
-            position: absolute;
-            right: 0;
-            top: 8%;
-            z-index: 10;
-        }
-        :host([layout="horizontal"].fullscreen) kano-app-player-toolbar {
-            position: relative;
-        }
-        :host *[hidden] {
-            display: none !important;
-        }
-    </style>
     <template>
+        <style>
+            :host([layout="vertical"]) {
+                @apply --layout-vertical-reverse;
+                @apply --layout-center;
+            }
+            :host([layout="horizontal"]) {
+                padding: 16px 60px;
+                position: relative;
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            :host .user-app {
+                @apply --layout-flex;
+                @apply --layout-self-stretch;
+                height: 100%;
+                width: 100%;
+            }
+            :host(.fullscreen) {
+                padding: 20vh 16px;
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                max-width: 100%;
+                width: 100%;
+                height: 100%;
+                z-index: 100;
+                background-color: var(--color-chateau);
+            }
+            :host([layout="horizontal"].fullscreen) {
+                @apply --layout-vertical-reverse;
+                @apply --layout-justified;
+                @apply --layout-center;
+            }
+            :host(.fullscreen) .user-app {
+                width: 60%;
+                height: 40%;
+                margin: auto;
+            }
+            :host(.fullscreen) kano-app-player-toolbar {
+                margin: 0 auto 40px auto;
+                width: 40%;
+            }
+            :host(.fullscreen) .close {
+                cursor: pointer;
+                color: var(--color-porcelain);
+                height: 16px;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                width: 16px;
+            }
+            #container {
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+                @apply(--layout-center);
+                @apply(--layout-center-justified);
+                position: relative;
+                height: calc(100% - 40px);
+            }
+            h1.error {
+                color: var(--color-red, red);
+            }
+            :host([layout="vertical"]) kano-app-player-toolbar {
+                width: 100%;
+            }
+            :host([layout="horizontal"]) kano-app-player-toolbar {
+                position: absolute;
+                right: 0;
+                top: 8%;
+                z-index: 10;
+            }
+            :host([layout="horizontal"].fullscreen) kano-app-player-toolbar {
+                position: relative;
+            }
+            :host *[hidden] {
+                display: none !important;
+            }
+        </style>
         <div id="container">
             <template is="dom-if" if="{{failed}}">
                 <h1 class="error">Something went wrong :(</h1>

@@ -5,43 +5,43 @@
 <link rel="import" href="../ui/kano-ui/kano-ui-camera.html">
 <script src="../../scripts/kano/webcam.js"></script>
 <dom-module id="kano-workspace-camera">
-    <style>
-        :host {
-            display: block;
-            width: 100%;
-            height: 100%;
-            @apply --layout-vertical;
-        }
-        :host ::slotted(*) {
-            position: absolute;
-            top: 0px;
-            left: 0px
-        }
-        .canvas {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            background: var(--canvas-background, #ffffff);
-            border-radius: 5px;
-        }
-        :host #canvas, :host .content {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-        }
-        :host button {
-            @apply --kano-button;
-            @apply --layout-self-end;
-            background-color: var(--color-green, green);
-        }
-        :host canvas,
-        :host .content {
-            border-radius: 5px;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                width: 100%;
+                height: 100%;
+                @apply --layout-vertical;
+            }
+            :host ::slotted(*) {
+                position: absolute;
+                top: 0px;
+                left: 0px
+            }
+            .canvas {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                background: var(--canvas-background, #ffffff);
+                border-radius: 5px;
+            }
+            :host #canvas, :host .content {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+            }
+            :host button {
+                @apply --kano-button;
+                @apply --layout-self-end;
+                background-color: var(--color-green, green);
+            }
+            :host canvas,
+            :host .content {
+                border-radius: 5px;
+            }
+        </style>
         <button on-tap="_triggerShutterEvent">Shutter</button>
         <div class="canvas">
             <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>

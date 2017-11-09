@@ -3,29 +3,29 @@
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/light-circle.html">
 <dom-module id="kano-part-light-circle">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: block;
-    }
-    .container {
-        position: relative;
-        border: 1px solid blue;
-    }
-    .pixel {
-        width: 21px;
-        height: 21px;
-        margin: 3px;
-    }
-    .canvas {
-        @apply(--layout-horizontal);
-        @apply(--layout-wrap);
-        padding: 2px;
-    }
-    .container[running] {
-        display: none;
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            display: block;
+        }
+        .container {
+            position: relative;
+            border: 1px solid blue;
+        }
+        .pixel {
+            width: 21px;
+            height: 21px;
+            margin: 3px;
+        }
+        .canvas {
+            @apply(--layout-horizontal);
+            @apply(--layout-wrap);
+            padding: 2px;
+        }
+        .container[running] {
+            display: none;
+        }
+        </style>
         <div id="container" class="container" style$="[[_computeContainerStyle(model.userProperties.*)]]" running$="[[isRunning]]">
             <div id="pixel-array" class="canvas"></div>
         </div>

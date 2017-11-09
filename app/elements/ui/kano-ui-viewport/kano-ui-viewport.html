@@ -43,22 +43,22 @@ the content out of proportions to make it fit inside the available space.
 -->
 
 <dom-module id="kano-ui-viewport">
-    <style>
-        :host {
-            display: block;
-            width: 100%;
-            overflow: hidden;
-        }
-        #view {
-            transform-origin: 0 0 0;
-            background-color: transparent;
-            @apply --kano-ui-viewport;
-        }
-        :host([no-overflow]) #view {
-            overflow: hidden;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                width: 100%;
+                overflow: hidden;
+            }
+            #view {
+                transform-origin: 0 0 0;
+                background-color: transparent;
+                @apply --kano-ui-viewport;
+            }
+            :host([no-overflow]) #view {
+                overflow: hidden;
+            }
+        </style>
         <div id="view">
             <slot></slot>
         </div>

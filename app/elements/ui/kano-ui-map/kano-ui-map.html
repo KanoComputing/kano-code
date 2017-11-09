@@ -5,15 +5,15 @@
 
 <dom-module id="kano-ui-map">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: inline-block;
-    }
-    :host iron-image {
-        border: 2px solid var(--color-primary);
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+            :host iron-image {
+                border: 2px solid var(--color-primary);
+            }
+        </style>
         <!-- Add the map only when the Api Key is set -->
         <template is="dom-if" if="[[apiKey]]" restamp>
             <google-map id="map"

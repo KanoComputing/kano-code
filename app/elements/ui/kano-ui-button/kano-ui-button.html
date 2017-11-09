@@ -4,20 +4,20 @@
 <link rel="import" href="../../../bower_components/kwc-style/typography.html">
 
 <dom-module id="kano-ui-button">
-    <style>
-    :host {
-        display: inline-block;
-    }
-    :host button {
-        @apply(--kano-button);
-        background: var(--color-green);
-        border: 2px solid transparent;
-    }
-    :host(.selected) button {
-        border-color: var(--color-orange);
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+            :host button {
+                @apply(--kano-button);
+                background: var(--color-green);
+                border: 2px solid transparent;
+            }
+            :host(.selected) button {
+                border-color: var(--color-orange);
+            }
+        </style>
         <button id="button"
                 type="button"
                 on-tap="buttonClicked"
