@@ -36,15 +36,97 @@ Example:
 <dom-module id="kano-challenge-ui">
     <template>
         <style>
-            @keyframes pulse {
+            @keyframes pop-in {
                 0% {
-                    transform: scale(1, 1);
+                    transform: scale(0, 0);
                 }
-                10% {
+                80% {
                     transform: scale(1.3, 1.3);
                 }
                 100% {
+                    transform: scale(1.0, 1.0);
+                }
+            }
+            @keyframes ring {
+                0% {
+                    transform: scale(0, 0);
+                    opacity: 0.8;
+                }
+                20% {
+                    transform: scale(1.0, 1.0);
+                    opacity: 0;
+                }
+                /* 2 */
+                20.5% {
+                    transform: scale(0, 0);
+                    opacity: 0;
+                }
+                21% {
+                    transform: scale(0, 0);
+                    opacity: 0.8;
+                }
+                40% {
+                    transform: scale(1.0, 1.0);
+                    opacity: 0;
+                }
+                /* 3 */
+                40.5% {
+                    transform: scale(0, 0);
+                    opacity: 0;
+                }
+                41% {
+                    transform: scale(0, 0);
+                    opacity: 0.8;
+                }
+                60% {
+                    transform: scale(1.0, 1.0);
+                    opacity: 0;
+                }
+                /* 4 */
+                60.5% {
+                    transform: scale(0, 0);
+                    opacity: 0;
+                }
+                61% {
+                    transform: scale(0, 0);
+                    opacity: 0.8;
+                }
+                80% {
+                    transform: scale(1.0, 1.0);
+                    opacity: 0;
+                }
+                /* 5 */
+                80.5% {
+                    transform: scale(0, 0);
+                    opacity: 0;
+                }
+                81% {
+                    transform: scale(0, 0);
+                    opacity: 1.0;
+                }
+                100% {
+                    transform: scale(2.5, 2.5);
+                    opacity: 0;
+                }
+            }
+            @keyframes jump {
+                0% {
+                    transform: scale(1.0, 1.0);
+                }
+                80% {
+                    transform: scale(1.0, 1.0);
+                }
+                82% {
+                    transform: scale(1.3, 1.3);
+                }
+                83.5% {
+                    transform: scale(0.9, 0.9);
+                }
+                85% {
                     transform: scale(1, 1);
+                }
+                100% {
+                    transform: scale(1.0, 1.0);
                 }
             }
             @keyframes ripple {
@@ -52,15 +134,15 @@ Example:
                     transform: scale(0, 0);
                     opacity: 1;
                 }
-                75% {
+                80% {
                     transform: scale(0, 0);
                     opacity: 1;
                 }
-                85% {
-                    opacity: 0;
+                89% {
+                    opacity: 0.05;
                 }
                 100% {
-                    transform: scale(1.5, 1.5);
+                    transform: scale(1.0, 1.0);
                     opacity: 0;
                 }
             }
@@ -148,13 +230,14 @@ Example:
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
-                background-color: rgba(254, 192, 45, 0.40);
                 @apply --layout-vertical;
                 @apply --layout-center;
                 @apply --layout-center-justified;
             }
             .beacon.animate {
-                animation: 1s ease-out infinite pulse;
+                animation: 150ms ease-in pop-in;
+                animation-delay: 0ms;
+                animation-iteration-count: 1;
             }
             .beacon .core {
                 width: 12px;
@@ -162,19 +245,37 @@ Example:
                 background: #fec02d;
                 border-radius: 50%;
                 border: 2px solid white;
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
             }
-            .beacon-wrapper .ring {
+            .beacon .core.animate {
+                animation: 5s ease-in-out jump;
+                animation-delay: 400ms;
+                animation-iteration-count: infinite;
+            }
+            .beacon-wrapper .ripple {
                 position: absolute;
-                width: 800px;
-                height: 800px;
+                width: 300px;
+                height: 300px;
                 border-radius: 50%;
-                background-color: rgba(254, 192, 45, 0.20);
+                border: 1px solid rgba(254, 192, 45, 1.0);
                 transform: scale(0, 0);
             }
-            .beacon-wrapper .ring.animate {
+            .beacon-wrapper .ripple.animate {
                 animation: 5s ease-out ripple;
                 animation-delay: 400ms;
                 animation-iteration-count: infinite;
+            }
+            .beacon-wrapper .ring {
+                position: absolute;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background: #fec02d;
+                transform: scale(0, 0);
+            }
+            .beacon-wrapper .ring.animate {
+                animation: 5s ease-out infinite ring;
+                animation-delay: 400ms;
             }
             .markdown-html p {
                 margin: 0px;
@@ -196,9 +297,10 @@ Example:
         </kano-arrow>
         <kano-arrow target="[[beacon.target]]" bounce="0" angle="[[beacon.angle]]" offset="[[beacon.offset]]" hidden$="[[idle]]">
             <div class="beacon-wrapper" slot="arrow-image">
-                <div class="ring" id="ring" on-animationiteration="_ringAnimationIterated" on-animationstart="_ringAnimationIterated"></div>
+                <div class="ripple" id="ripple" on-animationiteration="_ringAnimationIterated" on-animationstart="_ringAnimationIterated"></div>
+                <div class="ring" id="ring"></div>
                 <div class="beacon" id="beacon">
-                    <div class="core"></div>
+                    <div class="core" id="core"></div>
                 </div>
             </div>
         </kano-arrow>
@@ -498,6 +600,8 @@ Example:
 
             this.toggleClass('animate', false, this.$.beacon);
             this.toggleClass('animate', false, this.$.ring);
+            this.toggleClass('animate', false, this.$.ripple);
+            this.toggleClass('animate', false, this.$.core);
 
             if (!step || !step.beacon || (!this.state.hints.enabled && !step.injected)) {
                 return;
@@ -561,6 +665,8 @@ Example:
             });
             this.toggleClass('animate', true, this.$.beacon);
             this.toggleClass('animate', true, this.$.ring);
+            this.toggleClass('animate', true, this.$.ripple);
+            this.toggleClass('animate', true, this.$.core);
         },
         _ringAnimationIterated (e) {
             if (this._ringAnimationCount > 4 || this.idle) {
@@ -569,7 +675,7 @@ Example:
             this._ringSoundTimeout = setTimeout(() => {
                 this.playSound('/assets/audio/sounds/ding.mp3');
                 this._ringAnimationCount++;
-            }, 4600 * 0.75);
+            }, 4600 * 0.80);
         },
         _onIdleChanged (idle) {
             if (idle) {

@@ -135,6 +135,10 @@
                 padding-top: 64px;
             }
 
+            #title_input {
+                margin-bottom: 20px;
+            }
+
             form textarea {
                 @apply --layout-flex;
                 margin-bottom: 8px;
@@ -149,6 +153,11 @@
                 box-shadow: none;
                 width: 100%;
             }
+
+            form input[type="text"]::-webkit-input-placeholder { text-transform: none; }
+            form input[type="text"]::-moz-placeholder { text-transform: none; }
+            form input[type="text"]:-ms-input-placeholder { text-transform: none; }
+            form input[type="text"]:-moz-placeholder { text-transform: none; }
 
             .share-button {
                 width: 100%;

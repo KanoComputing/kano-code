@@ -19,11 +19,6 @@
             :host {
                 display: block;
             }
-            :host kano-workspace-head {
-                position: absolute;
-                right: 10px;
-                top: 10px;
-            }
             :host(.fullscreen) #content {
                 position: fixed;
                 top: 0;
@@ -64,7 +59,7 @@
                 animation: fade-in 200ms linear;
             }
             kano-workspace-toolbar {
-                padding: 32px 0;
+                padding: 20px 0;
             }
             .controls {
                 @apply --layout-vertical;
@@ -92,32 +87,11 @@
             .add-parts {
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                height: 46px;
-                border-top: 1px solid #202428;
                 border-bottom: 1px solid #202428;
             }
-            .add-parts .label {
-                text-transform: uppercase;
-                @apply --layout-flex;
-                color: #fff;
-                font-size: 14px;
-                font-weight: bold;
-                letter-spacing: 0.03em;
-                padding: 10px 0;
-            }
-            .add-parts .action {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+            .add-parts label {
+                margin: 0;
                 cursor: pointer;
-                transition: background 0.2s;
-            }
-            .add-parts .action label {
-                margin-right: 12px;
-                font-size: 14px;
-                font-weight: bold;
-                color: rgba(255, 255, 255, 0.5);
-                cursor: pointer;
-                transition: color 0.2s;
             }
             button#add-part-button,
             button#fullscreen-close {
@@ -128,9 +102,18 @@
                 border-radius: 3px;
             }
             button#add-part-button {
-                width: 24px;
-                height: 24px;
-                padding: 0px;
+                @apply --layout-horizontal;
+                padding: 8px 10px;
+                font-size: 12px;
+                cursor: pointer;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            button#add-part-button:hover {
+                background: #fd6a21;
+            }
+            button#add-part-button:hover > label {
+                color: white;
             }
             button#fullscreen-close {
                 position: fixed;
@@ -141,12 +124,8 @@
             button>* {
                 margin: 0 auto;
             }
-            .add-parts .action:hover button#add-part-button,
             button#fullscreen-close:hover {
                 background: rgba(255, 255, 255, 0.5);
-            }
-            .add-parts .action:hover label {
-                color: #fff;
             }
             paper-dialog {
                 background: transparent;
@@ -198,8 +177,9 @@
                 fill: rgba(255, 255, 255, 1);
             }
             button#add-part-button iron-icon {
-                --iron-icon-width: 18px;
-                --iron-icon-height: 18px;
+                --iron-icon-width: 16px;
+                --iron-icon-height: 16px;
+                margin-right: 0px;
             }
             button#fullscreen-close iron-icon {
                 --iron-icon-width: 20px;
@@ -242,15 +222,13 @@
                                     on-restart-button-clicked="_resetAppState"
                                     show-mouse-position="[[showMousePosition]]"
                                     mouse-x="[[mouseX]]"
-                                    mouse-y="[[mouseY]]"></kano-workspace-toolbar>
+                                    mouse-y="[[mouseY]]"
+                                    fullscreen="[[fullscreen]]"></kano-workspace-toolbar>
             <div class="add-parts">
-                <div class="label">[[localize('PARTS', 'Parts')]]</div>
-                <div class="action" on-tap="_addPartsTapped">
-                    <label for="add-part-button">[[localize('ADD_PART', 'Add Part')]]</label>
-                    <button id="add-part-button" type="button">
-                        <iron-icon icon="kc-ui:add"></iron-icon>
-                    </button>
-                </div>
+                <button id="add-part-button" type="button" on-tap="_addPartsTapped">
+                    <label for="add-part-button">[[localize('ADD_PARTS', 'Add Parts')]]</label>
+                    <iron-icon icon="kc-ui:add"></iron-icon>
+                </button>
             </div>
             <div class="part-list">
                 <slot name="extra-parts"></slot>
@@ -275,7 +253,8 @@
                                     no-part-controls
                                     on-pause-run-button-clicked="_runButtonClicked"
                                     on-fullscreen-button-clicked="_toggleFullscreen"
-                                    on-restart-button-clicked="_resetAppState"></kano-workspace-toolbar>
+                                    on-restart-button-clicked="_resetAppState"
+                                    fullscreen=[[fullscreen]]></kano-workspace-toolbar>
         </div>
         <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
     </template>
