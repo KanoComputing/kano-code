@@ -163,16 +163,62 @@
                         }
                     };
                 }
+            },
+            history: {
+                type: Object
+            },
+            canGoBack: {
+                type: Boolean,
+                computed: '_computeCanGoBack(history.backBuffer.splices)'
+            },
+            canGoForward: {
+                type: Boolean,
+                computed: '_computeCanGoForward(history.forwardBuffer.splices)'
             }
         },
         observers: [
             '_sceneChanged(scene)',
             '_selectedStepChanged(selectedStep)',
+            '_currentStepChanged(currentStep)',
             '_completedChanged(scene.completed)',
             '_addedPartsChanged(addedParts.splices)'
         ],
         forceReloadStep () {
             this.$.challenge.forceReloadStep();
+        },
+        _isStepSafeToSaveInHistory(step) {
+            if (step.validation) {
+                if (step.validation.blockly) {
+                    let b = step.validation.blockly;
+
+                    if (b['open-flyout'] || b.value) {
+                        return true;
+                    }
+                }
+
+                if (step.validation['open-parts']) {
+                    return true;
+                }
+            }
+
+            if (step.banner && step.banner['open-parts']) {
+                return true;
+            }
+
+            return step.isLast;
+        },
+        _currentStepChanged (stepNumber) {
+            let step = this.scene.steps[stepNumber];
+            if (this.history.ignoreNextStepChange) {
+                this.set('history.ignoreNextStepChange', false);
+            } else {
+                if (this._isStepSafeToSaveInHistory(step)) {
+                    this.debounce('save-history', () => {
+                        this.saveHistory();
+                    }, 400);
+                }
+            }
+
         },
         _selectedStepChanged (step) {
             if (!step || !this.modeReady) {
@@ -431,6 +477,11 @@
 
             this.bannerButtonInactive = false;
 
+            this.history = {};
+            this.set('history.backBuffer', []);
+            this.set('history.forwardBuffer', []);
+            this.set('history.ignoreNextStepChange', false);
+
             this.debounce('saveApp', () => {
                 this.editor = this.$.editor;
                 this.editor.addEventListener('change', (e) => {
@@ -548,6 +599,42 @@
         },
         resetAppState () {
             this.$.editor.resetAppState();
+        },
+        saveHistory () {
+            let step = this.currentStep;
+
+            this.push('history.backBuffer', {
+                stepNumber: step,
+                editorState: Kano.MakeApps.Utils.deepCopy(this.$.editor.save())
+            });
+            this.history.forwardBuffer.length = 0;
+        },
+        historyBack () {
+            if (this.canGoBack) {
+                let currentState = this.pop('history.backBuffer'),
+                    history = this.history.backBuffer[this.history.backBuffer.length - 1];
+
+                this.push('history.forwardBuffer', currentState);
+
+                this.$.editor.load(history.editorState, Kano.MakeApps.Parts.list);
+                this.set('history.ignoreNextStepChange', true);
+                this.set('currentStep', history.stepNumber);
+            }
+        },
+        historyForward () {
+            if (this.canGoForward) {
+                let history = this.pop('history.forwardBuffer');
+                this.push('history.backBuffer', history);
+                this.$.editor.load(history.editorState, Kano.MakeApps.Parts.list);
+                this.set('history.ignoreNextStepChange', true);
+                this.set('currentStep', history.stepNumber);
+            }
+        },
+        _computeCanGoBack () {
+            return this.history.backBuffer && this.history.backBuffer.length > 1;
+        },
+        _computeCanGoForward () {
+            return this.history.forwardBuffer && this.history.forwardBuffer.length > 0;
         }
     });
 </script>
