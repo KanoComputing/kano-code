@@ -17,59 +17,62 @@ pipeline {
             }
         }
 
-        stage('install dependencies') {
-            steps {
-                install_dep()
-            }
-        }
+        // stage('install dependencies') {
+        //     steps {
+        //         install_dep()
+        //     }
+        // }
 
-        stage('test') {
-            steps {
-                node('win-test') {
-                    prepare_env()
-                    checkout scm
-                    install_dep()
-                    sh "./node_modules/.bin/gulp validate-challenges"
-                    run_tests()
-                }
-            }
-        }
+        // stage('test') {
+        //     steps {
+        //         node('win-test') {
+        //             prepare_env()
+        //             checkout scm
+        //             install_dep()
+        //             sh "./node_modules/.bin/gulp validate-challenges"
+        //             run_tests()
+        //         }
+        //     }
+        // }
 
-        stage('build') {
-            steps {
-                sh "gulp build"
-            }
-        }
+        // stage('build') {
+        //     steps {
+        //         sh "gulp build"
+        //     }
+        // }
 
-        stage('deploy') {
-            steps {
-                script {
-                    def bucket = ''
-                    if (env.BRANCH_NAME == "jenkins") {
-                        echo 'deploy skipped'
-                    } else if (env.BRANCH_NAME == "prod") {
-                        deploy("production", false)
+        // stage('deploy') {
+        //     steps {
+        //         script {
+        //             def bucket = ''
+        //             if (env.BRANCH_NAME == "jenkins") {
+        //                 echo 'deploy skipped'
+        //             } else if (env.BRANCH_NAME == "prod") {
+        //                 deploy("production", false)
 
-                        // Rebuild the config of the index with the kit's target env
-                        env.TARGET = "osonline"
-                        sh "gulp copy-index"
-                        deploy("production-kit", false)
-                    } else if (env.BRANCH_NAME == "rc") {
-                        deploy("rc", true)
-                    } else if (env.NODE_ENV=="staging") {
-                        deploy("staging", true)
+        //                 // Rebuild the config of the index with the kit's target env
+        //                 env.TARGET = "osonline"
+        //                 sh "gulp copy-index"
+        //                 deploy("production-kit", false)
+        //             } else if (env.BRANCH_NAME == "rc") {
+        //                 deploy("rc", true)
+        //             } else if (env.NODE_ENV=="staging") {
+        //                 deploy("staging", true)
 
-                        sh "gulp doc"
-                        sh "./node_modules/.bin/kart archive ./www-doc -a releases.kano.me -r . --name kano-code-doc --channel main --release"
-                    }
-                }
-            }
-        }
+        //                 sh "gulp doc"
+        //                 sh "./node_modules/.bin/kart archive ./www-doc -a releases.kano.me -r . --name kano-code-doc --channel main --release"
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     post {
         failure {
             notify_failure_to_committers()
+        }
+        always {
+            updateGithubCommitStatus('Just testing')
         }
     }
 
@@ -115,4 +118,15 @@ def deploy(branch, release) {
     }
 
     sh cmd
+}
+ 
+def updateGithubCommitStatus(message) {
+ 
+  step([
+      $class: "GitHubCommitStatusSetter",
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: "https://github.com/KanoComputing/kano-code"],
+      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: "ci/jenkins/build-status"],
+      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: 'SUCCESS']] ]
+  ]);
 }
