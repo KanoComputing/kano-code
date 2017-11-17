@@ -75,7 +75,7 @@
             <g clip-path="url(#steps)">
                 <g clip-path="url(#funnel)">
                     <rect class="background" x="0" y="0" width="34" height="200"></rect>
-                    <rect id="filler" class="filler" x="0" y="0" width="34" height="200" transform$="translate(0, [[_computeGaugeHeight(gauge)]])"></rect>
+                    <rect id="filler" class="filler" x="0" y="0" width="34" height="200"></rect>
                 </g>
             </g>
         </svg>
@@ -93,7 +93,8 @@
             },
             gauge: {
                 type: Number,
-                value: 0
+                value: 0,
+                observer: '_transformFiller'
             }
         },
         _optionTapped (e) {
@@ -101,8 +102,9 @@
                 value = target.dataset.value;
             this.value = parseInt(value);
         },
-        _computeGaugeHeight (value) {
-            return Math.max(0, Math.min(200, value / 100 * 200));
+        _transformFiller (gauge) {
+            let gaugeHeight = Math.max(0, Math.min(200, gauge / 100 * 200));
+            this.transform(`translate(0, ${gaugeHeight}px)`, this.$.filler);
         }
     });
 </script>
