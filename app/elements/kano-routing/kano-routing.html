@@ -169,12 +169,7 @@
             },
             _exit() {
                 this.leaveAlert = false;
-                //TODO refactor this when Kano2App is able to restore selected device
-                if (window.ClientUtil.runningInKanoApp()) {
-                    window.history.back();
-                } else {
-                    location.href = Kano.MakeApps.config.PROJECTS_URL;
-                }
+                location.href = Kano.MakeApps.config.PROJECTS_URL;
             }
         });
     </script>
