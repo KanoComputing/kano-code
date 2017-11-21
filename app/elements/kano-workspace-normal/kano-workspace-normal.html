@@ -38,6 +38,9 @@
                     type: Number,
                     value: 250,
                     notify: true
+                },
+                backgroundCache: {
+                    type: String
                 }
             },
             ready () {
@@ -48,23 +51,34 @@
                 if (this.autoStart) {
                     this.start();
                 }
-
                 this.ctx = this.$.canvas;
             },
+            /**
+             * Apply background and store the value
+             * to be reapplied when workspace is reset
+             * (For imperative use - i.e user code will not call this)
+             */
             setBackground (bg) {
+                this.backgroundCache = bg;
                 this.style.background = bg;
-                let ctx = this.$.canvas.getContext('2d'),
-                    img = new Image(),
-                    bg_url = /^url\((['"]?)(.*)\1\)$/.exec(bg);
+                let bg_url = /^url\((['"]?)(.*)\1\)$/.exec(bg),
+                    ctx,
+                    img;
                     bg_url = bg_url ? bg_url[2] : '';
                 if (bg_url && bg_url !== '') {
+                    ctx = this.$.canvas.getContext('2d');
+                    img = new Image();
                     img.src = bg_url;
                     img.onload = () => {
                         ctx.drawImage(img, 0, 0, this.$.canvas.width, this.$.canvas.height); 
                     } 
                 }
             },
+            /**
+             * Method called by Canvas part (i.e. user code setting the background)
+            */
             setBackgroundColor (color) {
+                this.backgroundColorSet = true;
                 this.style.backgroundColor = color;
             },
             getBackgroundColor () {
@@ -88,7 +102,17 @@
                 });
             },
             clear () {
-                this.setBackground('#ffffff');
+                this.backgroundColorSet = false;
+                if (this.backgroundCache) {
+
+                    // To avoid a brief flash on the canvas, reset background only if Canvas part
+                    // would otherwise not set any value and there is effective change
+                    setTimeout(() => {
+                        if (!this.backgroundColorSet && this.style.background !== this.backgroundCache) {
+                            this.setBackground(this.backgroundCache);
+                        }
+                    }, 50);
+                }
             },
             renderOnCanvas (ctx, util, scaleFactor) {
                 ctx.fillStyle = this.style.background || '#ffffff';
