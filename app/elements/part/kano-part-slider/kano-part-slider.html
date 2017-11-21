@@ -4,13 +4,13 @@
 <link rel="import" href="../../../bower_components/web-components/kano-style/part.html">
 
 <dom-module id="kano-part-slider">
-    <style is="custom-style" include="input-range"></style>
-    <style>
-    :host {
-        display: block;
-    }
-    </style>
     <template>
+        <style is="custom-style" include="input-range"></style>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
         <input type="range"
                 min="{{model.userProperties.min}}"
                 max="{{model.userProperties.max}}"
@@ -31,6 +31,9 @@
                 observer: '_valueChanged'
             }
         },
+        start () {
+            this.setValue(this.model.userProperties.default);
+        },
         stop () {
             Kano.MakeApps.PartsAPI.Base.stop.apply(this, arguments);
             this.target = null;
@@ -38,6 +41,11 @@
         getValue () {
             let rawValue = this.get('value');
             return parseInt(rawValue);
+        },
+        setValue (value) {
+            let props = this.model.userProperties;
+
+            this.set('value', Math.min(Math.max(value, props.min), props.max));
         },
         _valueChanged () {
             let value = parseInt(this.value);

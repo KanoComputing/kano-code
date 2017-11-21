@@ -3,20 +3,20 @@
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/light-animation-display.html">
 <dom-module id="kano-part-light-animation-display">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: block;
-    }
-    .container {
-        position: relative;
-        border: 1px solid blue;
-        padding: 2px;
-    }
-    .container[running] {
-        display: none;
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            display: block;
+        }
+        .container {
+            position: relative;
+            border: 1px solid blue;
+            padding: 2px;
+        }
+        .container[running] {
+            display: none;
+        }
+        </style>
         <div class="container" running$="[[isRunning]]">
             <kano-bitmap-renderer width="[[model.userProperties.width]]" height="[[model.userProperties.height]]" bitmap="[[bitmap]]" pixel-size="22" spacing="1" fps="30" loop></kano-bitmap-renderer>
         </div>

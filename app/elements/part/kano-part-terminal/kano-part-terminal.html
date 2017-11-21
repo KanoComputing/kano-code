@@ -3,26 +3,26 @@
 <link rel="import" href="../kano-ui-behavior.html">
 <link rel="import" href="../../../scripts/kano/make-apps/parts-api/terminal.html">
 <dom-module id="kano-part-terminal">
-    <style>
-        :host {
-            @apply --layout-vertical;
-            width: calc(100% + 2px);
-            height: calc(100% + 2px);
-            overflow: hidden;
-            transform: translate(-1px, -1px);
-        }
-        #container {
-            @apply --layout-flex;
-            background: rgba(0, 0, 0, 0.9);
-            color: green;
-            font-family: monospace;
-            overflow: hidden;
-            padding: 2px 4px;
-            font-size: 18px;
-            word-wrap: break-word;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                width: calc(100% + 2px);
+                height: calc(100% + 2px);
+                overflow: hidden;
+                transform: translate(-1px, -1px);
+            }
+            #container {
+                @apply --layout-flex;
+                background: rgba(0, 0, 0, 0.9);
+                color: green;
+                font-family: monospace;
+                overflow: hidden;
+                padding: 2px 4px;
+                font-size: 18px;
+                word-wrap: break-word;
+            }
+        </style>
         <div id="container"></div>
     </template>
 </dom-module>

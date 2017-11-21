@@ -4,12 +4,12 @@
 
 <dom-module id="kano-ui-box">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: inline-block;
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            display: inline-block;
+        }
+        </style>
         <div id="box" style$="[[computeImageStyle(model.userStyle.*, model.userProperties.*)]]" on-tap="tapped"></div>
     </template>
 </dom-module>

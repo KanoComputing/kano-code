@@ -238,6 +238,8 @@
     Blockly.Msg.BLOCK_MOUSE_UP         = "release";
     Blockly.Msg.BLOCK_MOUSE_MOVE       = "move";
 
+    Blockly.Msg.BLOCK_SLIDER_SET_VALUE = "set value to %1";
+
     window.CustomBlocklyMsg = Blockly.Msg;
 
 })(window.Blockly = window.Blockly || {});

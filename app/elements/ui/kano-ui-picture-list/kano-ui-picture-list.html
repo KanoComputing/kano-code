@@ -4,40 +4,40 @@
 <link rel="import" href="../../kano-gif-creator/kano-gif-creator.html">
 <dom-module id="kano-ui-picture-list">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: inline-block;
-    }
-    .container {
-        overflow-x: auto;
-        position: relative;
-        max-width: 379px;
-        @apply(--layout-horizontal);
-        border-radius: 3px;
-        background-color: rgba(0, 0, 0, 0.22);
-        padding: 12px;
-        box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
-    }
-    .picture {
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-jusitfied);
-        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
-        border-radius: 3px;
-        border: 1px solid white;
-        background-color: #f3f3f3;
-        padding: 5px;
-        transition: all linear 1000ms;
-    }
-    .picture:not(:first-of-type) {
-        margin-left: -7px;
-    }
-    iron-image {
-        width: 66px;
-        height: 36px;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+            .container {
+                overflow-x: auto;
+                position: relative;
+                max-width: 379px;
+                @apply(--layout-horizontal);
+                border-radius: 3px;
+                background-color: rgba(0, 0, 0, 0.22);
+                padding: 12px;
+                box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
+            }
+            .picture {
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                @apply(--layout-center-jusitfied);
+                box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+                border-radius: 3px;
+                border: 1px solid white;
+                background-color: #f3f3f3;
+                padding: 5px;
+                transition: all linear 1000ms;
+            }
+            .picture:not(:first-of-type) {
+                margin-left: -7px;
+            }
+            iron-image {
+                width: 66px;
+                height: 36px;
+            }
+        </style>
         <div class="container">
             <template is="dom-repeat" items="[[_computePictureArray(pictures.splices)]]" as="picture">
                 <div class="picture" style$="[[_computeTilt(index)]]">

@@ -4,22 +4,22 @@
 <link rel="import" href="../../../bower_components/web-components/kano-style/part.html">
 <dom-module id="kano-ui-scrolling-text">
     <style is="custom-style" include="part-style"></style>
-    <style>
-        :host {
-            display: inline-block;
-        }
-        :host .container {
-            overflow: hidden;
-            position: relative;
-            border: 1px solid transparent;
-        }
-        :host #label {
-            white-space: nowrap;
-            position: absolute;
-            top: -2%;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: inline-block;
+            }
+            :host .container {
+                overflow: hidden;
+                position: relative;
+                border: 1px solid transparent;
+            }
+            :host #label {
+                white-space: nowrap;
+                position: absolute;
+                top: -2%;
+            }
+        </style>
         <div id="container" class="container" style$="[[computeContainerStyle(model.userStyle.*, isRunning)]]">
             <span id="label"
                 style$="[[computeLabelStyle(model.userStyle.*)]]">

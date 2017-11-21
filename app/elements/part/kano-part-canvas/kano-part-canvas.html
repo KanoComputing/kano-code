@@ -5,18 +5,18 @@
 
 <dom-module id="kano-part-canvas">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: inline-block;
-    }
-    canvas {
-        border: 1px solid lightgrey;
-    }
-    canvas[running] {
-        border-color: transparent;
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            display: inline-block;
+        }
+        canvas {
+            border: 1px solid lightgrey;
+        }
+        canvas[running] {
+            border-color: transparent;
+        }
+        </style>
         <canvas id="canvas" style$="[[_computeCanvasStyle(model.userStyle.width, model.userStyle.height)]]" running$="[[isRunning]]"></canvas>
     </template>
 </dom-module>

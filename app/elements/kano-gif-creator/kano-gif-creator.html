@@ -1,15 +1,15 @@
 <script src="../../bower_components/gif.js/dist/gif.js"></script>
 <dom-module id="kano-gif-creator">
-    <style>
-        :host {
-            display: block;
-        }
-        canvas {
-            width: 100%;
-            height: 100%;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+            canvas {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
     </template>
     <script>

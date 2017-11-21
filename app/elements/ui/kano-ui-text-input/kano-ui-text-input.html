@@ -6,27 +6,27 @@
 
 <dom-module id="kano-ui-text-input">
     <style is="custom-style" include="part-style"></style>
-    <style>
-    :host {
-        display: inline-block;
-    }
-    :host input[type='text'] {
-        @apply(--kano-input);
-        padding: 8px 12px;
-        width: 200px;
-        border: 1px solid var(--color-dark, black);
-    }
-    :host input[type='text']:disabled {
-        color: black;
-    }
-    @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-        :host input[type='text'] {
-            width: 120px;
-            padding: 2px 4px;
-        }
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            display: inline-block;
+        }
+        :host input[type='text'] {
+            @apply(--kano-input);
+            padding: 8px 12px;
+            width: 200px;
+            border: 1px solid var(--color-dark, black);
+        }
+        :host input[type='text']:disabled {
+            color: black;
+        }
+        @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+            :host input[type='text'] {
+                width: 120px;
+                padding: 2px 4px;
+            }
+        }
+        </style>
         <input id="input" type="text" value="{{model.userProperties.value::keyup}}" on-keyup="onKeyUp" placeholder$="[[model.userProperties.placeholder]]" disabled$="[[!isRunning]]">
     </template>
     <script type="text/javascript">

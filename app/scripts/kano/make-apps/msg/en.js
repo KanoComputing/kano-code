@@ -93,6 +93,7 @@
     Kano.MakeApps.Msg.DELAY = "Delay";
     Kano.MakeApps.Msg.MIN = "Min";
     Kano.MakeApps.Msg.MAX = "Max";
+    Kano.MakeApps.Msg.DEFAULT = "Default";
     Kano.MakeApps.Msg.IMAGE = "Image";
     Kano.MakeApps.Msg.ANIMATION = "Animation";
     Kano.MakeApps.Msg.ANIMATIONS = "Animations";

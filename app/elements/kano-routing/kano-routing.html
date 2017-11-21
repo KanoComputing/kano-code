@@ -31,9 +31,9 @@
                 overflow: auto;
             }
         </style>
-        <kano-alert id="mobile-info-dialog" heading="Kano Code is best with lots of room to code." text="We recommend using a tablet, laptop, or desktop."
+        <kano-alert id="mobile-info-dialog" heading="Coding on your mobile?" text="We’ve got something just for you!"
             entry-animation="from-big-animation" with-backdrop>
-            <button class="kano-alert-primary" dialog-confirm slot="actions">Got it</button>
+            <button class="kano-alert-primary" slot="actions" on-tap="_goToTapcode">Try it</button>
         </kano-alert>
         <iron-lazy-pages selected="[[page]]" attr-for-selected="name" loading="{{loading}}" restamp>
             <template is="iron-lazy-page" name="story" path="/views/kano-view-story/kano-view-story.html">
@@ -167,14 +167,13 @@
 
                 Kano.MakeApps.config.DISABLE_LOGOUT = !!disableLogout;
             },
+            _goToTapcode () {
+                this.leaveAlert = false;
+                location.href = Kano.MakeApps.config.TAPCODE_URL;
+            },
             _exit() {
                 this.leaveAlert = false;
-                //TODO refactor this when Kano2App is able to restore selected device
-                if (window.ClientUtil.runningInKanoApp()) {
-                    window.history.back();
-                } else {
-                    location.href = Kano.MakeApps.config.PROJECTS_URL;
-                }
+                location.href = Kano.MakeApps.config.PROJECTS_URL;
             }
         });
     </script>

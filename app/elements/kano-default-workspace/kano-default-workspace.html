@@ -256,7 +256,8 @@
                                     on-restart-button-clicked="_resetAppState"
                                     fullscreen=[[fullscreen]]></kano-workspace-toolbar>
         </div>
-        <iron-a11y-keys keys="alt+shift+f" on-keys-pressed="_toggleFullscreen" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="meta+enter" on-keys-pressed="_goFullscreen" target="[[target]]"></iron-a11y-keys>
+        <iron-a11y-keys keys="esc" on-keys-pressed="_cancelFullscreen" target="[[target]]"></iron-a11y-keys>
     </template>
     <script>
         Polymer({
@@ -400,6 +401,16 @@
                 this.target = document.body;
                 this._registerElement('add-part-button', this.$['add-part-button']);
                 this._registerElement('parts-controls', this);
+            },
+            _goFullscreen () {
+                if (!this.fullscreen) {
+                    this._toggleFullscreen();
+                }
+            },
+            _cancelFullscreen () {
+                if (this.fullscreen) {
+                    this._toggleFullscreen();
+                }
             },
             _toggleFullscreen () {
                 this.toggleClass('fullscreen');

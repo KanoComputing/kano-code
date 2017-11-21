@@ -1,14 +1,14 @@
 <dom-module id="kano-bitmap-renderer">
-    <style>
-    :host, canvas {
-        display: block;
-    }
-    canvas {
-        border: 0px;
-        @apply(--kano-bitmap-renderer-canvas);
-    }
-    </style>
     <template>
+        <style>
+        :host, canvas {
+            display: block;
+        }
+        canvas {
+            border: 0px;
+            @apply(--kano-bitmap-renderer-canvas);
+        }
+        </style>
         <canvas id="canvas" width$="[[_canvasSize(width, pixelSize, spacing)]]" height$="[[_canvasSize(height, pixelSize, spacing)]]"></canvas>
     </template>
     <script type="text/javascript">
@@ -27,7 +27,10 @@
                 width: Number,
                 height: Number,
                 pixelSize: Number,
-                bitmap: Array,
+                bitmap: {
+                    type: Array,
+                    observer: '_onBitmapSet'
+                },
                 fps: Number
             },
             observers: [
@@ -39,6 +42,11 @@
             },
             _canvasSize (size, pixelSize, spacing) {
                 return size * pixelSize + (size * (spacing * 2));
+            },
+            _onBitmapSet (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    this._renderCanvas();
+                }
             },
             _onBitmapChanged () {
                 if (!this.loop) {
