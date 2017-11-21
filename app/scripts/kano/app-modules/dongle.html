@@ -24,7 +24,9 @@
             }
 
             _getDeviceForPart () {
-                return this.api.getDeviceForPart.apply(this.api, arguments);
+                if (this.api) {
+                    return this.api.getDeviceForPart.apply(this.api, arguments);
+                }
             }
         }
 

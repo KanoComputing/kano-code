@@ -87,10 +87,14 @@
             /* The UI doesn't allow more than one lightboard at the minute so
              * get all connected lightboards and do the action on all of them.
              */
-            _getAllLightboards () {
-                return this.api.getAllDevices().filter((dev) => {
-                    return dev.product === 'lightboard' || dev.product === 'RPK';
-                });
+             _getAllLightboards () {
+                if (this.api) {
+                    return this.api.getAllDevices().filter((dev) => {
+                        return dev.product === 'lightboard' || dev.product === 'RPK';
+                    });
+                } else {
+                    return [];
+                }
             }
 
             paint () {

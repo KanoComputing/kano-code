@@ -17,7 +17,9 @@
             }
 
             _flash (color, length) {
-                this.api.ledring.flash(color, length);
+                if (this.api) {
+                    this.api.ledring.flash(color, length);
+                }
             }
 
             _on () {
@@ -33,22 +35,36 @@
             }
 
             _takePicture () {
-                return this.api.camera.takePicture();
+                if (this.api) {
+                    return this.api.camera.takePicture();
+                } else {
+                    return "";
+                }
             }
 
             _lastPicture () {
-                return this.api.camera.lastPicture();
+                if (this.api) {
+                    return this.api.camera.lastPicture();
+                } else {
+                    return "";
+                }
             }
 
             _getPicture (filename) {
-                return this.api.camera.getPicture(filename);
+                if (this.api) {
+                    return this.api.camera.getPicture(filename);
+                } else {
+                    return "";
+                }
             }
 
             _connect (info) {
-                this.api.connect();
-                this.api.on('connect', () => {
-                    this.api.emit('camera:init', info);
-                });
+                if (this.api) {
+                    this.api.connect();
+                    this.api.on('connect', () => {
+                        this.api.emit('camera:init', info);
+                    });
+                }
             }
 
             config (opts) {
