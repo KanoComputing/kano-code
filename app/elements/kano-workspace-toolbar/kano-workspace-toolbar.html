@@ -98,7 +98,7 @@
             display: inline-block;
             transform: translate(0px, -2px);
         }
-        button#play-pause {
+        button#play {
             margin: 0;
         }
         iron-icon {
@@ -191,8 +191,8 @@
             <button id="restart" class="square" type="button" on-tap="restartClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
                 <iron-icon icon="kc-ui:reset"></iron-icon>
             </button>
-            <kano-tooltip id="play-pause-tooltip" class="fly" position="top" offset="16"><div class="text">[[playPauseLabel]]</div></kano-tooltip>
-            <button id="play-pause" class="square" type="button" on-tap="_runButtonClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
+            <kano-tooltip id="play-tooltip" class="fly" position="top" offset="16"><div class="text">[[playPauseLabel]]</div></kano-tooltip>
+            <button id="play" class="square" type="button" on-tap="_runButtonClicked" on-mouseenter="_startTimer" on-mouseleave="_stopTimer">
                 <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}"></kano-animated-svg>
             </button>
         </div>
@@ -292,9 +292,11 @@
             return !show;
         },
         fullscreenClicked (e) {
+            this.closeAllTooltips();
             this.fire('fullscreen-button-clicked');
         },
         _runButtonClicked (e) {
+            this.$['play-tooltip'].close();
             this.fire('run-button-clicked');
             this.playPauseLabel = this.running ? 'Pause' : 'Play';
         },
@@ -342,6 +344,15 @@
             const targetId = this._computeTargetId(e),
                 tooltip = this.$[`${targetId}-tooltip`];
             tooltip.close();
+        },
+        /**
+        * Close all on-hover tooltips
+        */
+        closeAllTooltips () {
+            let tooltipIds = ['fullscreen', 'restart', 'play'];
+            tooltipIds.forEach(id => {
+                this.$[`${id}-tooltip`].close();
+            });
         },
         _computeTargetId (e) {
             return e.currentTarget ? e.currentTarget.id : Polymer.dom(e).rootTarget.id;

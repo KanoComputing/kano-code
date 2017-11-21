@@ -23,7 +23,7 @@
                 position: fixed;
                 top: 0;
                 left: 0;
-                z-index: 101;
+                z-index: 301;
                 margin: 0;
             }
             :host #content {
@@ -76,7 +76,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                z-index: 100;
+                z-index: 300;
                 background: var(--kano-app-editor-workspace-background, #f2f2f2);
             }
             .overlay kano-workspace-toolbar {
@@ -251,6 +251,7 @@
             </button>
             <kano-workspace-toolbar running="[[running]]"
                                     no-part-controls
+                                    on-save-button-clicked="_toggleFullscreen"
                                     on-pause-run-button-clicked="_runButtonClicked"
                                     on-fullscreen-button-clicked="_toggleFullscreen"
                                     on-restart-button-clicked="_resetAppState"

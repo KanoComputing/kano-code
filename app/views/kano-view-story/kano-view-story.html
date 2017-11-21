@@ -1,35 +1,48 @@
+<!-- Outside dependencies -->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/web-components/kano-reward-modal/kano-reward-modal.html">
 <link rel="import" href="../../bower_components/web-components/kano-alert/kano-alert.html">
-<link rel="import" href="../../scripts/kano/make-apps/mode/mode.html">
-<link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
-<link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
-<link rel="import" href="../../scripts/kano/util/router.html">
-<link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
-<link rel="import" href="../../scripts/kano/app-modules/index.html">
-<link rel="import" href="../../scripts/kano/make-apps/stories.html">
+<!-- App components -->
+<link rel="import" href="../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.html">
+<link rel="import" href="../../elements/kano-app-challenge/kano-app-challenge.html">
+<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
+<link rel="import" href="../../elements/kano-editor-banner/kano-editor-banner.html">
+<link rel="import" href="../../elements/kano-editor-topbar/kano-editor-topbar.html">
+<link rel="import" href="../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.html">
+<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
+<!-- App behaviors -->
 <link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-view-drop-file-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-code-ga-tracking-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-i18n-behavior.html">
-<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
-<link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
-<link rel="import" href="../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.html">
-<link rel="import" href="../../bower_components/web-components/kano-reward-modal/kano-reward-modal.html">
-<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
-
+<!-- App scripts -->
+<link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
+<link rel="import" href="../../scripts/kano/make-apps/mode/mode.html">
+<link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
+<link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
+<link rel="import" href="../../scripts/kano/util/router.html">
+<link rel="import" href="../../scripts/kano/app-modules/index.html">
+<link rel="import" href="../../scripts/kano/make-apps/stories.html">
 <link rel="import" href="../../scripts/kano/make-apps/progress.html">
 <link rel="import" href="../../scripts/kano/make-apps/store.html">
 <link rel="import" href="../../scripts/kano/make-apps/actions/app.html">
+<link rel="import" href="../../scripts/kano/make-apps/utils.html">
 
 <dom-module id="kano-view-story">
     <style>
         :host {
-            display: block;
+            @apply --layout-vertical;
             position: relative;
-            @apply(--layout-vertical);
         }
-        :host kano-story-scene {
-            @apply(--layout-flex);
+        :host kano-app-challenge {
+            @apply --layout-flex;
+        }
+        :host kano-app-editor {
+            @apply --layout-flex;
         }
         paper-dialog {
             border-radius: 5px;
@@ -40,24 +53,98 @@
             padding: 0px;
             margin: 0px;
         }
+        kano-editor-banner {
+            background: #394148;
+            color: white;
+            border-bottom: 1px solid var(--kano-app-editor-workspace-border, #22272d);
+        }
+        .bolt {
+            background: black;
+            width: 11px;
+            height: 11px;
+            margin: 3px 4px;
+            border-radius: 2px;
+            padding: 3px;
+        }
+        .progress {
+            position: relative;
+            color: white;
+            background: #32393F;
+            height: 22px;
+            border-top: 1px solid var(--kano-app-editor-workspace-border, #22272d);
+        }
+        .progress .bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: #e4e6e7;
+            opacity: 0.4;
+            transition: transform 200ms ease-out;
+        }
+        .progress .bar-content {
+            @apply --layout-horizontal;
+            position: absolute;
+        }
+        .progress .story-name {
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
     </style>
     <template>
-        <kano-story-scene id="story-scene"
-                            user="[[user]]"
-                            scene="{{scene}}"
-                            on-scene-done="nextScene"
-                            story="[[story]]"
-                            extensions="[[story.extensions]]"
-                            on-extend-story="extendStory"
+        <kano-app-challenge id="challenge"
+                            steps="[[scene.steps]]"
+                            mode-ready="[[modeReady]]"
+                            step="{{currentStep}}"
+                            started="[[scene.started]]"
+                            idle="[[story.paused]]"
+                            selected-step="{{selectedStep}}"
+                            state="{{state}}"
+                            scene-variables="{{sceneVariables}}"
+                            on-scene-done="sceneCompleted"
                             on-next-story="goToNextStory"
+                            on-save="saveApp"
                             on-exit="_exit"
-                            on-share="share"
-                            added-parts="{{addedParts}}">
-                            </kano-story-scene>
+                            on-save-to-storage="saveToStorage"
+                            on-load="loadApp">
+            <kano-app-editor id="editor"
+                             added-parts="{{addedParts}}"
+                             parts="[[parts]]"
+                             default-categories="[[categories]]"
+                             slot="editor"
+                             running="{{running}}"
+                             code="{{code}}"
+                             mode="[[mode]]"
+                             on-share="_pauseAndShare"
+                             on-lockdown-clicked="_notifyBanner">
+                <div slot="above-code">
+                    <kano-editor-topbar user="[[user]]" profile="[[user.profile]]"></kano-editor-topbar>
+                    <kano-editor-banner id="banner"
+                                        head="[[banner.head]]"
+                                        text="[[banner.text]]"
+                                        img-src="[[banner.icon]]"
+                                        img-page="[[banner.imgPage]]"
+                                        button-label="[[banner.buttonLabel]]"
+                                        on-button-tapped="_bannerButtonTapped"></kano-editor-banner>
+                </div>
+                <div class="progress" slot="under-code">
+                    <div class="bar" id="bar"></div>
+                    <div class="bar-content">
+                        <iron-icon class="bolt" src="/assets/icons/lightning.svg"></iron-icon>
+                        <div class="story-name">[[story.name]]</div>
+                    </div>
+                </div>
+            </kano-app-editor>
+        </kano-app-challenge>
         <paper-dialog id="share-modal" opened={{shareOpened}} modal>
             <kano-share-modal id="share-modal-content"
                               on-confirm="confirmShare"
                               on-dismiss="dismissShare"
+                              on-share-attempted="_setUserShared"
+                              on-share-successful="_setUserShared"
                               opened="[[shareOpened]]"
                               on-next-story="goToNextStory"
                               share-info="{{shareInfo}}"
@@ -92,15 +179,21 @@
 
 <script>
     /* globals Polymer, Kano, page */
+    const BANNER_ICONS = {
+        'default': '/assets/avatar/judoka-face.svg'
+    };
+
     Polymer({
         is: 'kano-view-story',
         behaviors: [
             Kano.Behaviors.ViewBehavior,
+            Kano.Behaviors.EditorViewBehavior,
             Kano.Behaviors.SharingBehavior,
             Kano.Behaviors.Tracking.GABehavior,
             Kano.Behaviors.ViewDropFileBehavior,
             Kano.Behaviors.I18nBehavior,
-            Kano.MakeApps.Store.ReceiverBehavior
+            Kano.MakeApps.Store.ReceiverBehavior,
+            Kano.Behaviors.SoundPlayerBehavior
         ],
         properties: {
             selected: {
@@ -111,6 +204,12 @@
             story: {
                 type: Object,
                 observer: 'selectedChanged'
+            },
+            scene: {
+                type: Object
+            },
+            mode: {
+                type: Object  
             },
             addedParts: {
                 type: Array
@@ -124,15 +223,77 @@
                 type: Object,
                 linkState: 'editor.app',
                 observer: '_editorAppChanged'
+            },
+            history: {
+                type: Object,
+                value: () => {
+                    return {
+                        backBuffer: [],
+                        forwardBuffer: [],
+                        ignoreNextStepChange: false
+                    };
+                }
+            },
+            canGoBack: {
+                type: Boolean,
+                computed: '_computeCanGoBack(history.backBuffer.splices)'
+            },
+            canGoForward: {
+                type: Boolean,
+                computed: '_computeCanGoForward(history.forwardBuffer.splices)'
+            },
+            progress: {
+                type: Number,
+                computed: 'computeProgress(currentStep, scene)',
+                observer: '_progressChanged'
+            },
+            code: Object,
+            store: {
+                type: Object,
+                value: () => {
+                    return {};
+                }
+            },
+            currentStep: {
+                type: Number,
+                notify: true
+            },
+            remix: {
+                type: Boolean,
+                value: false,
+                observer: '_remixChanged'
+            },
+            sceneVariables: {
+                type: Object,
+                computed: '_computeSceneVariables(categories)'
+            },
+            state: {
+                type: Object,
+                value: () => {
+                    return {
+                        hints: {
+                            enabled: true
+                        }
+                    };
+                }
+            },
+            bannerButtonInactive: {
+                type: Boolean,
+                value: false
             }
         },
         listeners: {
             'parts-changed': '_partsChanged',
             'opened-changed': '_onModalChanged',
-            'mode-ready': '_setupHardwareParts'
+            'mode-ready': '_setupHardwareParts',
         },
         observers: [
-            '_setupHardwareParts(addedParts.splices)'
+            '_setupHardwareParts(addedParts.splices)',
+            '_completedChanged(scene.completed)',
+            '_loadVariables(scene)',
+            '_selectedStepChanged(selectedStep)',
+            '_currentStepChanged(currentStep)',
+            '_addedPartsChanged(addedParts.splices)'
         ],
         ready () {
             this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
@@ -140,16 +301,22 @@
                 this.fire('iron-signal', { name: 'new-part-request', data: e.detail });
             });
 
-            this.modal = this.$['share-modal'];
-
             Kano.AppModules.init(Object.assign({
                 hardwareAPI: this.hardwareAPI,
                 restartCodeHandler: () => {
-                    this.$['story-scene'].resetAppState();
+                    this.resetAppState();
                 }
             }, Kano.MakeApps.config));
             Kano.MakeApps.Blockly.init(Kano.MakeApps.config);
             Kano.MakeApps.Mode.init(Kano.MakeApps.config);
+            
+            this.modal = this.$['share-modal'];
+            this.editor = this.$.editor;
+            this.debounce('saveApp', () => {
+                this.editor.addEventListener('change', (e) => {
+                    this.saveApp(e);
+                });
+            }, 300);
         },
         attached () {
             Kano.MakeApps.Stories.getById(this.context.params.id)
@@ -183,7 +350,118 @@
                         return Kano.MakeApps.Progress.loadProgress(story.progress.group);
                     }
                 })
-                .then((progress) => this.updateExtensions(progress));
+        },
+        selectedChanged () {
+            if (!this.story) {
+                return;
+            }
+            this.$['share-modal-content'].set('nextButtonLabel', Boolean(this.story.next) ?
+                    this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
+
+            Kano.MakeApps.Stories.getSceneByIndex(this.story, this.selected)
+                .then((scene) => {
+                    // TODO Check if any important info in scene apart from data
+                    this.set('scene', Object.assign(scene, scene.data));
+                    //FIXME
+                    this.set('scene.started', true);
+                    this.customAlert = true;
+                    this.mode = Kano.MakeApps.Mode.modes[(this.scene.mode || 'normal')];
+                });
+        },
+        _editorAppChanged () {
+            if (!this.editorApp) {
+                return;
+            }
+            // TODO replace this when routing is based on flow-down
+            page.redirect('/');
+        },
+        _onModeReady () {
+            Kano.Behaviors.EditorViewBehavior._onModeReady.apply(this, arguments);
+            this._computeMode();
+            this._computeCategories();
+            this._computeParts();
+            this._loadVariables();
+            this.currentStep = 0;
+            this.async(() => {
+                this._loadDefaultApp();
+            });
+        },
+        _computeMode () {
+            if (this.remix && this._originalModeCategories) {
+                this.set('mode.categories', this._originalModeCategories);
+            } else {
+                const mode = this.mode;
+                // In case we filter blocks in the categories of the mode
+                if (this.scene.filterBlocks) {
+                    const whitelist = this.scene.filterBlocks[mode.id];
+                    if (whitelist) {
+                        this._originalModeCategories = Kano.MakeApps.Utils.deepCopy(this.mode.categories);
+                        mode.categories.forEach((category, index) => {
+                            // Filter the blocks of this category to the one whitelisted
+                            category.blocks = category.blocks.filter(block => {
+                                let definition = block.block(mode);
+                                return whitelist.indexOf(definition.id) !== -1;
+                            });
+                        });
+                    }
+                }
+                this.set('mode', mode);
+            }
+        },
+        /**
+         * Compute the categories that will be used in this challenge. Takes care of filtering the
+         * categories and blocks that will not be used. Resets everything when the users enters remix mode
+         */
+        _computeCategories () {
+            let cats = {},
+                cat;
+            if (this.remix) {
+                cats = Kano.MakeApps.Blockly.categories;
+            } else {
+                cats.events = Object.assign({}, Kano.MakeApps.Blockly.categories.events);
+                Object.keys(Kano.MakeApps.Blockly.categories).filter(key => {
+                    return this.scene.modules.indexOf(key) >= 0;
+                }).forEach(id => {
+                    // Clone the object, because we might change its blocks
+                    cats[id] = Object.assign({}, Kano.MakeApps.Blockly.categories[id]);
+                });
+
+                // Do not filter blocks if the list is not defined
+                if (this.scene.filterBlocks) {
+                    // Remove the excluded blocks from the categories
+                    Object.keys(this.scene.filterBlocks).forEach(catId => {
+                        cat = cats[catId];
+                        if (!cat) {
+                            return;
+                        }
+                        cat.blocks = cat.blocks.filter(block => this.scene.filterBlocks[catId].indexOf(block.id) !== -1);
+                    });
+                }
+            }
+            this.categories = cats;
+        },
+        _computeParts () {
+            if (this.remix) {
+                this.parts = Kano.MakeApps.Parts.list.filter((part) => {
+                    return this.mode.parts.indexOf(part.type) !== -1;
+                });
+            } else {
+                this.parts = Kano.MakeApps.Parts.list.filter(part => this.scene.parts.indexOf(part.type) !== -1);
+            }
+        },
+        _loadDefaultApp () {
+            let editor = this.$.editor;
+            if (this.scene && this.scene.defaultApp) {
+                editor.load(JSON.parse(this.scene.defaultApp), Kano.MakeApps.Parts.list);
+            }
+        },
+        _loadVariables () {
+            let workspace = this.$.editor.getBlocklyWorkspace();
+            if (this.scene && this.scene.variables && workspace) {
+                this.scene.variables.forEach((v) => {
+                    Blockly.Variables.addVariable(v, workspace);
+                });
+            }
         },
         _onFileDropped (contents) {
             let app;
@@ -197,13 +475,6 @@
             const state = this.getState();
             this.dispatch({ type: 'LOAD_EDITOR_APP', data: state.story.loadingApp });
         },
-        _editorAppChanged () {
-            if (!this.editorApp) {
-                return;
-            }
-            // TODO replace this when routing is based on flow-down
-            page.redirect('/');
-        },
         _setupHardwareParts () {
             if (this.hardwareAPI) {
                 this.hardwareAPI.setParts(this.addedParts);
@@ -214,23 +485,19 @@
                 this.hardwareAPI.requestDeviceUpdate();
             }
         },
-        updateExtensions (progress) {
-            let story = this.story,
-                extensions = story.extensions,
-                progressGroup = story.progress && progress[story.progress.group] || {},
-                progressExtensions = progressGroup.extensions;
-            if (story.extensions && progressExtensions) {
-                for (let i = 0, len = extensions.length; i < len; i++) {
-                    if (progressExtensions.indexOf(extensions[i].id) !== -1) {
-                        this.set(`story.extensions.${i}.completed`, true);
-                    }
-                }
+        sceneCompleted (e) {
+            if (this.scene.show_remix_options) {
+                this.set('scene.completed', true);
             }
-        },
-        isSelected (index) {
-            return index === this.selected;
-        },
-        nextScene () {
+
+            if (this.scene['autoshare_disabled']) {
+                this.set('scene.autoshareDisabled', true);
+            }
+
+            this.fire('ga-tracking-event', {
+                event: 'worldTutorialCompleted'
+            });
+            
             this.trackUserProgress(this.story.id);
             if (this.selected < this.story.scenes.length - 1) {
                 this.selected++;
@@ -238,10 +505,29 @@
                 //story completed
                 let progress = this.story.progress,
                     extension = this.story.extension ? this.story.id : null;
-                Kano.MakeApps.Progress.updateProgress(progress.group, progress.storyNo, extension, this.story.id)
-                    .then((progress) => this.updateExtensions(progress));
+                Kano.MakeApps.Progress.updateProgress(progress.group, progress.storyNo, extension, this.story.id);
                 this.customAlert = false;
                 this._displayUserReward();
+            }
+        },
+        _completedChanged (completed) {
+            if (completed) {
+                this.remix = true;
+                this.$.editor.generateCover().then((image) => {
+                    this.appPreview = image.src;
+                });
+            }
+        },
+        goToNextStory () {
+            let storyId;
+            if (!this.story.next) {
+                this.fire('exit-confirmed');
+                return;
+            }
+
+            if (this.story.next) {
+                window.history.pushState(null, null, `/story/${this.story}`);
+                page.redirect(`/story/${this.story.next}`);
             }
         },
         _displayUserReward () {
@@ -265,10 +551,12 @@
                 type: 'complete',
                 data: trackingData
             });
-            this.$['story-scene'].disableBannerButton();
+            this.bannerButtonInactive = true;
+            this.computeBanner(this.selectedStep);
             this.triggerGamificationEngine(payload)
                 .then(res => {
-                    this.$['story-scene'].enableBannerButton();
+                    this.bannerButtonInactive = false;
+                    this.computeBanner(this.selectedStep);
                     this._trackRewards(res.update);
                     this.$['reward-modal'].open(res, this.user);
                     this.fire('update-user-progress', res.update);
@@ -301,35 +589,6 @@
                 });
             }
         },
-        selectedChanged () {
-            if (!this.story) {
-                return;
-            }
-            this.$['share-modal-content'].set('nextButtonLabel', Boolean(this.story.next) ?
-                    this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
-
-            Kano.MakeApps.Stories.getSceneByIndex(this.story, this.selected)
-                .then((scene) => {
-                    this.set('scene', scene);
-                    this.customAlert = true;
-                });
-        },
-        extendStory (e) {
-            let extensionId = e.detail;
-            page.redirect(`/story/${extensionId}`);
-        },
-        goToNextStory (e) {
-            let storyId;
-            if (!this.story.next) {
-                this.fire('exit-confirmed');
-                return;
-            }
-
-            if (this.story.next) {
-                window.history.pushState(null, null, `/story/${this.story}`);
-                page.redirect(`/story/${this.story.next}`);
-            }
-        },
         _openSignup () {
             this.fire('signup');
         },
@@ -346,6 +605,262 @@
                 this.fire('exit-confirmed');
             }
         },
+        resetAppState () {
+            this.$.editor.resetAppState();
+        },
+        _notifyBanner () {
+            this.$.banner.shakeButton();
+        },
+        _runningChanged () {
+            if (!this.scene || !this.scene.started) {
+                return;
+            }
+            Kano.Behaviors.EditorViewBehavior._runningChanged.apply(this, arguments);
+        },
+        loadApp (e) {
+            let id = e.detail,
+                savedState,
+                challenge;
+            savedState = this.fromStore(id);
+            challenge = this.$.challenge;
+            this.$.editor.load(savedState.app, this._computeParts());
+            challenge.set('stepIds', savedState.stepIds);
+            challenge.set('blockIds', savedState.blockIds);
+        },
+        saveApp (e) {
+            let id = e.detail.id || 'current',
+                blockIds = e.detail.blockIds,
+                stepIds = e.detail.stepIds,
+                app = this.$.editor.save(true, false);
+            this.addToStore(id, {
+                app,
+                blockIds,
+                stepIds
+            });
+        },
+        shareApp () {
+            this.$.editor.share();
+        },
+        saveToStorage () {
+            let app = this.$.editor.save();
+            localStorage.setItem('savedApp', JSON.stringify(app));
+        },
+        _progressChanged (progress) {
+            this.transform(`translateX(-${100 - progress * 100}%)`, this.$.bar);
+            this.$.bar.animate({
+                opacity: [0.4, 1, 0.4]
+            }, {
+                duration: 1200,
+                easing: 'ease-in-out'
+            });
+        },
+        computeProgress (currentStep, scene) {
+            if (currentStep < 0) {
+                return 1;
+            }
+            return (currentStep + 1) / scene.steps.length;
+        },
+        _currentStepChanged (stepNumber) {
+            let step = this.scene.steps[stepNumber];
+            if (this.history.ignoreNextStepChange) {
+                this.set('history.ignoreNextStepChange', false);
+            } else {
+                if (this._isStepSafeToSaveInHistory(step)) {
+                    this.debounce('save-history', () => {
+                        this.saveHistory();
+                    }, 400);
+                }
+            }
+        },
+        _selectedStepChanged (step) {
+            if (!step || !this.modeReady) {
+                return;
+            }
+            this.computeBanner(step);
+        },
+        _computeSceneVariables (categories) {
+            let sceneVariables = {};
+            Object.keys(categories).forEach((key) => {
+                sceneVariables[`${key}_color`] = categories[key].colour;
+            });
+            return sceneVariables;
+        },
+        computeBanner (step) {
+            let iconId, animation;
+            clearTimeout(this.showButtonTimeout);
+            this.debounce('banner', () => {
+                this.set('banner', null);
+                if (this.state.hints.enabled) {
+                    if (step.banner) {
+                        let label = (step.banner.buttonLabel || this.localize('NEXT', 'Next'));
+                        this.banner = this.banner || {};
+                        this.set('banner.head', step.banner.head);
+                        this.set('banner.text', step.banner.text);
+                        this.set('banner.buttonLabel', step.banner.next_button ? label : null);
+
+                        if (this.banner.buttonLabel) {
+                            if (this.bannerButtonInactive) {
+                               this.$.banner.buttonState = 'inactive';
+                            } else {
+                               this.$.banner.buttonState = 'active';
+                            }
+                        } else {
+                            this.$.banner.buttonState = 'hidden';
+                        }
+                    } else {
+                        this.banner = null;
+                    }
+                } else {
+                    let bannerProps = this.state.hints['disabled-banner'];
+                    if (bannerProps) {
+                        this.banner = this.banner || {};
+                        this.set('banner.head', bannerProps.head);
+                        this.set('banner.text', bannerProps.text);
+                        this.set('banner.buttonLabel', this.localize('HINTS', 'Hints'));
+                        
+                        // Show hint button with delay
+                        this.$.banner.buttonState = 'hidden';
+                        this.showButtonTimeout = setTimeout(() => {
+                            this.$.banner.buttonState = 'active';
+                        }, 6000);
+                    } else {
+                        this.banner = null;
+                    }
+                }
+                if (this.banner) {
+                    if (step.banner) {
+
+                        this.$.editor.set('lockdown', step.banner.lockdown);    //disable click events if true
+                        this.$.banner.showSaveButton = step.isLast;
+
+                        if (step.isLast) {
+                            this.set('banner.icon', null);
+                            this.set('banner.imgPage', 'star');
+                            this.set('banner.buttonLabel', Boolean(this.story.next) ?
+                                    this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
+                        } else if (step.banner.animation) {
+                            animation = step.banner.animation;
+                            this.set('banner.imgPage', animation);
+                            this.set('banner.icon', null);
+                        } else if (step.banner.icon) {
+                            iconId = step.banner.icon;
+                            this.set('banner.icon', BANNER_ICONS[iconId]);
+                            this.set('banner.imgPage', null);
+                        } else {
+                            this.set('banner.icon', null);
+                            this.set('banner.imgPage', 'judoka');
+                        }
+                    } else {
+                        //TODO quickfix for demo. Needs to be removed.
+                        this.set('banner.icon', null);
+                        this.set('banner.imgPage', 'judoka');
+                    }
+                }
+            }, 200);
+        },
+        _bannerButtonTapped () {
+            if (this.selectedStep.isLast) {
+                Kano.MakeApps.Utils.onLine().then((isOnline) => {
+                    if (!this.user || this.user.hasSharedInSession || this._userAlreadyShared(this.story) ||
+                            this.scene.autoshareDisabled || !isOnline) {
+                        this.goToNextStory();
+                    } else {
+                        const shareDetail = this.$.editor.compileApp();
+                        shareDetail.title = this.story.name;
+                        shareDetail.autoshare = true;
+                        this.scene.autoshareDisabled = true;
+                        this.running = false;
+                        this.fire('share', shareDetail);
+                    }
+                });
+            } else if (this.state.hints && this.state.hints.enabled) {
+                this.$.challenge.nextStep();
+            } else {
+                this.showHints();
+            }
+        },
+        showHints () {
+                    this.set('banner', null);
+                    this.computeBanner(this.selectedStep);
+                    this.set('state.hints', { enabled: true });
+        },
+        _userAlreadyShared (story) {
+            const progress = this._getUserProgress(this.user);
+            return progress.indexOf(story.id) > -1;
+        },
+        _getUserProgress (user) {
+            let groups = this._getProgressGroups(user),
+                stories = [];
+            if (groups) {
+                Object.keys(groups).forEach(key => {
+                    stories = stories.concat(groups[key].completedStories);
+                });
+            }
+            return stories;
+        },
+        _getProgressGroups (user) {
+            return user && user.profile && user.profile.stats['make-apps'] &&
+                    user.profile.stats['make-apps'].progress || null;
+        },
+        _pauseAndShare (e) {
+            this.running = false;
+            this.share(e);
+            e.preventDefault();
+            e.stopPropagation();
+        },
+        _remixChanged (remix) {
+            if (remix) {
+                this._computeMode();
+                this._computeCategories();
+                this._computeParts();
+                // Look for the previously removed blocks in the addedParts
+                this.addedParts.forEach((part, i) => {
+                    // Some blocks were removed, we need to add them back
+                    if (part.removedBlocks) {
+                        // Go through all the removed blocks and inject them back in the blocks array
+                        Object.keys(part.removedBlocks).forEach(index => {
+                            this.splice(`addedParts.${i}.blocks`, index, 0, part.removedBlocks[index]);
+                        });
+                        delete part.removedBlocks;
+                    }
+                });
+            }
+        },
+        /**
+         * Observes the `addedParts` array. Goes through the added splice and removes the blocks from a part if needed.
+         * Stores the removed blocks in a `removedBlocks` object for future re-injection
+         */
+        _addedPartsChanged (e) {
+            if (!e || this.remix || !this.scene.filterBlocks) {
+                return;
+            }
+            e.indexSplices.forEach(splice => {
+                splice.object.forEach(part => {
+                    Object.keys(this.scene.filterBlocks).forEach(key => {
+                        if (part.id !== key) {
+                            return;
+                        }
+                        part.blocks = part.blocks.filter((block, index) => {
+                            let id, definition, remove;
+                            if (typeof block === 'string') {
+                                id = block;
+                            } else {
+                                definition = block.block(part);
+                                id = definition.id
+                            }
+                            remove = this.scene.filterBlocks[key].indexOf(id) === -1;
+                            // We're about to remove the block from the part. Save it under another object to
+                            // be able to inject it back later
+                            if (remove) {
+                                part.removedBlocks = part.removedBlocks || {};
+                                part.removedBlocks[index] = block;
+                            }
+                            return !remove;
+                        });
+                    });
+                });
+            });
+        },
         _onModalChanged (e) {
             if (!this.story) {
                 return;
@@ -356,6 +871,69 @@
             if (pathIds.indexOf('share-modal') > -1 || pathIds.indexOf('reward-modal') > -1) {
                 this.set('story.paused', e.detail.value);
             }
+        },
+        saveHistory () {
+            let step = this.currentStep;
+
+            this.push('history.backBuffer', {
+                stepNumber: step,
+                editorState: Kano.MakeApps.Utils.deepCopy(this.$.editor.save())
+            });
+            this.history.forwardBuffer.length = 0;
+        },
+        historyBack () {
+            if (this.canGoBack) {
+                let currentState = this.pop('history.backBuffer'),
+                    history = this.history.backBuffer[this.history.backBuffer.length - 1];
+                this.push('history.forwardBuffer', currentState);
+                this.$.editor.load(history.editorState, Kano.MakeApps.Parts.list);
+                this.set('history.ignoreNextStepChange', true);
+                this.set('currentStep', history.stepNumber);
+            }
+        },
+        historyForward () {
+            if (this.canGoForward) {
+                let history = this.pop('history.forwardBuffer');
+                this.push('history.backBuffer', history);
+                this.$.editor.load(history.editorState, Kano.MakeApps.Parts.list);
+                this.set('history.ignoreNextStepChange', true);
+                this.set('currentStep', history.stepNumber);
+            }
+        },
+        _computeCanGoBack () {
+            return this.history.backBuffer && this.history.backBuffer.length > 1;
+        },
+        _computeCanGoForward () {
+            return this.history.forwardBuffer && this.history.forwardBuffer.length > 0;
+        },
+        _isStepSafeToSaveInHistory(step) {
+            if (step.validation) {
+                if (step.validation.blockly) {
+                    let b = step.validation.blockly;
+
+                    if (b['open-flyout'] || b.value) {
+                        return true;
+                    }
+                }
+
+                if (step.validation['open-parts']) {
+                    return true;
+                }
+            }
+
+            if (step.banner && step.banner['open-parts']) {
+                return true;
+            }
+
+            return step.isLast;
+        },
+        addToStore (id, data) {
+            this.store[id] = data;
+        },
+
+        fromStore (id) {
+            return this.store[id];
         }
+        
     });
 </script>
