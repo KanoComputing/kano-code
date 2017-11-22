@@ -1,3 +1,11 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
+<link rel="import" href="../../elements/kano-app-challenge/kano-app-challenge.html">
+<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
+<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
+<link rel="import" href="../../elements/behaviors/kano-modal-animator-behavior.html">
 <link rel="import" href="../../scripts/kano/make-apps/mode/mode.html">
 <link rel="import" href="../../scripts/kano/make-apps/hardware-api.html">
 <link rel="import" href="../../scripts/kano/make-apps/parts/parts.html">
@@ -5,14 +13,6 @@
 <link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
 <link rel="import" href="../../scripts/kano/make-apps/challenge.html">
 <link rel="import" href="../../scripts/kano/app-modules/index.html">
-<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
-<link rel="import" href="../../elements/kano-story-scene/kano-story-scene.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-
-<link rel="import" href="../../elements/behaviors/kano-editor-view-behavior.html">
-<link rel="import" href="../../elements/behaviors/kano-modal-animator-behavior.html">
-
 <link rel="import" href="../../scripts/kano/make-apps/sdk.html">
 <link rel="import" href="../../scripts/kano/make-apps/debug/challenge.html">
 
@@ -23,7 +23,10 @@
             @apply --layout-vertical;
             @apply --font-body;
         }
-        :host kano-story-scene {
+        :host kano-app-challenge {
+            @apply --layout-flex;
+        }
+        :host kano-app-editor {
             @apply --layout-flex;
         }
         :host paper-dialog {
@@ -98,12 +101,49 @@
     </style>
     <template>
         <template is="dom-if" if="[[loaded]]" on-dom-change="_editorDomChanged">
-            <kano-scene-editor id="editor"
-                               scene="[[scene]]"
-                               story-name="[[fileName]]"
-                               on-scene-done="_showEndModal"
-                               added-parts="{{addedParts}}"
-                               current-step="{{step}}"></kano-scene-editor>
+            <kano-app-challenge id="challenge"
+                                steps="[[scene.steps]]"
+                                mode-ready="[[modeReady]]"
+                                step="{{currentStep}}"
+                                started="[[scene.started]]"
+                                idle="[[story.paused]]"
+                                selected-step="{{selectedStep}}"
+                                state="{{state}}"
+                                scene-variables="{{sceneVariables}}"
+                                on-scene-done="_showEndModal"
+                                on-next-story="goToNextStory"
+                                on-save="saveApp"
+                                on-save-to-storage="saveToStorage"
+                                on-load="loadApp">
+                <kano-app-editor id="editor"
+                                 added-parts="{{addedParts}}"
+                                 parts="[[parts]]"
+                                 default-categories="[[categories]]"
+                                 slot="editor"
+                                 running="{{running}}"
+                                 code="{{code}}"
+                                 mode="[[mode]]"
+                                 on-share="_pauseAndShare"
+                                 on-lockdown-clicked="_notifyBanner">
+                    <div slot="above-code">
+                        <kano-editor-topbar user="[[user]]" profile="[[user.profile]]"></kano-editor-topbar>
+                        <kano-editor-banner id="banner"
+                                            head="[[banner.head]]"
+                                            text="[[banner.text]]"
+                                            img-src="[[banner.icon]]"
+                                            img-page="[[banner.imgPage]]"
+                                            button-label="[[banner.buttonLabel]]"
+                                            on-button-tapped="_bannerButtonTapped"></kano-editor-banner>
+                    </div>
+                    <div class="progress" slot="under-code">
+                        <div class="bar" id="bar"></div>
+                        <div class="bar-content">
+                            <iron-icon class="bolt" src="/assets/icons/lightning.svg"></iron-icon>
+                            <div class="story-name">[[story.name]]</div>
+                        </div>
+                    </div>
+                </kano-app-editor>
+            </kano-app-challenge>
         </template>
         <div class$="start-overlay {{_computeOverlayClass(testing)}}">
             <div class="wrapper">

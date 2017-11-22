@@ -292,7 +292,7 @@
             return !show;
         },
         fullscreenClicked (e) {
-            this.closeAllTooltips();
+            this.$['fullscreen-tooltip'].close()
             this.fire('fullscreen-button-clicked');
         },
         _runButtonClicked (e) {
@@ -330,9 +330,8 @@
         _stopTimer (e) {
             if (this.hoverTimer) {
                 this.cancelAsync(this.hoverTimer);
-            } else {
-                this._closeTooltip(e);
             }
+            this._closeTooltip(e);
         },
         _openTooltip (e) {
             const targetId = this._computeTargetId(e),
@@ -344,15 +343,6 @@
             const targetId = this._computeTargetId(e),
                 tooltip = this.$[`${targetId}-tooltip`];
             tooltip.close();
-        },
-        /**
-        * Close all on-hover tooltips
-        */
-        closeAllTooltips () {
-            let tooltipIds = ['fullscreen', 'restart', 'play'];
-            tooltipIds.forEach(id => {
-                this.$[`${id}-tooltip`].close();
-            });
         },
         _computeTargetId (e) {
             return e.currentTarget ? e.currentTarget.id : Polymer.dom(e).rootTarget.id;
