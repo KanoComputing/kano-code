@@ -355,13 +355,14 @@
                     bannerText = bannerText.replace(/\$fieldPreview/g, fieldPreview);
                     bannerText = bannerText.replace(/\$currentFieldPreview/g, currentFieldPreview);
                     // Add a `change value` step to get the right value
+                    const uiLocation = Object.assign({ inputName: fieldName }, selector);
                     step = {
                         "banner": {
                             "text": bannerText
                         },
                         "beacon": {
                             "target": {
-                                "block": selector
+                                "block": uiLocation
                             }
                         },
                         "validation": {
