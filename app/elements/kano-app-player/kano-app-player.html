@@ -50,7 +50,6 @@
             }
             :host(.fullscreen) kano-app-player-toolbar {
                 margin: 0 auto 40px auto;
-                width: 43%;
             }
             :host(.fullscreen) .close {
                 cursor: pointer;
@@ -75,9 +74,6 @@
             :host([layout="vertical"]) kano-app-player-toolbar {
                 margin-top: 15px;
             }
-            :host([layout="vertical"]):not(.fullscreen) kano-app-player-toolbar {
-                width: 80%;
-            }
             :host([layout="horizontal"]) kano-app-player-toolbar {
                 position: absolute;
                 right: 0;
@@ -99,12 +95,15 @@
         </div>
         <template is="dom-if" if="{{showToolbar}}">
             <iron-icon class="icon close" hidden$="[[!fullscreen]]" icon="kano-icons:close" on-tap="_toggleFullscreen"></iron-icon>
-            <kano-app-player-toolbar layout="[[toolbarLayout]]"
-                                     running="[[running]]"
-                                     fullscreen$="[[fullscreen]]"
-                                     on-run-button-clicked="_toggleRunning"
-                                     on-reset-button-clicked="_reset"
-                                     on-fullscreen-button-clicked="_toggleFullscreen"></kano-app-player-toolbar>
+            <kano-app-player-toolbar
+                id="toolbar"
+                layout="[[toolbarLayout]]"
+                running="[[running]]"
+                fullscreen$="[[fullscreen]]"
+                on-run-button-clicked="_toggleRunning"
+                on-reset-button-clicked="_reset"
+                on-fullscreen-button-clicked="_toggleFullscreen">
+            </kano-app-player-toolbar>
         </template>
         <template is="dom-if" if="{{showHardware}}">
             Hardware
@@ -197,6 +196,7 @@
                 this.component = c;
 
                 this.component.addEventListener('restart-code', this._reset.bind(this));
+                this.component.addEventListener('viewport-resize', this._onViewportResize.bind(this));
 
                 this.fire('app-ready');
                 this.async(() => {
@@ -208,6 +208,12 @@
             },
             _onAppFileError (e) {
                 this.failed = true;
+            },
+            _onViewportResize (e) {
+                let playerSizeData = e.detail,
+                    toolbar = this.$$('#toolbar');
+
+                toolbar.style.width = playerSizeData.width + 'px';
             },
             start () {
                 if (this.component.start) {
