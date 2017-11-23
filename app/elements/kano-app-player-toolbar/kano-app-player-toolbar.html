@@ -1,5 +1,5 @@
 <link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
-<link rel="import" href="../../bower_components/web-components/kano-icons/kano-icons.html">
+<link rel="import" href="../kano-icons/kc-ui.html">
 
 <dom-module id="kano-app-player-toolbar">
     <template>
@@ -13,20 +13,27 @@
             }
             :host([layout="horizontal"]) .panel {
                 @apply --layout-horizontal;
-                @apply --layout-center-justified;
+                @apply --layout-justified;
             }
-            :host .panel {
-                @apply --layout-center;
+            .panel {
                 border-radius: 5px;
                 padding: 4px 4px;
                 color: white;
             }
-            :host .panel .icon iron-icon,
-            :host .panel kano-animated-svg {
+            .panel .icon iron-icon {
+                height: 26px;
+                margin: 2px 2px;
+                width: 26px;
+            }
+            .panel kano-animated-svg {
                 color: var(--color-porcelain);
                 height: 20px;
-                margin: 10px 10px;
+                margin: 10px 8px;
                 width: 20px;
+            }
+            .panel .icon iron-icon,
+            .panel kano-animated-svg {
+                color: var(--color-porcelain);
             }
             .icon kano-animated-svg {
                 --kano-animated-path: {
@@ -38,36 +45,51 @@
                     transition: all ease-in-out 200ms;
                 }
             }
-            :host .panel .icon {
+            .panel .icon {
+                @apply --layout-horizontal;
                 @apply --layout-center;
-                @apply --layout-justified;
-                background-color: var(--color-abbey);
-                border-radius: 3px;
-                cursor: pointer;
-                height: 40px;
+                @apply --layout-center-justified;
                 transition: 0.2s background ease-in-out;
-                width: 40px;
+                background-color: rgba(255, 255, 255, 0.25);
+                border-radius: 3px;
+                padding: 10px 16px;
+                cursor: pointer;
+                width: 32px;
+                height: 32px;
+                padding: 0px;
+                cursor: pointer;
             }
-            :host([layout="horizontal"]) .panel .icon:nth-child(n+2) {
-                margin-left: 16px;
+            span {
+                width: 80px;
+                display: flex;
             }
-            :host([layout="vertical"]) .panel .icon:nth-child(n+2) {
-                margin-top: 16px;
+            span .icon {
+                margin: 0 8px 0 0;
             }
-            :host .panel .icon:hover {
+            iron-icon {
+                opacity: 0.75;
+            }
+            .icon:hover iron-icon,
+            .icon:focus iron-icon {
+                opacity: 1;
+            }
+            
+            .panel .icon:hover {
                 background-color: var(--color-kano-orange);
             }
         </style>
         <div class="panel">
-            <div class="pause icon" on-tap="pauseClicked">
-                <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}">
-                </kano-animated-svg>
-            </div>
+            <span>
+                <div class="pause icon" on-tap="pauseClicked">
+                    <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="{{_getRunningStatus(running)}}">
+                    </kano-animated-svg>
+                </div>
+                <div class="reset icon" on-tap="resetClicked">
+                    <iron-icon icon="kc-ui:reset"></iron-icon>
+                </div>
+            </span>
             <div class="fullscreen icon" on-tap="fullscreenClicked">
-                <iron-icon icon="kano-icons:fullscreen"></iron-icon>
-            </div>
-            <div class="reset icon" on-tap="resetClicked">
-                <iron-icon icon="kano-icons:reset"></iron-icon>
+                <iron-icon icon="kc-ui:{{_getMinMaxIcon(fullscreen)}}"></iron-icon>
             </div>
         </div>
     </template>
@@ -78,6 +100,11 @@
     Polymer({
         is: 'kano-app-player-toolbar',
         properties: {
+            fullscreen: {
+                type: Boolean,
+                value:false,
+                reflectToAttribute: true
+            },
             layout: {
                 type: String,
                 value: 'horizontal',
@@ -109,6 +136,9 @@
         },
         _getRunningStatus (running) {
             return running ? 'running' : 'stopped';
+        },
+        _getMinMaxIcon(fullscreen) {
+            return fullscreen ? 'minimize' : 'maximize';
         }
     });
 </script>

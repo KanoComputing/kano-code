@@ -50,7 +50,7 @@
             }
             :host(.fullscreen) kano-app-player-toolbar {
                 margin: 0 auto 40px auto;
-                width: 40%;
+                width: 43%;
             }
             :host(.fullscreen) .close {
                 cursor: pointer;
@@ -62,10 +62,10 @@
                 width: 16px;
             }
             #container {
-                @apply(--layout-vertical);
-                @apply(--layout-flex);
-                @apply(--layout-center);
-                @apply(--layout-center-justified);
+                @apply --layout-vertical;
+                @apply --layout-flex;
+                @apply --layout-center;
+                @apply --layout-center-justified;
                 position: relative;
                 height: calc(100% - 40px);
             }
@@ -73,7 +73,10 @@
                 color: var(--color-red, red);
             }
             :host([layout="vertical"]) kano-app-player-toolbar {
-                width: 100%;
+                margin-top: 15px;
+            }
+            :host([layout="vertical"]):not(.fullscreen) kano-app-player-toolbar {
+                width: 80%;
             }
             :host([layout="horizontal"]) kano-app-player-toolbar {
                 position: absolute;
@@ -98,6 +101,7 @@
             <iron-icon class="icon close" hidden$="[[!fullscreen]]" icon="kano-icons:close" on-tap="_toggleFullscreen"></iron-icon>
             <kano-app-player-toolbar layout="[[toolbarLayout]]"
                                      running="[[running]]"
+                                     fullscreen$="[[fullscreen]]"
                                      on-run-button-clicked="_toggleRunning"
                                      on-reset-button-clicked="_reset"
                                      on-fullscreen-button-clicked="_toggleFullscreen"></kano-app-player-toolbar>
