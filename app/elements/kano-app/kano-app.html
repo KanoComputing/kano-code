@@ -107,8 +107,8 @@ Example:
     Polymer({
         is: 'kano-app',
         behaviors: [
-            Kano.Behaviors.Tracking.GABehavior,
-            Kano.Behaviors.Tracking.KanoCodeBehavior,
+            Kano.Behaviors.KanoCode.GABehavior,
+            Kano.Behaviors.KanoCode.TrackingBehavior,
             Kano.MakeApps.Store.ProviderBehavior,
             Kano.Behaviors.GamificationBehavior
         ],
@@ -182,7 +182,12 @@ Example:
                      * to ensure that the token is used when starting the
                      * session, if applicable
                      */
-                    this._initializeTracking();
+                    this._initializeTracking({
+                        detail: {
+                            token: this.token,
+                            path: window.location.pathname
+                        }
+                    });
                 });
             };
             if (this.offline) {
