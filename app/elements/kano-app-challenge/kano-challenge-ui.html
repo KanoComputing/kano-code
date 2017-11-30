@@ -254,6 +254,8 @@ Example:
             }
             .beacon-wrapper .ripple {
                 position: absolute;
+                top: 0;
+                left: 0;
                 width: 300px;
                 height: 300px;
                 border-radius: 50%;
@@ -267,10 +269,13 @@ Example:
             }
             .beacon-wrapper .ring {
                 position: absolute;
+                top: -10px;
+                left: -10px;
                 width: 50px;
                 height: 50px;
                 border-radius: 50%;
                 background: #fec02d;
+                box-sizing: border-box;
                 transform: scale(0, 0);
             }
             .beacon-wrapper .ring.animate {
