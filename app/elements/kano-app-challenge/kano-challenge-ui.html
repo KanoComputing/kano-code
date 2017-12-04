@@ -886,7 +886,11 @@ Example:
                 inputRelPos,
                 pos;
 
-            if (selector.inputName) {
+            if (selector.inputName === '@next' && !!block.nextConnection) {
+                connection = block.nextConnection;
+            } else if (selector.inputName === '@previous' && !!block.previousConnection) {
+                connection = block.previousConnection;
+            } else if (selector.inputName) {
                 // The input targeted might be a field. If a field exists with this name, return the rect matching
                 let field = block.getField(selector.inputName),
                     input;
@@ -904,8 +908,6 @@ Example:
                 if (!connection) {
                     return block.getSvgRoot();
                 }
-            } else {
-                connection = block.nextConnection;
             }
             blockRect = block.svgPath_.getBoundingClientRect();
             blockPos = block.getRelativeToSurfaceXY();
