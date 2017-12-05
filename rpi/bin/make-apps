@@ -157,7 +157,7 @@ if len(sys.argv) > 1:
 token = get_token()
 
 if token:
-    URL = '{url}/login/{token}?redirect=projects'.format(url=WORLD_URL, token=token)
+    URL = '{url}/login/{token}?redirect=/projects'.format(url=WORLD_URL, token=token)
 else:
     URL = '{url}/projects'.format(url=WORLD_URL)
 
