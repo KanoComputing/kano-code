@@ -35,7 +35,9 @@ var GamificationBehavior = {
             sharedStorage.saveProgressEvent(payload);
 
             // Process it through the local gamification engine
-            return gamification.start().then(() => {
+            return gamification.start({
+                staticUrlPrefix: Kano.MakeApps.config.GAMIFICATION_ASSETS_URL_PREFIX
+            }).then(() => {
                 if (!Array.isArray(payload)) {
                     payload = [payload];
                 }
