@@ -79,6 +79,20 @@
             }
         }
 
+        class Wand extends PowerUpDevice {
+            constructor (options, master) {
+                super(options, master);
+
+                let tokens = this.id.split('-');
+
+                this.number = tokens[tokens.length - 1];
+
+                this._socketOn(`wand:${this.number}:position`, (value) => {
+                    this.emitter.emit('position', value);
+                });
+            }
+        }
+
         class TiltSensor extends PowerUpDevice {
             constructor (options, master) {
                 super(options, master);
@@ -478,7 +492,8 @@
             camera: Camera,
             'gyro-accelerometer': TiltSensor,
             'motion-sensor': MotionSensor,
-            'RPK': Lightboard
+            'RPK': Lightboard,
+            'wand': Wand
         };
 
         class HardwareAPIMock extends EventEmitter {

@@ -41,7 +41,7 @@
                 mode: 'proximity',
                 updateInterval: 100
             },
-            supportedHardware: ['motion-sensor', /* Old name */'proximity-sensor'],
+            supportedHardware: ['wand'],
             events: [{
                 label: Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_READ_DATA,
                 id: 'proximity-update'
@@ -63,44 +63,46 @@
             }],
             blocks: [{
                 block: (part) => {
-                    const id = 'motion_when';
-                    Blockly.Blocks[`${part.id}#${id}`] = {
-                        init: function () {
-                            this.appendDummyInput()
-                                .appendField(`${part.name}: ${Blockly.Msg.BLOCK_MOTION_WHEN}`)
-                                .appendField(new Blockly.FieldMotionZone(1, part), 'ZONE')
-                                .appendField(Blockly.Msg.BLOCK_MOTION_IS_TRIGGERED);
-
-                            this.appendStatementInput('DO');
-
-                            this.setColour(part.colour);
-                        }
-                    };
                     return {
-                        id,
-                        doNotRegister: true
-                    };
-                },
-                javascript: (part) => {
-                    return (block) => {
-                        let zone = block.getFieldValue('ZONE'),
-                            statement = Blockly.JavaScript.statementToCode(block, 'DO'),
-                            code = `devices.get('${part.id}').whenEntersZone(${zone}, function () {\n${statement}\n})`;
-                        return code;
-                    };
-                }
-            },{
-                block: (part) => {
-                    return {
-                        id: 'wand_value',
-                        message0: `${part.name} value`,
+                        id: 'wand_x',
+                        message0: `${part.name} x`,
                         inputsInline: false,
                         output: 'Number'
                     };
                 },
                 javascript: (part) => {
                     return (block) => {
-                        let code = `devices.get('${part.id}').getValue()`;
+                        let code = `devices.get('${part.id}').getX()`;
+                        return [code];
+                    };
+                }
+            }, {
+                block: (part) => {
+                    return {
+                        id: 'wand_y',
+                        message0: `${part.name} y`,
+                        inputsInline: false,
+                        output: 'Number'
+                    };
+                },
+                javascript: (part) => {
+                    return (block) => {
+                        let code = `devices.get('${part.id}').getY()`;
+                        return [code];
+                    };
+                }
+            }, {
+                block: (part) => {
+                    return {
+                        id: 'wand_z',
+                        message0: `${part.name} z`,
+                        inputsInline: false,
+                        output: 'Number'
+                    };
+                },
+                javascript: (part) => {
+                    return (block) => {
+                        let code = `devices.get('${part.id}').getZ()`;
                         return [code];
                     };
                 }
