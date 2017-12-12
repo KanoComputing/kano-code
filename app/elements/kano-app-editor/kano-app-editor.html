@@ -17,7 +17,7 @@
 <link rel="import" href="../kano-workspace/kano-workspace.html">
 <link rel="import" href="../kano-part-editor/kano-part-editor.html">
 <link rel="import" href="../kano-background-editor/kano-background-editor.html">
-<link rel="import" href="../kano-root-view/kano-root-view.html">
+<link rel="import" href="../kc-blockly-editor/kc-blockly-editor.html">
 <link rel="import" href="../kano-animated-svg/kano-animated-svg.html">
 <link rel="import" href="../kano-code-display/kano-code-display.html">
 <link rel="import" href="../kano-add-parts/kano-add-parts.html">
@@ -110,7 +110,7 @@
             @apply --layout-flex;
             position: relative;
         }
-        kano-root-view {
+        kc-blockly-editor {
             @apply --layout-flex;
         }
         :host #resize {
@@ -220,15 +220,16 @@
                 <div id="resize" on-mousedown="resizeWorkspace" class="visible-when-running"></div>
                 <div main class="main">
                     <slot name="above-code"></slot>
-                    <kano-root-view
+                    <kc-blockly-editor
                         id="root-view"
                         parts="{{addedParts}}"
                         code="{{code}}"
                         mode="[[mode]]"
                         on-change="_proxyChange"
+                        on-exit-tapped="_exitTapped"
                         default-categories="{{defaultCategories}}"
                         loading$="[[!modeReady]]"
-                        simple="{{isModeSimple(mode)}}"></kano-root-view>
+                        simple="{{isModeSimple(mode)}}"></kc-blockly-editor>
                     <slot name="under-code"></slot>
                     <div id="code-overlay" class="code-overlay"></div>
                 </div>

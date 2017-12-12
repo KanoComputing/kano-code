@@ -15,7 +15,7 @@
 <link rel="import" href="../../scripts/kano/make-apps/mode/camera.html">
 <link rel="import" href="../../scripts/kano/make-apps/mode/light.html">
 <link rel="import" href="../../scripts/kano/make-apps/utils.html">
-<link rel="import" href="../kano-root-view/kano-root-view.html">
+<link rel="import" href="../kc-blockly-editor/kc-blockly-editor.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-lazy-pages/iron-lazy-pages.html">
@@ -177,13 +177,13 @@ Example:
     </style>
     <template>
         <div class="snippet">
-            <kano-root-view id="root-view"
+            <kc-blockly-editor id="root-view"
                             parts="{{parts}}"
                             code="{{code}}"
                             mode="[[mode]]"
                             default-categories="{{defaultCategories}}"
                             simple="true">
-            </kano-root-view>
+            </kc-blockly-editor>
             <kano-ui-viewport id="viewport"
                               mode="scaled"
                               view-width="[[mode.workspace.viewport.width]]"

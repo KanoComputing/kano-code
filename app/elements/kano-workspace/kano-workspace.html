@@ -484,13 +484,13 @@
                     let child = this.dropzone.children[i],
                     childIndex = reverseParts.indexOf(child.model);
                     if (childIndex > index) {
-                        this.dropzone.insertBefore(element, child);
+                        Polymer.dom(this.dropzone).insertBefore(element, child);
                         break;
                     }
                 }
             } else {
                 /* If ll existing elements come before this one, append it. */
-                this.dropzone.appendChild(element);
+                Polymer.dom(this.dropzone).appendChild(element);
             }
         },
         removePart (key) {

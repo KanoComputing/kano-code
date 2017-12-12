@@ -88,10 +88,6 @@
             on-share="share"
             on-exit="_exit"
             show-share-button>
-            <kano-editor-topbar
-                user="[[user]]"
-                profile="[[user.profile]]"
-                slot="above-code"></kano-editor-topbar>
         </kano-app-editor>
         <kano-alert id="save-prompt"
                     heading="[[localize('DO_YOU_SAVE', 'Do you want to save your creation?')]]"
@@ -106,7 +102,7 @@
             <h2 class="title">{{error.title}}</h2>
             <p class="description">{{error.description}}</p>
         </paper-dialog>
-        <paper-dialog id="share-modal" opened={{shareOpened}} modal>
+        <paper-dialog id="share-modal" opened="{{shareOpened}}" modal>
             <kano-share-modal id="share-modal-content"
                               on-confirm="confirmShare"
                               on-dismiss="dismissShare"

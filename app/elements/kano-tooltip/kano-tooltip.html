@@ -284,7 +284,7 @@
             }], {
                 easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
                 duration: 150
-            }).onfinish = this.onCloseAnimationEnd();
+            }).onfinish = this.onCloseAnimationEnd.bind(this);
         },
         onCloseAnimationEnd () {
             let style = this.style;

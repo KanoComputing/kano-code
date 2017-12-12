@@ -1,12 +1,24 @@
+<link rel="import" href="../../config/config.html">
 <link rel="import" href="../../../bower_components/flow-down/flow-down.html">
 <script>
     Kano.MakeApps = Kano.MakeApps || {};
 
     Kano.MakeApps.Store = FlowDown.createStore({
         editor: {
-            app: null
+            app: null,
+            logoutEnabled: !Kano.MakeApps.config.DISABLE_LOGOUT
         },
         story: {},
-        routing: {}
+        routing: {},
+        user: null
     });
+
+
+    Kano.MakeApps.Store.types = function types (constants) {
+        return Object.freeze(constants.reduce((acc, constant) => {
+            acc[constant] = constant;
+            return acc;
+        }, {}))
+    };
+
 </script>

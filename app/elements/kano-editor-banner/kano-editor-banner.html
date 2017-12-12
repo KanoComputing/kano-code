@@ -4,219 +4,148 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../../bower_components/web-components/kano-glint-animation/kano-glint-animation.html">
+<link rel="import" href="../../bower_components/web-components/kano-circle-progress/kano-circle-progress.html">
 <link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../kano-icons/kc-ui.html">
 <dom-module id="kano-editor-banner">
-    <style>
-        @keyframes eye-movement {
-            0% {
-                transform: translate(0px);
-            }
-            70% {
-                transform: translate(0px);
-            }
-            75% {
-                transform: translate(3px);
-            }
-            95% {
-                transform: translate(3px);
-            }
-            100% {
-                transform: translate(0px);
-            }
-        }
-        #left-eye, #right-eye {
-            animation: 10s ease-in-out infinite eye-movement;
-        }
-        :host {
-            position: relative;
-            flex-direction: row;
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            @apply --layout-center-justified;
-        }
-        :host .content {
-            @apply --layout-flex;
-            @apply --layout-horizontal;
-            height: 100%;
-            box-sizing: border-box;
-            font-family: var(--font-body);
-            font-size: 16px;
-            font-weight: bold;
-            padding: 24px 0 24px;
-            min-height: 89px;
-        }
-        :host .content .head {
-            color: #888;
-            margin-bottom: 5px;
-        }
-        :host .content .body {
-            @apply --layout-flex;
-        }
-        :host .avatar {
-            margin: 14px 0 auto;
-        }
-        :host iron-image,
-        :host .animations-pager {
-            margin: 0 20px;
-            height: 60px;
-            width: 60px;
-        }
-        :host([show-save-button]) .animations-pager {
-            height: 50px;
-            width: 50px;
-            margin: 0 25px;
-        }
-        :host .text {
-            @apply --layout-vertical;
-            @apply --layout-flex;
-            /*Align text box to base-line while using 20px line-height*/
-            position: relative;
-            top: -2px;
-            left: 0;
-            line-height: 20px;
-        }
-        :host kano-glint-animation {
-            margin: 0 20px 0 10px;
-        }
-        :host .button {
-            @apply --layout-self-start;
-            opacity: 0;
-            animation-duration: 0.3s;
-            animation-fill-mode: forwards;
-            border: none;
-            outline: none;
-            cursor: pointer;
-            font-family: var(--font-body);
-            text-transform: uppercase;
-            overflow: hidden;
-            white-space: nowrap;
-            background-color: var(--color-chateau);
-            box-sizing: border-box;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-            border-radius: 3px;
-            box-sizing: border-box;
-            padding: 7px 24px;
-            margin: 0;
-            transition: background 300ms;
-        }
-        :host .button:hover {
-            background-color: #5B646B;
-        }
-        :host #banner-save-button {
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            margin: 0 10px;
-        }
-        #banner-save-button iron-icon {
-            --iron-icon-width: 24px;
-            --iron-icon-height: 24px;
-            opacity: 0.75;
-            margin-right: 8px;
-        }
-        #banner-save-button:hover iron-icon {
-            opacity: 0.85;
-        }
-        :host(.green-cta) #banner-button {
-            background: var(--color-grassland);
-            font-weight: bold;
-            transition: background 300ms;
-        }
-        :host(.green-cta) #banner-button:hover {
-            background: var(--color-apple);
-        }
-        :host(.green-cta) #banner-button:active {
-            background: #B8FA63;
-        }
-        .markdown-html p {
-            margin: 0px;
-        }
-        .markdown-html kano-blockly-block {
-            line-height: 0px;
-            vertical-align: middle;
-            display: inline-block;
-        }
-        [hidden] {
-            display: none !important;
-        }
-        :host .emoji {
-            max-width: 18px;
-            max-height: 18px;
-            transform: translateY(4px);
-        }
-        .button paper-spinner-lite {
-            --paper-spinner-color: white;
-            --paper-spinner-stroke-width: 2px;
-
-            width: 18px;
-            height: 18px;
-            display: block;
-            margin: 0px 7px;
-        }
-        .button.active paper-spinner-lite {
-            display: none;
-        }
-        .button.hidden {
-            display: none;
-        }
-        .button.inactive {
-            filter: grayscale(100%);
-            cursor: wait;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                position: relative;
+                @apply --layout-horizontal;
+                @apply --layout-start;
+                padding: 16px;
+            }
+            .content {
+                @apply --layout-flex;
+                @apply --layout-horizontal;
+                height: 100%;
+                box-sizing: border-box;
+                font-family: var(--font-body);
+                font-size: 16px;
+                color: #414a51;
+            }
+            .content .head {
+                color: #888;
+                margin-bottom: 5px;
+            }
+            .content .body {
+                @apply --layout-flex;
+            }
+            :host([show-save-button]) .animations-pager {
+                height: 50px;
+                width: 50px;
+                margin: 0 25px;
+            }
+            .text {
+                @apply --layout-vertical;
+                @apply --layout-flex;
+            }
+            kano-glint-animation {
+                margin: 0 20px 0 10px;
+            }
+            .button {
+                opacity: 0;
+                animation-duration: 0.3s;
+                animation-fill-mode: forwards;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                font-family: var(--font-body);
+                text-transform: uppercase;
+                overflow: hidden;
+                white-space: nowrap;
+                background-color: var(--color-chateau);
+                box-sizing: border-box;
+                color: white;
+                font-size: 14px;
+                font-weight: bold;
+                border-radius: 3px;
+                box-sizing: border-box;
+                padding: 7px 24px;
+                margin: 0;
+                transition: background 300ms;
+            }
+            .button:hover {
+                background-color: #5B646B;
+            }
+            #banner-save-button {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                margin: 0 10px;
+            }
+            #banner-save-button iron-icon {
+                --iron-icon-width: 24px;
+                --iron-icon-height: 24px;
+                opacity: 0.75;
+                margin-right: 8px;
+            }
+            #banner-save-button:hover iron-icon {
+                opacity: 0.85;
+            }
+            :host(.green-cta) #banner-button {
+                background: var(--color-grassland);
+                font-weight: bold;
+                transition: background 300ms;
+            }
+            :host(.green-cta) #banner-button:hover {
+                background: var(--color-apple);
+            }
+            :host(.green-cta) #banner-button:active {
+                background: #B8FA63;
+            }
+            .markdown-html p {
+                margin: 0px;
+            }
+            .markdown-html kano-blockly-block {
+                line-height: 0px;
+                vertical-align: middle;
+                display: inline-block;
+            }
+            [hidden] {
+                display: none !important;
+            }
+            .emoji {
+                max-width: 18px;
+                max-height: 18px;
+                transform: translateY(4px);
+            }
+            .button paper-spinner-lite {
+                --paper-spinner-color: white;
+                --paper-spinner-stroke-width: 2px;
+
+                width: 18px;
+                height: 18px;
+                display: block;
+                margin: 0px 7px;
+            }
+            .button.active paper-spinner-lite {
+                display: none;
+            }
+            .button.hidden {
+                display: none;
+            }
+            .button.inactive {
+                filter: grayscale(100%);
+                cursor: wait;
+            }
+            kano-circle-progress {
+                margin-right: 16px;
+                height: 40px;
+                width: 40px;
+                --kano-circle-progress: {
+                    stroke: #fec02d;
+                };
+                --kano-circle-progress-back: {
+                    stroke: var(--color-porcelain);
+                };
+            }
+            button, kano-glint-animation {
+                @apply --layout-self-center;
+            }
+        </style>
         <div class="avatar">
-            <iron-image src="[[imgSrc]]" alt="Judoka in a speech bubble" sizing="contain" hidden$="[[imgPage]]"></iron-image>
-            <iron-pages class="animations-pager" attr-for-selected="name" selected="[[imgPage]]" hidden$="[[!imgPage]]">
-                <div name="judoka">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 126.54 126.54"><defs><style>.judoka-1{isolation:isolate;}.judoka-2{fill:#ffb66f;}.judoka-3{fill:#fff;}.judoka-4{fill:#57473e;}.judoka-5{fill:#986d46;}.judoka-6{fill:#ff6139;}.judoka-7{opacity:0.08;mix-blend-mode:multiply;}.judoka-8{fill:#515451;}.judoka-9{fill:#626662;}.judoka-10{fill:#5d5c58;}.judoka-11{fill:#6b6a65;}.judoka-12{fill:#ffce9e;}</style></defs><title>Untitled-1</title><g class="judoka-1"><g id="Layer_1" data-name="Layer 1"><circle class="judoka-2" cx="62.41" cy="67.66" r="47.11"/><path class="judoka-3" d="M45.21,70.33c0,3.83-3.11,5.87-6.94,5.87s-6.94-2-6.94-5.87A6.94,6.94,0,0,1,45.21,70.33Z"/><g id="left-eye"><circle class="judoka-4" cx="38.27" cy="71" r="3.18"/><circle class="judoka-3" cx="35.81" cy="68.99" r="1.19"/></g><path class="judoka-3" d="M93.49,70.33c0,3.83-3.11,5.87-6.94,5.87s-6.94-2-6.94-5.87A6.94,6.94,0,0,1,93.49,70.33Z"/><g id="right-eye"><circle class="judoka-4" cx="86.56" cy="71" r="3.18"/><circle class="judoka-3" cx="84.1" cy="68.99" r="1.19"/></g><path class="judoka-5" d="M82,82.56a19.92,19.92,0,0,1-39.23,0,2.93,2.93,0,0,1,2.88-3.44H79.14A2.94,2.94,0,0,1,82,82.56Z"/><path class="judoka-3" d="M78,79.12L77.6,83a1.23,1.23,0,0,1-1.22,1.11H49.32A1.23,1.23,0,0,1,48.1,83l-0.4-3.92H78Z"/><path class="judoka-6" d="M72.19,96.47a19.91,19.91,0,0,1-19.55,0A18.33,18.33,0,0,1,62.41,94,18.33,18.33,0,0,1,72.19,96.47Z"/><path class="judoka-7" d="M109.44,67.53c0,0.16,0,.33,0,0.49a46.39,46.39,0,0,1-4.68,20l0,0.06C96.44,73,78.69,69.64,62.36,64c-13.55-4.7-28.65-20.55-35.9-28.88-0.06-.07-0.11-0.13-0.16-0.19l0.25-.32a2.05,2.05,0,0,1,.33-0.32l0.39-.3c26.63-19.87,54.91-14.22,70.88,3A46.81,46.81,0,0,1,109.44,67.53Z"/><path class="judoka-8" d="M20.54,34.55C18.89,36.2,4,51.86,12.77,73a1.52,1.52,0,0,0,2.39.6C19.07,70.25,29.09,61.14,30,54.65s4.46-18.07,5.9-22.58a1.5,1.5,0,0,0-1.45-2c-2.59,0-7.45.71-13.53,4.19A1.58,1.58,0,0,0,20.54,34.55Z"/><path class="judoka-9" d="M35.85,32.07l-0.33,1a1.56,1.56,0,0,0-1.12-.26c-2.76.39-7.86,1.72-13.89,6.23a1.59,1.59,0,0,0-.32.31C18.84,41.12,8,55.76,13.59,73.83A1.55,1.55,0,0,1,12.76,73C4,51.86,18.89,36.2,20.54,34.55a1.76,1.76,0,0,1,.33-0.25c6.07-3.49,10.93-4.14,13.52-4.19A1.5,1.5,0,0,1,35.85,32.07Z"/><path class="judoka-10" d="M102.24,30a52.82,52.82,0,0,0-80.47,1.77,1.22,1.22,0,0,0,.25.35c5,5.11,25.31,25,42,29.18C82,65.81,101.31,67.5,110.27,84.71a1.48,1.48,0,0,0,1.25.82,50.62,50.62,0,0,0,2.5-7.58A52.87,52.87,0,0,0,102.24,30Z"/><path class="judoka-11" d="M115.59,65.14A52.44,52.44,0,0,1,114,77.94a50.5,50.5,0,0,1-2.2,6.85c0.35-1.8.63-3.64,0.83-5.51a60.46,60.46,0,0,0-9.48-39.6A54.27,54.27,0,0,0,78.15,19a50.66,50.66,0,0,0-50.57,7.53,55.57,55.57,0,0,0-5.8,5.29A52.83,52.83,0,0,1,115.59,65.14Z"/><circle class="judoka-12" cx="33.6" cy="79.85" r="1.61"/><circle class="judoka-12" cx="91.22" cy="79.85" r="1.61"/></g></g></svg>
-                </div>
-                <div name="star">
-                    <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" xml:space="preserve"><style type="text/css">.st0{opacity:4.000000e-02;enable-background:new;}.st1{fill:#F2BA00;}.st2{fill:#FFD500;}.st3{fill:#FFEA00;}.st4{opacity:7.000000e-02;enable-background:new  ;}.st5{fill:#FFFFFF;}.st6{fill:#FE8233;}</style>
-                        <g>
-                            <path class="st0" d="M58.1,31.6c0,15.5-12.5,28-28,28s-28-12.5-28-28s12.5-28,28-28c10.7,0,20.4,6.1,25.2,15.6
-                                C57.1,23.1,58.1,27.3,58.1,31.6z"/>
-                            <path class="st1" d="M58.1,30.1c0,15.5-12.5,28-28,28c-15.5,0-28-12.5-28-28s12.5-28,28-28c10.7,0,20.4,6.1,25.2,15.6
-                                C57.1,21.6,58.1,25.8,58.1,30.1z"/>
-                            <path class="st2" d="M58.1,28.4c0,15.5-12.5,28.1-28.1,28.2c-4,0-8-0.9-11.7-2.5l-0.7-0.3c-1.5-0.7-2.9-1.6-4.2-2.5l-0.2-0.2
-                                c-0.8-0.6-1.6-1.2-2.3-1.8l0,0c-2.5-2.3-4.6-5.1-6.1-8.2l-0.4-0.8C-2,26,4.2,9.3,18.4,2.9c7.4-3.4,15.9-3.4,23.3,0l0.7,0.3
-                                c3.1,1.5,5.9,3.6,8.3,6.1l0,0c0.6,0.7,1.2,1.5,1.8,2.3l0.2,0.3l0,0c1,1.3,1.8,2.7,2.5,4.2l0.3,0.7C57.2,20.4,58.1,24.4,58.1,28.4
-                                z"/>
-                            <path class="st3" d="M50.7,9.4L10.9,49.1l0,0c-2.5-2.3-4.6-5.1-6.1-8.2l-0.4-0.8L41.7,2.8l0.7,0.3C45.5,4.7,48.3,6.8,50.7,9.4
-                                L50.7,9.4z"/>
-                            <path class="st3" d="M55.6,16.8L18.4,54l-0.7-0.3c-1.5-0.7-2.9-1.6-4.2-2.5l39.2-39.3c1,1.3,1.8,2.7,2.5,4.2L55.6,16.8z"/>
-                            <path class="st1" d="M53.9,28.4c0,13.2-10.6,23.9-23.8,23.9c-13.2,0-23.9-10.6-23.9-23.8C6.1,15.3,16.8,4.6,30,4.6
-                                c13.1,0,23.8,10.6,23.9,23.7C53.9,28.3,53.9,28.4,53.9,28.4z"/>
-                            <path class="st3" d="M53.9,29.7c0,13.2-10.7,23.9-23.9,23.9c-13.2,0-23.9-10.7-23.9-23.9c0,0,0,0,0,0c0-0.2,0-0.4,0-0.7
-                                c0.4,13.2,11.3,23.6,24.5,23.2c12.7-0.3,22.8-10.5,23.2-23.2C53.9,29.3,53.9,29.5,53.9,29.7z"/>
-                            <path class="st4" d="M6.1,28.5c0,0.3,0,0.6,0,0.9C6.7,16.2,17.7,5.9,30.9,6.4c12.4,0.5,22.4,10.5,22.9,22.9c0-0.3,0-0.6,0-0.9
-                                C53.8,15.3,43.1,4.6,30,4.6C16.8,4.6,6.1,15.3,6.1,28.5L6.1,28.5z"/>
-                            <path class="st4" d="M50.2,30c0,11.2-9.1,20.2-20.2,20.2c-8.8,0-16.6-5.7-19.2-14.1l-0.1-0.4C7.5,25,13.6,13.8,24.3,10.6
-                                c7.7-2.3,16.1,0.2,21.2,6.4c2.1,2.5,3.6,5.5,4.3,8.7C50,27.1,50.2,28.6,50.2,30z"/>
-                            <path class="st1" d="M50.2,28.9c0,11.2-9.1,20.2-20.2,20.2c-8.8,0-16.6-5.7-19.2-14.1l-0.1-0.4C7.5,24,13.6,12.7,24.3,9.6
-                                C32,7.3,40.3,9.8,45.5,16c2.1,2.5,3.6,5.5,4.3,8.7C50,26.1,50.2,27.5,50.2,28.9z"/>
-                            <path class="st2" d="M50.2,27.9c0,11.2-9,20.3-20.2,20.3c-1.4,0-2.9-0.1-4.3-0.4L25,47.5c-1.8-0.5-3.4-1.2-5-2.1l-0.4-0.3
-                                c-0.9-0.5-1.7-1.1-2.4-1.8l-0.3-0.2c-2.8-2.4-5-5.6-6.1-9.2v-0.2v-0.2c-3.1-10.7,3.1-21.9,13.8-25C26.3,8,28.1,7.7,30,7.7
-                                c1.9,0,3.8,0.3,5.7,0.8h0.2l0,0c3.7,1.1,6.9,3.3,9.4,6.2l0.2,0.3c0.7,0.8,1.3,1.6,1.8,2.4l0.3,0.4c0.9,1.6,1.6,3.3,2.1,5
-                                c0.1,0.3,0.1,0.6,0.2,0.8C50.1,25,50.2,26.5,50.2,27.9z"/>
-                            <path class="st3" d="M45.3,14.7L16.8,43.2c-2.8-2.4-5-5.6-6.1-9.2v-0.2L35.9,8.5l0,0C39.5,9.7,42.8,11.8,45.3,14.7z"/>
-                            <path class="st3" d="M49.5,22.8L25,47.5c-1.7-0.5-3.4-1.1-5-2.1l-0.4-0.3l27.7-27.8l0.3,0.4C48.4,19.3,49.1,21,49.5,22.8z"/>
-                            <path class="st5" d="M47.4,15.2c-1.2,0.1-2.1,1-2.2,2.1c0,0.1-0.2,0.2-0.3,0.2c-0.1,0-0.2-0.1-0.2-0.2c-0.1-1.1-1-2-2.1-2.1
-                                c-0.1,0-0.2-0.2-0.2-0.3c0-0.1,0.1-0.2,0.2-0.2c1.2-0.1,2.1-1,2.2-2.1c0-0.1,0.2-0.2,0.3-0.2c0.1,0,0.2,0.1,0.2,0.2
-                                c0.1,1.2,1,2.1,2.1,2.2C47.6,14.9,47.6,15,47.4,15.2C47.5,15.2,47.5,15.2,47.4,15.2z"/>
-                            <circle class="st5" cx="23.1" cy="32.2" r="0.7"/>
-                            <g>
-                                <path class="st6" d="M37.3,38.8c-0.2,0.1-0.4,0.1-0.6,0.1c-0.3,0-0.6-0.1-0.9-0.2l-5.9-3.1l-5.9,3.1l-0.3,0.1
-                                    c-0.6,0.2-1.3,0.1-1.8-0.3c-0.6-0.4-0.9-1.2-0.8-1.9l1.1-6.6l-4.7-4.5c-0.8-0.7-0.9-1.9-0.2-2.8c0.2-0.3,0.5-0.4,0.8-0.6h0.3
-                                    l6.6-1l2.9-6c0.2-0.5,0.6-0.8,1.1-1c0.9-0.3,2,0.1,2.4,1l2.9,5.8l6.6,0.9c0.7,0.1,1.4,0.6,1.6,1.3c0.2,0.7,0,1.5-0.5,2L37.4,30
-                                    l1.2,6.5C38.7,37.5,38.2,38.5,37.3,38.8"/>
-                            </g>
-                        </g>
-                    </svg>
-                </div>
-            </iron-pages>
+            <kano-circle-progress radius="40" stroke-width="7" value="[[progress]]"></kano-circle-progress>
         </div>
         <div class="content">
             <div class="text">
@@ -231,24 +160,24 @@
                     </marked-element>
                 </div>
             </div>
-            <button id="banner-save-button" type="button" class="button" hidden$="[[!showSaveButton]]" on-tap="_saveTapped">
-                <iron-icon class="save-icon" icon="kc-ui:save"></iron-icon>
-                <div>[[localize('SAVE', 'Save')]]</div>
-            </button>
-            <kano-glint-animation id="banner-button-container" running="[[_computeGlint(buttonLabel, buttonState)]]">
-                <button id="banner-button"
-                        class$="button [[_computeButtonClass(buttonState)]]"
-                        type="button"
-                        on-tap="_buttonTapped"
-                        data-animate="300">
-                    <paper-spinner-lite active="[[_buttonInactive(buttonState)]]"></paper-spinner-lite>
-                    <span hidden$="[[!_buttonActive(buttonState)]]">
-                        [[buttonLabel]]
-                    </span>
-                    </template>
-                </button>
-            </kano-glint-animation>
         </div>
+        <button id="banner-save-button" type="button" class="button" hidden$="[[!showSaveButton]]" on-tap="_saveTapped">
+            <iron-icon class="save-icon" icon="kc-ui:save"></iron-icon>
+            <div>[[localize('SAVE', 'Save')]]</div>
+        </button>
+        <kano-glint-animation id="banner-button-container" running="[[_computeGlint(buttonLabel, buttonState)]]">
+            <button id="banner-button"
+                    class$="button [[_computeButtonClass(buttonState)]]"
+                    type="button"
+                    on-tap="_buttonTapped"
+                    data-animate="300">
+                <paper-spinner-lite active="[[_buttonInactive(buttonState)]]"></paper-spinner-lite>
+                <span hidden$="[[!_buttonActive(buttonState)]]">
+                    [[buttonLabel]]
+                </span>
+                </template>
+            </button>
+        </kano-glint-animation>
     </template>
 </dom-module>
 
@@ -289,6 +218,10 @@
                 value: false,
                 reflectToAttribute: true,
                 observer: '_showSaveButtonChanged'
+            },
+            progress: {
+                type: Number,
+                value: 0
             }
         },
         attached () {

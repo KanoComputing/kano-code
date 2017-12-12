@@ -2,7 +2,10 @@
 <link rel="import" href="../../bower_components/kwc-style/typography.html">
 <link rel="import" href="./kano-challenge-ui.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
+<link rel="import" href="../kano-editor-banner/kano-editor-banner.html">
 <link rel="import" href="./kano-challenge-behavior.html">
+<link rel="import" href="../../bower_components/web-components/kano-sound-player-behavior/kano-sound-player-behavior.html">
 
 <!--
 
@@ -25,25 +28,79 @@ Example:
         <style>
             :host {
                 display: flex;
+                --kano-value-preview-input-background: rgba(0, 0, 0, 0.2);
             }
             #content {
                 flex: 1;
+            }
+            .banner-container {
+                @apply --layout-vertical;
+                @apply --layout-stretch;
+                @apply --layout-center-justified;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                max-height: 220px;
+                pointer-events: none;
+                padding: 24px;
+                box-sizing: border-box;
+                z-index: 1;
+            }
+            kano-editor-banner {
+                @apply --shadow-elevation-2dp;
+                border-radius: 6px;
+                background: white;
+                color: black;
+                font-family: var(--font-body);
+                pointer-events: all;
+            }
+            [hidden] {
+                display: none !important;
             }
         </style>
         <kano-challenge-ui id="ui" step="[[selectedStep]]" on-next-step="nextStep" blocks-panel="{{blocksPanel}}" state="{{state}}" mode-ready="[[modeReady]]" idle="[[idle]]">
             <slot name="editor" id="content"></slot>
         </kano-challenge-ui>
+        <div class="banner-container" id="banner-container">
+            <kano-editor-banner id="banner"
+                head="[[banner.head]]"
+                text="[[banner.text]]"
+                img-src="[[banner.icon]]"
+                img-page="[[banner.imgPage]]"
+                button-label="[[banner.buttonLabel]]"
+                progress="[[progress]]"
+                on-button-tapped="_bannerButtonTapped"
+                hidden$="[[_isBannerHidden(banner)]]"></kano-editor-banner>
+        </div>
     </template>
 </dom-module>
 
 <script type="text/javascript">
+    /* globals Polymer, Kano, page */
+    const BANNER_ICONS = {
+        'default': '/assets/avatar/judoka-face.svg'
+    };
+
+    const BANNER_SOUND = '/assets/audio/sounds/card_set.wav';
+    
     Polymer({
         is: 'kano-app-challenge',
         behaviors: [
             Kano.Behaviors.BlocklyValidatorBehavior,
-            Kano.Behaviors.AppElementRegistryBehavior
+            Kano.Behaviors.AppElementRegistryBehavior,
+            Kano.Behaviors.SoundPlayerBehavior,
+            Kano.Behaviors.I18nBehavior
         ],
         properties: {
+            progress: {
+                type: Number,
+                value: 0
+            },
+            banner: {
+                type: Object,
+                value: null
+            },
             state: {
                 type: Object,
                 notify: true
@@ -55,7 +112,124 @@ Example:
             }
         },
         listeners: {
-            'change': '_editorChanged'
+            'change': '_editorChanged',
+            'selected-step-changed': '_selectedStepChanged'
+        },
+        _selectedStepChanged (e) {
+            if (!this.selectedStep || !this.modeReady) {
+                return;
+            }
+            this.computeBanner(this.selectedStep);
+        },
+        _isBannerHidden (banner) {
+            return !banner;
+        },
+        computeBanner (step) {
+            let iconId, animation;
+            clearTimeout(this.showButtonTimeout);
+            this.set('banner', null);
+            if (this.state.hints.enabled) {
+                if (step.banner) {
+                    let label = (step.banner.buttonLabel || this.localize('NEXT', 'Next'));
+                    this.banner = this.banner || {};
+                    this.set('banner.head', step.banner.head || null);
+                    this.set('banner.text', step.banner.text);
+                    this.set('banner.buttonLabel', step.banner.next_button ? label : null);
+
+                    if (this.banner.buttonLabel) {
+                        if (this.bannerButtonInactive) {
+                            this.$.banner.buttonState = 'inactive';
+                        } else {
+                            this.$.banner.buttonState = 'active';
+                        }
+                    } else {
+                        this.$.banner.buttonState = 'hidden';
+                    }
+                } else {
+                    this.banner = null;
+                }
+            } else {
+                let bannerProps = this.state.hints['disabled-banner'];
+                if (bannerProps) {
+                    this.banner = this.banner || {};
+                    this.set('banner.head', bannerProps.head || null);
+                    this.set('banner.text', bannerProps.text);
+                    this.set('banner.buttonLabel', this.localize('HINTS', 'Hints'));
+                    
+                    // Show hint button with delay
+                    this.$.banner.buttonState = 'hidden';
+                    this.showButtonTimeout = setTimeout(() => {
+                        this.$.banner.buttonState = 'active';
+                    }, 6000);
+                } else {
+                    this.banner = null;
+                }
+            }
+            if (this.banner) {
+                if (step.banner) {
+
+                    this.editor.set('lockdown', step.banner.lockdown);    //disable click events if true
+                    this.$.banner.showSaveButton = step.isLast;
+
+                    if (step.isLast) {
+                        this.set('banner.icon', null);
+                        this.set('banner.imgPage', 'star');
+                        this.set('banner.buttonLabel', Boolean(this.story.next) ?
+                                this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
+                    } else if (step.banner.animation) {
+                        animation = step.banner.animation;
+                        this.set('banner.imgPage', animation);
+                        this.set('banner.icon', null);
+                    } else if (step.banner.icon) {
+                        iconId = step.banner.icon;
+                        this.set('banner.icon', BANNER_ICONS[iconId]);
+                        this.set('banner.imgPage', null);
+                    } else {
+                        this.set('banner.icon', null);
+                        this.set('banner.imgPage', 'judoka');
+                    }
+                } else {
+                    //TODO quickfix for demo. Needs to be removed.
+                    this.set('banner.icon', null);
+                    this.set('banner.imgPage', 'judoka');
+                }
+                this.playSound(BANNER_SOUND);
+                if ('animate' in HTMLElement.prototype) {
+                    this.$.banner.animate({
+                        opacity: [0, 1],
+                        transform: ['scale(0.5, 0.5)', 'scale(1, 1)']
+                    }, {
+                        duration: 150,
+                        easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)'
+                    });
+                }
+            }
+            this.set('banner.progress', this.progress);
+            this._fitBanner();
+        },
+        _bannerButtonTapped () {
+            if (this.selectedStep.isLast) {
+                Kano.MakeApps.Utils.onLine().then((isOnline) => {
+                    if (!this.user || this.user.hasSharedInSession || this._userAlreadyShared(this.story) ||
+                            this.scene.autoshareDisabled || !isOnline) {
+                        this.fire('next-story');
+                    } else {
+                        const detail = this.$.editor.compileApp();
+                        detail.title = this.story.name;
+                        detail.autoshare = true;
+                        this.scene.autoshareDisabled = true;
+                        this.running = false;
+                        this.share({ detail });
+                    }
+                });
+            } else if (this.state.hints && this.state.hints.enabled) {
+                this.nextStep();
+            } else {
+                this.showHints();
+            }
+        },
+        _onLockdownClick () {
+            this.$.banner.shakeButton();
         },
         _editorChanged (e) {
             // Store current step object
@@ -90,20 +264,43 @@ Example:
 
             this._addOppositeAction('add-part', 'close-parts', '_partsClosed');
             this.changeCounts = {};
+            this._onFlyoutStateChanged = this._onFlyoutStateChanged.bind(this);
+            this._onLockdownClick = this._onLockdownClick.bind(this);
             this.editor = Polymer.dom(this.$.content).getDistributedNodes()[0];
+            this.editor.addEventListener('lockdown-clicked', this._onLockdownClick);
             this.editor.addEventListener('blockly-ready', (e) => {
-                let target = e.path ? e.path[0] : e.target;
-                this.setWorkspace(target.getWorkspace());
+                const target = e.path ? e.path[0] : e.target;
+                const workspace = target.getWorkspace();
+                this.setWorkspace(workspace);
                 this.blocksPanel = this._getElement('blocks-panel');
+                workspace.addChangeListener(this._onFlyoutStateChanged);
             });
         },
         attached () {
             this.addEventListener('mousewheel', this.updateTooltips, true);
             window.addEventListener('resize', this.updateTooltips);
+            this.loadSound(BANNER_SOUND);
         },
         detached () {
             this.removeEventListener('mousewheel', this.updateTooltips);
             window.removeEventListener('resize', this.updateTooltips);
+        },
+        _onFlyoutStateChanged (e) {
+            if ([Blockly.Events.OPEN_FLYOUT, Blockly.Events.CLOSE_FLYOUT].indexOf(e.type) === -1) {
+                return;
+            }
+            this.async(() => {
+                this._fitBanner();
+            });
+        },
+        _fitBanner () {
+            const workspace = this._blocklyWorkspace;
+            const metrics = workspace.getMetrics();
+            const flyout = workspace.getFlyout_();
+            const width = workspace.toolbox_ && workspace.toolbox_.opened ? flyout.getWidth() + 44 : metrics.toolboxWidth;
+            this.$['banner-container'].style.left = `${width}px`;
+            this.$['banner-container'].style.top = `0px`;
+            this.$['banner-container'].style.width = `${metrics.viewWidth + metrics.toolboxWidth - width}px`;
         },
         _partsClosed () {
             return this._prevStep();

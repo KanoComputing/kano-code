@@ -1,9 +1,15 @@
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
+<link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../blockly.html">
 <link rel="import" href="../../bower_components/kwc-blockly/kwc-blockly.html">
+<link rel="import" href="../kc-user-options/kc-user-options.html">
+<link rel="import" href="../kano-tooltip/kano-tooltip.html">
+<link rel="import" href="../kano-icons/kc-ui.html">
+<link rel="import" href="../../scripts/kano/make-apps/store.html">
+<link rel="import" href="../../scripts/kano/make-apps/actions/user.html">
 
-<dom-module id="kano-root-view">
+<dom-module id="kc-blockly-editor">
     <template>
         <style>
             :host {
@@ -18,7 +24,7 @@
                 transition: opacity 200ms linear;
             }
             .shell {
-                background-color: var(--kwc-blockly-background, white);
+                background-color: var(--kc-primary-color, white);
             }
             .shell .toolbox {
                 content: ' ';
@@ -26,10 +32,90 @@
                 @apply --kwc-blockly-toolbox;
                 top: 0px;
                 bottom: 0px;
-                width: 130px;
+                width: 142px;
             }
             :host([loading]) kwc-blockly {
                 opacity: 0;
+            }
+            button.icon {
+                background: transparent;
+                border: 0;
+                cursor: pointer;
+                margin: 6px;
+            }
+            button.icon:focus {
+                outline: none;
+            }
+            button.icon iron-icon {
+                fill: white;
+                margin: 6px;
+            }
+            button.logo iron-icon {
+                width: 50px;
+                opacity: 0.7;
+            }
+            button.menu iron-icon {
+                width: 24px;
+                height: 24px;
+                opacity: 0.5;
+            }
+            button.menu:hover iron-icon {
+                opacity: 1;
+            }
+            button.icon:hover iron-icon {
+                opacity: 1;
+            }
+            .toolbox-enhancer {
+                background: var(--kc-secondary-color);
+                color: white;
+            }
+            .toolbox-enhancer.above {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+            }
+            .toolbox-enhancer.under .wrapper {
+                max-width: 142px;
+                @apply --layout-vertical;
+                @apply --layout-center;
+            }
+            .back {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                @apply --kano-button;
+                background: rgba(255, 255, 255, 0.25);
+                border-radius: 2px;
+                font-size: 14px;
+                padding: 8px 22px;
+                color: rgba(255, 255, 255, 0.75);
+                font-weight: bold;
+                margin-bottom: 12px;
+            }
+            .back:hover,
+            .back:focus {
+                background: rgba(255, 255, 255, 0.35);
+                color: rgba(255, 255, 255, 1);
+            }
+            .back iron-icon {
+                width: 12px;
+                height: 12px;
+                margin-right: 8px;
+                fill: rgba(255, 255, 255, 0.5);
+            }
+            kano-tooltip {
+                box-sizing: border-box;
+            }
+            [hidden] {
+                display: none !important;
+            }
+            kano-tooltip {
+                --kano-tooltip: {
+                    border-radius: 6px;
+                };
+            }
+            kc-user-options {
+                border-radius: 6px;
+                overflow: hidden;
             }
         </style>
         <div class="shell">
@@ -42,16 +128,40 @@
                 on-blockly-ready="_onBlocklyReady"
                 no-trashcan="[[simple]]"
                 no-zoom-control="[[simple]]"
-                no-toolbox="[[simple]]"></kwc-blockly>
+                no-toolbox="[[simple]]">
+                <div class="toolbox-enhancer above" slot="above-toolbox">
+                    <button type="button" class="logo icon" on-tap="_exitButtonTapped">
+                        <iron-icon class="block-logo" src="/assets/kano-logo-simple.svg"></iron-icon>
+                    </button>
+                    <button type="button" class="menu icon" on-tap="_menuButtonTapped">
+                        <iron-icon id="menu-icon" class="block-logo" icon="kc-ui:hamburger"></iron-icon>
+                    </button>
+                </div>
+                <div class="toolbox-enhancer under" slot="under-toolbox">
+                    <div class="wrapper">
+                        <a class="back" on-tap="_exitButtonTapped">
+                            <iron-icon id="back-icon" icon="kano-icons:back"></iron-icon>
+                            <span>[[localize('BACK', 'Back')]]</span>
+                        </a>
+                    </div>
+                </div>
+        </kwc-blockly>
+        <kano-tooltip id="tooltip" position="bottom" offset="8" auto-close>
+            <kc-user-options on-logout="_closeTooltip"></kc-user-options>
+        </kano-tooltip>
     </template>
 </dom-module>
 <script type="text/javascript">
     /* globals Polymer, Kano, Blockly */
 
     Polymer({
-        is: 'kano-root-view',
-        behaviors: [Kano.Behaviors.AppEditorBehavior,
-                    Kano.Behaviors.AppElementRegistryBehavior],
+        is: 'kc-blockly-editor',
+        behaviors: [
+            Kano.Behaviors.AppEditorBehavior,
+            Kano.Behaviors.AppElementRegistryBehavior,
+            Kano.Behaviors.I18nBehavior,
+            Kano.MakeApps.Store.ReceiverBehavior
+            ],
         properties: {
             parts: {
                 type: Array,
@@ -74,6 +184,14 @@
             simple: {
                 type: Boolean,
                 value: false
+            },
+            user: {
+                type: Object,
+                linkState: 'user'
+            },
+            logoutEnabled: {
+                type: Boolean,
+                linkState: 'editor.logoutEnabled'
             }
         },
         observers: [
@@ -83,6 +201,38 @@
             'computeToolboxDebounced(mode)',
             'defaultCategoriesLoaded(defaultCategories.events)'
         ],
+        _logoutTapped () {
+            this.fire('logout');
+            this._closeTooltip();
+        },
+        _loginTapped () {
+            this.fire('login');
+        },
+        _isLogoutHidden (logoutEnabled, user) {
+            return !logoutEnabled || !user;
+        },
+        _isProfileHidden (user) {
+            return !user;
+        },
+        _closeTooltip () {
+            this.$.tooltip.close();
+        },
+        _isAuthenticated (user) {
+            return !!user;
+        },
+        _computeAvatar (user) {
+            if (!user || !user.avatar || !user.avatar.urls || !user.avatar.urls.circle) {
+                return '/assets/avatar/judoka-face.svg';
+            }
+            return user.avatar.urls.circle;
+        },
+        _menuButtonTapped (e) {
+            this.$.tooltip.target = this.$['menu-icon'].getBoundingClientRect();
+            this.$.tooltip.open();
+        },
+        _exitButtonTapped () {
+            this.fire('exit-tapped');
+        },
         _onBlocklyReady () {
             if (!this.simple) {
                 this._registerElement('blockly-bin', this.$['code-editor'].workspace.svgGroup_.querySelector('.blocklyTrash'));

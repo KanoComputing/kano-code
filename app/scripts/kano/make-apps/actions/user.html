@@ -1,0 +1,49 @@
+<link rel="import" href="../store.html">
+<script>
+    ((Kano) => {
+        Kano.MakeApps = Kano.MakeApps || {};
+        Kano.MakeApps.Actions = Kano.MakeApps.Actions || {};
+
+        const store = Kano.MakeApps.Store;
+
+        const CONSTANTS = ['AUTHENTICATE', 'UPDATE_PROFILE', 'UPDATE_LEVELS', 'LOGOUT'];
+        const USER_TYPES = store.types(CONSTANTS);
+        
+
+        store.addMutator(function (action) {
+            switch (action.type) {
+                case USER_TYPES.AUTHENTICATE: {
+                    this.set('state.user', action.user);
+                    break;
+                }
+                case USER_TYPES.UPDATE_PROFILE: {
+                    this.set('state.user.profile', action.profile);
+                    break;
+                }
+                case USER_TYPES.UPDATE_LEVELS: {
+                    this.set('state.user.profile.levels', action.levels);
+                    break;
+                }
+                case USER_TYPES.LOGOUT: {
+                    this.set('state.user', null);
+                    break;
+                }
+            }
+        });
+
+        Kano.MakeApps.Actions.User = {
+            authenticate (user) {
+                store.dispatch({ type: USER_TYPES.AUTHENTICATE, user });
+            },
+            updateProfile (profile) {
+                store.dispatch({ type: USER_TYPES.UPDATE_PROFILE, profile });
+            },
+            logout () {
+                store.dispatch({ type: USER_TYPES.LOGOUT });
+            },
+            updateLevels (levels) {
+                store.dispatch({ type: USER_TYPES.UPDATE_LEVELS, levels });
+            }
+        };
+    })(window.Kano = window.Kano || {});
+</script>

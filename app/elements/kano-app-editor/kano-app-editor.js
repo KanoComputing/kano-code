@@ -111,6 +111,12 @@ Polymer({
         'feature-not-available-offline': '_openOfflineDialog',
         'opened-changed': '_manageModals'
     },
+    _exitTapped () {
+        this.fire('tracking-event', {
+            name: 'ide_exited'
+        });
+        this.fire('exit');
+    },
      //Make sure that no conflicting modals are opened at the same time
     _manageModals (e) {
         const notifier = Polymer.dom(e).rootTarget.id,

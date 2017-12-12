@@ -1,0 +1,30 @@
+<link rel="import" href="../store.html">
+<script>
+    ((Kano) => {
+        Kano.MakeApps = Kano.MakeApps || {};
+        Kano.MakeApps.Actions = Kano.MakeApps.Actions || {};
+
+        const store = Kano.MakeApps.Store;
+
+        const CONSTANTS = ['UPDATE_LOGOUT_ENABLED'];
+        const EDITOR_TYPES = store.types(CONSTANTS);
+
+        store.addMutator(function (action) {
+            switch (action.type) {
+                case EDITOR_TYPES.UPDATE_LOGOUT_ENABLED: {
+                    this.set('state.editor.logoutEnabled', action.enabled);
+                    break;
+                }
+            }
+        });
+
+        Kano.MakeApps.Actions.Editor = {
+            updateLogoutEnabled (enabled) {
+                store.dispatch({ type: EDITOR_TYPES.UPDATE_LOGOUT_ENABLED, enabled });
+            }
+        };
+    })(window.Kano = window.Kano || {});
+</script>
+
+
+

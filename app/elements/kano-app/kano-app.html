@@ -18,6 +18,7 @@
 <link rel="import" href="../kano-try-chrome/kano-try-chrome.html">
 <link rel="import" href="../../scripts/kano/make-apps/progress.html">
 <link rel="import" href="../../scripts/kano/make-apps/store.html">
+<link rel="import" href="../../scripts/kano/make-apps/actions/user.html">
 <!--
 `kano-app` provides the whole Make apps app.
 Example:
@@ -26,61 +27,61 @@ Example:
 @element kano-app
 -->
 <dom-module id="kano-app">
-    <style>
-    :host {
-        font-family: var(--font-body);
-        display: block;
-        @apply(--layout-vertical);
-        @apply(--layout-flex);
-    }
-    :host button {
-        font-family: Bariol;
-    }
-    :host kano-routing {
-        @apply(--layout-vertical);
-        @apply(--layout-flex);
-        overflow: auto;
-    }
-    :host button,
-    :host .main header .link {
-        @apply(--kano-button-small);
-        text-decoration: none;
-        background-color: var(--primary-color);
-    }
-    :host .main header {
-        background-color: var(--color-header, black);
-        color: white;
-        @apply(--kano-header);
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-        @apply(--layout-center);
-        height: 62px;
-    }
-    :host .main header div {
-        @apply(--layout-flex);
-    }
-    :host .main header .logged {
-        @apply(--layout-vertical);
-    }
-    :host .user-info {
-        margin-left: 5px;
-    }
-    :host kano-routing {
-        @apply(--layout-flex);
-        position: relative;
-    }
-    :host .logged-out {
-        background: white;
-    }
-    #toast {
-        --paper-toast-background-color: var(--kano-app-editor-workspace-background);
-    }
-    #toast button {
-        background-color: var(--color-green);
-        margin-left: 16px;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                font-family: var(--font-body);
+                display: block;
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+            }
+            :host button {
+                font-family: Bariol;
+            }
+            :host kano-routing {
+                @apply(--layout-vertical);
+                @apply(--layout-flex);
+                overflow: auto;
+            }
+            :host button,
+            :host .main header .link {
+                @apply(--kano-button-small);
+                text-decoration: none;
+                background-color: var(--primary-color);
+            }
+            :host .main header {
+                background-color: var(--color-header, black);
+                color: white;
+                @apply(--kano-header);
+                @apply(--layout-horizontal);
+                @apply(--layout-justified);
+                @apply(--layout-center);
+                height: 62px;
+            }
+            :host .main header div {
+                @apply(--layout-flex);
+            }
+            :host .main header .logged {
+                @apply(--layout-vertical);
+            }
+            :host .user-info {
+                margin-left: 5px;
+            }
+            :host kano-routing {
+                @apply(--layout-flex);
+                position: relative;
+            }
+            :host .logged-out {
+                background: white;
+            }
+            #toast {
+                --paper-toast-background-color: var(--kano-app-editor-workspace-background);
+            }
+            #toast button {
+                background-color: var(--color-green);
+                margin-left: 16px;
+            }
+        </style>
         <kano-routing id="router"
                 ctx="{{ctx}}"
                 name="app"
@@ -107,8 +108,8 @@ Example:
     Polymer({
         is: 'kano-app',
         behaviors: [
-            Kano.Behaviors.Tracking.GABehavior,
-            Kano.Behaviors.Tracking.KanoCodeBehavior,
+            Kano.Behaviors.KanoCode.GABehavior,
+            Kano.Behaviors.KanoCode.TrackingBehavior,
             Kano.MakeApps.Store.ProviderBehavior,
             Kano.Behaviors.GamificationBehavior
         ],
@@ -145,16 +146,6 @@ Example:
             if (!this.user) {
                 return;
             }
-            // Stop the notifications polling on every route change
-            this._stopNotificationsPolling();
-            // Restart the polling if we need it on this route
-            if (this._needsNotifications()) {
-                this._startNotificationsPolling();
-            }
-        },
-        _needsNotifications () {
-            // If the route is apps or home ( routes with the navbar )
-            return this.route === 'apps' || this.route === 'home';
         },
         ready () {
             this.editor = null;
@@ -169,11 +160,9 @@ Example:
                      */
                     this.token = Kano.MakeApps.sdk.auth.getToken();
                     if (user) {
+                        Kano.MakeApps.Actions.User.authenticate(user);
                         this.set('user', user);
                         this._populateUser();
-                        if (this._needsNotifications()) {
-                            this._startNotificationsPolling();
-                        }
                     } else {
                         this.trackVisitType('Logged out');
                     }
@@ -182,7 +171,12 @@ Example:
                      * to ensure that the token is used when starting the
                      * session, if applicable
                      */
-                    this._initializeTracking();
+                    this._initializeTracking({
+                        detail: {
+                            token: this.token,
+                            path: window.location.pathname
+                        }
+                    });
                 });
             };
             if (this.offline) {
@@ -240,6 +234,7 @@ Example:
         _logout (e) {
             e.preventDefault();
             Kano.MakeApps.sdk.auth.logout(false);
+            Kano.MakeApps.Actions.User.logout();
             this.user = null;
             this.$.auth.reset();
             Kano.MakeApps.Progress.reset();
@@ -285,6 +280,7 @@ Example:
         _fetchUserProgress () {
             Kano.MakeApps.sdk.api.progress.get()
                 .then((res) => {
+                    Kano.MakeApps.Actions.User.updateLevels(res.body.progress.levels);
                     this.set('user.profile.levels', res.body.progress.levels);
                 });
         },
@@ -292,12 +288,9 @@ Example:
             let data = e.detail;
             Kano.MakeApps.sdk.auth.setToken(data.token);
             this.token = data.token;
-            data.user.notifications = [];
+            Kano.MakeApps.Actions.User.authenticate(data.user);
             this.user = data.user;
             this._populateUser();
-            if (this._needsNotifications()) {
-                this._startNotificationsPolling();
-            }
             this.authenticated = true;
             this.fire('tracking-event', {
                 name: 'logged_in'
@@ -307,26 +300,11 @@ Example:
         },
         _populateUser () {
             this._updateProfile();
-            this._updateNotifications();
-        },
-        _startNotificationsPolling () {
-            this._pollingIntervalId = setInterval(this._updateNotifications.bind(this), 30000);
-        },
-        _stopNotificationsPolling () {
-            clearInterval(this._pollingIntervalId);
-        },
-        _updateNotifications () {
-            Kano.MakeApps.sdk.api.notifications.get()
-                .then((res) => {
-                    this.set('user.notifications', res.body.entries.map((notification) => {
-                        notification.time = notification.date_created;
-                        return notification;
-                    }));
-                });
         },
         _updateProfile () {
             Kano.MakeApps.sdk.api.users.get.byUsername({ username: this.user.username })
                 .then((res) => {
+                    Kano.MakeApps.Actions.User.updateProfile(res.body.user.profile);
                     this.set('user.profile', res.body.user.profile);
                     this._fetchUserProgress();
                 });
