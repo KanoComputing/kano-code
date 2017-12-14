@@ -1,7 +1,8 @@
 'use strict';
 
 const shards = require('./shards'),
-      kanoCodeLib = require('./kano-code-lib');
+      kanoCodeLib = require('./kano-code-lib'),
+      path = require('path');
 
 module.exports = (gulp, $) => {
 
@@ -37,16 +38,18 @@ module.exports = (gulp, $) => {
     });
 
     function notBowerComponent(file) {
-        let needTranspile = ((file.path.indexOf('bower_components') === -1 &&
-            file.path.indexOf('assets/vendor/') === -1) ||
-            file.path.indexOf('web-components') !== -1 ||
-            file.path.indexOf('lazy-imports') !== -1 ||
-            file.path.indexOf('kano-shared-storage-client') !== -1 ||
-            file.path.indexOf('gamification-engine') !== -1 ||
-            file.path.indexOf('flow-down') !== -1 ||
-            (file.path.indexOf('kwc-') !== -1 && file.path.indexOf('blockly_built') === -1) ||
-            file.path.indexOf('Sortable') !== -1) ||
-            file.path.indexOf('polymer-sortablejs') !== -1;
+        let relativePath = path.relative(__dirname.replace(/\/tasks$/, ''), file.path),
+            needTranspile = ((relativePath.indexOf('bower_components') === -1 &&
+            relativePath.indexOf('assets/vendor/') === -1) ||
+            relativePath.indexOf('web-components') !== -1 ||
+            relativePath.indexOf('lazy-imports') !== -1 ||
+            relativePath.indexOf('kano-shared-storage-client') !== -1 ||
+            relativePath.indexOf('gamification-engine') !== -1 ||
+            relativePath.indexOf('flow-down') !== -1 ||
+            (relativePath.indexOf('kwc-') !== -1 && relativePath.indexOf('blockly_built') === -1) ||
+            relativePath.indexOf('Sortable') !== -1) ||
+            relativePath.indexOf('polymer-sortablejs') !== -1;
+
         return needTranspile;
     }
 
