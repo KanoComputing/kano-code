@@ -71,6 +71,7 @@ Example:
                 button-label="[[banner.buttonLabel]]"
                 progress="[[progress]]"
                 on-button-tapped="_bannerButtonTapped"
+                on-save-button-clicked="_transmitRequestShare"
                 hidden$="[[_isBannerHidden(banner)]]"></kano-editor-banner>
         </div>
     </template>
@@ -406,6 +407,9 @@ Example:
             //tell UI and validator separately that step has finished
             this.$.ui.finishStep();
             Kano.Behaviors.ChallengeBehavior.nextStep.call(this);
+        },
+        _transmitRequestShare () {
+            this.fire('request-share');
         }
     });
 </script>

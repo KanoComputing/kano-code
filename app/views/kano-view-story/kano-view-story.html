@@ -103,7 +103,8 @@
                             on-save="saveApp"
                             on-exit="_exit"
                             on-save-to-storage="saveToStorage"
-                            on-load="loadApp">
+                            on-load="loadApp"
+                            on-request-share="askEditorToShare">
             <kano-app-editor id="editor"
                              added-parts="{{addedParts}}"
                              parts="[[parts]]"
@@ -792,6 +793,9 @@
         },
         fromStore (id) {
             return this.store[id];
+        },
+        askEditorToShare () {
+            this.editor.share();
         }
     });
 </script>
