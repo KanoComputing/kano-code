@@ -142,14 +142,16 @@
                 }
             },
             _onLeaveAlertChanged(alert) {
-                if (alert) {
-                    window.onbeforeunload = () => {
-                        return 'Any unsaved changes to your app will be lost. Continue?';
-                        return false;
-                    }
-                } else {
-                    window.onbeforeunload = null;
-                }
+                // Quick-fix for CES demo: don't use alert windows
+
+                // if (alert) {
+                //     window.onbeforeunload = () => {
+                //         return 'Any unsaved changes to your app will be lost. Continue?';
+                //         return false;
+                //     }
+                // } else {
+                //     window.onbeforeunload = null;
+                // }
             },
             _onPageChanged() {
                 let disableLogout,
