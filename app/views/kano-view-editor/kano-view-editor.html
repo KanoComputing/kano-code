@@ -184,8 +184,7 @@
         observers: [
             '_setupHardwareParts(addedParts.splices)',
             '_setupHardwareParts(hardwareAPI)',
-            '_pauseApp(shareOpened)',
-            '_onFastLoadChanged(fastLoad.*)'
+            '_pauseApp(shareOpened)'
         ],
         listeners: {
             'parts-changed': '_partsChanged',
@@ -197,6 +196,7 @@
             this.editor = this.$.editor;
             this.editor.addEventListener('change', this.save.bind(this));
             this.modal = this.$['share-modal'];
+            window.Bridge.openApp = this._onFastLoadChanged.bind(this);
 
             this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
             this.hardwareAPI.on('new-part-request', (e) => {
@@ -454,10 +454,10 @@
         _openSignup () {
             this.fire('signup');
         },
-        _onFastLoadChanged () {
-            console.log('on fast load app');
+        _onFastLoadChanged (app) {
+            console.log('on fast load app', window.Bridge);
             // app = JSON.parse(app);
-            this.dispatch({ type: 'LOAD_EDITOR_APP', data: this.fastLoad });
+            this.dispatch({ type: 'LOAD_EDITOR_APP', data: app });
         }
     });
 </script>

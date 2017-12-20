@@ -191,7 +191,9 @@
             },
             _exit() {
                 this.leaveAlert = false;
-                location.href = Kano.MakeApps.config.PROJECTS_URL;
+                // CES-HACK
+                window.Bridge.showElectronHome();
+                // location.href = Kano.MakeApps.config.PROJECTS_URL;
             }
         });
     </script>
