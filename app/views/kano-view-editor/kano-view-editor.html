@@ -19,7 +19,6 @@
 <link rel="import" href="../../elements/behaviors/kano-view-drop-file-behavior.html">
 <link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
 <link rel="import" href="../../bower_components/web-components/kano-reward-modal/kano-reward-modal.html">
-<link rel="import" href="../../bower_components/app-storage/app-localstorage/app-localstorage-document.html">
 
 <dom-module id="kano-view-editor">
     <style>
@@ -76,7 +75,6 @@
         }
     </style>
     <template>
-        <app-localstorage-document id="meta" key="fastLoad" data="{{fastLoad}}" storage="window.localStorage"></app-localstorage-document>
         <kano-app-editor
             id="editor"
             running="{{running}}"
@@ -176,9 +174,6 @@
                 type: Object,
                 linkState: 'editor.app',
                 observer: '_appChanged'
-            },
-            fastLoad: {
-                type: Object
             }
         },
         observers: [
@@ -196,7 +191,8 @@
             this.editor = this.$.editor;
             this.editor.addEventListener('change', this.save.bind(this));
             this.modal = this.$['share-modal'];
-            window.Bridge.openApp = this._onFastLoadChanged.bind(this);
+            // CES-HACK
+            window.Bridge.openApp = this._openApp.bind(this);
 
             this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
             this.hardwareAPI.on('new-part-request', (e) => {
@@ -454,9 +450,8 @@
         _openSignup () {
             this.fire('signup');
         },
-        _onFastLoadChanged (app) {
-            console.log('on fast load app', window.Bridge);
-            // app = JSON.parse(app);
+        //CES-HACK
+        _openApp (app) {
             this.dispatch({ type: 'LOAD_EDITOR_APP', data: app });
         }
     });

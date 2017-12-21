@@ -234,7 +234,6 @@ Polymer({
         return { x, y };
     },
     _onModeReady () {
-        console.log('YEADDDH')
         this.modeReady = true;
         Kano.MakeApps.Utils.triggerResize();
     },

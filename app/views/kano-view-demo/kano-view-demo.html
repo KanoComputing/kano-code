@@ -135,11 +135,7 @@
             this.apps = groupedApps[this.mode];
         },
         _loadApp (e) {
-            // let app = e.model.get('app');
-            let app = {
-                    id: 'alarm',
-                    label: 'Alarm'
-                };
+            let app = e.model.get('app');
             fetch(`/assets/demo-apps/${app.id}.json`)
                 .then(r => r.json())
                 .then(appJson => {
