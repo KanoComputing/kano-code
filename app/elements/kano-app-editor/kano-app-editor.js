@@ -489,6 +489,10 @@ Polymer({
         // If there is no background, fall back to the default value
         this.set('background', savedApp.background ? savedApp.background : this.properties.background.value());
         this.unsavedChanges = false;
+        
+        //CES-HACK
+        window.Bridge.onCodeLoaded();
+        
     },
     _formatCode (code) {
         code = code || {};
