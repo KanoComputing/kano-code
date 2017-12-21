@@ -11,8 +11,10 @@
             module: 'wand',
             onCreated () {
                 this._onPositionChanged = this._onPositionChanged.bind(this);
+                this._update = this._update.bind(this);
                 this.handlers = {
-                    'position': this._onPositionChanged
+                    'position': this._onPositionChanged,
+                    'update': this._update
                 };
                 Kano.MakeApps.PartsAPI.DongleBase.onCreated.apply(this);
                 this.reset();
@@ -23,6 +25,10 @@
             stop () {
                 PartsAPI.DongleBase.stop.apply(this, arguments);
                 this.reset();
+            },
+            _update (opts) {
+                this.set('model.device', opts);
+                this.set('model.connected', opts && opts.connected);
             },
             reset () {
                 if (this.model && this.model.lastX) {

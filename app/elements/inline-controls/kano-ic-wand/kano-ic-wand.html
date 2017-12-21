@@ -1,0 +1,30 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../kano-value-rendering/kano-value-rendering.html">
+<link rel="import" href="../../kano-icons/kc-ui.html">
+<dom-module id="kano-ic-wand">
+    <template>
+        <style>
+            :host {
+                @apply --layout-horizontal;
+                @apply --layout-end-justified;
+                color: #fff;
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
+        <div>[[device.name]]</div>
+    </template>
+    <script>
+        Polymer({
+            is:'kano-ic-wand',
+            properties: {
+                device: {
+                    type: Object
+                }
+            }
+        });
+    </script>
+</dom-module>

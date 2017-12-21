@@ -90,6 +90,11 @@
                 this._socketOn(`wand:${this.number}:position`, (value) => {
                     this.emitter.emit('position', value);
                 });
+                this.update(options);
+            }
+
+            update (opts) {
+                this.emitter.emit('update', opts);
             }
         }
 
