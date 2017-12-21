@@ -191,6 +191,8 @@
             this.editor = this.$.editor;
             this.editor.addEventListener('change', this.save.bind(this));
             this.modal = this.$['share-modal'];
+            // CES-HACK
+            window.Bridge.openApp = this._openApp.bind(this);
 
             this.hardwareAPI = new Kano.MakeApps.HardwareAPI(Kano.MakeApps.config);
             this.hardwareAPI.on('new-part-request', (e) => {
@@ -447,6 +449,10 @@
         },
         _openSignup () {
             this.fire('signup');
+        },
+        //CES-HACK
+        _openApp (app) {
+            this.dispatch({ type: 'LOAD_EDITOR_APP', data: app });
         }
     });
 </script>
