@@ -106,6 +106,27 @@
                         return [code];
                     };
                 }
+            }, {
+                block: (part) => {
+                    return {
+                        id: 'wand_speed',
+                        message0: `${part.name} %1 speed`,
+                        args0: [{
+                            type: "field_dropdown",
+                            name: "AXIS",
+                            options: [['x', 'X'], ['y', 'Y'], ['z', 'Z']]
+                        }],
+                        inputsInline: false,
+                        output: 'Number'
+                    };
+                },
+                javascript: (part) => {
+                    return (block) => {
+                        let axis = block.getFieldValue('AXIS') || 'X';
+                        let code = `devices.get('${part.id}').get${axis}Speed()`;
+                        return [code];
+                    };
+                }
             }]
         };
 

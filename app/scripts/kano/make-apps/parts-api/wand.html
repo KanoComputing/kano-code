@@ -43,6 +43,9 @@
                 this._listeners = [];
             },
             _onPositionChanged (e) {
+                this.model.xSpeed = Math.abs((this.model.lastX || e[0]) - e[0]);
+                this.model.ySpeed = Math.abs((this.model.lastY || e[1]) - e[1]);
+                this.model.zSpeed = Math.abs((this.model.lastZ || e[2]) - e[2]);
                 this.model.lastX = e[0];
                 this.model.lastY = e[1];
                 this.model.lastZ = e[2];
@@ -81,6 +84,15 @@
                 const value = this._lerp(this.lastQueriedZ || this.model.lastZ, this.model.lastZ, 50);
                 this.lastQueriedZ = this.model.lastZ;
                 return value;
+            },
+            getXSpeed () {
+                return this.model.xSpeed;
+            },
+            getYSpeed () {
+                return this.model.ySpeed;
+            },
+            getZSpeed () {
+                return this.model.zSpeed;
             },
             dataToPercentage (value) {
                 return Math.round((value / 255) * 100);
