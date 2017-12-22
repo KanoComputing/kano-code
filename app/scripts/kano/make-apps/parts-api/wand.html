@@ -61,14 +61,26 @@
             whenEntersZone (zone, callback) {
                 this._listeners.push({ zone, callback });
             },
+            _lerp (from, to, percent) {
+                const span = to - from;
+                percent = Math.max(0, Math.min(percent, 100));
+
+                return from + (span * (percent * 0.01));
+            },
             getX () {
-                return this.model.lastX;
+                const value = this._lerp(this.lastQueriedX || this.model.lastX, this.model.lastX, 50);
+                this.lastQueriedX = this.model.lastX;
+                return value;
             },
             getY () {
-                return this.model.lastY;
+                const value = this._lerp(this.lastQueriedY || this.model.lastY, this.model.lastY, 50);
+                this.lastQueriedY = this.model.lastY;
+                return value;
             },
             getZ () {
-                return this.model.lastZ;
+                const value = this._lerp(this.lastQueriedZ || this.model.lastZ, this.model.lastZ, 50);
+                this.lastQueriedZ = this.model.lastZ;
+                return value;
             },
             dataToPercentage (value) {
                 return Math.round((value / 255) * 100);
