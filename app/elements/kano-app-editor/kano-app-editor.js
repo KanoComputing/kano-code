@@ -491,7 +491,7 @@ Polymer({
         this.unsavedChanges = false;
         
         //CES-HACK
-        if (window.bridge) {
+        if (window.Bridge) {
             window.Bridge.onCodeLoaded();
         }
         
