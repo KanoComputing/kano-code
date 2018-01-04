@@ -571,11 +571,13 @@
             this.fire('exit-confirmed');
         },
         _exit () {
-            if (this.customAlert) {
-                this.$['leave-alert'].open();
-            } else {
-                this.fire('exit-confirmed');
-            }
+            //CES-HACK always exit
+            this.fire('exit-confirmed');
+            // if (this.customAlert) {
+            //     this.$['leave-alert'].open();
+            // } else {
+            //     this.fire('exit-confirmed');
+            // }
         },
         resetAppState () {
             this.$.editor.resetAppState();
