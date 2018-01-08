@@ -19,6 +19,7 @@
                 this._onReady = resolve;
                 this._onFail = reject;
             });
+            this.cameraIds = [];
         }
 
         static get hasGetUserMedia() {
@@ -26,13 +27,47 @@
         }
 
         start () {
-            navigator.getUserMedia({ video: true }, this._onStreamReady.bind(this), this._onStreamFailed.bind(this));
+            // CES hack
+            this.scanCameras();
+
         }
 
         stop () {
             if (this.stream) {
                 this.stream.getVideoTracks().forEach(track => track.stop());
             }
+        }
+
+        scanCameras () {
+            navigator.mediaDevices.enumerateDevices()
+                .then(deviceInfos => {
+                    for (var i = 0; i !== deviceInfos.length; i++) {
+                        var deviceInfo = deviceInfos[i];
+
+                        // Put the Stereo Vision camera (Kano kit) as the first item of the cameraIds array
+                        if (deviceInfo.kind === 'videoinput' && /Stereo Vision/.test(deviceInfo.label)) {
+                            this.cameraIds.unshift(deviceInfo.deviceId);
+
+                            // Log result for CES demo
+                            console.log('Sterevision detected, deviceId:', deviceInfo.deviceId);
+                        } else if (deviceInfo.kind === 'videoinput') {
+                            this.cameraIds.push(deviceInfo.deviceId);
+                        }
+                    }
+                    this.connectToCamera();
+                })
+                .catch(error => {
+                    this._onStreamFailed(error);
+                });
+        }
+
+        connectToCamera () {
+            let selectedCameraId = this.cameraIds[0];
+
+            // Trying to connect otherwise go to next cameraId
+            navigator.getUserMedia(
+                { video: { deviceId: {exact: selectedCameraId} } },
+                this._onStreamReady.bind(this), this._onCameraConnectFailed.bind(this));
         }
 
         takePicture () {
@@ -52,6 +87,17 @@
                 this.canvas.setAttribute('height', this.height);
                 this._onReady();
             };
+        }
+
+        _onCameraConnectFailed (error) {
+
+            // Take the first out from the detected camera array, and scan again
+            this.cameraIds.splice(0, 1);
+            if (this.cameraIds.length > 0) {
+                this.connectToCamera();
+            } else {
+                this._onStreamFailed(error);
+            }
         }
 
         _onStreamFailed (error) {
