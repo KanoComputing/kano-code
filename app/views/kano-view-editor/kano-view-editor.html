@@ -440,19 +440,21 @@
             this.$.editor.share();
         },
         _exit () {
-            if (this.showSavePrompt) {
-                this.$['save-prompt'].open();
-                this.fire('tracking-event', {
-                    name: 'save_prompt_opened'
-                });
-            } else {
-                this.fire('exit-confirmed');
-            }
+            // CES-HACK always exit
+            this.fire('exit-confirmed');
+            // if (this.showSavePrompt) {
+            //     this.$['save-prompt'].open();
+            //     this.fire('tracking-event', {
+            //         name: 'save_prompt_opened'
+            //     });
+            // } else {
+            //     this.fire('exit-confirmed');
+            // }
         },
         _openSignup () {
             this.fire('signup');
         },
-        //CES-HACK
+        // CES-HACK
         _openApp (app) {
             this.dispatch({ type: 'LOAD_EDITOR_APP', data: app });
         }
