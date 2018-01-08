@@ -28,7 +28,7 @@
        },
         {
             "banner": {
-                "text": "Open the Control tray"
+                "text": "Let's use a loop to move the feather, open the Control tray"
             },
             "beacon": {
                 "target": {
@@ -43,7 +43,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block repeats the code inside it, drag it onto your code space"
             },
             "beacon": {
                 "target": {
@@ -92,7 +92,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview> so the code repeats faster"
             },
             "beacon": {
                 "target": {
@@ -114,7 +114,7 @@
         },
         {
             "banner": {
-                "text": "Open the Feather tray"
+                "text": "Let's move the Feather, open the Feather tray"
             },
             "beacon": {
                 "target": {
@@ -129,7 +129,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block changes the position of the Feather, drag it onto your code space"
             },
             "beacon": {
                "target": {
@@ -182,7 +182,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Let's use Math to move the Feather, open the Math tray"
             },
             "beacon": {
                 "target": {
@@ -316,7 +316,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>150</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>150</span></kano-value-preview>, to centre the Feather"
             },
             "beacon": {
                 "target": {
@@ -338,7 +338,7 @@
         },
         {
             "banner": {
-                "text": "Open the Wand tray"
+                "text": "Let's use the sensor data from the Wand, open the Wand tray"
             },
             "beacon": {
                 "target": {
@@ -413,7 +413,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Let's move the Feather up and down, open the Math tray"
             },
             "beacon": {
                 "target": {
@@ -428,17 +428,17 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "The lerp block can remap a sensor reading, drag it onto your code space"
             },
             "beacon": {
                 "target": {
-                    "flyout_block": "math_arithmetic"
+                    "flyout_block": "math_lerp"
                 }
             },
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "math_arithmetic",
+                        "type": "math_lerp",
                         "id": "block_6"
                     }
                 }
@@ -480,11 +480,12 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>+</span></kano-value-preview> to <kano-value-preview><span>- subtract</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>200</span></kano-value-preview> to <kano-value-preview><span>250</span></kano-value-preview>"
             },
             "beacon": {
                 "target": {
                     "block": {
+                        "shadow": "TO",
                         "id": "block_6"
                     }
                 }
@@ -493,105 +494,17 @@
                 "blockly": {
                     "value": {
                         "target": {
+                            "shadow": "TO",
                             "id": "block_6"
                         },
-                        "value": "MINUS"
+                        "value": "250"
                     }
                 }
             }
         },
         {
             "banner": {
-                "text": "Open the Variables tray"
-            },
-            "beacon": {
-                "target": {
-                    "category": "variables"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "open-flyout": "variables"
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Drag the block onto your code space"
-            },
-            "beacon": {
-                "target": {
-                    "flyout_block": "math_number"
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "create": {
-                        "type": "math_number",
-                        "id": "block_7"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Connect it to this block"
-            },
-            "beacon": {
-                "target": {
-                    "block": {
-                        "id": "block_6",
-                        "rawId": "~W%AmhjSDW5,SzR*#wBH"
-                    }
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "connect": {
-                        "parent": {
-                            "id": "block_6",
-                            "rawId": "~W%AmhjSDW5,SzR*#wBH",
-                            "inputName": "A"
-                        },
-                        "target": "block_7"
-                    }
-                }
-            },
-            "phantom_block": {
-                "location": {
-                    "block": {
-                        "id": "block_6",
-                        "rawId": "~W%AmhjSDW5,SzR*#wBH"
-                    }
-                },
-                "target": "A"
-            }
-        },
-        {
-            "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>200</span></kano-value-preview>"
-            },
-            "beacon": {
-                "target": {
-                    "block": {
-                        "id": "block_7"
-                    }
-                }
-            },
-            "validation": {
-                "blockly": {
-                    "value": {
-                        "target": {
-                            "id": "block_7"
-                        },
-                        "value": "200"
-                    }
-                }
-            }
-        },
-        {
-            "banner": {
-                "text": "Open the Wand tray"
+                "text": "Let's get another Wand sensor reading, open the Wand tray"
             },
             "beacon": {
                 "target": {
@@ -625,7 +538,7 @@
                     "create": {
                         "target": "wand_0",
                         "type": "wand_y",
-                        "id": "block_8"
+                        "id": "block_7"
                     }
                 }
             }
@@ -638,7 +551,7 @@
                 "target": {
                     "block": {
                         "id": "block_6",
-                        "rawId": "~W%AmhjSDW5,SzR*#wBH"
+                        "rawId": "PnOWbcUlu!v`(*_x?~-n"
                     }
                 }
             },
@@ -647,10 +560,10 @@
                     "connect": {
                         "parent": {
                             "id": "block_6",
-                            "rawId": "~W%AmhjSDW5,SzR*#wBH",
-                            "inputName": "B"
+                            "rawId": "PnOWbcUlu!v`(*_x?~-n",
+                            "inputName": "PERCENT"
                         },
-                        "target": "block_8"
+                        "target": "block_7"
                     }
                 }
             },
@@ -658,10 +571,10 @@
                 "location": {
                     "block": {
                         "id": "block_6",
-                        "rawId": "~W%AmhjSDW5,SzR*#wBH"
+                        "rawId": "PnOWbcUlu!v`(*_x?~-n"
                     }
                 },
-                "target": "B"
+                "target": "PERCENT"
             }
         },
         {
@@ -686,7 +599,7 @@
         },
         {
             "banner": {
-                "text": "Open the Feather tray"
+                "text": "Open the Feather tray again"
             },
             "beacon": {
                 "target": {
@@ -701,7 +614,7 @@
         },
         {
             "banner": {
-                "text": "Drag the block onto your code space"
+                "text": "This block rotates the feather, drag it onto your code space"
             },
             "beacon": {
                "target": {
@@ -774,7 +687,7 @@
         },
         {
             "banner": {
-                "text": "Open the Math tray"
+                "text": "Open the Math tray to use the lerp block again"
             },
             "beacon": {
                 "target": {
@@ -841,7 +754,7 @@
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>-20</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>0</span></kano-value-preview> to <kano-value-preview><span>-50</span></kano-value-preview>"
             },
             "beacon": {
                 "target": {
@@ -858,14 +771,14 @@
                             "shadow": "FROM",
                             "id": "block_10"
                         },
-                        "value": "-20"
+                        "value": "-50"
                     }
                 }
             }
         },
         {
             "banner": {
-                "text": "Change <kano-value-preview><span>200</span></kano-value-preview> to <kano-value-preview><span>20</span></kano-value-preview>"
+                "text": "Change <kano-value-preview><span>200</span></kano-value-preview> to <kano-value-preview><span>50</span></kano-value-preview>"
             },
             "beacon": {
                 "target": {
@@ -882,14 +795,14 @@
                             "shadow": "TO",
                             "id": "block_10"
                         },
-                        "value": "20"
+                        "value": "50"
                     }
                 }
             }
         },
         {
             "banner": {
-                "text": "Open the Wand tray"
+                "text": "Let's get the rotation data from the Wand, open the Wand tray"
             },
             "beacon": {
                 "target": {
