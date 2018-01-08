@@ -16,16 +16,27 @@
                 this.addMethod('connect', '_connect');
             }
 
-            _flash (color, length) {
+             _getAllDevices () {
                 if (this.api) {
-                    this.api.ledring.flash(color, length);
+                    return this.api.getAllDevices().filter((dev) => {
+                        return dev.product === 'Camera kit CES Prototype';
+                    });
+                } else {
+                    return [];
                 }
             }
 
+            _flash (color, length) {
+                this._getAllDevices().forEach(device => {
+                    device.emit('flash', { duration: 200 });
+                });
+            }
+
             _on () {
-                if (this.api) {
-                    this.api.on.apply(this.api, arguments);
-                }
+                let args = arguments;
+                this._getAllDevices().forEach(device => {
+                    device.on.apply(device, args);
+                });
             }
 
             _removeListener () {
@@ -66,7 +77,6 @@
 
             _connect (info) {
                 if (this.api) {
-                    this.api.connect();
                     this.api.on('connect', () => {
                         this.api.emit('camera:init', info);
                     });
