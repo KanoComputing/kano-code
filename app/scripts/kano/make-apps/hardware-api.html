@@ -244,12 +244,15 @@
                         this.serialSocket = HardwareAPI.connect(this.hwapi.url);
                     }
                     if (this.url) {
-                        this.networkSocket = HardwareAPI.connect(this.url, (this.product == 'RPK'));
+                        this.networkSocket = HardwareAPI.connect(this.url, (this.product == 'RPK' || this.product === 'Camera kit CES Prototype'));
                     }
                     this.socket = this.serial ? this.serialSocket : this.networkSocket;
                     this.powerUpSocket = this.networkSocket;
 
                     this.updateDevices().then(() => {
+                        if (!this.networkSocket) {
+                            return;
+                        }
                         this.networkSocket.on('device-added', (info) => {
                             const device = HardwareAPI.instanciateDevice(info, this);
                             this.addDevice(device);
@@ -262,17 +265,19 @@
                             }
                         });
                     });
+                    if (this.networkSocket) {
+                        this.networkSocket.on('volume', (volume) => {
+                            this.volume = volume;
+                        });
 
-                    this.networkSocket.on('volume', (volume) => {
-                        this.volume = volume;
-                    });
+                        // Volume events from the RPK
+                        this.networkSocket.on('mic-clap', mic => {
+                            this.volume = mic.value;
+                        });
 
-                    // Volume events from the RPK
-                    this.networkSocket.on('mic-clap', mic => {
-                        this.volume = mic.value;
-                    });
+                        this.networkSocket.on('disconnect', () => {});
+                    }
 
-                    this.networkSocket.on('disconnect', () => {});
 
                     // Tells the Kano Code App to enable OTG control on the Kit
                     if (this.serialSocket) {
@@ -301,6 +306,9 @@
                         }
                         return Promise.resolve();
                     };
+                    if (!this.networkSocket) {
+                        return Promise.resolve();
+                    }
                     return ensureConnected(this.networkSocket).then(() => {
                         return HardwareAPI.getTopDevices(this.networkSocket);
                     }).then(devices => {
@@ -435,7 +443,15 @@
 
         class Camera extends KitDevice {
             constructor (options, hwapi) {
+                options.url = null;
                 super(options, hwapi);
+            }
+
+            on (name, cb, socketType) {
+                let socket = this.getSocket(socketType);
+                if (socket) {
+                    socket.on(`${this.product}:0:${name}`, cb);
+                }
             }
 
             takePicture () {
@@ -495,6 +511,7 @@
         const productToClassMap = {
             lightboard: Lightboard,
             camera: Camera,
+            'Camera kit CES Prototype': Camera,
             'gyro-accelerometer': TiltSensor,
             'motion-sensor': MotionSensor,
             'RPK': Lightboard,

@@ -132,7 +132,6 @@
                 this.socketListeners = [];
                 this.kaleidoscope = null;
                 this.ctx = this.canvas.getContext('2d');
-
                 this.appModules.getModule('camera').on('button-down', this._propagateButtonPress.bind(this));
                 this.appModules.getModule('camera').on('timer-changed', this._propagateTimerChange.bind(this));
             },
