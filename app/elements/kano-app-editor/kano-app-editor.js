@@ -104,6 +104,7 @@ Polymer({
         'mode-ready': '_onModeReady',
         'add-part': '_addPart',
         'remove-part': '_removePartReceived',
+        'save-button-clicked': 'share',
         'open-parts-modal': '_openPartsModal',
         'edit-background': '_openBackgroundDialog',
         'iron-resize': '_refitPartModal',
