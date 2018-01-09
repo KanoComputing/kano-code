@@ -101,7 +101,7 @@
                             can-go-back="[[canGoBack]]"
                             can-go-forward="[[canGoForward]]"
                             on-scene-done="sceneCompleted"
-                            on-next-story="goToNextStory"
+                            on-request-next-story="_concludeStory"
                             on-save="saveApp"
                             on-exit="_exit"
                             on-save-to-storage="saveToStorage"
@@ -648,6 +648,22 @@
             this.set('banner', null);
             this.computeBanner(this.currentStep);
             this.set('state.hints', { enabled: true });
+        },
+        _concludeStory () {
+            // Go to next story or share automatically
+            Kano.MakeApps.Utils.onLine().then((isOnline) => {
+                if (!this.user || this.user.hasSharedInSession || this._userAlreadyShared(this.story) ||
+                        this.scene.autoshareDisabled || !isOnline) {
+                    this.goToNextStory();
+                } else {
+                    const detail = this.$.editor.compileApp();
+                    detail.title = this.story.name;
+                    detail.autoshare = true;
+                    this.scene.autoshareDisabled = true;
+                    this.running = false;
+                    this.share({ detail });
+                }
+            });
         },
         _userAlreadyShared (story) {
             const progress = this._getUserProgress(this.user);

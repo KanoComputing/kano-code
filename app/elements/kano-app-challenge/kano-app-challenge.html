@@ -224,19 +224,7 @@ Example:
         },
         _bannerButtonTapped () {
             if (this.selectedStep.isLast) {
-                Kano.MakeApps.Utils.onLine().then((isOnline) => {
-                    if (!this.user || this.user.hasSharedInSession || this._userAlreadyShared(this.story) ||
-                            this.scene.autoshareDisabled || !isOnline) {
-                        this.fire('next-story');
-                    } else {
-                        const detail = this.$.editor.compileApp();
-                        detail.title = this.story.name;
-                        detail.autoshare = true;
-                        this.scene.autoshareDisabled = true;
-                        this.running = false;
-                        this.share({ detail });
-                    }
-                });
+                this.fire('request-next-story');
             } else if (this.state.hints && this.state.hints.enabled) {
                 this.nextStep();
             } else {
