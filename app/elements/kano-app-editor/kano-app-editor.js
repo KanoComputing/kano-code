@@ -176,16 +176,20 @@ Polymer({
     },
     _newPartRequest (e) {
         let model;
+        if (!e.detail || !e.detail.data || !e.detail.data.product) {
+            return;
+        }
+        model = e.detail.data;
 
         // Too early
         if (!Array.isArray(this.parts)) {
             this.queuedHardware = this.queuedHardware || [];
-            this.queuedHardware.push(e.detail);
+            this.queuedHardware.push(model);
             return;
         }
 
-        if (!this.queuedHardware || this.queuedHardware.indexOf(e.detail) === -1) {
-            this._addHardwarePart(e.detail.product);
+        if (!this.queuedHardware || this.queuedHardware.indexOf(model) === -1) {
+            this._addHardwarePart(model.product);
         }
     },
     _addHardwarePart (product) {
@@ -618,11 +622,14 @@ Polymer({
     },
     bindEvents () {
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
+        this.onIronSignal = this.onIronSignal.bind(this);
 
         this.$.workspace.addEventListener('viewport-resize', this.updateWorkspaceRect);
+        document.addEventListener('iron-signal', this.onIronSignal);
     },
     detachEvents () {
         this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
+        document.removeEventListener('iron-signal', this.onIronSignal);
     },
     ready () {
         this.reset = this.reset.bind(this);
@@ -645,6 +652,25 @@ Polymer({
     detached () {
         Kano.MakeApps.Parts.clear();
         this.detachEvents();
+    },
+    onIronSignal (e) {
+        if (!e.detail) {
+            return;
+        }
+        switch (e.detail.name) {
+            case 'export-app':
+                this._exportApp();
+                break;
+            case 'import-app':
+                this._importApp();
+                break;
+            case 'reset-workspace':
+                this.reset();
+                break;
+            case 'new-part-request':
+                this._newPartRequest(e);
+                break;
+        }
     },
     _exportApp () {
         let savedApp = this.save(),

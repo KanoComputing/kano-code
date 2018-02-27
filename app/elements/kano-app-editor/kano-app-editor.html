@@ -3,7 +3,6 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../../bower_components/iron-overlay-behavior/iron-overlay-backdrop.html">
@@ -286,10 +285,6 @@
         <paper-dialog id="parts-modal" entry-animation="from-big-animation" on-iron-overlay-closed="_partsModalClosed" with-backdrop>
             <kano-add-parts id="add-parts" class="no-padding" available-parts="[[parts]]" used-parts="[[addedParts]]" on-cancel="_closePartsModal" on-confirm="_addParts"></kano-add-parts>
         </paper-dialog>
-        <iron-signals on-iron-signal-export-app="_exportApp">
-        <iron-signals on-iron-signal-import-app="_importApp">
-        <iron-signals on-iron-signal-reset-workspace="reset">
-        <iron-signals on-iron-signal-new-part-request="_newPartRequest">
         <iron-a11y-keys target="[[target]]" keys="alt+p" on-keys-pressed="toggleParts"></iron-a11y-keys>
         <iron-a11y-keys target="[[target]]" keys="alt+s" on-keys-pressed="share"></iron-a11y-keys>
     </template>

@@ -1,4 +1,3 @@
-<link rel="import" href="../../bower_components/iron-signals/iron-signals.html">
 <link rel="import" href="../../scripts/kano/make-apps/mode/light.html">
 <link rel="import" href="../behaviors/kano-workspace-behavior.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
@@ -217,7 +216,6 @@
             </button>
         </div>
         <slot></slot>
-        <iron-signals on-iron-signal-remove-shape="_removeShape"></iron-signals>
     </template>
     <script>
         /* globals Polymer, Kano */
@@ -257,6 +255,8 @@
 
                 this._keysDown = {};
 
+                this.onIronSignal = this.onIronSignal.bind(this);
+                document.addEventListener('iron-signal', this.onIronSignal);
                 document.body.addEventListener('keydown', this._onKeyDown);
                 document.body.addEventListener('keyup', this._onKeyUp);
                 window.addEventListener('blur', this._stopSimulation);
@@ -266,6 +266,7 @@
                 this._registerElement('lightboard-button-B', this.$['lightboard-btn-B']);
             },
             detached () {
+                document.removeEventListener('iron-signal', this.onIronSignal);
                 document.body.removeEventListener('keydown', this._onKeyDown);
                 document.body.removeEventListener('keyup', this._onKeyUp);
                 window.removeEventListener('blur', this._stopSimulation);
@@ -322,6 +323,11 @@
 
                 this._buttonUp({ 'button-id': target });
                 this._simulateReleased(target);
+            },
+            onIronSignal (e) {
+                if (e.detail && e.data && e.detail.name === 'remove-shape') {
+                    this._removeShape(e);
+                }
             },
             _simulatePressed (target) {
                 let id = 'lightboard-' + target;
