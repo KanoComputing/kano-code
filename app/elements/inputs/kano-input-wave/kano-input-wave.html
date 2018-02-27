@@ -5,17 +5,17 @@
 <link rel="import" href="../behaviors.html">
 
 <dom-module id="kano-input-wave">
-    <style>
-    :host {
-        display: block;
-    }
-    iron-image {
-        height: 48px;
-        width: 48px;
-        margin-right: 16px;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+            iron-image {
+                height: 48px;
+                width: 48px;
+                margin-right: 16px;
+            }
+        </style>
         <paper-dropdown-menu id="dropdown" noink no-animations label="[[label]]">
             <paper-listbox class="dropdown-content" selected="{{value}}" attr-for-selected="key" fallback-selection="linear">
                 <paper-item role="menuitem" key="sine">

@@ -1,70 +1,70 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <dom-module id="kano-what-is-json">
-    <style>
-    :host {
-        display: block;
-    }
-    :host #modal {
-        background-color: var(--color-dark);
-        color: #fff;
-        font-family: var(--font-body);
-        border-radius: 6px;
-        padding: 16px;
-    }
-    :host .modal-content {
-        font-size: 1.2em;
-    }
-    :host paper-dialog h2#title {
-        text-align: center;
-        font-weight: bold;
-    }
-    :host paper-dialog .buttons {
-        @apply --layout-center-justified;
-    }
-    :host .info-button:hover {
-        cursor: pointer;
-    }
-    :host button.close-modal {
-        @apply --kano-button;
-        background-color: var(--color-grassland);
-        font-size: 14px;
-        line-height: 14px;
-        text-shadow: none;
-        font-weight: bold;
-        border-radius: 3px;
-        padding: 12px 22px 10px;
-    }
-    :host button.close-modal:hover {
-        background-color: var(--color-sushi);
-    }
-    :host .modal-content .code-sample {
-        font-family: monospace;
-        color: #aabbc3;
-        line-height: 1.7em;
-        font-size: 1.2em;
-        background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
-        overflow-y: auto;
-    }
-    :host .modal-content {
-        @apply(--layout-vertical);
-    }
-    :host .line {
-        padding-left: 20px;
-    }
-    :host .line .key {
-        color: #80cbc4;
-    }
-    :host .line .value {
-        color: orange;
-    }
-    :host .line .colon {
-        color: #ae94dd;
-    }
-    :host .line .comment {
-        color: #49656f;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+            :host #modal {
+                background-color: var(--color-dark);
+                color: #fff;
+                font-family: var(--font-body);
+                border-radius: 6px;
+                padding: 16px;
+            }
+            :host .modal-content {
+                font-size: 1.2em;
+            }
+            :host paper-dialog h2#title {
+                text-align: center;
+                font-weight: bold;
+            }
+            :host paper-dialog .buttons {
+                @apply --layout-center-justified;
+            }
+            :host .info-button:hover {
+                cursor: pointer;
+            }
+            :host button.close-modal {
+                @apply --kano-button;
+                background-color: var(--color-grassland);
+                font-size: 14px;
+                line-height: 14px;
+                text-shadow: none;
+                font-weight: bold;
+                border-radius: 3px;
+                padding: 12px 22px 10px;
+            }
+            :host button.close-modal:hover {
+                background-color: var(--color-sushi);
+            }
+            :host .modal-content .code-sample {
+                font-family: monospace;
+                color: #aabbc3;
+                line-height: 1.7em;
+                font-size: 1.2em;
+                background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
+                overflow-y: auto;
+            }
+            :host .modal-content {
+                @apply(--layout-vertical);
+            }
+            :host .line {
+                padding-left: 20px;
+            }
+            :host .line .key {
+                color: #80cbc4;
+            }
+            :host .line .value {
+                color: orange;
+            }
+            :host .line .colon {
+                color: #ae94dd;
+            }
+            :host .line .comment {
+                color: #49656f;
+            }
+        </style>
         <paper-dialog id="modal" with-backdrop>
             <h2 id="title">What is JSON?</h2>
             <div class="modal-content">

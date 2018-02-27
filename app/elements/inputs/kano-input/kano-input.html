@@ -17,12 +17,12 @@ Custom property | Description | Default
 --kano-input-label`
 -->
 <dom-module id="kano-input">
-    <style>
-        :host {
-            display: block;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
         <div id="input-container"></div>
     </template>
 </dom-module>
@@ -36,8 +36,8 @@ Custom property | Description | Default
                     Kano.Behaviors.AppEditorBehavior],
         observers: [
             '_typeChanged(type)',
-            '_valueChanged(value)',
-            '_themeChanged(theme)'
+            '_valueChanged(value, instance)',
+            '_themeChanged(theme, instance)'
         ],
         _instanceProps: {
             value: true,
@@ -64,13 +64,13 @@ Custom property | Description | Default
         _forwardInstanceProp (inst, prop, value) {
             this.set(prop, value);
         },
-        _themeChanged (theme) {
-            if (this.instance) {
+        _themeChanged (theme, instance) {
+            if (theme && instance) {
                 this.instance.set('theme', theme);
             }
         },
-        _valueChanged (value) {
-            if (this.instance) {
+        _valueChanged (value, instance) {
+            if (value && instance) {
                 this.instance.set('value', value);
             }
         },

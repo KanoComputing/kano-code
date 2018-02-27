@@ -3,8 +3,13 @@
     <head>
         <meta charset="utf-8">
         <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <link rel="import" href="../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
         <link rel="import" href="./kano-animated-svg.html">
-        <style is="custom-style">
+        <style is="custom-style" include="demo-pages-shared-styles">
+            html, body {
+                min-height: 100vh;
+            }
             kano-animated-svg {
                 width: 30px;
                 height: 30px;
@@ -15,16 +20,19 @@
         </style>
     </head>
     <body>
-        <template is="dom-bind" id="bind">
-            <label>Selected</label>
-            <select name="selected" value="{{selected::change}}">
-                <option value="start">start</option>
-                <option value="middle">middle</option>
-                <option value="end">end</option>
-            </select>
-            <span>[[remix]]</span>
-            <kano-animated-svg paths="[[paths]]" selected="[[selected]]" width="30" height="30"></kano-animated-svg>
-        </template>
+        <h1>kano-animated-svg</h1>
+        <dom-bind id="bind">
+            <template is="dom-bind">
+                <label>Selected</label>
+                <select name="selected" value="{{selected::change}}">
+                    <option value="start">start</option>
+                    <option value="middle">middle</option>
+                    <option value="end">end</option>
+                </select>
+                <span>[[remix]]</span>
+                <kano-animated-svg paths="[[paths]]" selected="[[selected]]" width="30" height="30"></kano-animated-svg>
+            </template>
+        </dom-bind>
         <script>
             var bind = document.getElementById('bind');
             bind.paths = {

@@ -7,35 +7,35 @@
 <link rel="import" href="../inputs/kano-input-range/kano-input-range.html">
 <link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
 <dom-module id="kano-ui-editor">
-    <style include="kano-code-shared-styles input-range">
-    :host {
-        display: block;
-        overflow: hidden;
-    }
-    .config {
-        box-sizing: border-box;
-        padding: var(--kano-part-editor-padding);
-        max-height: var(--kano-part-editor-content-height);
-        overflow: auto;
-    }
-    :host .input-line {
-        @apply --layout-horizontal;
-        @apply --layout-center;
-    }
-    :host kano-input-range {
-        @apply --layout-flex-auto;
-    }
-    .spacer {
-        width: 32px;
-    }
-    .input {
-        margin-bottom: var(--kano-part-editor-input-margin, 24px);
-    }
-    *[hidden] {
-        display: none !important;
-    }
-    </style>
     <template>
+        <style include="kano-code-shared-styles input-range">
+            :host {
+                display: block;
+                overflow: hidden;
+            }
+            .config {
+                box-sizing: border-box;
+                padding: var(--kano-part-editor-padding);
+                max-height: var(--kano-part-editor-content-height);
+                overflow: auto;
+            }
+            :host .input-line {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+            :host kano-input-range {
+                @apply --layout-flex-auto;
+            }
+            .spacer {
+                width: 32px;
+            }
+            .input {
+                margin-bottom: var(--kano-part-editor-input-margin, 24px);
+            }
+            *[hidden] {
+                display: none !important;
+            }
+        </style>
         <kano-part-editor-topbar icon="[[element.type]]" label="[[element.label]]" theme="[[theme]]"></kano-part-editor-topbar>
         <div class="config">
             <kano-input-text class="input" label="Name" value="{{name}}" theme="[[theme]]"></kano-input-text>

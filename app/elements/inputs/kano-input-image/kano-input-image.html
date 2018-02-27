@@ -4,35 +4,35 @@
 <link rel="import" href="../../../bower_components/web-components/kano-glint-animation/kano-glint-animation.html">
 
 <dom-module id="kano-input-image">
-    <style>
-    :host {
-        @apply --layout-vertical;
-        @apply --layout-center-justified;
-        @apply --layout-center;
-    }
-    :host button {
-        @apply --kano-button;
-        border-radius: 3px;
-        background: var(--element-theme, #54595d);
-        font-size: 14px;
-        font-weight: bold;
-        text-shadow: none;
-        padding: 8px 24px;
-    }
-    :host kano-glint-animation:last-child {
-        margin-top: 16px;
-    }
-    :host button.remove-button {
-        background-color: var(--color-chateau);
-    }
-    :host button.remove-button:hover {
-        background-color: var(--color-abbey);
-    }
-    [hidden] {
-        display: none !important;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                @apply --layout-center-justified;
+                @apply --layout-center;
+            }
+            :host button {
+                @apply --kano-button;
+                border-radius: 3px;
+                background: var(--element-theme, #54595d);
+                font-size: 14px;
+                font-weight: bold;
+                text-shadow: none;
+                padding: 8px 24px;
+            }
+            :host kano-glint-animation:last-child {
+                margin-top: 16px;
+            }
+            :host button.remove-button {
+                background-color: var(--color-chateau);
+            }
+            :host button.remove-button:hover {
+                background-color: var(--color-abbey);
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
         <h4 hidden$="[[!title]]">[[title]]</h4>
         <div class="actions">
             <kano-glint-animation id="glint-open" on-mouseenter="_startGlint" on-mouseout="_endGlint">

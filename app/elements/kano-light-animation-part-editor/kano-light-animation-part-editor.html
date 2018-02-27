@@ -9,49 +9,52 @@
 <link rel="import" href="../kano-icons/kc-ui.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <dom-module id="kano-light-animation-part-editor">
-    <style>
-    .action-control {
-        @apply --layout-flex-auto;
-        @apply --layout-horizontal;
-        @apply --layout-end-justified;
-    }
-    .action-control button {
-        @apply --kano-button;
-        background: #54595d;
-        border-radius: 3px;
-        padding: 0;
-        margin-right: 12px;
-    }
-    #reverse, #preview-button {
-        padding: 2px 10px;
-    }
-    .action-control button:hover {
-        background-color: #00d9c7;
-    }
-    .action-control button iron-icon {
-        --iron-icon-height: 28px;
-        --iron-icon-width: 28px;
-        fill: #8f9195;
-        transition: fill 300ms;
-    }
-    .action-control button:hover iron-icon {
-        fill: #fff;
-    }
-    .action-control button kano-animated-svg {
-        width: 28px;
-        height: 28px;
-        fill: #8f9195;
-        transition: fill ease-in-out 300ms;
-        margin: 0 auto;
-    }
-    .action-control button:hover kano-animated-svg {
-        fill: #fff;
-    }
-    kano-light-animation-editor {
-        width: 880px;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+            .action-control {
+                @apply --layout-flex-auto;
+                @apply --layout-horizontal;
+                @apply --layout-end-justified;
+            }
+            .action-control button {
+                @apply --kano-button;
+                background: #54595d;
+                border-radius: 3px;
+                padding: 0;
+                margin-right: 12px;
+            }
+            #reverse, #preview-button {
+                padding: 2px 10px;
+            }
+            .action-control button:hover {
+                background-color: #00d9c7;
+            }
+            .action-control button iron-icon {
+                --iron-icon-height: 28px;
+                --iron-icon-width: 28px;
+                fill: #8f9195;
+                transition: fill 300ms;
+            }
+            .action-control button:hover iron-icon {
+                fill: #fff;
+            }
+            .action-control button kano-animated-svg {
+                width: 28px;
+                height: 28px;
+                fill: #8f9195;
+                transition: fill ease-in-out 300ms;
+                margin: 0 auto;
+            }
+            .action-control button:hover kano-animated-svg {
+                fill: #fff;
+            }
+            kano-light-animation-editor {
+                width: 880px;
+            }
+        </style>
         <kano-part-editor-topbar icon="light-animation" label="Animation" theme="#00d9c7">
             <div class="action-control" slot="action">
                 <button id="reverse" type="button" on-tap="_resetPreview">

@@ -6,16 +6,16 @@
 <link rel="import" href="../kc-dialog-topbar/kc-dialog-topbar.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <dom-module id="kano-part-editor-topbar">
-    <style>
-        :host {
-            display: block;
-            border-bottom: 1px solid var(--kano-app-part-editor-border);
-        }
-        [hidden] {
-            display: none !important;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                border-bottom: 1px solid var(--kano-app-part-editor-border);
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
         <kc-dialog-topbar icon="parts:[[icon]]" label="[[label]]">
             <slot name="action" slot="action"></slot>
             <button id="done" slot="action" type="button" data-animate$="[[_computeDataAnimate('450', visible)]]" dialog-dismiss>Done</button>

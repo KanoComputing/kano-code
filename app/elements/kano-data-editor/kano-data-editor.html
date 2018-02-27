@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner-lite.html">
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
@@ -14,220 +14,220 @@
 <link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
 <link rel="import" href="./kano-what-is-json.html">
 <dom-module id="kano-data-editor">
-    <style include="kano-code-shared-styles">
-    :host {
-        display: block;
-        overflow: hidden;
-    }
-    .content {
-        box-sizing: border-box;
-        max-height: var(--kano-part-editor-content-height);
-        padding: var(--kano-part-editor-padding);
-        overflow: auto;
-    }
-    :host .config {
-        @apply --layout-vertical;
-        @apply --layout-flex-auto;
-    }
-    :host .line {
-        @apply --layout-vertical;
-        margin-bottom: var(--kano-part-editor-input-margin);
-        text-align: left;
-    }
-    kano-input,
-    kano-input-text {
-        margin-bottom: var(--kano-part-editor-input-margin);
-    }
-    #refresh-toggle paper-toggle-button {
-        --paper-toggle-button-label-color: #fff;
-    }
-    :host .refresh-button {
-        @apply --layout-vertical;
-        @apply --layout-center;
-        @apply --layout-center-justified;
-        @apply --kano-icon-button;
-        margin: 16px 8px 16px 0px;
-        padding: 0;
-        transition: transform ease-out 400ms;
-    }
-    :host .refresh-button iron-image {
-        width: 18px;
-        height: 18px;
-    }
-    :host .refresh-button:hover {
-        transform: rotate(-45deg);
-    }
-    :host([loading]) kano-data-display {
-        opacity: 0.2;
-    }
-    paper-spinner-lite {
-        position: absolute;
-        top: 164px;
-        left: 50%;
-        --paper-spinner-color: #fff;
-    }
-    #refresh-frequency paper-dropdown-menu {
-        @apply --layout-vertical;
-        border-radius: 3px;
-        background: var(--color-abbey);
-
-        --paper-dropdown-menu-ripple: {
-            display: none;
-        };
-
-        --paper-menu-button-content: {
-            background-color: transparent;
-        };
-
-        --paper-dropdown-menu-button: {
-            color: #fff;
-        };
-        --paper-input-container-input: {
-            color: #fff;
-            font-family: var(--font-body);
-            font-weight: bold;
-            font-size: 14px;
-        };
-        --paper-input-container: {
-            border-radius: 3px;
-            white-space: nowrap;
-            overflow: hidden;
-            background-color: var(--color-chateau);
-            font-size: 14px;
-            padding: 9px 8px 7px;
-        };
-        --paper-input-container-underline: {
-            border: none;
-        };
-        --paper-input-container-underline-focus: {
-            border: none;
-        };
-
-        --paper-dropdown-menu-icon: {
-            fill: #9b61bd;
-        };
-    }
-    :host .line label {
-        width: 80px;
-        color: rgba(255, 255, 255, 0.5);
-        text-align: left;
-        text-transform: uppercase;
-        font-size: 12px;
-        line-height: 12px;
-        font-family: var(--font-body);
-        font-weight: bold;
-        margin-bottom: 8px;
-    }
-    :host.loading .refresh-button iron-image {
-        transform-origin: 46% 50%;
-        animation: spin 1s linear infinite;
-    }
-    .dropdown-content {
-        background-color: var(--color-black);
-        color: #fff;
-        padding: 0;
-        --paper-menu-button-content: {
-            padding: 3px;
-            background-color: var(--color-black);
-        };
-        --paper-dropdown-menu-button: {
-             left: 0;
-             width: 100%;
-          };
-        --paper-menu: {
-            color: #fff;
-            box-sizing: border-box;
-            padding: 0;
-        };
-
-        --paper-menu-color: #fff;
-    }
-    .dropdown-content paper-item {
-        --paper-item: {
-            min-height: 36px;
-            font-family: var(--font-body);
-            font-weight: bold;
-            font-size: 14px;
-            box-sizing: border-box;
-            padding: 9px 8px 7px;
-            border-bottom: 1px solid var(--kano-app-part-editor-border);
-        };
-
-        --paper-item-focused: {
-            background-color: #9b61bd;
-        };
-
-    }
-    .dropdown-content paper-item:last-of-type {
-        --paper-item: {
-            min-height: 36px;
-            font-family: var(--font-body);
-            font-weight: bold;
-            font-size: 14px;
-            box-sizing: border-box;
-            padding: 9px 8px 7px;
-        };
-    }
-    :host .dropdown-content paper-item:hover {
-        --paper-icon-item: {
-            color: #fff;
-        };
-    }
-    :host .data-header {
-        @apply --layout-horizontal;
-        @apply --layout-justified;
-        padding: 0 8px;
-    }
-    :host .loading-overlay {
-        position: absolute;
-        top: 0px;
-        bottom: 0px;
-        right: 0px;
-        left: 0px;
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        @apply(--layout-center-justified);
-        background-color: rgba(255, 255, 255, 0.4);
-    }
-    :host .data-browser {
-        @apply --layout-vertical;
-        position: relative;
-        border-radius: 6px;
-        margin: 16px 0 24px;
-        border: 1px solid var(--kano-app-part-editor-border);
-    }
-    :host .param-description {
-        font-family: var(--font-body);
-        margin-top: 8px;
-        width: 85%;
-        color: rgba(255, 255, 255, 0.5);
-        @apply --layout-self-end;
-    }
-    :host kano-what-is-json {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-    }
-    :host .info-button {
-        width: 18px;
-        height: 18px;
-        border-radius: 50%;
-        border: 0;
-        background-color: #fff;
-        margin-top: 13px;
-        transition: transform linear 250ms;
-    }
-    :host .info-button:hover {
-        transform: scale(1.1);
-    }
-    *[hidden] {
-        display: none !important;
-    }
-    @keyframes spin {
-        100% {transform: rotate(-360deg);}
-    }
-    </style>
     <template>
+        <style include="kano-code-shared-styles">
+            :host {
+                display: block;
+                overflow: hidden;
+            }
+            .content {
+                box-sizing: border-box;
+                max-height: var(--kano-part-editor-content-height);
+                padding: var(--kano-part-editor-padding);
+                overflow: auto;
+            }
+            :host .config {
+                @apply --layout-vertical;
+                @apply --layout-flex-auto;
+            }
+            :host .line {
+                @apply --layout-vertical;
+                margin-bottom: var(--kano-part-editor-input-margin);
+                text-align: left;
+            }
+            kano-input,
+            kano-input-text {
+                margin-bottom: var(--kano-part-editor-input-margin);
+            }
+            #refresh-toggle paper-toggle-button {
+                --paper-toggle-button-label-color: #fff;
+            }
+            :host .refresh-button {
+                @apply --layout-vertical;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                @apply --kano-icon-button;
+                margin: 16px 8px 16px 0px;
+                padding: 0;
+                transition: transform ease-out 400ms;
+            }
+            :host .refresh-button iron-image {
+                width: 18px;
+                height: 18px;
+            }
+            :host .refresh-button:hover {
+                transform: rotate(-45deg);
+            }
+            :host([loading]) kano-data-display {
+                opacity: 0.2;
+            }
+            paper-spinner-lite {
+                position: absolute;
+                top: 164px;
+                left: 50%;
+                --paper-spinner-color: #fff;
+            }
+            #refresh-frequency paper-dropdown-menu {
+                @apply --layout-vertical;
+                border-radius: 3px;
+                background: var(--color-abbey);
+
+                --paper-dropdown-menu-ripple: {
+                    display: none;
+                };
+
+                --paper-menu-button-content: {
+                    background-color: transparent;
+                };
+
+                --paper-dropdown-menu-button: {
+                    color: #fff;
+                };
+                --paper-input-container-input: {
+                    color: #fff;
+                    font-family: var(--font-body);
+                    font-weight: bold;
+                    font-size: 14px;
+                };
+                --paper-input-container: {
+                    border-radius: 3px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    background-color: var(--color-chateau);
+                    font-size: 14px;
+                    padding: 9px 8px 7px;
+                };
+                --paper-input-container-underline: {
+                    border: none;
+                };
+                --paper-input-container-underline-focus: {
+                    border: none;
+                };
+
+                --paper-dropdown-menu-icon: {
+                    fill: #9b61bd;
+                };
+            }
+            :host .line label {
+                width: 80px;
+                color: rgba(255, 255, 255, 0.5);
+                text-align: left;
+                text-transform: uppercase;
+                font-size: 12px;
+                line-height: 12px;
+                font-family: var(--font-body);
+                font-weight: bold;
+                margin-bottom: 8px;
+            }
+            :host.loading .refresh-button iron-image {
+                transform-origin: 46% 50%;
+                animation: spin 1s linear infinite;
+            }
+            .dropdown-content {
+                background-color: var(--color-black);
+                color: #fff;
+                padding: 0;
+                --paper-menu-button-content: {
+                    padding: 3px;
+                    background-color: var(--color-black);
+                };
+                --paper-dropdown-menu-button: {
+                     left: 0;
+                     width: 100%;
+                  };
+                --paper-listbox: {
+                    color: #fff;
+                    box-sizing: border-box;
+                    padding: 0;
+                };
+
+                --paper-listbox-color: #fff;
+            }
+            .dropdown-content paper-item {
+                --paper-item: {
+                    min-height: 36px;
+                    font-family: var(--font-body);
+                    font-weight: bold;
+                    font-size: 14px;
+                    box-sizing: border-box;
+                    padding: 9px 8px 7px;
+                    border-bottom: 1px solid var(--kano-app-part-editor-border);
+                };
+
+                --paper-item-focused: {
+                    background-color: #9b61bd;
+                };
+
+            }
+            .dropdown-content paper-item:last-of-type {
+                --paper-item: {
+                    min-height: 36px;
+                    font-family: var(--font-body);
+                    font-weight: bold;
+                    font-size: 14px;
+                    box-sizing: border-box;
+                    padding: 9px 8px 7px;
+                };
+            }
+            :host .dropdown-content paper-item:hover {
+                --paper-icon-item: {
+                    color: #fff;
+                };
+            }
+            :host .data-header {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+                padding: 0 8px;
+            }
+            :host .loading-overlay {
+                position: absolute;
+                top: 0px;
+                bottom: 0px;
+                right: 0px;
+                left: 0px;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                @apply(--layout-center-justified);
+                background-color: rgba(255, 255, 255, 0.4);
+            }
+            :host .data-browser {
+                @apply --layout-vertical;
+                position: relative;
+                border-radius: 6px;
+                margin: 16px 0 24px;
+                border: 1px solid var(--kano-app-part-editor-border);
+            }
+            :host .param-description {
+                font-family: var(--font-body);
+                margin-top: 8px;
+                width: 85%;
+                color: rgba(255, 255, 255, 0.5);
+                @apply --layout-self-end;
+            }
+            :host kano-what-is-json {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+            }
+            :host .info-button {
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                border: 0;
+                background-color: #fff;
+                margin-top: 13px;
+                transition: transform linear 250ms;
+            }
+            :host .info-button:hover {
+                transform: scale(1.1);
+            }
+            *[hidden] {
+                display: none !important;
+            }
+            @keyframes spin {
+                100% {transform: rotate(-360deg);}
+            }
+        </style>
         <kano-part-editor-topbar icon="[[element.type]]" label="[[element.label]]" theme="[[theme]]"></kano-part-editor-topbar>
         <div class="content">
             <div class="config">
@@ -244,13 +244,13 @@
                 <div class="line" id="refresh-frequency">
                     <label>Refresh</label>
                     <paper-dropdown-menu id="dropdown-menu" horizontal-align="left" no-label-float no-animations on-tap="_computeDropdownStyle">
-                        <paper-menu id="dropdown" class="dropdown-content" selected="{{selected.refreshFreq}}" attr-for-selected="value">
+                        <paper-listbox id="dropdown" slot="dropdown-content" class="dropdown-content" selected="{{selected.refreshFreq}}" attr-for-selected="value">
                             <paper-item value="5">Every 5 seconds</paper-item>
                             <paper-item value="30">Every 30 seconds</paper-item>
                             <paper-item value="60">Every minute</paper-item>
                             <paper-item value="3600">Every hour</paper-item>
                             <paper-item value="0">Don't refresh</paper-item>
-                        </paper-menu>
+                        </paper-listbox>
                     </paper-dropdown-menu>
                 </div>
             </div>

@@ -4,20 +4,19 @@
 <link rel="import" href="../inputs/kano-input/kano-input.html">
 <link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
 <dom-module id="kano-ui-customizer">
-    <style include="kano-code-shared-styles">
-        :host {
-            @apply --layout-vertical;
-            --kwc-color-picker-size: 29px;
-
-            --kano-color-input-field: {
-                margin: 14px auto 0;
-            };
-        }
-        kano-input {
-            margin-bottom: var(--kano-part-editor-input-margin, 24px);
-        }
-    </style>
     <template>
+        <style include="kano-code-shared-styles">
+            :host {
+                @apply --layout-vertical;
+                --kwc-color-picker-size: 29px;
+                --kano-color-input-field: {
+                    margin: 14px auto 0;
+                };
+            }
+            kano-input {
+                margin-bottom: var(--kano-part-editor-input-margin, 24px);
+            }
+        </style>
         <template is="dom-repeat" items="{{customizable}}" as="property"> 
             <kano-input id$="[[property.key]]"
                     type="{{property.type}}"

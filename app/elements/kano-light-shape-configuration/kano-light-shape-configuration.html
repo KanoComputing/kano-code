@@ -6,33 +6,33 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/kwc-style/input.html">
 <dom-module id="kano-light-shape-configuration">
-    <style is="custom-style" include="kano-code-shared-styles input-range">
-        :host {
-            display: block;
-            overflow: hidden;
-        }
-        .config {
-            box-sizing: border-box;
-            max-height: var(--kano-part-editor-content-height);
-            padding: var(--kano-part-editor-padding);
-            overflow: auto;
-        }
-        kano-input {
-            margin-bottom: var(--kano-part-editor-input-margin);
-        }
-        .position {
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            margin-bottom: var(--kano-part-editor-input-margin);
-        }
-        .position>* {
-            @apply --layout-flex-auto;
-        }
-        kano-input-range:first-child {
-            margin-right: 32px;
-        }
-    </style>
     <template>
+        <style is="custom-style" include="kano-code-shared-styles input-range">
+            :host {
+                display: block;
+                overflow: hidden;
+            }
+            .config {
+                box-sizing: border-box;
+                max-height: var(--kano-part-editor-content-height);
+                padding: var(--kano-part-editor-padding);
+                overflow: auto;
+            }
+            kano-input {
+                margin-bottom: var(--kano-part-editor-input-margin);
+            }
+            .position {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                margin-bottom: var(--kano-part-editor-input-margin);
+            }
+            .position>* {
+                @apply --layout-flex-auto;
+            }
+            kano-input-range:first-child {
+                margin-right: 32px;
+            }
+        </style>
         <kano-part-editor-topbar icon="[[element.type]]" label="[[element.label]]" theme="[[theme]]"></kano-part-editor-topbar>
         <div class="config">
             <kano-input type="text" label="Name" value="{{name}}" theme="[[theme]]"></kano-input>

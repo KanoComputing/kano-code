@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>kano-input-range demo</title>
+        <title>kano-input-list demo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
@@ -12,30 +12,46 @@
         </script>
         <link rel="import" href="../../../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../kano-input-range.html">
+        <link rel="import" href="../kano-input-list.html">
         <custom-style>
             <style is="custom-style" include="demo-pages-shared-styles">
                 html, body {
                     margin: 0;
                     padding: 0;
                     height: 100vh;
-                    --demo-snippet-demo: {
-                        background: #bbb;
-                    };
                 }
                 body>div {
                     max-width: 600px;
                     margin: 0 auto;
+                }
+                #input {
+                    width: 400px;
+                    height: 100px;
                 }
             </style>
         </custom-style>
     </head>
     <body unresolved>
         <div class="vertical-section-container">
-            <h3>kano-input-range</h3>
+            <h3>kano-input-list</h3>
             <demo-snippet>
                 <template>
-                    <kano-input-range value="50"></kano-input-range>
+                    <kano-input-list id="input"></kano-input-list>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                            const input = document.getElementById('input');
+                            input.options = [
+                                {
+                                    "value": 1,
+                                    "label": "one"
+                                },
+                                {
+                                    "value": 2,
+                                    "label": "two"
+                                }
+                            ];
+                        });
+                    </script>
                 </template>
             </demo-snippet>
         </div>

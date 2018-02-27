@@ -1,60 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-
-        <title>kano-input-range demo</title>
-
+        <title>kano-input-color demo</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-
         <script>
             window.Polymer = {
                 dom: 'shadow'
             };
         </script>
-
-        <link rel="import" href="../../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../../../bower_components/iron-demo-helpers/demo-snippet.html">
+        <link rel="import" href="../../../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
         <link rel="import" href="../kano-input-color.html">
-
-        <style is="custom-style" include="demo-pages-shared-styles">
-            html, body {
-                min-height: 100vh;
-            }
-            body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            h1 {
-                align-self: flex-start;
-            }
-            demo-snippet {
-               background-color: #bbb;
-            }
-            #input {
-                
-            }
-        </style>
+        <custom-style>
+            <style is="custom-style" include="demo-pages-shared-styles">
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    height: 100vh;
+                    --demo-snippet-demo: {
+                        background: #bbb;
+                    };
+                }
+                body>div {
+                    max-width: 600px;
+                    margin: 0 auto;
+                }
+                kano-input-color {
+                    width: 400px;
+                    margin: 0 auto;
+                }
+            </style>
+        </custom-style>
     </head>
     <body unresolved>
         <div class="vertical-section-container">
-        <h1>kano-input-color</h1>
+            <h3>kano-input-color</h3>
             <demo-snippet>
-                <style>
-
-                </style>
-                <template is="dom-bind" id="bind">
-                    <kano-input-color id="input"></kano-input-color>
+                <template>
+                    <kano-input-color></kano-input-color>
+                    <script>
+                        document.addEventListener('WebComponentsReady', () => {
+                        });
+                    </script>
                 </template>
-                <script>
-                    document.addEventListener('WebComponentsReady', () => {
-                        const bind = document.getElementById('bind');
-
-                    });
-                </script>
             </demo-snippet>
         </div>
     </body>

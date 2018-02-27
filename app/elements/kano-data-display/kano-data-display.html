@@ -1,44 +1,44 @@
 <link rel="import" href="../../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 <dom-module id="kano-data-display">
-    <style>
-    :host {
-        @apply --layout-vertical;
-        @apply --layout-center-justified;
-        position: relative;
-        text-align: left;
-    }
-    :host code {
-        font-family: monospace;
-        color: #aabbc3;
-        font-size: 14px;
-        overflow-y: auto;
-        border-radius: 6px;
-        padding: 0 36px;
-    }
-    :host .modal-content {
-        @apply --layout-vertical;
-    }
-    :host .line {
-        padding-left: 20px;
-    }
-    :host .line .key {
-        color: #80cbc4;
-    }
-    :host .line .value {
-        color: orange;
-    }
-    :host .line .colon {
-        color: #ae94dd;
-    }
-    :host .line .comment {
-        color: #49656f;
-    }
-    *[hidden] {
-        display: none !important;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                @apply --layout-center-justified;
+                position: relative;
+                text-align: left;
+            }
+            :host code {
+                font-family: monospace;
+                color: #aabbc3;
+                font-size: 14px;
+                overflow-y: auto;
+                border-radius: 6px;
+                padding: 0 36px;
+            }
+            :host .modal-content {
+                @apply --layout-vertical;
+            }
+            :host .line {
+                padding-left: 20px;
+            }
+            :host .line .key {
+                color: #80cbc4;
+            }
+            :host .line .value {
+                color: orange;
+            }
+            :host .line .colon {
+                color: #ae94dd;
+            }
+            :host .line .comment {
+                color: #49656f;
+            }
+            *[hidden] {
+                display: none !important;
+            }
+    </style>
         <code>
             <div>{</div>
             <template is="dom-repeat" items="{{dataDefinition}}" as="property" id="repeat">

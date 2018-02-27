@@ -1,50 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title></title>
+        <title>kano-part-editor-demo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script>
+            window.Polymer = {
+                dom: 'shadow'
+            };
+        </script>
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
         <link rel="import" href="../../../bower_components/kwc-style/typography.html">
         <link rel="import" href="../kano-part-editor.html">
-        <style is="custom-style" include="demo-pages-shared-styles">
-            html, body {
-                margin: 0;
-                padding: 0;
-                min-height: 100%;
-            }
-            body {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                font-family: var(--font-body);
-            }
-            kano-part-editor {
-                width: 440px;
-                margin: 0 auto;
-            }
-            kano-part-editor.large {
-                width: 880px;
-                margin: 0 auto;
-            }
-            demo-snippet {
-                --demo-snippet-code: {
-                    display: none;
-                };
-            }
-        </style>
+        <link rel="import" href="../../kano-light-animation-editor/kano-light-animation-editor.html">
+        <custom-style>
+            <style is="custom-style" include="demo-pages-shared-styles">
+                html, body {
+                    margin: 0;
+                    padding: 0;
+                    min-height: 100%;
+                }
+                body {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    font-family: var(--font-body);
+                }
+                kano-part-editor {
+                    width: 440px;
+                    margin: 0 auto;
+                }
+                kano-part-editor.large {
+                    width: 880px;
+                    margin: 0 auto;
+                }
+                demo-snippet {
+                    --demo-snippet-code: {
+                        display: none;
+                    };
+                }
+            </style>
+        </custom-style>
     </head>
     <body unresolved>
         <div class="vertical-section-container">
             <h3>UI part</h3>
             <demo-snippet class="demo-container">
                 <template>
-                    <template is="dom-bind" id="bind-1">
-                        <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
-                    </template>
+                    <dom-bind id="bind-1">
+                        <template is="dom-bind">
+                            <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
+                        </template>
+                    </dom-bind>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             let b = document.getElementById('bind-1');
@@ -128,10 +138,11 @@
             <h3>Data part</h3>
             <demo-snippet>
                 <template>
-                    <template is="dom-bind" id="bind-2">
-                        <link rel="import" href="../../kano-light-animation-editor/kano-light-animation-editor.html">
-                        <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
-                    </template>
+                    <dom-bind id="bind-2">
+                        <template is="dom-bind">
+                            <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
+                        </template>
+                    </dom-bind>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             let b = document.getElementById('bind-2');
@@ -218,9 +229,11 @@
             <h3>Hardware part</h3>
             <demo-snippet class="demo-container">
                 <template>
-                    <template is="dom-bind" id="bind-3">
-                        <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
-                    </template>
+                    <dom-bind id="bind-3">
+                        <template is="dom-bind">
+                            <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
+                        </template>
+                    </dom-bind>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             let b = document.getElementById('bind-3');
@@ -276,9 +289,11 @@
             <h3>Lightboard part</h3>
             <demo-snippet class="demo-container">
                 <template>
-                    <template is="dom-bind" id="bind-4">
-                        <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
-                    </template>
+                    <dom-bind id="bind-4">
+                        <template is="dom-bind">
+                            <kano-part-editor selected="{{part}}" mode="[[mode]]"></kano-part-editor>
+                        </template>
+                    </dom-bind>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             let b = document.getElementById('bind-4');
@@ -341,9 +356,11 @@
             <h3>Light animation part</h3>
             <demo-snippet class="demo-container">
                 <template>
-                    <template is="dom-bind" id="bind-5">
-                        <kano-part-editor class="large" selected="{{part}}" mode="[[mode]]"></kano-part-editor>
-                    </template>
+                    <dom-bind id="bind-5">
+                        <template is="dom-bind">
+                            <kano-part-editor class="large" selected="{{part}}" mode="[[mode]]"></kano-part-editor>
+                        </template>
+                    </dom-bind>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             let b = document.getElementById('bind-5');
@@ -410,9 +427,11 @@
             <h3>Light frame part</h3>
             <demo-snippet class="demo-container">
                 <template>
-                    <template is="dom-bind" id="bind-6">
-                        <kano-part-editor class="large" selected="{{part}}" mode="[[mode]]"></kano-part-editor>
-                    </template>
+                    <dom-bind id="bind-6">
+                        <template is="dom-bind">
+                            <kano-part-editor class="large" selected="{{part}}" mode="[[mode]]"></kano-part-editor>
+                        </template>
+                    </dom-bind>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             let b = document.getElementById('bind-6');

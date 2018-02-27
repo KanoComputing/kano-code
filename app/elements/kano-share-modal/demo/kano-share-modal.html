@@ -35,8 +35,8 @@
         <div class="vertical-section-container">
             <h3>Inputs can have different types, and be disabled</h3>
             <demo-snippet>
-                <template>
-                    <template is="dom-bind" id="bind">
+                <dom-bind id="bind">
+                    <template is="dom-bind">
                         <paper-tabs id="tabs" selected="{{page}}" attr-for-selected="name">
                             <paper-tab name="sharing-form">Sharing form</paper-tab>
                             <paper-tab name="saving">Saving</paper-tab>
@@ -45,7 +45,7 @@
                         </paper-tabs>
                         <kano-share-modal id="modal"></kano-share-modal>
                     </template>
-                </template>
+                </dom-bind>
                 <script>
                     document.addEventListener('WebComponentsReady', () => {
                         let bind = document.getElementById('bind'),

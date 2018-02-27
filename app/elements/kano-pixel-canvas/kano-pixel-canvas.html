@@ -8,49 +8,50 @@
 @demo demo/index.html
 -->
 <dom-module id="kano-pixel-canvas">
-    <style>
-    :host {
-        display: block;
-        position: relative;
-    }
-    .pixel {
-        width: 20px;
-        height: 20px;
-        /* Use a border the same color as the background, allows the spacing to trigger the mouseover event */
-        border: 2px solid var(--kano-pixel-editor-background, #444);
-        background-color: black;
-        box-sizing: content-box;
-        @apply --kano-pixel-canvas-pixel;
-    }
-    .canvas {
-        @apply --layout-horizontal;
-        @apply --layout-wrap;
-        box-sizing: border-box;
-    }
-    .canvas-wrapper {
-        @apply --layout-horizontal;
-        @apply --layout-center-justified;
-        background-color: var(--kano-pixel-editor-background, #444);
-    }
-    .pen {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 18px;
-        height: 18px;
-        opacity: 0.45;
-        border: 2px solid white;
-        pointer-events: none;
-        @apply --shadow-elevation-2dp;
-        border-radius: 1px;
-        display: none;
-    }
-    .picker {
-        @apply --layout-horizontal;
-        @apply --layout-center;
-        margin-top: 16px;
-    }
-    </style>
+    <template>
+        <style>
+            :host {
+                display: block;
+                position: relative;
+            }
+            .pixel {
+                width: 20px;
+                height: 20px;
+                /* Use a border the same color as the background, allows the spacing to trigger the mouseover event */
+                border: 2px solid var(--kano-pixel-editor-background, #444);
+                background-color: black;
+                box-sizing: content-box;
+                @apply --kano-pixel-canvas-pixel;
+            }
+            .canvas {
+                @apply --layout-horizontal;
+                @apply --layout-wrap;
+                box-sizing: border-box;
+            }
+            .canvas-wrapper {
+                @apply --layout-horizontal;
+                @apply --layout-center-justified;
+                background-color: var(--kano-pixel-editor-background, #444);
+            }
+            .pen {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 18px;
+                height: 18px;
+                opacity: 0.45;
+                border: 2px solid white;
+                pointer-events: none;
+                @apply --shadow-elevation-2dp;
+                border-radius: 1px;
+                display: none;
+            }
+            .picker {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                margin-top: 16px;
+            }
+        </style>
     <template>
         <div class="content" on-contextmenu="_preventContextMenu">
             <div class="canvas-wrapper">

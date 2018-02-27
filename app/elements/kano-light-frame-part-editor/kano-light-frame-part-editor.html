@@ -6,30 +6,33 @@
 <link rel="import" href="../kano-pixel-canvas/kano-pixel-canvas.html">
 <link rel="import" href="../behaviors/kano-light-bitmap-behavior.html">
 <dom-module id="kano-light-frame-part-editor">
-    <style>
-        .settings {
-            @apply --layout-vertical;
-            @apply --layout-flex-auto;
-        }
-        .settings-controls {
-            @apply --layout-flex-auto;
-            @apply --layout-vertical;
-        }
-        .settings-controls>* {
-            margin-bottom: 18px;
-        }
-        kano-pixel-editor {
-            --kano-pixel-editor-bitmap-container: {
-                height: 364px;
-            };
-        }
-        kano-pixel-canvas {
-            @apply --layout-flex-auto;
-            cursor: none;
-            --kano-pixel-editor-background: var(--color-dark);
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+            .settings {
+                @apply --layout-vertical;
+                @apply --layout-flex-auto;
+            }
+            .settings-controls {
+                @apply --layout-flex-auto;
+                @apply --layout-vertical;
+            }
+            .settings-controls>* {
+                margin-bottom: 18px;
+            }
+            kano-pixel-editor {
+                --kano-pixel-editor-bitmap-container: {
+                    height: 364px;
+                };
+            }
+            kano-pixel-canvas {
+                @apply --layout-flex-auto;
+                cursor: none;
+                --kano-pixel-editor-background: var(--color-dark);
+            }
+        </style>
         <kano-part-editor-topbar icon="light-frame" label="[[selected.label]]" theme="[[theme]]"></kano-part-editor-topbar>
         <kano-pixel-editor id="pixel-editor"
                            bitmap="{{selected.userProperties.bitmap}}"

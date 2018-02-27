@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>kano-input-range demo</title>
+        <title>kano-input-text demo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="../../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
@@ -12,7 +12,7 @@
         </script>
         <link rel="import" href="../../../../../bower_components/iron-demo-helpers/demo-snippet.html">
         <link rel="import" href="../../../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../kano-input-range.html">
+        <link rel="import" href="../kano-input-text.html">
         <custom-style>
             <style is="custom-style" include="demo-pages-shared-styles">
                 html, body {
@@ -27,16 +27,33 @@
                     max-width: 600px;
                     margin: 0 auto;
                 }
+                kano-input-color {
+                    width: 400px;
+                    margin: 0 auto;
+                }
             </style>
         </custom-style>
     </head>
     <body unresolved>
         <div class="vertical-section-container">
-            <h3>kano-input-range</h3>
+            <h3>kano-input-text</h3>
             <demo-snippet>
-                <template>
-                    <kano-input-range value="50"></kano-input-range>
-                </template>
+                <dom-bind id="dom-bind">
+                    <template is="dom-bind">
+                        <kano-input-text id="input"></kano-input-text>
+                        <h2>[[inputValue]]</h2>
+                        <script>
+                            document.addEventListener('WebComponentsReady', () => {
+                                
+                                const b = document.getElementById('dom-bind');
+                                const input = document.getElementById('input');
+                                input.addEventListener('change',() => {
+                                    b.inputValue = input.value;
+                                });
+                            });
+                        </script>
+                    </template>
+                </dom-bind>
             </demo-snippet>
         </div>
     </body>

@@ -1,59 +1,59 @@
 <dom-module id="kano-fs">
-    <style>
-    :host {
-        display: block;
-    }
-    :host .explorer {
-        @apply --layout-horizontal;
-        @apply --layout-center-justified;
-        @apply --layout-wrap;
-        max-width: calc(144px * 5);
-    }
-    :host .item {
-        @apply(--layout-vertical);
-        @apply(--layout-center);
-        margin: 12px;
-    }
-    :host .item:hover {
-        cursor: pointer;
-    }
-    :host .icon {
-        @apply --layout-vertical;
-        @apply --layout-center;
-        @apply --layout-center-justified;
-        width: 120px;
-        height: 120px;
-        background: #fff;
-        border-radius: 4px;
-    }
-    :host .icon iron-image {
-        width: 100px;
-        height: 100px;
-    }
-    :host header {
-        @apply --layout-horizontal;
-        @apply --layout-center;
-    }
-    :host header div {
-        @apply --layout-flex;
-    }
-    :host .left {
-        @apply --layout-start;
-    }
-    :host .right {
-        @apply --layout-end;
-    }
-    :host .center {
-        text-align: center;
-    }
-    :host .back {
-        @apply --kano-icon-button;
-        font-size: 2em;
-        font-weight: 600;
-        font-family: monospace;
-    }
-    </style>
     <template>
+        <style>
+        :host {
+            display: block;
+        }
+        :host .explorer {
+            @apply --layout-horizontal;
+            @apply --layout-center-justified;
+            @apply --layout-wrap;
+            max-width: calc(144px * 5);
+        }
+        :host .item {
+            @apply(--layout-vertical);
+            @apply(--layout-center);
+            margin: 12px;
+        }
+        :host .item:hover {
+            cursor: pointer;
+        }
+        :host .icon {
+            @apply --layout-vertical;
+            @apply --layout-center;
+            @apply --layout-center-justified;
+            width: 120px;
+            height: 120px;
+            background: #fff;
+            border-radius: 4px;
+        }
+        :host .icon iron-image {
+            width: 100px;
+            height: 100px;
+        }
+        :host header {
+            @apply --layout-horizontal;
+            @apply --layout-center;
+        }
+        :host header div {
+            @apply --layout-flex;
+        }
+        :host .left {
+            @apply --layout-start;
+        }
+        :host .right {
+            @apply --layout-end;
+        }
+        :host .center {
+            text-align: center;
+        }
+        :host .back {
+            @apply --kano-icon-button;
+            font-size: 2em;
+            font-weight: 600;
+            font-family: monospace;
+        }
+        </style>
         <header>
             <div class="left">
                 <button type="button" class="back" on-tap="goBack" hidden$="[[!folder.parent]]">&lt;</button>
