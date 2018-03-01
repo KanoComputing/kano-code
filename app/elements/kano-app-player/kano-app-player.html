@@ -151,6 +151,9 @@
                     return;
                 }
                 this.debounce('importApp', () => {
+
+                    // FIXME: Polymer 2 will run this data URL through its 'resolve-url' script,
+                    // where it throws an 'invalid URL' error when trying to instantiate a URL class.
                     this.importHref(this.src, this._onAppFileLoad.bind(this), this._onAppFileError.bind(this));
                 });
             },
