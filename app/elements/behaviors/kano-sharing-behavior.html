@@ -334,7 +334,7 @@ var SharingBehavior = {
             app.code);
         shareInfo = {
             app: {
-                src: 'data:text/html,' +
+                src: 'data:text/html;base64,' +
                      window.btoa(unescape(encodeURIComponent(component))),
                 slug
             },

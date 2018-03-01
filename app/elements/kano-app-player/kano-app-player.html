@@ -144,10 +144,10 @@
                 }
             },
             _srcChanged () {
-                // Check that we are loading and html file. Bsing that on the extension is not the best solution
-                // as any server coulde return html content. This prevents loading of late setups bindings. For
-                // exanple, Vue.js will set the property to {{item.attachment_url}} a few times before applying the binding
-                if (!this.src || !/(.*\.html)|(data:text\/html,.*)/.test(this.src)) {
+                // Check that we are loading an html file. Inspecting the extension is not the best solution
+                // as any server could return html content. This prevents loading of late setups bindings. For
+                // example, Vue.js will set the property to {{item.attachment_url}} a few times before applying the binding
+                if (!this.src || !/(.*\.html)|(data:text\/html;base64,.*)/.test(this.src)) {
                     return;
                 }
                 this.debounce('importApp', () => {
