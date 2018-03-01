@@ -30,63 +30,63 @@
 <link rel="import" href="../../scripts/kano/make-apps/utils.html">
 
 <dom-module id="kano-view-story">
-    <style>
-        :host {
-            @apply --layout-vertical;
-            position: relative;
-        }
-        :host kano-app-challenge {
-            @apply --layout-flex;
-        }
-        :host kano-app-editor {
-            @apply --layout-flex;
-        }
-        paper-dialog {
-            border-radius: 5px;
-            overflow: hidden;
-            background: transparent;
-        }
-        paper-dialog#share-modal kano-share-modal {
-            padding: 0px;
-            margin: 0px;
-        }
-        .bolt {
-            background: black;
-            width: 11px;
-            height: 11px;
-            margin: 3px 4px;
-            border-radius: 2px;
-            padding: 3px;
-        }
-        .progress {
-            position: relative;
-            color: white;
-            background: #32393F;
-            height: 22px;
-            border-top: 1px solid var(--kano-app-editor-workspace-border, #22272d);
-        }
-        .progress .bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 100%;
-            background: #e4e6e7;
-            opacity: 0.4;
-            transition: transform 200ms ease-out;
-        }
-        .progress .bar-content {
-            @apply --layout-horizontal;
-            position: absolute;
-        }
-        .progress .story-name {
-            font-size: 14px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                position: relative;
+            }
+            :host kano-app-challenge {
+                @apply --layout-flex;
+            }
+            :host kano-app-editor {
+                @apply --layout-flex;
+            }
+            paper-dialog {
+                border-radius: 5px;
+                overflow: hidden;
+                background: transparent;
+            }
+            paper-dialog#share-modal kano-share-modal {
+                padding: 0px;
+                margin: 0px;
+            }
+            .bolt {
+                background: black;
+                width: 11px;
+                height: 11px;
+                margin: 3px 4px;
+                border-radius: 2px;
+                padding: 3px;
+            }
+            .progress {
+                position: relative;
+                color: white;
+                background: #32393F;
+                height: 22px;
+                border-top: 1px solid var(--kano-app-editor-workspace-border, #22272d);
+            }
+            .progress .bar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background: #e4e6e7;
+                opacity: 0.4;
+                transition: transform 200ms ease-out;
+            }
+            .progress .bar-content {
+                @apply --layout-horizontal;
+                position: absolute;
+            }
+            .progress .story-name {
+                font-size: 14px;
+                font-weight: bold;
+                text-transform: uppercase;
+                margin-top: 2px;
+            }
+        </style>
         <kano-app-challenge id="challenge"
                             story="[[story]]"
                             steps="[[scene.steps]]"

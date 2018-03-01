@@ -9,154 +9,154 @@
 <link rel="import" href="../inline-controls/kano-value-rendering/kano-value-rendering.html">
 
 <dom-module id="kano-workspace-toolbar">
-    <style>
-        :host {
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            @apply --layout-center-justified;
-        }
-        :host([show-settings]) {
-            @apply --layout-end-justified;
-        }
-        :host>div {
-            @apply --layout-horizontal;
-        }
-        .fullscreen,
-        .pause {
-            border-right: 2px solid #eee;
-        }
-        .mouse-position {
-            @apply --flex-horizontal;
-            @apply --layout-end-justified;
-            width: 100px;
-            font-family: var(--font-body);
-            font-size: 14px;
-            line-height: 14px;
-            font-weight: bold;
-            color: #fff;
-            margin-right: 12px;
-        }
-        .spacer {
-            @apply --layout-flex;
-        }
-        button#settings {
-            margin: 0 8px 0 0;
-        }
-        kano-animated-svg {
-            min-width: 17px;
-            min-height: 17px;
-
-            --kano-animated-path: {
-                fill: white;
-                stroke: white;
-                stroke-width: 2px;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                transition: all ease-in-out 200ms;
-            }
-        }
-        kano-tooltip {
-            box-sizing: border-box;
-            --kano-tooltip-caret-width: 12px;
-        }
-        kano-tooltip.fly {
-            --kano-tooltip-caret-width: 7px;
-        }
-        button {
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            @apply --layout-center-justified;
-            @apply --kano-button;
-            background-color: rgba(255, 255, 255, 0.25);
-            border-radius: 3px;
-            padding: 10px 16px;
-            cursor: pointer;
-            margin: 0 8px 0 0;
-            font-size: 12px;
-            font-weight: normal;
-            text-shadow: none;
-            font-family: var(--font-body);
-        }
-        button:hover,
-        button:focus {
-            background-color: var(--color-orange);
-            outline: none;
-        }
-        button.square {
-            width: 32px;
-            height: 32px;
-            padding: 0px;
-            cursor: pointer;
-        }
-        button.square>* {
-            margin: 0 auto;
-        }
-        button span.x {
-            display: none;
-        }
-        button.open span.x {
-            display: inline-block;
-            transform: translate(0px, -2px);
-        }
-        button#play {
-            margin: 0;
-        }
-        iron-icon {
-            --iron-icon-width: 24px;
-            --iron-icon-height: 24px;
-            opacity: 0.75;
-        }
-        button:hover iron-icon,
-        button:focus iron-icon {
-            opacity: 1;
-        }
-        button#save iron-icon {
-            --iron-icon-fill-color: #fff;
-        }
-        ul {
-            min-width: 188px;
-            margin: 0px;
-            padding: 10px 0 8px;
-            color: black;
-        }
-        li {
-            @apply --layout-vertical;
-            @apply --layout-stretch;
-        }
-        .inline {
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            @apply --layout-start-justified;
-            cursor: pointer;
-            opacity: 0.9;
-            background: transparent;
-            margin: 0;
-            transition: none;
-            border-radius: 0px;
-        }
-        .text {
-            color: var(--color-chateau);
-            text-transform: initial;
-            font-size: 14px;
-            font-family: var(--font-body);
-            text-decoration: none;
-            padding: 6px 12px;
-        }
-        ul li .inline:hover,
-        ul li .inline:focus {
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.10);
-        }
-        ul li .inline iron-icon {
-            --iron-icon-width: 20px;
-            --iron-icon-height: 20px;
-            margin-right: 14px;
-        }
-        [hidden] {
-            display: none !important;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+            }
+            :host([show-settings]) {
+                @apply --layout-end-justified;
+            }
+            :host>div {
+                @apply --layout-horizontal;
+            }
+            .fullscreen,
+            .pause {
+                border-right: 2px solid #eee;
+            }
+            .mouse-position {
+                @apply --flex-horizontal;
+                @apply --layout-end-justified;
+                width: 100px;
+                font-family: var(--font-body);
+                font-size: 14px;
+                line-height: 14px;
+                font-weight: bold;
+                color: #fff;
+                margin-right: 12px;
+            }
+            .spacer {
+                @apply --layout-flex;
+            }
+            button#settings {
+                margin: 0 8px 0 0;
+            }
+            kano-animated-svg {
+                min-width: 17px;
+                min-height: 17px;
+
+                --kano-animated-path: {
+                    fill: white;
+                    stroke: white;
+                    stroke-width: 2px;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    transition: all ease-in-out 200ms;
+                }
+            }
+            kano-tooltip {
+                box-sizing: border-box;
+                --kano-tooltip-caret-width: 12px;
+            }
+            kano-tooltip.fly {
+                --kano-tooltip-caret-width: 7px;
+            }
+            button {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-center-justified;
+                @apply --kano-button;
+                background-color: rgba(255, 255, 255, 0.25);
+                border-radius: 3px;
+                padding: 10px 16px;
+                cursor: pointer;
+                margin: 0 8px 0 0;
+                font-size: 12px;
+                font-weight: normal;
+                text-shadow: none;
+                font-family: var(--font-body);
+            }
+            button:hover,
+            button:focus {
+                background-color: var(--color-orange);
+                outline: none;
+            }
+            button.square {
+                width: 32px;
+                height: 32px;
+                padding: 0px;
+                cursor: pointer;
+            }
+            button.square>* {
+                margin: 0 auto;
+            }
+            button span.x {
+                display: none;
+            }
+            button.open span.x {
+                display: inline-block;
+                transform: translate(0px, -2px);
+            }
+            button#play {
+                margin: 0;
+            }
+            iron-icon {
+                --iron-icon-width: 24px;
+                --iron-icon-height: 24px;
+                opacity: 0.75;
+            }
+            button:hover iron-icon,
+            button:focus iron-icon {
+                opacity: 1;
+            }
+            button#save iron-icon {
+                --iron-icon-fill-color: #fff;
+            }
+            ul {
+                min-width: 188px;
+                margin: 0px;
+                padding: 10px 0 8px;
+                color: black;
+            }
+            li {
+                @apply --layout-vertical;
+                @apply --layout-stretch;
+            }
+            .inline {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-start-justified;
+                cursor: pointer;
+                opacity: 0.9;
+                background: transparent;
+                margin: 0;
+                transition: none;
+                border-radius: 0px;
+            }
+            .text {
+                color: var(--color-chateau);
+                text-transform: initial;
+                font-size: 14px;
+                font-family: var(--font-body);
+                text-decoration: none;
+                padding: 6px 12px;
+            }
+            ul li .inline:hover,
+            ul li .inline:focus {
+                opacity: 1;
+                background: rgba(0, 0, 0, 0.10);
+            }
+            ul li .inline iron-icon {
+                --iron-icon-width: 20px;
+                --iron-icon-height: 20px;
+                margin-right: 14px;
+            }
+            [hidden] {
+                display: none !important;
+            }
+        </style>
         <button id="settings" type="button" class="square settings" hidden$="[[!showSettings]]" on-tap="_openTooltip">
             <iron-icon icon="kc-ui:settings"></iron-icon>
         </button>

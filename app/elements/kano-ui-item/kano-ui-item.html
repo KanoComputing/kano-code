@@ -2,52 +2,52 @@
 <link rel="import" href="../behaviors/kano-animatable-behavior.html">
 
 <dom-module id="kano-ui-item">
-    <style>
-    :host {
-        display: block;
-    }
-    :host[disabled] label {
-        color: grey;
-    }
-    :host:hover {
-        cursor: pointer;
-    }
-    :host .container {
-        @apply(--layout-vertical);
-        @apply(--layout-wrap);
-        @apply(--layout-center);
-    }
-    :host .overlay {
-        position: absolute;
-        border-radius: 50%;
-        top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        background-color: rgba(0, 0, 0, 0.45);
-    }
-    :host .img-container {
-        position: relative;
-        border-radius: 50%;
-        background-color: #CCC;
-        overflow: hidden;
-        transition: all ease-in 150ms;
-    }
-    :host iron-image {
-        margin: 10px;
-    }
-    :host label {
-        margin-top: 5px;
-        font-size: 14px;
-        text-align: center;
-        color: #4A4A4A;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 62px;
-        white-space: nowrap;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+            }
+            :host[disabled] label {
+                color: grey;
+            }
+            :host:hover {
+                cursor: pointer;
+            }
+            :host .container {
+                @apply(--layout-vertical);
+                @apply(--layout-wrap);
+                @apply(--layout-center);
+            }
+            :host .overlay {
+                position: absolute;
+                border-radius: 50%;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                background-color: rgba(0, 0, 0, 0.45);
+            }
+            :host .img-container {
+                position: relative;
+                border-radius: 50%;
+                background-color: #CCC;
+                overflow: hidden;
+                transition: all ease-in 150ms;
+            }
+            :host iron-image {
+                margin: 10px;
+            }
+            :host label {
+                margin-top: 5px;
+                font-size: 14px;
+                text-align: center;
+                color: #4A4A4A;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 62px;
+                white-space: nowrap;
+            }
+        </style>
         <div class="container" on-tap="handleSelect">
             <div class="img-container" style$="[[containerStyle]]">
                 <iron-image src="{{model.image}}"

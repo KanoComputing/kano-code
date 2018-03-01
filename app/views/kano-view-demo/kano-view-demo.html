@@ -4,36 +4,36 @@
 <link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
 
 <dom-module id="kano-view-demo">
-    <style>
-        :host {
-            display: block;
-            background-color: #fafafa;
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-        }
-        paper-card {
-            --paper-card-header-color: white;
-            margin: 12px;
-            font-family: Bariol;
-        }
-        paper-button {
-            font-family: Bariol;
-            color: black;
-            text-decoration: none;
-        }
-        .apps {
-            @apply(--layout-horizontal);
-            @apply(--layout-wrap);
-            @apply(--layout-around-justified);
-        }
-        .apps paper-card {
-            width: 30%;
-        }
-        .make paper-card {
-            --paper-card-header-color: black;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                background-color: #fafafa;
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+            }
+            paper-card {
+                --paper-card-header-color: white;
+                margin: 12px;
+                font-family: Bariol;
+            }
+            paper-button {
+                font-family: Bariol;
+                color: black;
+                text-decoration: none;
+            }
+            .apps {
+                @apply(--layout-horizontal);
+                @apply(--layout-wrap);
+                @apply(--layout-around-justified);
+            }
+            .apps paper-card {
+                width: 30%;
+            }
+            .make paper-card {
+                --paper-card-header-color: black;
+            }
+        </style>
         <div class="make">
             <paper-card image="/assets/kano-code-logo.svg">
                 <div class="card-actions">

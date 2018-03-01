@@ -191,9 +191,9 @@ Example:
                               no-overflow
                               centered>
                 <iron-lazy-pages selected="[[mode.workspace.component]]"
-                                 attr-for-selected="name"
-                                 restamp>
-                    <template is="iron-lazy-page" name="kano-workspace-normal">
+                                 attr-for-selected="data-route"
+                                 hide-immediately>
+                    <template is="dom-if" data-route="kano-workspace-normal" restamp>
                         <kano-workspace-normal
                             id="workspace"
                             class="dropzone"
@@ -205,8 +205,7 @@ Example:
                             parts="{{parts}}">
                         </kano-workspace-normal>
                     </template>
-                    <template is="iron-lazy-page"
-                              name="kano-workspace-lightboard">
+                    <template is="dom-if" data-route="kano-workspace-lightboard" restamp>
                         <kano-workspace-lightboard
                             id="workspace"
                             class="dropzone"

@@ -1,13 +1,15 @@
+<link rel="import" href="../../bower_components/kwc-blockly/kwc-blockly.html">
 <link rel="import" href="../behaviors/kano-app-editor-behavior.html">
 <link rel="import" href="../behaviors/kano-app-element-registry-behavior.html">
 <link rel="import" href="../behaviors/kano-i18n-behavior.html">
 <link rel="import" href="../blockly.html">
-<link rel="import" href="../../bower_components/kwc-blockly/kwc-blockly.html">
 <link rel="import" href="../kc-user-options/kc-user-options.html">
 <link rel="import" href="../kano-tooltip/kano-tooltip.html">
 <link rel="import" href="../kano-icons/kc-ui.html">
 <link rel="import" href="../../scripts/kano/make-apps/store.html">
 <link rel="import" href="../../scripts/kano/make-apps/actions/user.html">
+<link rel="import" href="../kano-style/themes/dark.html">
+
 
 <dom-module id="kc-blockly-editor">
     <template>
@@ -22,6 +24,12 @@
             .shell {
                 @apply(--layout-fit);
                 transition: opacity 200ms linear;
+            }
+            :host kwc-blockly {
+                --kwc-blockly-toolbox: {
+                    padding-top: 0;
+                    background: var(--kc-secondary-color);
+                };
             }
             .shell {
                 background-color: var(--kc-primary-color, white);

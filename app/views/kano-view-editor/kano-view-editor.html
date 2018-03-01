@@ -21,60 +21,60 @@
 <link rel="import" href="../../bower_components/web-components/kano-reward-modal/kano-reward-modal.html">
 
 <dom-module id="kano-view-editor">
-    <style>
-        :host {
-            display: block;
-            @apply(--layout-vertical);
-        }
-        :host kano-app-editor {
-            @apply(--layout-flex);
-        }
-        :host #error-dialog .title {
-            color: red;
-        }
-        :host #error-dialog .description {
-            text-align: center;
-        }
-        paper-dialog {
-            border-radius: 5px;
-            overflow: hidden;
-            background: transparent;
-        }
-        paper-dialog#share-modal kano-share-modal {
-            padding: 0px;
-            margin: 0px;
-        }
-        :host(.dragging) * {
-            pointer-events: none;
-        }
-        .dragoverlay {
-            @apply(--layout-vertical);
-            @apply(--layout-center);
-            @apply(--layout-center-justified);
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            display: none;
-            background-color: rgba(255, 255, 255, 0.75);
-            box-sizing: border-box;
-            overflow: hidden;
-            text-align: center;
-        }
-        .dragoverlay * {
-            pointer-events: none;
-        }
-        #overlay-character {
-            transform-origin: center bottom;
-        }
-        #overlay-text {
-            opacity: 0;
-            font-size: 32px;
-            font-weight: 400;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                @apply(--layout-vertical);
+            }
+            :host kano-app-editor {
+                @apply(--layout-flex);
+            }
+            :host #error-dialog .title {
+                color: red;
+            }
+            :host #error-dialog .description {
+                text-align: center;
+            }
+            paper-dialog {
+                border-radius: 5px;
+                overflow: hidden;
+                background: transparent;
+            }
+            paper-dialog#share-modal kano-share-modal {
+                padding: 0px;
+                margin: 0px;
+            }
+            :host(.dragging) * {
+                pointer-events: none;
+            }
+            .dragoverlay {
+                @apply(--layout-vertical);
+                @apply(--layout-center);
+                @apply(--layout-center-justified);
+                position: fixed;
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                display: none;
+                background-color: rgba(255, 255, 255, 0.75);
+                box-sizing: border-box;
+                overflow: hidden;
+                text-align: center;
+            }
+            .dragoverlay * {
+                pointer-events: none;
+            }
+            #overlay-character {
+                transform-origin: center bottom;
+            }
+            #overlay-text {
+                opacity: 0;
+                font-size: 32px;
+                font-weight: 400;
+            }
+        </style>
         <kano-app-editor
             id="editor"
             running="{{running}}"
@@ -115,7 +115,7 @@
             <p id="overlay-text">Drop a file here to load the app</p>
             <iron-image
                 id="overlay-character"
-                src="/assets/stories/background_color/color-character.png"
+                src="/assets/stories/locales/en-US/background_color/color-character.png"
                 preload
                 sizing="contain"
                 width="300"

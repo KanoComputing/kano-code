@@ -12,34 +12,34 @@
     <link rel="lazy-import" href="../kano-editor-camera/kano-editor-camera.html" group="camera">
     <link rel="lazy-import" href="../kano-editor-normal/kano-editor-normal.html" group="normal">
     <link rel="lazy-import" href="../kano-editor-simple/kano-editor-simple.html" group="simple">
-    <style>
-    @keyframes fade-in {
-        from { opacity: 0 },
-        to { opacity: 1 }
-    }
-    :host {
-        position: relative;
-        @apply --layout-vertical;
-        border: 0px;
-        overflow: hidden;
-    }
-    :host ::slotted(#dropzone) {
-        margin: auto;
-        position: relative;
-    }
-    #workspace-placeholder {
-        @apply --layout-flex-auto;
-        @apply --layout-vertical;
-    }
-    #workspace-placeholder>* {
-        @apply --layout-flex-auto;
-        animation: fade-in 200ms linear;
-    }
-    *[hidden] {
-        display: none !important;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                position: relative;
+                border: 0px;
+                overflow: hidden;
+            }
+            :host ::slotted(#dropzone) {
+                margin: auto;
+                position: relative;
+            }
+            #workspace-placeholder {
+                @apply --layout-flex-auto;
+                @apply --layout-vertical;
+            }
+            #workspace-placeholder>* {
+                @apply --layout-flex-auto;
+                animation: fade-in 200ms linear;
+            }
+            *[hidden] {
+                display: none !important;
+            }
+            @keyframes fade-in {
+                from { opacity: 0 },
+                to { opacity: 1 }
+            }
+        </style>
         <!-- The variable workspace component will be inserted here -->
         <div id="workspace-placeholder" on-tap="onTap"></div>
         <array-selector id="selector" items="{{parts}}" selected="{{selected}}"></array-selector>
@@ -114,6 +114,7 @@
             }
         },
         _instanceProps: {
+            mode: true,
             running: true,
             editableLayout: true,
             partsMenuOpen: true,
@@ -274,20 +275,20 @@
 
                     // We add 'kano-workspace' class manually to preserve shady DOM styling scope
                     template.innerHTML = `<${tagName} id$="[[mode.id]]"
+                                                        parts="[[parts]]"
                                                         class="dropzone kano-workspace"
                                                         width="[[mode.workspace.viewport.width]]"
                                                         height="[[mode.workspace.viewport.height]]"
                                                         running="[[running]]"
                                                         editable-layout="[[editableLayout]]"
-                                                        parts-menu-open="[[partsMenuOpen]]"
-                                                        parts="{{parts}}">
+                                                        parts-menu-open="[[partsMenuOpen]]">
                                                         </${tagName}>`;
 
                     this.templatize(template);
-
                     this.instance = this.stamp({
                         mode: this.mode,
                         parts: this.parts,
+                        editableLayout: this.editableLayout
                     });
 
                     newDropzone = this.instance.root;
@@ -299,14 +300,14 @@
                     placeholder.appendChild(newDropzone);
 
                     /* Update dropzone reference */
-                    this.dropzone = this.$$(`#${this.mode.id}`);
+                    this.dropzone = this.shadowRoot.querySelector(`#${this.mode.id}`);
 
                     if (this.dropzone.setBackground) {
                         this.dropzone.setBackground(this.background);
                     }
 
                     this.parts.forEach((model, index) => {
-                        this.insertPart(`#${index}`);
+                        this.insertPart(`${index}`);
                     });
                     this.fire('mode-ready');
                 });
@@ -395,7 +396,7 @@
                     if (indexSplices) {
                         indexSplices.forEach((idxSplice)=> {
                             for (let  i = 0; i < idxSplice.addedCount; i++) {
-                                this.insertPart.bind(this)(`#${idxSplice.index + i}`);
+                                this.insertPart.bind(this)(`${idxSplice.index + i}`);
                             }
                         });
                     }
@@ -411,7 +412,7 @@
                 }
                 // Insert the elements from the models
                 this.parts.forEach((model, index) => {
-                    this.insertPart(`#${index}`);
+                    this.insertPart(`${index}`);
                 });
             } else if (path === 'parts.length') {
                 return;

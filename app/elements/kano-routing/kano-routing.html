@@ -19,16 +19,16 @@
         <style>
             :host {
                 display: block;
-                @apply(--layout-vertical);
+                @apply --layout-vertical;
             }
 
             :host iron-lazy-pages {
-                @apply(--layout-vertical);
-                @apply(--layout-flex);
+                @apply --layout-vertical;
+                @apply --layout-flex;
             }
 
             :host iron-lazy-pages>* {
-                @apply(--layout-flex);
+                @apply --layout-flex;
                 overflow: auto;
             }
         </style>
@@ -36,23 +36,23 @@
             entry-animation="from-big-animation" with-backdrop>
             <button class="kano-alert-primary" slot="actions" on-tap="_goToTapcode">Try it</button>
         </kano-alert>
-        <iron-lazy-pages selected="[[page]]" attr-for-selected="name" loading="{{loading}}" restamp>
-            <template is="iron-lazy-page" name="story" path="/views/kano-view-story/kano-view-story.html">
+        <iron-lazy-pages selected="[[page]]" attr-for-selected="data-route" loading="{{loading}}" hide-immediately>
+            <template is="dom-if" data-route="story" data-path="/views/kano-view-story/kano-view-story.html" restamp>
                 <kano-view-story context="[[context]]" user="{{user}}" show-save-prompt={{leaveAlert}}></kano-view-story>
             </template>
-            <template is="iron-lazy-page" name="tutorial" path="/views/kano-view-tutorial/kano-view-tutorial.html">
+            <template is="dom-if" data-route="tutorial" data-path="/views/kano-view-tutorial/kano-view-tutorial.html" restamp>
                 <kano-view-tutorial context="[[context]]" user="{{user}}"></kano-view-tutorial>
             </template>
-            <template is="iron-lazy-page" name="editor" path="/views/kano-view-editor/kano-view-editor.html">
+            <template is="dom-if" data-route="editor" data-path="/views/kano-view-editor/kano-view-editor.html" restamp>
                 <kano-view-editor context="[[context]]" user="{{user}}"></kano-view-editor>
             </template>
-            <template is="iron-lazy-page" name="onboarding" path="/views/kano-view-onboarding/kano-view-onboarding.html">
+            <template is="dom-if" data-route="onboarding" data-path="/views/kano-view-onboarding/kano-view-onboarding.html" restamp>
                 <kano-view-onboarding context="[[context]]" user="{{user}}"></kano-view-onboarding>
             </template>
-            <template is="iron-lazy-page" name="flags" path="/views/kano-view-flags/kano-view-flags.html">
+            <template is="dom-if" data-route="flags" data-path="/views/kano-view-flags/kano-view-flags.html" restamp>
                 <kano-view-flags context="[[context]]" user="{{user}}"></kano-view-flags>
             </template>
-            <template is="iron-lazy-page" name="demo" path="/views/kano-view-demo/kano-view-demo.html">
+            <template is="dom-if" data-route="demo" data-path="/views/kano-view-demo/kano-view-demo.html" restamp>
                 <kano-view-demo context="[[context]]"></kano-view-demo>
             </template>
         </iron-lazy-pages>

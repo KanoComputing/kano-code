@@ -2,50 +2,50 @@
 <link rel="import" href="../kano-default-workspace/kano-default-workspace.html">
 <link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
 <dom-module id="kano-editor-normal">
-    <style>
-        :host {
-            @apply --layout-vertical;
-            width: 100%;
-            height: 100%;
-            padding-top: 12px;
-        }
-        kano-default-workspace {
-            @apply --layout-vertical;
-            @apply --layout-flex;
-            margin: 0 40px;
-        }
-        kano-workspace-normal {
-            @apply --layout-flex;
-        }
-        #workspace ::slotted(.data),
-        #workspace ::slotted(.hardware),
-        #workspace ::slotted(kano-part-oscillator) {
-            display: none;
-        }
-        .part {
-            @apply --layout-flex-none;
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            height: 40px;
-            font-size: 14px;
-            color: #fff;
-            border-bottom: 1px solid #202428;
-            cursor: pointer;
-        }
-        .part .background-icon {
-            --iron-icon-width: 24px;
-            --iron-icon-height: 24px;
-            fill: #8f9195;
-            margin: 8px 12px 8px 0;
-        }
-        .part:hover .background-icon {
-            fill: rgba(255, 255, 255, 0.8);
-        }
-        .part .handle {
-            color: #3A4248;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                width: 100%;
+                height: 100%;
+                padding-top: 12px;
+            }
+            kano-default-workspace {
+                @apply --layout-vertical;
+                @apply --layout-flex;
+                margin: 0 40px;
+            }
+            kano-workspace-normal {
+                @apply --layout-flex;
+            }
+            #workspace ::slotted(.data),
+            #workspace ::slotted(.hardware),
+            #workspace ::slotted(kano-part-oscillator) {
+                display: none;
+            }
+            .part {
+                @apply --layout-flex-none;
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                height: 40px;
+                font-size: 14px;
+                color: #fff;
+                border-bottom: 1px solid #202428;
+                cursor: pointer;
+            }
+            .part .background-icon {
+                --iron-icon-width: 24px;
+                --iron-icon-height: 24px;
+                fill: #8f9195;
+                margin: 8px 12px 8px 0;
+            }
+            .part:hover .background-icon {
+                fill: rgba(255, 255, 255, 0.8);
+            }
+            .part .handle {
+                color: #3A4248;
+            }
+        </style>
         <kano-default-workspace id="wrapper"
                                 width="[[width]]"
                                 height="[[height]]"
@@ -83,8 +83,15 @@
                     value: 250,
                     notify: true
                 },
+                mode: {
+                    type: Object
+                },
                 running: {
                     type: Boolean
+                },
+                parts: {
+                    type: Array,
+                    notify: true
                 }
             },
             ready () {

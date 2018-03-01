@@ -12,22 +12,22 @@
 <link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
 
 <dom-module id="kano-view-onboarding">
-    <style>
-        :host {
-            display: block;
-            @apply(--layout-vertical);
-        }
-        :host kano-app-editor {
-            @apply(--layout-flex);
-        }
-        kano-editor-banner {
-            background: #394148;
-            color: white;
-            border-bottom: 1px solid var(--kano-app-editor-workspace-border, #22272d);
-            height: 120px;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                @apply(--layout-vertical);
+            }
+            :host kano-app-editor {
+                @apply(--layout-flex);
+            }
+            kano-editor-banner {
+                background: #394148;
+                color: white;
+                border-bottom: 1px solid var(--kano-app-editor-workspace-border, #22272d);
+                height: 120px;
+            }
+        </style>
         <kano-app-editor
             id="editor"
             running="{{running}}"

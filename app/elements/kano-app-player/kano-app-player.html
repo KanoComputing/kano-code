@@ -147,8 +147,7 @@
                 // Check that we are loading and html file. Bsing that on the extension is not the best solution
                 // as any server coulde return html content. This prevents loading of late setups bindings. For
                 // exanple, Vue.js will set the property to {{item.attachment_url}} a few times before applying the binding
-
-                if (!this.src || !/(.*\.html)|(data:text\/html;base64,.*)/.test(this.src)) {
+                if (!this.src || !/(.*\.html)|(data:text\/html,.*)/.test(this.src)) {
                     return;
                 }
                 this.debounce('importApp', () => {
@@ -193,7 +192,6 @@
                 this.component = c;
 
                 this.component.addEventListener('restart-code', this._reset.bind(this));
-
                 this.fire('app-ready');
                 this.async(() => {
                     this.component.$$('kano-ui-viewport').resizeView();

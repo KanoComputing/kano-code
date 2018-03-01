@@ -10,47 +10,47 @@
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 
 <dom-module id="kano-view-flags">
-    <style>
-        :host {
-            display: block;
-            padding: 7px;
-        }
-        .refresh-link {
-            text-transform: uppercase;
-            color: yellow;
-            padding: 4px;
-            text-decoration: none;
-        }
-        .heading {
-            background-color: #acacf9;
-            border-top: 1px solid #505088;
-            padding: 12px;
-            margin-bottom: 4px;
-        }
-        .line {
-            width: 100%;
-            padding: 7px;
-            background-color: lightgrey;
-            border-bottom: 1px solid grey;
-            @apply(--layout-horizontal);
-        }
-        .details {
-            @apply(--layout-flex);
-        }
-        .sub-heading {
-            margin-bottom: 0px;
-        }
-        .info {
-            margin-top: 0px;
-        }
-        h4 {
-            margin: 0px;
-        }
-        .contains {
-            text-decoration: underline;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                padding: 7px;
+            }
+            .refresh-link {
+                text-transform: uppercase;
+                color: yellow;
+                padding: 4px;
+                text-decoration: none;
+            }
+            .heading {
+                background-color: #acacf9;
+                border-top: 1px solid #505088;
+                padding: 12px;
+                margin-bottom: 4px;
+            }
+            .line {
+                width: 100%;
+                padding: 7px;
+                background-color: lightgrey;
+                border-bottom: 1px solid grey;
+                @apply(--layout-horizontal);
+            }
+            .details {
+                @apply(--layout-flex);
+            }
+            .sub-heading {
+                margin-bottom: 0px;
+            }
+            .info {
+                margin-top: 0px;
+            }
+            h4 {
+                margin: 0px;
+            }
+            .contains {
+                text-decoration: underline;
+            }
+        </style>
         <h1>Careful, these experiments may bite!</h1>
         <div class="heading">Experiments</div>
         <template is="dom-repeat" items="[[available]]" as="exp">

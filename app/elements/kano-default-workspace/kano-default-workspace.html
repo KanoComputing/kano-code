@@ -351,7 +351,7 @@
                     this._registerElement(`parts-controls-${partElId}`, partEl);
                 }
                 this._partsToAnimateIn.forEach(part => {
-                    let partEl = this.$$(`#part-${part.id}`),
+                    let partEl = this.shadowRoot.querySelector(`#part-${part.id}`),
                         partInlineControlsEl;
                     if (!partEl) {
                         return;

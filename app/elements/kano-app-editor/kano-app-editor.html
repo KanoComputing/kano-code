@@ -29,159 +29,159 @@
 @demo demo/index.html
 -->
 <dom-module id="kano-app-editor">
-    <style>
-        :host {
-            @apply --layout-vertical;
-            position: relative;
-            max-width: 100vw;
-        }
-        :host([lockdown]) {
-            pointer-events: none;
-        }
-        /*Don't apply lockdown on topbar*/
-        :host([lockdown]) ::slotted(*) {
-            pointer-events: auto;
-        }
-        :host section {
-            @apply --layout-horizontal-reverse;
-            @apply --layout-flex;
-        }
-        :host section #blocks-panel {
-            @apply --layout-flex-auto;
-            @apply --layout-vertical;
-            @apply --kano-inset-box-shadow;
-            position: relative;
-            min-width: 50%;
-            max-width: 70%;
-        }
-        :host section #workspace-panel {
-            @apply --layout-vertical;
-            position: relative;
-            min-width: 33%;
-            max-width: 50%;
-            width: 33%;
-            background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
-        }
-        .tab-selector {
-            --paper-tabs: {
-                height: 32px;
-                background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
-            };
-            --paper-tabs-selection-bar: {
-                border-bottom: none;
-            };
-        }
-        .tab-selector .tab {
-            --paper-tab: {
-                width: 50%;
-                color: #fff;
-                font-family: var(--font-body);
-                font-weight: bold;
-                text-transform: uppercase;
-                padding: 0;
-                border-top: 1px solid var(--kano-app-editor-workspace-background, #f2f2f2);
-                border-left: 1px solid var(--kano-app-editor-workspace-background, #f2f2f2);
-                padding: 0;
-            };
-            --paper-tab-content: {
-                padding: 0 8px;
-            };
-            --paper-tab-content-unselected: {
-                color: rgba(255, 255, 255, 0.5);
-                background-color: var(--color-abbey);
-            };
-            --paper-tab-ink: var(--color-dark);
-        }
-        :host iron-pages.workspace-pages {
-            @apply --layout-vertical;
-            @apply --layout-flex;
-            overflow-y: auto;
-        }
-        :host #workspace-panel kano-workspace {
-            @apply --layout-flex;
-        }
-        :host kano-code-display {
-            @apply --flex-layout;
-            margin: 16px;
-        }
-        :host [main] {
-            @apply --layout-vertical;
-            @apply --layout-flex;
-            position: relative;
-        }
-        kc-blockly-editor {
-            @apply --layout-flex;
-        }
-        :host #resize {
-            position: absolute;
-            width: 8px;
-            top: 0px;
-            bottom: 0px;
-            right: -4px;
-            cursor: ew-resize;
-            background-color: transparent;
-            z-index: 1;
-        }
-        :host .hidden {
-            visibility: hidden;
-            opacity: 0;
-        }
-        .editor {
-            position: relative;
-        }
-        #edit-part-dialog {
-            @apply --layout-vertical;
-            @apply --layout-flex-auto;
-            flex-shrink: 0;
-            overflow: hidden;
-            font-weight: bold;
-            color: #fff;
-        }
-        .modal {
-            width: 427px;
-        }
-        .large-modal {
-            width: 880px;
-        }
-        :host([small-screen]) #edit-part-dialog,
-        :host([small-screen]) #edit-background-dialog {
-            width: 100%;
-            left: -32px !important;
-        }
-        :host #background-editor {
-            background: #292f35;
-        }
-        :host #edit-part-dialog-content,
-        :host #background-editor {
-            margin: 0;
-        }
-        .code-overlay {
-            @apply --layout-fit;
-            background: #414a51;
-            opacity: 0;
-            transition: opacity 200ms linear;
-            pointer-events: none;
-        }
-        .code-overlay.open {
-            opacity: 0.85;
-        }
-        .icon-button {
-            background: transparent;
-            border: 0px;
-            cursor: pointer;
-        }
-        paper-dialog {
-            background-color: transparent;
-            border-radius: 6px;
-        }
-        paper-dialog > * {
-            border-radius: 6px;
-        }
-        kano-add-parts#add-parts {
-            margin: 0px;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                position: relative;
+                max-width: 100vw;
+            }
+            :host([lockdown]) {
+                pointer-events: none;
+            }
+            /*Don't apply lockdown on topbar*/
+            :host([lockdown]) ::slotted(*) {
+                pointer-events: auto;
+            }
+            :host section {
+                @apply --layout-horizontal-reverse;
+                @apply --layout-flex;
+            }
+            :host section #blocks-panel {
+                @apply --layout-flex-auto;
+                @apply --layout-vertical;
+                @apply --kano-inset-box-shadow;
+                position: relative;
+                min-width: 50%;
+                max-width: 70%;
+            }
+            :host section #workspace-panel {
+                @apply --layout-vertical;
+                position: relative;
+                min-width: 33%;
+                max-width: 50%;
+                width: 33%;
+                background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
+            }
+            .tab-selector {
+                --paper-tabs: {
+                    height: 32px;
+                    background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
+                };
+                --paper-tabs-selection-bar: {
+                    border-bottom: none;
+                };
+            }
+            .tab-selector .tab {
+                --paper-tab: {
+                    width: 50%;
+                    color: #fff;
+                    font-family: var(--font-body);
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    padding: 0;
+                    border-top: 1px solid var(--kano-app-editor-workspace-background, #f2f2f2);
+                    border-left: 1px solid var(--kano-app-editor-workspace-background, #f2f2f2);
+                    padding: 0;
+                };
+                --paper-tab-content: {
+                    padding: 0 8px;
+                };
+                --paper-tab-content-unselected: {
+                    color: rgba(255, 255, 255, 0.5);
+                    background-color: var(--color-abbey);
+                };
+                --paper-tab-ink: var(--color-dark);
+            }
+            :host iron-pages.workspace-pages {
+                @apply --layout-vertical;
+                @apply --layout-flex;
+                overflow-y: auto;
+            }
+            :host #workspace-panel kano-workspace {
+                @apply --layout-flex;
+            }
+            :host kano-code-display {
+                @apply --flex-layout;
+                margin: 16px;
+            }
+            :host [main] {
+                @apply --layout-vertical;
+                @apply --layout-flex;
+                position: relative;
+            }
+            kc-blockly-editor {
+                @apply --layout-flex;
+            }
+            :host #resize {
+                position: absolute;
+                width: 8px;
+                top: 0px;
+                bottom: 0px;
+                right: -4px;
+                cursor: ew-resize;
+                background-color: transparent;
+                z-index: 1;
+            }
+            :host .hidden {
+                visibility: hidden;
+                opacity: 0;
+            }
+            .editor {
+                position: relative;
+            }
+            #edit-part-dialog {
+                @apply --layout-vertical;
+                @apply --layout-flex-auto;
+                flex-shrink: 0;
+                overflow: hidden;
+                font-weight: bold;
+                color: #fff;
+            }
+            .modal {
+                width: 427px;
+            }
+            .large-modal {
+                width: 880px;
+            }
+            :host([small-screen]) #edit-part-dialog,
+            :host([small-screen]) #edit-background-dialog {
+                width: 100%;
+                left: -32px !important;
+            }
+            :host #background-editor {
+                background: #292f35;
+            }
+            :host #edit-part-dialog-content,
+            :host #background-editor {
+                margin: 0;
+            }
+            .code-overlay {
+                @apply --layout-fit;
+                background: #414a51;
+                opacity: 0;
+                transition: opacity 200ms linear;
+                pointer-events: none;
+            }
+            .code-overlay.open {
+                opacity: 0.85;
+            }
+            .icon-button {
+                background: transparent;
+                border: 0px;
+                cursor: pointer;
+            }
+            paper-dialog {
+                background-color: transparent;
+                border-radius: 6px;
+            }
+            paper-dialog > * {
+                border-radius: 6px;
+            }
+            kano-add-parts#add-parts {
+                margin: 0px;
+            }
+        </style>
         <kano-media-query small-screen="{{smallScreen}}" medium-screen="{{mediumScreen}}" large-screen="{{largeScreen}}">
         </kano-media-query>
 
