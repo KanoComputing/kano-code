@@ -114,6 +114,10 @@
                     type: String,
                     observer: '_srcChanged'
                 },
+                componentContent: {
+                    type: String,
+                    observer: '_componentContentChanged'
+                },
                 slug: {
                     type: String
                 },
@@ -151,10 +155,21 @@
                     return;
                 }
                 this.debounce('importApp', () => {
-
-                    // FIXME: Polymer 2 will run this data URL through its 'resolve-url' script,
-                    // where it throws an 'invalid URL' error when trying to instantiate a URL class.
                     this.importHref(this.src, this._onAppFileLoad.bind(this), this._onAppFileError.bind(this));
+                });
+            },
+            _componentContentChanged () {
+                this.debounce('appendApp', () => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(this.componentContent, 'text/html');
+
+                    // The script is copied and attached separately to make sure it runs
+                    const script = doc.getElementsByTagName('script')[0];
+                    const scriptCopy = document.createElement('script');
+                    scriptCopy.innerHTML = script.innerHTML;
+                    document.head.appendChild(doc.body.firstChild);
+                    document.head.appendChild(scriptCopy);
+                    this._onAppFileLoad();
                 });
             },
             _onAppFileLoad () {
@@ -193,13 +208,11 @@
                     root.removeChild(this.component);
                 }
                 this.component = c;
-
                 this.component.addEventListener('restart-code', this._reset.bind(this));
                 this.fire('app-ready');
                 this.async(() => {
                     this.component.$$('kano-ui-viewport').resizeView();
                 });
-
                 this.running = true;
                 this.fullscreen = false;
             },

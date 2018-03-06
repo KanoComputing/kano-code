@@ -1,3 +1,4 @@
+<link rel="import" href="../../bower_components/neon-animation/animations/transform-animation.html">
 <link rel="import" href="./kano-view-behavior.html">
 <link rel="import" href="./kano-gamification-behavior.html">
 <script src="./file_utils.js"></script>
@@ -280,8 +281,7 @@ var SharingBehavior = {
             code: app.code,
             app: {
                 slug,
-                src: 'data:text/html;base64,' +
-                     window.btoa(unescape(encodeURIComponent(component)))
+                component
             },
             workspaceInfo: JSON.stringify(app),
             mode
@@ -334,9 +334,8 @@ var SharingBehavior = {
             app.code);
         shareInfo = {
             app: {
-                src: 'data:text/html;base64,' +
-                     window.btoa(unescape(encodeURIComponent(component))),
-                slug
+                slug,
+                component
             },
             workspaceInfo: e.detail.workspaceInfo,
             page: 'sharing-form',

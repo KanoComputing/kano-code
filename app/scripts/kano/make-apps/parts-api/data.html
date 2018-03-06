@@ -19,12 +19,6 @@
             stop () {
                 PartsAPI.Base.stop.apply(this, arguments);
                 clearInterval(this.refreshInterval);
-                Object.keys(this.listeners).forEach((name) => {
-                    this.listeners[name].forEach((callback) => {
-                        this.removeEventListener(name, callback);
-                    });
-                });
-                this.listeners = {};
             },
             refresh () {
                 return this.appModules.getModule('data').generateRequest(this.model.id, this.model.method, this.model.config)

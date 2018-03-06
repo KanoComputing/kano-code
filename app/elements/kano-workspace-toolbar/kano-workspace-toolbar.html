@@ -322,30 +322,27 @@
             return open ? 'open' : '';
         },
         _startTimer (e) {
+            let target = e.composedPath()[0];
             this.hoverTimer = this.async(() => {
-                this._openTooltip(e);
+                this._openTooltip(target);
                 this.hoverTimer = null;
             }, 800);
         },
         _stopTimer (e) {
+            let target = e.composedPath()[0];
             if (this.hoverTimer) {
                 this.cancelAsync(this.hoverTimer);
             }
-            this._closeTooltip(e);
+            this._closeTooltip(target);
         },
-        _openTooltip (e) {
-            const targetId = this._computeTargetId(e),
-                tooltip = this.$[`${targetId}-tooltip`];
-            tooltip.target = this.$[targetId].getBoundingClientRect();
+        _openTooltip (target) {
+            const tooltip = this.$[`${target.id}-tooltip`];
+            tooltip.target = target.getBoundingClientRect();
             tooltip.open();
         },
-        _closeTooltip (e) {
-            const targetId = this._computeTargetId(e),
-                tooltip = this.$[`${targetId}-tooltip`];
+        _closeTooltip (target) {
+            const tooltip = this.$[`${target.id}-tooltip`];
             tooltip.close();
-        },
-        _computeTargetId (e) {
-            return e.currentTarget ? e.currentTarget.id : Polymer.dom(e).rootTarget.id;
         },
         _reset () {
             this.$['settings-tooltip'].close();
