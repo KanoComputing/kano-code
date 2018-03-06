@@ -336,7 +336,7 @@ Custom property | Description | Default
                 if (this._isShiftPressed) {
                     return;
                 }
-                const target = e.currentTarget ? e.currentTarget : Polymer.dom(e).rootTarget;
+                const target = e.currentTarget ? e.currentTarget : e.composedPath()[0];
                 let penType = target.getAttribute('name');
                 this.controlPanel = 'palette';
                 this.set('_penType', penType);
@@ -365,7 +365,7 @@ Custom property | Description | Default
                 }, this)
             },
             _openWheel (e) {
-                const target = e.currentTarget ? e.currentTarget : Polymer.dom(e).rootTarget,
+                const target = e.currentTarget ? e.currentTarget : e.composedPath()[0],
                     viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
                     editorWidth = this.offsetWidth;
                 // if editor is full screen, open color wheel to left

@@ -341,7 +341,7 @@
                 },
                 _onKeydown (e) {
                     //disable key commands if event origin is an input, or when running and key is not 'space'
-                    if (/INPUT/.test(Polymer.dom(e).rootTarget.tagName) || (this.running && e.key !== ' ')) {
+                    if (/INPUT/.test(e.composedPath()[0].tagName) || (this.running && e.key !== ' ')) {
                         return;
                     }
   

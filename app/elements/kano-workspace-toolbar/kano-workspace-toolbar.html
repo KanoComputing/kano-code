@@ -322,14 +322,14 @@
             return open ? 'open' : '';
         },
         _startTimer (e) {
-            let target = e.composedPath()[0];
+            const target = e.composedPath()[0];
             this.hoverTimer = this.async(() => {
                 this._openTooltip(target);
                 this.hoverTimer = null;
             }, 800);
         },
         _stopTimer (e) {
-            let target = e.composedPath()[0];
+            const target = e.composedPath()[0];
             if (this.hoverTimer) {
                 this.cancelAsync(this.hoverTimer);
             }

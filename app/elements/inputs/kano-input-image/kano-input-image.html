@@ -127,11 +127,11 @@
             });
         },
         _startGlint (e) {
-            const target = e.currentTarget ? e.currentTarget : Polymer.dom(e).rootTarget;
+            const target = e.currentTarget ? e.currentTarget : e.composedPath()[0];
             target.running = true;
         },
         _endGlint (e) {
-            const target = e.currentTarget ? e.currentTarget : Polymer.dom(e).rootTarget;
+            const target = e.currentTarget ? e.currentTarget : e.composedPath()[0];
             target.running = false;
         }
     });

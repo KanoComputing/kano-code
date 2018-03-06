@@ -48,7 +48,7 @@
             theme: String
         },
         propertyChanged (e) {
-            if (Polymer.dom(e).rootTarget.tagName !== 'KANO-INPUT') {
+            if (e.composedPath()[0].tagName !== 'KANO-INPUT') {
                 return;
             }
             let propertyName = e.model.get('property.key'),
