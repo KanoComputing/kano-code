@@ -123,7 +123,7 @@ class CustomWorld {
     getCurrentViewElement () {
         let element;
         return this.driver.wait(() => {
-            return this.driver.executeScript(`return window.__routingEl__.$$('.iron-selected');`)
+            return this.driver.executeScript(`return window.__routingEl__.$$('.iron-lazy-selected');`)
                 .then(e => {
                     element = e;
                     return !!element;
