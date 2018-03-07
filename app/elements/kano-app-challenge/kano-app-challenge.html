@@ -60,7 +60,7 @@ Example:
             }
         </style>
         <kano-challenge-ui id="ui" step="[[selectedStep]]" on-next-step="nextStep" blocks-panel="{{blocksPanel}}" state="{{state}}" mode-ready="[[modeReady]]" idle="[[idle]]">
-            <slot name="editor" id="content"></slot>
+            <slot name="editor" slot="editor" id="content"></slot>
         </kano-challenge-ui>
         <div class="banner-container" id="banner-container">
             <kano-editor-banner id="banner"

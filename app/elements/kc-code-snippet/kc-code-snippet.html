@@ -39,143 +39,143 @@ Example:
 -->
 
 <dom-module id="kc-code-snippet">
-    <style>
-        :host {
-            display: flex;
-            border-radius: 5px;
-        }
-        .snippet {
-            @apply --layout-horizontal;
-            @apply --layout-wrap;
+    <template>
+        <style>
+            :host {
+                display: flex;
+                border-radius: 5px;
+            }
+            .snippet {
+                @apply --layout-horizontal;
+                @apply --layout-wrap;
 
-            position: relative;
-        }
+                position: relative;
+            }
 
-        #root-view {
-            @apply --layout-self-stretch;
-            @apply --layout-flex;
-        }
+            #root-view {
+                @apply --layout-self-stretch;
+                @apply --layout-flex;
+            }
 
-        #viewport {
-            @apply --layout-flex;
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-            overflow: hidden;
-        }
+            #viewport {
+                @apply --layout-flex;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                overflow: hidden;
+            }
 
-        #root-view {
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
-            overflow: hidden;
-        }
+            #root-view {
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+                overflow: hidden;
+            }
 
-        #root-view, #viewport {
-            min-width: 400px;
-            height: 300px;
-        }
+            #root-view, #viewport {
+                min-width: 400px;
+                height: 300px;
+            }
 
-        .controls {
-            @apply --layout-horizontal;
-            position: absolute;
-            bottom: 10px;
-            right: 7px
-        }
-        kano-animated-svg {
-            min-width: 17px;
-            min-height: 17px;
-            margin: 8px 5px 6px 7px;
+            .controls {
+                @apply --layout-horizontal;
+                position: absolute;
+                bottom: 10px;
+                right: 7px
+            }
+            kano-animated-svg {
+                min-width: 17px;
+                min-height: 17px;
+                margin: 8px 5px 6px 7px;
 
-            --kano-animated-path: {
+                --kano-animated-path: {
+                    fill: #ccc;
+                    stroke: #ccc;
+                    stroke-width: 2px;
+                    stroke-linecap: round;
+                    stroke-linejoin: round;
+                    transition: all ease-in-out 200ms;
+                }
+            }
+            .controls button {
+                border: none;
+                background: #eaeaea;
+                border-radius: 5px;
+                overflow: none;
+                cursor: pointer;
+                outline: none;
+                margin: 0px 3px;
+            }
+            .controls button:hover {
+                opacity: 0.7;
+            }
+            .controls .reset-icon {
                 fill: #ccc;
                 stroke: #ccc;
-                stroke-width: 2px;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-                transition: all ease-in-out 200ms;
+                margin: 8px;
+                --iron-icon-width: 17px;
+                --iron-icon-height: 17px;
             }
-        }
-        .controls button {
-            border: none;
-            background: #eaeaea;
-            border-radius: 5px;
-            overflow: none;
-            cursor: pointer;
-            outline: none;
-            margin: 0px 3px;
-        }
-        .controls button:hover {
-            opacity: 0.7;
-        }
-        .controls .reset-icon {
-            fill: #ccc;
-            stroke: #ccc;
-            margin: 8px;
-            --iron-icon-width: 17px;
-            --iron-icon-height: 17px;
-        }
-        kano-workspace-lightboard {
-            background-color: #fff;
-        }
-        .loading {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--kwc-blockly-background, white);
-            color: #fff;
-            @apply --kano-font;
+            kano-workspace-lightboard {
+                background-color: #fff;
+            }
+            .loading {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: var(--kwc-blockly-background, white);
+                color: #fff;
+                @apply --kano-font;
 
-            @apply --layout-vertical;
-            @apply --layout-center-justified;
+                @apply --layout-vertical;
+                @apply --layout-center-justified;
 
-            font-family: var(--font-body);
+                font-family: var(--font-body);
 
-            transition: opacity 300ms ease-in-out;
+                transition: opacity 300ms ease-in-out;
 
-            border-radius: 5px;
-        }
-        .loading-done {
-            display: none;
-        }
-        .loading .text {
-            @apply --layout-self-center;
-        }
+                border-radius: 5px;
+            }
+            .loading-done {
+                display: none;
+            }
+            .loading .text {
+                @apply --layout-self-center;
+            }
 
-        /* Splash animation style
-         * @see scripts/splash.js
-         */
-        .blocks {
-            width: 80px;
-            height: 80px;
+            /* Splash animation style
+             * @see scripts/splash.js
+             */
+            .blocks {
+                width: 80px;
+                height: 80px;
 
-            display: flex;
-            flex-direction: column;
+                display: flex;
+                flex-direction: column;
 
-            animation: fade-in .3s;
-            transition-timing-function: ease-in;
-        }
+                animation: fade-in .3s;
+                transition-timing-function: ease-in;
+            }
 
-        .line {
-            width: 100%;
+            .line {
+                width: 100%;
 
-            transform-origin: center;
+                transform-origin: center;
 
-            display: flex;
-        }
+                display: flex;
+            }
 
-        .block {
-            opacity: 1;
-            border-radius: 1px;
+            .block {
+                opacity: 1;
+                border-radius: 1px;
 
-            background-color: rgba(0,0,0,0.5);
+                background-color: rgba(0,0,0,0.5);
 
-            margin: 2px;
-            width: 10px;
-            height: 8px;
-        }
-    </style>
-    <template>
+                margin: 2px;
+                width: 10px;
+                height: 8px;
+            }
+        </style>
         <div class="snippet">
             <kc-blockly-editor id="root-view"
                             parts="{{parts}}"

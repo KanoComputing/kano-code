@@ -4,8 +4,8 @@
 <link rel="import" href="../../../bower_components/web-components/kano-style/part.html">
 
 <dom-module id="kano-ui-map">
-    <style is="custom-style" include="part-style"></style>
     <template>
+        <style is="custom-style" include="part-style"></style>
         <style>
             :host {
                 display: inline-block;
@@ -93,7 +93,7 @@
                     this.$$('#map').style = this.getPartialStyle(['width', 'height']);
                     this.$$('#map').resize();
                     this._updateCollisionSize();
-                });
+                }, 10);
             },
             renderOnCanvas (ctx) {
                 return Kano.Behaviors.UIBehavior.renderOnCanvas.apply(this, arguments).then(() => {

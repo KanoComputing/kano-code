@@ -7,243 +7,241 @@
 <link rel="import" href="../../bower_components/web-components/kano-sound-player-behavior/kano-sound-player-behavior.html">
 <link rel="import" href="../../bower_components/web-components/kano-glint-animation/kano-glint-animation.html">
 
-
 <dom-module id="kano-onboarding-reward-modal">
-    <style is="custom-style" include="input-text"></style>
-    <style>
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0%);
-            }
-        }
-        :host {
-            --color-background: #ffffff;
-            --color-yellow: #f1cb44;
-            --color-yellow-darker: #E4BE37;
-            --color-light-grey: #f4f5f6;
-            --color-medium-grey: #a7aeb2;
-            --color-dark-grey: #999999;
-            --color-black: #000000;
-            --color-text: #253541;
-            --color-progress-bar: #9FD465;
-            --color-progress-bar-bg: #e5e5e5;
-            --border-radius-large: 6px;
-            --border-radius-medium: 3px;
-            background-color: transparent;
-        }
-        :host paper-dialog {
-            background-color: transparent;
-        }
-        :host .fadeInUp {
-            animation-duration: 0.1s;
-            animation-name: fadeInUp;
-            animation-fill-mode: both;
-        }
-        :host .wrapper {
-            background-color: var(--color-light-grey);
-            border-radius: var(--border-radius-large);
-            color: var(--color-text);
-            display: block;
-            font-family: 'Bariol', sans-serif;
-            /* It's bad practice to use !important but there is no other way
-            to remove the padding & margins without affecting other
-            paper-dialogs */
-            margin: 0 !important;
-            overflow: hidden;
-            padding-bottom: 0 !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            position: relative;
-        }
-        :host .content {
-            background-color: var(--color-background);
-            box-sizing: border-box;
-            padding-left: 0;
-            padding-right: 0;
-            position: relative;
-            text-align: center;
-        }
-        :host .motif {
-            display: block;
-            height: 120px;
-            left: 0;
-            margin: 0 auto;
-            position: absolute;
-            right: 0;
-            top: 0;
-            transform: translateY(-65%);
-            width: 120px;
-        }
-        :host .title {
-            font-size: 30px;
-            font-weight: bold;
-            line-height: 1.2em;
-            margin: 0;
-            padding-bottom: 12px;
-            padding-top: 55px;
-        }
-        :host .body {
-            color: var(--color-dark-grey);
-            font-size: 18px;
-            font-weight: bold;
-            line-height: 1.2em;
-            margin: 0;
-            padding-bottom: 25px;
-            padding-top: 0px;
-        }
-        :host .xp {
-            border-bottom: 2px solid var(--color-light-grey);
-            border-top: 2px solid var(--color-light-grey);
-            margin: 0 auto;
-            max-width: 190px;
-            padding: 10px 7px;
-            text-align: center;
-        }
-        :host .xp-prefix {
-            color: var(--color-yellow);
-            display: inline-block;
-            font-size: 28px;
-            line-height: 1em;
-            margin-right: 15px;
-            vertical-align: 15%;
-        }
-        :host .xp-value {
-            display: inline-block;
-            font-size: 36px;
-            font-weight: bold;
-        }
-        :host .xp-suffix {
-            background-color: var(--color-yellow);
-            border-radius: var(--border-radius-large);
-            color: var(--color-background);
-            display: inline-block;
-            font-size: 16px;
-            margin-left: 15px;
-            padding: 6px;
-            text-transform: uppercase;
-            vertical-align: 30%;
-        }
-        :host kano-progress-bar {
-            height: 12px;
-        }
-        :host .action {
-            padding-bottom: 0;
-            padding-top: 25px;
-        }
-        :host .progress {
-            @apply --layout-horizontal;
-            @apply --layout-center;
-            @apply --layout-justified;
-            margin: 20px 23px 0;
-        }
-        :host .progress .fraction {
-            color: #444;
-            font-weight: bold;
-            margin-top: -3px;
-            margin-left: 10px;
-        }
-        :host .button {
-            appearance: none;
-            -webkit-appearance: none;
-            border: 0;
-            border-radius: var(--border-radius-medium);
-            cursor: pointer;
-            display: inline-block;
-            font-family: Bariol;
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0 auto;
-            outline: 0;
-            text-transform: uppercase;
-        }
-        :host .button.button--primary {
-            background-color: var(--color-yellow);
-            color: var(--color-background);
-            padding: 14px 24px;
-        }
-        :host .button .icon {
-            display: inline-block;
-            height: auto;
-            line-height: 0;
-            opacity: 0.3;
-            vertical-align: top;
-            width: 20px;
-        }
-        :host .button .icon ~ .action-text {
-            margin-left: 10px;
-        }
-        :host .button .action-text ~ .icon {
-            margin-left: 10px;
-        }
-        :host .button.button--primary .icon {
-            color: var(--color-black);
-        }
-        :host .button.button--primary {
-            background-color: var(--color-yellow);
-        }
-        :host .button.button--primary:hover {
-            background-color: var(--color-yellow-darker);
-        }
-        :host .button.button--secondary {
-            background-color: var(--color-light-grey);
-            color: var(--color-medium-grey);
-            padding: 12px 20px;
-        }
-        :host .icon-arrow-up.icon-arrow-right svg {
-            transform: rotate(90deg);
-        }
-        :host .xp-component {
-            opacity: 0;
-        }
-        :host .xp-component:nth-child(2) {
-            animation-delay: 0.025s;
-        }
-        :host .xp-component:nth-child(3) {
-            animation-delay: 0.05s;
-        }
-        @media all and (max-width: 580px) {
-            :host .wrapper {
-                padding-top: 100px !important;
-                width: 300px;
-            }
-            :host .content {
-                padding-bottom: 20px;
-            }
-            :host .title,
-            :host .body,
-            :host .action,
-            :host .progress {
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-            :host .progress {
-                margin: 20px 13px 0;
-            }
-        }
-        @media all and (min-width: 580px) {
-            :host .wrapper {
-                padding-top: 120px !important;
-                width: 380px;
-            }
-            :host .content {
-                padding-bottom: 50px;
-            }
-            :host .title,
-            :host .body,
-            :host .action,
-            :host .progress {
-                padding-left: 50px;
-                padding-right: 50px;
-            }
-        }
-
-    </style>
     <template>
+        <style is="custom-style" include="input-text"></style>
+        <style>
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0%);
+                }
+            }
+            :host {
+                --color-background: #ffffff;
+                --color-yellow: #f1cb44;
+                --color-yellow-darker: #E4BE37;
+                --color-light-grey: #f4f5f6;
+                --color-medium-grey: #a7aeb2;
+                --color-dark-grey: #999999;
+                --color-black: #000000;
+                --color-text: #253541;
+                --color-progress-bar: #9FD465;
+                --color-progress-bar-bg: #e5e5e5;
+                --border-radius-large: 6px;
+                --border-radius-medium: 3px;
+                background-color: transparent;
+            }
+            :host paper-dialog {
+                background-color: transparent;
+            }
+            :host .fadeInUp {
+                animation-duration: 0.1s;
+                animation-name: fadeInUp;
+                animation-fill-mode: both;
+            }
+            :host .wrapper {
+                background-color: var(--color-light-grey);
+                border-radius: var(--border-radius-large);
+                color: var(--color-text);
+                display: block;
+                font-family: 'Bariol', sans-serif;
+                /* It's bad practice to use !important but there is no other way
+                to remove the padding & margins without affecting other
+                paper-dialogs */
+                margin: 0 !important;
+                overflow: hidden;
+                padding-bottom: 0 !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                position: relative;
+            }
+            :host .content {
+                background-color: var(--color-background);
+                box-sizing: border-box;
+                padding-left: 0;
+                padding-right: 0;
+                position: relative;
+                text-align: center;
+            }
+            :host .motif {
+                display: block;
+                height: 120px;
+                left: 0;
+                margin: 0 auto;
+                position: absolute;
+                right: 0;
+                top: 0;
+                transform: translateY(-65%);
+                width: 120px;
+            }
+            :host .title {
+                font-size: 30px;
+                font-weight: bold;
+                line-height: 1.2em;
+                margin: 0;
+                padding-bottom: 12px;
+                padding-top: 55px;
+            }
+            :host .body {
+                color: var(--color-dark-grey);
+                font-size: 18px;
+                font-weight: bold;
+                line-height: 1.2em;
+                margin: 0;
+                padding-bottom: 25px;
+                padding-top: 0px;
+            }
+            :host .xp {
+                border-bottom: 2px solid var(--color-light-grey);
+                border-top: 2px solid var(--color-light-grey);
+                margin: 0 auto;
+                max-width: 190px;
+                padding: 10px 7px;
+                text-align: center;
+            }
+            :host .xp-prefix {
+                color: var(--color-yellow);
+                display: inline-block;
+                font-size: 28px;
+                line-height: 1em;
+                margin-right: 15px;
+                vertical-align: 15%;
+            }
+            :host .xp-value {
+                display: inline-block;
+                font-size: 36px;
+                font-weight: bold;
+            }
+            :host .xp-suffix {
+                background-color: var(--color-yellow);
+                border-radius: var(--border-radius-large);
+                color: var(--color-background);
+                display: inline-block;
+                font-size: 16px;
+                margin-left: 15px;
+                padding: 6px;
+                text-transform: uppercase;
+                vertical-align: 30%;
+            }
+            :host kano-progress-bar {
+                height: 12px;
+            }
+            :host .action {
+                padding-bottom: 0;
+                padding-top: 25px;
+            }
+            :host .progress {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-justified;
+                margin: 20px 23px 0;
+            }
+            :host .progress .fraction {
+                color: #444;
+                font-weight: bold;
+                margin-top: -3px;
+                margin-left: 10px;
+            }
+            :host .button {
+                appearance: none;
+                -webkit-appearance: none;
+                border: 0;
+                border-radius: var(--border-radius-medium);
+                cursor: pointer;
+                display: inline-block;
+                font-family: Bariol;
+                font-size: 16px;
+                font-weight: bold;
+                margin: 0 auto;
+                outline: 0;
+                text-transform: uppercase;
+            }
+            :host .button.button--primary {
+                background-color: var(--color-yellow);
+                color: var(--color-background);
+                padding: 14px 24px;
+            }
+            :host .button .icon {
+                display: inline-block;
+                height: auto;
+                line-height: 0;
+                opacity: 0.3;
+                vertical-align: top;
+                width: 20px;
+            }
+            :host .button .icon ~ .action-text {
+                margin-left: 10px;
+            }
+            :host .button .action-text ~ .icon {
+                margin-left: 10px;
+            }
+            :host .button.button--primary .icon {
+                color: var(--color-black);
+            }
+            :host .button.button--primary {
+                background-color: var(--color-yellow);
+            }
+            :host .button.button--primary:hover {
+                background-color: var(--color-yellow-darker);
+            }
+            :host .button.button--secondary {
+                background-color: var(--color-light-grey);
+                color: var(--color-medium-grey);
+                padding: 12px 20px;
+            }
+            :host .icon-arrow-up.icon-arrow-right svg {
+                transform: rotate(90deg);
+            }
+            :host .xp-component {
+                opacity: 0;
+            }
+            :host .xp-component:nth-child(2) {
+                animation-delay: 0.025s;
+            }
+            :host .xp-component:nth-child(3) {
+                animation-delay: 0.05s;
+            }
+            @media all and (max-width: 580px) {
+                :host .wrapper {
+                    padding-top: 100px !important;
+                    width: 300px;
+                }
+                :host .content {
+                    padding-bottom: 20px;
+                }
+                :host .title,
+                :host .body,
+                :host .action,
+                :host .progress {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+                :host .progress {
+                    margin: 20px 13px 0;
+                }
+            }
+            @media all and (min-width: 580px) {
+                :host .wrapper {
+                    padding-top: 120px !important;
+                    width: 380px;
+                }
+                :host .content {
+                    padding-bottom: 50px;
+                }
+                :host .title,
+                :host .body,
+                :host .action,
+                :host .progress {
+                    padding-left: 50px;
+                    padding-right: 50px;
+                }
+            }
+        </style>
         <paper-dialog
             entry-animation="slide-from-bottom-animation"
             id="reward-modal-dialog"

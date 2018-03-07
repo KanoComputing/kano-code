@@ -35,7 +35,8 @@ var SharingBehavior = {
         gamificationResponse: {
             type: Object,
             value: null
-        }
+        },
+        shareContent: Object
     },
     listeners: {
         'cover-generated': '_onCoverGenerated'
@@ -388,7 +389,7 @@ var SharingBehavior = {
         }
         // The user logged in and the sharing was waiting authentication, trigger the share
         if (this.waitingAuth && !this.shareInfo.is_private) {
-            this.confirmShare();
+            this.confirmShare(this.shareContent);
         }
     },
 
@@ -397,6 +398,7 @@ var SharingBehavior = {
         if (!this.user) {
             // Flag the sharing as waiting authentication and trigger a login event
             this.waitingAuth = true;
+            this.shareContent = e.detail;
             return this.fire('login');
         }
         this._shareApp(e.detail);

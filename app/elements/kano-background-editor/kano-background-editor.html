@@ -2,15 +2,15 @@
 <link rel="import" href="../kano-code-shared-styles/kano-code-shared-styles.html">
 <link rel="import" href="../kano-part-editor-topbar/kano-part-editor-topbar.html">
 <dom-module id="kano-background-editor">
-    <style include="kano-code-shared-styles">
-    :host {
-        display: block;
-    }
-    .editor {
-        padding: var(--kano-part-editor-padding);
-    }
-    </style>
     <template>
+        <style include="kano-code-shared-styles">
+            :host {
+                display: block;
+            }
+            .editor {
+                padding: var(--kano-part-editor-padding);
+            }
+        </style>
         <kano-part-editor-topbar label="Background"></kano-part-editor-topbar>
         <div class="editor">
             <template is="dom-if" if="{{isNormalMode}}">

@@ -3,28 +3,28 @@
 <link rel="import" href="../kano-default-workspace/kano-default-workspace.html">
 <link rel="import" href="../kano-workspace-lightboard/kano-workspace-lightboard.html">
 <dom-module id="kano-editor-lightboard">
-    <style>
-        :host {
-            @apply --layout-vertical;
-            width: 100%;
-            height: 100%;
-            padding-top: 12px;
-        }
-        kano-default-workspace {
-            @apply --layout-vertical;
-            @apply --layout-flex;
-            margin: 0 40px;
-        }
-        kano-workspace-lightboard {
-            @apply --layout-flex;
-        }
-        ::slotted(.data),
-        ::slotted(.hardware),
-        ::slotted(kano-part-oscillator) {
-            display: none;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                @apply --layout-vertical;
+                width: 100%;
+                height: 100%;
+                padding-top: 12px;
+            }
+            kano-default-workspace {
+                @apply --layout-vertical;
+                @apply --layout-flex;
+                margin: 0 40px;
+            }
+            kano-workspace-lightboard {
+                @apply --layout-flex;
+            }
+            ::slotted(.data),
+            ::slotted(.hardware),
+            ::slotted(kano-part-oscillator) {
+                display: none;
+            }
+        </style>
         <kano-default-workspace id="wrapper"
                                 width="[[width]]"
                                 height="[[height]]"
@@ -34,7 +34,7 @@
                                 parts-menu-open="[[partsMenuOpen]]"
                                 parts="{{parts}}">
             <kano-workspace-lightboard id="workspace" width="[[width]]" height="[[height]]" slot="workspace">
-                <slot></slot>
+                <slot name="part" slot="part"></slot>
             </kano-workspace-lightboard>
         </kano-default-workspace>
     </template>

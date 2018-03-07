@@ -1,42 +1,42 @@
 <script src="../../scripts/util/dom.js"></script>
 <dom-module id="kano-focus-on">
-    <style>
-    :host {
-        display: block;
-        visibility: hidden;
-        position: fixed;
-        top: 0px;
-        bottom: 0px;
-        left: 0px;
-        right: 0px;
-        transform: scale(1.5, 1.5);
-        z-index: 1;
-    }
-    :host.show {
-        transform: scale(1, 1);
-    }
-    :host,
-    :host canvas {
-        pointer-events: none;
-    }
-    :host canvas {
-        opacity: 0;
-    }
-    :host.show canvas {
-        opacity: 0.6;
-    }
-    :host .border {
-        position: absolute;
-        border: 4px solid white;
-        border-radius: 3px;
-        opacity: 0;
-        @apply(--shadow-elevation-4dp);
-    }
-    :host.show .border {
-        opacity: 1;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                visibility: hidden;
+                position: fixed;
+                top: 0px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+                transform: scale(1.5, 1.5);
+                z-index: 1;
+            }
+            :host.show {
+                transform: scale(1, 1);
+            }
+            :host,
+            :host canvas {
+                pointer-events: none;
+            }
+            :host canvas {
+                opacity: 0;
+            }
+            :host.show canvas {
+                opacity: 0.6;
+            }
+            :host .border {
+                position: absolute;
+                border: 4px solid white;
+                border-radius: 3px;
+                opacity: 0;
+                @apply(--shadow-elevation-4dp);
+            }
+            :host.show .border {
+                opacity: 1;
+            }
+        </style>
         <canvas id="canvas"></canvas>
         <template is="dom-repeat" items="{{borders}}" as="border">
             <div class="border" style$="[[computeBorderStyle(border)]]"></div>

@@ -1,24 +1,24 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <script src="../../scripts/util/dom.js"></script>
 <dom-module id="kano-arrow">
-    <style>
-    :host {
-        display: block;
-        position: fixed;
-        top: 0px;
-        right: 0px;
-        left: 0px;
-        bottom: 0px;
-        pointer-events: none;
-        visibility: hidden;
-    }
-    :host .line {
-        stroke: black;
-        stroke-width: 3;
-        fill: transparent;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                position: fixed;
+                top: 0px;
+                right: 0px;
+                left: 0px;
+                bottom: 0px;
+                pointer-events: none;
+                visibility: hidden;
+            }
+            :host .line {
+                stroke: black;
+                stroke-width: 3;
+                fill: transparent;
+            }
+        </style>
         <slot id="content" name="arrow-image"></slot>
     </template>
 </dom-module>

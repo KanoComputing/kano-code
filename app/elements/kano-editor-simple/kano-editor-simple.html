@@ -1,29 +1,29 @@
 <link rel="import" href="../ui/kano-ui-viewport/kano-ui-viewport.html">
 <link rel="import" href="../kano-workspace-normal/kano-workspace-normal.html">
 <dom-module id="kano-editor-simple">
-    <style>
-        :host {
-            display: block;
-            width: 100%;
-            height: 100%;
-            border-radius: 5px;
-            @apply --layout-vertical;
-        }
-        kano-ui-viewport {
-            @apply --layout-vertical;
-            @apply --layout-flex;
-        }
-        kano-workspace-normal {
-            @apply --layout-flex;
-        }
-    </style>
     <template>
+        <style>
+            :host {
+                display: block;
+                width: 100%;
+                height: 100%;
+                border-radius: 5px;
+                @apply --layout-vertical;
+            }
+            kano-ui-viewport {
+                @apply --layout-vertical;
+                @apply --layout-flex;
+            }
+            kano-workspace-normal {
+                @apply --layout-flex;
+            }
+        </style>
         <kano-ui-viewport mode="scaled"
                         view-width="[[width]]"
                         view-height="[[height]]"
                         id="wrapper">
             <kano-workspace-normal id="workspace" width="[[width]]" height="[[height]]">
-                <slot></slot>
+                <slot name="part" slot="part"></slot>
             </kano-workspace-normal>
         </kano-ui-viewport>
     </template>

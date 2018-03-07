@@ -157,7 +157,7 @@
                 display: none !important;
             }
         </style>
-        <button id="settings" type="button" class="square settings" hidden$="[[!showSettings]]" on-tap="_openTooltip">
+        <button id="settings" type="button" class="square settings" hidden$="[[!showSettings]]" on-tap="_openSettings">
             <iron-icon icon="kc-ui:settings"></iron-icon>
         </button>
         <kano-tooltip id="save-tooltip" class="fly" position="top" offset="16"><div class="text">Save</div></kano-tooltip>
@@ -343,6 +343,12 @@
         _closeTooltip (target) {
             const tooltip = this.$[`${target.id}-tooltip`];
             tooltip.close();
+        },
+        _openSettings (e) {
+            const target = e.composedPath()[0];
+            const tooltip = this.$['settings-tooltip'];
+            tooltip.target = target.getBoundingClientRect();
+            tooltip.open();
         },
         _reset () {
             this.$['settings-tooltip'].close();

@@ -58,7 +58,7 @@
                                 parts="{{parts}}"
                                 show-mouse-position>
             <kano-workspace-normal id="workspace" width="[[width]]" height="[[height]]" slot="workspace">
-                <slot></slot>
+                <slot name="part" slot="part"></slot>
             </kano-workspace-normal>
             <div class="part" id$="background" slot="extra-parts" on-tap="_editBackground">
                 <iron-icon class="background-icon" icon="aspect-ratio"></iron-icon>

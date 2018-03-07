@@ -446,6 +446,7 @@
             tagName = model.tagName;
             element = document.createElement(tagName);
             element.setAttribute('id', model.id);
+            element.setAttribute('slot', 'part');
             element.classList.add(model.partType);
             element.addEventListener('model-changed', (e) => {
                 let detail = e.detail,

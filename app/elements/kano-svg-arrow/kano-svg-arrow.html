@@ -1,22 +1,22 @@
 <script src="../../scripts/util/dom.js"></script>
 <dom-module id="kano-svg-arrow">
-    <style>
-    :host {
-        display: inline-block;
-        position: fixed;
-        top: 0px;
-        right: 0px;
-        left: 0px;
-        bottom: 0px;
-        pointer-events: none;
-    }
-    :host .line {
-        stroke: black;
-        stroke-width: 3;
-        fill: transparent;
-    }
-    </style>
     <template>
+        <style>
+            :host {
+                display: inline-block;
+                position: fixed;
+                top: 0px;
+                right: 0px;
+                left: 0px;
+                bottom: 0px;
+                pointer-events: none;
+            }
+            :host .line {
+                stroke: black;
+                stroke-width: 3;
+                fill: transparent;
+            }
+        </style>
         <svg xmlns="http://www.w3.org/2000/svg" id="svg">
             <defs>
                 <marker
