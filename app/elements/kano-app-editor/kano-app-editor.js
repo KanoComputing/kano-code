@@ -754,6 +754,7 @@ Polymer({
 
             target.set('model.position.x', pos.x);
             target.set('model.position.y', pos.y);
+            target.notifyPath('model.position');
         };
     },
     scaleToWorkspace (point) {
