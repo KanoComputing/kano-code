@@ -123,10 +123,13 @@
             }
             button.change-gif {
                 color: white;
-                padding: 12px;
+                padding: 12px 16px;
                 border-radius: 24px;
-                margin-bottom: 12px;
+                margin-bottom: 70px;
                 background: var(--color-abbey);
+            }
+            button.change-gif:hover {
+                background: var(--color-chateau);
             }
 
             form {
@@ -416,13 +419,9 @@
                 height: 100%;
                 @apply --layout-vertical;
                 @apply --layout-center;
-                @apply --layout-center-justified;
-                opacity: 0;
+                @apply --layout-end-justified;
                 transition: opacity ease-in-out 70ms;
                 cursor: pointer;
-            }
-            .change-gif-container:hover {
-                opacity: 1;
             }
             .social-share-container button.social {
                 background-color: transparent;
@@ -548,7 +547,7 @@
                             <iron-image class="cover" src="[[gifSrc]]" preload fade sizing="contain" hidden$="[[spriteSrc]]"></iron-image>
                             <kano-lightboard-preview class="cover" width="420" src="[[spriteSrc]]" hidden$="[[!spriteSrc]]"></kano-lightboard-preview>
                             <div class="change-gif-container" on-tap="_changeGif">
-                                <button class="change-gif" type="button">&larr; [[localize('MAKE_ANOTHER', 'Make another gif')]]</button>
+                                <button class="change-gif" type="button">[[localize('MAKE_GIF', 'Make a gif instead')]]</button>
                             </div>
                         </div>
                     </div>

@@ -159,7 +159,7 @@
                 Kano.MakeApps.config.PORT = Kano.Util.Router.parseQsParam(this.context.querystring, 'port') || Kano.MakeApps.config.PORT;
                 Kano.MakeApps.config.WORLD_URL = Kano.Util.Router.parseQsParam(this.context.querystring, 'worldUrl') || Kano.MakeApps.config.WORLD_URL;
                 Kano.MakeApps.config.PROJECTS_URL = Kano.Util.Router.parseQsParam(this.context.querystring, 'projectsUrl') || Kano.MakeApps.config.PROJECTS_URL;
-                Kano.MakeApps.config.PREVIEW_TYPE = Kano.Util.Router.parseQsParam(this.context.querystring, 'previewType') || 'gif';
+                Kano.MakeApps.config.PREVIEW_TYPE = Kano.Util.Router.parseQsParam(this.context.querystring, 'previewType') || 'image';
 
                 disableLogout = Kano.Util.Router.parseQsParam(this.context.querystring, 'disableLogout');
                 if (disableLogout === null) {

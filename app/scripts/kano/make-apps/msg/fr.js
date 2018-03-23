@@ -189,7 +189,7 @@
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_BEGIN_RECORDING = "Click to begin recording your gif";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_START_RECORDING = "Start recording your animated gif";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_CLOSE = Kano.MakeApps.Msg.CLOSE;
-    Kano.MakeApps.Msg.KANO_SHARE_MODAL_MAKE_ANOTHER = "Make another gif";
+    Kano.MakeApps.Msg.KANO_SHARE_MODAL_MAKE_GIF = "Make a gif instead";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_SHARE_ON_WORLD = "Share on Kano World";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_COPY = "copy";
     Kano.MakeApps.Msg.KANO_SHARE_MODAL_GET_SHARE_LINK = "Get share link";
