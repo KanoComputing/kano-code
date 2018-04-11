@@ -22,6 +22,9 @@
         <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
         <div class="content">
             <slot name="part"></slot>
+            <!-- This is here for legacy apps that slot components into
+                 the workspace without a name -->
+            <slot></slot>
         </div>
     </template>
     <script>
