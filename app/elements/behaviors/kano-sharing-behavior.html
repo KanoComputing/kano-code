@@ -409,7 +409,7 @@ var SharingBehavior = {
         if (!this.user) {
             // Flag the sharing as waiting authentication and trigger a login event
             this.waitingAuth = true;
-            return this.fire('login');
+            return this.fire('signup');
         }
 
         let shareOptions = { share: true };
