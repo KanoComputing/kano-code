@@ -328,7 +328,7 @@ var SharingBehavior = {
             shareInfo;
 
         let p = Promise.resolve();
-        
+
         if (Kano.MakeApps.config.PREVIEW_TYPE === 'image') {
             const workspace = this.editor.getWorkspace();
             p = workspace.generateCover();
@@ -411,7 +411,12 @@ var SharingBehavior = {
             this.waitingAuth = true;
             return this.fire('login');
         }
-        this._shareApp(e.detail);
+
+        let shareOptions = { share: true };
+        if (e && e.detail) {
+            shareOptions = e.detail;
+        }
+        this._shareApp(shareOptions);
 
         if (!this.shareInfo.is_private) {
             this._goToPage('saving');

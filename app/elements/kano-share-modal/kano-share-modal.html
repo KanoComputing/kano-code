@@ -756,12 +756,16 @@
             appPreview.src = this.shareInfo.app.src;
         },
         _resetCoverGenerator () {
-            this.$['app-preview'].stop();
+            const appPreview = this.$['app-preview'];
+            if (appPreview.stop) {
+                appPreview.stop();
+            }
+
             this.gifProgress = this.gifRenderProgress = this.waitingFrame = 0;
             this.recording = false;
         },
         _onAppReady () {
-             /* setTimeout required on Safari */
+            /* setTimeout required on Safari */
             setTimeout(this._generateAppGif.bind(this), 0);
         },
         _generateAppGif () {

@@ -422,6 +422,10 @@
         },
         _computeParts () {
             if (this.remix) {
+                if (!this.mode) {
+                    return;
+                }
+
                 this.parts = Kano.MakeApps.Parts.list.filter((part) => {
                     return this.mode.parts.indexOf(part.type) !== -1;
                 });
