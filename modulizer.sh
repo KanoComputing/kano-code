@@ -1,0 +1,15 @@
+modulizer --out . \
+--npm-name @kano/kano-code \
+--npm-version 3.0.0-beta.1 \
+--dependency-mapping kano-shared-storage-client,kano-shared-storage-client,1.0.0 \
+--dependency-mapping web-components,@kano/web-components,3.0.0-beta.1 \
+--dependency-mapping polymer-sortablejs,@kano/polymer-sortablejs,3.0.0-beta.1 \
+--dependency-mapping x-carousel,@kano/x-carousel,3.0.0-beta.1 \
+--dependency-mapping kwc-color-picker,@kano/kwc-color-picker,3.0.0-beta.1 \
+--dependency-mapping kwc-color-wheel,@kano/kwc-color-wheel,3.0.0-beta.1 \
+--dependency-mapping kwc-blockly,@kano/kwc-blockly,3.0.0-beta.1 \
+--dependency-mapping flow-down,flow-down,1.0.2 \
+--dependency-mapping kwc-file-picker,@kano/kwc-file-picker,3.0.0-beta.1 \
+--dependency-mapping kwc-behaviours,@kano/kwc-behaviors,3.0.0-beta.1 \
+--dependency-mapping challenge-engine,challenge-engine,1.0.0 \
+--dependency-mapping kwc-icons,@kano/kwc-icons,3.0.0-beta.1
