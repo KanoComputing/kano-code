@@ -1,7 +1,10 @@
 <script type="text/javascript">
 
-    (function (Kano){
-
+    (function (){
+        window.Kano = window.Kano || {}
+        /**
+         * @namespace Kano.Behaviors
+         */
         Kano.Behaviors = Kano.Behaviors || {};
         
         // @polymerBehavior
@@ -12,6 +15,6 @@
             }
         };
         
-    })(window.Kano = window.Kano || {});
+    })();
 
 </script>
