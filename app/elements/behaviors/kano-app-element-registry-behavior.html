@@ -1,9 +1,12 @@
 <link rel="import" href="../../../../iron-resizable-behavior/iron-resizable-behavior.html">
 <script type="text/javascript">
 
-    (function (Kano){
+    (function (){
         let REGISTRY = {};
-
+        window.Kano = window.Kano || {}
+        /**
+         * @namespace Kano.Behaviors
+         */
         Kano.Behaviors = Kano.Behaviors || {};
 
         // @polymerBehavior AppElementRegistryBehavior
@@ -43,6 +46,6 @@
 
         Kano.Behaviors.AppElementRegistryBehavior = [Kano.Behaviors.AppElementRegistryBehaviorImpl, Polymer.IronResizableBehavior];
 
-    })(window.Kano = window.Kano || {});
+    })();
 
 </script>

@@ -1,5 +1,5 @@
 <script>
-    (function (Kano) {
+    (function () {
         /*
         Copyright 2014 Ralph Thomas
 
@@ -154,8 +154,11 @@
         Spring.prototype.map = function (n, start1, stop1, start2, stop2) {
             return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2;
         }
-
+        window.Kano = window.Kano || {};
+        /**
+         * @namespace Kano.MakesApps
+         */
         Kano.MakeApps = Kano.MakeApps || {};
         Kano.MakeApps.Spring = Spring;
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

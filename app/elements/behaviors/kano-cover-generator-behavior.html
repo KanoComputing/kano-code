@@ -1,8 +1,12 @@
 <link rel="import" href="../../scripts/kano/gif-encoder/encoder.html">
 <script type="text/javascript">
 
-    (function (Kano) {
+    (function () {
 
+        window.Kano = window.Kano || {}
+        /**
+         * @namespace Kano.Behaviors
+         */
         Kano.Behaviors = window.Kano.Behaviors || {};
 
         // @polymerBehavior
@@ -297,5 +301,5 @@
             }
         };
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

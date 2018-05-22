@@ -1,7 +1,12 @@
 
 <script src="../../../../../omggif/omggif.js"></script>
 <script>
-    (function (Kano) {
+    (function () {
+
+        /**
+         * @namespace Kano
+         */
+        window.Kano = window.Kano || {};
 
         class GifEncoder {
             constructor (opts) {
@@ -145,5 +150,5 @@
 
         Kano.GifEncoder = GifEncoder;
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

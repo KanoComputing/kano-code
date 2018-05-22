@@ -1,9 +1,15 @@
 <link rel="import" href="./default.html">
 <script>
-    (function (Kano) {
+    (function () {
+        const rpi = Kano.MakeApps.config;
         
-        Kano.MakeApps.config.API_URL = "http://localhost:8000";
-        Kano.MakeApps.config.PERF_SAFE = true;
+        rpi.API_URL = "http://localhost:8000";
+        rpi.PERF_SAFE = true;
+        /** 
+         * @namespace Kano.MakeApps
+         */
+         Kano.MakeApps = Kano.MakeApps || {};
 
-    })(window.Kano = window.Kano || {});
+         Kano.MakeApps.config = rpi;
+    })();
 </script>

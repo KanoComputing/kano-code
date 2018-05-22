@@ -1,6 +1,10 @@
 <script>
-    (function (Kano) {
+    (function () {
 
+        window.Kano = window.Kano || {}
+        /**
+         * @namespace Kano.Util
+         */
         Kano.Util = Kano.Util || {};
         Kano.Util.Router = Kano.Util.Router || {};
 
@@ -25,5 +29,5 @@
 
             return null;
         }
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

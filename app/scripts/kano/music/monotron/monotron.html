@@ -1,6 +1,8 @@
 <script>
     (function (Kano) {
 
+        window.Kano = window.Kano || {};
+
         class Monotron {
             constructor (opts) {
                 this.ctx = opts.ctx;
@@ -53,8 +55,11 @@
 
         }
 
+        /**
+         * @namespace Kano.Music
+         */
         Kano.Music = Kano.Music || {};
 
         Kano.Music.Monotron = Monotron;
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

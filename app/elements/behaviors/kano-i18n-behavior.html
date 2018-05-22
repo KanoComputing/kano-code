@@ -1,10 +1,14 @@
 <script type="text/javascript">
 
-    (function (Kano){
+    (function (){
 
+        window.Kano = window.Kano || {};
         Kano.MakeApps = Kano.MakeApps || {};
         Kano.MakeApps.Msg = Kano.MakeApps.Msg || {};
 
+        /**
+         * @namespace Kano.Behaviors
+         */
         Kano.Behaviors = Kano.Behaviors || {};
         
         // @polymerBehavior Kano.Behaviors.I18nBehavior
@@ -24,5 +28,5 @@
             }
         };
         
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

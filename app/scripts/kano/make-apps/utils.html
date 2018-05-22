@@ -1,6 +1,10 @@
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         var Utils = {};
+        /**
+         * @namespace Kano.MakeApps
+         */
         Kano.MakeApps = Kano.MakeApps || {};
         Kano.MakeApps.Utils = Utils;
 
@@ -190,5 +194,5 @@
             window.dispatchEvent(new Event('resize'));
         };
         
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

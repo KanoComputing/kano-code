@@ -2,8 +2,12 @@
 <link rel="import" href="./kano-validator-behavior.html">
 <script type="text/javascript">
 
-    (function (Kano) {
+    (function () {
 
+        window.Kano = window.Kano || {}
+        /**
+         * @namespace Kano.Behaviors
+         */
         Kano.Behaviors = window.Kano.Behaviors || {};
 
         // @polymerBehavior
@@ -264,6 +268,6 @@
 
         Kano.Behaviors.BlocklyValidatorBehavior = [Kano.Behaviors.ValidatorBehavior, Kano.Behaviors.BlocklyValidatorBehaviorImpl];
 
-    })(window.Kano = window.Kano || {});
+    })();
 
 </script>

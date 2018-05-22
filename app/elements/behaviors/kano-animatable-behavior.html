@@ -1,7 +1,9 @@
 <script type="text/javascript">
-
-    (function (Kano){
-
+    (function (){
+        window.Kano = window.Kano || {}
+        /**
+         * @namespace Kano.Behaviors
+         */
         Kano.Behaviors = Kano.Behaviors || {};
         
         // @polymerBehavior
@@ -20,6 +22,5 @@
                 this.toggleClass('no-animations', noAnimations);
             }
         };
-        
-    })(window.Kano = window.Kano || {});
+    })();
 </script>
