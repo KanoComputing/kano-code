@@ -1,4 +1,4 @@
-modulizer --out . \
+NODE_OPTIONS="--max_old_space_size=8192" modulizer --out . \
 --npm-name @kano/kano-code \
 --npm-version 3.0.0-beta.1 \
 --dependency-mapping kano-shared-storage-client,kano-shared-storage-client,1.0.0 \
