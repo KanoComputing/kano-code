@@ -1,4 +1,8 @@
-(function (Kano) {
+(function () {
+    window.Kano = window.Kano || {};
+    /**
+     *@namespace Kano.CanvasAPI
+     */
     function Setters(session) {
         this.session = session;
     }
@@ -55,4 +59,4 @@
 
     Kano.CanvasAPI.Setters = Setters;
 
-})(window.Kano = window.Kano || {});
+})();

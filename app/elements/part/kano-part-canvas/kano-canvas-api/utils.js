@@ -1,4 +1,8 @@
-(function (Kano) {
+(function () {
+    window.Kano = window.Kano || {};
+    /**
+     *@namespace Kano.CanvasAPI
+     */
     Kano.CanvasAPI.Utils = {};
 
     /*
@@ -151,4 +155,4 @@
         return false;
     };
 
-})(window.Kano = window.Kano || {});
+})();

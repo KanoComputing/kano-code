@@ -1,4 +1,8 @@
-(function (Kano) {
+(function () {
+    window.Kano = window.Kano || {};
+    /**
+     *@namespace Kano.CanvasAPI
+     */
     function Shapes(session) {
         this.session = session;
     }
@@ -152,4 +156,4 @@
 
     Kano.CanvasAPI.Shapes = Shapes;
 
-})(window.Kano = window.Kano || {});
+})();

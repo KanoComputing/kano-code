@@ -1,5 +1,9 @@
-(function (Kano) {
+(function () {
 
+    window.Kano = window.Kano || {};
+    /**
+     *@namespace Kano.CanvasAPI
+     */
     function Paths(session) {
         this.session = session;
         this.space = new Kano.CanvasAPI.Space(this.session);
@@ -54,4 +58,4 @@
     };
 
     Kano.CanvasAPI.Paths = Paths;
-})(window.Kano = window.Kano || {});
+})();

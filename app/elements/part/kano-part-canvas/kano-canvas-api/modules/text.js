@@ -1,4 +1,5 @@
-(function (Kano) {
+(function () {
+    window.Kano = window.Kano || {};
     function Text(session) {
         this.session = session;
     }
@@ -130,6 +131,9 @@
         this.session.ctx.fillText(val, x, y);
     };
 
+    /**
+     *@namespace Kano.CanvasAPI
+     */
     Kano.CanvasAPI.Text = Text;
 
-})(window.Kano = window.Kano || {});
+})();

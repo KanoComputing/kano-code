@@ -1,4 +1,5 @@
-(function (Kano) {
+(function () {
+    window.Kano = window.Kano || {};
     function General(session) {
         this.session = session;
     }
@@ -95,6 +96,9 @@
         return Math.floor(out);
     };
 
+    /**
+     *@namespace Kano.CanvasAPI
+     */
     Kano.CanvasAPI.General = General;
 
-})(window.Kano = window.Kano || {});
+})();

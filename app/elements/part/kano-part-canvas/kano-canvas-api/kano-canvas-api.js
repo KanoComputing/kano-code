@@ -1,4 +1,9 @@
-(function (Kano) {
+(function () {
+
+    window.Kano = window.Kano || {};
+    /**
+     *@namespace Kano
+     */
 
     function Canvas(settings) {
         this.session = {};
@@ -30,4 +35,4 @@
     };
 
     Kano.CanvasAPI = Canvas;
-})(window.Kano = window.Kano || {});
+})();

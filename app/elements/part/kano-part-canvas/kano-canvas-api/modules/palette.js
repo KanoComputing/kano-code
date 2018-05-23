@@ -1,4 +1,8 @@
-(function (Kano) {
+(function () {
+    window.Kano = window.Kano || {};
+    /**
+     *@namespace Kano.CanvasAPI
+     */
     Kano.CanvasAPI.Palette = {
         "aliceblue"            : "#F0F8FF",
         "antiquewhite"         : "#FAEBD7",
@@ -147,4 +151,4 @@
         "yellow"               : "#ffd839",
         "yellowgreen"          : "#9ACD32"
     };
-})(window.Kano || {});
+})();
