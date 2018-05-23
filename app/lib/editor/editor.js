@@ -61,7 +61,7 @@ class Editor extends EventEmitter {
         this.plugins.push(plugin);
         plugin.onInstall(this);
         if (this.injected) {
-            this.runPluginTask('onInject');
+            plugin.onInject();
         }
     }
 

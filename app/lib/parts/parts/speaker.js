@@ -1,9 +1,11 @@
+import { localize } from '../../i18n/index.js';
+
 const COLOUR = '#FFB347';
 
 const speaker = {
     partType: 'hardware',
     type: 'speaker',
-    label: Kano.MakeApps.Msg.PART_SPEAKER_NAME,
+    label: localize('PART_SPEAKER_NAME'),
     image: '/assets/part/speaker.svg',
     colour: COLOUR,
     component: 'kano-part-speaker',

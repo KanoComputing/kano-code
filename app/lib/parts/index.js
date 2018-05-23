@@ -53,7 +53,7 @@ class PartsPlugin extends Plugin {
     _onAddPartsFormConfirmed(e) {
         const addPartsDialog = this.editor.getElement('add-parts-dialog');
         addPartsDialog.close();
-        this.addPart(e.detail);
+        this.editor.emit('add-part-request', e.detail);
     }
     _openPartsDialog() {
         const addPartsDialog = this.editor.getElement('add-parts-dialog');
