@@ -1,8 +1,5 @@
 <link rel="import" href="../../../../../elements/kc-asset-picker/kc-asset-picker-dialog.html">
 <script>
-    /**
-     * @namespace Blockly
-     */
     Blockly.FieldAssetPicker = function (heading, type, rootDir, value, opt_validator) {
         this._heading = heading;
         this._type = type;
@@ -66,5 +63,12 @@
         this._expandedValue = JSON.parse(container.getAttribute('sample'));
         this.setValue(this._expandedValue.item.name);
     };
+
+    /**
+     * @namespace Kano
+     */
+    window.Kano = window.Kano || {};
+
+    Kano.FieldAssetPicker = Blockly.FieldAssetPicker;
 
 </script>
