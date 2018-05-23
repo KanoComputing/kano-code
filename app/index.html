@@ -7,16 +7,6 @@
         <!-- build:base -->
         <!-- endbuild -->
 
-        <!-- build:env -->
-        <script>
-            window.Kano = window.Kano || {};
-            window.Kano.MakeApps = window.Kano.MakeApps || {};
-            window.Kano.MakeApps.config = window.Kano.MakeApps.config || {};
-            window.Kano.MakeApps.config.ENV = 'staging';
-            window.Kano.MakeApps.config.TARGET = 'web';
-        </script>
-        <!-- endbuild-->
-
         <!-- Default meta tags (may be overriden via kano-meta-tags) on certain pages -->
         <!-- build:meta -->
         <!-- endbuild -->
@@ -54,8 +44,7 @@
         </div>
         
         <!-- Lazy load the dependencies and create the kano-app component when done -->
-        <script src="/scripts/splash.js"></script>
-        <script src="/scripts/index.js"></script>
+        <script type="module" src="./scripts/index.js"></script>
 
         <!-- build:gtm -->
         <!-- endbuild -->

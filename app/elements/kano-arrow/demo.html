@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <script src="../../../../../webcomponentsjs/webcomponents-lite.js"></script>
-        <link rel="import" href="./kano-arrow.html">
+        <script type="module" src="./kano-arrow.js"></script>
         <style is="custom-style">
             kano-animated-svg {
                 width: 30px;
@@ -113,37 +113,38 @@
                 <img src="http://simpleicon.com/wp-content/uploads/arrow-31.svg" alt="" slot="arrow-image" width="70"/>
             </kano-arrow>
         </template>
-        <script>
-            var bind = document.getElementById('bind'),
-                source = true,
-                prevSource,
-                prevTarget;
-            bind.addEventListener('dom-change', function () {
-                bind.target2 = document.getElementById('target').getBoundingClientRect();
-            });
-            bind.elemClicked = function (e) {
-                var rect = e.target.getBoundingClientRect();
-                if (e.target.tagName !== 'SPAN') {
-                    return;
-                }
-                if (source) {
-                    bind.source = rect;
-                    if (prevSource) {
-                        prevSource.className = '';
-                    }
-                    e.target.className = 'source';
-                    prevSource = e.target;
-                } else {
-                    bind.target = rect;
-                    if (prevTarget) {
-                        prevTarget.className = '';
-                    }
-                    e.target.className = 'target';
-                    prevTarget = e.target;
-                }
-                source = !source;
-            };
-            bind.selected = 'start';
-        </script>
+        <script type="module">
+import './kano-arrow.js';
+var bind = document.getElementById('bind'),
+    source = true,
+    prevSource,
+    prevTarget;
+bind.addEventListener('dom-change', function () {
+    bind.target2 = document.getElementById('target').getBoundingClientRect();
+});
+bind.elemClicked = function (e) {
+    var rect = e.target.getBoundingClientRect();
+    if (e.target.tagName !== 'SPAN') {
+        return;
+    }
+    if (source) {
+        bind.source = rect;
+        if (prevSource) {
+            prevSource.className = '';
+        }
+        e.target.className = 'source';
+        prevSource = e.target;
+    } else {
+        bind.target = rect;
+        if (prevTarget) {
+            prevTarget.className = '';
+        }
+        e.target.className = 'target';
+        prevTarget = e.target;
+    }
+    source = !source;
+};
+bind.selected = 'start';
+</script>
     </body>
 </html>

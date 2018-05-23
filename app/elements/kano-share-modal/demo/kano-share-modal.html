@@ -6,7 +6,7 @@
 
         <title>kano-share-modal demo</title>
 
-        <script src="../../../../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
         <script>
             window.Polymer = {
@@ -19,19 +19,37 @@
             };
         </script>
 
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../../../paper-tabs/paper-tabs.html">
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="../../../../../../@polymer/paper-tabs/paper-tabs.js"></script>
         <script src="../../../scripts/kano/make-apps/msg/en.js"></script>
-        <link rel="import" href="../../kano-workspace-lightboard/kano-workspace-lightboard.html">
-        <link rel="import" href="../../ui/kano-ui-viewport/kano-ui-viewport.html">
-        <link rel="import" href="../kano-share-modal.html">
+        <script type="module" src="../../kano-workspace-lightboard/kano-workspace-lightboard.js"></script>
+        <script type="module" src="../../ui/kano-ui-viewport/kano-ui-viewport.js"></script>
+        <script type="module" src="../kano-share-modal.js"></script>
 
-        <style is="custom-style" include="demo-pages-shared-styles">
-        </style>
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
+        </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
     </head>
     <body unresolved>
-        <div class="vertical-section-container">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container">
             <h3>Inputs can have different types, and be disabled</h3>
             <demo-snippet>
                 <dom-bind id="bind">
@@ -51,11 +69,11 @@
                             slug = 'blinky-the-ghost',
                             mode = Kano.MakeApps.Mode.modes.lightboard;
                         bind.page = 'sharing-form';
-                        bind.$.tabs.addEventListener('selected-changed', () => {
+                        bind.\$.tabs.addEventListener('selected-changed', () => {
                             updateModal();
                         });
                         function updateModal () {
-                            bind.$.modal.shareInfo = {
+                            bind.\$.modal.shareInfo = {
                                 page: bind.page,
                                 slug,
                                 app: {
@@ -65,11 +83,11 @@
                                 mode,
                                 description: ''
                             };
-                            bind.$.modal.opened = true;
+                            bind.\$.modal.opened = true;
                         }
                         updateModal();
                     });
-                </script>
+                &lt;/script>
             </demo-snippet>
             <h3>With a simple bitmap</h3>
             <demo-snippet>
@@ -90,11 +108,11 @@
                             slug = 'blinky-the-ghost',
                             mode = Kano.MakeApps.Mode.modes.lightboard;
                         bind.page = 'sharing-form';
-                        bind.$.tabs.addEventListener('selected-changed', () => {
+                        bind.\$.tabs.addEventListener('selected-changed', () => {
                             updateModal();
                         });
                         function updateModal () {
-                            bind.$.modal.shareInfo = {
+                            bind.\$.modal.shareInfo = {
                                 page: bind.page,
                                 slug,
                                 animation: {
@@ -104,12 +122,13 @@
                                 mode,
                                 description: ''
                             };
-                            bind.$.modal.opened = true;
+                            bind.\$.modal.opened = true;
                         }
                         updateModal();
                     });
-                </script>
+                &lt;/script>
             </demo-snippet>
-        </div>
-    </body>
-</html>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>

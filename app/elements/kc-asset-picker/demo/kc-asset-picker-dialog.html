@@ -7,15 +7,26 @@
 
         <title>kc-asset-picker-dialog demo</title>
 
-        <script src="../../../../..//webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../kc-asset-picker-dialog.html">
-        <link rel="import" href="../../../scripts/config/config.html">
-        <link rel="import" href="../../../scripts/kano/make-apps/files/samples.html">
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../kc-asset-picker-dialog.js"></script>
+        <script type="module" src="../../../scripts/config/config.js"></script>
+        <script type="module" src="../../../scripts/kano/make-apps/files/samples.js"></script>
 
-        <custom-style>
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
             <style is="custom-style" include="demo-pages-shared-styles">
                 .vertical-section-container.centered {
                     max-width: 800px;
@@ -25,11 +36,17 @@
                     max-height: 600px;
                 }
             </style>
-        </custom-style>
+        </custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
     </head>
 
     <body>
-        <div class="vertical-section-container centered">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
             <h3>Basic kc-asset-picker-dialog demo</h3>
             <demo-snippet>
                 <template>
@@ -38,7 +55,17 @@
                         const picker = document.getElementById('picker');
                         picker.rootDir = Kano.MakeApps.Files.samplesDir;
                         picker.open();
-                    </script>
+                    &lt;/script>
+                </template>
+            </demo-snippet>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>./scripts/kano/make-apps/files/samples.js';
+const picker = document.getElementById('picker');
+picker.rootDir = samplesDir;
+picker.open();
+</script>
                 </template>
             </demo-snippet>
         </div>

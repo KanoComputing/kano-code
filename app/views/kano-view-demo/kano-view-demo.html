@@ -1,7 +1,7 @@
-<link rel="import" href="../../scripts/kano/util/router.html">
-<link rel="import" href="../../../../paper-card/paper-card.html">
-<link rel="import" href="../../../../paper-button/paper-button.html">
-<link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
+<script type="module" src="../../scripts/kano/util/router.js"></script>
+<script type="module" src="../../../../../@polymer/paper-card/paper-card.js"></script>
+<script type="module" src="../../../../../@polymer/paper-button/paper-button.js"></script>
+<script type="module" src="../../elements/behaviors/kano-view-behavior.js"></script>
 
 <dom-module id="kano-view-demo">
     <template>
@@ -56,96 +56,101 @@
     </template>
 </dom-module>
 
-<script>
-    /* globals Polymer, Kano */
-    Polymer({
-        is: 'kano-view-demo',
-        behaviors: [Kano.Behaviors.ViewBehavior],
-        ready () {
-            let groupedApps = {
-                'lightboard': [{
-                    id: 'alarm',
-                    label: 'Alarm'
-                }, {
-                    id: 'alarm-2',
-                    label: 'Alarm 2'
-                }, {
-                    id: 'cnn',
-                    label: 'CNN'
-                }, {
-                    id: 'game_bouncy',
-                    label: 'Bouncy'
-                }, {
-                    id: 'game_racing',
-                    label: 'Racing'
-                }, {
-                    id: 'gmeter',
-                    label: 'G-Meter'
-                }, {
-                    id: 'heartbeat',
-                    label: 'Heartbeat'
-                }, {
-                    id: 'mouth',
-                    label: 'Talking Robot'
-                }, {
-                    id: 'rainbow',
-                    label: 'Rainbow'
-                }, {
-                    id: 'soundwave',
-                    label: 'Sound Wave'
-                }, {
-                    id: 'sports_score',
-                    label: 'Sport Score'
-                }, {
-                    id: 'weather_anims',
-                    label: 'Weather Animations'
-                }, {
-                    id: 'weather_with_temp',
-                    label: 'Weather with Temperature'
-                }, {
-                    id: 'weather_with_umbrella warning',
-                    label: 'Weather with warning'
-                }, {
-                    id: 'light-bell',
-                    label: 'Light Bell'
-                }, {
-                    id: 'light-sounds',
-                    label: 'Sounds near'
-                }],
-                'camera': [{
-                    id: 'clap-to-snap',
-                    label: 'Clap to Snap'
-                }, {
-                    id: 'gif-maker',
-                    label: 'Gif Forge'
-                }, {
-                    id: 'kaleidoscope-prism',
-                    label: 'Prism-o-vision'
-                }, {
-                    id: 'simple-pic',
-                    label: 'Simple Snap'
-                }, {
-                    id: 'music-power',
-                    label: 'Gesture beats'
-                }
-                ],
-                'normal': []
-            };
-            this.mode = this._getMode(this.context);
-            this.apps = groupedApps[this.mode];
-        },
-        _loadApp (e) {
-            let app = e.model.get('app');
-            fetch(`/assets/demo-apps/${app.id}.json`)
-                .then(r => r.json())
-                .then(appJson => {
-                    localStorage.setItem(`savedApp-${appJson.mode}`, JSON.stringify(appJson));
-                    page.redirect(`/?mode=${appJson.mode}`);
-                });
-        },
-        _getMode (context) {
-            let modeFromQs = Kano.Util.Router.parseQsParam(this.context.querystring, 'mode');
-            return modeFromQs ? modeFromQs : 'normal';
-        },
-    });
+<script type="module">
+import { Router } from '../../scripts/kano/util/router.js';
+import '../../../../../@polymer/paper-card/paper-card.js';
+import '../../../../../@polymer/paper-button/paper-button.js';
+import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
+import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+/* globals Polymer, Kano */
+Polymer({
+    is: 'kano-view-demo',
+    behaviors: [ViewBehavior],
+    ready () {
+        let groupedApps = {
+            'lightboard': [{
+                id: 'alarm',
+                label: 'Alarm'
+            }, {
+                id: 'alarm-2',
+                label: 'Alarm 2'
+            }, {
+                id: 'cnn',
+                label: 'CNN'
+            }, {
+                id: 'game_bouncy',
+                label: 'Bouncy'
+            }, {
+                id: 'game_racing',
+                label: 'Racing'
+            }, {
+                id: 'gmeter',
+                label: 'G-Meter'
+            }, {
+                id: 'heartbeat',
+                label: 'Heartbeat'
+            }, {
+                id: 'mouth',
+                label: 'Talking Robot'
+            }, {
+                id: 'rainbow',
+                label: 'Rainbow'
+            }, {
+                id: 'soundwave',
+                label: 'Sound Wave'
+            }, {
+                id: 'sports_score',
+                label: 'Sport Score'
+            }, {
+                id: 'weather_anims',
+                label: 'Weather Animations'
+            }, {
+                id: 'weather_with_temp',
+                label: 'Weather with Temperature'
+            }, {
+                id: 'weather_with_umbrella warning',
+                label: 'Weather with warning'
+            }, {
+                id: 'light-bell',
+                label: 'Light Bell'
+            }, {
+                id: 'light-sounds',
+                label: 'Sounds near'
+            }],
+            'camera': [{
+                id: 'clap-to-snap',
+                label: 'Clap to Snap'
+            }, {
+                id: 'gif-maker',
+                label: 'Gif Forge'
+            }, {
+                id: 'kaleidoscope-prism',
+                label: 'Prism-o-vision'
+            }, {
+                id: 'simple-pic',
+                label: 'Simple Snap'
+            }, {
+                id: 'music-power',
+                label: 'Gesture beats'
+            }
+            ],
+            'normal': []
+        };
+        this.mode = this._getMode(this.context);
+        this.apps = groupedApps[this.mode];
+    },
+    _loadApp (e) {
+        let app = e.model.get('app');
+        fetch(`/assets/demo-apps/${app.id}.json`)
+            .then(r => r.json())
+            .then(appJson => {
+                localStorage.setItem(`savedApp-${appJson.mode}`, JSON.stringify(appJson));
+                page.redirect(`/?mode=${appJson.mode}`);
+            });
+    },
+    _getMode (context) {
+        let modeFromQs = Router.parseQsParam(this.context.querystring, 'mode');
+        return modeFromQs ? modeFromQs : 'normal';
+    },
+});
 </script>

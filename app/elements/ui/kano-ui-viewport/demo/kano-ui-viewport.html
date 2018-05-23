@@ -7,7 +7,7 @@
 
         <title>kano-ui-viewport</title>
 
-        <script src="../../../../../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
         <script>
             window.Polymer = {
@@ -15,11 +15,23 @@
             };
         </script>
 
-        <link rel="import" href="../../../../../../iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../../../../iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../kano-ui-viewport.html">
+        <script type="module" src="../../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="../../../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../kano-ui-viewport.js"></script>
 
-        <style is="custom-style" include="demo-pages-shared-styles">
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
             body {
                 padding: 0;
             }
@@ -62,10 +74,16 @@
             button:focus {
                 outline: none;
             }
-        </style>
+        </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
     </head>
     <body>
-        <div class="vertical-section-container">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container">
             <demo-snippet class="demo-container">
                 <template is="dom-bind" id="bind">
                     <h1>kano-ui-viewport-demo</h1>
@@ -80,10 +98,7 @@
                         <button type="button" name="button" data-value="scaled" on-tap="setMode">Scaled</button>
                         <button type="button" name="button" data-value="zoomed" on-tap="setMode">Zoomed</button>
                     </div>
-                    <kano-ui-viewport id="viewport"
-                                      mode="[[mode]]"
-                                      view-width="[[width]]"
-                                      view-height="[[height]]">
+                    <kano-ui-viewport id="viewport" mode="[[mode]]" view-width="[[width]]" view-height="[[height]]">
                         <slot name="workspace">
                             <h1 class="oversize">CONTENT</h1>
                             <h1 class="oversize">AND</h1>
@@ -92,22 +107,26 @@
                     </kano-ui-viewport>
                 </template>
             </demo-snippet>
-        </div>
-        <script>
-            document.addEventListener('WebComponentsReady', () => {
-                const bind = document.getElementById('bind');
-                const viewport = document.getElementById('viewport');
-                bind.width = 1600;
-                bind.height = 900;
-                bind.mode = 'scaled';
-                bind.setMode = function (e) {
-                    bind.mode = e.target.getAttribute('data-value');
-                };
-                bind.setAspectRatio = function (e) {
-                    viewport.style.width = parseInt(e.target.getAttribute('data-x')) * 100 + 'px';
-                    viewport.style.height = parseInt(e.target.getAttribute('data-y')) * 100 +'px';   
-                };
-            });
-        </script>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+        <script type="module">
+import '../../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+import '../../../../../../../@polymer/iron-demo-helpers/demo-snippet.js';
+import '../kano-ui-viewport.js';
+const bind = document.getElementById('bind');
+const viewport = document.getElementById('viewport');
+bind.width = 1600;
+bind.height = 900;
+bind.mode = 'scaled';
+bind.setMode = function (e) {
+    bind.mode = e.target.getAttribute('data-value');
+};
+bind.setAspectRatio = function (e) {
+    viewport.style.width = parseInt(e.target.getAttribute('data-x')) * 100 + 'px';
+    viewport.style.height = parseInt(e.target.getAttribute('data-y')) * 100 +'px';   
+};
+</script>
     </body>
 </html>

@@ -1,10 +1,13 @@
+import { BlockAnimation } from './splash.js';
+import { config } from './config/staging.js';
+
 const { userAgent } = window.navigator;
 
 const Bootstrap = {
     loaded: false,
     loadEventFired: false,
     kanoAppInserted: false,
-    isCore: window.Kano.MakeApps.config.TARGET === 'osonline',
+    isCore: config.TARGET === 'osonline',
     isPi: userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1,
     webComponentsSupported: ('registerElement' in document &&
                                         'import' in document.createElement('link') &&
@@ -61,13 +64,13 @@ const Bootstrap = {
         const lang = this.getLang();
         let loaded = 0;
 
-        elements.push(`/elements/msg/${lang}.html`);
-        elements.push('/elements/elements.html');
+        elements.push(`/elements/msg/${lang}.js`);
+        elements.push('/elements/elements.js');
 
         elements.forEach((elementURL) => {
-            const elImport = document.createElement('link');
-            elImport.rel = 'import';
-            elImport.href = elementURL;
+            const elImport = document.createElement('script');
+            elImport.type = 'module';
+            elImport.src = elementURL;
             elImport.addEventListener('load', () => {
                 loaded += 1;
                 if (loaded === elements.length) {
@@ -88,14 +91,7 @@ const Bootstrap = {
         }
         this.loadEventFired = true;
         clearTimeout(this.loadTimeoutId);
-        if (!this.webComponentsSupported) {
-            wcPoly = document.createElement('script');
-            wcPoly.src = '/bower_components/webcomponentsjs/webcomponents-lite.min.js';
-            wcPoly.onload = this.lazyLoadElements;
-            document.head.appendChild(wcPoly);
-        } else {
-            this.lazyLoadElements();
-        }
+        this.lazyLoadElements();
     },
     registerSW() {
         if ('serviceWorker' in navigator) {
@@ -113,7 +109,7 @@ const Bootstrap = {
     },
     start() {
         this.redirectCore();
-        this.splash = new Kano.BlockAnimation(document.getElementById('blocks'));
+        this.splash = new BlockAnimation(document.getElementById('blocks'));
         this.splash.init();
         this.started = new Date();
         // Attach the loading of the dependencies when the page is loaded

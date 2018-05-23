@@ -1,11 +1,11 @@
-<link rel="import" href="../../../../neon-animation/animations/slide-from-bottom-animation.html">
-<link rel="import" href="../../../../iron-pages/iron-pages.html">
-<link rel="import" href="../../../../iron-image/iron-image.html">
-<link rel="import" href="../../../../paper-card/paper-card.html">
-<link rel="import" href="../../../../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../../web-components/kano-progress-bar/kano-progress-bar.html">
-<link rel="import" href="../../../../web-components/kano-sound-player-behavior/kano-sound-player-behavior.html">
-<link rel="import" href="../../../../web-components/kano-glint-animation/kano-glint-animation.html">
+<script type="module" src="../../../../../@polymer/neon-animation/animations/slide-from-bottom-animation.js"></script>
+<script type="module" src="../../../../../@polymer/iron-pages/iron-pages.js"></script>
+<script type="module" src="../../../../../@polymer/iron-image/iron-image.js"></script>
+<script type="module" src="../../../../../@polymer/paper-card/paper-card.js"></script>
+<script type="module" src="../../../../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+<script type="module" src="../../../../../@kano/web-components/kano-progress-bar/kano-progress-bar.js"></script>
+<script type="module" src="../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js"></script>
+<script type="module" src="../../../../../@kano/web-components/kano-glint-animation/kano-glint-animation.js"></script>
 
 <dom-module id="kano-onboarding-reward-modal">
     <template>
@@ -315,77 +315,87 @@
     </template>
 </dom-module>
 
-<script>
-    /* globals Polymer, Kano */
-    Polymer({
-        is: 'kano-onboarding-reward-modal',
-        behaviors: [Kano.Behaviors.SoundPlayerBehavior],
-        properties: {
-            content: {
-                type: Object
-            },
-            modalVisibility: {
-                type: Boolean,
-                value: false
-            },
-            progress: {
-                type: Object,
-                value: {
-                    min: 0,
-                    max: 300
-                }
+<script type="module">
+import '../../../../../@polymer/neon-animation/animations/slide-from-bottom-animation.js';
+import '../../../../../@polymer/iron-pages/iron-pages.js';
+import '../../../../../@polymer/iron-image/iron-image.js';
+import '../../../../../@polymer/paper-card/paper-card.js';
+import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../../../../@kano/web-components/kano-progress-bar/kano-progress-bar.js';
+import '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
+import '../../../../../@kano/web-components/kano-glint-animation/kano-glint-animation.js';
+import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+/* globals Polymer, Kano */
+Polymer({
+    is: 'kano-onboarding-reward-modal',
+    behaviors: [Kano.Behaviors.SoundPlayerBehavior],
+    properties: {
+        content: {
+            type: Object
+        },
+        modalVisibility: {
+            type: Boolean,
+            value: false
+        },
+        progress: {
+            type: Object,
+            value: {
+                min: 0,
+                max: 300
             }
-        },
-        observers: [
-            '_onVisibilityChanged(modalVisibility)'
-        ],
-        attached () {
-            this.$['reward-modal-dialog'].backdropElement.classList.add('reward');
-            this.loadSound(`/assets/audio/samples/challenge_complete.wav`);
-        },
-        detached () {
-            this.$['reward-modal-dialog'].backdropElement.classList.remove('reward');
-        },
-        open () {
-            this.$['reward-modal-dialog'].open();
-            this.playSound(`/assets/audio/samples/challenge_complete.wav`);
-            this.async(() => this._animateProgress(), 1000);
-        },
-        close () {
-            this.$['reward-modal-dialog'].close();
-        },
-        _buttonClass (index) {
-            if (index === 0) {
-                return `button button--primary`;
-            };
-            return 'button button--secondary';
-        },
-        _handleTap (e) {
-            this.close();
-            this.fire('interaction', {
-                trackingEvent: e.model.link.trackingEvent,
-                type: e.model.link.type
-            });
-        },
-        _animateProgress () {
-            this.$$('#progress-bar').addValue(100);
-        },
-        _iconType (icon, content) {
-            return icon === content;
-        },
-        _onVisibilityChanged (visible) {
-            let xpComponents = Polymer.dom(this.root).querySelectorAll('.xp-component');
-            let xpArray = Array.prototype.slice.call(xpComponents);
-            for (let i = 0; i < xpArray.length; i++) {
-                if (visible) {
-                    xpArray[i].classList.add('fadeInUp');
-                } else {
-                    xpArray[i].classList.remove('fadeInUp');
-                }
-            }
-        },
-        _updateModalVisibility () {
-            this.set('modalVisibility', !this.modalVisibility);
         }
-    });
+    },
+    observers: [
+        '_onVisibilityChanged(modalVisibility)'
+    ],
+    attached () {
+        this.$['reward-modal-dialog'].backdropElement.classList.add('reward');
+        this.loadSound(`/assets/audio/samples/challenge_complete.wav`);
+    },
+    detached () {
+        this.$['reward-modal-dialog'].backdropElement.classList.remove('reward');
+    },
+    open () {
+        this.$['reward-modal-dialog'].open();
+        this.playSound(`/assets/audio/samples/challenge_complete.wav`);
+        this.async(() => this._animateProgress(), 1000);
+    },
+    close () {
+        this.$['reward-modal-dialog'].close();
+    },
+    _buttonClass (index) {
+        if (index === 0) {
+            return `button button--primary`;
+        };
+        return 'button button--secondary';
+    },
+    _handleTap (e) {
+        this.close();
+        this.fire('interaction', {
+            trackingEvent: e.model.link.trackingEvent,
+            type: e.model.link.type
+        });
+    },
+    _animateProgress () {
+        this.$$('#progress-bar').addValue(100);
+    },
+    _iconType (icon, content) {
+        return icon === content;
+    },
+    _onVisibilityChanged (visible) {
+        let xpComponents = dom(this.root).querySelectorAll('.xp-component');
+        let xpArray = Array.prototype.slice.call(xpComponents);
+        for (let i = 0; i < xpArray.length; i++) {
+            if (visible) {
+                xpArray[i].classList.add('fadeInUp');
+            } else {
+                xpArray[i].classList.remove('fadeInUp');
+            }
+        }
+    },
+    _updateModalVisibility () {
+        this.set('modalVisibility', !this.modalVisibility);
+    }
+});
 </script>

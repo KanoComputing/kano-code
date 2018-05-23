@@ -4,44 +4,45 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="import" type="" href="../encoder.html">
+        <script type="module" src="../encoder.js"></script>
     </head>
     <body>
         <canvas id="canvas" width="300" height="300"></canvas>
-        <script>
-            function render(color) {
-                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                ctx.fillStyle = color;
-                ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            }
+        <script type="module">
+import { GifEncoder } from '../encoder.js';
+function render(color) {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
 
-            let canvas = document.getElementById('canvas'),
-                ctx = canvas.getContext('2d');
-            let encoder = new Kano.GifEncoder({
-                width: 300,
-                height: 300,
-                length: 4,
-                workerUrl: '/scripts/kano/gif-encoder/worker.js'
-            }), p = [];
+let canvas = document.getElementById('canvas'),
+    ctx = canvas.getContext('2d');
+let encoder = new GifEncoder({
+    width: 300,
+    height: 300,
+    length: 4,
+    workerUrl: '/scripts/kano/gif-encoder/worker.js'
+}), p = [];
 
-            render('red');
-            p.push(encoder.addFrame(ctx, 500));
-            render('aliceblue');
-            p.push(encoder.addFrame(ctx, 500));
-            render('aquamarine');
-            p.push(encoder.addFrame(ctx, 500));
-            render('violet');
-            p.push(encoder.addFrame(ctx, 500));
+render('red');
+p.push(encoder.addFrame(ctx, 500));
+render('aliceblue');
+p.push(encoder.addFrame(ctx, 500));
+render('aquamarine');
+p.push(encoder.addFrame(ctx, 500));
+render('violet');
+p.push(encoder.addFrame(ctx, 500));
 
-            Promise.all(p).then(() => {
-                let link = document.createElement('a');
-                encoder.end();
-                link.setAttribute('href', encoder.data_url);
+Promise.all(p).then(() => {
+    let link = document.createElement('a');
+    encoder.end();
+    link.setAttribute('href', encoder.data_url);
 
-                link.innerText = 'ddl';
+    link.innerText = 'ddl';
 
-                document.body.appendChild(link);
-            });
-        </script>
+    document.body.appendChild(link);
+});
+</script>
     </body>
 </html>

@@ -1,27 +1,27 @@
 <!-- External dependencies -->
-<link rel="import" href="../../../../polymer/polymer-element.html">
-<link rel="import" href="../../../../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../../../iron-icon/iron-icon.html">
-<link rel="import" href="../../../../web-components/kano-reward-modal/kano-reward-modal.html">
-<link rel="import" href="../../../../web-components/kano-alert/kano-alert.html">
+<script type="module" src="../../../../../@polymer/polymer/polymer-element.js"></script>
+<script type="module" src="../../../../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+<script type="module" src="../../../../../@polymer/iron-icon/iron-icon.js"></script>
+<script type="module" src="../../../../../@kano/web-components/kano-reward-modal/kano-reward-modal.js"></script>
+<script type="module" src="../../../../../@kano/web-components/kano-alert/kano-alert.js"></script>
 <!-- App components -->
-<link rel="import" href="../../elements/kano-app-challenge/kano-app-challenge.html">
-<link rel="import" href="../../elements/kano-app-editor/kano-app-editor.html">
-<link rel="import" href="../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.html">
-<link rel="import" href="../../elements/kano-share-modal/kano-share-modal.html">
+<script type="module" src="../../elements/kano-app-challenge/kano-app-challenge.js"></script>
+<script type="module" src="../../elements/kano-app-editor/kano-app-editor.js"></script>
+<script type="module" src="../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.js"></script>
+<script type="module" src="../../elements/kano-share-modal/kano-share-modal.js"></script>
 <!-- App behaviors -->
-<link rel="import" href="../../elements/behaviors/kano-sharing-behavior.html">
-<link rel="import" href="../../elements/behaviors/kano-code-ga-tracking-behavior.html">
-<link rel="import" href="../../elements/behaviors/kano-i18n-behavior.html">
+<script type="module" src="../../elements/behaviors/kano-sharing-behavior.js"></script>
+<script type="module" src="../../elements/behaviors/kano-code-ga-tracking-behavior.js"></script>
+<script type="module" src="../../elements/behaviors/kano-i18n-behavior.js"></script>
 <!-- App scripts -->
-<link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
-<link rel="import" href="../../scripts/kano/util/router.html">
-<link rel="import" href="../../scripts/kano/make-apps/stories.html">
-<link rel="import" href="../../scripts/kano/make-apps/progress.html">
-<link rel="import" href="../../scripts/kano/make-apps/store.html">
-<link rel="import" href="../../scripts/kano/make-apps/actions/app.html">
-<link rel="import" href="../../scripts/kano/make-apps/utils.html">
-<link rel="import" href="../../scripts/kano/make-apps/experiments.html">
+<script type="module" src="../../scripts/kano/make-apps/blockly/blockly.js"></script>
+<script type="module" src="../../scripts/kano/util/router.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/stories.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/progress.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/store.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/actions/app.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/utils.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/experiments.js"></script>
 
 <dom-module id="kano-view-story">
     <template>
@@ -96,460 +96,484 @@
     </template>
 </dom-module>
 
-<script>
+<script type="module">
+import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../../../../@polymer/iron-icon/iron-icon.js';
+import '../../../../../@kano/web-components/kano-reward-modal/kano-reward-modal.js';
+import '../../../../../@kano/web-components/kano-alert/kano-alert.js';
+import '../../elements/kano-app-challenge/kano-app-challenge.js';
+import '../../elements/kano-app-editor/kano-app-editor.js';
+import '../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.js';
+import '../../elements/kano-share-modal/kano-share-modal.js';
+import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
+import { GABehavior } from '../../elements/behaviors/kano-code-ga-tracking-behavior.js';
+import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
+import '../../scripts/kano/make-apps/blockly/blockly.js';
+import '../../scripts/kano/util/router.js';
+import { Stories } from '../../scripts/kano/make-apps/stories.js';
+import { Progress } from '../../scripts/kano/make-apps/progress.js';
+import { Store } from '../../scripts/kano/make-apps/store.js';
+import '../../scripts/kano/make-apps/actions/app.js';
+import { Utils } from '../../scripts/kano/make-apps/utils.js';
+import { experiments } from '../../scripts/kano/make-apps/experiments.js';
+import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
+import { Parts as Parts$0 } from '../../mode/common/background-blocks.js';
+import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
 
-    const behaviors = [
-        Kano.Behaviors.ViewBehavior,
-        Kano.Behaviors.SharingBehavior,
-        Kano.Behaviors.KanoCode.GABehavior,
-        Kano.Behaviors.I18nBehavior,
-        Kano.Behaviors.SoundPlayerBehavior,
-    ];
+const behaviors = [
+    ViewBehavior,
+    SharingBehavior,
+    GABehavior,
+    I18nBehavior,
+    Kano.Behaviors.SoundPlayerBehavior,
+];
 
-    class KanoViewStory extends Kano.MakeApps.Store.StateReceiver(
-        Polymer.mixinBehaviors(behaviors, Polymer.Element)
-    ) {
-        static get is() { return 'kano-view-story'; }
-        static get properties() {
-            return {
-                loading: {
-                    type: Boolean,
-                    value: true,
-                    reflectToAttribute: true,
-                },
-                context: {
-                    linkState: 'routing.context',
-                    observer: '_contextChanged',
-                },
-                store: {
-                    type: Object,
-                    value: () => ({}),
-                },
-                story: {
-                    type: Object,
-                    linkState: 'challenge',
-                },
-                scene: {
-                    type: Object,
-                    linkState: 'challenge.scene',
-                },
-                addedParts: {
-                    type: Array,
-                },
-                sceneVariables: {
-                    type: Object,
-                },
-                remix: {
-                    type: Boolean,
-                    value: false,
-                    observer: '_remixChanged',
-                },
-                code: Object,
-                customAlert: Boolean,
-                loadingApp: {
-                    type: Object,
-                    linkState: 'story.loadingApp',
-                },
-                editorApp: {
-                    type: Object,
-                    linkState: 'editor.app',
-                    observer: '_editorAppChanged',
-                },
-            };
-        }
-        static get observers() {
-            return [
-                '_completedChanged(scene.completed)',
-                '_addedPartsChanged(addedParts.splices)',
-            ];
-        }
-        constructor() {
-            super();
-            const { config } = this.getState();
-            this.progress = new Kano.MakeApps.Progress(config);
-            this._nextChallenge = this._nextChallenge.bind(this);
-        }
-        connectedCallback() {
-            super.connectedCallback();
-            const { config } = this.getState();
+class KanoViewStory extends Store.StateReceiver(
+    mixinBehaviors(behaviors, PolymerElement)
+) {
+    static get is() { return 'kano-view-story'; }
+    static get properties() {
+        return {
+            loading: {
+                type: Boolean,
+                value: true,
+                reflectToAttribute: true,
+            },
+            context: {
+                linkState: 'routing.context',
+                observer: '_contextChanged',
+            },
+            store: {
+                type: Object,
+                value: () => ({}),
+            },
+            story: {
+                type: Object,
+                linkState: 'challenge',
+            },
+            scene: {
+                type: Object,
+                linkState: 'challenge.scene',
+            },
+            addedParts: {
+                type: Array,
+            },
+            sceneVariables: {
+                type: Object,
+            },
+            remix: {
+                type: Boolean,
+                value: false,
+                observer: '_remixChanged',
+            },
+            code: Object,
+            customAlert: Boolean,
+            loadingApp: {
+                type: Object,
+                linkState: 'story.loadingApp',
+            },
+            editorApp: {
+                type: Object,
+                linkState: 'editor.app',
+                observer: '_editorAppChanged',
+            },
+        };
+    }
+    static get observers() {
+        return [
+            '_completedChanged(scene.completed)',
+            '_addedPartsChanged(addedParts.splices)',
+        ];
+    }
+    constructor() {
+        super();
+        const { config } = this.getState();
+        this.progress = new Progress(config);
+        this._nextChallenge = this._nextChallenge.bind(this);
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        const { config } = this.getState();
 
-            this.modal = this.$['share-modal'];
+        this.modal = this.$['share-modal'];
 
-            this.editor = new Kano.Code.Editor(config);
+        this.editor = new Kano.Code.Editor(config);
 
-            const userPlugin = new Kano.Code.UserPlugin();
-            this.editor.addPlugin(userPlugin);
+        const userPlugin = new Kano.Code.UserPlugin();
+        this.editor.addPlugin(userPlugin);
 
-            this.partsPlugin = new Kano.Code.Parts(Kano.Code.Legacy.PartTypes);
-            this.editor.addPlugin(this.partsPlugin);
+        this.partsPlugin = new Kano.Code.Parts(Kano.Code.Legacy.PartTypes);
+        this.editor.addPlugin(this.partsPlugin);
 
-            this.editor.toolbox.setEntries(Kano.Code.BlocklyModules);
+        this.editor.toolbox.setEntries(Kano.Code.BlocklyModules);
 
-            this.runner = new Kano.Code.Runner(Kano.Code.AppModules);
-            this.editor.addPlugin(this.runner);
+        this.runner = new Kano.Code.Runner(Kano.Code.AppModules);
+        this.editor.addPlugin(this.runner);
 
-            this.challenge = new Kano.Code.Challenge(this.partsPlugin);
-            this.challenge.setParts(Kano.Code.Legacy.Parts);
-            this.challenge.on('completed', this.challengeCompleted.bind(this));
+        this.challenge = new Kano.Code.Challenge(this.partsPlugin);
+        this.challenge.setParts(Kano.Code.Legacy.Parts);
+        this.challenge.on('completed', this.challengeCompleted.bind(this));
 
-            this.editor.addPlugin(this.challenge);
+        this.editor.addPlugin(this.challenge);
 
-            this._onModalChanged = this._onModalChanged.bind(this);
+        this._onModalChanged = this._onModalChanged.bind(this);
 
-            this.addEventListener('opened-changed', this._onModalChanged);
-        }
-        disconnectedCallback() {
-            super.disconnectedCallback();
-            this.removeEventListener('opened-changed', this._onModalChanged);
-        }
-        _contextChanged() {
-            this.loading = true;
-            // Load challenge data
-            Kano.MakeApps.Stories.getById(this.context.params.id)
-                .then((story) => {
-                    if (typeof story.next === 'string') {
-                        // Load next challenge as well if needed
-                        return Kano.MakeApps.Stories.getById(story.next)
-                            .then((nextStory) => {
-                                this.set('story.next', nextStory);
-                                return story;
-                            })
-                            .catch(() => {
-                                return story;
-                            });
-                    }
-                    return story;
-                })
-                .then((story) => {
-                    // Legacy challenge structure has challenges in scenes. We now only load the first scene as the whole challenge
-                    const sceneIndex = 0;
-                    // Load challenge data (nested, legacy)
-                    return Kano.MakeApps.Stories.getSceneByIndex(story, sceneIndex)
-                        .then((scene) => {
-                            // FIXME This merging of scene and scene data will not be necessary once we restructure the challenge files
-                            story.scene = Object.assign({}, scene, scene.data);
-                            delete story.scene.data;
-                            return this.loadMode(story.scene.mode || 'normal');
+        this.addEventListener('opened-changed', this._onModalChanged);
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener('opened-changed', this._onModalChanged);
+    }
+    _contextChanged() {
+        this.loading = true;
+        // Load challenge data
+        Stories.getById(this.context.params.id)
+            .then((story) => {
+                if (typeof story.next === 'string') {
+                    // Load next challenge as well if needed
+                    return Stories.getById(story.next)
+                        .then((nextStory) => {
+                            this.set('story.next', nextStory);
+                            return story;
                         })
-                        .then((mode) => {
-                            this.setupEditor();
-                            this.challenge.load(story, mode);
-                            this.$['share-modal-content'].set('nextButtonLabel', Boolean(this.story.next) ? this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
-                            this.loading = false;
+                        .catch(() => {
+                            return story;
                         });
-                });
-        }
-        loadMode(id) {
-            const url = `/mode/${id}.html`;
-            return Kano.Code.Mode.load(id, url);
-        }
-        save() {}
-        setupEditor() {
-            if (this.injected) {
-                return;
-            }
-            this.injected = true;
-            this.challenge.inject(this.root, this.root.firstChild);
-            this.editor.on('share', (shareInfo) => this.share({ detail: shareInfo }));
-            this.editor.on('exit', () => this._exit());
-            this.editor.on('change', () => this.save());
-            this.editor.on('save', () => this.saveApp());
-
-            this.challenge.on('next-challenge', this._nextChallenge);
-
-            this.editor.setRunningState(true);
-        }
-        _nextChallenge() {
-            this.goToNextChallenge();
-        }
-        _editorAppChanged() {
-            if (!this.editorApp) {
-                return;
-            }
-            // TODO replace this when routing is based on flow-down
-            page.redirect('/');
-        }
-        getModeParts(mode) {
-            return Kano.MakeApps.Parts.list.filter((part) => {
-                return mode.parts.indexOf(part.type) !== -1;
-            });
-        }
-        _onFileDropped(contents) {
-            let app;
-            try {
-                app = JSON.parse(contents);
-                this.dispatch({ type: 'LOAD_APP_FROM_STORY', data: app });
-            } catch (e) {}
-        }
-        _confirmLoadApp() {
-            const state = this.getState();
-            this.dispatch({ type: 'LOAD_EDITOR_APP', data: state.story.loadingApp });
-        }
-        challengeCompleted() {
-            const challenge = this.challenge.store.getState();
-
-            this.fire('ga-tracking-event', {
-                event: 'worldTutorialCompleted'
-            });
-
-            this.trackUserProgress(challenge.id);
-            //story completed
-            let progress = challenge.progress,
-                extension = challenge.extension ? challenge.id : null;
-            this.progress.updateProgress(progress.group, progress.storyNo, extension, challenge.id);
-            this.customAlert = false;
-            this._displayUserReward();
-        }
-        _completedChanged(completed) {
-            if (completed) {
-                this.remix = true;
-                this.editor.rootEl.generateCover().then((image) => {
-                    this.appPreview = image.src;
-                });
-            }
-        }
-        goToNextChallenge() {
-            let storyId;
-            if (!this.story.next) {
-                this.fire('exit-confirmed');
-                return;
-            }
-
-            if (this.story.next) {
-                window.history.pushState(null, null, `/story/${this.story.id}`);
-                page.redirect(`/story/${this.story.next.id}`);
-            }
-        }
-        _displayUserReward() {
-            const headers = new Headers();
-            const flags = Kano.MakeApps.experiments.getFlags();
-            let fakeGamificationData;
-            const challenge = this.challenge.store.getState();
-            const payload = {
-                name: 'kano-code-challenge-completed',
-                detail: {
-                    id: challenge.id
                 }
-            };
-            const trackingData = {
-                id: challenge.id,
-                name: challenge.name
-            };
-            if (challenge.progress && challenge.progress.group) {
-                trackingData.group = challenge.progress.group;
-            }
-            this.fire('track-challenge-event', {
-                type: 'complete',
-                data: trackingData
-            });
-            // this.bannerButtonInactive = true;
-            // this.$.challenge.computeBanner(this.currentStep);
-            this.triggerGamificationEngine(payload)
-                .then(res => {
-                    // this.bannerButtonInactive = false;
-                    // this.$.challenge.computeBanner(this.currentStep);
-                    this._trackRewards(res.update);
-                    this.$['reward-modal'].open(res, this.user);
-                    this.fire('update-user-progress', res.update);
-                });
-        }
-        _trackRewards(update) {
-            let levelChanges = update.levels && update.levels.changes,
-                badgeChanges = update['badges-basic'] && update['badges-basic'].changes,
-                xpChanges = levelChanges && levelChanges['total-xp'];
-            if (xpChanges) {
-                this.fire('tracking-event', {
-                    name: 'xp_earned',
-                    data: {
-                        previous_level: xpChanges.oldValue,
-                        new_level: xpChanges.newValue,
-                        xp_earned: xpChanges.newValue - xpChanges.oldValue,
-                        leveled_up: !!levelChanges.level
-                    }
-                });
-            }
-            if (badgeChanges) {
-                badgeChanges.new.forEach(badge => {
-                    this.fire('tracking-event', {
-                        name: 'badge_unlocked',
-                        data: {
-                            badge_id: badge.id,
-                            badge_name: badge.title
-                        }
+                return story;
+            })
+            .then((story) => {
+                // Legacy challenge structure has challenges in scenes. We now only load the first scene as the whole challenge
+                const sceneIndex = 0;
+                // Load challenge data (nested, legacy)
+                return Stories.getSceneByIndex(story, sceneIndex)
+                    .then((scene) => {
+                        // FIXME This merging of scene and scene data will not be necessary once we restructure the challenge files
+                        story.scene = Object.assign({}, scene, scene.data);
+                        delete story.scene.data;
+                        return this.loadMode(story.scene.mode || 'normal');
+                    })
+                    .then((mode) => {
+                        this.setupEditor();
+                        this.challenge.load(story, mode);
+                        this.$['share-modal-content'].set('nextButtonLabel', Boolean(this.story.next) ? this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
+                        this.loading = false;
                     });
-                });
-            }
-        }
-        _openSignup() {
-            this.fire('signup');
-        }
-        _setUserShared() {
-            this.set('user.hasSharedInSession', true);
-        }
-        _confirmExit() {
-            this.fire('exit-confirmed');
-        }
-        _exit() {
-            if (this.customAlert) {
-                this.$['leave-alert'].open();
-            } else {
-                this.fire('exit-confirmed');
-            }
-        }
-        resetAppState() {
-            this.$.editor.resetAppState();
-        }
-        _runningChanged() {
-            if (!this.scene || !this.scene.started) {
-                return;
-            }
-            Kano.Behaviors.EditorViewBehaviorImpl._runningChanged.apply(this, arguments);
-        }
-        loadApp(e) {
-            let id = e.detail,
-                savedState,
-                challenge;
-            savedState = this.fromStore(id);
-            challenge = this.$.challenge;
-            this.$.editor.load(savedState.app, this._computeParts());
-            challenge.set('stepIds', savedState.stepIds);
-            challenge.set('blockIds', savedState.blockIds);
-        }
-        saveApp(e) {
-            let id = e.detail.id || 'current',
-                blockIds = e.detail.blockIds,
-                stepIds = e.detail.stepIds,
-                app = this.$.editor.save(true, false);
-            this.addToStore(id, {
-                app,
-                blockIds,
-                stepIds
             });
+    }
+    loadMode(id) {
+        const url = `/mode/${id}.html`;
+        return Kano.Code.Mode.load(id, url);
+    }
+    save() {}
+    setupEditor() {
+        if (this.injected) {
+            return;
         }
-        shareApp() {
-            this.$.editor.share();
-        }
-        saveToStorage() {
-            let app = this.$.editor.save();
-            localStorage.setItem('savedApp', JSON.stringify(app));
-        }
-        showHints() {
-            this.set('banner', null);
-            this.computeBanner(this.currentStep);
-            this.set('state.hints', { enabled: true });
-        }
-        _concludeStory() {
-            // Go to next story or share automatically
-            Kano.MakeApps.Utils.onLine().then((isOnline) => {
-                if (!this.user || this.user.hasSharedInSession || this._userAlreadyShared(this.story) ||
-                        this.scene.autoshareDisabled || !isOnline) {
-                    this.goToNextChallenge();
-                } else {
-                    const detail = this.$.editor.compileApp();
-                    detail.title = this.story.name;
-                    detail.autoshare = true;
-                    this.scene.autoshareDisabled = true;
-                    this.running = false;
-                    this.share({ detail });
-                }
-            });
-        }
-        _userAlreadyShared(story) {
-            const progress = this._getUserProgress(this.user);
-            return progress.indexOf(story.id) > -1;
-        }
-        _getUserProgress(user) {
-            let groups = this._getProgressGroups(user),
-                stories = [];
-            if (groups) {
-                Object.keys(groups).forEach(key => {
-                    stories = stories.concat(groups[key].completedStories);
-                });
-            }
-            return stories;
-        }
-        _getProgressGroups(user) {
-            return user && user.profile && user.profile.stats['make-apps'] &&
-                    user.profile.stats['make-apps'].progress || null;
-        }
-        _pauseAndShare(e) {
-            this.running = false;
-            this.share(e);
-            e.preventDefault();
-            e.stopPropagation();
-        }
-        _remixChanged(remix) {
-            if (remix) {
-                this.editor.setMode(this.originalMode);
-                // // Look for the previously removed blocks in the addedParts
-                // this.addedParts.forEach((part, i) => {
-                //     // Some blocks were removed, we need to add them back
-                //     if (part.removedBlocks) {
-                //         // Go through all the removed blocks and inject them back in the blocks array
-                //         Object.keys(part.removedBlocks).forEach(index => {
-                //             this.splice(`addedParts.${i}.blocks`, index, 0, part.removedBlocks[index]);
-                //         });
-                //         delete part.removedBlocks;
-                //     }
-                // });
-            }
-        }
-        /**
-         * Observes the `addedParts` array. Goes through the added splice and removes the blocks from a part if needed.
-         * Stores the removed blocks in a `removedBlocks` object for future re-injection
-         */
-        _addedPartsChanged (e) {
-            if (!e || this.remix || !this.scene.filterBlocks) {
-                return;
-            }
-            e.indexSplices.forEach(splice => {
-                splice.object.forEach(part => {
-                    Object.keys(this.scene.filterBlocks).forEach(key => {
-                        if (part.id !== key) {
-                            return;
-                        }
-                        part.blocks = part.blocks.filter((block, index) => {
-                            let id, definition, remove;
-                            if (typeof block === 'string') {
-                                id = block;
-                            } else {
-                                definition = block.block(part);
-                                id = definition.id
-                            }
-                            remove = this.scene.filterBlocks[key].indexOf(id) === -1;
-                            // We're about to remove the block from the part. Save it under another object to
-                            // be able to inject it back later
-                            if (remove) {
-                                part.removedBlocks = part.removedBlocks || {};
-                                part.removedBlocks[index] = block;
-                            }
-                            return !remove;
-                        });
-                    });
-                });
-            });
-        }
-        _onModalChanged(e) {
-            if (!this.story) {
-                return;
-            }
-            //TODO Refactor this when challenge modal is implemented similarly to share-modal i.e. as child of a paper dialog
-            const pathIds = Polymer.dom(e).path.map(path => path.id);
+        this.injected = true;
+        this.challenge.inject(this.root, this.root.firstChild);
+        this.editor.on('share', (shareInfo) => this.share({ detail: shareInfo }));
+        this.editor.on('exit', () => this._exit());
+        this.editor.on('change', () => this.save());
+        this.editor.on('save', () => this.saveApp());
 
-            if (pathIds.indexOf('share-modal') > -1 || pathIds.indexOf('reward-modal') > -1) {
-                this.set('story.paused', e.detail.value);
-            }
+        this.challenge.on('next-challenge', this._nextChallenge);
+
+        this.editor.setRunningState(true);
+    }
+    _nextChallenge() {
+        this.goToNextChallenge();
+    }
+    _editorAppChanged() {
+        if (!this.editorApp) {
+            return;
         }
-        addToStore(id, data) {
-            this.store[id] = data;
-        }
-        fromStore(id) {
-            return this.store[id];
-        }
-        askEditorToShare() {
-            this.editor.share();
+        // TODO replace this when routing is based on flow-down
+        page.redirect('/');
+    }
+    getModeParts(mode) {
+        return Parts$0.list.filter((part) => {
+            return mode.parts.indexOf(part.type) !== -1;
+        });
+    }
+    _onFileDropped(contents) {
+        let app;
+        try {
+            app = JSON.parse(contents);
+            this.dispatch({ type: 'LOAD_APP_FROM_STORY', data: app });
+        } catch (e) {}
+    }
+    _confirmLoadApp() {
+        const state = this.getState();
+        this.dispatch({ type: 'LOAD_EDITOR_APP', data: state.story.loadingApp });
+    }
+    challengeCompleted() {
+        const challenge = this.challenge.store.getState();
+
+        this.fire('ga-tracking-event', {
+            event: 'worldTutorialCompleted'
+        });
+
+        this.trackUserProgress(challenge.id);
+        //story completed
+        let progress = challenge.progress,
+            extension = challenge.extension ? challenge.id : null;
+        this.progress.updateProgress(progress.group, progress.storyNo, extension, challenge.id);
+        this.customAlert = false;
+        this._displayUserReward();
+    }
+    _completedChanged(completed) {
+        if (completed) {
+            this.remix = true;
+            this.editor.rootEl.generateCover().then((image) => {
+                this.appPreview = image.src;
+            });
         }
     }
+    goToNextChallenge() {
+        let storyId;
+        if (!this.story.next) {
+            this.fire('exit-confirmed');
+            return;
+        }
 
-    customElements.define(KanoViewStory.is, KanoViewStory);
+        if (this.story.next) {
+            window.history.pushState(null, null, `/story/${this.story.id}`);
+            page.redirect(`/story/${this.story.next.id}`);
+        }
+    }
+    _displayUserReward() {
+        const headers = new Headers();
+        const flags = experiments.getFlags();
+        let fakeGamificationData;
+        const challenge = this.challenge.store.getState();
+        const payload = {
+            name: 'kano-code-challenge-completed',
+            detail: {
+                id: challenge.id
+            }
+        };
+        const trackingData = {
+            id: challenge.id,
+            name: challenge.name
+        };
+        if (challenge.progress && challenge.progress.group) {
+            trackingData.group = challenge.progress.group;
+        }
+        this.fire('track-challenge-event', {
+            type: 'complete',
+            data: trackingData
+        });
+        // this.bannerButtonInactive = true;
+        // this.$.challenge.computeBanner(this.currentStep);
+        this.triggerGamificationEngine(payload)
+            .then(res => {
+                // this.bannerButtonInactive = false;
+                // this.$.challenge.computeBanner(this.currentStep);
+                this._trackRewards(res.update);
+                this.$['reward-modal'].open(res, this.user);
+                this.fire('update-user-progress', res.update);
+            });
+    }
+    _trackRewards(update) {
+        let levelChanges = update.levels && update.levels.changes,
+            badgeChanges = update['badges-basic'] && update['badges-basic'].changes,
+            xpChanges = levelChanges && levelChanges['total-xp'];
+        if (xpChanges) {
+            this.fire('tracking-event', {
+                name: 'xp_earned',
+                data: {
+                    previous_level: xpChanges.oldValue,
+                    new_level: xpChanges.newValue,
+                    xp_earned: xpChanges.newValue - xpChanges.oldValue,
+                    leveled_up: !!levelChanges.level
+                }
+            });
+        }
+        if (badgeChanges) {
+            badgeChanges.new.forEach(badge => {
+                this.fire('tracking-event', {
+                    name: 'badge_unlocked',
+                    data: {
+                        badge_id: badge.id,
+                        badge_name: badge.title
+                    }
+                });
+            });
+        }
+    }
+    _openSignup() {
+        this.fire('signup');
+    }
+    _setUserShared() {
+        this.set('user.hasSharedInSession', true);
+    }
+    _confirmExit() {
+        this.fire('exit-confirmed');
+    }
+    _exit() {
+        if (this.customAlert) {
+            this.$['leave-alert'].open();
+        } else {
+            this.fire('exit-confirmed');
+        }
+    }
+    resetAppState() {
+        this.$.editor.resetAppState();
+    }
+    _runningChanged() {
+        if (!this.scene || !this.scene.started) {
+            return;
+        }
+        Kano.Behaviors.EditorViewBehaviorImpl._runningChanged.apply(this, arguments);
+    }
+    loadApp(e) {
+        let id = e.detail,
+            savedState,
+            challenge;
+        savedState = this.fromStore(id);
+        challenge = this.$.challenge;
+        this.$.editor.load(savedState.app, this._computeParts());
+        challenge.set('stepIds', savedState.stepIds);
+        challenge.set('blockIds', savedState.blockIds);
+    }
+    saveApp(e) {
+        let id = e.detail.id || 'current',
+            blockIds = e.detail.blockIds,
+            stepIds = e.detail.stepIds,
+            app = this.$.editor.save(true, false);
+        this.addToStore(id, {
+            app,
+            blockIds,
+            stepIds
+        });
+    }
+    shareApp() {
+        this.$.editor.share();
+    }
+    saveToStorage() {
+        let app = this.$.editor.save();
+        localStorage.setItem('savedApp', JSON.stringify(app));
+    }
+    showHints() {
+        this.set('banner', null);
+        this.computeBanner(this.currentStep);
+        this.set('state.hints', { enabled: true });
+    }
+    _concludeStory() {
+        // Go to next story or share automatically
+        Utils.onLine().then((isOnline) => {
+            if (!this.user || this.user.hasSharedInSession || this._userAlreadyShared(this.story) ||
+                    this.scene.autoshareDisabled || !isOnline) {
+                this.goToNextChallenge();
+            } else {
+                const detail = this.$.editor.compileApp();
+                detail.title = this.story.name;
+                detail.autoshare = true;
+                this.scene.autoshareDisabled = true;
+                this.running = false;
+                this.share({ detail });
+            }
+        });
+    }
+    _userAlreadyShared(story) {
+        const progress = this._getUserProgress(this.user);
+        return progress.indexOf(story.id) > -1;
+    }
+    _getUserProgress(user) {
+        let groups = this._getProgressGroups(user),
+            stories = [];
+        if (groups) {
+            Object.keys(groups).forEach(key => {
+                stories = stories.concat(groups[key].completedStories);
+            });
+        }
+        return stories;
+    }
+    _getProgressGroups(user) {
+        return user && user.profile && user.profile.stats['make-apps'] &&
+                user.profile.stats['make-apps'].progress || null;
+    }
+    _pauseAndShare(e) {
+        this.running = false;
+        this.share(e);
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    _remixChanged(remix) {
+        if (remix) {
+            this.editor.setMode(this.originalMode);
+            // // Look for the previously removed blocks in the addedParts
+            // this.addedParts.forEach((part, i) => {
+            //     // Some blocks were removed, we need to add them back
+            //     if (part.removedBlocks) {
+            //         // Go through all the removed blocks and inject them back in the blocks array
+            //         Object.keys(part.removedBlocks).forEach(index => {
+            //             this.splice(`addedParts.${i}.blocks`, index, 0, part.removedBlocks[index]);
+            //         });
+            //         delete part.removedBlocks;
+            //     }
+            // });
+        }
+    }
+    /**
+     * Observes the `addedParts` array. Goes through the added splice and removes the blocks from a part if needed.
+     * Stores the removed blocks in a `removedBlocks` object for future re-injection
+     */
+    _addedPartsChanged (e) {
+        if (!e || this.remix || !this.scene.filterBlocks) {
+            return;
+        }
+        e.indexSplices.forEach(splice => {
+            splice.object.forEach(part => {
+                Object.keys(this.scene.filterBlocks).forEach(key => {
+                    if (part.id !== key) {
+                        return;
+                    }
+                    part.blocks = part.blocks.filter((block, index) => {
+                        let id, definition, remove;
+                        if (typeof block === 'string') {
+                            id = block;
+                        } else {
+                            definition = block.block(part);
+                            id = definition.id
+                        }
+                        remove = this.scene.filterBlocks[key].indexOf(id) === -1;
+                        // We're about to remove the block from the part. Save it under another object to
+                        // be able to inject it back later
+                        if (remove) {
+                            part.removedBlocks = part.removedBlocks || {};
+                            part.removedBlocks[index] = block;
+                        }
+                        return !remove;
+                    });
+                });
+            });
+        });
+    }
+    _onModalChanged(e) {
+        if (!this.story) {
+            return;
+        }
+        //TODO Refactor this when challenge modal is implemented similarly to share-modal i.e. as child of a paper dialog
+        const pathIds = dom(e).path.map(path => path.id);
+
+        if (pathIds.indexOf('share-modal') > -1 || pathIds.indexOf('reward-modal') > -1) {
+            this.set('story.paused', e.detail.value);
+        }
+    }
+    addToStore(id, data) {
+        this.store[id] = data;
+    }
+    fromStore(id) {
+        return this.store[id];
+    }
+    askEditorToShare() {
+        this.editor.share();
+    }
+}
+
+customElements.define(KanoViewStory.is, KanoViewStory);
 </script>

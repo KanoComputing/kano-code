@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <script src="../../../../../../webcomponentsjs/webcomponents-lite.js"></script>
-        <link rel="import" href="../kano-challenge-completed-modal.html">
+        <script type="module" src="../kano-challenge-completed-modal.js"></script>
         <style is="custom-style">
             body {
                 display: flex;
@@ -32,15 +32,16 @@
                 </template>
             </div>
         </template>
-        <script type="text/javascript">
-            var bind = document.getElementById('bind');
-            bind.events = [];
-            document.addEventListener('close', () => {
-                bind.push('events', 'close');
-            });
-            bind.openModal = () => {
-                document.getElementById('modal').open();
-            };
-        </script>
+        <script type="module">
+import '../kano-challenge-completed-modal.js';
+var bind = document.getElementById('bind');
+bind.events = [];
+document.addEventListener('close', () => {
+    bind.push('events', 'close');
+});
+bind.openModal = () => {
+    document.getElementById('modal').open();
+};
+</script>
     </body>
 </html>

@@ -4,12 +4,24 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="../../../../../webcomponentsjs/webcomponents-lite.js"></script>
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../../../kwc-style/typography.html">
-        <link rel="import" href="../kano-part-list-item.html">
-        <style is="custom-style" include="demo-pages-shared-styles">
+        <script src="../../../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="../../../../../../@kano/kwc-style/typography.js"></script>
+        <script type="module" src="../kano-part-list-item.js"></script>
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
             html, body {
                 margin: 0;
                 padding: 0;
@@ -30,10 +42,16 @@
             kano-part-list-item {
                 width: 300px;
             }
-        </style>
+        </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
     </head>
     <body unresolved>
-        <div class="vertical-section-container">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container">
             <h3>Part item displayed in a list</h3>
             <demo-snippet>
                 <template>
@@ -49,7 +67,7 @@
                                 type: 'button'
                             }
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
             <h3>Part item displayed in a list with custom controls/display</h3>
@@ -67,9 +85,11 @@
                                 type: 'oscillator'
                             }
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
-        </div>
-    </body>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 </html>

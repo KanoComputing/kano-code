@@ -1,0 +1,11 @@
+import { config as config$0 } from './default.js';
+const staging = config$0;
+staging.API_URL = "https://api-staging.kano.me";
+staging.DATA_API_URL = "https://apps-data-staging.kano.me";
+staging.WORLD_URL = "https://world-staging.kano.me";
+staging.SHARED_STORAGE_URL = "https://world-staging.kano.me/cross-storage.html";
+staging.PROJECTS_URL = staging.WORLD_URL + "/projects";
+staging.KANO_CODE_URL = "https://apps-staging.kano.me";
+staging.GOOGLE_API_KEY = "AIzaSyB3CO_eTW7T_bwAQFewuUqwNElg_b9B6lQ";
+staging.TAPCODE_URL = "https://tapcode-staging.kano.me";
+export { staging as config };

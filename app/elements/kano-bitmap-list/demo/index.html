@@ -4,12 +4,24 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="../../../../../webcomponentsjs/webcomponents-lite.js"></script>
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../../../paper-button/paper-button.html">
-        <link rel="import" href="../kano-bitmap-list.html">
-        <style is="custom-style" include="demo-pages-shared-styles">
+        <script src="../../../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="../../../../../../@polymer/paper-button/paper-button.js"></script>
+        <script type="module" src="../kano-bitmap-list.js"></script>
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
             html, body {
                 margin: 0;
                 padding: 0;
@@ -24,15 +36,21 @@
             kano-bitmap-list {
                 max-width: 600px;
             }
-        </style>
+        </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
     </head>
     <body unresolved>
-        <div class="vertical-section-container">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container">
             <h3>Frame list</h3>
             <demo-snippet>
                 <template>
                     <kano-bitmap-list id="list" width="16" height="8"></kano-bitmap-list>
-                    <paper-button id="button" raised>Add frame</paper-button>
+                    <paper-button id="button" raised="">Add frame</paper-button>
                     <script>
                         document.addEventListener('WebComponentsReady', () => {
                             var list = document.querySelector('#list'),
@@ -50,21 +68,25 @@
                                 list.push('bitmaps', newFrame());
                             }
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
-        </div>
-        <script>
-            let i = 0;
-            function newFrame () {
-                let frame = [],
-                    color = `hsl(${i * 40}, 80%, 80%)`;
-                for (let i = 0; i < 16 * 8; i++) {
-                    frame.push(color);
-                }
-                i++;
-                return frame;
-            }
-        </script>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>n-demo-helpers/demo-pages-shared-styles.js';
+import '../../../../../../@polymer/paper-button/paper-button.js';
+import '../kano-bitmap-list.js';
+let i = 0;
+function newFrame () {
+    let frame = [],
+        color = `hsl(${i * 40}, 80%, 80%)`;
+    for (let i = 0; i < 16 * 8; i++) {
+        frame.push(color);
+    }
+    i++;
+    return frame;
+}
+</script>
     </body>
 </html>

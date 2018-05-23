@@ -1,0 +1,11 @@
+import { config as config$0 } from './default.js';
+const rc = config$0;
+rc.API_URL = "https://api-staging.kano.me";
+rc.DATA_API_URL = "https://apps-data-staging.kano.me";
+rc.WORLD_URL = "https://world-staging.kano.me";
+rc.SHARED_STORAGE_URL = "https://world-staging.kano.me/cross-storage.html";
+rc.PROJECTS_URL = rc.WORLD_URL + "/projects";
+rc.KANO_CODE_URL = "https://apps-rc.kano.me";
+rc.GOOGLE_API_KEY = "AIzaSyB3CO_eTW7T_bwAQFewuUqwNElg_b9B6lQ";
+rc.TAPCODE_URL = "https://tapcode-staging.kano.me";
+export { rc as config };

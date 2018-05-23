@@ -1,8 +1,8 @@
-<link rel="import" href="../../scripts/kano/make-apps/experiments.html">
-<link rel="import" href="../../scripts/kano/make-apps/store.html">
-<link rel="import" href="../../scripts/kano/make-apps/blockly/blockly.html">
-<link rel="import" href="../../elements/behaviors/kano-view-behavior.html">
-<link rel="import" href="../../../../paper-toggle-button/paper-toggle-button.html">
+<script type="module" src="../../scripts/kano/make-apps/experiments.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/store.js"></script>
+<script type="module" src="../../scripts/kano/make-apps/blockly/blockly.js"></script>
+<script type="module" src="../../elements/behaviors/kano-view-behavior.js"></script>
+<script type="module" src="../../../../../@polymer/paper-toggle-button/paper-toggle-button.js"></script>
 
 <dom-module id="kano-view-flags">
     <template>
@@ -65,65 +65,72 @@
     </template>
 </dom-module>
 
-<script>
-    /* globals Polymer, Kano */
-    Polymer({
-        is: 'kano-view-flags',
-        behaviors: [
-            Kano.Behaviors.ViewBehavior,
-            Kano.MakeApps.Store.ReceiverBehavior,
-        ],
-        ready () {
-            const { config } = this.getState();
-            Kano.MakeApps.Parts.init(config);
-            Kano.AppModules.init(config);
-            Kano.MakeApps.Blockly.init(config);
-            this.flags = Kano.MakeApps.experiments.getFlags();
-            this.available = Object.keys(Kano.MakeApps.experiments.FLAGS.available).map(key => {
-                return {
-                    id: key,
-                    groups: Kano.MakeApps.experiments.FLAGS.available[key].join(', ')
-                };
-            });
-            this.changed = false;
-            this.labels = {
-                lightboard: 'Lightboard support',
-                camera: 'Camera support',
-                canvas: 'Canvas part from Make Art',
-                fun: 'Fun blocks',
-                keyboard_events: 'Keyboard events',
-                dongles: 'K2 Sensors',
-                gamification_modal: 'Gamification XP modal'
+<script type="module">
+import { experiments as experiments$0 } from '../../scripts/kano/make-apps/experiments.js';
+import { Store } from '../../scripts/kano/make-apps/store.js';
+import '../../scripts/kano/make-apps/blockly/blockly.js';
+import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
+import '../../../../../@polymer/paper-toggle-button/paper-toggle-button.js';
+import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Parts } from '../../mode/common/background-blocks.js';
+/* globals Polymer, Kano */
+Polymer({
+    is: 'kano-view-flags',
+    behaviors: [
+        ViewBehavior,
+        Store.ReceiverBehavior,
+    ],
+    ready () {
+        const { config } = this.getState();
+        Parts.init(config);
+        Kano.AppModules.init(config);
+        Kano.MakeApps.Blockly.init(config);
+        this.flags = experiments$0.getFlags();
+        this.available = Object.keys(experiments$0.FLAGS.available).map(key => {
+            return {
+                id: key,
+                groups: experiments$0.FLAGS.available[key].join(', ')
             };
-        },
-        _notifyReload () {
-            if (!this.changed) {
-                this.$.toast.show();
-                this.changed = true;
-            }
-        },
-        _isEnabled (exp) {
-            return this.flags.experiments && this.flags.experiments.indexOf(exp) !== -1;
-        },
-        _expChanged (e) {
-            let exp = e.model.get('exp.id'),
-                index;
-            this.flags.experiments = this.flags.experiments || [];
-            index = this.flags.experiments.indexOf(exp);
-            if (index !== -1) {
-                this.flags.experiments.splice(index, 1);
-            } else {
-                this.flags.experiments.push(exp);
-            }
-            Kano.MakeApps.experiments.updateFlags(this.flags);
-            this._notifyReload();
-        },
-        _refresh (e) {
-            e.preventDefault();
-            location.reload();
-        },
-        _labelFilter (id) {
-            return this.labels[id] || id;
+        });
+        this.changed = false;
+        this.labels = {
+            lightboard: 'Lightboard support',
+            camera: 'Camera support',
+            canvas: 'Canvas part from Make Art',
+            fun: 'Fun blocks',
+            keyboard_events: 'Keyboard events',
+            dongles: 'K2 Sensors',
+            gamification_modal: 'Gamification XP modal'
+        };
+    },
+    _notifyReload () {
+        if (!this.changed) {
+            this.$.toast.show();
+            this.changed = true;
         }
-    });
+    },
+    _isEnabled (exp) {
+        return this.flags.experiments && this.flags.experiments.indexOf(exp) !== -1;
+    },
+    _expChanged (e) {
+        let exp = e.model.get('exp.id'),
+            index;
+        this.flags.experiments = this.flags.experiments || [];
+        index = this.flags.experiments.indexOf(exp);
+        if (index !== -1) {
+            this.flags.experiments.splice(index, 1);
+        } else {
+            this.flags.experiments.push(exp);
+        }
+        experiments$0.updateFlags(this.flags);
+        this._notifyReload();
+    },
+    _refresh (e) {
+        e.preventDefault();
+        location.reload();
+    },
+    _labelFilter (id) {
+        return this.labels[id] || id;
+    }
+});
 </script>

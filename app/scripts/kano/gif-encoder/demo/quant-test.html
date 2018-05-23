@@ -4,7 +4,7 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="import" type="" href="../encoder.html">
+        <script type="module" src="../encoder.js"></script>
         <style>
             .cont {
                 display: flex;
@@ -27,89 +27,90 @@
                 <div id="rgb-stats"></div>
             </span>
         </div>
-        <script>
-            function loadImage (src) {
-                return new Promise((resolve, reject) => {
-                    let img = new Image();
-                    img.onload = () => resolve(img);
-                    img.onerror = reject;
-                    img.src = src;
-                    img.crossOrigin = 'Anonymous';
-                });
-            }
+        <script type="module">
+import { GifEncoder } from '../encoder.js';
+function loadImage (src) {
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = src;
+        img.crossOrigin = 'Anonymous';
+    });
+}
 
-            let canvas = document.createElement('canvas'),
-                neuQuantResult = document.getElementById('neu-quant'),
-                rgbQuantResult = document.getElementById('rgb-quant'),
-                rgbQuantStats = document.getElementById('rgb-stats'),
-                neuQuantStats = document.getElementById('neu-stats'),
-                ctx;
-            canvas.width = 500;
-            canvas.height = 500;
-            ctx = canvas.getContext('2d');
-            loadImage('./hokusai.jpg')
-                .then(img => {
-                    function render(ctx, n) {
-                        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-                        ctx.drawImage(img, -n, -n, img.naturalWidth, img.naturalHeight);
-                    }
-                    function neu () {
-                        let encoder = new Kano.GifEncoder({
-                            width: 500,
-                            height: 500,
-                            length: 4,
-                            workerUrl: '/scripts/kano/gif-encoder/worker-neu.js'
-                        });
+let canvas = document.createElement('canvas'),
+    neuQuantResult = document.getElementById('neu-quant'),
+    rgbQuantResult = document.getElementById('rgb-quant'),
+    rgbQuantStats = document.getElementById('rgb-stats'),
+    neuQuantStats = document.getElementById('neu-stats'),
+    ctx;
+canvas.width = 500;
+canvas.height = 500;
+ctx = canvas.getContext('2d');
+loadImage('./hokusai.jpg')
+    .then(img => {
+        function render(ctx, n) {
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.drawImage(img, -n, -n, img.naturalWidth, img.naturalHeight);
+        }
+        function neu () {
+            let encoder = new GifEncoder({
+                width: 500,
+                height: 500,
+                length: 4,
+                workerUrl: '/scripts/kano/gif-encoder/worker-neu.js'
+            });
 
-                        render(ctx, 0);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 30);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 60);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 90);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 120);
-                        encoder.addFrame(ctx, 500);
+            render(ctx, 0);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 30);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 60);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 90);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 120);
+            encoder.addFrame(ctx, 500);
 
-                        return encoder.end().then(() => {
-                            let link = document.createElement('a');
-                            neuQuantResult.setAttribute('src', encoder.data_url);
-                            neuQuantStats.innerText = encoder.stats.frames.map(frameStat => `${frameStat}ms`).join(', ');
-                        });
-                    }
+            return encoder.end().then(() => {
+                let link = document.createElement('a');
+                neuQuantResult.setAttribute('src', encoder.data_url);
+                neuQuantStats.innerText = encoder.stats.frames.map(frameStat => `${frameStat}ms`).join(', ');
+            });
+        }
 
-                    function rgb () {
-                        let encoder = new Kano.GifEncoder({
-                            width: 500,
-                            height: 500,
-                            length: 4,
-                            workerUrl: '/scripts/kano/gif-encoder/worker-rgb.js'
-                        });
+        function rgb () {
+            let encoder = new GifEncoder({
+                width: 500,
+                height: 500,
+                length: 4,
+                workerUrl: '/scripts/kano/gif-encoder/worker-rgb.js'
+            });
 
-                        render(ctx, 0);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 30);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 60);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 90);
-                        encoder.addFrame(ctx, 500);
-                        render(ctx, 120);
-                        encoder.addFrame(ctx, 500);
+            render(ctx, 0);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 30);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 60);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 90);
+            encoder.addFrame(ctx, 500);
+            render(ctx, 120);
+            encoder.addFrame(ctx, 500);
 
-                        return encoder.end().then(() => {
-                            let link = document.createElement('a');
-                            rgbQuantResult.setAttribute('src', encoder.data_url);
-                            rgbQuantStats.innerText = encoder.stats.frames.map(frameStat => `${frameStat}ms`).join(', ');
-                        });
-                    }
+            return encoder.end().then(() => {
+                let link = document.createElement('a');
+                rgbQuantResult.setAttribute('src', encoder.data_url);
+                rgbQuantStats.innerText = encoder.stats.frames.map(frameStat => `${frameStat}ms`).join(', ');
+            });
+        }
 
-                    neu().then(() => {
-                        return rgb();
-                    });
-                    
-                });
-        </script>
+        neu().then(() => {
+            return rgb();
+        });
+        
+    });
+</script>
     </body>
 </html>

@@ -4,18 +4,29 @@
         <title>kano-part-editor-demo</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="../../../../../webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="../../../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
         <script>
             window.Polymer = {
                 dom: 'shadow'
             };
         </script>
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../../../../../iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../../../kwc-style/typography.html">
-        <link rel="import" href="../kano-part-editor.html">
-        <link rel="import" href="../../kano-light-animation-editor/kano-light-animation-editor.html">
-        <custom-style>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="../../../../../../@kano/kwc-style/typography.js"></script>
+        <script type="module" src="../kano-part-editor.js"></script>
+        <script type="module" src="../../kano-light-animation-editor/kano-light-animation-editor.js"></script>
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
             <style is="custom-style" include="demo-pages-shared-styles">
                 html, body {
                     margin: 0;
@@ -43,10 +54,16 @@
                     };
                 }
             </style>
-        </custom-style>
+        </custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
     </head>
     <body unresolved>
-        <div class="vertical-section-container">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container">
             <h3>UI part</h3>
             <demo-snippet class="demo-container">
                 <template>
@@ -132,7 +149,7 @@
                                 "visible": true
                             };
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
             <h3>Data part</h3>
@@ -223,7 +240,7 @@
                                 ]
                             }
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
             <h3>Hardware part</h3>
@@ -283,7 +300,7 @@
                                 }
                             };
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
             <h3>Lightboard part</h3>
@@ -350,7 +367,7 @@
                                 "visible": true
                             }
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
             <h3>Light animation part</h3>
@@ -421,7 +438,7 @@
                                 "visible": true
                                 }
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
             <h3>Light frame part</h3>
@@ -484,9 +501,10 @@
                                 "visible": true
                                 }
                         });
-                    </script>
+                    &lt;/script>
                 </template>
             </demo-snippet>
-        </div>
-    </body>
-</html>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
