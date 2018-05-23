@@ -3,16 +3,13 @@
 
         window.Kano = window.Kano || {};
 
-        var Base;
-
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI.Base = Base = {
+        const Base = {
             /**
              * Do a Object.assign, but also brings in the getter/setters
              */
@@ -219,6 +216,11 @@
                 });
             }
         };
+
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI.Base = Base;
 
     })();
 </script>

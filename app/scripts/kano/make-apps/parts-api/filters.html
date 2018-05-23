@@ -3,15 +3,16 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let FiltersAPI, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        FiltersAPI = {
+        const { PartsAPI } = Kano.MakeApps;
+
+        const FiltersAPI = {
             start () {
                 PartsAPI.Base.start.apply(this, arguments);
                 this._filters = [];
@@ -67,7 +68,9 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['filters'] = Object.assign({}, PartsAPI.Base, FiltersAPI);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI.filters = Object.assign({}, PartsAPI.Base, FiltersAPI);
     })();
 </script>

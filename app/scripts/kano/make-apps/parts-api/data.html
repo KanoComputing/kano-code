@@ -2,7 +2,6 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let Data, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
@@ -10,7 +9,9 @@
          */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        Data = {
+        const { PartsAPI } = Kano.MakeApps;
+
+        const Data = {
             start () {
                 PartsAPI.Base.start.apply(this, arguments);
                 let model = this.model;
@@ -46,7 +47,9 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['data'] = Object.assign({}, PartsAPI.Base, Data);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI.data = Object.assign({}, PartsAPI.Base, Data);
     })();
 </script>

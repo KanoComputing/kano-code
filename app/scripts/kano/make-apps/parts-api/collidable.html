@@ -3,15 +3,13 @@
     (function () {
         window.Kano = window.Kano || {};
 
-        var Collidable;
-
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        Collidable = {
+        const Collidable = {
             onCreated () {
                 this.model.collidable = true;
             },

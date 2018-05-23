@@ -2,16 +2,17 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let DongleBase, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+
+        const { PartsAPI } = Kano.MakeApps;
 
         // @polymerBehavior
-        DongleBase = {
+        const DongleBase = {
             _listeners: [],
             handlers: [],
             onCreated () {
