@@ -1,7 +1,13 @@
-<link rel="import" href="../../parts/parts.html">
 <script>
-    (function (Kano) {
+    (function () {
 
+        window.Kano = window.Kano || {};
+        Kano.MakeApps = Kano.MakeApps || {};
+        Kano.MakeApps.Parts = Kano.MakeApps.Parts || {};
+
+        /**
+         * @namespace Kano.MakeApps.Parts.Common
+         */
         const COLOUR = '#C24242';
 
         Kano.MakeApps.Parts.Common = Kano.MakeApps.Parts.Common || {};
@@ -28,6 +34,6 @@
                 };
             }
         }];
-    })(window.Kano = window.Kano || {});
+    })();
 </script>
 
