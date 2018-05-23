@@ -12,4 +12,9 @@ NODE_OPTIONS="--max_old_space_size=8192" modulizer --out . \
 --dependency-mapping kwc-file-picker,@kano/kwc-file-picker,3.0.0-beta.1 \
 --dependency-mapping kwc-behaviours,@kano/kwc-behaviors,3.0.0-beta.1 \
 --dependency-mapping challenge-engine,challenge-engine,1.0.0 \
---dependency-mapping kwc-icons,@kano/kwc-icons,3.0.0-beta.1
+--dependency-mapping kwc-icons,@kano/kwc-icons,3.0.0-beta.1 \
+--dependency-mapping kwc-style,@kano/kwc-style,3.0.0-beta.1 \
+--dependency-mapping socket.io-client,socket.io-client,1.4.8 \
+--dependency-mapping interact,interactjs,1.3.4 \
+--dependency-mapping js-beautify,js-beautify,1.7.5 \
+--dependency-mapping omggif,omggif,1.0.9

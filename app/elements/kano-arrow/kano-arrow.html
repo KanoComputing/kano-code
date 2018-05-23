@@ -13,6 +13,7 @@
                 pointer-events: none;
                 visibility: hidden;
             }
+
             :host .line {
                 stroke: black;
                 stroke-width: 3;
@@ -52,18 +53,18 @@
             'updatePosition(angle)',
             'updatePosition(bounce)'
         ],
-        ready () {
+        ready() {
             this.arrowImage = Polymer.dom(this.$.content).getDistributedNodes()[0];
             window.addEventListener('resize', this.updatePosition.bind(this));
         },
-        detached () {
+        detached() {
             window.removeEventListener('resize', this.updatePosition.bind(this));
         },
-        hide () {
+        hide() {
             this.style.display = 'none';
             this.transform(``, this.arrowImage);
         },
-        updatePosition () {
+        updatePosition() {
             if (!this.arrowImage) {
                 return;
             }
@@ -116,14 +117,14 @@
             this.arrowImage.animate([{
                 transform: `translate(${x + offsetX}px, ${y + offsetY}px) rotate(${angle}rad)`,
                 opacity: 0
-            },{
+            }, {
                 transform: `translate(${x}px, ${y}px) rotate(${angle}rad)`,
                 opacity: 1
-            }],{
-                duration: 700 / dist * (dist * 0.2),
-                easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
-                fill: 'forwards'
-            });
+            }], {
+                    duration: 700 / dist * (dist * 0.2),
+                    easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
+                    fill: 'forwards'
+                });
             this.alreadyAnimated = true;
         },
         _showWithoutSource() {
@@ -169,11 +170,11 @@
             } else {
                 this.arrowImage.animate([{
                     transform: `translate(${x + offsetX}px, ${y + offsetY}px) rotate(${a}rad)`
-                },{
+                }, {
                     transform: `translate(${x}px, ${y}px) rotate(${a}rad)`
-                },{
+                }, {
                     transform: `translate(${x + offsetX}px, ${y + offsetY}px) rotate(${a}rad)`
-                }],{
+                }], {
                     duration: this.bounce * 25,
                     easing: 'ease-in-out',
                     iterations: Infinity
@@ -181,6 +182,6 @@
             }
 
         },
-        _tickBounce () {}
+        _tickBounce() { }
     });
 </script>
