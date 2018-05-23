@@ -1,5 +1,8 @@
 <link rel="import" href="../../../../../elements/kano-motion-zone-input/kano-motion-zone-input.html">
 <script>
+    /**
+     * @namespace Blockly
+     */
     Blockly.FieldMotionZone = function (value, part, opt_validator) {
         this._part = part;
         Blockly.FieldDropdown.superClass_.constructor.call(this, value || 1, opt_validator);
