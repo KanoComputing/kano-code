@@ -1,4 +1,4 @@
-export const Router = Router || {};
+const Router = {};
 
 /*
 * Parse query string parameters
@@ -21,3 +21,5 @@ Router.parseQsParam = function (qs, name) {
 
     return null;
 }
+
+export { Router };

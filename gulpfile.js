@@ -9,7 +9,7 @@ let gulp = require('gulp'),
     htmlAutoprefixer = require("html-autoprefixer"),
     connect = require('connect'),
     livereload = require('livereload'),
-    serveStatic = require('serve-static'),
+    serveStatic = require('./tasks/serve'),
     history = require('connect-history-api-fallback'),
     validateChallenges = require('./tasks/validate-challenges-locales'),
     runSequence = require('run-sequence'),
@@ -17,6 +17,8 @@ let gulp = require('gulp'),
     target = process.env.TARGET || 'web',
     version = require('./package.json').version,
     utils;
+
+const namedResolutionMiddleware = require('./tasks/named-resolution-middleware');
 
 const DEFAULT_META_DATA = [
     ["og:title", "Kano Code"],
@@ -139,8 +141,13 @@ $.startServer = (lr) => {
     }
     return server
         .use($.history())
-        .use($.serveStatic(__dirname + '/app'))
-        .use($.serveStatic(__dirname + '/node_modules'))
+        .use($.serveStatic({
+            root: __dirname + '/app',
+        }))
+        .use($.serveStatic({
+            root: __dirname + '/node_modules',
+        }))
+        .use(namedResolutionMiddleware({ modulesDir: '/' }))
         .listen(4000);
 };
 

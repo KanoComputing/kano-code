@@ -1,4 +1,4 @@
-export const experiments = experiments || {};
+export const experiments = {};
 
 // Read the flags from the localStorage and merge them into the config object
 const storedFlags = JSON.parse(localStorage.getItem('flags'));

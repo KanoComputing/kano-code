@@ -246,7 +246,7 @@ export const stickers = {
     }
 };
 
-export const generators = generators || {};
+export const generators = {};
 
 generators.stickers = function (set, sticker) {
     return `${config.KANO_CODE_URL}/assets/part/stickers/${set}/${sticker}.svg`;

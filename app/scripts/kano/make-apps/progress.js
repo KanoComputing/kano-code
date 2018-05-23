@@ -166,4 +166,4 @@ class Progress {
     }
 }
 
-export const Progress = Progress || Progress;
+export { Progress };
