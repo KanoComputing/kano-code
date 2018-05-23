@@ -39,7 +39,7 @@
             },
             getX () {
                 let width = this.getWidth(),
-                    newPos = Math.max(0, Math.floor(PartsAPI.Base.getX.apply(this) / this.PIXEL_SIZE));
+                    newPos = Math.max(0, Math.floor(Kano.MakeApps.PartsAPI.Base.getX.apply(this) / this.PIXEL_SIZE));
                 if (width) {
                     newPos = Math.min(this.BOARD_WIDTH - width, newPos);
                 }

@@ -2,15 +2,13 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let GyroAccelerometer, PartsAPI;
-
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        GyroAccelerometer = {
+        const GyroAccelerometer = {
             module: 'gyroAccelerometer',
             onCreated () {
                 this._onAccelorometerDataChanged = this._onAccelorometerDataChanged.bind(this);
@@ -41,7 +39,10 @@
                 this.fire('gyro-accel-update');
             }
         };
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['gyro-accelerometer'] = Object.assign({}, Kano.MakeApps.PartsAPI.DongleBase, GyroAccelerometer);
+        Kano.MakeApps.PartsAPI.GyroAccelerometer = Object.assign({}, Kano.MakeApps.PartsAPI.DongleBase, GyroAccelerometer);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI['gyro-accelerometer'] = Kano.MakeApps.PartsAPI.GyroAccelerometer;
     })();
 </script>
