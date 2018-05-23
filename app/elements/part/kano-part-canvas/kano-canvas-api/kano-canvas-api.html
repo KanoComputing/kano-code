@@ -1,9 +1,48 @@
-<script src="./kano-canvas-api.js"></script>
-<script src="./utils.js"></script>
-<script src="./modules/palette.js"></script>
-<script src="./modules/space.js"></script>
-<script src="./modules/general.js"></script>
-<script src="./modules/paths.js"></script>
-<script src="./modules/setters.js"></script>
-<script src="./modules/shapes.js"></script>
-<script src="./modules/text.js"></script>
+<link rel="import" href="./utils.html">
+<link rel="import" href="./modules/palette.html">
+<link rel="import" href="./modules/space.html">
+<link rel="import" href="./modules/general.html">
+<link rel="import" href="./modules/paths.html">
+<link rel="import" href="./modules/setters.html">
+<link rel="import" href="./modules/shapes.html">
+<link rel="import" href="./modules/text.html">
+
+<script>
+(function () {
+    window.Kano = window.Kano || {};
+    /**
+     *@namespace Kano
+    */
+
+    function Canvas(settings) {
+        this.session = {};
+        this.general = new Kano.CanvasAPI.General(this.session);
+        this.palette = Kano.CanvasAPI.Palette;
+        this.paths = new Kano.CanvasAPI.Paths(this.session);
+        this.setters = new Kano.CanvasAPI.Setters(this.session);
+        this.shapes = new Kano.CanvasAPI.Shapes(this.session);
+        this.space = new Kano.CanvasAPI.Space(this.session);
+        this.text = new Kano.CanvasAPI.Text(this.session);
+        this.reset(settings);
+    }
+
+    Canvas.prototype.reset = function (settings) {
+        this.session.ctx = settings.ctx;
+        this.session.width = settings.width;
+        this.session.height = settings.height;
+        this.session.ratio = settings.ratio || 1;
+        this.session.pos = {
+            x: settings.width / 2,
+            y: settings.height / 2
+        };
+        this.general.reset();
+        this.space.moveTo(this.session.pos.x, this.session.pos.y);
+        this.setters.strokeColor(this.session.settings.stroke.color);
+        this.setters.strokeWidth(this.session.settings.stroke.width);
+        this.paths.lineCap(this.session.settings.stroke.cap);
+        this.text.updateFont();
+    };
+
+    Kano.CanvasAPI = Canvas;
+})();
+</script>
