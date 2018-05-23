@@ -2,15 +2,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let LightRectangle, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        LightRectangle = {
+        const LightRectangle = {
             setWidth (w) {
                 let x = this.getX();
                     w = this.limitValue(this.model, 'width', w);
@@ -56,7 +55,10 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['light-rectangle'] = Object.assign({}, PartsAPI['light-shape'], LightRectangle);
+        Kano.MakeApps.PartsAPI.LightRectangle = Object.assign({}, Kano.MakeApps.PartsAPI.LightShape, LightRectangle);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI['light-rectangle'] = Kano.MakeApps.PartsAPI.LightRectangle;
     })();
 </script>

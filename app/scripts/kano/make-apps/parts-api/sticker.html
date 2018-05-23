@@ -3,15 +3,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let Sticker, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        Sticker = {
+        const Sticker = {
             getSticker (set, sticker) {
                 return Kano.MakeApps.Files.generators.stickers(set, sticker);
             },
@@ -35,7 +34,9 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI.sticker = Object.assign({}, PartsAPI.Base, Sticker);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI.sticker = Object.assign({}, Kano.MakeApps.PartsAPI.Base, Sticker);
     })();
 </script>

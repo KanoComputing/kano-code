@@ -7,13 +7,11 @@
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
-
-        const { PartsAPI } = Kano.MakeApps;
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         const Data = {
             start () {
-                PartsAPI.Base.start.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.start.apply(this, arguments);
                 let model = this.model;
                 if (model.refreshEnabled) {
                     this.refreshInterval = setInterval(this.refresh.bind(this), Math.max(1, model.refreshFreq) * 1000);
@@ -22,7 +20,7 @@
                 this.refresh();
             },
             stop () {
-                PartsAPI.Base.stop.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.stop.apply(this, arguments);
                 clearInterval(this.refreshInterval);
             },
             refresh () {
@@ -50,6 +48,6 @@
         /**
          * @polymerBehavior
          */
-        Kano.MakeApps.PartsAPI.data = Object.assign({}, PartsAPI.Base, Data);
+        Kano.MakeApps.PartsAPI.data = Object.assign({}, Kano.MakeApps.PartsAPI.Base, Data);
     })();
 </script>

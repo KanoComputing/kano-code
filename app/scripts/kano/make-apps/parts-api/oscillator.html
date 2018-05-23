@@ -2,20 +2,19 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let Oscillator, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        Oscillator = {
+        const Oscillator = {
             onDestroyed () {
                 this._stopOscillating();
             },
             start () {
-                PartsAPI.Base.start.apply(this);
+                Kano.MakeApps.PartsAPI.Base.start.apply(this);
                 this.set('model.x', 0);
                 if (!this.timeout) {
                     this._updateValue();
@@ -39,7 +38,7 @@
                 this.timeout = null;
             },
             stop () {
-                PartsAPI.Base.stop.apply(this);
+                Kano.MakeApps.PartsAPI.Base.stop.apply(this);
                 this.x = 0;
             },
             _getStep () {
@@ -97,7 +96,9 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['oscillator'] = Object.assign({}, PartsAPI.Base, Oscillator);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI.oscillator = Object.assign({}, Kano.MakeApps.PartsAPI.Base, Oscillator);
     })();
 </script>

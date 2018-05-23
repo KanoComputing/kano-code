@@ -2,17 +2,16 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let Microphone, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        Microphone = {
+        const Microphone = {
             onCreated () {
-                PartsAPI.Base.onCreated.apply(this);
+                Kano.MakeApps.PartsAPI.Base.onCreated.apply(this);
                 this.reset();
                 this._update();
             },
@@ -69,6 +68,6 @@
 
 
         // @polymerBehavior
-        Kano.MakeApps.PartsAPI['microphone'] = Kano.MakeApps.PartsAPI.Base.applyMixins({}, PartsAPI.Base, Microphone);
+        Kano.MakeApps.PartsAPI.microphone = Kano.MakeApps.PartsAPI.Base.applyMixins({}, Kano.MakeApps.PartsAPI.Base, Microphone);
     })();
 </script>

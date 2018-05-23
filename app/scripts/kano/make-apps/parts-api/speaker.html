@@ -2,15 +2,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let Speaker, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        Speaker = {
+        const Speaker = {
             play () {
                 return;
             },
@@ -32,7 +31,9 @@
         };
 
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['speaker'] = Kano.MakeApps.PartsAPI.Base.applyMixins({}, PartsAPI.Base, Speaker);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI.speaker = Kano.MakeApps.PartsAPI.Base.applyMixins({}, Kano.MakeApps.PartsAPI.Base, Speaker);
     })();
 </script>

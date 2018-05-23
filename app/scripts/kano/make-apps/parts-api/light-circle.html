@@ -2,15 +2,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let LightCircle, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        LightCircle = {
+        const LightCircle = {
             _updateLightboard (force) {
                 this.debounce('_updateLightboard', () => {
                     if (this.isRunning) {
@@ -61,7 +60,10 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['light-circle'] = Object.assign({}, PartsAPI['light-shape'], LightCircle);
+        Kano.MakeApps.PartsAPI.LightCircle = Object.assign({}, Kano.MakeApps.PartsAPI.LightShape, LightCircle);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI['light-circle'] = Kano.MakeApps.PartsAPI.LightCircle;
     })();
 </script>

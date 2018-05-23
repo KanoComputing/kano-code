@@ -3,15 +3,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let MotionSensor, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        MotionSensor = {
+        const MotionSensor = {
             module: 'motionSensor',
             onCreated () {
                 this._onProximityDataChanged = this._onProximityDataChanged.bind(this);
@@ -28,11 +27,11 @@
                 this.reset();
             },
             start () {
-                PartsAPI.DongleBase.start.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.DongleBase.start.apply(this, arguments);
                 this._updateLoop = requestAnimationFrame(this._generateUpdate);
             },
             stop () {
-                PartsAPI.DongleBase.stop.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.DongleBase.stop.apply(this, arguments);
                 cancelAnimationFrame(this._updateLoop);
                 this.reset();
             },
@@ -99,7 +98,10 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['motion-sensor'] = Object.assign({}, PartsAPI.DongleBase, MotionSensor);
+        Kano.MakeApps.PartsAPI.MotionSensor = Object.assign({}, Kano.MakeApps.PartsAPI.DongleBase, MotionSensor);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI['motion-sensor'] = Kano.MakeApps.PartsAPI.MotionSensor;
     })();
 </script>

@@ -10,11 +10,9 @@
          */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        const { PartsAPI } = Kano.MakeApps;
-
         const FiltersAPI = {
             start () {
-                PartsAPI.Base.start.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.start.apply(this, arguments);
                 this._filters = [];
             },
             _getWorker() {
@@ -63,7 +61,7 @@
                 });
             },
             stop () {
-                PartsAPI.Base.stop.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.stop.apply(this, arguments);
                 this._filters = [];
             }
         };
@@ -71,6 +69,6 @@
         /**
          * @polymerBehavior
          */
-        Kano.MakeApps.PartsAPI.filters = Object.assign({}, PartsAPI.Base, FiltersAPI);
+        Kano.MakeApps.PartsAPI.filters = Object.assign({}, Kano.MakeApps.PartsAPI.Base, FiltersAPI);
     })();
 </script>

@@ -2,7 +2,6 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        var Collidable;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
@@ -10,7 +9,7 @@
          */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        WebCollidable = {
+        const WebCollidable = {
             parseComputedSize (size) {
                 return parseInt(size, 10);
             },
@@ -26,7 +25,9 @@
             },
         };
 
-        // @polymerBehavior
+        /**
+         * @polymerBehavior
+         */
         Kano.MakeApps.PartsAPI.WebCollidable = Kano.MakeApps.PartsAPI.Base.applyMixins({}, Kano.MakeApps.PartsAPI.Collidable, WebCollidable);
 
     })();

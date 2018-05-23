@@ -10,17 +10,15 @@
          */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        const { PartsAPI } = Kano.MakeApps;
-
         const Camera = {
             addFilter () {
                 let args = Array.prototype.slice.call(arguments),
                     name = args.shift();
-                PartsAPI.filters.addFilter.call(this, name, args);
+                Kano.MakeApps.PartsAPI.filters.addFilter.call(this, name, args);
                 this._paintFrame();
             },
             clearFilters () {
-                PartsAPI.filters.clearFilters.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.filters.clearFilters.apply(this, arguments);
                 this._paintFrame();
             },
             takePicture () {
@@ -132,8 +130,8 @@
             },
             savePicture () {},
             start () {
-                PartsAPI.kaleidoscope.start.apply(this, arguments);
-                PartsAPI.filters.start.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.kaleidoscope.start.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.filters.start.apply(this, arguments);
                 this.socketListeners = [];
                 this.kaleidoscope = null;
                 this.ctx = this.canvas.getContext('2d');
@@ -142,8 +140,8 @@
                 this.appModules.getModule('camera').on('timer-changed', this._propagateTimerChange.bind(this));
             },
             stop () {
-                PartsAPI.kaleidoscope.stop.apply(this, arguments);
-                PartsAPI.filters.stop.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.kaleidoscope.stop.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.filters.stop.apply(this, arguments);
                 this.reset();
 
                 this.appModules.getModule('camera').removeListener('button-down', this._propagateButtonPress);
@@ -163,6 +161,6 @@
         /**
          * @polymerBehavior
          */
-        Kano.MakeApps.PartsAPI.camera = Object.assign({}, PartsAPI.kaleidoscope, PartsAPI.filters, Camera);
+        Kano.MakeApps.PartsAPI.camera = Object.assign({}, Kano.MakeApps.PartsAPI.kaleidoscope, Kano.MakeApps.PartsAPI.filters, Camera);
     })();
 </script>

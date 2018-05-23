@@ -2,15 +2,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let LightFrame, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        LightFrame = {
+        const LightFrame = {
             _updateLightboard (force) {
                 this.debounce('_updateLightboard', () => {
                     if (this.isRunning) {
@@ -39,7 +38,10 @@
                 return parseInt(this.get('model.userProperties.height'));
             }
         };
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['light-frame'] = Object.assign({}, PartsAPI['light-shape'], LightFrame);
+        Kano.MakeApps.PartsAPI.LightFrame = Object.assign({}, Kano.MakeApps.PartsAPI.LightShape, LightFrame);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI['light-frame'] = Kano.MakeApps.PartsAPI.LightFrame;
     })();
 </script>

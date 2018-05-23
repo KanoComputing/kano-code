@@ -2,15 +2,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let LightAnimationDisplay, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        LightAnimationDisplay = {
+        const LightAnimationDisplay = {
             _updateFrame () {
                 let bitmaps = this.animation.bitmaps;
                 this.frame = bitmaps[this.frameIndex];
@@ -95,7 +94,10 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['light-animation-display'] = Object.assign({}, PartsAPI['light-shape'], LightAnimationDisplay);
+        Kano.MakeApps.PartsAPI.LightAnimationDisplay = Object.assign({}, Kano.MakeApps.PartsAPI.LightShape, LightAnimationDisplay);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI['light-animation-display'] = Kano.MakeApps.PartsAPI.LightAnimationDisplay;
     })();
 </script>

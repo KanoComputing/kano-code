@@ -2,34 +2,33 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let LightShape, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        LightShape = {
+        const LightShape = {
             PIXEL_SIZE: 27,
             start () {
-                PartsAPI.Base.start.apply(this);
+                Kano.MakeApps.PartsAPI.Base.start.apply(this);
                 this._updateLightboard(true);
             },
             move (x, y) {
                 x *= this.PIXEL_SIZE;
                 y *= this.PIXEL_SIZE;
-                PartsAPI.Base.move.call(this, x, y);
+                Kano.MakeApps.PartsAPI.Base.move.call(this, x, y);
                 this._updateLightboard();
             },
             setX (x) {
                 x *= this.PIXEL_SIZE;
-                PartsAPI.Base.setX.call(this, x);
+                Kano.MakeApps.PartsAPI.Base.setX.call(this, x);
                 this._updateLightboard();
             },
             setY (y) {
                 y *= this.PIXEL_SIZE;
-                PartsAPI.Base.setY.call(this, y);
+                Kano.MakeApps.PartsAPI.Base.setY.call(this, y);
                 this._updateLightboard();
             },
             getWidth () {
@@ -73,7 +72,10 @@
             _updateLightboard() {}
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI['light-shape'] = Object.assign({}, PartsAPI.Base, LightShape);
+        Kano.MakeApps.PartsAPI.LightShape = Object.assign({}, Kano.MakeApps.PartsAPI.Base, LightShape);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI['light-shape'] = Kano.MakeApps.PartsAPI.LightShape;
     })();
 </script>

@@ -9,8 +9,6 @@
          */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        const { PartsAPI } = Kano.MakeApps;
-
         // @polymerBehavior
         const DongleBase = {
             _listeners: [],
@@ -30,7 +28,7 @@
                 }
             },
             start () {
-                PartsAPI.Base.start.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.start.apply(this, arguments);
             },
             mappingChangedEventListener (e) {
                 this.remapListeners(e.detail.oldDevice, e.detail.newDevice, true);
@@ -69,10 +67,10 @@
                 }, 1000);
             },
             stop () {
-                PartsAPI.Base.stop.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.stop.apply(this, arguments);
             }
         };
 
-        Kano.MakeApps.PartsAPI.DongleBase = Object.assign({}, PartsAPI.Base, DongleBase);
+        Kano.MakeApps.PartsAPI.DongleBase = Object.assign({}, Kano.MakeApps.PartsAPI.Base, DongleBase);
     })();
 </script>

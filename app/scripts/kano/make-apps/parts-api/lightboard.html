@@ -2,15 +2,14 @@
 <script>
     (function () {
         window.Kano = window.Kano || {};
-        let Lightboard, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
         /**
          * @namespace Kano.MakeApps.PartsAPI
          */
-        PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
+        Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
-        Lightboard = {
+        const Lightboard = {
             listeners: {
                 'update-shape': '_updateShape'
             },
@@ -22,7 +21,7 @@
                 this._stopFiring();
             },
             start () {
-                PartsAPI.Base.start.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.start.apply(this, arguments);
                 this.attachListeners();
 
                 this.iterator = {
@@ -32,7 +31,7 @@
                 this.clear();
             },
             stop () {
-                PartsAPI.Base.stop.apply(this, arguments);
+                Kano.MakeApps.PartsAPI.Base.stop.apply(this, arguments);
                 this.detachListeners();
             },
             attachListeners () {
@@ -136,7 +135,9 @@
             }
         };
 
-        // @polymerBehavior
-        Kano.MakeApps.PartsAPI.lightboard = Object.assign({}, PartsAPI.Base, Lightboard);
+        /**
+         * @polymerBehavior
+         */
+        Kano.MakeApps.PartsAPI.lightboard = Object.assign({}, Kano.MakeApps.PartsAPI.Base, Lightboard);
     })();
 </script>
