@@ -1,5 +1,8 @@
 /* globals unescape */
 
+/**
+ * @namespace FileUtils
+ */
 window.FileUtils = window.FileUtils || {};
 
 /*
