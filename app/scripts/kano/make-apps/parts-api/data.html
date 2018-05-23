@@ -1,9 +1,13 @@
 <link rel="import" href="./base.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let Data, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         Data = {
@@ -44,5 +48,5 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['data'] = Object.assign({}, PartsAPI.Base, Data);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

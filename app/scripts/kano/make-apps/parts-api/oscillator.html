@@ -1,9 +1,13 @@
 <link rel="import" href="./base.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let Oscillator, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         Oscillator = {
@@ -95,5 +99,5 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['oscillator'] = Object.assign({}, PartsAPI.Base, Oscillator);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

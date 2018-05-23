@@ -1,7 +1,11 @@
 <link rel="import" href="../store.html">
 <script>
-    ((Kano) => {
+    (() => {
+        window.Kano = window.Kano || {};
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Actions
+         */
         Kano.MakeApps.Actions = Kano.MakeApps.Actions || {};
 
         const store = Kano.MakeApps.Store;
@@ -45,5 +49,5 @@
                 store.dispatch({ type: USER_TYPES.UPDATE_LEVELS, levels });
             }
         };
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

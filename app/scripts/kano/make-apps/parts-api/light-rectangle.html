@@ -1,9 +1,13 @@
 <link rel="import" href="./light-shape.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let LightRectangle, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         LightRectangle = {
@@ -54,5 +58,5 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['light-rectangle'] = Object.assign({}, PartsAPI['light-shape'], LightRectangle);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

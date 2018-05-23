@@ -1,7 +1,11 @@
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Files
+         */
         Kano.MakeApps.Files = Kano.MakeApps.Files || {};
 
         let cache = {};
@@ -58,6 +62,6 @@
             }
         };
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>
     

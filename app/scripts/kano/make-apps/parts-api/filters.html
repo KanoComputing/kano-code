@@ -1,10 +1,14 @@
 <link rel="import" href="./base.html">
 <link rel="import" href="./canvas-filters.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let FiltersAPI, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         FiltersAPI = {
@@ -65,5 +69,5 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['filters'] = Object.assign({}, PartsAPI.Base, FiltersAPI);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

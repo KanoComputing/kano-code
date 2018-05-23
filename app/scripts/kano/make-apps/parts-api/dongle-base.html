@@ -1,10 +1,13 @@
 <link rel="import" href="./base.html">
 <script>
-    (function (Kano) {
-
+    (function () {
+        window.Kano = window.Kano || {};
         let DongleBase, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         // @polymerBehavior
@@ -70,5 +73,5 @@
         };
 
         Kano.MakeApps.PartsAPI.DongleBase = Object.assign({}, PartsAPI.Base, DongleBase);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

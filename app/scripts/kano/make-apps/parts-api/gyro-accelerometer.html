@@ -1,9 +1,13 @@
 <link rel="import" href="./dongle-base.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let GyroAccelerometer, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         GyroAccelerometer = {
@@ -39,5 +43,5 @@
         };
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['gyro-accelerometer'] = Object.assign({}, PartsAPI.DongleBase, GyroAccelerometer);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

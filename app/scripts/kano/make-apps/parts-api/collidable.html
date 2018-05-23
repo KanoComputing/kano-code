@@ -1,10 +1,14 @@
 <link rel="import" href="./base.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
 
         var Collidable;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         Collidable = {
@@ -68,5 +72,5 @@
         // @polymerBehavior
         Kano.MakeApps.PartsAPI.Collidable = Kano.MakeApps.PartsAPI.Base.applyMixins({}, Kano.MakeApps.PartsAPI.Base, Collidable);
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

@@ -1,9 +1,13 @@
 <link rel="import" href="./base.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let Microphone, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         Microphone = {
@@ -66,5 +70,5 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['microphone'] = Kano.MakeApps.PartsAPI.Base.applyMixins({}, PartsAPI.Base, Microphone);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

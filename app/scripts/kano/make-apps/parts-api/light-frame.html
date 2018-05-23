@@ -1,9 +1,13 @@
 <link rel="import" href="./light-shape.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let LightFrame, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         LightFrame = {
@@ -37,5 +41,5 @@
         };
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['light-frame'] = Object.assign({}, PartsAPI['light-shape'], LightFrame);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

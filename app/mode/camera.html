@@ -3,7 +3,7 @@
 <link rel="import" href="./common/filters.html">
 
 <script>
-    ((Kano) => {
+    (() => {
         const COLOR = '#82C23D';
         const definition = {
             id: 'camera',
@@ -165,5 +165,13 @@
         definition.categories = categories;
 
         Kano.Code.Mode.define(definition.id, definition);
-    })(window.Kano);
+
+        window.Kano = window.Kano || {};
+        Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Mode
+         */
+        Kano.MakeApps.Mode = Kano.MakeApps.Mode || {};
+        Kano.MakeApps.Mode.Camera = definition;
+    })();
 </script>

@@ -1,7 +1,11 @@
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Files
+         */
         Kano.MakeApps.Files = Kano.MakeApps.Files || {};
 
         Kano.MakeApps.Files.stickers = {
@@ -256,5 +260,5 @@
             return `${Kano.MakeApps.config.KANO_CODE_URL}/assets/part/stickers/${set}/${sticker}.svg`;
         };
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

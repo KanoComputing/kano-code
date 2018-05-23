@@ -1,7 +1,12 @@
 <script>
-    (function (Kano) {
+    (function () {
+
+        window.Kano = window.Kano || {};
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Files
+         */
         Kano.MakeApps.Files = Kano.MakeApps.Files || {};
 
         Kano.MakeApps.Files.types = Kano.MakeApps.Files.types || {};
@@ -552,5 +557,5 @@
             return `${Kano.MakeApps.config.KANO_CODE_URL}/assets/audio/samples/${sample}.wav`;
         };
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

@@ -1,10 +1,14 @@
 <link rel="import" href="../../event-emitter.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Debug
+         */
         Kano.MakeApps.Debug = Kano.MakeApps.Debug || {};
 
-        class ChallengeDebugger extends EventEmitter {
+        class ChallengeDebugger extends Kano.EventEmitter {
             constructor () {
                 super();
             }
@@ -76,5 +80,5 @@
         }
 
         Kano.MakeApps.Debug.Challenge = new ChallengeDebugger();
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

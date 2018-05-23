@@ -1,9 +1,13 @@
 <link rel="import" href="./base.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let Lightboard, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         Lightboard = {
@@ -134,5 +138,5 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI.lightboard = Object.assign({}, PartsAPI.Base, Lightboard);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

@@ -1,7 +1,7 @@
 <link rel="import" href="../elements/kano-editor-normal/kano-editor-normal.html">
 
 <script>
-    ((Kano) => {
+    (() => {
         const COLOR = '#82C23D';
         const definition = {
             id: 'normal',
@@ -85,5 +85,13 @@
         definition.categories = categories;
 
         Kano.Code.Mode.define(definition.id, definition);
-    })(window.Kano);
+
+        window.Kano = window.Kano || {};
+        Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Mode
+         */
+         Kano.MakeApps.Mode = Kano.MakeApps.Mode || {};
+        Kano.MakeApps.Mode.Normal = definition;
+    })();
 </script>

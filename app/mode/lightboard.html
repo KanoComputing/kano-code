@@ -1,6 +1,6 @@
 <link rel="import" href="../elements/kano-editor-lightboard/kano-editor-lightboard.html">
 <script>
-    ((Kano) => {
+    (() => {
         const COLOR = '#4674e8';
         const definition = {
             id: 'lightboard',
@@ -363,5 +363,13 @@
 
         Kano.Code.Mode.define(definition.id, definition);
 
-    })(window.Kano);
+        window.Kano = window.Kano || {};
+        Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.Mode
+         */
+         Kano.MakeApps.Mode = Kano.MakeApps.Mode || {};
+        Kano.MakeApps.Mode.Light = definition;
+
+    })();
 </script>

@@ -1,10 +1,14 @@
 <link rel="import" href="./dongle-base.html">
 <link rel="import" href="../spring.html">
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         let MotionSensor, PartsAPI;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         PartsAPI = Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         MotionSensor = {
@@ -97,5 +101,5 @@
 
         // @polymerBehavior
         Kano.MakeApps.PartsAPI['motion-sensor'] = Object.assign({}, PartsAPI.DongleBase, MotionSensor);
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

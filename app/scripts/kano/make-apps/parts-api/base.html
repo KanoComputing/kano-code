@@ -1,9 +1,14 @@
 <script>
-    (function (Kano) {
+    (function () {
+
+        window.Kano = window.Kano || {};
 
         var Base;
 
         Kano.MakeApps = Kano.MakeApps || {};
+        /**
+         * @namespace Kano.MakeApps.PartsAPI
+         */
         Kano.MakeApps.PartsAPI = Kano.MakeApps.PartsAPI || {};
 
         // @polymerBehavior
@@ -215,5 +220,5 @@
             }
         };
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>
