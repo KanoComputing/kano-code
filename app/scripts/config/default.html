@@ -1,5 +1,9 @@
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
+        /** 
+         * @namespace Kano.MakeApps
+         */
         Kano.MakeApps = Kano.MakeApps || {};
         Kano.MakeApps.config = Kano.MakeApps.config || {};
 
@@ -19,5 +23,5 @@
         };
         Kano.MakeApps.config.GEO_API = "http://kano-geoip-api.herokuapp.com/country/";
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

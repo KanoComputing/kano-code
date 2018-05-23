@@ -1,7 +1,9 @@
 <link rel="import" href="./copy-manager.html">
-<link rel="import" href="./blockly/defaults.html">
+<!-- <link rel="import" href="./blockly/defaults.html"> -->
 <script>
-    (function (Kano) {
+    (function () {
+
+        window.Kano = window.Kano || {};
 
         var Challenge = function () {
             // Namespaces for the unique ids
@@ -17,6 +19,9 @@
             this.appParts = {};
             this.partsIds = {};
         };
+        /**
+         * @namespace Kano.MakeApps
+         */
         Kano.MakeApps = Kano.MakeApps || {};
 
         Kano.MakeApps.Challenge = Challenge;
@@ -629,5 +634,5 @@
             return '<kano-value-preview><span>' + fieldValue + '</span></kano-value-preview>';
         };
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

@@ -2,8 +2,11 @@
 <link rel="import" href="./store.html">
 <link rel="import" href="../../../../../kano-shared-storage-client/kano-shared-storage-client.html">
 <script>
-    (function (Kano) {
-
+    (function () {
+        window.Kano = window.Kano || {};
+        /**
+         * @namespace Kano.MakeApps
+         */
         Kano.MakeApps = Kano.MakeApps || {};
 
         let loadDebouncer = null,
@@ -172,5 +175,5 @@
 
         Kano.MakeApps.Progress = Kano.MakeApps.Progress || Progress;
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>

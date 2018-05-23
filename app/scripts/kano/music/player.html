@@ -1,6 +1,8 @@
 <script>
         
-    (function (Kano) {
+    (function () {
+
+        window.Kano = window.Kano || {};
 
         Kano.AudioContext = Kano.AudioContext || new AudioContext();
 
@@ -70,9 +72,12 @@
             }
         }
 
+        /**
+         * @namespace Kano.Music
+         */
         Kano.Music = Kano.Music || {};
         Kano.Music.AudioPlayer = AudioPlayer;
 
-    })(window.Kano = window.Kano || {});
+    })();
 
 </script>

@@ -1,4 +1,8 @@
-(function (Kano) {
+(function () {
+    /**
+     * @namespace Kano
+     */
+    window.Kano = window.Kano || {}
     // Cross browser tweaks
     // Putting getUserMedia in navigator is a wrong practice, since the spec moved it inside MediaDevices
     // but calling it outside of navigator will fail on chrome
@@ -60,4 +64,4 @@
     }
 
     Kano.Webcam = Webcam;
-})(window.Kano = window.Kano || {});
+})();

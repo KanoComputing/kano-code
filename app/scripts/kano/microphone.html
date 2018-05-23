@@ -1,5 +1,5 @@
 <script>
-    (function (Kano) {
+    (function () {
         // Cross browser tweaks
         // Putting getUserMedia in navigator is a wrong practice, since the spec moved it inside MediaDevices
         // but calling it outside of navigator will fail on chrome
@@ -204,10 +204,15 @@
             }
 
         }
+        
+        /**
+         * @namespace Kano
+         */
+        window.Kano = window.Kano || {}
 
         // Is a singleton, all microphone data is shared
         Kano.MicrophoneClass = Microphone;
         Kano.Microphone = new Microphone();
-    })(window.Kano = window.Kano || {});
+    })();
 
 </script>

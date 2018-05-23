@@ -1,5 +1,9 @@
 <script>
     (((Kano) => {
+        window.Kano = window.Kano || {};
+        /**
+         * @namespace Kano.MakeApps
+         */
         Kano.MakeApps = Kano.MakeApps || {};
     
         Kano.MakeApps.experiments = Kano.MakeApps.experiments || {};
@@ -31,5 +35,5 @@
             this.FLAGS.available = this.FLAGS.available || {};
             return this.FLAGS;
         };
-    })(window.Kano = window.Kano || {}));
+    })());
 </script>

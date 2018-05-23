@@ -1,6 +1,11 @@
 <link rel="import" href="../microphone.html">
 <script>
-    (function (Kano) {
+    (function () {
+
+        /**
+         * @namespace Kano
+         */
+        window.Kano = window.Kano || {};
 
         class MicrophoneProxy extends Kano.MicrophoneClass {
 
@@ -61,6 +66,6 @@
 
         // Is a singleton, all microphone proxy data is shared
         Kano.MicrophoneProxy = new MicrophoneProxy();
-    })(window.Kano = window.Kano || {});
+    })();
 
 </script>

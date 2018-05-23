@@ -1,6 +1,10 @@
-(function (Kano) {
+(function () {
 
+    window.Kano = window.Kano || {};
 
+    /**
+     * @namespace Kano.MakeApps
+     */
     Kano.MakeApps = Kano.MakeApps || {};
 
     /*
@@ -157,4 +161,4 @@
 
     Kano.MakeApps.TextToSpeech = TextToSpeech;
 
-})(window.Kano = window.Kano || {});
+})();

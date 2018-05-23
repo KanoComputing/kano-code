@@ -1,7 +1,8 @@
 <link rel="import" href="../../../../flow-down/flow-down.html">
 
 <script>
-    (function (Kano) {
+    (function () {
+        window.Kano = window.Kano || {};
         const Store = {
             create(initState) {
                 const store = FlowDown.createStore(initState);
@@ -33,9 +34,12 @@
                 return store;
             },
         };
-
+        
+        /**
+         * @namespace Kano.Code
+         */
         Kano.Code = Kano.Code || {};
         Kano.Code.Store = Kano.Code.Store || Store.create({});
-    })(window.Kano = window.Kano || {});
+    })();
 </script>
     

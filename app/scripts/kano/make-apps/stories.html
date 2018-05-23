@@ -1,8 +1,13 @@
 <script>
-    (function (Kano) {
+    (function () {
+
+        window.Kano = window.Kano || {};
 
         let stories = [];
 
+        /**
+         * @namespace Kano.MakeApps
+         */
         Kano.MakeApps = Kano.MakeApps || {};
 
         Kano.MakeApps.Stories = Kano.MakeApps.Stories || {};
@@ -67,5 +72,5 @@
             return Promise.resolve(scene);
         };
 
-    })(window.Kano = window.Kano || {});
+    })();
 </script>
