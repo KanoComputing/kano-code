@@ -2,8 +2,8 @@ import { UIBehavior } from '../kano-ui-behavior.js';
 import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';
 import { Monotron } from '../../../scripts/kano/music/monotron/monotron.js';
 import { AudioPlayer } from '../../../scripts/kano/music/player.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
 const OSCILLATOR_FREQ_RANGE_LOW = 55, // --> A0 note in pitch standard tuning
       DEFAULT_FREQ = 220 // --> A2

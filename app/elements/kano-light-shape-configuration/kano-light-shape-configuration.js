@@ -3,10 +3,10 @@ import '../inputs/kano-input/kano-input.js';
 import '../inputs/kano-input-range/kano-input-range.js';
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
 import '../kano-part-editor-topbar/kano-part-editor-topbar.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@kano/kwc-style/input.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@kano/kwc-style/input.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer */
 
 Polymer({

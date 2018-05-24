@@ -19,19 +19,19 @@ Example:
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
-import { FlattenedNodesObserver } from '../../../../../@polymer/polymer/lib/utils/flattened-nodes-observer.js';
-import '../../../../../@kano/kwc-style/typography.js';
+import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
+import '@kano/kwc-style/typography.js';
 import './kano-challenge-ui.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../kano-editor-banner/kano-editor-banner.js';
-import { SoundPlayerBehavior } from '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
+import { SoundPlayerBehavior } from '@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
 import { Store } from '../../scripts/legacy/store.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { Debouncer } from '../../../../../@polymer/polymer/lib/utils/debounce.js';
-import { timeOut } from '../../../../../@polymer/polymer/lib/utils/async.js';
-import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
+import { timeOut } from '@polymer/polymer/lib/utils/async.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import '../../../../../twemoji-min/2/twemoji.min.js';
 /* globals Polymer, Kano */
 

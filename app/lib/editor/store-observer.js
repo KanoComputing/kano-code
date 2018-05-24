@@ -1,4 +1,4 @@
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 let defined = false;
 
 class StoreObserver {

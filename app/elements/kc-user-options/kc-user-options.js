@@ -1,9 +1,9 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import '../../scripts/kano/make-apps/actions/user.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano, Blockly */
 
 Polymer({

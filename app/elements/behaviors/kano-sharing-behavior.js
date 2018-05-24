@@ -1,4 +1,4 @@
-import '../../../../../@polymer/neon-animation/animations/transform-animation.js';
+import '@polymer/neon-animation/animations/transform-animation.js';
 import { ViewBehavior } from './kano-view-behavior.js';
 import { GamificationBehavior } from './kano-gamification-behavior.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';

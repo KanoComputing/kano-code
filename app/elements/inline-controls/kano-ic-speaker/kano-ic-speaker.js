@@ -1,9 +1,9 @@
-import '../../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../../@polymer/iron-icons/av-icons.js';
-import '../../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-icons/av-icons.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style>

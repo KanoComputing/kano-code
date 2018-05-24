@@ -1,12 +1,12 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@kano/kwc-style/button.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@kano/kwc-style/button.js';
 import '../kano-icons/parts.js';
 import '../kc-dialog-topbar/kc-dialog-topbar.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style>

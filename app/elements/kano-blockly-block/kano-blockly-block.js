@@ -1,8 +1,8 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@kano/kwc-blockly/kwc-blockly-style.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@kano/kwc-blockly/kwc-blockly-style.js';
 import '../blockly.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style include="kwc-blockly-style"></style>

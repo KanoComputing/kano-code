@@ -15,17 +15,17 @@ Custom property | Description | Default
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-selector/iron-selector.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@polymer/iron-icons/iron-icons.js';
-import '../../../../../@polymer/iron-icons/av-icons.js';
-import '../../../../../@polymer/iron-pages/iron-pages.js';
-import '../../../../../@polymer/paper-input/paper-input.js';
-import '../../../../../@kano/kwc-icons/kwc-icons.js';
-import '../../../../../@kano/kwc-color-wheel/kwc-color-wheel.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-selector/iron-selector.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-icons/av-icons.js';
+import '@polymer/iron-pages/iron-pages.js';
+import '@polymer/paper-input/paper-input.js';
+import '@kano/kwc-icons/kwc-icons.js';
+import '@kano/kwc-color-wheel/kwc-color-wheel.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import '../inputs/kano-input-text/kano-input-text.js';
 import '../inputs/kano-input-color/kano-input-color.js';
@@ -34,9 +34,9 @@ import '../kano-icons/kc-ui.js';
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
 import '../kano-style/themes/dark.js';
 import '../kano-tooltip/kano-tooltip.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 Polymer({
   _template: html`
         <style include="kano-code-shared-styles">

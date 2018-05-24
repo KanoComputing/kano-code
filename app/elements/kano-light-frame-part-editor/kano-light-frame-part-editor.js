@@ -1,12 +1,12 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import '../kano-part-editor-topbar/kano-part-editor-topbar.js';
 import '../kano-pixel-editor/kano-pixel-editor.js';
 import '../kano-pixel-canvas/kano-pixel-canvas.js';
 import { LightBitmapBehavior } from '../behaviors/kano-light-bitmap-behavior.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { LightFrame } from '../../scripts/kano/make-apps/parts-api/light-frame.js';
 Polymer({
   _template: html`

@@ -1,8 +1,8 @@
 import '../../scripts/kano/make-apps/store.js';
 import '../kano-style/themes/dark.js';
 import { Store } from '../../scripts/legacy/store.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '../../../../../monaco-editor-element/dist/monaco-editor/vs/loader.js';
 import '../../../../../monaco-editor-element/monaco-editor.js';
 /* globals Polymer, Kano, monaco */

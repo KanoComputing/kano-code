@@ -1,10 +1,10 @@
-import '../../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import { IronResizableBehavior } from '../../../../../../@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import { oscillator } from '../../../scripts/kano/make-apps/parts-api/oscillator.js';
 import '../kano-value-rendering/kano-value-rendering.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style>

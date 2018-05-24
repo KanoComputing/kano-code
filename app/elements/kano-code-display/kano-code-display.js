@@ -8,14 +8,14 @@
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/prism-element/prism-highlighter.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import { IronResizableBehavior } from '../../../../../@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import '@polymer/prism-element/prism-highlighter.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import './kano-prism-theme.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 const CODE_DISPLAY_LINE_HEIGHT = 20;
 Polymer({

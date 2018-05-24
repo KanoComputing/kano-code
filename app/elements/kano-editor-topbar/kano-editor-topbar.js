@@ -8,16 +8,16 @@
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-image/iron-image.js';
-import '../../../../../@kano/kwc-icons/kwc-icons.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-image/iron-image.js';
+import '@kano/kwc-icons/kwc-icons.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../kano-tooltip/kano-tooltip.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style>

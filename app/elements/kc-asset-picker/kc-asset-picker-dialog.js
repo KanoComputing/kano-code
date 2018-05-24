@@ -1,14 +1,14 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@kano/kwc-icons/kwc-icons.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import { PaperDialogBehavior } from '../../../../../@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@kano/kwc-icons/kwc-icons.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import { PaperDialogBehavior } from '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
 import '../kc-dialog-topbar/kc-dialog-topbar.js';
 import './kc-asset-picker.js';
 import { KcAssetPickerBehavior } from './kc-asset-picker-behavior.js';
-import { KwcFileManagerBehavior } from '../../../../@kano/kwc-file-picker/kwc-file-manager-behavior.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { KwcFileManagerBehavior } from '@kano/kwc-file-picker/kwc-file-manager-behavior.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style include="kc-asset-picker-style">

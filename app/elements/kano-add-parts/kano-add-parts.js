@@ -1,14 +1,14 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@kano/kwc-style/kwc-style.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@kano/kwc-style/kwc-style.js';
 import '../kano-style/themes/dark.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import './kano-add-parts-item.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 Polymer({
   _template: html`
         <style>

@@ -1,15 +1,15 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-pages/iron-pages.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/marked-element/marked-element.js';
-import '../../../../../@kano/web-components/kano-glint-animation/kano-glint-animation.js';
-import '../../../../../@kano/web-components/kano-circle-progress/kano-circle-progress.js';
-import '../../../../../@kano/kwc-style/color.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-pages/iron-pages.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/marked-element/marked-element.js';
+import '@kano/web-components/kano-glint-animation/kano-glint-animation.js';
+import '@kano/web-components/kano-circle-progress/kano-circle-progress.js';
+import '@kano/kwc-style/color.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../kano-icons/kc-ui.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 /* globals Polymer, Kano */
 

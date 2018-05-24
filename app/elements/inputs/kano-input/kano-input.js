@@ -21,11 +21,11 @@ import '../kano-input-list/kano-input-list.js';
 import '../kano-input-toggle/kano-input-toggle.js';
 import '../kano-input-image/kano-input-image.js';
 import '../kano-input-wave/kano-input-wave.js';
-import '../../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { AppEditorBehavior } from '../../behaviors/kano-app-editor-behavior.js';
-import { dom } from '../../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 /* globals Polymer, Kano */
 
 Polymer({

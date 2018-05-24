@@ -1,8 +1,8 @@
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
 import '../ui/kano-ui/kano-ui.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { Canvas } from '../part/kano-part-canvas/kano-canvas-api/kano-canvas-api.js';
 class KanoWorkspaceNormal extends mixinBehaviors(
     [WorkspaceBehavior],

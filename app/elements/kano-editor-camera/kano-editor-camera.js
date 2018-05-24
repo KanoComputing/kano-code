@@ -1,8 +1,8 @@
 import '../kc-workspace-frame/kc-workspace-frame.js';
 import '../kc-workspace-frame/kc-parts-controls.js';
 import '../kano-workspace-camera/kano-workspace-camera.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
 /* globals Polymer, Kano */
 Polymer({

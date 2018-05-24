@@ -8,14 +8,14 @@
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@kano/kwc-icons/kwc-icons.js';
+import '@kano/kwc-icons/kwc-icons.js';
 import '../kano-app-player-toolbar/kano-app-player-toolbar.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 Polymer({
   _template: html`
         <style>

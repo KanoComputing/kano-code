@@ -1,6 +1,6 @@
-import '../../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 import { UIBehavior } from '../kano-ui-behavior.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { GyroAccelerometer } from '../../../scripts/kano/make-apps/parts-api/gyro-accelerometer.js';
 
 Polymer({

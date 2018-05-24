@@ -1,8 +1,8 @@
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 // TODO: Route using something else
 // import '../../../../../iron-lazy-pages/iron-lazy-pages.js';
-import '../../../../../@kano/web-components/kano-alert/kano-alert.js';
+import '@kano/web-components/kano-alert/kano-alert.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import { Config } from '../../scripts/kano/make-apps/actions/config.js';
 import '../../scripts/kano/make-apps/actions/routing.js';

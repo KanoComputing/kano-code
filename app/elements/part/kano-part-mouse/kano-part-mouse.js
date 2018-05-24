@@ -1,7 +1,7 @@
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';
 import { sticker } from '../../../scripts/kano/make-apps/parts-api/sticker.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 /* globals Polymer, Kano */
 
 Polymer({

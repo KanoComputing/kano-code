@@ -1,6 +1,6 @@
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { oscillator } from '../../../scripts/kano/make-apps/parts-api/oscillator.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 /* globals Polymer, Kano */
 
 Polymer({

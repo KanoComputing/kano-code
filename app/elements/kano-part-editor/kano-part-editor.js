@@ -8,10 +8,10 @@
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icon/iron-icon.js';
 import '../kano-icons/kc-ui.js';
 import '../kano-ui-editor/kano-ui-editor.js';
 import '../kano-data-editor/kano-data-editor.js';
@@ -23,10 +23,10 @@ import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { MediaQueryBehavior } from '../behaviors/kano-media-query-behavior.js';
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
 import { Store } from '../../scripts/legacy/store.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
-import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 const colorThemes = {
     'ui': '#00d9c7',
     'data': '#9b61bd',

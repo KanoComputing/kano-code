@@ -8,14 +8,14 @@
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import { IronResizableBehavior } from '../../../../../@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 Polymer({
   _template: html`
         <style>

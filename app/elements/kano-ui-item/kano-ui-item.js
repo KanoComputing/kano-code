@@ -1,7 +1,7 @@
-import '../../../../../@polymer/iron-image/iron-image.js';
+import '@polymer/iron-image/iron-image.js';
 import { AnimatableBehavior } from '../behaviors/kano-animatable-behavior.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 
 const IMAGE_PADDING = 20;

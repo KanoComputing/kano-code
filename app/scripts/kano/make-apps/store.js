@@ -1,6 +1,6 @@
 import FlowDown from '../../../../../../flow-down/flow-down.js';
 import { config as config$0 } from '../../config/default.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 
 export const Store = FlowDown.createStore({
     editor: {

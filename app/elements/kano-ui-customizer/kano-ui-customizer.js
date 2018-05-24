@@ -1,10 +1,10 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '../inputs/kano-input/kano-input.js';
 import '../inputs/kano-input/kano-input.js';
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer */
 Polymer({
   _template: html`

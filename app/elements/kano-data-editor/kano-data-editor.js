@@ -1,10 +1,10 @@
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
-import '../../../../../@polymer/paper-item/paper-item.js';
-import '../../../../../@polymer/paper-listbox/paper-listbox.js';
-import '../../../../../@polymer/paper-toggle-button/paper-toggle-button.js';
-import '../../../../../@polymer/paper-spinner/paper-spinner-lite.js';
-import '../../../../../@polymer/marked-element/marked-element.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-listbox/paper-listbox.js';
+import '@polymer/paper-toggle-button/paper-toggle-button.js';
+import '@polymer/paper-spinner/paper-spinner-lite.js';
+import '@polymer/marked-element/marked-element.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import '../inputs/kano-input/kano-input.js';
 import '../inputs/kano-input-text/kano-input-text.js';
@@ -13,8 +13,8 @@ import '../kano-part-editor-topbar/kano-part-editor-topbar.js';
 import '../kano-data-display/kano-data-display.js';
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
 import './kano-what-is-json.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 Polymer({
   _template: html`

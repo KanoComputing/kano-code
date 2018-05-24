@@ -1,13 +1,13 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@kano/kwc-style/input.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@kano/kwc-style/input.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '../kano-part-editor-topbar/kano-part-editor-topbar.js';
 import '../kano-ui-customizer/kano-ui-customizer.js';
 import '../inputs/kano-input-text/kano-input-text.js';
 import '../inputs/kano-input-range/kano-input-range.js';
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer */
 
 Polymer({

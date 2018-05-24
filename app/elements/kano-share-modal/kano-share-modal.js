@@ -1,16 +1,16 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-pages/iron-pages.js';
-import '../../../../../@polymer/iron-image/iron-image.js';
-import '../../../../../@polymer/paper-card/paper-card.js';
-import '../../../../../@polymer/paper-dialog/paper-dialog.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@kano/web-components/kano-lightboard-preview/kano-lightboard-preview.js';
-import '../../../../../@kano/kwc-style/input.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-pages/iron-pages.js';
+import '@polymer/iron-image/iron-image.js';
+import '@polymer/paper-card/paper-card.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@kano/web-components/kano-lightboard-preview/kano-lightboard-preview.js';
+import '@kano/kwc-style/input.js';
 import { CoverGeneratorBehavior } from '../behaviors/kano-cover-generator-behavior.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../kano-app-player/kano-app-player.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { BlockAnimation } from '../../scripts/splash.js';
 
 /* globals Polymer, Kano */

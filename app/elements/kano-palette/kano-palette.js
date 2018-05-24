@@ -12,18 +12,18 @@ Custom property | Description | Default
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-selector/iron-selector.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@kano/kwc-icons/kwc-icons.js';
-import '../../../../../@kano/kwc-color-wheel/kwc-color-wheel.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-selector/iron-selector.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@kano/kwc-icons/kwc-icons.js';
+import '@kano/kwc-color-wheel/kwc-color-wheel.js';
 import { MediaQueryBehavior } from '../behaviors/kano-media-query-behavior.js';
 import '../kano-media-query/kano-media-query.js';
 import '../kano-tooltip/kano-tooltip.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style>

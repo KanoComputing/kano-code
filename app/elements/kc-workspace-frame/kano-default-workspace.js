@@ -1,8 +1,8 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@kano/polymer-sortablejs/polymer-sortablejs.js';
-import { IronResizableBehavior } from '../../../../../@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@kano/polymer-sortablejs/polymer-sortablejs.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import '../ui/kano-ui-viewport/kano-ui-viewport.js';
 import '../kano-icons/kc-ui.js';
 import '../kano-workspace-toolbar/kano-workspace-toolbar.js';
@@ -10,8 +10,8 @@ import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style>

@@ -1,7 +1,7 @@
 import '../kano-animated-svg/kano-animated-svg.js';
-import '../../../../../@kano/kwc-icons/kwc-icons.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@kano/kwc-icons/kwc-icons.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 Polymer({
   _template: html`

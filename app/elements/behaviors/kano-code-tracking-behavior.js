@@ -1,4 +1,4 @@
-import { Tracking } from '../../../../../@kano/kwc-behaviors/kwc-tracking.js';
+import { Tracking } from '@kano/kwc-behaviors/kwc-tracking.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 
 // @polymerBehavior

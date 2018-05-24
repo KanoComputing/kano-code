@@ -1,7 +1,7 @@
-import '../../../../../@polymer/marked-element/marked-element.js';
-import '../../../../../@polymer/paper-tooltip/paper-tooltip.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@polymer/marked-element/marked-element.js';
+import '@polymer/paper-tooltip/paper-tooltip.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
 /* globals Polymer */
 Polymer({

@@ -2,8 +2,8 @@ import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
 import { UIBehavior } from '../part/kano-ui-behavior.js';
 import { camera } from '../../scripts/kano/make-apps/parts-api/camera.js';
 import '../ui/kano-ui/kano-ui-camera.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 // Cross browser tweaks
 // Putting getUserMedia in navigator is a wrong practice, since the spec moved it inside MediaDevices
 // but calling it outside of navigator will fail on chrome

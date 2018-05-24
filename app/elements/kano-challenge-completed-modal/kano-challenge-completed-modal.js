@@ -11,13 +11,13 @@
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/paper-dialog/paper-dialog.js';
-import '../../../../../@polymer/neon-animation/animations/transform-animation.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+import '@polymer/neon-animation/animations/transform-animation.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <style>

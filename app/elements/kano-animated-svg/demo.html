@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8">
         <script src="../../../../../webcomponentsjs/webcomponents-lite.js"></script>
-        <script type="module" src="../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
-        <script type="module" src="../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
         <script type="module" src="./kano-animated-svg.js"></script>
         <!-- FIXME(polymer-modulizer):
         These imperative modules that innerHTML your HTML are
@@ -59,8 +59,8 @@ $_documentContainer.innerHTML = `<dom-bind id="bind">
 document.body.appendChild($_documentContainer.content);
 </script>
         <script type="module">
-import '../../../../../@polymer/iron-demo-helpers/demo-snippet.js';
-import '../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+import '@polymer/iron-demo-helpers/demo-snippet.js';
+import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
 import './kano-animated-svg.js';
 var bind = document.getElementById('bind');
 bind.paths = {

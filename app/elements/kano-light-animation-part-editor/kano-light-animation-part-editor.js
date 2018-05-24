@@ -1,13 +1,13 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-icon/iron-icon.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import '../kano-part-editor-topbar/kano-part-editor-topbar.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import '../kano-light-animation-editor/kano-light-animation-editor.js';
 import '../kano-icons/kc-ui.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { LightAnimation } from '../../scripts/kano/make-apps/parts-api/light-animation.js';
 /* globals Polymer, Kano */
 Polymer({

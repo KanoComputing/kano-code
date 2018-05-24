@@ -1,6 +1,6 @@
 import '../kano-light-shape-behavior.js';
 import '../../../scripts/kano/make-apps/parts-api/light-rectangle.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 const $_documentContainer = document.createElement('template');
 $_documentContainer.setAttribute('style', 'display: none;');
 

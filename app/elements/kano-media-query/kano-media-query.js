@@ -1,7 +1,7 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-media-query/iron-media-query.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-media-query/iron-media-query.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
         <iron-media-query query="(max-width: 700px)" query-matches="{{smallScreen}}"></iron-media-query>

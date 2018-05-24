@@ -4,8 +4,8 @@ import { AudioPlayer } from '../../../scripts/kano/music/player.js';
 import { samples as samples$0 } from '../../../scripts/kano/make-apps/files/samples.js';
 import { Cache } from '../../../scripts/kano/make-apps/files/cache.js';
 import { Store } from '../../../scripts/kano/make-apps/store.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
 /*
  *

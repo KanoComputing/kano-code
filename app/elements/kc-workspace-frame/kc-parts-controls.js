@@ -1,17 +1,17 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@kano/polymer-sortablejs/polymer-sortablejs.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@kano/polymer-sortablejs/polymer-sortablejs.js';
 import '../kano-icons/kc-ui.js';
 import '../kano-add-parts/kano-add-parts.js';
 import '../kano-part-list-item/kano-part-list-item.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
-import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
-import { IronResizableBehavior } from '../../../../../@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 class KCPartsControls extends mixinBehaviors([
         I18nBehavior,

@@ -1,7 +1,7 @@
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { microphone } from '../../../scripts/kano/make-apps/parts-api/microphone.js';
 import { MicrophoneProxy } from '../../../scripts/kano/make-apps/microphone-proxy.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 /* globals Polymer, Kano */
 
 Polymer({

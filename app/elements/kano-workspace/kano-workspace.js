@@ -1,11 +1,11 @@
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import { SoundPlayerBehavior } from '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
+import { SoundPlayerBehavior } from '@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
 import { CoverGeneratorBehavior } from '../behaviors/kano-cover-generator-behavior.js';
-import '../../../../../@polymer/iron-a11y-keys/iron-a11y-keys.js';
+import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import { Store } from '../../scripts/legacy/store.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 const behaviors = [
     CoverGeneratorBehavior,
     SoundPlayerBehavior,

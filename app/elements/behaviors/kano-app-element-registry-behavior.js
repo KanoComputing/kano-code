@@ -1,4 +1,4 @@
-import { IronResizableBehavior } from '../../../../../@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 let REGISTRY = {};
 
 // @polymerBehavior AppElementRegistryBehavior

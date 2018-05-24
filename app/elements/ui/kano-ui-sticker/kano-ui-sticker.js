@@ -1,10 +1,10 @@
 import { UIBehavior } from '../../part/kano-ui-behavior.js';
 import { sticker } from '../../../scripts/kano/make-apps/parts-api/sticker.js';
 import { WebCollidable } from '../../../scripts/kano/make-apps/parts-api/web-collidable.js';
-import '../../../../../../@kano/kwc-style/background.js';
-import '../../../../../../@polymer/iron-image/iron-image.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@kano/kwc-style/background.js';
+import '@polymer/iron-image/iron-image.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 
 Polymer({

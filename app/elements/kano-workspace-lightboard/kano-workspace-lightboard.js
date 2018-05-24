@@ -3,8 +3,8 @@ import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-regist
 import { lightboard } from '../../scripts/kano/make-apps/parts-api/lightboard.js';
 import '../kano-bitmap-renderer/kano-bitmap-renderer.js';
 import '../ui/kano-ui/kano-ui-lightboard.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 Polymer({
   _template: html`

@@ -9,11 +9,11 @@ import '../../scripts/kano/make-apps/blockly/blockly.js';
 import '../../scripts/config/development.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
 import '../kc-blockly-editor/kc-blockly-editor.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icons/iron-icons.js';
 import '../../../../../iron-lazy-pages/iron-lazy-pages.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { BlockAnimation } from '../../scripts/splash.js'
 /**
 

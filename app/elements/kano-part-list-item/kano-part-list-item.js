@@ -1,12 +1,12 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icon/iron-icon.js';
 import '../kano-icons/parts.js';
-import '../../../../../@kano/kwc-style/color.js';
+import '@kano/kwc-style/color.js';
 import '../inline-controls/kano-inline-controls.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { Templatizer } from '../../../../../@polymer/polymer/lib/legacy/templatizer-behavior.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { Templatizer } from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
 var themeColors = {
     'ui': '#00d9c7',
     'data': '#9b61bd',

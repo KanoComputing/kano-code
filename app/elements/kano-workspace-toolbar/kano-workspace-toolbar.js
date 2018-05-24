@@ -1,15 +1,15 @@
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-icons/iron-icons.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-icon/iron-icon.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import '../kano-tooltip/kano-tooltip.js';
 import '../kano-icons/kc-ui.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../inline-controls/kano-value-rendering/kano-value-rendering.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 Polymer({
   _template: html`

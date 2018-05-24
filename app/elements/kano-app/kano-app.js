@@ -1,12 +1,12 @@
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
 import { experiments } from '../../scripts/kano/make-apps/experiments.js';
-import '../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../@polymer/paper-dialog/paper-dialog.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/paper-toast/paper-toast.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/paper-toast/paper-toast.js';
 import '../kano-style/themes/dark.js';
-import '../../../../../@kano/web-components/kano-auth/kano-auth.js';
+import '@kano/web-components/kano-auth/kano-auth.js';
 import '../kano-routing/kano-routing.js';
 import '../kano-ui-item/kano-ui-item.js';
 import '../behaviors/kano-modal-animator-behavior.js';
@@ -18,8 +18,8 @@ import '../kano-try-chrome/kano-try-chrome.js';
 import { Progress } from '../../scripts/kano/make-apps/progress.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import { User } from '../../scripts/kano/make-apps/actions/user.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 /*
  * Returns true iff client is a Pi. Please be aware that it is not a foolproof
  * method at the moment

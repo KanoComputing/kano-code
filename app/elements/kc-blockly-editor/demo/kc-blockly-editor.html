@@ -7,18 +7,18 @@
 
         <title>kc-blockly-editor demo</title>
 
-        <script src="../../../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+        <script src="@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
-        <script type="module" src="../../../../../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="@polymer/iron-demo-helpers/demo-snippet.js"></script>
         <script type="module" src="../../../scripts/kano/make-apps/store.js"></script>
         <script type="module">
-import '../../../../../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
-import '../../../../../../@polymer/iron-demo-helpers/demo-snippet.js';
+import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+import '@polymer/iron-demo-helpers/demo-snippet.js';
 import { Store } from '../../../scripts/kano/make-apps/store.js';
 import '../kc-blockly-editor.js';
 import '../../../scripts/config/config.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 const StoreElement = Polymer({ is: 'kc-store', behaviors: [Store.ProviderBehavior] });
 </script>
         <script type="module" src="../kc-blockly-editor.js"></script>

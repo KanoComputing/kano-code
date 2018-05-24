@@ -1,9 +1,9 @@
 import { Input } from '../behaviors.js';
 import '../../kano-fs/kano-fs.js';
 import '../kano-file-picker-modal/kano-file-picker-modal.js';
-import '../../../../../../@kano/web-components/kano-glint-animation/kano-glint-animation.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import '@kano/web-components/kano-glint-animation/kano-glint-animation.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { generators } from '../../../scripts/kano/make-apps/files/stickers.js';
 /* globals Polymer, Kano */
 

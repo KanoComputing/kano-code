@@ -1,7 +1,7 @@
-import '../../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../../@polymer/neon-animation/web-animations.js';
-import { NeonAnimationBehavior } from '../../../../../../@polymer/neon-animation/neon-animation-behavior.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/neon-animation/web-animations.js';
+import { NeonAnimationBehavior } from '@polymer/neon-animation/neon-animation-behavior.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 Polymer({
     is: 'from-big-animation',
     behaviors: [

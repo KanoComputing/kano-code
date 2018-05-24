@@ -1,5 +1,5 @@
 import GlobalStore from '../global-store.js';
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 const Store = {
     create(initState) {

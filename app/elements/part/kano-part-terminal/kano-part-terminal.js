@@ -1,9 +1,9 @@
-import '../../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { terminal } from '../../../scripts/kano/make-apps/parts-api/terminal.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
 Polymer({
   _template: html`

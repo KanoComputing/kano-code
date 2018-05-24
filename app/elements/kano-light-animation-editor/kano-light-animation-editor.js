@@ -8,12 +8,12 @@
   from HTML and may be out of place here. Review them and
   then delete this comment!
 */
-import '../../../../../@polymer/polymer/polymer-legacy.js';
+import '@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@polymer/iron-image/iron-image.js';
-import '../../../../../@polymer/iron-pages/iron-pages.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '@polymer/iron-image/iron-image.js';
+import '@polymer/iron-pages/iron-pages.js';
 import '../kano-icons/kc-ui.js';
 import '../kano-pixel-editor/kano-pixel-editor.js';
 import '../kano-bitmap-list/kano-bitmap-list.js';
@@ -22,8 +22,8 @@ import '../inputs/kano-input-range/kano-input-range.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { LightBitmapBehavior } from '../behaviors/kano-light-bitmap-behavior.js';
 import '../kano-tooltip/kano-tooltip.js';
-import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
   _template: html`
           <style>

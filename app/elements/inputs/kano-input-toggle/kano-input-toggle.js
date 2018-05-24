@@ -1,9 +1,9 @@
-import '../../../../../../@polymer/polymer/polymer-legacy.js';
-import '../../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../../@kano/kwc-style/color.js';
+import '@polymer/polymer/polymer-legacy.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@kano/kwc-style/color.js';
 import { Input } from '../behaviors.js';
-import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano */
 
 Polymer({
