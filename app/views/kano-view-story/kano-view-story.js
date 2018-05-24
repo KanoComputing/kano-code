@@ -25,6 +25,8 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { Editor, UserPlugin, PartsPlugin, Runner, Mode } from '../../lib/index.js';
 import { PartTypes, Parts } from '../../lib/parts/all.js';
+import { AllModules } from '../../lib/app-modules/all.js';
+import { AllApis } from '../../lib/meta-api/modules/all.js';
 import { Challenge } from '../../lib/challenge/index.js';
 
 const behaviors = [
@@ -184,9 +186,9 @@ class KanoViewStory extends Store.StateReceiver(
         this.partsPlugin = new PartsPlugin(PartTypes);
         this.editor.addPlugin(this.partsPlugin);
 
-        this.editor.toolbox.setEntries(Kano.Code.BlocklyModules);
+        this.editor.toolbox.setEntries(AllApis);
 
-        this.runner = new Runner(Kano.Code.AppModules);
+        this.runner = new Runner(AllModules);
         this.editor.addPlugin(this.runner);
 
         this.challenge = new Challenge(this.partsPlugin);

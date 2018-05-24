@@ -114,12 +114,6 @@ const Bootstrap = {
         // I am ashamed of this hack, but sometimes safari just doesn't fire the load event :(
         this.loadTimeoutId = setTimeout(this.deferLoading.bind(this), 1000);
 
-        window.Polymer = {
-            dom: 'shadow',
-            lazyRegister: false,
-            useNativeCSSProperties: true,
-        };
-
         this.registerSW();
     },
 };
