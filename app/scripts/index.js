@@ -1,5 +1,6 @@
 import { BlockAnimation } from './splash.js';
 import { config } from './config/config.js';
+import I18n from '../lib/i18n/index.js';
 
 window.Kano = window.Kano || {};
 window.Kano.MakeApps = window.Kano.MakeApps || {};
@@ -13,9 +14,6 @@ const Bootstrap = {
     kanoAppInserted: false,
     isCore: config.TARGET === 'osonline',
     isPi: userAgent.indexOf('armv6l') !== -1 || userAgent.indexOf('armv7l') !== -1,
-    webComponentsSupported: ('registerElement' in document &&
-                                        'import' in document.createElement('link') &&
-                                        'content' in document.createElement('template')),
     getLang() {
         return 'en-US';
     },
@@ -64,31 +62,20 @@ const Bootstrap = {
      * Imports the elements bundle and the messages depending on the locale
      */
     lazyLoadElements() {
-        const elements = [];
         const lang = this.getLang();
-        let loaded = 0;
 
-        elements.push(`/elements/msg/${lang}.js`);
-        elements.push('/elements/elements.js');
-
-        elements.forEach((elementURL) => {
-            const elImport = document.createElement('script');
-            elImport.type = 'module';
-            elImport.src = elementURL;
-            elImport.addEventListener('load', () => {
-                loaded += 1;
-                if (loaded === elements.length) {
-                    this.onElementsLoaded();
-                }
-            });
-            document.head.appendChild(elImport);
+        Promise.all([
+            I18n.load(`/locale/editor/${lang}.json`),
+            I18n.load(`/locale/blockly/${lang}.json`).then(m => window.CustomBlocklyMsg = m),
+            import('/elements/elements.js'),
+        ]).then(() => {
+            this.onElementsLoaded();
         });
     },
     /**
      * Optionally load the webcomponents polyfill and then load the elements bundle
      */
     deferLoading() {
-        let wcPoly;
         // Race condition cause of safari fix hack
         if (this.loadEventFired) {
             return;

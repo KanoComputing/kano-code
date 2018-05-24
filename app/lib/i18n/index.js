@@ -22,6 +22,7 @@ function load(url) {
         .then(r => r.json())
         .then((m) => {
             Object.assign(messages, m);
+            return m;
         });
 }
 
