@@ -2,7 +2,6 @@ import '../../../../../@polymer/neon-animation/animations/transform-animation.js
 import { ViewBehavior } from './kano-view-behavior.js';
 import { GamificationBehavior } from './kano-gamification-behavior.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
-import { Parts } from '../../mode/common/background-blocks.js';
 
 /*
  * Convert base64/URLEncoded data component to raw binary data held in a string
@@ -34,7 +33,7 @@ export const dataURItoBlob = function dataURItoBlob(dataURI) {
     return new Blob([ia], { type: mimeString });
 };
 
-var SharingBehavior = {
+var SharingBehaviorImpl = {
 
     properties: {
         remixedShare: {
@@ -440,4 +439,4 @@ var SharingBehavior = {
 export const SharingBehavior = [
     ViewBehavior,
     GamificationBehavior,
-    SharingBehavior];
+    SharingBehaviorImpl];

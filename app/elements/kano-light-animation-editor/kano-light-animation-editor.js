@@ -10,8 +10,6 @@
 */
 import '../../../../../@polymer/polymer/polymer-legacy.js';
 
-import '../../../../../polymer-filters/polymer-filters.js';
-import '../../../../../polymer-filters/filters/compare.js';
 import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
 import '../../../../../@polymer/iron-icon/iron-icon.js';
 import '../../../../../@polymer/iron-image/iron-image.js';
@@ -206,7 +204,6 @@ Polymer({
   is: 'kano-light-animation-editor',
 
   behaviors: [
-      PolymerFilters.FilterBehavior,
       AppEditorBehavior,
       LightBitmapBehavior
   ],

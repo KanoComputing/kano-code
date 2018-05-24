@@ -19,5 +19,3 @@ import '../../part/kano-part-clock/kano-part-clock.js';
 import '../../part/kano-part-slider/kano-part-slider.js';
 import '../../part/kano-part-motion-sensor/kano-part-motion-sensor.js';
 import '../../part/kano-part-gyro-accelerometer/kano-part-gyro-accelerometer.js';
-import '../../part/onboarding/kano-part-talking-face/kano-part-talking-face.js';
-import '../../part/onboarding/kano-part-fireworks/kano-part-fireworks.js';

@@ -1,6 +1,6 @@
 import { LightShape } from './light-shape.js';
 
-const LightCircle = {
+const LightCircleImpl = {
     _updateLightboard (force) {
         this.debounce('_updateLightboard', () => {
             if (this.isRunning) {
@@ -51,8 +51,4 @@ const LightCircle = {
     }
 };
 
-export const LightCircle = Object.assign({}, LightShape, LightCircle);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['light-circle'] = LightCircle;
+export const LightCircle = Object.assign({}, LightShape, LightCircleImpl);

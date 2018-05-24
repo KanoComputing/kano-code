@@ -1,6 +1,6 @@
 import { generators as generators$0 } from './stickers.js';
 import { config } from '../../../config/default.js';
-export const types = types || {};
+export const types = {};
 
 types.samples = 'audio';
 

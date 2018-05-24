@@ -23,8 +23,6 @@ import '../../../../../@polymer/iron-icon/iron-icon.js';
 import '../../../../../@polymer/iron-icons/iron-icons.js';
 import '../../../../../@polymer/iron-icons/av-icons.js';
 import '../../../../../@polymer/iron-pages/iron-pages.js';
-import '../../../../../polymer-filters/polymer-filters.js';
-import '../../../../../polymer-filters/filters/compare.js';
 import '../../../../../@polymer/paper-input/paper-input.js';
 import '../../../../../@kano/kwc-icons/kwc-icons.js';
 import '../../../../../@kano/kwc-color-wheel/kwc-color-wheel.js';
@@ -260,7 +258,6 @@ Polymer({
   is: 'kano-pixel-editor',
 
   behaviors: [
-      PolymerFilters.FilterBehavior,
       AppEditorBehavior
   ],
 

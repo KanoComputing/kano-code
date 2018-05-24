@@ -1,7 +1,7 @@
 import { DongleBase } from './dongle-base.js';
 import { Spring } from '../spring.js';
 
-const MotionSensor = {
+const MotionSensorImpl = {
     module: 'motionSensor',
     onCreated () {
         this._onProximityDataChanged = this._onProximityDataChanged.bind(this);
@@ -89,8 +89,4 @@ const MotionSensor = {
     }
 };
 
-export const MotionSensor = Object.assign({}, DongleBase, MotionSensor);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['motion-sensor'] = MotionSensor;
+export const MotionSensor = Object.assign({}, DongleBase, MotionSensorImpl);

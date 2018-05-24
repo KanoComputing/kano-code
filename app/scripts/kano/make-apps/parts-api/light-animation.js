@@ -1,6 +1,6 @@
 import { LightShape } from './light-shape.js';
 
-const LightAnimation = {
+const LightAnimationImpl = {
     _updateLightboard (force) {
         if (!this.frame) {
             return;
@@ -82,8 +82,4 @@ const LightAnimation = {
         return (this.frameIndex + 1);
     }
 };
-export const LightAnimation = Object.assign({}, LightShape, LightAnimation);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['light-animation'] = LightAnimation;
+export const LightAnimation = Object.assign({}, LightShape, LightAnimationImpl);

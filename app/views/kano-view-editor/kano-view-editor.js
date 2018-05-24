@@ -1,82 +1,3 @@
-<script type="module" src="../../../../../@kano/web-components/kano-alert/kano-alert.js"></script>
-
-<script type="module" src="../../scripts/kano/make-apps/store.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/actions/app.js"></script>
-
-<script type="module" src="../../scripts/kano/make-apps/utils.js"></script>
-<script type="module" src="../../scripts/kano/util/router.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/blockly/blockly.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/sdk.js"></script>
-<script type="module" src="../../elements/behaviors/kano-i18n-behavior.js"></script>
-<script type="module" src="../../elements/kano-app-editor/kano-app-editor.js"></script>
-<script type="module" src="../../elements/kano-share-modal/kano-share-modal.js"></script>
-<script type="module" src="../../elements/kano-editor-topbar/kano-editor-topbar.js"></script>
-<script type="module" src="../../elements/behaviors/kano-sharing-behavior.js"></script>
-<script type="module" src="../../../../../@kano/web-components/kano-reward-modal/kano-reward-modal.js"></script>
-<script type="module" src="../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js"></script>
-
-<dom-module id="kano-view-editor">
-    <template>
-        <style>
-            :host {
-                display: block;
-                @apply(--layout-vertical);
-            }
-            :host kano-app-editor {
-                @apply(--layout-flex);
-            }
-            :host #error-dialog .title {
-                color: red;
-            }
-            :host #error-dialog .description {
-                text-align: center;
-            }
-            paper-dialog {
-                border-radius: 5px;
-                overflow: hidden;
-                background: transparent;
-            }
-            paper-dialog#share-modal kano-share-modal {
-                padding: 0px;
-                margin: 0px;
-            }
-            :host(.dragging) * {
-                pointer-events: none;
-            }
-        </style>
-        <kano-alert id="save-prompt"
-                    heading="[[localize('DO_YOU_SAVE', 'Do you want to save your creation?')]]"
-                    text="[[localize('ABOUT_TO_RESET', 'You\'ll lose any unsaved changes')]]"
-                    entry-animation="from-big-animation"
-                    with-backdrop>
-                <button class="kano-alert-primary" on-tap="_launchShare" dialog-confirm slot="actions">[[localize('SAVE_IT', 'Save it!')]]</button>
-                <button class="kano-alert-secondary" on-tap="_confirmExit" dialog-dismiss slot="actions">[[localize('NO_THANKS', 'No\, thanks')]]</button>
-                <button class="kano-alert-secondary" dialog-dismiss slot="actions">[[localize('CANCEL', 'Cancel')]]</button>
-        </kano-alert>
-        <kano-alert opened="[[remixLoadingAlertOpened]]"
-                    heading="[[localize('LOADING_REMIX', 'Loading creation for remixing')]]"
-                    text="[[localize('PLEASE_WAIT', 'Please wait...')]]"
-                    modal>
-        </kano-alert>
-        <paper-dialog id="error-dialog" with-backdrop>
-            <h2 class="title">{{error.title}}</h2>
-            <p class="description">{{error.description}}</p>
-        </paper-dialog>
-        <paper-dialog id="share-modal" opened="{{shareOpened}}" modal>
-            <kano-share-modal id="share-modal-content"
-                              on-confirm="confirmShare"
-                              on-dismiss="dismissShare"
-                              opened="[[shareOpened]]"
-                              share-info="{{shareInfo}}"
-                              world-url="[[config.WORLD_URL]]"
-                              is-authenticated="[[user]]"></kano-share-modal>
-        </paper-dialog>
-        <kano-reward-modal id="reward-modal" on-second-action="_openSignup"></kano-reward-modal>
-        <kc-file-upload-overlay id="file-upload-overlay"></kc-file-upload-overlay>
-    </template>
-</dom-module>
-
-<script type="module">
 import '../../../../../@kano/web-components/kano-alert/kano-alert.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import '../../scripts/kano/make-apps/actions/app.js';
@@ -93,6 +14,9 @@ import '../../../../../@kano/web-components/kano-reward-modal/kano-reward-modal.
 import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
 import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
 import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { Editor, UserPlugin, PartsPlugin, LocalStoragePlugin, Runner, Mode } from '../../lib/index.js';
+import { PartTypes, Parts } from '../../lib/parts/all.js';
 
 const behaviors = [
     SharingBehavior,
@@ -103,6 +27,66 @@ class KanoViewEditor extends Store.StateReceiver(
     mixinBehaviors(behaviors, PolymerElement)
 ) {
     static get is() { return 'kano-view-editor'; }
+    static get template() {
+        return html`
+                <style>
+                    :host {
+                        display: block;
+                        @apply(--layout-vertical);
+                    }
+                    :host kano-app-editor {
+                        @apply(--layout-flex);
+                    }
+                    :host #error-dialog .title {
+                        color: red;
+                    }
+                    :host #error-dialog .description {
+                        text-align: center;
+                    }
+                    paper-dialog {
+                        border-radius: 5px;
+                        overflow: hidden;
+                        background: transparent;
+                    }
+                    paper-dialog#share-modal kano-share-modal {
+                        padding: 0px;
+                        margin: 0px;
+                    }
+                    :host(.dragging) * {
+                        pointer-events: none;
+                    }
+                </style>
+                <kano-alert id="save-prompt"
+                            heading="[[localize('DO_YOU_SAVE', 'Do you want to save your creation?')]]"
+                            text="[[localize('ABOUT_TO_RESET', 'You\'ll lose any unsaved changes')]]"
+                            entry-animation="from-big-animation"
+                            with-backdrop>
+                        <button class="kano-alert-primary" on-tap="_launchShare" dialog-confirm slot="actions">[[localize('SAVE_IT', 'Save it!')]]</button>
+                        <button class="kano-alert-secondary" on-tap="_confirmExit" dialog-dismiss slot="actions">[[localize('NO_THANKS', 'No\, thanks')]]</button>
+                        <button class="kano-alert-secondary" dialog-dismiss slot="actions">[[localize('CANCEL', 'Cancel')]]</button>
+                </kano-alert>
+                <kano-alert opened="[[remixLoadingAlertOpened]]"
+                            heading="[[localize('LOADING_REMIX', 'Loading creation for remixing')]]"
+                            text="[[localize('PLEASE_WAIT', 'Please wait...')]]"
+                            modal>
+                </kano-alert>
+                <paper-dialog id="error-dialog" with-backdrop>
+                    <h2 class="title">{{error.title}}</h2>
+                    <p class="description">{{error.description}}</p>
+                </paper-dialog>
+                <paper-dialog id="share-modal" opened="{{shareOpened}}" modal>
+                    <kano-share-modal id="share-modal-content"
+                                    on-confirm="confirmShare"
+                                    on-dismiss="dismissShare"
+                                    opened="[[shareOpened]]"
+                                    share-info="{{shareInfo}}"
+                                    world-url="[[config.WORLD_URL]]"
+                                    is-authenticated="[[user]]"></kano-share-modal>
+                </paper-dialog>
+                <kano-reward-modal id="reward-modal" on-second-action="_openSignup"></kano-reward-modal>
+                <kc-file-upload-overlay id="file-upload-overlay"></kc-file-upload-overlay>
+        `;
+    }
     static get properties() {
         return {
             context: {
@@ -145,21 +129,21 @@ class KanoViewEditor extends Store.StateReceiver(
     constructor() {
         super();
         const { config } = this.getState();
-        this.editor = new Kano.Code.Editor(config);
+        this.editor = new Editor(config);
 
-        const userPlugin = new Kano.Code.UserPlugin();
+        const userPlugin = new UserPlugin();
         this.editor.addPlugin(userPlugin);
 
-        this.partsPlugin = new Kano.Code.Parts(Kano.Code.Legacy.PartTypes);
-        this.partsPlugin.setParts(Kano.Code.Legacy.Parts);
+        this.partsPlugin = new PartsPlugin(PartTypes);
+        this.partsPlugin.setParts(Parts);
         this.editor.addPlugin(this.partsPlugin);
 
-        this.storagePlugin = new Kano.Code.LocalStoragePlugin(this._getStorageKey.bind(this));
+        this.storagePlugin = new LocalStoragePlugin(this._getStorageKey.bind(this));
         this.editor.addPlugin(this.storagePlugin);
 
         this.editor.toolbox.setEntries(Kano.Code.BlocklyModules);
 
-        this.runner = new Kano.Code.Runner(Kano.Code.AppModules);
+        this.runner = new Runner(Kano.Code.AppModules);
         this.editor.addPlugin(this.runner);
 
         this._deactivateSavePrompt = this._deactivateSavePrompt.bind(this);
@@ -246,8 +230,8 @@ class KanoViewEditor extends Store.StateReceiver(
             });
     }
     loadMode(id) {
-        const url = `/mode/${id}.html`;
-        return Kano.Code.Mode.load(id, url);
+        const url = `/mode/${id}.js`;
+        return Mode.load(id, url);
     }
     setupEditor() {
         this.editor.inject(this.root, this.root.firstChild);
@@ -323,4 +307,3 @@ class KanoViewEditor extends Store.StateReceiver(
 }
 
 customElements.define(KanoViewEditor.is, KanoViewEditor);
-</script>

@@ -1,3 +1,5 @@
+import { Utils } from '../utils.js';
+
 function Space(session) {
     this.session = session;
 }
@@ -14,7 +16,7 @@ Space.prototype.moveTo = function (x, y) {
     x = x || 0;
     y = y || 0;
 
-    pos = Kano.CanvasAPI.Utils.parseCoordinates(this.session, x, y);
+    pos = Utils.parseCoordinates(this.session, x, y);
     dx = pos.x - this.session.pos.x;
     dy = pos.y - this.session.pos.y;
 

@@ -1,7 +1,7 @@
 import { Base } from './base.js';
 
 // @polymerBehavior
-const DongleBase = {
+const DongleBaseImpl = {
     _listeners: [],
     handlers: [],
     onCreated () {
@@ -62,4 +62,4 @@ const DongleBase = {
     }
 };
 
-export const DongleBase = Object.assign({}, Base, DongleBase);
+export const DongleBase = Object.assign({}, Base, DongleBaseImpl);

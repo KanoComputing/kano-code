@@ -1,7 +1,6 @@
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';
 import { Canvas } from './kano-canvas-api/kano-canvas-api.js';
-import '../../../../../../@kano/kwc-style/part.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 const $_documentContainer = document.createElement('template');
 $_documentContainer.setAttribute('style', 'display: none;');

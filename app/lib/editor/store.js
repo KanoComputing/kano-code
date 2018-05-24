@@ -1,13 +1,15 @@
 import GlobalStore from '../global-store.js';
+import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
 
 const Store = {
     create(initState) {
         const store = GlobalStore.create(initState);
 
-        const StoreElement = Polymer({
-            is: `kc-store-${store.id}`,
-            behaviors: [store.ProviderBehavior],
-        });
+        class StoreElement extends store.StateProvider(PolymerElement) {
+            static get is() { return `kc-store-${store.id}` }
+        }
+
+        customElements.define(StoreElement.is, StoreElement);
 
         const storeElement = new StoreElement();
 

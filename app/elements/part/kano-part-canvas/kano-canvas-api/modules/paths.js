@@ -1,4 +1,6 @@
 import { Space } from './space.js';
+import { Utils } from '../utils.js';
+
 function Paths(session) {
     this.session = session;
     this.space = new Space(this.session);
@@ -13,7 +15,7 @@ function Paths(session) {
 */
 Paths.prototype.lineTo = function (x, y) {
     var ratio = this.session.ratio,
-    pos = Kano.CanvasAPI.Utils.parseCoordinates(this.session, x, y),
+    pos = Utils.parseCoordinates(this.session, x, y),
     from = {
         x : this.session.pos.x,
         y : this.session.pos.y
@@ -23,10 +25,10 @@ Paths.prototype.lineTo = function (x, y) {
     y = pos.y;
 
     this.space.moveTo(this.session.pos.x, this.session.pos.y, false);
-    Kano.CanvasAPI.Utils.startShape(this.session);
+    Utils.startShape(this.session);
     this.session.ctx.moveTo(from.x * ratio, from.y * ratio);
     this.session.ctx.lineTo(x * ratio, y * ratio);
-    Kano.CanvasAPI.Utils.endShape(this.session);
+    Utils.endShape(this.session);
 };
 
 /*

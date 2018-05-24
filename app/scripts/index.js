@@ -1,6 +1,10 @@
 import { BlockAnimation } from './splash.js';
 import { config } from './config/staging.js';
 
+window.Kano = window.Kano || {};
+window.Kano.MakeApps = window.Kano.MakeApps || {};
+window.Kano.MakeApps.Msg = window.Kano.MakeApps.Msg || {};
+
 const { userAgent } = window.navigator;
 
 const Bootstrap = {

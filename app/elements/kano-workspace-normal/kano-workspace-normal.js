@@ -3,6 +3,7 @@ import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
 import '../ui/kano-ui/kano-ui.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
 import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
+import { Canvas } from '../part/kano-part-canvas/kano-canvas-api/kano-canvas-api.js';
 class KanoWorkspaceNormal extends mixinBehaviors(
     [WorkspaceBehavior],
     PolymerElement
@@ -102,7 +103,7 @@ class KanoWorkspaceNormal extends mixinBehaviors(
       this.clear();
       this.ctx = this.$.canvas.getContext('2d');
       this.ctx.globalAlpha = 1;
-      this.modules = new Kano.CanvasAPI({
+      this.modules = new Canvas({
           ctx: this.ctx,
           width: this.width,
           height: this.height

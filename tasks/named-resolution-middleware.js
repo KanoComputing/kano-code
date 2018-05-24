@@ -5,7 +5,20 @@ module.exports = (opts = {}) => {
     const modulesDir = opts.modulesDir || '/node_modules';
     return (req, res, next) => {
         if (!res.body) {
-            next();
+            res.statusCode = 404;
+            return res.end();
+        }
+        if (req.url.indexOf('blockly_compressed.js') !== -1) {
+            return res.end(res.body.replace('goog.global=this', 'goog.global=window'));
+        }
+        if (req.url.indexOf('cross-storage/dist/client.min.js') !== -1) {
+            return res.end(res.body.replace('}(this);', '}(window);'));
+        }
+        if (req.url.indexOf('page.js') !== -1) {
+            return res.end(res.body.replace('}(this,', '}(window,'));
+        }
+        if (req.url.indexOf('md5.js') !== -1) {
+            return res.end(res.body.replace('})(this)', '})(window)'));
         }
         res.body = res.body.replace(/import (.+ from )?'(.+)'/g, (match, g1, g2) => {
             if (g2 && (g2.startsWith('.') || g2.startsWith('/'))) {

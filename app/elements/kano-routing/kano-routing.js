@@ -1,4 +1,5 @@
 import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
 // TODO: Route using something else
 // import '../../../../../iron-lazy-pages/iron-lazy-pages.js';
 import '../../../../../@kano/web-components/kano-alert/kano-alert.js';
@@ -9,57 +10,7 @@ import '../../scripts/kano/make-apps/utils.js';
 import { Router } from '../../scripts/kano/util/router.js';
 import { Editor } from '../../scripts/kano/make-apps/actions/editor.js';
 import '../../../../../page/page.js';
-const $_documentContainer = document.createElement('template');
-$_documentContainer.setAttribute('style', 'display: none;');
 
-$_documentContainer.innerHTML = `<dom-module id="kano-routing">
-    
-    
-    
-    
-    
-    <template>
-        <style>
-            :host {
-                display: block;
-                @apply --layout-vertical;
-            }
-
-            :host iron-lazy-pages {
-                @apply --layout-vertical;
-                @apply --layout-flex;
-            }
-
-            :host iron-lazy-pages>* {
-                @apply --layout-flex;
-                overflow: auto;
-            }
-        </style>
-        <kano-alert id="mobile-info-dialog" heading="Coding on your mobile?" text="We’ve got something just for you!" entry-animation="from-big-animation" with-backdrop="">
-            <button class="kano-alert-primary" slot="actions" on-tap="_goToTapcode">Try it</button>
-        </kano-alert>
-        <iron-lazy-pages selected="[[page]]" attr-for-selected="data-route" loading="{{loading}}" hide-immediately="">
-            <template is="dom-if" data-route="story" data-path="/views/kano-view-story/kano-view-story.html" restamp="">
-                <kano-view-story show-save-prompt="{{leaveAlert}}"></kano-view-story>
-            </template>
-            <template is="dom-if" data-route="tutorial" data-path="/views/kano-view-tutorial/kano-view-tutorial.html" restamp="">
-                <kano-view-tutorial></kano-view-tutorial>
-            </template>
-            <template is="dom-if" data-route="editor" data-path="/views/kano-view-editor/kano-view-editor.html" restamp="">
-                <kano-view-editor show-save-prompt="{{leaveAlert}}"></kano-view-editor>
-            </template>
-            <template is="dom-if" data-route="flags" data-path="/views/kano-view-flags/kano-view-flags.html" restamp="">
-                <kano-view-flags></kano-view-flags>
-            </template>
-            <template is="dom-if" data-route="demo" data-path="/views/kano-view-demo/kano-view-demo.html" restamp="">
-                <kano-view-demo></kano-view-demo>
-            </template>
-        </iron-lazy-pages>
-    </template>
-    
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
 /*
  * Returns true iff client is a Pi. Please be aware that it is not a foolproof
  * method at the moment
@@ -81,6 +32,46 @@ function runningInKanoApp() {
 window.ClientUtil = window.ClientUtil || { isPi, runningInKanoApp };
 class KanoRouting extends Store.StateReceiver(PolymerElement) {
     static get is() { return 'kano-routing'; }
+    static get template() {
+        return html`<style>
+                    :host {
+                        display: block;
+                        @apply --layout-vertical;
+                    }
+
+                    :host iron-lazy-pages {
+                        @apply --layout-vertical;
+                        @apply --layout-flex;
+                    }
+
+                    :host iron-lazy-pages>* {
+                        @apply --layout-flex;
+                        overflow: auto;
+                    }
+                </style>
+                <kano-alert id="mobile-info-dialog" heading="Coding on your mobile?" text="We’ve got something just for you!" entry-animation="from-big-animation" with-backdrop="">
+                    <button class="kano-alert-primary" slot="actions" on-tap="_goToTapcode">Try it</button>
+                </kano-alert>
+                <iron-lazy-pages>
+                    <template is="dom-if" data-route="story" data-path="/views/kano-view-story/kano-view-story.js" restamp>
+                        <kano-view-story show-save-prompt="{{leaveAlert}}"></kano-view-story>
+                    </template>
+                    <template is="dom-if" data-route="tutorial" data-path="/views/kano-view-tutorial/kano-view-tutorial.js" restamp>
+                        <kano-view-tutorial></kano-view-tutorial>
+                    </template>
+                    <template is="dom-if" data-route="editor" data-path="/views/kano-view-editor/kano-view-editor.js" restamp>
+                        <kano-view-editor show-save-prompt="{{leaveAlert}}"></kano-view-editor>
+                    </template>
+                    <template is="dom-if" data-route="flags" data-path="/views/kano-view-flags/kano-view-flags.js" restamp>
+                        <kano-view-flags></kano-view-flags>
+                    </template>
+                    <template is="dom-if" data-route="demo" data-path="/views/kano-view-demo/kano-view-demo.js" restamp>
+                        <kano-view-demo></kano-view-demo>
+                    </template>
+                </iron-lazy-pages>
+            </template>
+`;
+    }
     static get properties() {
         return {
             context: {
@@ -98,12 +89,12 @@ class KanoRouting extends Store.StateReceiver(PolymerElement) {
             },
             loading: {
                 type: Boolean,
-                observer: '_loadingChanged'
+                observer: '_loadingChanged',
             },
             leaveAlert: {
                 type: Boolean,
                 value: true,
-                observer: '_onLeaveAlertChanged'
+                observer: '_onLeaveAlertChanged',
             },
         };
     }
@@ -214,6 +205,24 @@ class KanoRouting extends Store.StateReceiver(PolymerElement) {
         const hardwareQuery = Router.parseQsParam(this.context.querystring, 'hardware');
         if (hardwareQuery) {
             Config.updateConfigKey('USE_HARDWARE_API', hardware !== 'false', config.USE_HARDWARE_API);
+        }
+        this.updateView();
+    }
+    updateView() {
+        const { page } = this;
+        let template;
+        const templates = this.shadowRoot.querySelectorAll('dom-if');
+        for (let i = 0; i < templates.length; i += 1) {
+            template = templates[i];
+            // Enable or disable template depending on route match
+            template.if = template.dataset.route === page;
+            if (template.if) {
+                this.loading = true;
+                import(template.dataset.path)
+                    .then(() => {
+                        this.loading = false;
+                    })
+            }
         }
     }
     _goToTapcode() {

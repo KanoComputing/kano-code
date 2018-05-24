@@ -1,7 +1,4 @@
-<script type="module">
 import { Palette } from './modules/palette.js';
-export const Kano = Kano || {};
-export const CanvasAPI = CanvasAPI || {};
 export const Utils = {};
 
 /*
@@ -153,4 +150,3 @@ Utils.isColorValue = function (val) {
 
     return false;
 };
-</script>

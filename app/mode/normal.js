@@ -1,7 +1,11 @@
-<script type="module" src="../elements/kano-editor-normal/kano-editor-normal.js"></script>
-
-<script type="module">
 import '../elements/kano-editor-normal/kano-editor-normal.js';
+import general from '../lib/parts/parts/canvas/blocks/general.js';
+import paths from '../lib/parts/parts/canvas/blocks/paths.js';
+import setters from '../lib/parts/parts/canvas/blocks/setters.js';
+import shapes from '../lib/parts/parts/canvas/blocks/shapes.js';
+import space from '../lib/parts/parts/canvas/blocks/space.js';
+import { Mode } from '../lib/index.js';
+
 const COLOR = '#82C23D';
 const definition = {
     id: 'normal',
@@ -27,7 +31,7 @@ const definition = {
 const categories = [];
 let blocks = [];
 
-blocks = blocks.concat(Code.Legacy.Canvas.general);
+blocks = blocks.concat(general);
 
 blocks.push({
     block: (part) => {
@@ -70,10 +74,10 @@ blocks.push({
     }
 });
 
-blocks = blocks.concat(Code.Legacy.Canvas.setters);
-blocks = blocks.concat(Code.Legacy.Canvas.space);
-blocks = blocks.concat(Code.Legacy.Canvas.paths);
-blocks = blocks.concat(Code.Legacy.Canvas.shapes);
+blocks = blocks.concat(setters);
+blocks = blocks.concat(space);
+blocks = blocks.concat(paths);
+blocks = blocks.concat(shapes);
 
 categories.push({
     name: definition.name,
@@ -84,10 +88,4 @@ categories.push({
 
 definition.categories = categories;
 
-Code.Mode.define(definition.id, definition);
-
-export const Kano = Kano || {};
-export const MakeApps = MakeApps || {};
-export const Mode = Mode || {};
-export { definition as Normal };
-</script>
+Mode.define(definition.id, definition);

@@ -1,6 +1,6 @@
-<script type="module" src="../elements/kano-editor-lightboard/kano-editor-lightboard.js"></script>
-<script type="module">
 import '../elements/kano-editor-lightboard/kano-editor-lightboard.js';
+import { Mode } from '../lib/index.js';
+
 const COLOR = '#4674e8';
 const definition = {
     id: 'lightboard',
@@ -361,10 +361,4 @@ const categories = [{
 
 definition.categories = categories;
 
-Code.Mode.define(definition.id, definition);
-
-export const Kano = Kano || {};
-export const MakeApps = MakeApps || {};
-export const Mode = Mode || {};
-export { definition as Light };
-</script>
+Mode.define(definition.id, definition);

@@ -1,4 +1,4 @@
-export const AudioContext = AudioContext || new AudioContext();
+window.SharedAudioContext = window.SharedAudioContext || new AudioContext();
 
 class AudioPlayer {
     constructor (buffer, output, opts) {
@@ -6,7 +6,7 @@ class AudioPlayer {
             loop: false
         }, opts);
         this.buffer = buffer;
-        this.ctx = AudioContext;
+        this.ctx = SharedAudioContext;
         this.gainControl = this.ctx.createGain();
         this.gainControl.connect(this.ctx.destination);
 
@@ -62,7 +62,7 @@ class AudioPlayer {
         this.playing ? this.pause() : this.play();
     }
     static get context () {
-        return AudioContext;
+        return SharedAudioContext;
     }
 }
 

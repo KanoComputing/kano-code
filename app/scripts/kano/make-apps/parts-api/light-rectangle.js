@@ -1,6 +1,6 @@
 import { LightShape } from './light-shape.js';
 
-const LightRectangle = {
+const LightRectangleImpl = {
     setWidth (w) {
         let x = this.getX();
             w = this.limitValue(this.model, 'width', w);
@@ -46,8 +46,4 @@ const LightRectangle = {
     }
 };
 
-export const LightRectangle = Object.assign({}, LightShape, LightRectangle);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['light-rectangle'] = LightRectangle;
+export const LightRectangle = Object.assign({}, LightShape, LightRectangleImpl);

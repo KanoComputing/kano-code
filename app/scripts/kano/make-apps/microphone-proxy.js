@@ -1,6 +1,6 @@
 import { MicrophoneClass } from '../microphone.js';
 
-class MicrophoneProxy extends MicrophoneClass {
+class MicrophoneProxyImpl extends MicrophoneClass {
 
     constructor () {
         super();
@@ -58,4 +58,4 @@ class MicrophoneProxy extends MicrophoneClass {
 }
 
 // Is a singleton, all microphone proxy data is shared
-export const MicrophoneProxy = new MicrophoneProxy();
+export const MicrophoneProxy = new MicrophoneProxyImpl();

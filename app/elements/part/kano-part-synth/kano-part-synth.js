@@ -1,7 +1,7 @@
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';
 import { Monotron } from '../../../scripts/kano/music/monotron/monotron.js';
-import { AudioContext as AudioContext$0 } from '../../../scripts/kano/music/player.js';
+import { AudioPlayer } from '../../../scripts/kano/music/player.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 const $_documentContainer = document.createElement('template');
 $_documentContainer.setAttribute('style', 'display: none;');
@@ -15,7 +15,6 @@ $_documentContainer.innerHTML = `<dom-module id="kano-part-synth">
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
-export const AudioContext = AudioContext$0 || new AudioContext();
 
 const OSCILLATOR_FREQ_RANGE_LOW = 55, // --> A0 note in pitch standard tuning
       DEFAULT_FREQ = 220 // --> A2
@@ -43,7 +42,7 @@ Polymer({
     ready () {
         this.sources = [];
         try {
-            this.ctx = AudioContext$0;
+            this.ctx = AudioPlayer.context;
             this.webAudioSupported = true;
             this.gainControl = this.ctx.createGain();
             this.gainControl.connect(this.ctx.destination);

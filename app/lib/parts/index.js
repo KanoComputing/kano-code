@@ -61,6 +61,9 @@ class PartsPlugin extends Plugin {
     }
     onAppLoad(app) {
         this.parts.clear();
+        if (!app) {
+            return;
+        }
         const { partsMap } = this.editor.store.getState();
         const { mode } = this.editor.store.getState();
         if (app.parts) {

@@ -1,8 +1,7 @@
 import { UIBehavior } from '../../part/kano-ui-behavior.js';
 import { WebCollidable } from '../../../scripts/kano/make-apps/parts-api/web-collidable.js';
 import { Store } from '../../../scripts/kano/make-apps/store.js';
-import '../../../../../../google-map/google-map.js';
-import '../../../../../../@kano/kwc-style/part.js';
+// import '../../../../../../google-map/google-map.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano, google */

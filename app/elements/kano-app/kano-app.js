@@ -12,7 +12,7 @@ import '../kano-ui-item/kano-ui-item.js';
 import '../behaviors/kano-modal-animator-behavior.js';
 import '../behaviors/kano-view-behavior.js';
 import { GABehavior } from '../behaviors/kano-code-ga-tracking-behavior.js';
-import '../behaviors/kano-code-tracking-behavior.js';
+import { KanoCodeTrackingBehavior } from '../behaviors/kano-code-tracking-behavior.js';
 import { GamificationBehavior } from '../behaviors/kano-gamification-behavior.js';
 import '../kano-try-chrome/kano-try-chrome.js';
 import { Progress } from '../../scripts/kano/make-apps/progress.js';
@@ -41,7 +41,7 @@ function runningInKanoApp() {
 window.ClientUtil = window.ClientUtil || { isPi, runningInKanoApp };
 const behaviors = [
     GABehavior,
-    Kano.Behaviors.KanoCode.TrackingBehavior,
+    KanoCodeTrackingBehavior,
     GamificationBehavior,
 ];
 class KanoApp extends Store.StateReceiver(

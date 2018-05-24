@@ -1,11 +1,8 @@
-<script type="module" src="../elements/kano-editor-camera/kano-editor-camera.js"></script>
-<script type="module" src="./common/background-blocks.js"></script>
-<script type="module" src="./common/filters.js"></script>
-
-<script type="module">
 import '../elements/kano-editor-camera/kano-editor-camera.js';
 import { background } from './common/background-blocks.js';
 import { filters } from './common/filters.js';
+import { Mode } from '../lib/index.js';
+
 const COLOR = '#82C23D';
 const definition = {
     id: 'camera',
@@ -166,10 +163,4 @@ categories.push({
 
 definition.categories = categories;
 
-Code.Mode.define(definition.id, definition);
-
-export const Kano = Kano || {};
-export const MakeApps = MakeApps || {};
-export const Mode = Mode || {};
-export { definition as Camera };
-</script>
+Mode.define(definition.id, definition);

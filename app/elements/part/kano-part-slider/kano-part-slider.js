@@ -1,7 +1,6 @@
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { WebCollidable } from '../../../scripts/kano/make-apps/parts-api/web-collidable.js';
 import '../../../../../../@kano/kwc-style/input.js';
-import '../../../../../../@kano/kwc-style/part.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
 import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';

@@ -1,3 +1,5 @@
+import { Utils } from '../utils.js';
+
 function Shapes(session) {
     this.session = session;
 }
@@ -11,7 +13,7 @@ function Shapes(session) {
 */
 Shapes.prototype.rectangle = function (width, height) {
     var x, y;
-    Kano.CanvasAPI.Utils.startShape(this.session);
+    Utils.startShape(this.session);
 
     x = this.session.pos.x * this.session.ratio;
     y = this.session.pos.y * this.session.ratio;
@@ -20,7 +22,7 @@ Shapes.prototype.rectangle = function (width, height) {
     height *= this.session.ratio;
 
     this.session.ctx.rect(x, y, width, height);
-    Kano.CanvasAPI.Utils.endShape(this.session);
+    Utils.endShape(this.session);
 };
 
 /*
@@ -49,7 +51,7 @@ Shapes.prototype.square = function (size) {
 */
 Shapes.prototype.drawArc = function (rx, ry, start, end, close, back) {
     var x, y, startingAngle, endingAngle;
-    Kano.CanvasAPI.Utils.startShape(this.session);
+    Utils.startShape(this.session);
 
     x = this.session.pos.x * this.session.ratio;
     y = this.session.pos.y * this.session.ratio;
@@ -66,7 +68,7 @@ Shapes.prototype.drawArc = function (rx, ry, start, end, close, back) {
     this.session.ctx.arc(0, 0, 1, startingAngle, endingAngle, -1);
     this.session.ctx.restore();
 
-    Kano.CanvasAPI.Utils.endShape(this.session, close, back);
+    Utils.endShape(this.session, close, back);
 };
 
 /*
@@ -117,7 +119,7 @@ Shapes.prototype.polygon = function () {
         points = [],
         i;
 
-    Kano.CanvasAPI.Utils.startShape(this.session);
+    Utils.startShape(this.session);
     this.session.ctx.save();
     this.session.ctx.lineTo(baseX, baseY);
 
@@ -131,7 +133,7 @@ Shapes.prototype.polygon = function () {
         points.push({ x: arguments[i], y: arguments[i + 1] });
     }
     this.session.ctx.restore();
-    Kano.CanvasAPI.Utils.endShape(this.session, close);
+    Utils.endShape(this.session, close);
 };
 
 /*

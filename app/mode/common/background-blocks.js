@@ -1,5 +1,3 @@
-export const Parts = Parts || {};
-
 /**
  * @namespace Kano.MakeApps.Parts.Common
  */

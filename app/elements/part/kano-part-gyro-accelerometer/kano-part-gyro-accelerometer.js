@@ -1,13 +1,12 @@
 import '../../../../../../@polymer/polymer/polymer-legacy.js';
 import { UIBehavior } from '../kano-ui-behavior.js';
-import '../../../scripts/kano/make-apps/parts-api/gyro-accelerometer.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-/* globals Polymer, Kano */
+import { GyroAccelerometer } from '../../../scripts/kano/make-apps/parts-api/gyro-accelerometer.js';
 
 Polymer({
     is: 'kano-part-gyro-accelerometer',
     behaviors: [
-        Kano.MakeApps.PartsAPI['gyro-accelerometer'],
+        GyroAccelerometer,
         UIBehavior
     ],
     properties: {

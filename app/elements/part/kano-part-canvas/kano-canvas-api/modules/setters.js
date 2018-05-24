@@ -1,3 +1,5 @@
+import { Utils } from '../utils.js';
+
 function Setters(session) {
     this.session = session;
 }
@@ -9,7 +11,7 @@ function Setters(session) {
 * @return void
 */
 Setters.prototype.strokeColor = function (color) {
-    color = Kano.CanvasAPI.Utils.parseColor(color);
+    color = Utils.parseColor(color);
     this.session.settings.stroke.color = color;
     this.session.ctx.strokeStyle = color;
 };
@@ -32,7 +34,7 @@ Setters.prototype.strokeWidth = function (val) {
 * @return void
 */
 Setters.prototype.stroke = function () {
-    var style = Kano.CanvasAPI.Utils.parseLineStyle(arguments);
+    var style = Utils.parseLineStyle(arguments);
     if (style.color) {
         this.strokeColor(style.color);
     }
@@ -48,7 +50,7 @@ Setters.prototype.stroke = function () {
 * @return void
 */
 Setters.prototype.color = function (val) {
-    val = Kano.CanvasAPI.Utils.parseColor(val);
+    val = Utils.parseColor(val);
     this.session.settings.fill = val || 'transparent';
 };
 

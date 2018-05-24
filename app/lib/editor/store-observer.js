@@ -1,9 +1,10 @@
+import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
 let defined = false;
 
 class StoreObserver {
     constructor(store, editor) {
         if (!defined) {
-            class Observer extends store.StateReceiver(Polymer.Element) {
+            class Observer extends store.StateReceiver(PolymerElement) {
                 static get is() { return 'kc-editor-observer'; }
                 static get properties() {
                     return {

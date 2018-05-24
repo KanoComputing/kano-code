@@ -1,15 +1,16 @@
-import '../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
-// import '../../../../../gamification-engine/gamification-engine.js';
+import KanoSharedStorageClient from '../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
+import '../../../../../gamification-engine/dist/gamification-engine.js';
+import BrowserStorage from '../../../../../gamification-engine/browser.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
 
 var GamificationBehavior = {
     attached() {
         const { config } = Store.getState();
-        this.sharedStorage = new Kano.KanoSharedStorageClient({ sharedStorageURL: config.SHARED_STORAGE_URL });
+        this.sharedStorage = new KanoSharedStorageClient({ sharedStorageURL: config.SHARED_STORAGE_URL });
         this.gamification = new Kano.GamificationEngine.Engine(
             Kano.GamificationEngine.RULES,
-            new Kano.GamificationEngine.BrowserStorage({client: this.sharedStorage})
+            new BrowserStorage({client: this.sharedStorage})
         );
     },
     triggerGamificationEngine(payload) {

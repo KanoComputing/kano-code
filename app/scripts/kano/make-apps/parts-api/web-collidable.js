@@ -1,7 +1,7 @@
 import { Collidable } from './collidable.js';
 import { Base } from './base.js';
 
-const WebCollidable = {
+const WebCollidableImpl = {
     parseComputedSize (size) {
         return parseInt(size, 10);
     },
@@ -20,4 +20,4 @@ const WebCollidable = {
 /**
  * @polymerBehavior
  */
-export const WebCollidable = Base.applyMixins({}, Collidable, WebCollidable);
+export const WebCollidable = Base.applyMixins({}, Collidable, WebCollidableImpl);

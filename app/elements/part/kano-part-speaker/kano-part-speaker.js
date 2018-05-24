@@ -1,6 +1,6 @@
 import { UIBehavior } from '../kano-ui-behavior.js';
 import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';
-import { AudioContext as AudioContext$0, AudioPlayer } from '../../../scripts/kano/music/player.js';
+import { AudioPlayer } from '../../../scripts/kano/music/player.js';
 import { samples as samples$0 } from '../../../scripts/kano/make-apps/files/samples.js';
 import { Cache } from '../../../scripts/kano/make-apps/files/cache.js';
 import { Store } from '../../../scripts/kano/make-apps/store.js';
@@ -18,8 +18,6 @@ import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
 
 /* globals SpeechSynthesisUtterance*/
 
-export let AudioContext = AudioContext$0 || new AudioContext();
-
 class TextToSpeech {
 
     constructor (config) {
@@ -27,7 +25,7 @@ class TextToSpeech {
 
         this.backend = this.remote;
         this.backendStop = this.remoteStop;
-        this.ctx = AudioContext$0;
+        this.ctx = AudioPlayer.context;
 
         this.cache = {};
         this.playQueue = [];
@@ -199,7 +197,7 @@ Polymer({
       this.tts = new TextToSpeech();
       this.tts.configure(config);
       try {
-          this.ctx = AudioContext$0;
+          this.ctx = AudioPlayer.context;
           this.webAudioSupported = true;
           this.gainControl = this.ctx.createGain();
           this.gainControl.connect(this.ctx.destination);
@@ -371,5 +369,3 @@ Polymer({
 
 const OSCILLATOR_FREQ_RANGE_LOW = 20,
     OSCILLATOR_FREQ_RANGE_HI = 5000;
-
-export let AudioContext = AudioContext$0 || new AudioContext();

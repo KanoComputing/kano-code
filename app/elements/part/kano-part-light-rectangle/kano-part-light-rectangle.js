@@ -1,5 +1,4 @@
 import '../kano-light-shape-behavior.js';
-import '../../../../../../@kano/kwc-style/part.js';
 import '../../../scripts/kano/make-apps/parts-api/light-rectangle.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 const $_documentContainer = document.createElement('template');

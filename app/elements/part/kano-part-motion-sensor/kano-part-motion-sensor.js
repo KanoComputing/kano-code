@@ -1,13 +1,13 @@
 import '../../../../../../@polymer/polymer/polymer-legacy.js';
 import { UIBehavior } from '../kano-ui-behavior.js';
-import '../../../scripts/kano/make-apps/parts-api/motion-sensor.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
+import { MotionSensor } from '../../../scripts/kano/make-apps/parts-api/motion-sensor.js';
 /* globals Polymer, Kano */
 
 Polymer({
     is: 'kano-part-motion-sensor',
     behaviors: [
-        Kano.MakeApps.PartsAPI['motion-sensor'],
+        MotionSensor,
         UIBehavior
     ],
     observers: [

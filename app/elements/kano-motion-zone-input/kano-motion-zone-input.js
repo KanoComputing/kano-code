@@ -1,7 +1,6 @@
 import '../../../../../@polymer/polymer/polymer-legacy.js';
 import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
 import '../../../../../@kano/kwc-style/typography.js';
-import '../../../../../polymer-filters/filters/compare.js';
 import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
@@ -84,7 +83,6 @@ Polymer({
 `,
 
   is:'kano-motion-zone-input',
-  behaviors: [PolymerFilters.FilterBehavior],
 
   properties: {
       value: {
@@ -97,6 +95,10 @@ Polymer({
           value: 0,
           observer: '_transformFiller'
       }
+  },
+
+  isEq(a, b) {
+    return a === b;
   },
 
   _optionTapped (e) {

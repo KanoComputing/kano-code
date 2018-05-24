@@ -1,6 +1,6 @@
 import { SDK } from './sdk.js';
 import { Store } from './store.js';
-import '../../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
+import KanoSharedStorageClient from '../../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
 
 let loadDebouncer = null,
     neverLoaded = true,
@@ -9,12 +9,9 @@ let loadDebouncer = null,
 
 
 const { config } = Store.getState();
-const sharedStorageWrapper = new Kano.KanoSharedStorageClient({ sharedStorageURL: config.SHARED_STORAGE_URL });
+const sharedStorageWrapper = new KanoSharedStorageClient({ sharedStorageURL: config.SHARED_STORAGE_URL });
 // Just grab the cross-storage instance here to support previous API..
 let sharedStorage = sharedStorageWrapper._client;
-if (Kano.MakeApps.SharedStorage) {
-    sharedStorage = Kano.MakeApps.SharedStorage._client;
-}
 const LOAD_DEBOUNCE_DELAY = 3000;
 
 localStorage.setItem('progress', storedProgress);

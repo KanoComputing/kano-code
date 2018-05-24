@@ -1,10 +1,12 @@
+import { stickers } from '../../../scripts/kano/make-apps/files/stickers.js';
+
 const COLOR = '#1198ff';
 
 class BlocklyAssets {
     static get type() { return 'blockly'; }
     static get id() { return 'assets'; }
     static register(Blockly) {
-        const stickerSet = Object.keys(Kano.MakeApps.Files.stickers);
+        const stickerSet = Object.keys(stickers);
         Blockly.Blocks.assets_get_sticker = {
             init: function init() {
                 const setDropdown = new Blockly.FieldDropdown(
@@ -30,7 +32,6 @@ class BlocklyAssets {
                 this.createInputs_(option);
             },
             createInputs_(option) {
-                const { stickers } = Kano.MakeApps.Files;
                 const options = Object.keys(stickers[option])
                     .map(key => [stickers[option][key], key]);
                 const dropdown = new Blockly.FieldDropdown(options);
@@ -79,7 +80,7 @@ class BlocklyAssets {
                     args0: [{
                         type: 'field_dropdown',
                         name: 'SET',
-                        options: Object.keys(Kano.MakeApps.Files.stickers).map(key => [key, key]),
+                        options: Object.keys(stickers).map(key => [key, key]),
                     }],
                     colour: COLOR,
                     output: 'String',

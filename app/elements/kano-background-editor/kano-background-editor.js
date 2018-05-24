@@ -2,7 +2,7 @@ import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
 import '../kc-dialog-topbar/kc-dialog-topbar.js';
 import '../../../../../@kano/kwc-color-picker/kwc-color-picker.js';
-import '../../../../../@kano/kwc-color-picker/palettes/material.js';
+import { Material } from '../../../../../@kano/kwc-color-picker/palettes/material.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
 
 class KanoBackgroundEditor extends PolymerElement {
@@ -39,8 +39,8 @@ class KanoBackgroundEditor extends PolymerElement {
   }
   connectedCallback() {
       super.connectedCallback();
-      this.$.picker.colors = window.KwcColorPickerPalette.Material.colors;
-      this.$.picker.rowSize = window.KwcColorPickerPalette.Material.rowSize;
+      this.$.picker.colors = Material.colors;
+      this.$.picker.rowSize = Material.rowSize;
   }
 }
 

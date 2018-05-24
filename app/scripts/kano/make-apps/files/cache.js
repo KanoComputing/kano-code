@@ -1,10 +1,8 @@
-import { AudioContext as AudioContext$0 } from '../../music/player.js';
+import { AudioPlayer } from '../../music/player.js';
 import { generators } from './stickers.js';
 import { types } from './samples.js';
 
 let cache = {};
-
-export const AudioContext = AudioContext$0 || new AudioContext();
 
 export const Cache = {
     getFile (type, name) {
@@ -30,7 +28,7 @@ export const Cache = {
                         return r.arrayBuffer()
                             .then(data => {
                                 return new Promise((resolve, reject) => {
-                                    AudioContext$0.decodeAudioData(data, (buffer) => {
+                                    AudioPlayer.context.decodeAudioData(data, (buffer) => {
                                         return resolve(buffer);
                                     });
                                 });

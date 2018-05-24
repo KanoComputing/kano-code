@@ -1,5 +1,5 @@
-import '../../../../../flow-down/flow-down.js';
-const Store = {
+import FlowDown from '../../../../../flow-down/flow-down.js';
+const StoreFactory = {
     create(initState) {
         const store = FlowDown.createStore(initState);
 
@@ -31,4 +31,4 @@ const Store = {
     },
 };
 
-export const Store = Store || Store.create({});
+export const Store = StoreFactory.create({});

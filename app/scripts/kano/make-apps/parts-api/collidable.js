@@ -1,6 +1,6 @@
 import { Base } from './base.js';
 
-const Collidable = {
+const CollidableImpl = {
     onCreated () {
         this.model.collidable = true;
     },
@@ -59,4 +59,4 @@ const Collidable = {
 };
 
 // @polymerBehavior
-export const Collidable = Base.applyMixins({}, Base, Collidable);
+export const Collidable = Base.applyMixins({}, Base, CollidableImpl);

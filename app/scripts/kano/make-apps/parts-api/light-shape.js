@@ -1,6 +1,6 @@
 import { Base } from './base.js';
 
-const LightShape = {
+const LightShapeImpl = {
     PIXEL_SIZE: 27,
     start () {
         Base.start.apply(this);
@@ -63,8 +63,4 @@ const LightShape = {
     _updateLightboard() {}
 };
 
-export const LightShape = Object.assign({}, Base, LightShape);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['light-shape'] = LightShape;
+export const LightShape = Object.assign({}, Base, LightShapeImpl);

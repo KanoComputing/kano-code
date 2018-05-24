@@ -1,6 +1,6 @@
 import { LightShape } from './light-shape.js';
 
-const LightAnimationDisplay = {
+const LightAnimationDisplayImpl = {
     _updateFrame () {
         let bitmaps = this.animation.bitmaps;
         this.frame = bitmaps[this.frameIndex];
@@ -85,8 +85,4 @@ const LightAnimationDisplay = {
     }
 };
 
-export const LightAnimationDisplay = Object.assign({}, LightShape, LightAnimationDisplay);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['light-animation-display'] = LightAnimationDisplay;
+export const LightAnimationDisplay = Object.assign({}, LightShape, LightAnimationDisplayImpl);

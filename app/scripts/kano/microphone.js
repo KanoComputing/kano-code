@@ -15,7 +15,7 @@ const PITCH_REFRESH_RATE = 100;
  * Provides volume and pitch data from the user's microphone using getUserMedia.
  * Intended to be used as a singleton
  */
-class Microphone {
+class MicrophoneImpl {
 
     constructor () {
         this._onStreamReady = this._onStreamReady.bind(this);
@@ -204,6 +204,6 @@ class Microphone {
 }
 
 // Is a singleton, all microphone data is shared
-export { Microphone as MicrophoneClass };
+export { MicrophoneImpl as MicrophoneClass };
 
-export const Microphone = new Microphone();
+export const Microphone = new MicrophoneImpl();

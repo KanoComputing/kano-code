@@ -1,6 +1,6 @@
 import { LightShape } from './light-shape.js';
 
-const LightFrame = {
+const LightFrameImpl = {
     _updateLightboard (force) {
         this.debounce('_updateLightboard', () => {
             if (this.isRunning) {
@@ -29,8 +29,4 @@ const LightFrame = {
         return parseInt(this.get('model.userProperties.height'));
     }
 };
-export const LightFrame = Object.assign({}, LightShape, LightFrame);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['light-frame'] = LightFrame;
+export const LightFrame = Object.assign({}, LightShape, LightFrameImpl);

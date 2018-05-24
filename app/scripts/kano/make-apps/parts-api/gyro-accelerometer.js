@@ -1,6 +1,6 @@
 import { DongleBase } from './dongle-base.js';
 
-const GyroAccelerometer = {
+const GyroAccelerometerImpl = {
     module: 'gyroAccelerometer',
     onCreated () {
         this._onAccelorometerDataChanged = this._onAccelorometerDataChanged.bind(this);
@@ -31,8 +31,4 @@ const GyroAccelerometer = {
         this.fire('gyro-accel-update');
     }
 };
-export const GyroAccelerometer = Object.assign({}, DongleBase, GyroAccelerometer);
-/**
- * @polymerBehavior
- */
-Kano.MakeApps.PartsAPI['gyro-accelerometer'] = GyroAccelerometer;
+export const GyroAccelerometer = Object.assign({}, DongleBase, GyroAccelerometerImpl);

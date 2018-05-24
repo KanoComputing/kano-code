@@ -5,7 +5,8 @@ import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
 import { PaperDialogBehavior } from '../../../../../@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
 import '../kc-dialog-topbar/kc-dialog-topbar.js';
 import './kc-asset-picker.js';
-import './kc-asset-picker-behavior.js';
+import { KcAssetPickerBehavior } from './kc-asset-picker-behavior.js';
+import { KwcFileManagerBehavior } from '../../../../@kano/kwc-file-picker/kwc-file-manager-behavior.js';
 import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
 Polymer({
@@ -75,8 +76,8 @@ Polymer({
   is: 'kc-asset-picker-dialog',
 
   behaviors: [
-      Kano.KwcFileManagerBehavior,
-      Kano.KcAssetPickerBehavior,
+      KwcFileManagerBehavior,
+      KcAssetPickerBehavior,
       PaperDialogBehavior
   ],
 

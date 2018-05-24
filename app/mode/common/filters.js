@@ -1,7 +1,4 @@
-import { Parts as Parts$0 } from './background-blocks.js';
-export const Parts = Parts$0 || {};
-
-Parts$0.Common.filters = [{
+const filters = [{
     block: () => {
         return {
             id: 'filter_clear',
@@ -237,3 +234,5 @@ Parts$0.Common.filters = [{
         };
     }
 }];
+
+export { filters };

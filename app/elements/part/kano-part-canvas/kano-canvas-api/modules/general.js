@@ -1,3 +1,5 @@
+import { Utils } from "../utils.js";
+
 function General(session) {
     this.session = session;
 }
@@ -28,7 +30,7 @@ General.prototype.background = function (color) {
     var width = this.session.width * this.session.ratio,
     height = this.session.height * this.session.ratio;
 
-    color = Kano.CanvasAPI.Utils.parseColor(color);
+    color = Utils.parseColor(color);
     this.session.ctx.globalCompositeOperation = 'destination-over';
 
     this.session.settings.bg = color;
@@ -46,7 +48,7 @@ General.prototype.background = function (color) {
 * @return void
 */
 General.prototype.reset = function () {
-    this.session.pos = Kano.CanvasAPI.Utils.getCenter(this.session);
+    this.session.pos = Utils.getCenter(this.session);
 
     this.session.settings = {
         bg     : null,

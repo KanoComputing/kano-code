@@ -1,4 +1,4 @@
-import '../../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
+import KanoSharedStorageClient from '../../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
 function stringifyIfObject(val) {
     return typeof val === 'object' ? JSON.stringify(val) : val;
 }
@@ -51,7 +51,7 @@ class SDK {
     constructor(config) {
         this.config = config;
         if (!clients.has(this.config.SHARED_STORAGE_URL)) {
-            clients.set(this.config.SHARED_STORAGE_URL, new Kano.KanoSharedStorageClient({ sharedStorageURL: this.config.SHARED_STORAGE_URL }));
+            clients.set(this.config.SHARED_STORAGE_URL, new KanoSharedStorageClient({ sharedStorageURL: this.config.SHARED_STORAGE_URL }));
         }
         this.sharedStorage = clients.get(this.config.SHARED_STORAGE_URL);
     }
