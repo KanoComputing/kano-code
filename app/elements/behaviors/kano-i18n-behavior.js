@@ -1,3 +1,5 @@
+import { I18n } from '../../lib/index.js';
+
 export const Msg = {};
 
 // @polymerBehavior Kano.Behaviors.I18nBehavior
@@ -12,7 +14,7 @@ export const I18nBehavior = {
      */
     localize (key, fallback) {
         let scopedKey = `${this._msgKeyPrefix}_${key}`;
-        const messages = Kano.Code.I18n.getMessages();
+        const messages = I18n.getMessages();
         return messages[scopedKey] || messages[key] || fallback || '';
     }
 };

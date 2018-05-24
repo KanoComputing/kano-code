@@ -1,5 +1,5 @@
 import { BlockAnimation } from './splash.js';
-import { config } from './config/staging.js';
+import { config } from './config/config.js';
 
 window.Kano = window.Kano || {};
 window.Kano.MakeApps = window.Kano.MakeApps || {};

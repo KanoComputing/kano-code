@@ -2,31 +2,23 @@ import { UIBehavior } from '../kano-ui-behavior.js';
 import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';
 import { Canvas } from './kano-canvas-api/kano-canvas-api.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-const $_documentContainer = document.createElement('template');
-$_documentContainer.setAttribute('style', 'display: none;');
-
-$_documentContainer.innerHTML = `<dom-module id="kano-part-canvas">
-    <style is="custom-style" include="part-style"></style>
-    <template>
-        <style>
-        :host {
-            display: inline-block;
-        }
-        canvas {
-            border: 1px solid lightgrey;
-        }
-        canvas[running] {
-            border-color: transparent;
-        }
-        </style>
-        <canvas id="canvas" style\$="[[_computeCanvasStyle(model.userStyle.width, model.userStyle.height)]]" running\$="[[isRunning]]"></canvas>
-    </template>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
-/* globals Polymer, Kano */
+import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
 
 Polymer({
+    _template: html`
+        <style>
+            :host {
+                display: inline-block;
+            }
+            canvas {
+                border: 1px solid lightgrey;
+            }
+            canvas[running] {
+                border-color: transparent;
+            }
+        </style>
+        <canvas id="canvas" style\$="[[_computeCanvasStyle(model.userStyle.width, model.userStyle.height)]]" running\$="[[isRunning]]"></canvas>
+    `,
     is: 'kano-part-canvas',
     behaviors: [Base, UIBehavior],
     ready () {

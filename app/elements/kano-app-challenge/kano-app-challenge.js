@@ -26,7 +26,7 @@ import '../../../../../@kano/kwc-style/typography.js';
 import './kano-challenge-ui.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../kano-editor-banner/kano-editor-banner.js';
-import '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
+import { SoundPlayerBehavior } from '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
 import { Store } from '../../scripts/legacy/store.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
 import { Debouncer } from '../../../../../@polymer/polymer/lib/utils/debounce.js';
@@ -38,7 +38,7 @@ import '../../../../../twemoji-min/2/twemoji.min.js';
 const BANNER_SOUND = '/assets/audio/sounds/card_set.wav';
 
 class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
-    Kano.Behaviors.SoundPlayerBehavior,
+    SoundPlayerBehavior,
     I18nBehavior,
 ], PolymerElement)) {
   static get template() {

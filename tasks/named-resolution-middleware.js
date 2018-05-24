@@ -20,6 +20,9 @@ module.exports = (opts = {}) => {
         if (req.url.indexOf('md5.js') !== -1) {
             return res.end(res.body.replace('})(this)', '})(window)'));
         }
+        if (req.url.indexOf('twemoji-min/2/twemoji.min.js') !== -1) {
+            return res.end(res.body.replace('var twemoji=function()', 'window.twemoji=function()'));
+        }
         res.body = res.body.replace(/import (.+ from )?'(.+)'/g, (match, g1, g2) => {
             if (g2 && (g2.startsWith('.') || g2.startsWith('/'))) {
                 return match;

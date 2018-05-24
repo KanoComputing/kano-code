@@ -15,7 +15,7 @@ var GamificationBehavior = {
     },
     triggerGamificationEngine(payload) {
         const { config } = Store.getState();
-        sdk = new SDK(config);
+        const sdk = new SDK(config);
         const token = sdk.getToken();
 
         if (token) {
@@ -49,7 +49,7 @@ var GamificationBehavior = {
     },
     syncCachedProgress() {
         const { config } = Store.getState();
-        sdk = new SDK(config);
+        const sdk = new SDK(config);
         const token = sdk.getToken();
 
         // Is logged in?

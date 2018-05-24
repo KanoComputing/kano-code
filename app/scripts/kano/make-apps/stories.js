@@ -1,6 +1,6 @@
 let stories = [];
 
-export const Stories = Stories || {};
+export const Stories = {};
 
 Stories.getLang = function () {
     return 'en-US';

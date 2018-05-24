@@ -15,8 +15,10 @@ import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
 import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
 import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
-import { Editor, UserPlugin, PartsPlugin, LocalStoragePlugin, Runner, Mode } from '../../lib/index.js';
+import { Editor, UserPlugin, PartsPlugin, LocalStoragePlugin, Runner, Mode, FileUploadPlugin, I18n } from '../../lib/index.js';
 import { PartTypes, Parts } from '../../lib/parts/all.js';
+import { AllModules } from '../../lib/app-modules/all.js';
+import { AllApis } from '../../lib/meta-api/modules/all.js';
 
 const behaviors = [
     SharingBehavior,
@@ -141,9 +143,9 @@ class KanoViewEditor extends Store.StateReceiver(
         this.storagePlugin = new LocalStoragePlugin(this._getStorageKey.bind(this));
         this.editor.addPlugin(this.storagePlugin);
 
-        this.editor.toolbox.setEntries(Kano.Code.BlocklyModules);
+        this.editor.toolbox.setEntries(AllApis);
 
-        this.runner = new Runner(Kano.Code.AppModules);
+        this.runner = new Runner(AllModules);
         this.editor.addPlugin(this.runner);
 
         this._deactivateSavePrompt = this._deactivateSavePrompt.bind(this);
@@ -154,7 +156,7 @@ class KanoViewEditor extends Store.StateReceiver(
         this.setupListeners();
         this.modal = this.$['share-modal'];
 
-        this.fileUpload = new Kano.Code.FileUpload(this, this.$['file-upload-overlay']);
+        this.fileUpload = new FileUploadPlugin(this, this.$['file-upload-overlay']);
         this.fileUpload.on('upload', this._onFileDropped.bind(this));
         this.editor.addPlugin(this.fileUpload);
 
@@ -165,6 +167,9 @@ class KanoViewEditor extends Store.StateReceiver(
                 const app = share;
                 return this.loadMode(share.mode)
                     .then((mode) => {
+                        if (app.code && app.code.snapshot) {
+                            app.source = app.code.snapshot.blocks;
+                        }
                         this.editor.setMode(mode);
                         this.setupEditor();
                         this.editor.load(app);
@@ -197,9 +202,9 @@ class KanoViewEditor extends Store.StateReceiver(
         this.removeEventListener('share-attempted', this._deactivateSavePrompt);
     }
     loadLanguages() {
-        const lang = Kano.Code.I18n.getLang();
+        const lang = I18n.getLang();
         return Promise.all([
-            Kano.Code.I18n.load(`/locale/editor/${lang}.json`),
+            I18n.load(`/locale/editor/${lang}.json`),
         ]);
     }
     loadRemix(slug) {

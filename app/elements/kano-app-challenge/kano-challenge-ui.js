@@ -34,7 +34,7 @@ import '../kano-value-preview/kano-value-preview.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import '../behaviors/kano-blockly-validator-behavior.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
-import '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
+import { SoundPlayerBehavior } from '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
 import '../../../../../@kano/kwc-style/typography.js';
 import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
@@ -344,7 +344,7 @@ Polymer({
 
   behaviors: [
       AppElementRegistryBehavior,
-      Kano.Behaviors.SoundPlayerBehavior,
+      SoundPlayerBehavior,
       I18nBehavior,
       IronResizableBehavior
   ],
@@ -655,7 +655,6 @@ Polymer({
   },
 
   _fitBeacon(beacon, scroll) {
-      console.log(beacon);
       let target = this._getTargetElement(beacon.target),
           angle = beacon.angle || 0,
           offset = beacon.offset || 10,

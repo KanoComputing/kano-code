@@ -1,31 +1,47 @@
-<!-- External dependencies -->
-<script type="module" src="../../../../../@polymer/polymer/polymer-element.js"></script>
-<script type="module" src="../../../../../@polymer/iron-flex-layout/iron-flex-layout.js"></script>
-<script type="module" src="../../../../../@polymer/iron-icon/iron-icon.js"></script>
-<script type="module" src="../../../../../@kano/web-components/kano-reward-modal/kano-reward-modal.js"></script>
-<script type="module" src="../../../../../@kano/web-components/kano-alert/kano-alert.js"></script>
-<!-- App components -->
-<script type="module" src="../../elements/kano-app-challenge/kano-app-challenge.js"></script>
-<script type="module" src="../../elements/kano-app-editor/kano-app-editor.js"></script>
-<script type="module" src="../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.js"></script>
-<script type="module" src="../../elements/kano-share-modal/kano-share-modal.js"></script>
-<!-- App behaviors -->
-<script type="module" src="../../elements/behaviors/kano-sharing-behavior.js"></script>
-<script type="module" src="../../elements/behaviors/kano-code-ga-tracking-behavior.js"></script>
-<script type="module" src="../../elements/behaviors/kano-i18n-behavior.js"></script>
-<!-- App scripts -->
-<script type="module" src="../../scripts/kano/make-apps/blockly/blockly.js"></script>
-<script type="module" src="../../scripts/kano/util/router.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/stories.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/progress.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/store.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/actions/app.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/utils.js"></script>
-<script type="module" src="../../scripts/kano/make-apps/experiments.js"></script>
+import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
+import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
+import '../../../../../@polymer/iron-icon/iron-icon.js';
+import '../../../../../@kano/web-components/kano-reward-modal/kano-reward-modal.js';
+import '../../../../../@kano/web-components/kano-alert/kano-alert.js';
+import { SoundPlayerBehavior } from '../../../../../@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
+import '../../elements/kano-app-challenge/kano-app-challenge.js';
+import '../../elements/kano-app-editor/kano-app-editor.js';
+import '../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.js';
+import '../../elements/kano-share-modal/kano-share-modal.js';
+import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
+import { GABehavior } from '../../elements/behaviors/kano-code-ga-tracking-behavior.js';
+import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
+import '../../scripts/kano/make-apps/blockly/blockly.js';
+import '../../scripts/kano/util/router.js';
+import { Stories } from '../../scripts/kano/make-apps/stories.js';
+import { Progress } from '../../scripts/kano/make-apps/progress.js';
+import { Store } from '../../scripts/kano/make-apps/store.js';
+import '../../scripts/kano/make-apps/actions/app.js';
+import { Utils } from '../../scripts/kano/make-apps/utils.js';
+import { experiments } from '../../scripts/kano/make-apps/experiments.js';
+import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
+import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
+import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
+import { Editor, UserPlugin, PartsPlugin, Runner, Mode } from '../../lib/index.js';
+import { PartTypes, Parts } from '../../lib/parts/all.js';
+import { Challenge } from '../../lib/challenge/index.js';
 
-<dom-module id="kano-view-story">
-    <template>
-        <style>
+const behaviors = [
+    ViewBehavior,
+    SharingBehavior,
+    GABehavior,
+    I18nBehavior,
+    SoundPlayerBehavior,
+];
+
+class KanoViewStory extends Store.StateReceiver(
+    mixinBehaviors(behaviors, PolymerElement)
+) {
+    static get is() { return 'kano-view-story'; }
+    static get template() {
+        return html`
+            <style>
             :host {
                 @apply --layout-vertical;
                 position: relative;
@@ -93,47 +109,8 @@
             <button class="kano-alert-primary" on-tap="_confirmLoadApp" dialog-confirm slot="actions">[[localize('CONFIRM', 'Load app')]]</button>
             <button class="kano-alert-secondary" dialog-dismiss slot="actions">[[localize('CANCEL', 'Cancel')]]</button>
         </kano-alert>
-    </template>
-</dom-module>
-
-<script type="module">
-import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
-import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
-import '../../../../../@polymer/iron-icon/iron-icon.js';
-import '../../../../../@kano/web-components/kano-reward-modal/kano-reward-modal.js';
-import '../../../../../@kano/web-components/kano-alert/kano-alert.js';
-import '../../elements/kano-app-challenge/kano-app-challenge.js';
-import '../../elements/kano-app-editor/kano-app-editor.js';
-import '../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.js';
-import '../../elements/kano-share-modal/kano-share-modal.js';
-import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
-import { GABehavior } from '../../elements/behaviors/kano-code-ga-tracking-behavior.js';
-import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
-import '../../scripts/kano/make-apps/blockly/blockly.js';
-import '../../scripts/kano/util/router.js';
-import { Stories } from '../../scripts/kano/make-apps/stories.js';
-import { Progress } from '../../scripts/kano/make-apps/progress.js';
-import { Store } from '../../scripts/kano/make-apps/store.js';
-import '../../scripts/kano/make-apps/actions/app.js';
-import { Utils } from '../../scripts/kano/make-apps/utils.js';
-import { experiments } from '../../scripts/kano/make-apps/experiments.js';
-import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
-import { Parts as Parts$0 } from '../../mode/common/background-blocks.js';
-import { dom } from '../../../../../@polymer/polymer/lib/legacy/polymer.dom.js';
-import { mixinBehaviors } from '../../../../../@polymer/polymer/lib/legacy/class.js';
-
-const behaviors = [
-    ViewBehavior,
-    SharingBehavior,
-    GABehavior,
-    I18nBehavior,
-    Kano.Behaviors.SoundPlayerBehavior,
-];
-
-class KanoViewStory extends Store.StateReceiver(
-    mixinBehaviors(behaviors, PolymerElement)
-) {
-    static get is() { return 'kano-view-story'; }
+        `;
+    }
     static get properties() {
         return {
             loading: {
@@ -199,21 +176,21 @@ class KanoViewStory extends Store.StateReceiver(
 
         this.modal = this.$['share-modal'];
 
-        this.editor = new Kano.Code.Editor(config);
+        this.editor = new Editor(config);
 
-        const userPlugin = new Kano.Code.UserPlugin();
+        const userPlugin = new UserPlugin();
         this.editor.addPlugin(userPlugin);
 
-        this.partsPlugin = new Kano.Code.Parts(Kano.Code.Legacy.PartTypes);
+        this.partsPlugin = new PartsPlugin(PartTypes);
         this.editor.addPlugin(this.partsPlugin);
 
         this.editor.toolbox.setEntries(Kano.Code.BlocklyModules);
 
-        this.runner = new Kano.Code.Runner(Kano.Code.AppModules);
+        this.runner = new Runner(Kano.Code.AppModules);
         this.editor.addPlugin(this.runner);
 
-        this.challenge = new Kano.Code.Challenge(this.partsPlugin);
-        this.challenge.setParts(Kano.Code.Legacy.Parts);
+        this.challenge = new Challenge(this.partsPlugin);
+        this.challenge.setParts(Parts);
         this.challenge.on('completed', this.challengeCompleted.bind(this));
 
         this.editor.addPlugin(this.challenge);
@@ -264,8 +241,8 @@ class KanoViewStory extends Store.StateReceiver(
             });
     }
     loadMode(id) {
-        const url = `/mode/${id}.html`;
-        return Kano.Code.Mode.load(id, url);
+        const url = `/mode/${id}.js`;
+        return Mode.load(id, url);
     }
     save() {}
     setupEditor() {
@@ -292,11 +269,6 @@ class KanoViewStory extends Store.StateReceiver(
         }
         // TODO replace this when routing is based on flow-down
         page.redirect('/');
-    }
-    getModeParts(mode) {
-        return Parts$0.list.filter((part) => {
-            return mode.parts.indexOf(part.type) !== -1;
-        });
     }
     _onFileDropped(contents) {
         let app;
@@ -576,4 +548,3 @@ class KanoViewStory extends Store.StateReceiver(
 }
 
 customElements.define(KanoViewStory.is, KanoViewStory);
-</script>

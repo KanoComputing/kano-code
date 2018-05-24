@@ -1,17 +1,19 @@
 import GlobalStore from './global-store.js';
+import { PolymerElement } from '../../../../../@polymer/polymer/polymer-element.js';
 
 const Store = {
     create(initState) {
         const store = GlobalStore.create(initState);
 
-        const StoreElement = Polymer({
-            is: `kc-store-${store.id}`,
-            behaviors: [store.ProviderBehavior],
-            observers: ['_runningChanged(state.running)'],
+        class StoreElement extends store.StateProvider(PolymerElement) {
+            static get is() { return `kc-store-${store.id}`; }
+            static get observers() { return ['_runningChanged(state.running)']; }
             _runningChanged() {
-                this.fire('running-changed');
-            },
-        });
+                this.dispatchEvent(new CustomEvent('running-changed'), { bubbles: true });
+            }
+        }
+
+        customElements.define(StoreElement.is, StoreElement);
 
         const storeElement = new StoreElement();
 

@@ -3,23 +3,19 @@ import { Base } from '../../../scripts/kano/make-apps/parts-api/base.js';
 import { Monotron } from '../../../scripts/kano/music/monotron/monotron.js';
 import { AudioPlayer } from '../../../scripts/kano/music/player.js';
 import { Polymer } from '../../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
-const $_documentContainer = document.createElement('template');
-$_documentContainer.setAttribute('style', 'display: none;');
-
-$_documentContainer.innerHTML = `<dom-module id="kano-part-synth">
-    <style>
-        :host {
-            display: block;
-        }
-    </style>
-</dom-module>`;
-
-document.head.appendChild($_documentContainer.content);
+import { html } from '../../../../../../@polymer/polymer/lib/utils/html-tag.js';
 
 const OSCILLATOR_FREQ_RANGE_LOW = 55, // --> A0 note in pitch standard tuning
       DEFAULT_FREQ = 220 // --> A2
 
 Polymer({
+    _template: html`
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+    `,
     is: 'kano-part-synth',
     behaviors: [Base, UIBehavior],
     observers: [

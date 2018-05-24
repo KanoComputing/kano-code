@@ -16,4 +16,6 @@ config.TRACKING = {
 };
 config.GEO_API = "http://kano-geoip-api.herokuapp.com/country/";
 
+config.BLOCKLY_MEDIA = '/@kano/kwc-blockly/blockly_built/media/'
+
 export { config };

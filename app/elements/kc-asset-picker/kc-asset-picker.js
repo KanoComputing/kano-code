@@ -1,7 +1,7 @@
 import '../../../../../@polymer/polymer/polymer-legacy.js';
 import '../../../../../@polymer/iron-flex-layout/iron-flex-layout.js';
 import '../../../../../@polymer/iron-pages/iron-pages.js';
-import '../../../../../@kano/kwc-file-picker/kwc-file-manager-behavior.js';
+import { KwcFileManagerBehavior } from '../../../../../@kano/kwc-file-picker/kwc-file-manager-behavior.js';
 import '../../../../../@kano/kwc-file-picker/kwc-file-breadcrumbs.js';
 import '../../../../../@kano/kwc-icons/kwc-icons.js';
 import '../../../../../@kano/kwc-style/color.js';
@@ -9,9 +9,12 @@ import '../../../../../@kano/kwc-style/typography.js';
 import '../../../../../@polymer/iron-icon/iron-icon.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import './kc-asset-picker-style.js';
-import './kc-asset-picker-behavior.js';
+import { KcAssetPickerBehavior } from './kc-asset-picker-behavior.js';
 import { Polymer } from '../../../../../@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '../../../../../@polymer/polymer/lib/utils/html-tag.js';
+
+KcAssetPickerBehavior
+
 Polymer({
   _template: html`
         <style include="kc-asset-picker-style">
@@ -62,7 +65,7 @@ Polymer({
   is: 'kc-asset-picker',
 
   behaviors: [
-      Kano.KwcFileManagerBehavior,
-      Kano.KcAssetPickerBehavior
+      KwcFileManagerBehavior,
+      KcAssetPickerBehavior
   ]
 });
