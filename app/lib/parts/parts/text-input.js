@@ -1,7 +1,9 @@
+import { localize } from '../../i18n/index.js';
+
 const input = {
     partType: 'ui',
     type: 'text-input',
-    label: Kano.MakeApps.Msg.PART_TEXT_INPUT_NAME,
+    label: localize('PART_TEXT_INPUT_NAME'),
     image: '/assets/part/text-input.svg',
     colour: '#3CAA36',
     customizable: {
@@ -9,15 +11,15 @@ const input = {
         properties: [{
             key: 'value',
             type: 'text',
-            label: Kano.MakeApps.Msg.TEXT
+            label: localize('TEXT')
         },{
             key: 'placeholder',
             type: 'text',
-            label: Kano.MakeApps.Msg.PLACEHOLDER
+            label: localize('PLACEHOLDER')
         }]
     },
     userProperties: {
-        placeholder: Kano.MakeApps.Msg.BLOCK_TEXT_INPUT_TYPE_IN
+        placeholder: localize('BLOCK_TEXT_INPUT_TYPE_IN')
     },
     events: [{
         label: Blockly.Msg.BLOCK_TEXT_INPUT_CHANGED,

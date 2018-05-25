@@ -1,4 +1,6 @@
 import { localize } from '../../i18n/index.js';
+import { samples, samplesDir } from '../../../scripts/kano/make-apps/files/samples.js';
+import { Cache } from '../../../scripts/kano/make-apps/files/cache.js';
 
 const COLOUR = '#FFB347';
 
@@ -147,8 +149,7 @@ if (speaker.webAudioSupported) {
         }
     },{
         block: (part) => {
-            let samples = Kano.MakeApps.Files.samples,
-                sampleSet = Object.keys(samples),
+            let sampleSet = Object.keys(samples),
                 id = 'speaker_sample';
             Blockly.Blocks[`${part.id}#${id}`] = {
                 init: function () {
@@ -170,14 +171,14 @@ if (speaker.webAudioSupported) {
                 },
                 preloadSample () {
                     const value = this.getFieldValue('SAMPLE');
-                    Kano.MakeApps.Files.Cache.getFile('samples', value);
+                    Cache.getFile('samples', value);
                 },
                 updateShape_: function (option) {
                     this.removeInput('SAMPLE');
                     this.createInputs_(option);
                 },
                 createInputs_: function (option) {
-                    let samples = Kano.MakeApps.Files.samples,
+                    let samples = samples,
                         options,
                         dropdown;
 
@@ -227,7 +228,7 @@ if (speaker.webAudioSupported) {
         }
     },{
         block: (part) => {
-            let samples = Kano.MakeApps.Files.samplesDir,
+            let samples = samplesDir,
                 id = 'speaker_sample_picker';
             Blockly.Blocks[`${part.id}#${id}`] = {
                 init: function () {
@@ -318,7 +319,7 @@ if (speaker.webAudioSupported) {
         }
     },{
         block: (ui) => {
-            let sets = Kano.MakeApps.Files.samples;
+            let sets = samples;
             return {
                 id: 'random_from_set',
                 message0: Blockly.Msg.BLOCK_SPEAKER_RANDOM_FROM,

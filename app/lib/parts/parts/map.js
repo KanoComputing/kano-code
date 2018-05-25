@@ -1,7 +1,9 @@
+import { localize } from '../../i18n/index.js';
+
 const map = {
     partType: 'ui',
     type: 'map',
-    label: 'Map',
+    label: localize('PART_MAP_NAME', 'Map'),
     image: '/assets/part/map.svg',
     colour: '#E73544',
     customizable: {

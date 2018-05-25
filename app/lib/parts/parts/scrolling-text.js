@@ -1,7 +1,9 @@
+import { localize } from '../../i18n/index.js';
+
 const scrollingText = {
     partType: 'ui',
     type: 'scrolling-text',
-    label: Kano.MakeApps.Msg.PART_SCROLL_NAME,
+    label: localize('PART_SCROLL_NAME'),
     image: '/assets/part/scrolling-text.svg',
     colour: '#E73544',
     customizable: {
@@ -19,7 +21,7 @@ const scrollingText = {
         color: '#000000',
     },
     userProperties: {
-        text: Kano.MakeApps.Msg.SCROLL_DEFAULT
+        text: localize('SCROLL_DEFAULT')
     },
     blocks: [{
         block: (ui) => {

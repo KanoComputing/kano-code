@@ -1,9 +1,11 @@
+import { localize } from '../../i18n/index.js';
+
 const COLOUR = '#C93E6A';
 
 const synth = {
     partType: 'hardware',
     type: 'synth',
-    label: Kano.MakeApps.Msg.PART_SYNTH_NAME,
+    label: localize('PART_SYNTH_NAME'),
     image: '/assets/part/osc.svg',
     colour: COLOUR,
     component: 'kano-part-synth',

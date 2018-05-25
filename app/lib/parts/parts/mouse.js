@@ -1,3 +1,5 @@
+import { localize } from '../../i18n/index.js';
+
 const blocks = {
     onEvent: {
         block: (ui) => {
@@ -119,7 +121,7 @@ const blocks = {
 const mouse = {
     partType: 'hardware',
     type: 'mouse',
-    label: Kano.MakeApps.Msg.PART_MOUSE_NAME,
+    label: localize('PART_MOUSE_NAME'),
     component: 'kano-part-mouse',
     image: '/assets/part/mouse.svg',
     colour: '#FFB347',

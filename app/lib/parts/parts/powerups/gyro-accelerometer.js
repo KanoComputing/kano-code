@@ -1,7 +1,9 @@
+import { localize } from '../../../i18n/index.js';
+
 const gyroAccelerometer = {
     partType: 'hardware',
     type: 'gyro-accelerometer',
-    label: Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_NAME,
+    label: localize('PART_GYRO_ACCELEROMETER_NAME'),
     image: '/assets/part/proximity.svg',
     colour: '#FFB347',
     component: 'kano-part-gyro-accelerometer',
@@ -12,7 +14,7 @@ const gyroAccelerometer = {
     userProperties: {},
     supportedHardware: ['gyro-accelerometer'],
     events: [{
-        label: Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_READ_DATA,
+        label: localize('PART_GYRO_ACCELEROMETER_READ_DATA'),
         id: 'gyro-accel-update'
     }],
     blocks: [{

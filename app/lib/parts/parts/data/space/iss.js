@@ -1,7 +1,9 @@
+import { localize } from '../../../../i18n/index.js';
+
 const iss = {
     partType: 'data',
     type: 'iss',
-    label: Kano.MakeApps.Msg.PART_DATA_ISS_NAME,
+    label: localize('PART_DATA_ISS_NAME'),
     image: '/assets/part/iss.svg',
     colour: '#1f1f1f',
     parameters: [],
@@ -10,13 +12,13 @@ const iss = {
     singleton: true,
     method: 'space.getISSStatus',
     dataKeys: [{
-        label: Kano.MakeApps.Msg.PART_DATA_ISS_LATITUDE_TITLE,
+        label: localize('PART_DATA_ISS_LATITUDE_TITLE'),
         key: 'latitude',
-        description: Kano.MakeApps.Msg.PART_DATA_ISS_LATITUDE_DESC,
+        description: localize('PART_DATA_ISS_LATITUDE_DESC'),
     },{
-        label: Kano.MakeApps.Msg.PART_DATA_ISS_LONGITUDE_TITLE,
+        label: localize('PART_DATA_ISS_LONGITUDE_TITLE'),
         key: 'longitude',
-        description: Kano.MakeApps.Msg.PART_DATA_ISS_LONGITUDE_DESC,
+        description: localize('PART_DATA_ISS_LONGITUDE_DESC'),
     }],
 };
 

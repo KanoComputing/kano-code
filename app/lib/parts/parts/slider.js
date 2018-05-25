@@ -1,22 +1,24 @@
+import { localize } from '../../i18n/index.js';
+
 const slider = {
     partType: 'ui',
     type: 'slider',
-    label: Kano.MakeApps.Msg.PART_SLIDER_NAME,
+    label: localize('PART_SLIDER_NAME'),
     image: '/assets/part/slider.svg',
     component: 'kano-part-slider',
     customizable: {
         properties: [{
             key: 'min',
             type: 'range',
-            label: Kano.MakeApps.Msg.MIN,
+            label: localize('MIN'),
         }, {
             key: 'max',
             type: 'range',
-            label: Kano.MakeApps.Msg.MAX,
+            label: localize('MAX'),
         }, {
             key: 'default',
             type: 'range',
-            label: Kano.MakeApps.Msg.DEFAULT,
+            label: localize('DEFAULT'),
         }],
         style: [],
     },
@@ -26,7 +28,7 @@ const slider = {
         default: 0,
     },
     events: [{
-        label: Kano.MakeApps.Msg.CHANGED,
+        label: localize('CHANGED'),
         id: 'update',
     }],
     blocks: [{

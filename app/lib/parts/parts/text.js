@@ -1,7 +1,9 @@
+import { localize } from '../../i18n/index.js';
+
 const text = {
     partType: 'ui',
     type: 'text',
-    label: Kano.MakeApps.Msg.PART_TEXT_NAME,
+    label: localize('PART_TEXT_NAME'),
     image: '/assets/part/text.svg',
     colour: '#607d8b',
     customizable: {
@@ -9,7 +11,7 @@ const text = {
         properties: [{
             key: 'text',
             type: 'text',
-            label: Kano.MakeApps.Msg.TEXT
+            label: localize('TEXT')
         }]
     },
     userStyle: {
@@ -18,7 +20,7 @@ const text = {
         'font-family': 'Bariol'
     },
     userProperties: {
-        text: Kano.MakeApps.Msg.TEXT_DEFAULT
+        text: localize('TEXT_DEFAULT')
     },
     blocks: [{
         block: (ui) => {

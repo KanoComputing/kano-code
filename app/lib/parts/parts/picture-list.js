@@ -1,3 +1,4 @@
+import { localize } from '../../i18n/index.js';
 
 /**
 * Check if a block is the ancestor of another one
@@ -16,7 +17,7 @@ function checkAncestor(block, type) {
 const pictureList = {
     partType: 'ui',
     type: 'picture-list',
-    label: Kano.MakeApps.Msg.PART_PICTURE_LIST_NAME,
+    label: localize('PART_PICTURE_LIST_NAME'),
     image: '/assets/part/piclist.svg',
     component: 'kano-ui-picture-list',
     excludeDefaultBlocks: true,
@@ -25,7 +26,7 @@ const pictureList = {
         properties: [{
             key: 'speed',
             type: 'range',
-            label: Kano.MakeApps.Msg.SPEED,
+            label: localize('SPEED'),
             min: 1,
             max: 30,
         }],

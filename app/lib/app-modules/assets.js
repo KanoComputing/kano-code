@@ -1,4 +1,5 @@
 import AppModule from './app-module.js';
+import { stickers, generators } from '../../scripts/kano/make-apps/files/stickers.js';
 
 class AssetsModule extends AppModule {
     constructor() {
@@ -13,17 +14,17 @@ class AssetsModule extends AppModule {
     }
 
     _getSticker(set, sticker) {
-        return Kano.MakeApps.Files.generators.stickers(set, sticker);
+        return generators.stickers(set, sticker);
     }
 
     _randomSticker(set) {
         let sets;
         if (!set) {
-            sets = Object.keys(Kano.MakeApps.Files.stickers);
+            sets = Object.keys(stickers);
             set = sets[Math.floor(Math.random() * sets.length)];
         }
-        const stickers = Object.keys(Kano.MakeApps.Files.stickers[set]);
-        const randomSticker = stickers[Math.floor(Math.random() * stickers.length)];
+        const stickerSet = Object.keys(stickers[set]);
+        const randomSticker = stickerSet[Math.floor(Math.random() * stickers.length)];
         return this._getSticker(set, randomSticker);
     }
 }

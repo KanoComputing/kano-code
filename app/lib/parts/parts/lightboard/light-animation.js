@@ -1,7 +1,9 @@
+import { localize } from '../../../i18n/index.js';
+
 const lightAnimation = {
     partType: 'ui',
     type: 'light-animation',
-    label: Kano.MakeApps.Msg.PART_LIGHT_ANIMATION_NAME,
+    label: localize('PART_LIGHT_ANIMATION_NAME'),
     image: '/assets/part/pixels-animation.svg',
     colour: '#FFB347',
     component: 'kano-part-light-animation',
@@ -14,21 +16,21 @@ const lightAnimation = {
         properties: [{
             key: 'width',
             type: 'range',
-            label: Kano.MakeApps.Msg.WIDTH
+            label: localize('WIDTH')
         },{
             key: 'height',
             type: 'range',
-            label: Kano.MakeApps.Msg.HEIGHT
+            label: localize('HEIGHT')
         },{
             key: 'speed',
             type: 'range',
-            label: Kano.MakeApps.Msg.SPEED,
+            label: localize('SPEED'),
             min: 1,
             max: 30
         },{
             key: 'bitmaps',
             type: 'bitmap-animation',
-            label: Kano.MakeApps.Msg.BITMAPS
+            label: localize('BITMAPS')
         }],
         style: []
     },

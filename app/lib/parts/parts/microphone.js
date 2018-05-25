@@ -1,8 +1,9 @@
+import { localize } from '../../i18n/index.js';
 
 const microphone = {
     partType: 'hardware',
     type: 'microphone',
-    label: Kano.MakeApps.Msg.PART_MIC_NAME,
+    label: localize('PART_MIC_NAME'),
     component: 'kano-part-microphone',
     image: '/assets/part/microphone.svg',
     colour: '#FFB347',

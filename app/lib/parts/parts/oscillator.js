@@ -1,16 +1,16 @@
-
+import { localize } from '../../i18n/index.js';
 
 const oscillator = {
     partType: 'ui',
     type: 'oscillator',
-    label: Kano.MakeApps.Msg.PART_OSC_NAME,
+    label: localize('PART_OSC_NAME'),
     component: 'kano-part-oscillator',
     image: '/assets/part/osc.svg',
     colour: '#FFB347',
     customizable: {
         properties: [{
             key: 'wave',
-            label: Kano.MakeApps.Msg.WAVE,
+            label: localize('WAVE'),
             type: 'list',
             options: [{
                 value: 'sine',
@@ -31,13 +31,13 @@ const oscillator = {
             }]
         },{
             key: 'speed',
-            label: Kano.MakeApps.Msg.SPEED,
+            label: localize('SPEED'),
             type: 'range',
             min: 0,
             max: 100
         }, {
             key: 'delay',
-            label: Kano.MakeApps.Msg.DELAY,
+            label: localize('DELAY'),
             type: 'range',
             min: 0,
             max: 100

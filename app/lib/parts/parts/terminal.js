@@ -1,7 +1,9 @@
+import { localize } from '../../i18n/index.js';
+
 const terminal = {
     partType: 'ui',
     type: 'terminal',
-    label: Kano.MakeApps.Msg.PART_TERMINAL_NAME,
+    label: localize('PART_TERMINAL_NAME'),
     component: 'kano-part-terminal',
     image: '/assets/part/terminal.svg',
     colour: '#607d8b',

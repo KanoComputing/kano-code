@@ -1,14 +1,13 @@
-import { Input } from '../behaviors.js';
-import '../../kano-fs/kano-fs.js';
-import '../kano-file-picker-modal/kano-file-picker-modal.js';
 import '@kano/web-components/kano-glint-animation/kano-glint-animation.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { Input } from '../behaviors.js';
+import '../../kano-fs/kano-fs.js';
+import '../kano-file-picker-modal/kano-file-picker-modal.js';
 import { generators } from '../../../scripts/kano/make-apps/files/stickers.js';
-/* globals Polymer, Kano */
 
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 @apply --layout-vertical;
@@ -49,101 +48,97 @@ Polymer({
         <kano-file-picker-modal files="[[flatFiles]]" id="modal" on-select-file="fileSelected"></kano-file-picker-modal>
 `,
 
-  is: 'kano-input-image',
-  behaviors: [Input],
+    is: 'kano-input-image',
+    behaviors: [Input],
 
-  properties: {
-      title: {
-          type: String,
-          value: null
-      },
-      size: {
-          type: String,
-          value: '50px'
-      },
-      src: {
-          type: String,
-          value: null
-      },
-      options: {
-          type: Object,
-          observer: '_optionsChanged'
-      },
-      flatFiles: {
-          type: Array,
-          value: () => {
-              return [];
-          }
-      }
-  },
+    properties: {
+        title: {
+            type: String,
+            value: null,
+        },
+        size: {
+            type: String,
+            value: '50px',
+        },
+        src: {
+            type: String,
+            value: null,
+        },
+        options: {
+            type: Object,
+            observer: '_optionsChanged',
+        },
+        flatFiles: {
+            type: Array,
+            value: () => [],
+        },
+    },
 
-  observers: [
-      'valueChanged(src, size)',
-      'themeChanged(theme)'
-  ],
+    observers: [
+        'valueChanged(src, size)',
+        'themeChanged(theme)',
+    ],
 
-  attached () {
-      document.body.appendChild(this.$.modal);
-  },
+    attached() {
+        document.body.appendChild(this.$.modal);
+    },
 
-  detached () {
-      document.body.removeChild(this.$.modal);
-  },
+    detached() {
+        document.body.removeChild(this.$.modal);
+    },
 
-  _optionsChanged (options) {
-      let files = options.files,
-          group,
-          groupFiles,
-          allFiles;
-      allFiles = Object.keys(Kano.MakeApps.Files[files]).reduce((acc, groupKey) => {
-          group = Kano.MakeApps.Files[files][groupKey];
-          groupFiles = Object.keys(group).map((key) => {
-              return {
-                  name: group[key],
-                  type: 'image',
-                  data: {
-                      src: generators[files](groupKey, key)
-                  }
-              };
-          });
-          return acc.concat(groupFiles);
-      }, []);
-      this.set('flatFiles', allFiles);
-  },
+    _optionsChanged(options) {
+        let files = options.files,
+            group,
+            groupFiles,
+            allFiles;
+        allFiles = Object.keys(Kano.MakeApps.Files[files]).reduce((acc, groupKey) => {
+            group = Kano.MakeApps.Files[files][groupKey];
+            groupFiles = Object.keys(group).map(key => ({
+                name: group[key],
+                type: 'image',
+                data: {
+                    src: generators[files](groupKey, key),
+                },
+            }));
+            return acc.concat(groupFiles);
+        }, []);
+        this.set('flatFiles', allFiles);
+    },
 
-  openModal () {
-      this.$.modal.open();
-  },
+    openModal() {
+        this.$.modal.open();
+    },
 
-  fileSelected (e) {
-      let file = e.detail;
-      this.set('src', file.data.src);
-      this.set('title', file.name);
-      this.$.modal.close();
-  },
+    fileSelected(e) {
+        const file = e.detail;
+        this.set('src', file.data.src);
+        this.set('title', file.name);
+        this.$.modal.close();
+    },
 
-  valueChanged () {
-      this.set('value', this.src);
-  },
+    valueChanged() {
+        this.set('value', this.src);
+    },
 
-  removeImage () {
-      this.set('title', null);
-      this.set('src', null);
-  },
+    removeImage() {
+        this.set('title', null);
+        this.set('src', null);
+    },
 
-  themeChanged (theme) {
-      this.updateStyles({
-          '--element-theme': theme
-      });
-  },
+    themeChanged(theme) {
+        this.updateStyles({
+            '--element-theme': theme,
+        });
+    },
 
-  _startGlint (e) {
-      const target = e.currentTarget ? e.currentTarget : e.composedPath()[0];
-      target.running = true;
-  },
+    _startGlint(e) {
+        const target = e.currentTarget ? e.currentTarget : e.composedPath()[0];
+        target.running = true;
+    },
 
-  _endGlint (e) {
-      const target = e.currentTarget ? e.currentTarget : e.composedPath()[0];
-      target.running = false;
-  }
+    _endGlint(e) {
+        const target = e.currentTarget ? e.currentTarget : e.composedPath()[0];
+        target.running = false;
+    },
 });

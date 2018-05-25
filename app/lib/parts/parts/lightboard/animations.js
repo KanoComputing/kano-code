@@ -1,3 +1,5 @@
+import { localize } from '../../../i18n/index.js';
+
 const animations = {
     "Smiley": {
         "width": 8,

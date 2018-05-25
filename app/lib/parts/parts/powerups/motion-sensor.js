@@ -1,9 +1,11 @@
+import { localize } from '../../../i18n/index.js';
+
 const COLOR = '#FFB347';
 
 const motionSensor = {
     partType: 'hardware',
     type: 'motion-sensor',
-    label: Kano.MakeApps.Msg.PART_MOTION_SENSOR_NAME,
+    label: localize('PART_MOTION_SENSOR_NAME'),
     image: '/assets/part/motion.svg',
     colour: COLOR,
     component: 'kano-part-motion-sensor',
@@ -13,19 +15,19 @@ const motionSensor = {
             {
                 key: 'mode',
                 type: 'list',
-                label: Kano.MakeApps.Msg.MODE,
+                label: localize('MODE'),
                 value: 'proximity',
                 options: [{
                     value: 'proximity',
-                    label: Kano.MakeApps.Msg.PROXIMITY
+                    label: localize('PROXIMITY')
                 }, {
                     value: 'gesture',
-                    label: Kano.MakeApps.Msg.GESTURE
+                    label: localize('GESTURE')
                 }]
             }, {
                 key: 'updateInterval',
                 type: 'range',
-                label: Kano.MakeApps.Msg.UPDATE_INTERVAL,
+                label: localize('UPDATE_INTERVAL'),
                 min: 50,
                 max: 1000
             }
@@ -38,22 +40,22 @@ const motionSensor = {
     },
     supportedHardware: ['motion-sensor', /* Old name */'proximity-sensor'],
     events: [{
-        label: Kano.MakeApps.Msg.PART_GYRO_ACCELEROMETER_READ_DATA,
+        label: localize('PART_GYRO_ACCELEROMETER_READ_DATA'),
         id: 'proximity-update'
     },{
-        label: Kano.MakeApps.Msg.PART_MOTION_SENSOR_UP,
+        label: localize('PART_MOTION_SENSOR_UP'),
         id: 'gesture-up'
     },
     {
-        label: Kano.MakeApps.Msg.PART_MOTION_SENSOR_DOWN,
+        label: localize('PART_MOTION_SENSOR_DOWN'),
         id: 'gesture-down'
     },
     {
-        label: Kano.MakeApps.Msg.PART_MOTION_SENSOR_LEFT,
+        label: localize('PART_MOTION_SENSOR_LEFT'),
         id: 'gesture-left'
     },
     {
-        label: Kano.MakeApps.Msg.PART_MOTION_SENSOR_RIGHT,
+        label: localize('PART_MOTION_SENSOR_RIGHT'),
         id: 'gesture-right'
     }],
     blocks: [{

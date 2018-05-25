@@ -1,24 +1,26 @@
+import { localize } from '../../i18n/index.js';
+import { stickers } from '../../../scripts/kano/make-apps/files/stickers.js';
 
 const COLOR = '#E73544';
 
 const sticker = {
     partType: 'ui',
     type: 'sticker',
-    label: Kano.MakeApps.Msg.PART_STICKER_NAME,
+    label: localize('PART_STICKER_NAME'),
     image: '/assets/part/image.svg',
     colour: COLOR,
     customizable: {
         properties: [{
             key: 'src',
             type: 'image',
-            label: Kano.MakeApps.Msg.IMAGE,
+            label: localize('IMAGE'),
             options: {
                 files: 'stickers'
             }
         }, {
             key: 'size',
             type: 'range',
-            label: Kano.MakeApps.Msg.SIZE,
+            label: localize('SIZE'),
             symbol: 'px',
             min: 0,
             max: 100
@@ -32,7 +34,7 @@ const sticker = {
         size: 100
     },
     events: [{
-        label: Kano.MakeApps.Msg.IS_CLICKED,
+        label: localize('IS_CLICKED'),
         id: 'clicked'
     }],
     blocks: [{
@@ -66,7 +68,7 @@ const sticker = {
     ],
     legacyBlocks: [{
         block: (part) => {
-            let stickerSet = Object.keys(Kano.MakeApps.Files.stickers),
+            let stickerSet = Object.keys(stickers),
                 id = 'sticker';
             Blockly.Blocks[`${part.id}#${id}`] = {
                 init: function () {
@@ -91,8 +93,7 @@ const sticker = {
                     this.createInputs_(option);
                 },
                 createInputs_: function (option) {
-                    let stickers = Kano.MakeApps.Files.stickers,
-                        options = Object.keys(stickers[option]).map(key => [stickers[option][key], key]),
+                    let options = Object.keys(stickers[option]).map(key => [stickers[option][key], key]),
                         dropdown = new Blockly.FieldDropdown(options);
                     this.appendDummyInput('STICKER')
                         .appendField(dropdown, 'STICKER');
@@ -136,7 +137,7 @@ const sticker = {
         }
     }, {
         block: (ui) => {
-            let sets = Kano.MakeApps.Files.stickers;
+            let sets = stickers;
             return {
                 id: 'random_from_set',
                 message0: Blockly.Msg.BLOCK_STICKER_RANDOM_FROM,

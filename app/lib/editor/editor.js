@@ -100,7 +100,6 @@ class Editor extends EventEmitter {
             return;
         }
         this.injected = true;
-        Editor.enableLegacyI18nSupport();
         element.appendChild(this.store.providerElement);
         element.appendChild(this.storeObserver.rootEl);
         if (before) {
@@ -110,10 +109,6 @@ class Editor extends EventEmitter {
         }
         this.setupElements();
         this.runPluginTask('onInject');
-    }
-    static enableLegacyI18nSupport() {
-        window.Kano.MakeApps = window.Kano.MakeApps || {};
-        window.Kano.MakeApps.Msg = getMessages();
     }
 
     setMode(modeDefinition) {

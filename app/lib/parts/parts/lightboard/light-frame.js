@@ -1,7 +1,9 @@
+import { localize } from '../../../i18n/index.js';
+
 const lightFrame = {
     partType: 'ui',
     type: 'light-frame',
-    label: Kano.MakeApps.Msg.PART_LIGHT_FRAME_NAME,
+    label: localize('PART_LIGHT_FRAME_NAME'),
     image: '/assets/part/pixels-draw.svg',
     colour: '#FFB347',
     component: 'kano-part-light-frame',
@@ -15,15 +17,15 @@ const lightFrame = {
         properties: [{
             key: 'width',
             type: 'range',
-            label: Kano.MakeApps.Msg.WIDTH,
+            label: localize('WIDTH'),
         },{
             key: 'height',
             type: 'range',
-            label: Kano.MakeApps.Msg.HEIGHT,
+            label: localize('HEIGHT'),
         },{
             key: 'bitmap',
             type: 'bitmap',
-            label: Kano.MakeApps.Msg.BITMAP,
+            label: localize('BITMAP'),
         }],
         style: []
     },

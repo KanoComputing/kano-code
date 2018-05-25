@@ -1,25 +1,27 @@
+import { localize } from '../../i18n/index.js';
+
 const button = {
     partType: 'ui',
     type: 'button',
-    label: Kano.MakeApps.Msg.PART_BUTTON_NAME,
+    label: localize('PART_BUTTON_NAME'),
     image: '/assets/part/button.svg',
     colour: '#3f51b5',
     customizable: {
         properties: [{
             key: 'label',
             type: 'text',
-            label: Kano.MakeApps.Msg.LABEL
+            label: localize('LABEL')
         }],
         style: ['background-color'],
     },
     userProperties: {
-        label: Kano.MakeApps.Msg.CLICK_ME
+        label: localize('CLICK_ME')
     },
     userStyle: {
         'background-color': '#3caa36',
     },
     events: [{
-        label: Kano.MakeApps.Msg.IS_CLICKED,
+        label: localize('IS_CLICKED'),
         id: 'clicked',
     }],
     blocks: [{

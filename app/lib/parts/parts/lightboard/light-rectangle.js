@@ -1,7 +1,9 @@
+import { localize } from '../../../i18n/index.js';
+
 const lightRectangle = {
     partType: 'ui',
     type: 'light-rectangle',
-    label: Kano.MakeApps.Msg.PART_LIGHT_RECTANGLE_NAME,
+    label: localize('PART_LIGHT_RECTANGLE_NAME'),
     image: '/assets/part/pixels-rectangle.svg',
     colour: '#FFB347',
     component: 'kano-part-light-rectangle',
@@ -13,19 +15,19 @@ const lightRectangle = {
         properties: [{
             key: 'width',
             type: 'range',
-            label: Kano.MakeApps.Msg.WIDTH,
+            label: localize('WIDTH'),
             min: 1,
             max: 16
         },{
             key: 'height',
             type: 'range',
-            label: Kano.MakeApps.Msg.HEIGHT,
+            label: localize('HEIGHT'),
             min: 1,
             max: 8
         },{
             key: 'color',
             type: 'color',
-            label: Kano.MakeApps.Msg.COLOR,
+            label: localize('COLOR'),
         }],
         style: [],
     },

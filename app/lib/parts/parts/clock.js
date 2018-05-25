@@ -1,7 +1,9 @@
+import { localize } from '../../i18n/index.js';
+
 const clock = {
     partType: 'data',
     type: 'clock',
-    label: Kano.MakeApps.Msg.PART_CLOCK_NAME,
+    label: localize('PART_CLOCK_NAME'),
     image: '/assets/part/clock.svg',
     component: 'kano-part-clock',
     excludeBlocks: ['refresh'],

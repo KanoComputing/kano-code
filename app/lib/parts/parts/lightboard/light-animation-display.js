@@ -1,9 +1,10 @@
 import animations from './animations.js';
+import { localize } from '../../../i18n/index.js';
 
 const lightAnimationDisplay = {
     partType: 'ui',
     type: 'light-animation-display',
-    label: Kano.MakeApps.Msg.PART_LIGHT_ANIMATION_DISPLAY_NAME,
+    label: localize('PART_LIGHT_ANIMATION_DISPLAY_NAME'),
     image: '/assets/part/pixels-animation-play.svg',
     colour: '#FFB347',
     component: 'kano-part-light-animation-display',
@@ -13,7 +14,7 @@ const lightAnimationDisplay = {
         properties: [{
             key: 'animation',
             type: 'list',
-            label: Kano.MakeApps.Msg.ANIMATION,
+            label: localize('ANIMATION'),
             options: Object.keys(animations).map(key => {
                 return {
                     label: key,
@@ -23,7 +24,7 @@ const lightAnimationDisplay = {
         },{
             key: 'speed',
             type: 'range',
-            label: Kano.MakeApps.Msg.SPEED,
+            label: localize('SPEED'),
             min: 1,
             max: 30
         }],

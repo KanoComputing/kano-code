@@ -1,7 +1,9 @@
+import { localize } from '../../../i18n/index.js';
+
 const lightCircle = {
     partType: 'ui',
     type: 'light-circle',
-    label: Kano.MakeApps.Msg.PART_LIGHT_CIRCLE_NAME,
+    label: localize('PART_LIGHT_CIRCLE_NAME'),
     image: '/assets/part/pixels-circle.svg',
     colour: '#FFB347',
     component: 'kano-part-light-circle',
@@ -12,13 +14,13 @@ const lightCircle = {
         properties: [{
             key: 'radius',
             type: 'range',
-            label: Kano.MakeApps.Msg.RADIUS,
+            label: localize('RADIUS'),
             min: 0,
             max: 3
         },{
             key: 'color',
             type: 'color',
-            label: Kano.MakeApps.Msg.COLOR
+            label: localize('COLOR')
         }],
         style: []
     },

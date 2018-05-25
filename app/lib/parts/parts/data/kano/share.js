@@ -1,7 +1,9 @@
+import { localize } from '../../../../i18n/index.js';
+
 const share = {
     partType: 'data',
     type: 'share',
-    label: Kano.MakeApps.Msg.PART_DATA_SHARE_NAME,
+    label: localize('PART_DATA_SHARE_NAME'),
     image: '/assets/part/kano-world.svg',
     colour: '#1f1f1f',
     dataType: 'list',
@@ -12,21 +14,21 @@ const share = {
     singleton: true,
     method: 'kano.getShares',
     dataKeys: [{
-        label: Kano.MakeApps.Msg.PART_DATA_SHARE_TITLE_TITLE,
+        label: localize('PART_DATA_SHARE_TITLE_TITLE'),
         key: 'title',
-        description: Kano.MakeApps.Msg.PART_DATA_SHARE_TITLE_DESC,
+        description: localize('PART_DATA_SHARE_TITLE_DESC'),
     }, {
-        label: Kano.MakeApps.Msg.PART_DATA_SHARE_LIKES_TITLE,
+        label: localize('PART_DATA_SHARE_LIKES_TITLE'),
         key: 'likes',
-        description: Kano.MakeApps.Msg.PART_DATA_SHARE_LIKES_DESC,
+        description: localize('PART_DATA_SHARE_LIKES_DESC'),
     }, {
-        label: Kano.MakeApps.Msg.PART_DATA_SHARE_USER_TITLE,
+        label: localize('PART_DATA_SHARE_USER_TITLE'),
         key: 'user',
-        description: Kano.MakeApps.Msg.PART_DATA_SHARE_USER_DESC,
+        description: localize('PART_DATA_SHARE_USER_DESC'),
     }, {
-        label: Kano.MakeApps.Msg.PART_DATA_SHARE_IMAGE_TITLE,
+        label: localize('PART_DATA_SHARE_IMAGE_TITLE'),
         key: 'image',
-        description: Kano.MakeApps.Msg.PART_DATA_SHARE_IMAGE_DESC,
+        description: localize('PART_DATA_SHARE_IMAGE_DESC'),
     }],
 };
 

@@ -33,10 +33,12 @@ blocks = blocks.concat(setters);
 blocks = blocks.concat(shapes);
 blocks = blocks.concat(space);
 
+import { localize } from '../../i18n/index.js';
+
 const canvas = {
     partType: 'ui',
     type: 'canvas',
-    label: Kano.MakeApps.Msg.PART_CANVAS_NAME,
+    label: localize('PART_CANVAS_NAME'),
     image: '/assets/part/box.svg',
     component: 'kano-part-canvas',
     colour: '#E73544',

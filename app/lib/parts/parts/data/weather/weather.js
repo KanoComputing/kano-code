@@ -1,51 +1,53 @@
+import { localize } from '../../../../i18n/index.js';
+
 const weather = {
     partType: 'data',
     type: 'weather',
-    label: Kano.MakeApps.Msg.PART_DATA_WEATHER_NAME,
+    label: localize('PART_DATA_WEATHER_NAME'),
     colour: '#cddc39',
     image: '/assets/part/weather.svg',
     parameters: [{
-        label: Kano.MakeApps.Msg.PART_DATA_WEATHER_LOCATION_TITLE,
+        label: localize('PART_DATA_WEATHER_LOCATION_TITLE'),
         key: 'location',
         type: 'text',
-        value: Kano.MakeApps.Msg.PART_DATA_WEATHER_LOCATION_DEFAULT
+        value: localize('PART_DATA_WEATHER_LOCATION_DEFAULT')
     },{
-        label: Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_TITLE,
+        label: localize('PART_DATA_WEATHER_UNITS_TITLE'),
         key: 'units',
         type: 'list',
         value: 'metric',
-        description: Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_DESC,
+        description: localize('PART_DATA_WEATHER_UNITS_DESC'),
         options: [{
             value: 'metric',
-            label: Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_METRIC
+            label: localize('PART_DATA_WEATHER_UNITS_METRIC')
         },{
             value: 'imperial',
-            label: Kano.MakeApps.Msg.PART_DATA_WEATHER_UNITS_IMPERIAL
+            label: localize('PART_DATA_WEATHER_UNITS_IMPERIAL')
         }]
     }],
     refreshFreq: 5,
     minRefreshFreq: 5,
     method: 'weather.getWeather',
     dataKeys: [{
-        label: Kano.MakeApps.Msg.PART_DATA_WEATHER_TEMPERATURE_TITLE,
+        label: localize('PART_DATA_WEATHER_TEMPERATURE_TITLE'),
         key: 'temperature',
-        description: Kano.MakeApps.Msg.PART_DATA_WEATHER_TEMPERATURE_DESC
+        description: localize('PART_DATA_WEATHER_TEMPERATURE_DESC')
     },{
-        label: Kano.MakeApps.Msg.PART_DATA_WEATHER_SPEED_TITLE,
+        label: localize('PART_DATA_WEATHER_SPEED_TITLE'),
         key: 'wind_speed',
-        description: Kano.MakeApps.Msg.PART_DATA_WEATHER_SPEED_DESC
+        description: localize('PART_DATA_WEATHER_SPEED_DESC')
     },{
-        label: Kano.MakeApps.Msg.PART_DATA_WEATHER_ANGLE_TITLE,
+        label: localize('PART_DATA_WEATHER_ANGLE_TITLE'),
         key: 'wind_angle',
-        description: Kano.MakeApps.Msg.PART_DATA_WEATHER_ANGLE_DESC
+        description: localize('PART_DATA_WEATHER_ANGLE_DESC')
     },{
-        label: Kano.MakeApps.Msg.PART_DATA_WEATHER_CLOUDS_TITLE,
+        label: localize('PART_DATA_WEATHER_CLOUDS_TITLE'),
         key: 'clouds',
-        description: Kano.MakeApps.Msg.PART_DATA_WEATHER_CLOUDS_DESC
+        description: localize('PART_DATA_WEATHER_CLOUDS_DESC')
     },{
-        label: Kano.MakeApps.Msg.PART_DATA_WEATHER_EMOJI_TITLE,
+        label: localize('PART_DATA_WEATHER_EMOJI_TITLE'),
         key: 'emoji',
-        description: Kano.MakeApps.Msg.PART_DATA_WEATHER_EMOJI_DESC
+        description: localize('PART_DATA_WEATHER_EMOJI_DESC')
     }],
     blocks: [{
         block: (ui) => {

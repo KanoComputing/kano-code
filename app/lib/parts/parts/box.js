@@ -1,19 +1,21 @@
+import { localize } from '../../i18n/index.js';
+
 const box = {
     partType: 'ui',
     type: 'box',
-    label: Kano.MakeApps.Msg.PART_BOX_NAME,
+    label: localize('PART_BOX_NAME'),
     image: '/assets/part/box.svg',
     colour: '#E73544',
     customizable: {
         properties: [{
             key: 'strokeSize',
             type: 'range',
-            label: Kano.MakeApps.Msg.STROKE_SIZE,
+            label: localize('STROKE_SIZE'),
             symbol: 'px'
         },{
             key: 'strokeColor',
             type: 'color',
-            label: Kano.MakeApps.Msg.STROKE_COLOR
+            label: localize('STROKE_COLOR')
         }],
         style: ['width', 'height', 'background-color']
     },
@@ -27,7 +29,7 @@ const box = {
         strokeColor: 'black'
     },
     events: [{
-        label: Kano.MakeApps.Msg.IS_CLICKED,
+        label: localize('IS_CLICKED'),
         id: 'clicked'
     }],
     blocks: [{
