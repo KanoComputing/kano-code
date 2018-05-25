@@ -1,6 +1,6 @@
-import KanoSharedStorageClient from '../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
-import '../../../../../gamification-engine/dist/gamification-engine.js';
-import BrowserStorage from '../../../../../gamification-engine/browser.js';
+import KanoSharedStorageClient from 'kano-shared-storage-client/kano-shared-storage-client.js';
+import 'gamification-engine/dist/gamification-engine.js';
+import BrowserStorage from 'gamification-engine/browser.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
 

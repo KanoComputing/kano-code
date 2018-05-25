@@ -145,7 +145,7 @@ $.startServer = (lr) => {
             root: __dirname + '/app',
         }))
         .use($.serveStatic({
-            root: __dirname + '/node_modules',
+            root: __dirname + '/',
         }))
         .use(namedResolutionMiddleware({ modulesDir: '/' }))
         .listen(4000);

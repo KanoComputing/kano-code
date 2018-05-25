@@ -9,7 +9,7 @@ import '../../scripts/kano/make-apps/actions/routing.js';
 import '../../scripts/kano/make-apps/utils.js';
 import { Router } from '../../scripts/kano/util/router.js';
 import { Editor } from '../../scripts/kano/make-apps/actions/editor.js';
-import '../../../../../page/page.js';
+import 'page/page.js';
 
 /*
  * Returns true iff client is a Pi. Please be aware that it is not a foolproof

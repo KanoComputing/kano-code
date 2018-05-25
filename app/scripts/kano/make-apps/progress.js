@@ -1,6 +1,6 @@
 import { SDK } from './sdk.js';
 import { Store } from './store.js';
-import KanoSharedStorageClient from '../../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
+import KanoSharedStorageClient from 'kano-shared-storage-client/kano-shared-storage-client.js';
 
 let loadDebouncer = null,
     neverLoaded = true,

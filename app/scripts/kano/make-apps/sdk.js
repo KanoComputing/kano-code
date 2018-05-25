@@ -1,4 +1,4 @@
-import KanoSharedStorageClient from '../../../../../../kano-shared-storage-client/kano-shared-storage-client.js';
+import KanoSharedStorageClient from 'kano-shared-storage-client/kano-shared-storage-client.js';
 function stringifyIfObject(val) {
     return typeof val === 'object' ? JSON.stringify(val) : val;
 }

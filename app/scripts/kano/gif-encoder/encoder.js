@@ -1,4 +1,4 @@
-import '../../../../../../omggif/omggif.js';
+import 'omggif/omggif.js';
 
 class GifEncoder {
     constructor (opts) {

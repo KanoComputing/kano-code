@@ -37,8 +37,8 @@ import { Store } from '../../scripts/legacy/store.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import '../../../../../interactjs/dist/interact.js';
-import '../../../../../js-beautify/js/lib/beautify.js';
+import 'interactjs/dist/interact.js';
+import 'js-beautify/js/lib/beautify.js';
 Polymer({
   _template: html`
         <style>

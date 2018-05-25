@@ -1,4 +1,4 @@
-import FlowDown from '../../../flow-down/flow-down.js';
+import FlowDown from 'flow-down/flow-down.js';
 
 const Store = {
     create(initState) {
