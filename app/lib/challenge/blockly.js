@@ -1,4 +1,4 @@
-import Challenge from '../../../../challenge-engine/definition.js';
+import Challenge from 'challenge-engine/definition.js';
 
 class BlocklyChallenge extends Challenge {
     constructor(workspace) {

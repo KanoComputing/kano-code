@@ -1,4 +1,4 @@
-import '../../../../../twemoji-min/2/twemoji.min.js';
+import 'twemoji-min/2/twemoji.min.js';
 
 export const ChallengeBehavior = {
     properties: {

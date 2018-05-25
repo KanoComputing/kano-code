@@ -1,9 +1,8 @@
 import '@polymer/paper-dialog/paper-dialog.js';
 import '@polymer/paper-dialog-scrollable/paper-dialog-scrollable.js';
-import { AppEditorBehavior } from '../../behaviors/kano-app-editor-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-/* globals Polymer */
+import { AppEditorBehavior } from '../../behaviors/kano-app-editor-behavior.js';
 Polymer({
   _template: html`
         <style>

@@ -32,7 +32,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import '../../../../../twemoji-min/2/twemoji.min.js';
+import 'twemoji-min/2/twemoji.min.js';
 /* globals Polymer, Kano */
 
 const BANNER_SOUND = '/assets/audio/sounds/card_set.wav';

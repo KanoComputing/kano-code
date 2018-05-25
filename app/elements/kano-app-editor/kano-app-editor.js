@@ -20,6 +20,11 @@ import '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import '@polymer/paper-tabs/paper-tabs.js';
 import '@polymer/iron-overlay-behavior/iron-overlay-backdrop.js';
 import '@kano/web-components/kano-alert/kano-alert.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import 'interactjs/dist/interact.js';
+import 'js-beautify/js/lib/beautify.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { MediaQueryBehavior } from '../behaviors/kano-media-query-behavior.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
@@ -34,11 +39,6 @@ import '../kano-code-display/kano-code-display.js';
 import '../kano-add-parts/kano-add-parts.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
 import { Store } from '../../scripts/legacy/store.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import 'interactjs/dist/interact.js';
-import 'js-beautify/js/lib/beautify.js';
 Polymer({
   _template: html`
         <style>
