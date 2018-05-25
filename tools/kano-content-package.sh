@@ -2,6 +2,8 @@
 
 set -e
 
+cd ..
+
 gulp build
 
 pushd www

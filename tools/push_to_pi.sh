@@ -3,9 +3,10 @@
 # Exit in case of failure
 set -e
 
+cd ..
+
 echo "Rebuilding and pushing to Pi"
 npm install
-bower install
 NODE_ENV=production TARGET=rpi gulp build
 
 DEST_IP='10.0.0.114'
