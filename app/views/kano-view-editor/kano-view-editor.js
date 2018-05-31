@@ -16,6 +16,7 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { Editor, UserPlugin, PartsPlugin, LocalStoragePlugin, Runner, Mode, FileUploadPlugin, I18n } from '../../lib/index.js';
+import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
 import { PartTypes, Parts } from '../../lib/parts/all.js';
 import { AllModules } from '../../lib/app-modules/all.js';
 import { AllApis } from '../../lib/meta-api/modules/all.js';
@@ -147,6 +148,9 @@ class KanoViewEditor extends Store.StateReceiver(
 
         this.runner = new Runner(AllModules);
         this.editor.addPlugin(this.runner);
+
+        this.challengeGeneratorPlugin = new ChallengeGeneratorPlugin();
+        this.editor.addPlugin(this.challengeGeneratorPlugin);
 
         this._deactivateSavePrompt = this._deactivateSavePrompt.bind(this);
         this._deactivateSavePrompt = this._deactivateSavePrompt.bind(this);

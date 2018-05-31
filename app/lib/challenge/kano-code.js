@@ -114,10 +114,9 @@ class KanoCodeChallenge extends BlocklyChallenge {
     get done() {
         return this.stepIndex === this.steps.length - 1;
     }
-    _createBlockShorthand(data) {
-        const steps = super._createBlockShorthand(data);
-
-        Object.assign(steps[0], {
+    _getOpenFlyoutStep(data) {
+        const step = super._getOpenFlyoutStep(data);
+        return Object.assign(step, {
             banner: {
                 text: data.openFlyoutCopy || `Open the ${data.category} category`,
             },
@@ -127,8 +126,10 @@ class KanoCodeChallenge extends BlocklyChallenge {
                 },
             },
         });
-
-        Object.assign(steps[1], {
+    }
+    _getCreateBlockStep(data) {
+        const step = super._getCreateBlockStep(data);
+        return Object.assign(step, {
             banner: {
                 text: data.grabBlockCopy || 'Grab this block',
             },
@@ -138,21 +139,19 @@ class KanoCodeChallenge extends BlocklyChallenge {
                 },
             },
         });
-
-        if (steps[2]) {
-            Object.assign(steps[2], {
-                banner: {
-                    text: data.connectCopy || 'Connect to this block',
+    }
+    _getConnectBlockStep(data) {
+        const step = super._getConnectBlockStep(data);
+        return Object.assign(step, {
+            banner: {
+                text: data.connectCopy || 'Connect to this block',
+            },
+            beacon: {
+                target: {
+                    block: data.connectTo,
                 },
-                beacon: {
-                    target: {
-                        block: data.connectTo,
-                    },
-                },
-            });
-        }
-
-        return steps;
+            },
+        });
     }
     _changeInputShorthand(data) {
         const step = super._changeInputShorthand(data);

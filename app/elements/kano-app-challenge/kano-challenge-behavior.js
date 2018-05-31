@@ -3,28 +3,28 @@ import 'twemoji-min/2/twemoji.min.js';
 export const ChallengeBehavior = {
     properties: {
         steps: {
-            type: Object
+            type: Object,
         },
         step: {
             type: Number,
-            notify: true
+            notify: true,
         },
         selectedStep: {
             type: Object,
             computed: 'computeSelectedStep(steps, step, started)',
-            notify: true
+            notify: true,
         },
         started: {
             type: Boolean,
-            value: false
+            value: false,
         },
-        sceneVariables: Object
+        sceneVariables: Object,
     },
-    forceReloadStep () {
+    forceReloadStep() {
         this.started = false;
         this.started = true;
     },
-    computeSelectedStep () {
+    computeSelectedStep() {
         let selectedStep;
         if (!this.started) {
             return null;
@@ -44,7 +44,7 @@ export const ChallengeBehavior = {
         }
 
         if (selectedStep.tooltips) {
-            selectedStep.tooltips = selectedStep.tooltips.map(tooltip => {
+            selectedStep.tooltips = selectedStep.tooltips.map((tooltip) => {
                 tooltip.location = this.processLocation(tooltip.location);
                 tooltip.text = this._processMarkdown(tooltip.text || '');
                 return tooltip;
@@ -65,17 +65,17 @@ export const ChallengeBehavior = {
             selectedStep.modal.text = this._processMarkdown(selectedStep.modal.text);
         }
         if (selectedStep.reward) {
-            selectedStep.play_on_end = "puzzle_success";
+            selectedStep.play_on_end = 'puzzle_success';
         }
         return selectedStep;
     },
     /**
      * Changes the location to adapt to the current context
      */
-    processLocation (location) {
+    processLocation(location) {
         if (typeof location === 'object') {
             if (location.category) {
-                let cat = location.category;
+                const cat = location.category;
                 if (cat.part) {
                     location.category = this.stepIds[cat.part];
                 } else if (cat.rawPart) {
@@ -93,14 +93,14 @@ export const ChallengeBehavior = {
                     location.flyout_block = `${partId}#${type.type}`;
                 }
             } else if (location.path && (location.part || location.rawPart)) {
-                let partId = location.part ? this.stepIds[location.part] : location.rawPart;
+                const partId = location.part ? this.stepIds[location.part] : location.rawPart;
                 location = `${location.path}-part-${partId}`;
             } else if (location.part || location.rawPart) {
                 location.part = location.part ? this.stepIds[location.part] : location.rawPart;
             } else if (location.block) {
                 if (typeof location.block === 'string') {
                     location.block = {
-                        id: this.blockIds[location.block]
+                        id: this.blockIds[location.block],
                     };
                 } else if (location.block.id) {
                     location.block.id = this.blockIds[location.block.id];
@@ -111,12 +111,12 @@ export const ChallengeBehavior = {
         }
         return location;
     },
-    _processMarkdown (text) {
+    _processMarkdown(text) {
         let processedText = text,
             blockReg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
 
         processedText = processedText.replace(blockReg, (match, before, type, after) => {
-            let pieces = type.split('#');
+            const pieces = type.split('#');
             if (pieces.length > 1) {
                 pieces[0] = this.stepIds[pieces[0]] || pieces[0];
             }
@@ -124,10 +124,8 @@ export const ChallengeBehavior = {
             return `<kano-blockly-block${before}type="${type}"${after}></kano-blockly-block>`;
         });
 
-        //Inject variables to markdown syntax
-        processedText = Object.keys(this.sceneVariables).reduce((acc, key) => {
-            return acc.replace(new RegExp('\\$\\{' + key + '\\}', 'g'), this.sceneVariables[key] || '');
-        }, processedText);
+        // Inject variables to markdown syntax
+        processedText = Object.keys(this.sceneVariables).reduce((acc, key) => acc.replace(new RegExp(`\\$\\{${key }\\}`, 'g'), this.sceneVariables[key] || ''), processedText);
 
 
         /* Replace native emoji and return */
@@ -136,7 +134,7 @@ export const ChallengeBehavior = {
     /**
      * Move to the next step or set the challenge as done
      */
-    nextStep () {
+    nextStep() {
         // The current step was injected, we remove it form the array
         if (this.selectedStep.injected) {
             this.splice('steps', this.step, 1);
@@ -154,17 +152,17 @@ export const ChallengeBehavior = {
             }
         }
     },
-    stepChanged () {
+    stepChanged() {
         this.selectedStep = this.computeSelectedStep();
     },
-    _prevStep (n=1) {
+    _prevStep(n = 1) {
         this._goToStep(Math.max(0, this.step - n));
     },
-    _getStateAt (index) {
-        let state = {
+    _getStateAt(index) {
+        const state = {
             hints: {
-                enabled: true
-            }
+                enabled: true,
+            },
         };
         for (let i = 0; i < this.steps.length; i++) {
             if ('set-state' in this.steps[i]) {
@@ -173,7 +171,7 @@ export const ChallengeBehavior = {
         }
         return state;
     },
-    _goToStep (index) {
+    _goToStep(index) {
         let step = index,
             start = Math.min(this.step, index),
             end = Math.max(this.step, index),
@@ -203,17 +201,19 @@ export const ChallengeBehavior = {
         this.set('state', state);
         this.set('step', step);
     },
-    _injectStep (step, offset) {
-        let index = this.step + (typeof offset === 'undefined' ? 1 : offset);
+    _injectStep(step, offset) {
+        const index = this.step + (typeof offset === 'undefined' ? 1 : offset);
         step.injected = true;
         // Insert the new step just after that
         this.splice('steps', index, 0, step);
         // jump to the new step
         this._goToStep(index);
     },
-    _updateStep (step) {
+    _updateStep(step) {
         step.injected = true;
         this.set(`steps.${this.step}`, step);
         this.stepChanged();
-    }
+    },
 };
+
+export default ChallengeBehavior;

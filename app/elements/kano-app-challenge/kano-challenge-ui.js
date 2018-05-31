@@ -39,8 +39,9 @@ import '@kano/kwc-style/typography.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             @keyframes pop-in {
                 0% {
@@ -340,681 +341,678 @@ Polymer({
         </paper-dialog>
 `,
 
-  is: 'kano-challenge-ui',
+    is: 'kano-challenge-ui',
 
-  behaviors: [
-      AppElementRegistryBehavior,
-      SoundPlayerBehavior,
-      I18nBehavior,
-      IronResizableBehavior
-  ],
+    behaviors: [
+        AppElementRegistryBehavior,
+        SoundPlayerBehavior,
+        I18nBehavior,
+        IronResizableBehavior,
+    ],
 
-  properties: {
-      tooltips: {
-          type: Array
-      },
-      step: {
-          type: Object
-      },
-      arrow: {
-          type: Object
-      },
-      beacon: Object,
-      state: {
-          type: Object,
-          value: () => {
-              return {
-                  hints: {
-                      enabled: true
-                  }
-              };
-          },
-          notify: true
-      },
-      idle: {
-          type: Boolean,
-          observer: '_onIdleChanged'
-      },
-  },
+    properties: {
+        tooltips: {
+            type: Array,
+        },
+        step: {
+            type: Object,
+        },
+        arrow: {
+            type: Object,
+        },
+        beacon: Object,
+        state: {
+            type: Object,
+            value: () => ({
+                hints: {
+                    enabled: true,
+                },
+            }),
+            notify: true,
+        },
+        idle: {
+            type: Boolean,
+            observer: '_onIdleChanged',
+        },
+    },
 
-  observers: [
-      '_setupWithDelay(step, state.*)',
-      '_updateBeacon(beacon.*)',
-      '_updatTooltips(tooltips.*)',
-  ],
+    observers: [
+        '_setupWithDelay(step, state.*)',
+        '_updateBeacon(beacon.*)',
+        '_updatTooltips(tooltips.*)',
+    ],
 
-  listeners: {
-      'change': '_editorChanged'
-  },
+    listeners: {
+        change: '_editorChanged',
+    },
 
-  _stopPropagation (e) {
-      e.preventDefault();
-      e.stopPropagation();
-  },
+    _stopPropagation(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    },
 
-  _editorChanged (e) {
-      // Store current step object
-      let step = this.selectedStep,
-          detail = e.detail;
+    _editorChanged(e) {
+        // Store current step object
+        let step = this.selectedStep,
+            detail = e.detail;
 
-      if (!step || this.done) {
-          return;
-      }
-      if (this.tooltips && detail.type === 'blockly' && detail.event.type === 'move') {
-          this.updateTooltips();
-      }
-  },
+        if (!step || this.done) {
+            return;
+        }
+        if (this.tooltips && detail.type === 'blockly' && detail.event.type === 'move') {
+            this.updateTooltips();
+        }
+    },
 
-  computeSelectedStep() {
-      return this.steps[this.step];
-  },
+    computeSelectedStep() {
+        return this.steps[this.step];
+    },
 
-  /**
+    /**
    * Find the blockly element and listens to the change event
    */
-  ready() {
-      this.modal = this.$.modal;
-      this.highlight = {};
-      this.loadSound('/assets/audio/sounds/ding.mp3');
-      this._onRefit = this._onRefit.bind(this);
-      this.eventsCausingRefit = {
-          'toolbox-scroll': ['flyout_block'],
-          'workspace-scroll': ['block'],
-          'block-move': ['block'],
-          'iron-resize': 'all'
-      };
-  },
+    ready() {
+        this.modal = this.$.modal;
+        this.highlight = {};
+        this.loadSound('/assets/audio/sounds/ding.mp3');
+        this._onRefit = this._onRefit.bind(this);
+        this.eventsCausingRefit = {
+            'toolbox-scroll': ['flyout_block'],
+            'workspace-scroll': ['block'],
+            'block-move': ['block'],
+            'iron-resize': 'all',
+        };
+    },
 
-  attached() {
-      this.updateTooltips = this.updateTooltips.bind(this);
-      this.addEventListener('mousewheel', this.updateTooltips, true);
-      window.addEventListener('resize', this.updateTooltips);
-      Object.keys(this.eventsCausingRefit).forEach(eventName => {
-          this.addEventListener(eventName, this._onRefit);
-      });
-  },
+    attached() {
+        this.updateTooltips = this.updateTooltips.bind(this);
+        this.addEventListener('mousewheel', this.updateTooltips, true);
+        window.addEventListener('resize', this.updateTooltips);
+        Object.keys(this.eventsCausingRefit).forEach((eventName) => {
+            this.addEventListener(eventName, this._onRefit);
+        });
+    },
 
-  detached() {
-      this.removeEventListener('mousewheel', this.updateTooltips);
-      window.removeEventListener('resize', this.updateTooltips);
-      Object.keys(this.eventsCausingRefit).forEach(eventName => {
-          this.removeEventListener(eventName, this._onRefit);
-      });
-  },
+    detached() {
+        this.removeEventListener('mousewheel', this.updateTooltips);
+        window.removeEventListener('resize', this.updateTooltips);
+        Object.keys(this.eventsCausingRefit).forEach((eventName) => {
+            this.removeEventListener(eventName, this._onRefit);
+        });
+    },
 
-  getToolbox () {
-      return this.workspace.toolbox;
-  },
+    getToolbox() {
+        return this.workspace.toolbox;
+    },
 
-  _nextStep () {
-      this.fire('next-step');
-  },
+    _nextStep() {
+        this.fire('next-step');
+    },
 
-  _onResize () {
-      let step = this.step;
-      if (!step) {
-          return;
-      }
+    _onResize() {
+        const step = this.step;
+        if (!step) {
+            return;
+        }
 
-      if (this.beacon) {
-          this._fitBeacon(this.beacon);
-      }
+        if (this.beacon) {
+            this._fitBeacon(this.beacon);
+        }
 
-      if (step.arrow) {
-          this._fitArrow(step);
-      }
+        if (step.arrow) {
+            this._fitArrow(step);
+        }
 
-      this._fitTooltips(this.tooltips);
-  },
+        this._fitTooltips(this.tooltips);
+    },
 
-  _onRefit (e) {
-      const targetConcerned = this.eventsCausingRefit[e.type];
-      this._refitUiElements(targetConcerned);
-  },
+    _onRefit(e) {
+        const targetConcerned = this.eventsCausingRefit[e.type];
+        this._refitUiElements(targetConcerned);
+    },
 
-  _refitUiElements (targetConcerned) {
-      const step = this.step;
+    _refitUiElements(targetConcerned) {
+        const step = this.step;
 
-      if (!step) {
-          return;
-      }
+        if (!step) {
+            return;
+        }
 
-      if (this.beacon && this._targetIsConcerned(this.beacon.target, targetConcerned)) {
-          this._fitBeacon(this.beacon);
-      }
+        if (this.beacon && this._targetIsConcerned(this.beacon.target, targetConcerned)) {
+            this._fitBeacon(this.beacon);
+        }
 
-      if (step.arrow && this._targetIsConcerned(step.arrow.target, targetConcerned)) {
-          this._fitArrow(step);
-      }
-      this._fitTooltips(this.tooltips);
-  },
+        if (step.arrow && this._targetIsConcerned(step.arrow.target, targetConcerned)) {
+            this._fitArrow(step);
+        }
+        this._fitTooltips(this.tooltips);
+    },
 
-  /**
+    /**
    * Checks if the target of the beacon matches the type of targets concerned by the refit event received
    */
-  _targetIsConcerned (target, targetTypes) {
-      if (targetTypes === 'all') {
-          return true;
-      }
-      return typeof target === 'object' && Object.keys(target).some(key => targetTypes.indexOf(key) !== -1);
-  },
+    _targetIsConcerned(target, targetTypes) {
+        if (targetTypes === 'all') {
+            return true;
+        }
+        return typeof target === 'object' && Object.keys(target).some(key => targetTypes.indexOf(key) !== -1);
+    },
 
-  _updateTooltips() {
-      this.computeTooltips();
-  },
+    _updateTooltips() {
+        this.computeTooltips();
+    },
 
-  computeTooltips() {
-      const { tooltips } = this;
-      this.set('tooltips', []);
-      this.debounce('computeTooltips', () => {
-          this._fitTooltips(tooltips, true);
-      }, 200);
-  },
+    computeTooltips() {
+        const { tooltips } = this;
+        this.set('tooltips', []);
+        this.debounce('computeTooltips', () => {
+            this._fitTooltips(tooltips, true);
+        }, 200);
+    },
 
-  _fitTooltips(tooltips, scroll) {
-      const formattedTooltips = tooltips.map(tooltip => {
-          let copy = Object.assign({}, tooltip);
-          copy.target = this._getTargetElement(tooltip.location);
+    _fitTooltips(tooltips, scroll) {
+        const formattedTooltips = tooltips.map((tooltip) => {
+            const copy = Object.assign({}, tooltip);
+            copy.target = this._getTargetElement(tooltip.location);
 
-          if (!copy.target) {
-              return;
-          }
+            if (!copy.target) {
+                return;
+            }
 
-          if ('getBoundingClientRect' in copy.target) {
-              copy.target = copy.target.getBoundingClientRect();
-          }
+            if ('getBoundingClientRect' in copy.target) {
+                copy.target = copy.target.getBoundingClientRect();
+            }
 
-          if (scroll) {
-              this._scrollWorkspaceOnTargetIfNeeded(copy.target, tooltip.location);
-          }
+            if (scroll) {
+                this._scrollWorkspaceOnTargetIfNeeded(copy.target, tooltip.location);
+            }
 
-          copy.text = tooltip.text;
-          copy.tracking = !!tooltip.tracking;
+            copy.text = tooltip.text;
+            copy.tracking = !!tooltip.tracking;
 
-          return copy;
-      });
-      // Forces a recompute on the dom-repeat to make sure all tooltips are updated
-      this.set('_tooltips', []);
-      this.async(() => {
-          this.set('_tooltips', formattedTooltips);
-      });
-  },
+            return copy;
+        });
+        // Forces a recompute on the dom-repeat to make sure all tooltips are updated
+        this.set('_tooltips', []);
+        this.async(() => {
+            this.set('_tooltips', formattedTooltips);
+        });
+    },
 
-  _tooltipDomChanged (e) {
-      let tooltips = dom(this.root).querySelectorAll('kano-tooltip[bounce]'),
-          offset,
-          transform,
-          tooltip;
-      for (let i = 0; i < tooltips.length; i++) {
-          tooltip = tooltips[i];
-          offset = 70;
-          if (tooltip.position === 'top' || tooltip.position === 'bottom') {
-              transform = 'translateY';
-          } else {
-              transform = 'translateX';
-          }
-          if (tooltip.position === 'top' || tooltip.position === 'left') {
-              offset *= -1;
-          }
-          tooltips[i].animate([{
-              transform: `${transform}(${offset}px)`
-          },{
-              transform: `${transform}(0px)`
-          },{
-              transform: `${transform}(${offset}px)`
-          }], {
-              duration: 40 * 25,
-              easing: 'ease-in-out',
-              iterations: Infinity
-          });
-      }
-  },
+    _tooltipDomChanged(e) {
+        let tooltips = dom(this.root).querySelectorAll('kano-tooltip[bounce]'),
+            offset,
+            transform,
+            tooltip;
+        for (let i = 0; i < tooltips.length; i++) {
+            tooltip = tooltips[i];
+            offset = 70;
+            if (tooltip.position === 'top' || tooltip.position === 'bottom') {
+                transform = 'translateY';
+            } else {
+                transform = 'translateX';
+            }
+            if (tooltip.position === 'top' || tooltip.position === 'left') {
+                offset *= -1;
+            }
+            tooltips[i].animate([{
+                transform: `${transform}(${offset}px)`,
+            }, {
+                transform: `${transform}(0px)`,
+            }, {
+                transform: `${transform}(${offset}px)`,
+            }], {
+                duration: 40 * 25,
+                easing: 'ease-in-out',
+                iterations: Infinity,
+            });
+        }
+    },
 
-  computeArrow (step) {
-      if (!step || !step.arrow || (!this.state.hints.enabled && !step.injected)) {
-          this.$.arrow.hide();
-          this.arrow = {};
-          return;
-      }
-      this.async(() => {
-          this._fitArrow(step, true);
-      }, 300);
-  },
+    computeArrow(step) {
+        if (!step || !step.arrow || (!this.state.hints.enabled && !step.injected)) {
+            this.$.arrow.hide();
+            this.arrow = {};
+            return;
+        }
+        this.async(() => {
+            this._fitArrow(step, true);
+        }, 300);
+    },
 
-  _fitArrow (step, scroll) {
-      let source, target;
+    _fitArrow(step, scroll) {
+        let source,
+            target;
 
-      if (step.arrow.source) {
-          source = this._getTargetElement(step.arrow.source);
-          if ('getBoundingClientRect' in source) {
-              source = source.getBoundingClientRect();
-          }
-      }
-      target = this._getTargetElement(step.arrow.target);
+        if (step.arrow.source) {
+            source = this._getTargetElement(step.arrow.source);
+            if ('getBoundingClientRect' in source) {
+                source = source.getBoundingClientRect();
+            }
+        }
+        target = this._getTargetElement(step.arrow.target);
 
-      if ('getBoundingClientRect' in target) {
-          target = target.getBoundingClientRect();
-      }
-      if (scroll) {
-          this._scrollWorkspaceOnTargetIfNeeded(target, step.arrow.target);
-      }
-      this.set('arrow', {
-          source,
-          target,
-          size: (step.arrow.size || 70) * 0.6,
-          angle: step.arrow.angle || 0
-      });
-  },
+        if ('getBoundingClientRect' in target) {
+            target = target.getBoundingClientRect();
+        }
+        if (scroll) {
+            this._scrollWorkspaceOnTargetIfNeeded(target, step.arrow.target);
+        }
+        this.set('arrow', {
+            source,
+            target,
+            size: (step.arrow.size || 70) * 0.6,
+            angle: step.arrow.angle || 0,
+        });
+    },
 
-  _updateBeacon() {
-      this.computeBeacon();
-  },
+    _updateBeacon() {
+        this.computeBeacon();
+    },
 
-  computeBeacon() {
-      const { beacon } = this;
-      this.$.beacon.animate({
-          opacity: [1, 0]
-      }, {
-          duration: 200,
-          fill: 'forwards'
-      });
+    computeBeacon() {
+        const { beacon } = this;
+        this.$.beacon.animate({
+            opacity: [1, 0],
+        }, {
+            duration: 200,
+            fill: 'forwards',
+        });
 
-      clearTimeout(this._ringSoundTimeout);
-      this._ringAnimationCount = 0;
+        clearTimeout(this._ringSoundTimeout);
+        this._ringAnimationCount = 0;
 
-      this.toggleClass('animate', false, this.$.beacon);
-      this.toggleClass('animate', false, this.$.ring);
-      this.toggleClass('animate', false, this.$.ripple);
-      this.toggleClass('animate', false, this.$.core);
+        this.toggleClass('animate', false, this.$.beacon);
+        this.toggleClass('animate', false, this.$.ring);
+        this.toggleClass('animate', false, this.$.ripple);
+        this.toggleClass('animate', false, this.$.core);
 
-      if (!beacon) {
-          return;
-      }
+        if (!beacon) {
+            return;
+        }
 
-      this.async(() => {
-          this._fitBeacon(beacon, true);
-      }, 300);
-  },
+        this.async(() => {
+            this._fitBeacon(beacon, true);
+        }, 300);
+    },
 
-  _scrollWorkspaceOnTargetIfNeeded(target, location) {
-      if (location && location.block) {
-          let workspace = this.workspace,
-              workspaceRect = workspace.svgBackground_.getBoundingClientRect(),
-              viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-              viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
-              block;
-          if (target &&
+    _scrollWorkspaceOnTargetIfNeeded(target, location) {
+        if (location && location.block) {
+            let workspace = this.workspace,
+                workspaceRect = workspace.svgBackground_.getBoundingClientRect(),
+                viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+                viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0),
+                block;
+            if (target &&
                   (target.top + target.height > workspaceRect.top + workspaceRect.height) ||
                   (target.left + target.width > workspaceRect.left + workspaceRect.width) ||
                   (target.top < 0) ||
                   (target.left < 0)) {
-              block = this.getTargetBlock(location.block);
-              workspace.scrollBlockIntoView(block, true);
-          }
-      }
-  },
+                block = this.getTargetBlock(location.block);
+                workspace.scrollBlockIntoView(block, true);
+            }
+        }
+    },
 
-  _fitBeacon(beacon, scroll) {
-      let target = this._getTargetElement(beacon.target),
-          angle = beacon.angle || 0,
-          offset = beacon.offset || 10,
-          viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-          viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    _fitBeacon(beacon, scroll) {
+        let target = this._getTargetElement(beacon.target),
+            angle = beacon.angle || 0,
+            offset = beacon.offset || 10,
+            viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+            viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-      if (target && ('getBoundingClientRect' in target)) {
-          target = target.getBoundingClientRect();
-      }
+        if (target && ('getBoundingClientRect' in target)) {
+            target = target.getBoundingClientRect();
+        }
 
-      if (scroll) {
-          this._scrollWorkspaceOnTargetIfNeeded(target, beacon.target);
-      }
+        if (scroll) {
+            this._scrollWorkspaceOnTargetIfNeeded(target, beacon.target);
+        }
 
-      // Check if the target is out of the viewport (vertically)
-      if (target && target.top + target.height > viewportHeight) {
-          if (beacon.target.flyout_block) {
-              let toolbox = this._getElement('blockly-toolbox');
-              // Force a scroll of the toolbox to move the target in the viewport. Add 50 to make sure it's not just at the border of the screen
-              toolbox.scrollTop = toolbox.scrollTop + (target.top + target.height - viewportHeight) + 300;
-          }
-      }
-      this.set('_beacon', {
-          target,
-          angle,
-          offset
-      });
-      this.$.beacon.animate({
-          opacity: [0, 1]
-      }, {
-          duration: 200,
-          delay: 10,
-          fill: 'forwards'
-      });
-      this.toggleClass('animate', true, this.$.beacon);
-      this.toggleClass('animate', true, this.$.ring);
-      this.toggleClass('animate', true, this.$.ripple);
-      this.toggleClass('animate', true, this.$.core);
-  },
+        // Check if the target is out of the viewport (vertically)
+        if (target && target.top + target.height > viewportHeight) {
+            if (beacon.target.flyout_block) {
+                const toolbox = this._getElement('blockly-toolbox');
+                // Force a scroll of the toolbox to move the target in the viewport. Add 50 to make sure it's not just at the border of the screen
+                toolbox.scrollTop = toolbox.scrollTop + (target.top + target.height - viewportHeight) + 300;
+            }
+        }
+        this.set('_beacon', {
+            target,
+            angle,
+            offset,
+        });
+        this.$.beacon.animate({
+            opacity: [0, 1],
+        }, {
+            duration: 200,
+            delay: 10,
+            fill: 'forwards',
+        });
+        this.toggleClass('animate', true, this.$.beacon);
+        this.toggleClass('animate', true, this.$.ring);
+        this.toggleClass('animate', true, this.$.ripple);
+        this.toggleClass('animate', true, this.$.core);
+    },
 
-  _ringAnimationIterated (e) {
-      if (this._ringAnimationCount > 4 || this.idle) {
-          return;
-      }
-      this._ringSoundTimeout = setTimeout(() => {
-          this.playSound('/assets/audio/sounds/ding.mp3');
-          this._ringAnimationCount++;
-      }, 4600 * 0.80);
-  },
+    _ringAnimationIterated(e) {
+        if (this._ringAnimationCount > 4 || this.idle) {
+            return;
+        }
+        this._ringSoundTimeout = setTimeout(() => {
+            this.playSound('/assets/audio/sounds/ding.mp3');
+            this._ringAnimationCount++;
+        }, 4600 * 0.80);
+    },
 
-  _onIdleChanged (idle) {
-      if (idle) {
-          clearTimeout(this._ringSoundTimeout);
-          this._ringAnimationCount = 0;
-      }
-  },
+    _onIdleChanged(idle) {
+        if (idle) {
+            clearTimeout(this._ringSoundTimeout);
+            this._ringAnimationCount = 0;
+        }
+    },
 
-  _computeElements () {
-      if (!this.modeReady) {
-          return;
-      }
+    _computeElements() {
+        if (!this.modeReady) {
+            return;
+        }
 
-      const step = this.step;
+        const step = this.step;
 
-      this.debounce('stepChanged', () => {
+        this.debounce('stepChanged', () => {
+            if (!step) {
+                this.tooltips = [];
+                this.arrow = {};
+                this.modal.close();
+                this.$.highlight.hide();
+                return;
+            }
 
-          if (!step) {
-              this.tooltips = [];
-              this.arrow = {};
-              this.modal.close();
-              this.$.highlight.hide();
-              return;
-          }
+            if (step.load_app) {
+                this.fire('load', step.load_app);
+            }
 
-          if (step.load_app) {
-              this.fire('load', step.load_app);
-          }
+            if (step.save_app) {
+                this.fire('save', {
+                    id: step.save_app,
+                    stepIds: this.stepIds,
+                    blockIds: this.blockIds,
+                });
+            }
 
-          if (step.save_app) {
-              this.fire('save', {
-                  id: step.save_app,
-                  stepIds: this.stepIds,
-                  blockIds: this.blockIds
-              });
-          }
+            if (step.save_to_storage) {
+                this.fire('save-to-storage');
+            }
+            this.modal.close();
 
-          if (step.save_to_storage) {
-              this.fire('save-to-storage');
-          }
-          this.modal.close();
+            if (step.modal) {
+                step.modal.text = step.modal.text;
+                this.modal.open();
+            }
 
-          if (step.modal) {
-              step.modal.text = step.modal.text;
-              this.modal.open();
-          }
+            if (step['set-state']) {
+                this.set('state', Object.assign(this.state, step['set-state']));
+                this._nextStep();
+                return;
+            }
 
-          if (step['set-state']) {
-              this.set('state', Object.assign(this.state, step['set-state']));
-              this._nextStep();
-              return;
-          }
+            this.computeTooltips(step);
+            this.computeArrow(step);
+            this.computeHighlight(step);
+            this.computePhantomBlock(step);
+            this.computeSounds(step);
+        }, 10);
+    },
 
-          this.computeTooltips(step);
-          this.computeArrow(step);
-          this.computeHighlight(step);
-          this.computePhantomBlock(step);
-          this.computeSounds(step);
-      }, 10);
-  },
+    computeSounds(step) {
+        if (this.step.play_on_end) {
+            this.loadSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
+        }
+    },
 
-  computeSounds (step) {
-      if (this.step.play_on_end) {
-          this.loadSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
-      }
-  },
+    computePhantomBlock(step) {
+        let phantom_block = step.phantom_block,
+            connection,
+            target,
+            host;
 
-  computePhantomBlock (step) {
-      let phantom_block = step.phantom_block,
-          connection,
-          target,
-          host;
-
-      if (!phantom_block ||
+        if (!phantom_block ||
           !phantom_block.location ||
           !Blockly.selected) {
-          Blockly.removePhantomBlock();
-          return;
-      }
-      host = this.getTargetBlock(phantom_block.location.block);
+            Blockly.removePhantomBlock();
+            return;
+        }
+        host = this.getTargetBlock(phantom_block.location.block);
 
-      if (!phantom_block.target) {
-          connection = host.nextConnection;
-      } else {
-          for (let i = 0; i < host.inputList.length; i++) {
-              if (host.inputList[i].name === phantom_block.target) {
-                  connection = host.inputList[i].connection;
-                  break;
-              }
-          }
-      }
-      target = Blockly.selected;
+        if (!phantom_block.target) {
+            connection = host.nextConnection;
+        } else {
+            for (let i = 0; i < host.inputList.length; i++) {
+                if (host.inputList[i].name === phantom_block.target) {
+                    connection = host.inputList[i].connection;
+                    break;
+                }
+            }
+        }
+        target = Blockly.selected;
 
-      if (!connection) {
-          return;
-      }
-      this.async(() => {
-          Blockly.setPhantomBlock(connection, target);
-      });
-  },
+        if (!connection) {
+            return;
+        }
+        this.async(() => {
+            Blockly.setPhantomBlock(connection, target);
+        });
+    },
 
-  computeHighlight (step) {
-      if (step.highlight) {
-          let highlightString = JSON.stringify(step.highlight);
-          if (highlightString !== this.previousHighlight) {
-              this.$.highlight.hide();
-              this.debounce('highlight', () => {
-                  this.focusOn(step.highlight);
-                  this.$.highlight.show();
-              }, 200);
-              this.previousHighlight = JSON.stringify(step.highlight);
-          }
-      } else {
-          this.$.highlight.hide();
-      }
-  },
+    computeHighlight(step) {
+        if (step.highlight) {
+            const highlightString = JSON.stringify(step.highlight);
+            if (highlightString !== this.previousHighlight) {
+                this.$.highlight.hide();
+                this.debounce('highlight', () => {
+                    this.focusOn(step.highlight);
+                    this.$.highlight.show();
+                }, 200);
+                this.previousHighlight = JSON.stringify(step.highlight);
+            }
+        } else {
+            this.$.highlight.hide();
+        }
+    },
 
-  focusOn (selector) {
-      let target = this._getTargetElement(selector);
-      target = target.getBoundingClientRect();
-      this.set('highlight.x', target.left);
-      this.set('highlight.y', target.top);
-      this.set('highlight.width', target.width);
-      this.set('highlight.height', target.height);
-      this.$.highlight.show();
-  },
+    focusOn(selector) {
+        let target = this._getTargetElement(selector);
+        target = target.getBoundingClientRect();
+        this.set('highlight.x', target.left);
+        this.set('highlight.y', target.top);
+        this.set('highlight.width', target.width);
+        this.set('highlight.height', target.height);
+        this.$.highlight.show();
+    },
 
-  _getTargetElement (selector) {
-      let element = this.editor,
-          partId,
-          block,
-          el;
+    _getTargetElement(selector) {
+        let element = this.editor,
+            partId,
+            block,
+            el;
 
-      if (typeof selector == 'object') {
-          if (selector.block) {
-              block = this.getTargetBlock(selector.block);
+        if (typeof selector === 'object') {
+            if (selector.block) {
+                block = this.getTargetBlock(selector.block);
 
-              if (selector.block.inputName) {
-                  let el = this.getTargetBlockInput(selector.block);
-                  if (!el) {
-                      this._notifyError('Could not find input', selector.block);
-                  }
-                  return el;
-              }
+                if (selector.block.inputName) {
+                    const el = this.getTargetBlockInput(selector.block);
+                    if (!el) {
+                        this._notifyError('Could not find input', selector.block);
+                    }
+                    return el;
+                }
 
-              if (!block || !block.svgPath_) {
-                  this._notifyError('Could not find block', selector.block);
-              }
-              return block && block.svgPath_;
-          } else if (selector.category) {
-              let toolbox = this._getElement('blockly-toolbox'),
-                  el = toolbox.getCategoryElement(selector.category);
+                if (!block || !block.svgPath_) {
+                    this._notifyError('Could not find block', selector.block);
+                }
+                return block && block.svgPath_;
+            } else if (selector.category) {
+                let toolbox = this._getElement('blockly-toolbox'),
+                    el = toolbox.getCategoryElement(selector.category);
 
-              if (!el) {
-                  this._notifyError('Could not find category', selector.category);
-              }
-              return el;
-          } else if (selector.flyout_block) {
-              let toolbox = this._getElement('blockly-toolbox'),
-                  block = toolbox.getFlyoutBlock(selector.flyout_block);
+                if (!el) {
+                    this._notifyError('Could not find category', selector.category);
+                }
+                return el;
+            } else if (selector.flyout_block) {
+                const flyout = this._getElement('blockly-flyout');
+                const block = flyout.getBlockByType(selector.flyout_block);
 
-              if (!block) {
-                  this._notifyError('Could not find block in flyout', selector.flyout_block);
-              }
-              return block.getSvgRoot();
-          } else if (selector.root) {
-              element = document.querySelector(selector.root);
-              selector = selector.path;
-          }
-      }
-      el = this._getElement(selector);
+                if (!block) {
+                    this._notifyError('Could not find block in flyout', selector.flyout_block);
+                }
+                return block.getSvgRoot();
+            } else if (selector.root) {
+                element = document.querySelector(selector.root);
+                selector = selector.path;
+            }
+        }
+        el = this._getElement(selector);
 
-      if (!el) {
-          this._notifyError('Could not find element', selector);
-      }
+        if (!el) {
+            this._notifyError('Could not find element', selector);
+        }
 
-      return el;
-  },
+        return el;
+    },
 
-  _notifyError (message, detail) {
-      this.fire('challenge-ui-error', { message, detail });
-  },
+    _notifyError(message, detail) {
+        this.fire('challenge-ui-error', { message, detail });
+    },
 
-  updateTooltips () {
-      this.debounce('updateTooltips', () => {
-          if (this.tooltips) {
-              for (let i = 0; i < this.tooltips.length; i++) {
-                  if (this.$$(`#tooltip-${i}`).tracking) {
-                      this.$$(`#tooltip-${i}`).updatePosition();
-                  }
-              }
-          }
-          this.computeArrow(this.step);
-          this.$$('kano-arrow').updatePosition();
-      }, 100);
-  },
+    updateTooltips() {
+        this.debounce('updateTooltips', () => {
+            if (this.tooltips) {
+                for (let i = 0; i < this.tooltips.length; i++) {
+                    if (this.$$(`#tooltip-${i}`).tracking) {
+                        this.$$(`#tooltip-${i}`).updatePosition();
+                    }
+                }
+            }
+            this.computeArrow(this.step);
+            this.$$('kano-arrow').updatePosition();
+        }, 100);
+    },
 
-  getTargetBlock (selector) {
-      let block = this.workspace.getBlockById(selector.id);
+    getTargetBlock(selector) {
+        let block = this.workspace.getBlockById(selector.id);
 
-      if (selector.shadow) {
-          block = block.getInput(selector.shadow).connection.targetBlock();
-      }
-      return block;
-  },
+        if (selector.shadow) {
+            block = block.getInput(selector.shadow).connection.targetBlock();
+        }
+        return block;
+    },
 
-  getTargetBlockInput (selector) {
-      let block = this.getTargetBlock(selector),
-          connection,
-          blockRect,
-          blockPos,
-          inputRelPos,
-          pos;
+    getTargetBlockInput(selector) {
+        let block = this.getTargetBlock(selector),
+            connection,
+            blockRect,
+            blockPos,
+            inputRelPos,
+            pos;
 
-      if (selector.inputName) {
-          // The input targeted might be a field. If a field exists with this name, return the rect matching
-          let field = block.getField(selector.inputName),
-              input;
+        if (selector.inputName) {
+            // The input targeted might be a field. If a field exists with this name, return the rect matching
+            let field = block.getField(selector.inputName),
+                input;
 
-          if (field) {
-              return field.fieldGroup_.getBoundingClientRect();
-          }
+            if (field) {
+                return field.fieldGroup_.getBoundingClientRect();
+            }
 
-          input = block.getInput(selector.inputName);
-          if (!input) {
-              return block.getSvgRoot();
-          }
+            input = block.getInput(selector.inputName);
+            if (!input) {
+                return block.getSvgRoot();
+            }
 
-          connection = input.connection;
-          if (!connection) {
-              return block.getSvgRoot();
-          }
-      } else {
-          connection = block.nextConnection;
-      }
-      blockRect = block.svgPath_.getBoundingClientRect();
-      blockPos = block.getRelativeToSurfaceXY();
-      inputRelPos = {
-          x: connection.x_ - blockPos.x,
-          y: connection.y_ - blockPos.y
-      };
-      pos = {};
+            connection = input.connection;
+            if (!connection) {
+                return block.getSvgRoot();
+            }
+        } else {
+            connection = block.nextConnection;
+        }
+        blockRect = block.svgPath_.getBoundingClientRect();
+        blockPos = block.getRelativeToSurfaceXY();
+        inputRelPos = {
+            x: connection.x_ - blockPos.x,
+            y: connection.y_ - blockPos.y,
+        };
+        pos = {};
 
-      pos.left = blockRect.left + inputRelPos.x;
-      pos.top = blockRect.top + inputRelPos.y;
+        pos.left = blockRect.left + inputRelPos.x;
+        pos.top = blockRect.top + inputRelPos.y;
 
-      pos.right = blockRect.right + blockRect.width - inputRelPos.x;
-      pos.bottom = blockRect.bottom + blockRect.height - inputRelPos.y;
+        pos.right = blockRect.right + blockRect.width - inputRelPos.x;
+        pos.bottom = blockRect.bottom + blockRect.height - inputRelPos.y;
 
-      pos.width = 1;
-      pos.height = 1;
+        pos.width = 1;
+        pos.height = 1;
 
-      return pos;
+        return pos;
+    },
 
-  },
+    finishStep() {
+        if (this.step.play_on_end) {
+            this.playSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
+        }
+    },
 
-  finishStep () {
-      if (this.step.play_on_end) {
-          this.playSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
-      }
-  },
+    _getLongestDelay() {
+        let step = this.step,
+            delayingElements = [],
+            currentDelay,
+            longestDelay;
 
-  _getLongestDelay() {
-      let step = this.step,
-          delayingElements = [],
-          currentDelay,
-          longestDelay;
+        if (!step) {
+            return 0;
+        }
 
-          if (!step) {
-              return 0;
-          }
+        if (step.tooltips) {
+            step.tooltips.forEach(tooltip => delayingElements.push(this._getTargetElement(tooltip.location)));
+        }
 
-          if (step.tooltips) {
-              step.tooltips.forEach(tooltip => delayingElements.push(this._getTargetElement(tooltip.location)));
-          }
+        if (this.beacon) {
+            delayingElements.push(this._getTargetElement(this.beacon.target));
+        }
 
-          if (this.beacon) {
-              delayingElements.push(this._getTargetElement(this.beacon.target));
-          }
+        if (step.arrow) {
+            delayingElements.push(this._getTargetElement(step.arrow.source));
+        }
 
-          if (step.arrow) {
-              delayingElements.push(this._getTargetElement(step.arrow.source));
-          }
+        delayingElements.forEach((el) => {
+            if (el instanceof HTMLElement) {
+                currentDelay = parseInt(el.getAttribute('data-animate'));
+            }
+            if (currentDelay > (longestDelay || 0)) {
+                longestDelay = currentDelay;
+            }
+        });
+        return (longestDelay || 0);
+    },
 
-          delayingElements.forEach(el => {
-              if (el instanceof HTMLElement) {
-                  currentDelay = parseInt(el.getAttribute('data-animate'));
-              }
-              if (currentDelay > (longestDelay || 0)) {
-                  longestDelay = currentDelay;
-              }
-          });
-          return (longestDelay || 0);
-  },
-
-  _setupWithDelay () {
-      /* Toggle idle state to show elements with a little delay when the step loads in.
+    _setupWithDelay() {
+        /* Toggle idle state to show elements with a little delay when the step loads in.
       This also allows to read the current data-animate values of target elements */
-      this._computeElements();
-      this.idle = true;
-      this.async(this._turnOnVisibility, 250);
-  },
+        this._computeElements();
+        this.idle = true;
+        this.async(this._turnOnVisibility, 250);
+    },
 
-  _turnOnVisibility () {
-      const delay = this._getLongestDelay();
+    _turnOnVisibility() {
+        const delay = this._getLongestDelay();
 
-      if (delay) {
-          this.async(() => this._refitUiElements('all'), delay);
-          this.async(() => this.idle = false, delay + 50);
-      } else {
-          this.idle = false;
-      }
-  }
+        if (delay) {
+            this.async(() => this._refitUiElements('all'), delay);
+            this.async(() => this.idle = false, delay + 50);
+        } else {
+            this.idle = false;
+        }
+    },
 });

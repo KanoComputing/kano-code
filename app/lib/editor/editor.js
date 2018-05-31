@@ -33,6 +33,10 @@ class Editor extends EventEmitter {
             addedParts: [],
             workspaceTab: 'workspace',
             sourceType: this.sourceType,
+            // When using blockly, can apply specific options
+            blockly: {
+                flyoutMode: false,
+            },
         });
         this.storeObserver = new StoreObserver(this.store, this);
         this.modeActions = ModeActions(this.store);
@@ -154,6 +158,11 @@ class Editor extends EventEmitter {
     getMode() {
         const { mode } = this.store.getState();
         return mode;
+    }
+
+    getSource() {
+        const { source } = this.store.getState();
+        return source;
     }
 
     getCode() {

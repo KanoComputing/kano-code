@@ -1,9 +1,11 @@
 import '../blockly.js';
 import '@kano/kwc-blockly/kwc-blockly.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import '@polymer/iron-icon/iron-icon.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
-import '@polymer/iron-icon/iron-icon.js';
 import '../kc-user-options/kc-user-options.js';
 import '../kano-tooltip/kano-tooltip.js';
 import '../kano-icons/kc-ui.js';
@@ -11,9 +13,6 @@ import '../../scripts/kano/make-apps/store.js';
 import '../../scripts/kano/make-apps/actions/user.js';
 import '../kano-style/themes/dark.js';
 import { Store } from '../../scripts/legacy/store.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-/* globals Polymer, Kano, Blockly */
 
 Polymer({
     _template: html`
@@ -158,7 +157,14 @@ Polymer({
         <div class="shell">
             <div class="toolbox"></div>
         </div>
-        <kwc-blockly id="code-editor" toolbox="[[toolbox]]" on-change="_onBlocklyChanged" on-code-changed="_onCodeChanged" on-blockly-ready="_onBlocklyReady" media="[[config.BLOCKLY_MEDIA]]">
+        <kwc-blockly id="code-editor"
+                    toolbox="[[toolbox]]"
+                    no-toolbox="[[noToolbox]]"
+                    flyout="[[flyout]]"
+                    on-change="_onBlocklyChanged"
+                    on-code-changed="_onCodeChanged"
+                    on-blockly-ready="_onBlocklyReady"
+                    media="[[config.BLOCKLY_MEDIA]]">
             <div id="toolbox-enhancer-above" class="toolbox-enhancer above" slot="above-toolbox">
                 <button type="button" class="logo icon" on-tap="_exitButtonTapped" hidden\$="[[noUser]]">
                     <iron-icon class="block-logo" src\$="/assets/kano-logo-simple.svg"></iron-icon>
@@ -206,6 +212,13 @@ Polymer({
         toolbox: {
             type: Array,
         },
+        noToolbox: {
+            type: Boolean,
+            value: false,
+        },
+        flyout: {
+            type: Array,
+        },
         defaultCategories: {
             type: Object,
             linkState: 'toolbox',
@@ -225,14 +238,17 @@ Polymer({
         },
         user: {
             type: Object,
-            linkState: 'user'
+            linkState: 'user',
         },
         logoutEnabled: {
             type: Boolean,
-            linkState: 'editor.logoutEnabled'
+            linkState: 'editor.logoutEnabled',
         },
         config: {
             linkState: 'config',
+        },
+        flyoutMode: {
+            linkState: 'blockly.flyoutMode',
         },
     },
 
@@ -241,7 +257,7 @@ Polymer({
         '_partsChanged(parts.*)',
         'computeToolboxDebounced(defaultCategories.*)',
         'computeToolboxDebounced(mode)',
-        'defaultCategoriesLoaded(defaultCategories.events)'
+        'defaultCategoriesLoaded(defaultCategories.events)',
     ],
 
     _logoutTapped() {
@@ -302,7 +318,7 @@ Polymer({
     },
 
     computeTriggerOptions() {
-        let options = [[Blockly.Msg.APP_STARTS, 'global.start']];
+        const options = [[Blockly.Msg.APP_STARTS, 'global.start']];
         this.parts.forEach((part) => {
             part.events.forEach((ev) => {
                 options.push([`${part.name} ${ev.label}`, `${part.id}.${ev.id}`]);
@@ -342,43 +358,44 @@ Polymer({
         if (!newVal) {
             return;
         }
-        let computeTriggerOptions = this.computeTriggerOptions.bind(this),
-            colour = this.defaultCategories.events ? this.defaultCategories.events.colour : '';
+        const computeTriggerOptions = this.computeTriggerOptions.bind(this);
+        const colour = this.defaultCategories.events ? this.defaultCategories.events.colour : '';
         Blockly.Blocks.part_event = {
-            init: function () {
-                let json = {
+            init() {
+                const json = {
                     id: 'part_event',
-                    colour: colour,
+                    colour,
                     message0: Blockly.Msg.GLOBAL_EVENT,
                     args0: [{
-                        type: "field_dropdown",
-                        name: "EVENT",
-                        options: computeTriggerOptions
+                        type: 'field_dropdown',
+                        name: 'EVENT',
+                        options: computeTriggerOptions,
                     }],
                     message1: '%1',
                     args1: [{
-                        type: "input_statement",
-                        name: "DO"
-                    }]
+                        type: 'input_statement',
+                        name: 'DO',
+                    }],
                 };
                 this.jsonInit(json);
-            }
+            },
         };
     },
 
     computeBlocks() {
-        let events = [];
+        const events = [];
+        const blocks = [];
         this.parts
             .forEach((part) => {
                 part.blocks.forEach((definition) => {
                     if (typeof definition === 'object') {
-                        this._registerBlock(part, definition);
+                        blocks.push({ part, definition });
                     }
                 });
                 // Also register the legacy blocks to support shares made with previous block API
                 part.legacyBlocks.forEach((definition) => {
                     if (typeof definition === 'object') {
-                        this._registerBlock(part, definition);
+                        blocks.push({ part, definition });
                     }
                 });
                 part.events.forEach((ev) => {
@@ -386,23 +403,24 @@ Polymer({
                 });
             });
         if (this.mode.categories) {
-            this.mode.categories.forEach(category => {
+            this.mode.categories.forEach((category) => {
                 category.blocks.forEach((definition) => {
-                    this._registerBlock(this.mode, definition);
+                    blocks.push({ part: this.mode, definition });
                 });
-            })
+            });
         }
+        blocks.forEach(({ part, definition }) => this._registerBlock(part, definition));
     },
 
     _registerBlock(part, definition) {
-        let block = definition.block(part);
+        const block = definition.block(part);
         block.colour = part.colour;
         block.id = `${part.id}#${block.id}`;
         if (!block.doNotRegister) {
             Blockly.Blocks[block.id] = {
-                init: function () {
+                init() {
                     this.jsonInit(block);
-                }
+                },
             };
             Blockly.Blocks[block.id].customColor = block.colour;
         }
@@ -412,9 +430,9 @@ Polymer({
             block.id = block.id.replace('normal', 'dropzone');
             if (!block.doNotRegister) {
                 Blockly.Blocks[block.id] = {
-                    init: function () {
+                    init() {
                         this.jsonInit(block);
-                    }
+                    },
                 };
                 Blockly.Blocks[block.id].customColor = block.colour;
             }
@@ -434,9 +452,9 @@ Polymer({
         this.computeBlocks();
         // Reset events blocks
         weight = {
-            'ui': 1,
-            'data': 2,
-            'hardware': 3
+            ui: 1,
+            data: 2,
+            hardware: 3,
         };
         categories = parts
             .map((ui) => {
@@ -444,16 +462,16 @@ Polymer({
                     if (typeof definition === 'string') {
                         return {
                             id: definition,
-                            colour: ui.colour
-                        }
+                            colour: ui.colour,
+                        };
                     }
-                    let block = definition.block(ui);
+                    const block = definition.block(ui);
                     block.colour = ui.colour;
                     block.id = `${ui.id}#${block.id}`;
                     return {
                         id: block.id,
                         colour: block.colour,
-                        shadow: block.shadow
+                        shadow: block.shadow,
                     };
                 });
                 return {
@@ -461,17 +479,15 @@ Polymer({
                     colour: ui.colour,
                     id: ui.id,
                     weight: weight[ui.partType],
-                    blocks
+                    blocks,
                 };
             })
-            .sort((a, b) => {
-                return a.weight - b.weight;
-            });
+            .sort((a, b) => a.weight - b.weight);
 
         categories = categories || [];
-        categories = categories.filter((category) => category.blocks.length);
+        categories = categories.filter(category => category.blocks.length);
         Object.keys(this.defaultCategories).forEach((id) => {
-            let cat = this.defaultCategories[id];
+            const cat = this.defaultCategories[id];
             cat.blocks.forEach((block) => {
                 block.colour = cat.colour;
             });
@@ -481,25 +497,36 @@ Polymer({
 
         // Generate the toolbox for the special mode
         if (this.mode.categories) {
-            this.mode.categories.forEach(category => {
-                let modeCat = {
+            this.mode.categories.forEach((category) => {
+                const modeCat = {
                     name: category.name,
                     id: category.id,
-                    colour: category.colour
+                    colour: category.colour,
                 };
                 modeCat.blocks = category.blocks.map((definition) => {
-                    let block = definition.block(this.mode);
+                    const block = definition.block(this.mode);
                     return {
                         id: `${this.mode.id}#${block.id}`,
                         colour: this.mode.colour,
-                        shadow: block.shadow
+                        shadow: block.shadow,
                     };
                 });
                 toolbox.push(modeCat);
             });
         }
         toolbox = toolbox.concat(categories);
-        this.set('toolbox', toolbox);
+        if (this.flyoutMode) {
+            const flyout = toolbox.reduce((acc, entry) => acc.concat(entry.blocks), []);
+            this.set('flyout', flyout);
+            this.set('toolbox', null);
+            this.set('noToolbox', true);
+        } else {
+            this.set('flyout', null);
+            this.set('toolbox', toolbox);
+            this.set('noToolbox', false);
+        }
+        // Update the flyout element as it can change
+        this._registerElement('blockly-flyout', this.$['code-editor'].getFlyout());
         if (!this.toolboxReady) {
             this.toolboxReady = true;
             this.$['code-editor'].loadBlocks(this.blocks);
@@ -508,7 +535,7 @@ Polymer({
 
     _partsChanged(e) {
         // If the name changes, the id will do as well
-        let idChanged = e.path.indexOf('name') === e.path.length - 4;
+        const idChanged = e.path.indexOf('name') === e.path.length - 4;
         if (e.path === 'parts' || e.path === 'parts.splices') {
             // Update the id registry when the parts array is changed or if any item is added/removed
             this._updateIdRegistry();
@@ -551,7 +578,13 @@ Polymer({
     },
 
     canRemovePart(part) {
-        let xmlString, xml, parser, blocks, block, blockId, pieces;
+        let xmlString,
+            xml,
+            parser,
+            blocks,
+            block,
+            blockId,
+            pieces;
         // Get the blockly xml and parse it
         xmlString = this.$['code-editor'].getBlocks();
         parser = new DOMParser();
@@ -573,5 +606,5 @@ Polymer({
 
     getSource() {
         return this.$['code-editor'].getBlocks();
-    }
+    },
 });

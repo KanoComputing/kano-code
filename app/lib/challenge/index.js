@@ -2,6 +2,7 @@ import Plugin from '../editor/plugin.js';
 import KanoCodeChallenge from './kano-code.js';
 import Store from '../store.js';
 import ChallengeActions from '../actions/challenge.js';
+import { Challenge as ChallengeGeneratorPlugin } from './generator.js';
 
 /* eslint no-underscore-dangle: "off" */
 class Challenge extends Plugin {
@@ -58,6 +59,7 @@ class Challenge extends Plugin {
         this.editor = editor;
     }
     initializeChallenge() {
+        const { config } = this.editor;
         const blocklyWorkspace = this.editor.getBlocklyWorkspace();
         this.engine = new KanoCodeChallenge(blocklyWorkspace);
         this.engine.addEventListener('done', this._onDone);
@@ -87,9 +89,11 @@ class Challenge extends Plugin {
         const state = this.store.getState();
 
         if (state.scene.steps) {
-            this.engine.setSteps(state.scene.steps);
-            this.engine.start();
-            this.challengeActions.updateSteps(this.engine.steps);
+            setTimeout(() => {
+                this.engine.setSteps(state.scene.steps);
+                this.engine.start();
+                this.challengeActions.updateSteps(this.engine.steps);
+            }, config.CHALLENGE_START_DELAY || 500);
         }
     }
     _nextStep() {
@@ -243,6 +247,7 @@ class Challenge extends Plugin {
         // Filter Catergories to get the categories view of their features
         const challengeToolbox = Challenge.getChallengeToolbox(challenge, toolbox);
         this.editor.editorActions.setToolbox(challengeToolbox);
+        this.editor.editorActions.setFlyoutMode(challenge.scene.flyoutMode);
         this.setSceneVariables(Challenge.getSceneVariables(challengeToolbox));
         // Filter Parts to get the categories view of their features
         const challengeParts = Challenge.getChallengeParts(challenge, toolbox);
@@ -283,6 +288,12 @@ class Challenge extends Plugin {
         return mode;
     }
     static getChallengeToolbox(challenge, toolbox) {
+        if (challenge.scene.blocks) {
+            return challenge.scene.blocks;
+        }
+        if (!challenge.scene.modules) {
+            return toolbox;
+        }
         const filter = challenge.scene.filterBlocks || challenge.scene.filterToolbox;
         const filtered = toolbox.filter(entry => challenge.scene.modules.indexOf(entry.id) >= 0)
             .map((entry) => {
@@ -297,6 +308,9 @@ class Challenge extends Plugin {
         return filtered;
     }
     static getChallengeParts(challenge, toolbox) {
+        if (!challenge.scene.parts) {
+            return toolbox;
+        }
         return toolbox.filter(part => challenge.scene.parts.indexOf(part.type) !== -1);
     }
     setSceneVariables(variables) {
@@ -320,4 +334,4 @@ class Challenge extends Plugin {
 
 export default KanoCodeChallenge;
 
-export { KanoCodeChallenge, Store, Challenge };
+export { KanoCodeChallenge, Store, Challenge, ChallengeGeneratorPlugin };

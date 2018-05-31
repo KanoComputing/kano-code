@@ -9,6 +9,7 @@ const CONSTANTS = [
     'SELECT_PART',
     'UPDATE_PART',
     'UPDATE_BACKGROUND',
+    'SET_FLYOUT_MODE',
 ];
 const EDITOR_TYPES = Store.types(CONSTANTS);
 
@@ -61,6 +62,10 @@ const EditorActions = (store) => {
             this.set('state.toolbox', action.toolbox);
             break;
         }
+        case EDITOR_TYPES.SET_FLYOUT_MODE: {
+            this.set('state.blockly.flyoutMode', action.isFlyoutMode);
+            break;
+        }
         default: {
             break;
         }
@@ -82,6 +87,9 @@ const EditorActions = (store) => {
         },
         setToolbox(toolbox) {
             store.dispatch({ type: EDITOR_TYPES.SET_TOOLBOX, toolbox });
+        },
+        setFlyoutMode(isFlyoutMode) {
+            store.dispatch({ type: EDITOR_TYPES.SET_FLYOUT_MODE, isFlyoutMode });
         },
     };
 };

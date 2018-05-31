@@ -22,18 +22,16 @@ Example:
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
-import '@kano/kwc-style/typography.js';
-import './kano-challenge-ui.js';
-import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
-import '../kano-editor-banner/kano-editor-banner.js';
 import { SoundPlayerBehavior } from '@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
-import { Store } from '../../scripts/legacy/store.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import 'twemoji-min/2/twemoji.min.js';
-/* globals Polymer, Kano */
+import './kano-challenge-ui.js';
+import { Store } from '../../scripts/legacy/store.js';
+import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
+import '../kano-editor-banner/kano-editor-banner.js';
 
 const BANNER_SOUND = '/assets/audio/sounds/card_set.wav';
 
@@ -41,8 +39,8 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
     SoundPlayerBehavior,
     I18nBehavior,
 ], PolymerElement)) {
-  static get template() {
-    return html`
+    static get template() {
+        return html`
         <style>
             :host {
                 display: flex;
@@ -96,170 +94,171 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
             <kano-editor-banner id="banner" head="[[banner.head]]" text="[[banner.text]]" img-src="[[banner.icon]]" img-page="[[banner.imgPage]]" button-label="[[banner.buttonLabel]]" button-state="[[banner.buttonState]]" show-save-button="[[banner.showSaveButton]]" progress="[[progress]]" on-button-tapped="_bannerButtonTapped" on-save-button-clicked="_transmitRequestShare" hidden\$="[[_isBannerHidden(banner)]]" can-go-back="[[history.canGoBack]]" can-go-forward="[[history.canGoForward]]"></kano-editor-banner>
         </div>
 `;
-  }
+    }
 
-  static get is() { return 'kano-app-challenge'; }
-  static get properties() {
-      return {
-          progress: {
-              type: Number,
-              linkState: 'userProgress',
-          },
-          banner: {
-              type: Object,
-              linkState: 'banner',
-              observer: '_fitBanner',
-          },
-          beacon: {
-              type: Object,
-              linkState: 'beacon',
-          },
-          idle: {
-              type: Boolean,
-              linkState: 'idle',
-          },
-          lockdown: {
-              type: Boolean,
-              reflectToAttribute: true,
-              linkState: 'lockdown',
-          },
-          history: {
-              type: Object,
-              linkState: 'history',
-          },
-          challengeId: {
-              linkState: 'id',
-              observer: '_challengeChanged',
-          }
-      };
-  }
-  constructor() {
-      super();
-      this.changeCounts = {};
-      this._onLockdownClick = this._onLockdownClick.bind(this);
-      this._onResize = this._onResize.bind(this);
-  }
-  connectedCallback() {
-      super.connectedCallback();
-      this._processMarkdown = this._processMarkdown.bind(this);
-      this.loadSound(BANNER_SOUND);
-      this._observer = new FlattenedNodesObserver(this.$.content, (info) => {
-          this._processNewNodes(info.addedNodes);
-      });
-      window.addEventListener('resize', this._onResize);
-  }
-  disconnectedCallback() {
-      super.disconnectedCallback();
-      this._observer.disconnect();
-      window.removeEventListener('resize', this._onResize);
-  }
-  _onResize() {
-      this._resizeDebouncer = Debouncer.debounce(
-          this._resizeDebouncer,
-          timeOut.after(300),
-          () => {
-              this._fitBanner();
-          });
-  }
-  _challengeChanged() {
-      this.initializeChallenge();
-  }
-  _processNewNodes(nodes) {
-      let editorEl;
-      for (let i = 0; i < nodes.length; i += 1){
-          if (nodes[i].assignedSlot === this.$.content) {
-              editorEl = nodes[i];
-          }
-      }
-      if (!editorEl) {
-          return;
-      }
-      this.editor = editorEl.editor;
-      this.$.ui.workspace = editorEl.getBlocklyWorkspace();
-      this._fitBanner();
-  }
-  animateBannerIn() {
-      this.playSound(BANNER_SOUND);
-      if ('animate' in HTMLElement.prototype) {
-          this.$.banner.animate({
-              opacity: [0, 1],
-              transform: ['scale(0.5, 0.5)', 'scale(1, 1)']
-          }, {
-              duration: 150,
-              easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)'
-          });
-      }
-  }
-  _isBannerHidden(banner) {
-      return !banner;
-  }
-  _processMarkdown(text) {
-      const { variables } = this.getState();
-      let processedText = text,
-          blockReg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
+    static get is() { return 'kano-app-challenge'; }
+    static get properties() {
+        return {
+            progress: {
+                type: Number,
+                linkState: 'userProgress',
+            },
+            banner: {
+                type: Object,
+                linkState: 'banner',
+                observer: '_fitBanner',
+            },
+            beacon: {
+                type: Object,
+                linkState: 'beacon',
+            },
+            idle: {
+                type: Boolean,
+                linkState: 'idle',
+            },
+            lockdown: {
+                type: Boolean,
+                reflectToAttribute: true,
+                linkState: 'lockdown',
+            },
+            history: {
+                type: Object,
+                linkState: 'history',
+            },
+            challengeId: {
+                linkState: 'id',
+                observer: '_challengeChanged',
+            },
+        };
+    }
+    constructor() {
+        super();
+        this.changeCounts = {};
+        this._onLockdownClick = this._onLockdownClick.bind(this);
+        this._onResize = this._onResize.bind(this);
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this._processMarkdown = this._processMarkdown.bind(this);
+        this.loadSound(BANNER_SOUND);
+        this._observer = new FlattenedNodesObserver(this.$.content, (info) => {
+            this._processNewNodes(info.addedNodes);
+        });
+        window.addEventListener('resize', this._onResize);
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this._observer.disconnect();
+        window.removeEventListener('resize', this._onResize);
+    }
+    _onResize() {
+        this._resizeDebouncer = Debouncer.debounce(
+            this._resizeDebouncer,
+            timeOut.after(300),
+            () => {
+                this._fitBanner();
+            }
+);
+    }
+    _challengeChanged() {
+        this.initializeChallenge();
+    }
+    _processNewNodes(nodes) {
+        let editorEl;
+        for (let i = 0; i < nodes.length; i += 1) {
+            if (nodes[i].assignedSlot === this.$.content) {
+                editorEl = nodes[i];
+            }
+        }
+        if (!editorEl) {
+            return;
+        }
+        this.editor = editorEl.editor;
+        this.$.ui.workspace = editorEl.getBlocklyWorkspace();
+        this._fitBanner();
+    }
+    animateBannerIn() {
+        this.playSound(BANNER_SOUND);
+        if ('animate' in HTMLElement.prototype) {
+            this.$.banner.animate({
+                opacity: [0, 1],
+                transform: ['scale(0.5, 0.5)', 'scale(1, 1)'],
+            }, {
+                duration: 150,
+                easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
+            });
+        }
+    }
+    _isBannerHidden(banner) {
+        return !banner;
+    }
+    _processMarkdown(text) {
+        const { variables } = this.getState();
+        let processedText = text,
+            blockReg = /<kano-blockly-block(.*)type="(.+)"(.*)><\/kano-blockly-block>/g;
 
-      processedText = processedText.replace(blockReg, (match, before, type, after) => {
-          let pieces = type.split('#');
-          if (pieces.length > 1) {
-              pieces[0] = this.stepIds[pieces[0]] || pieces[0];
-          }
-          type = pieces.join('#');
-          return `<kano-blockly-block${before}type="${type}"${after}></kano-blockly-block>`;
-      });
+        processedText = processedText.replace(blockReg, (match, before, type, after) => {
+            const pieces = type.split('#');
+            if (pieces.length > 1) {
+                pieces[0] = this.stepIds[pieces[0]] || pieces[0];
+            }
+            type = pieces.join('#');
+            return `<kano-blockly-block${before}type="${type}"${after}></kano-blockly-block>`;
+        });
 
-      //Inject variables to markdown syntax
-      processedText = Object.keys(variables).reduce((acc, key) => {
-          return acc.replace(new RegExp('\\$\\{' + key + '\\}', 'g'), variables[key] || '');
-      }, processedText);
+        // Inject variables to markdown syntax
+        processedText = Object.keys(variables).reduce((acc, key) => acc.replace(new RegExp('\\$\\{' + key + '\\}', 'g'), variables[key] || ''), processedText);
 
 
-      /* Replace native emoji and return */
-      return twemoji.parse(processedText);
-  }
-  _bannerButtonTapped() {
-      this.nextStep();
-  }
-  _onLockdownClick() {
-      this.$.banner.shakeButton();
-  }
-  initializeChallenge() {
-      this.challengeClass.initializeChallenge();
-  }
-  historyBack() {
-      this.dispatchEvent(new CustomEvent('history-back'));
-  }
-  historyForward() {
-      this.dispatchEvent(new CustomEvent('history-forward'));
-  }
-  _onFlyoutStateChanged(e) {
-      if ([Blockly.Events.OPEN_FLYOUT, Blockly.Events.CLOSE_FLYOUT].indexOf(e.type) === -1) {
-          return;
-      }
-      this.async(() => {
-          this._fitBanner();
-      });
-  }
-  _fitBanner() {
-      if (!this.editor) {
-          return;
-      }
-      const workspace = this.editor.getBlocklyWorkspace();
-      if (!workspace) {
-          return;
-      }
-      const metrics = workspace.getMetrics();
-      const flyout = workspace.getFlyout_();
-      const width = workspace.toolbox_ && workspace.toolbox_.opened ? flyout.getWidth() + 44 : metrics.toolboxWidth;
-      this.$['banner-container'].style.left = `${width}px`;
-      this.$['banner-container'].style.top = `0px`;
-      this.$['banner-container'].style.width = `${metrics.viewWidth + metrics.toolboxWidth - width}px`;
-  }
-  nextStep() {
-      this.dispatchEvent(new CustomEvent('next-step'));
-  }
-  _transmitRequestShare () {
-      this.dispatchEvent(new CustomEvent('save'));
-  }
+        /* Replace native emoji and return */
+        return twemoji.parse(processedText);
+    }
+    _bannerButtonTapped() {
+        this.nextStep();
+    }
+    _onLockdownClick() {
+        this.$.banner.shakeButton();
+    }
+    initializeChallenge() {
+        this.challengeClass.initializeChallenge();
+    }
+    historyBack() {
+        this.dispatchEvent(new CustomEvent('history-back'));
+    }
+    historyForward() {
+        this.dispatchEvent(new CustomEvent('history-forward'));
+    }
+    _onFlyoutStateChanged(e) {
+        if ([Blockly.Events.OPEN_FLYOUT, Blockly.Events.CLOSE_FLYOUT].indexOf(e.type) === -1) {
+            return;
+        }
+        this.async(() => {
+            this._fitBanner();
+        });
+    }
+    _fitBanner() {
+        if (!this.editor) {
+            return;
+        }
+        const workspace = this.editor.getBlocklyWorkspace();
+        if (!workspace) {
+            return;
+        }
+        const metrics = workspace.getMetrics();
+        const flyout = workspace.getFlyout_();
+        const width = workspace.toolbox_ && !workspace.toolbox_.opened ?
+            metrics.toolboxWidth : flyout.getWidth() + 44;
+        const bannerWidth = (metrics.viewWidth + metrics.toolboxWidth) - width;
+        this.$['banner-container'].style.left = `${width}px`;
+        this.$['banner-container'].style.top = '0px';
+        this.$['banner-container'].style.width = `${bannerWidth}px`;
+    }
+    nextStep() {
+        this.dispatchEvent(new CustomEvent('next-step'));
+    }
+    _transmitRequestShare() {
+        this.dispatchEvent(new CustomEvent('save'));
+    }
 }
 
 customElements.define(KanoAppChallenge.is, KanoAppChallenge);

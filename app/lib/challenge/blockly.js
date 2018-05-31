@@ -22,8 +22,8 @@ class BlocklyChallenge extends Challenge {
 
         this.addMatchFallback('open-flyout', this._wrongCategory.bind(this));
 
-        this.defineShorthand('create-block', this._createBlockShorthand);
-        this.defineShorthand('change-input', this._changeInputShorthand);
+        this.defineShorthand('create-block', this._createBlockShorthand.bind(this));
+        this.defineShorthand('change-input', this._changeInputShorthand.bind(this));
 
         this.defineBehavior('phantom_block', this._onPhantomBlockEnter.bind(this), this._onPhantomBlockLeave);
 
@@ -90,14 +90,17 @@ class BlocklyChallenge extends Challenge {
     _onPhantomBlockLeave(data) {
         Blockly.removePhantomBlock();
     }
-    _createBlockShorthand(data) {
-        const steps = [{
+    _getOpenFlyoutStep(data) {
+        return {
             validation: {
                 blockly: {
                     'open-flyout': data.category,
                 },
             },
-        }, {
+        };
+    }
+    _getCreateBlockStep(data) {
+        return {
             validation: {
                 blockly: {
                     create: {
@@ -106,24 +109,35 @@ class BlocklyChallenge extends Challenge {
                     },
                 },
             },
-        }];
+        };
+    }
+    _getConnectBlockStep(data) {
+        return {
+            validation: {
+                blockly: {
+                    connect: {
+                        parent: data.connectTo,
+                        target: data.alias,
+                    },
+                },
+            },
+            phantom_block: {
+                location: {
+                    block: data.connectTo,
+                },
+                target: data.connectTo.inputName,
+            },
+        };
+    }
+    _createBlockShorthand(data) {
+        const openFlyoutStep = this._getOpenFlyoutStep(data);
+        const createStep = this._getCreateBlockStep(data);
+        const steps = [createStep];
+        if (this.workspace.toolbox_) {
+            steps.unshift(openFlyoutStep);
+        }
         if (data.connectTo) {
-            steps.push({
-                validation: {
-                    blockly: {
-                        connect: {
-                            parent: data.connectTo,
-                            target: data.alias,
-                        },
-                    },
-                },
-                phantom_block: {
-                    location: {
-                        block: data.connectTo,
-                    },
-                    target: data.connectTo.inputName,
-                },
-            });
+            steps.push(this._getConnectBlockStep(data));
         }
         return steps;
     }
@@ -258,7 +272,7 @@ class BlocklyChallenge extends Challenge {
     _matchBlocklyValue(validation, event) {
         const targetId = this.getTargetBlock(validation.target).id;
         const eventBlock = this.workspace.getBlockById(event.blockId);
-        let block = eventBlock;
+        const block = eventBlock;
         let failed = false;
         if (block.id !== targetId) {
             return false;

@@ -173,6 +173,9 @@ class Defaults {
     define(blockId, defaults) {
         this.values[blockId] = defaults;
     }
+    getValues() {
+        return this.values;
+    }
 }
 
 export default Defaults;
