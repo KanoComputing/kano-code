@@ -170,6 +170,17 @@ gulp.task('validate-challenges', () => {
     return validateChallenges.validateChallenges(true);
 });
 
+gulp.task('build-engine', () => {
+    return gulp.src([
+        'app/elements/**/*',
+        'app/lib/**/*',
+        'app/locale/**/*',
+        'app/scripts/**/*',
+        'app/assets/vendor/**/*',
+    ], { base: './' })
+        .pipe(gulp.dest('kc'));
+});
+
 require('./tasks/service-worker')(gulp, $);
 require('./tasks/workers')(gulp, $);
 require('./tasks/kano-code-lib')(gulp, $);

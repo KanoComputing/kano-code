@@ -249,7 +249,7 @@ class Challenge extends Plugin {
         this.partsPlugin.setParts(challengeParts);
         this.editor.loadVariables(challenge.scene.variables);
         if (challenge.scene.defaultApp) {
-            this.editor.load(JSON.parse(this.scene.defaultApp));
+            this.editor.load(JSON.parse(challenge.scene.defaultApp));
         } else {
             this.editor.loadDefault();
         }
