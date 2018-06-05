@@ -79,12 +79,12 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
         }],
     };
 
-
-    // Check Web Audio support
+    // Check Web Audio support and if we can share the audio context
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    window.SharedAudioContext = window.SharedAudioContext || new window.AudioContext();
 
     try {
-        speaker.ctx = new window.AudioContext();
+        speaker.ctx = window.SharedAudioContext;
         speaker.webAudioSupported = true;
     } catch (e) {
         speaker.webAudioSupported = false;
