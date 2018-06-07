@@ -1,6 +1,7 @@
 import '../kano-light-shape-behavior.js';
 import '../../../scripts/kano/make-apps/parts-api/light-animation-display.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+
 const $_documentContainer = document.createElement('template');
 $_documentContainer.setAttribute('style', 'display: none;');
 
@@ -33,20 +34,20 @@ document.head.appendChild($_documentContainer.content);
 Polymer({
     is: 'kano-part-light-animation-display',
     behaviors: [Kano.MakeApps.PartsAPI['light-animation-display'], Kano.Behaviors.LightShapeBehavior],
-    ready () {
+    ready() {
         this.frameIndex = 0;
     },
-    attached () {
+    attached() {
         this._updateAnimation();
     },
-    detached () {
+    detached() {
         // Firing a regular event won't do much as this is detached and the workspace will not receive it.
         document.dispatchEvent(new CustomEvent('iron-signal', {
             bubbles: false,
             detail: {
                 name: 'remove-shape',
-                data: this.model.id
-            }
+                data: this.model.id,
+            },
         }));
-    }
+    },
 });

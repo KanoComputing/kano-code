@@ -8,8 +8,9 @@ import { LightBitmapBehavior } from '../behaviors/kano-light-bitmap-behavior.js'
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { LightFrame } from '../../scripts/kano/make-apps/parts-api/light-frame.js';
+
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 display: block;
@@ -51,81 +52,81 @@ Polymer({
         </kano-pixel-editor>
 `,
 
-  is: 'kano-light-frame-part-editor',
+    is: 'kano-light-frame-part-editor',
 
-  behaviors: [
-      LightFrame,
-      LightBitmapBehavior,
-      Store.ReceiverBehavior,
-  ],
+    behaviors: [
+        LightFrame,
+        LightBitmapBehavior,
+        Store.ReceiverBehavior,
+    ],
 
-  properties: {
-      selected: {
-          type: Object,
-          notify: true
-      },
-      theme: {
-          type: String,
-          value: "#00d9c7"
-      },
-      penColor: String,
-      penType: String,
-      name: {
-          type: String,
-          notify: true
-      }
-  },
+    properties: {
+        selected: {
+            type: Object,
+            notify: true,
+        },
+        theme: {
+            type: String,
+            value: '#00d9c7',
+        },
+        penColor: String,
+        penType: String,
+        name: {
+            type: String,
+            notify: true,
+        },
+    },
 
-  observers: [
-      '_onBitmapSet(selected.userProperties.bitmap)',
-      '_onBitmapChanged(selected.userProperties.bitmap.*)',
-      '_sizeChanged(selected.userProperties.width, selected.userProperties.height)',
-      '_renderOnRealDevice(selected.userProperties.bitmap.*)'
-  ],
+    observers: [
+        '_onBitmapSet(selected.userProperties.bitmap)',
+        '_onBitmapChanged(selected.userProperties.bitmap.*)',
+        '_sizeChanged(selected.userProperties.width, selected.userProperties.height)',
+        '_renderOnRealDevice(selected.userProperties.bitmap.*)',
+    ],
 
-  attached () {
-      this.BOARD_WIDTH = 16;
-      this.BOARD_HEIGHT = 8;
-  },
+    attached() {
+        this.BOARD_WIDTH = 16;
+        this.BOARD_HEIGHT = 8;
+    },
 
-  detached () {
-      this.appModule.stop();
-  },
+    detached() {
+        this.appModule.stop();
+    },
 
-  _onBitmapSet (bitmap) {
-      //When bitmap is set, ask pixel-editor to compute the custom palette.
-      if (!this.colorsComputed) {
-          this.$['pixel-editor']._computePalette(bitmap);
-          this.colorsComputed = true;
-      }
-  },
+    _onBitmapSet(bitmap) {
+        // When bitmap is set, ask pixel-editor to compute the custom palette.
+        if (!this.colorsComputed) {
+            this.$['pixel-editor']._computePalette(bitmap);
+            this.colorsComputed = true;
+        }
+    },
 
-  _onBitmapChanged (e) {
-      //Lock observer as it's resetting the observed property
-      if (this.lock) {
-          return;
-      }
-      this.lock = true;
-      this.async(() => this.lock = false);
+    _onBitmapChanged(e) {
+        // Lock observer as it's resetting the observed property
+        if (this.lock) {
+            return;
+        }
+        this.lock = true;
+        this.async(() => this.lock = false);
 
-      if (e.path.search(/splices/) !== -1) {
-          this._setBitmap();
-      }
-  },
+        if (e.path.search(/splices/) !== -1) {
+            this._setBitmap();
+        }
+    },
 
-  _setBitmap () {
-      const props = this.selected.userProperties;
-      this.set('storedBitmap', this._adjustForStorage(props.bitmap, props.width));
-      this.set('selected.userProperties.bitmap', this._adjustForDisplay(this.storedBitmap, props.width, props.height));
-  },
+    _setBitmap() {
+        const props = this.selected.userProperties;
+        this.set('storedBitmap', this._adjustForStorage(props.bitmap, props.width));
+        this.set('selected.userProperties.bitmap', this._adjustForDisplay(this.storedBitmap, props.width, props.height));
+    },
 
-  _sizeChanged () {
-      const props = this.selected.userProperties;
-      this.storedBitmap = this.storedBitmap || this._adjustForStorage(props.bitmap, props.width);
-      this.set('selected.userProperties.bitmap', this._adjustForDisplay(this.storedBitmap, props.width, props.height));
-  },
+    _sizeChanged() {
+        const props = this.selected.userProperties;
+        this.storedBitmap = this.storedBitmap || this._adjustForStorage(props.bitmap, props.width);
+        this.set('selected.userProperties.bitmap', this._adjustForDisplay(this.storedBitmap, props.width, props.height));
+    },
 
-  _renderOnRealDevice () {
+    _renderOnRealDevice() {
       if (!this.deviceRendering) {
           const hw = Kano.AppModules.modules.lightboard.api;
           const state = this.getState();
@@ -139,21 +140,21 @@ Polymer({
           this.async(() => this.appModule.getModule('lightboard').updateOrCreateShape('drawing', this.getShape(), () => {}));
       }
       catch (e) {
-         return;
+         
       }
   },
 
-  getShape () {
-      this.model = this.selected;
-      return {
-          id: 'being-edited',
-          x: this.getX(),
-          y: this.getY(),
-          width: this.getWidth(),
-          height: this.getHeight(),
-          visible: true,
-          bitmap: this.selected.userProperties.bitmap,
-          type: 'frame'
-      };
-  }
+    getShape() {
+        this.model = this.selected;
+        return {
+            id: 'being-edited',
+            x: this.getX(),
+            y: this.getY(),
+            width: this.getWidth(),
+            height: this.getHeight(),
+            visible: true,
+            bitmap: this.selected.userProperties.bitmap,
+            type: 'frame',
+        };
+    },
 });

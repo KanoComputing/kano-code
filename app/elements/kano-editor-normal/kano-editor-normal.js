@@ -7,7 +7,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
 /* globals Polymer, Kano */
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 @apply --layout-vertical;
@@ -67,85 +67,85 @@ Polymer({
         </kc-workspace-frame>
 `,
 
-  is: 'kano-editor-normal',
-  behaviors: [WorkspaceBehavior],
+    is: 'kano-editor-normal',
+    behaviors: [WorkspaceBehavior],
 
-  properties: {
-      autoStart: Boolean,
-      mousePositionX: {
-          type: Number,
-          value: 250,
-          notify: true
-      },
-      mousePositionY: {
-          type: Number,
-          value: 250,
-          notify: true
-      },
-      mode: {
-          type: Object
-      },
-      running: {
-          type: Boolean
-      },
-      parts: {
-          type: Array,
-          notify: true
-      }
-  },
+    properties: {
+        autoStart: Boolean,
+        mousePositionX: {
+            type: Number,
+            value: 250,
+            notify: true,
+        },
+        mousePositionY: {
+            type: Number,
+            value: 250,
+            notify: true,
+        },
+        mode: {
+            type: Object,
+        },
+        running: {
+            type: Boolean,
+        },
+        parts: {
+            type: Array,
+            notify: true,
+        },
+    },
 
-  ready () {
-      this.mousePositionX = 250;
-      this.mousePositionY = 250;
-  },
+    ready() {
+        this.mousePositionX = 250;
+        this.mousePositionY = 250;
+    },
 
-  attached () {
-      this.$.workspace.addEventListener('mouseover', this._onMouseOver.bind(this));
-      this.$.workspace.addEventListener('mouseout', this._onMouseOut.bind(this));
-      this.$.workspace.addEventListener('mousemove', this._onMouseMove.bind(this));
-  },
+    attached() {
+        this.$.workspace.addEventListener('mouseover', this._onMouseOver.bind(this));
+        this.$.workspace.addEventListener('mouseout', this._onMouseOut.bind(this));
+        this.$.workspace.addEventListener('mousemove', this._onMouseMove.bind(this));
+    },
 
-  getWorkspace () {
-      return this.$.workspace;
-  },
+    getWorkspace() {
+        return this.$.workspace;
+    },
 
-  _onMouseOver (e) {
-      this._isMouseOver = true;
-  },
+    _onMouseOver(e) {
+        this._isMouseOver = true;
+    },
 
-  _onMouseOut (e) {
-      this._isMouseOver = false;
-      this.mousePositionX = 250;
-      this.mousePositionY = 250;
-  },
+    _onMouseOut(e) {
+        this._isMouseOver = false;
+        this.mousePositionX = 250;
+        this.mousePositionY = 250;
+    },
 
-  _onMouseMove (e) {
-      if (this._isMouseOver) {
-          this.rectangle = this.$.workspace.getBoundingClientRect();
-          let scalingFactor = this.rectangle.width / this.width;
+    _onMouseMove(e) {
+        if (this._isMouseOver) {
+            this.rectangle = this.$.workspace.getBoundingClientRect();
+            const scalingFactor = this.rectangle.width / this.width;
 
-          this.mousePositionX = parseInt(parseInt(e.x - this.rectangle.left) / scalingFactor);
-          this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
-      }
-  },
+            this.mousePositionX = parseInt(parseInt(e.x - this.rectangle.left) / scalingFactor);
+            this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
+        }
+    },
 
-  getRestrictElement () {
-      return this.$.workspace;
-  },
+    getRestrictElement() {
+        return this.$.workspace;
+    },
 
-  getViewport () {
-      return this.$.workspace;
-  },
+    getViewport() {
+        return this.$.workspace;
+    },
 
-  getViewportScale () {
-      return this.$.wrapper.getViewportScale();
-  },
+    getViewportScale() {
+        return this.$.wrapper.getViewportScale();
+    },
 
-  _editBackground () {
-      this.fire('edit-background');
-  },
+    _editBackground() {
+        this.fire('edit-background');
+    },
 
-  setBackground (value) {
-      this.$.workspace.setBackground(value);
-  }
+    setBackground(value) {
+        this.$.workspace.setBackground(value);
+    },
 });

@@ -29,7 +29,7 @@ import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 /* globals Polymer, Kano */
 
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 display: block;
@@ -38,29 +38,29 @@ Polymer({
         <div id="input-container"></div>
 `,
 
-  is: 'kano-input',
+    is: 'kano-input',
 
-  behaviors: [Input,
-              AppEditorBehavior],
+    behaviors: [Input,
+        AppEditorBehavior],
 
-  observers: [
-      '_typeChanged(type)',
-  ],
+    observers: [
+        '_typeChanged(type)',
+    ],
 
-  _typeChanged() {
-      let inputTagName = this._getTagName(),
-          root = dom(this.root);
-      const tpl = document.createElement('template');
-      tpl.innerHTML = `<${inputTagName} class="kano-input" label="[[label]]" value="{{value}}" symbol="[[symbol]]" min="[[min]]" max="[[max]]" options="[[options]]" theme="[[theme]]"></${inputTagName}>`;
+    _typeChanged() {
+        let inputTagName = this._getTagName(),
+            root = dom(this.root);
+        const tpl = document.createElement('template');
+        tpl.innerHTML = `<${inputTagName} class="kano-input" label="[[label]]" value="{{value}}" symbol="[[symbol]]" min="[[min]]" max="[[max]]" options="[[options]]" theme="[[theme]]"></${inputTagName}>`;
 
-      const template = html`${tpl}`;
+        const template = html`${tpl}`;
 
-      this.instance = this._stampTemplate(template);
+        this.instance = this._stampTemplate(template);
 
-      this.$['input-container'].appendChild(this.instance);
-  },
+        this.$['input-container'].appendChild(this.instance);
+    },
 
-  _getTagName() {
-      return `kano-input-${this.type}`;
-  }
+    _getTagName() {
+        return `kano-input-${this.type}`;
+    },
 });

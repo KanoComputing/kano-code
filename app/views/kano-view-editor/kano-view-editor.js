@@ -1,25 +1,24 @@
 import '@kano/web-components/kano-alert/kano-alert.js';
-import { Store } from '../../scripts/kano/make-apps/store.js';
+import '@kano/web-components/kano-reward-modal/kano-reward-modal.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
+import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
+import '../../elements/kano-app-editor/kano-app-editor.js';
+import '../../elements/kano-editor-topbar/kano-editor-topbar.js';
+import '../../elements/kano-share-modal/kano-share-modal.js';
+import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
+import { AllModules } from '../../lib/app-modules/all.js';
+import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
+import { Editor, FileUploadPlugin, I18n, LocalStoragePlugin, Mode, PartsPlugin, Runner, UserPlugin } from '../../lib/index.js';
+import { AllApis } from '../../lib/meta-api/modules/all.js';
 import '../../scripts/kano/make-apps/actions/app.js';
-import '../../scripts/kano/make-apps/utils.js';
-import { Router } from '../../scripts/kano/util/router.js';
 import '../../scripts/kano/make-apps/blockly/blockly.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
-import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
-import '../../elements/kano-app-editor/kano-app-editor.js';
-import '../../elements/kano-share-modal/kano-share-modal.js';
-import '../../elements/kano-editor-topbar/kano-editor-topbar.js';
-import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
-import '@kano/web-components/kano-reward-modal/kano-reward-modal.js';
-import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { Editor, UserPlugin, PartsPlugin, LocalStoragePlugin, Runner, Mode, FileUploadPlugin, I18n } from '../../lib/index.js';
-import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
-import { PartTypes, Parts } from '../../lib/parts/all.js';
-import { AllModules } from '../../lib/app-modules/all.js';
-import { AllApis } from '../../lib/meta-api/modules/all.js';
+import { Store } from '../../scripts/kano/make-apps/store.js';
+import '../../scripts/kano/make-apps/utils.js';
+import { Router } from '../../scripts/kano/util/router.js';
 
 const behaviors = [
     SharingBehavior,
@@ -27,7 +26,7 @@ const behaviors = [
 ];
 
 class KanoViewEditor extends Store.StateReceiver(
-    mixinBehaviors(behaviors, PolymerElement)
+    mixinBehaviors(behaviors, PolymerElement),
 ) {
     static get is() { return 'kano-view-editor'; }
     static get template() {
@@ -137,8 +136,7 @@ class KanoViewEditor extends Store.StateReceiver(
         const userPlugin = new UserPlugin();
         this.editor.addPlugin(userPlugin);
 
-        this.partsPlugin = new PartsPlugin(PartTypes);
-        this.partsPlugin.setParts(Parts);
+        this.partsPlugin = new PartsPlugin();
         this.editor.addPlugin(this.partsPlugin);
 
         this.storagePlugin = new LocalStoragePlugin(this._getStorageKey.bind(this));

@@ -1,5 +1,6 @@
-import '../../../../scripts/kano/make-apps/blockly/inputs/asset-picker.js';
+import { FieldAssetPicker } from '../../../../scripts/kano/make-apps/blockly/inputs/asset-picker.js';
 import { localize } from '../../../i18n/index.js';
+import { AudioPlayer } from '../../../../scripts/kano/music/player.js';
 import './kano-part-speaker.js';
 
 const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
@@ -14,10 +15,10 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
         image: '/assets/part/speaker.svg',
         colour: COLOUR,
         component: 'kano-part-speaker',
-        userProperties: {
-            root,
+        config: {
+            assetsRoot: root,
+            samples,
         },
-        experiments: {},
         blocks: [{
             block: part => ({
                 id: 'say',
@@ -79,19 +80,11 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
         }],
     };
 
-    // Check Web Audio support and if we can share the audio context
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-    window.SharedAudioContext = window.SharedAudioContext || new window.AudioContext();
-
-    try {
-        speaker.ctx = window.SharedAudioContext;
-        speaker.webAudioSupported = true;
-    } catch (e) {
-        speaker.webAudioSupported = false;
-    }
+    speaker.webAudioSupported = AudioPlayer.webAudioSupported;
 
     // Add speaker blocks if supported
     if (speaker.webAudioSupported) {
+        speaker.ctx = AudioPlayer.context;
         speaker.blocks = speaker.blocks.concat([{
             block: part => ({
                 id: 'speaker_play',
@@ -212,7 +205,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                     init() {
                         const defaultCat = samples.children[0];
 
-                        const setDropdown = new Blockly.FieldAssetPicker(Blockly.Msg.BLOCK_SPEAKER_PICKER_HEADING, 'samples', samples, { path: `${samples.name}/${defaultCat.name}`, item: defaultCat.children[0] }, root);
+                        const setDropdown = new FieldAssetPicker(Blockly.Msg.BLOCK_SPEAKER_PICKER_HEADING, 'samples', samples, { path: `${samples.name}/${defaultCat.name}`, item: defaultCat.children[0] }, root);
 
                         this.setColour(part.colour);
 

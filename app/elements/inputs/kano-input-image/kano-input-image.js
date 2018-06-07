@@ -4,7 +4,6 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { Input } from '../behaviors.js';
 import '../../kano-fs/kano-fs.js';
 import '../kano-file-picker-modal/kano-file-picker-modal.js';
-import { generators } from '../../../scripts/kano/make-apps/files/stickers.js';
 
 Polymer({
     _template: html`
@@ -45,7 +44,7 @@ Polymer({
                 <button type="button" on-tap="removeImage" class="remove-button">Remove image</button>
             </kano-glint-animation>
         </div>
-        <kano-file-picker-modal files="[[flatFiles]]" id="modal" on-select-file="fileSelected"></kano-file-picker-modal>
+        <kano-file-picker-modal files="[[options.files]]" id="modal" on-select-file="fileSelected"></kano-file-picker-modal>
 `,
 
     is: 'kano-input-image',
@@ -66,11 +65,6 @@ Polymer({
         },
         options: {
             type: Object,
-            observer: '_optionsChanged',
-        },
-        flatFiles: {
-            type: Array,
-            value: () => [],
         },
     },
 
@@ -85,25 +79,6 @@ Polymer({
 
     detached() {
         document.body.removeChild(this.$.modal);
-    },
-
-    _optionsChanged(options) {
-        let files = options.files,
-            group,
-            groupFiles,
-            allFiles;
-        allFiles = Object.keys(Kano.MakeApps.Files[files]).reduce((acc, groupKey) => {
-            group = Kano.MakeApps.Files[files][groupKey];
-            groupFiles = Object.keys(group).map(key => ({
-                name: group[key],
-                type: 'image',
-                data: {
-                    src: generators[files](groupKey, key),
-                },
-            }));
-            return acc.concat(groupFiles);
-        }, []);
-        this.set('flatFiles', allFiles);
     },
 
     openModal() {

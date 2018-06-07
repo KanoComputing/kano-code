@@ -1,4 +1,5 @@
 import { localize } from '../../../i18n/index.js';
+import '../../../../elements/kano-motion-sensor-part-editor/kano-motion-sensor-part-editor.js';
 
 const COLOR = '#FFB347';
 

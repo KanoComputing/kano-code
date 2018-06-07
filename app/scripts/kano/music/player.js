@@ -1,12 +1,24 @@
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
 window.SharedAudioContext = window.SharedAudioContext || new AudioContext();
 
+let sharedAudioContext;
+let webAudioSupported = true;
+
+try {
+    /* eslint new-cap: "off" */
+    sharedAudioContext = window.webkitAudioContext ?
+        new window.webkitAudioContext() : new AudioContext();
+} catch (e) {
+    webAudioSupported = false;
+}
+
 class AudioPlayer {
-    constructor (buffer, output, opts) {
+    constructor(buffer, output, opts) {
         this.opts = Object.assign({
-            loop: false
+            loop: false,
         }, opts);
         this.buffer = buffer;
-        this.ctx = SharedAudioContext;
+        this.ctx = AudioPlayer.context;
         this.gainControl = this.ctx.createGain();
         this.gainControl.connect(this.ctx.destination);
 
@@ -15,21 +27,21 @@ class AudioPlayer {
         this.volume = 1;
         this.emitter = document.createElement('div');
     }
-    emit (name, data) {
+    emit(name, data) {
         this.emitter.dispatchEvent(new CustomEvent(name, { detail: data }));
     }
-    set volume (v) {
+    set volume(v) {
         this._volume = Math.max(0, Math.min(1, v));
         this.gainControl.gain.value = this._volume;
     }
-    play () {
+    play() {
         this.paused = false;
         this.playing = true;
         this.source = this.ctx.createBufferSource();
         this.source.loop = this.opts.loop;
         this.source.buffer = this.buffer;
         this.source.connect(this.output);
-        this.source.onended = event => {
+        this.source.onended = () => {
             if (this.paused) {
                 return;
             }
@@ -45,24 +57,31 @@ class AudioPlayer {
         }
         this.emit('play');
     }
-    pause () {
+    pause() {
         this.source.stop(0);
         this.pausedAt = Date.now() - this.startedAt;
         this.paused = true;
         this.playing = false;
         this.emit('paused');
     }
-    stop () {
+    stop() {
         this.pause();
         this.playing = false;
         this.pausedAt = null;
         this.emit('end');
     }
-    toggle () {
-        this.playing ? this.pause() : this.play();
+    toggle() {
+        if (this.playing) {
+            this.pause();
+        } else {
+            this.play();
+        }
     }
-    static get context () {
-        return SharedAudioContext;
+    static get context() {
+        return sharedAudioContext;
+    }
+    static get webAudioSupported() {
+        return webAudioSupported;
     }
 }
 

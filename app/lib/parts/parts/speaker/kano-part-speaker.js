@@ -1,47 +1,47 @@
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { UIBehavior } from '../../../../elements/part/kano-ui-behavior.js';
-import { Base } from '../../../../scripts/kano/make-apps/parts-api/base.js';
+import { UIMixin } from '../../../../elements/part/kano-ui-behavior.js';
 import { AudioPlayer } from '../../../../scripts/kano/music/player.js';
-import { samples as samples$0 } from '../../../../scripts/kano/make-apps/files/samples.js';
 import { AssetLoader } from '../../../asset/loader.js';
 import { Store } from '../../../../scripts/kano/make-apps/store.js';
-import { speaker } from './speaker.js';
+import { SpeakerMixin } from './speaker.js';
 import { TextToSpeech } from './text-to-speech.js';
 
-Polymer({
-    _template: html`
-        <style>
-            :host {
-                display: block;
-            }
-        </style>
-        <div class="part">
-            <kano-ui-item model="[[model]]" size="50" id\$="part-[[model.id]]" instance=""></kano-ui-item>
-        </div>
-`,
 
-    is: 'kano-part-speaker',
+const OSCILLATOR_FREQ_RANGE_LOW = 20;
+const OSCILLATOR_FREQ_RANGE_HI = 5000;
 
-    behaviors: [
-        speaker,
-        UIBehavior,
-    ],
-
-    observers: [
-        '_mutedChanged(model.muted)',
-    ],
-
-    properties: {
-        volume: {
-            type: Number,
-            value: 100,
-        },
-    },
-
+class KanoPartSpeaker extends SpeakerMixin(UIMixin(PolymerElement)) {
+    static get is() { return 'kano-part-speaker'; }
+    static get properties() {
+        return {
+            volume: {
+                type: Number,
+                value: 100,
+            },
+        };
+    }
+    static get observers() {
+        return [
+            '_mutedChanged(model.muted)',
+        ];
+    }
+    static get template() {
+        return html`
+            <style>
+                :host {
+                    display: block;
+                }
+            </style>
+            <div class="part">
+                <kano-ui-item model="[[model]]" size="50" id\$="part-[[model.id]]" instance=""></kano-ui-item>
+            </div>
+        `;
+    }
     ready() {
+        super.ready();
         const { config } = Store.getState();
-        this.assetLoader = new AssetLoader(this.model.userProperties.root);
+        this.assetLoader = new AssetLoader(this.model.config.assetsRoot);
         this.sources = [];
         this.players = [];
         this.oscillators = [];
@@ -61,12 +61,10 @@ Polymer({
         } catch (e) {
             this.webAudioSupported = false;
         }
-    },
-
+    }
     say(text, rate, language) {
         this.tts.speak(text, rate, language);
-    },
-
+    }
     play(sample) {
         if (!sample) {
             return;
@@ -78,8 +76,7 @@ Polymer({
                 player.source.playbackRate.value = this._playbackRate;
                 this.players.push(player);
             });
-    },
-
+    }
     loop(sample) {
         if (!sample) {
             return;
@@ -91,8 +88,7 @@ Polymer({
                 player.source.playbackRate.value = this._playbackRate;
                 this.players.push(player);
             });
-    },
-
+    }
     setPlaybackRate(rate) {
         let realRate;
         rate = Math.min(Math.max(rate, 0), 200);
@@ -108,16 +104,14 @@ Polymer({
             }
         });
         this._playbackRate = realRate;
-    },
-
-    start() {
-        Base.start.apply(this, arguments);
+    }
+    start(...args) {
+        super.start(...args)
         this._playbackRate = 1;
         this.volume = 100;
-    },
-
-    stop() {
-        Base.stop.apply(this, arguments);
+    }
+    stop(...args) {
+        super.stop(...args);
         if (this.tts) {
             this.tts.stop();
         }
@@ -125,24 +119,22 @@ Polymer({
             // Ignore sources not started
             try {
                 player.stop();
-            } catch (e) { }
+            } catch (e) {}
         });
         this.sources.forEach((source) => {
             // Ignore sources not started
             try {
                 source.stop();
-            } catch (e) { }
+            } catch (e) {}
         });
         this.players = [];
         this.sources = [];
         this.synth = null;
         this._playbackRate = 1;
-    },
-
+    }
     _mutedChanged() {
         this.setVolume(this.volume);
-    },
-
+    }
     setVolume(volume) {
         if (!this.model || !this.gainControl) {
             return;
@@ -155,25 +147,22 @@ Polymer({
         if (this.gainControl) {
             this.gainControl.gain.value = value;
         }
-    },
-
+    }
     loadSample(name) {
         return this.assetLoader.getAsset(name);
-    },
-
+    }
     randomSound(set) {
-        let randomSample, 
-            samples, 
+        let randomSample,
+            samples,
             sets;
         if (!set || set === 'any') {
-            sets = Object.keys(samples$0),
+            sets = Object.keys(this.model.config.samples);
             set = sets[Math.floor(Math.random() * sets.length)];
         }
-        samples = Object.keys(samples$0[set]);
+        samples = Object.keys(this.model.config.samples[set]);
         randomSample = samples[Math.floor(Math.random() * samples.length)];
         return randomSample;
-    },
-
+    }
     _createOscillator() {
         const oscillator = this.ctx.createOscillator();
 
@@ -181,13 +170,12 @@ Polymer({
         oscillator.connect(this.oscillatorsGain);
 
         return oscillator;
-    },
-
+    }
     playFrequency(freq, length) {
         const oscillator = this._createOscillator();
 
         oscillator.frequency.value = OSCILLATOR_FREQ_RANGE_LOW +
-          ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
+            ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
         oscillator.start(0);
         oscillator.stop(this.ctx.currentTime + length / 1000);
 
@@ -202,23 +190,20 @@ Polymer({
         };
 
         this.sources.push(oscillator);
-    },
-
+    }
     startSynth() {
         if (!this.synth) {
             this.synth = this._createOscillator();
             this.sources.push(this.synth);
             this.synth.start(0);
         }
-    },
-
+    }
     setSynthFrequency(freq) {
         if (this.synth) {
             this.synth.frequency.value = OSCILLATOR_FREQ_RANGE_LOW +
-              ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
+                ((freq) / 100) * OSCILLATOR_FREQ_RANGE_HI;
         }
-    },
-});
+    }
+}
 
-const OSCILLATOR_FREQ_RANGE_LOW = 20,
-    OSCILLATOR_FREQ_RANGE_HI = 5000;
+customElements.define(KanoPartSpeaker.is, KanoPartSpeaker);

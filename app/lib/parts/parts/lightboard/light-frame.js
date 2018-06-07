@@ -1,4 +1,5 @@
 import { localize } from '../../../i18n/index.js';
+import '../../../../elements/kano-light-frame-part-editor/kano-light-frame-part-editor.js';
 
 const lightFrame = {
     partType: 'ui',

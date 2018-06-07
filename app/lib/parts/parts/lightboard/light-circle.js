@@ -1,4 +1,5 @@
 import { localize } from '../../../i18n/index.js';
+import '../../../../elements/kano-light-shape-configuration/kano-light-shape-configuration.js';
 
 const lightCircle = {
     partType: 'ui',

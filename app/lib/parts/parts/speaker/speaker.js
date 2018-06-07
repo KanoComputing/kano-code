@@ -1,30 +1,24 @@
-import { Base } from '../../../../scripts/kano/make-apps/parts-api/base.js';
+import { BaseMixin } from '../../base.js';
 
-const Speaker = {
+export const SpeakerMixin = base => class extends BaseMixin(base) {
     play() {
 
-    },
+    }
     say() {
 
-    },
+    }
     loop() {
 
-    },
+    }
     stop() {
 
-    },
+    }
     setPlaybackRate() {
 
-    },
+    }
     setVolume() {
 
-    },
+    }
 };
 
-
-/**
- * @polymerBehavior
- */
-export const speaker = Base.applyMixins({}, Base, Speaker);
-
-export default speaker;
+export default SpeakerMixin;

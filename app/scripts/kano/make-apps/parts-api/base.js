@@ -1,13 +1,13 @@
-const Base = {
+const BaseMixin = base => class extends base {
     /**
      * Do a Object.assign, but also brings in the getter/setters
      */
     applyMixin(target, source) {
         Object.assign(target, source);
         Object.keys(source).forEach((key) => {
-            let desc = Object.getOwnPropertyDescriptor(source, key),
-                getter, 
-setter;
+            const desc = Object.getOwnPropertyDescriptor(source, key);
+            let getter;
+            let setter;
             if (typeof desc.get === 'function') {
                 getter = desc.get;
             }
@@ -22,7 +22,7 @@ setter;
             }
         });
         return target;
-    },
+    }
     applyMixins(target) {
         const args = Array.prototype.slice.apply(arguments);
         args.shift();
@@ -30,19 +30,21 @@ setter;
             this.applyMixin(target, source);
         });
         return target;
-    },
-    attached() {
+    }
+    connectedCallback() {
+        super.connectedCallback();
         this.onCreated();
-    },
-    detached() {
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
         this.onDestroyed();
-    },
+    }
     onCreated() {
         // In old apps, we refered to Kano.AppModules directly. Now we set a standalone appModules.
         // Keep this to ensure old apps and not yet updated clients still work
         this.appModules = this.appModules || Kano.AppModules;
-    },
-    onDestroyed() {},
+    }
+    onDestroyed() {}
     start() {
         if (this.model) {
             this.savedState = {
@@ -58,7 +60,7 @@ setter;
             };
         }
         this.isRunning = true;
-    },
+    }
     when(name, callback) {
         this.userListeners = this.userListeners || {};
         if (!this.userListeners[name]) {
@@ -66,7 +68,7 @@ setter;
         }
         this.userListeners[name].push(callback);
         this.addEventListener(name, callback);
-    },
+    }
     stop() {
         if (this.userListeners) {
             Object.keys(this.userListeners).forEach((name) => {
@@ -88,90 +90,90 @@ setter;
             this.set('model.visible', savedState.visible);
             Object.keys(savedState.userProperties).forEach((propName) => {
                 if (this.model && this.model.nonvolatileProperties.indexOf(propName) < 0) {
-                    this.set(`model.userProperties.${  propName}`, savedState.userProperties[propName]);
+                    this.set(`model.userProperties.${propName}`, savedState.userProperties[propName]);
                 }
             });
             this.set('model.userStyle', savedState.userStyle);
         }
         this.isRunning = false;
-    },
+    }
     moveAlong(distance) {
         let direction = (this.get('model.rotation') || 0) * Math.PI / 180,
             alongY = Math.round(parseInt(distance) * Math.sin(direction)),
             alongX = Math.round(parseInt(distance) * Math.cos(direction));
         this.move(alongX, alongY);
-    },
+    }
     move(x, y) {
         const position = this.model.position;
         // Set separate values otherwise, the reference is compared and
         // change triggers are not fired
         this.set('model.position.x', position.x + x);
         this.set('model.position.y', position.y + y);
-    },
+    }
     setXY(x, y) {
         this.setX(x);
         this.setY(y);
-    },
+    }
     setX(x) {
         this.set('model.position.x', x);
-    },
+    }
     setY(y) {
         this.set('model.position.y', y);
-    },
+    }
     getX() {
         return this.get('model.position.x');
-    },
+    }
     getY() {
         return this.get('model.position.y');
-    },
+    }
     getSize() {
         return this.get('model.scale');
-    },
+    }
     getRotation() {
         return this.get('model.rotation');
-    },
+    }
     rotate(deg) {
         const rotation = this.model.rotation;
         this.set('model.rotation', parseInt(rotation) + parseInt(deg));
-    },
+    }
     absolute_rotate(deg) {
         this.set('model.rotation', parseInt(deg));
-    },
+    }
     scale(factor) {
         this.set('model.scale', factor);
-    },
+    }
     resize(factor) {
         const curFactor = this.get('model.scale') || 100;
         this.set('model.scale', curFactor * factor / 100);
-    },
+    }
     show(visibility) {
         this.set('model.visible', visibility);
-    },
+    }
     toggleVisibility() {
         this.set('model.visible', !this.model.visible);
-    },
+    }
     hexToRgb(hex) {
         hex = (hex) ? hex.substr(1) : 0;
-        let bigint = parseInt(hex, 16);
-        let r = (bigint >> 16) & 255;
-        let g = (bigint >> 8) & 255;
-        let b = bigint & 255;
+        const bigint = parseInt(hex, 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
 
         return { r, g, b };
-    },
+    }
     rgbToHsl(r, g, b) {
         r /= 255, g /= 255, b /= 255;
 
-        let max = Math.max(r, g, b), 
-min = Math.min(r, g, b);
-        let h, 
-s, 
-l = (max + min) / 2;
+        const max = Math.max(r, g, b);
+        const min = Math.min(r, g, b);
+        let h;
+        let s;
+        const l = (max + min) / 2;
 
         if (max == min) {
             h = s = 0; // achromatic
         } else {
-            let d = max - min;
+            const d = max - min;
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 
             switch (max) {
@@ -184,33 +186,34 @@ l = (max + min) / 2;
         }
 
         return { h, s, l };
-    },
+    }
     throttle(id, cb, delay) {
-        // Push the logic to next event loop iteration. This let the blocking calls to the same id stack up
+        // Push the logic to next event loop iteration.
+        // This let the blocking calls to the same id stack up
         setTimeout(() => {
-            Base.nextCall = Base.nextCall || {};
-            Base.waiting = Base.waiting || {};
+            this.nextCall = this.nextCall || {};
+            this.waiting = this.waiting || {};
             // Last call buffer time passed, call the method and create a buffer time
-            if (!Base.nextCall[id]) {
-                // When the time has passed, check if a call was made and if so, execute the callback
-                Base.nextCall[id] = setTimeout(() => {
-                    Base.nextCall[id] = null;
-                    if (Base.waiting[id]) {
-                        this.throttle(id, Base.waiting[id], delay);
-                        Base.waiting[id] = null;
+            if (!this.nextCall[id]) {
+                // When the time has passed, check if a call was made and if so,
+                // execute the callback
+                this.nextCall[id] = setTimeout(() => {
+                    this.nextCall[id] = null;
+                    if (this.waiting[id]) {
+                        this.throttle(id, this.waiting[id], delay);
+                        this.waiting[id] = null;
                     }
                 }, delay);
                 // Execute the callback
                 cb();
             } else {
                 // The last call was less than `delay` ms ago, just update the waiting call
-                Base.waiting[id] = cb;
+                this.waiting[id] = cb;
             }
         });
-    },
+    }
 };
 
-/**
- * @polymerBehavior
- */
-export { Base };
+export { BaseMixin };
+
+export default BaseMixin;

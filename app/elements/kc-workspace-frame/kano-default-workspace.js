@@ -2,6 +2,8 @@ import '@polymer/polymer/polymer-legacy.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@kano/polymer-sortablejs/polymer-sortablejs.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import '../ui/kano-ui-viewport/kano-ui-viewport.js';
 import '../kano-icons/kc-ui.js';
@@ -10,10 +12,9 @@ import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 display: block;
@@ -159,123 +160,122 @@ Polymer({
         <iron-a11y-keys keys="esc" on-keys-pressed="_cancelFullscreen" target="[[target]]"></iron-a11y-keys>
 `,
 
-  is:'kano-default-workspace',
+    is: 'kano-default-workspace',
 
-  behaviors: [
-      I18nBehavior,
-      AppEditorBehavior,
-      AppElementRegistryBehavior,
-      IronResizableBehavior,
-  ],
+    behaviors: [
+        I18nBehavior,
+        AppEditorBehavior,
+        AppElementRegistryBehavior,
+        IronResizableBehavior,
+    ],
 
-  properties: {
-      running: {
-          type: Boolean,
-          value: false,
-          notify: true
-      },
-      width: {
-          type: Number
-      },
-      height: {
-          type: Number
-      },
-      mouseX: {
-          type: Number,
-          value: 0
-      },
-      mouseY: {
-          type: Number,
-          value: 0
-      },
-      showMousePosition: {
-          type: Boolean,
-          value: false
-      },
-      noPlayerBar: {
-          type: Boolean
-      },
-      fullscreen: {
-          type: Boolean,
-          value: false
-      },
-  },
+    properties: {
+        running: {
+            type: Boolean,
+            value: false,
+            notify: true,
+        },
+        width: {
+            type: Number,
+        },
+        height: {
+            type: Number,
+        },
+        mouseX: {
+            type: Number,
+            value: 0,
+        },
+        mouseY: {
+            type: Number,
+            value: 0,
+        },
+        showMousePosition: {
+            type: Boolean,
+            value: false,
+        },
+        noPlayerBar: {
+            type: Boolean,
+        },
+        fullscreen: {
+            type: Boolean,
+            value: false,
+        },
+    },
 
-  listeners: {
-      'iron-resize': '_setViewportHeight'
-  },
+    listeners: {
+        'iron-resize': '_setViewportHeight',
+    },
 
-  _setViewportHeight () {
-      window.requestAnimationFrame(() => {
-          let aspectRatio = this.height / this.width,
-              style = this.$.content.style;
-          if (this.fullscreen) {
-              // Portrait
-              if (window.innerHeight > window.innerWidth * aspectRatio) {
-                  style.width = '70vw';
-                  style.height = `calc(70vw * ${aspectRatio})`;
-                  style.top = `calc(50% - (70vw * ${aspectRatio} / 2))`;
-                  style.left = `calc(50% - 35vw)`;
-              } else {
-                  // Landscape
-                  aspectRatio = 1 / aspectRatio;
-                  style.height = '70vh';
-                  style.width = `calc(70vh * ${aspectRatio})`;
-                  style.top = `calc(50% - 35vh)`;
-                  style.left = `calc(50% - (70vh * ${aspectRatio} / 2))`;
-              }
-          } else {
-              //We are not fullscreen so set the viewport height relative to the width of the workspace
-              style.width = 'auto';
-              style.height = `${this.offsetWidth * aspectRatio}px`;
-              style.top = 'auto';
-              style.left = 'auto';
+    _setViewportHeight() {
+        window.requestAnimationFrame(() => {
+            let aspectRatio = this.height / this.width,
+                style = this.$.content.style;
+            if (this.fullscreen) {
+                // Portrait
+                if (window.innerHeight > window.innerWidth * aspectRatio) {
+                    style.width = '70vw';
+                    style.height = `calc(70vw * ${aspectRatio})`;
+                    style.top = `calc(50% - (70vw * ${aspectRatio} / 2))`;
+                    style.left = 'calc(50% - 35vw)';
+                } else {
+                    // Landscape
+                    aspectRatio = 1 / aspectRatio;
+                    style.height = '70vh';
+                    style.width = `calc(70vh * ${aspectRatio})`;
+                    style.top = 'calc(50% - 35vh)';
+                    style.left = `calc(50% - (70vh * ${aspectRatio} / 2))`;
+                }
+            } else {
+                // We are not fullscreen so set the viewport height relative to the width of the workspace
+                style.width = 'auto';
+                style.height = `${this.offsetWidth * aspectRatio}px`;
+                style.top = 'auto';
+                style.left = 'auto';
+            }
+        });
+        this.$.content.resizeView();
+    },
 
-          }
-      });
-      this.$.content.resizeView();
-  },
+    attached() {
+        this.target = document.body;
+        this._registerElement('parts-controls', this);
+    },
 
-  attached () {
-      this.target = document.body;
-      this._registerElement('parts-controls', this);
-  },
+    _goFullscreen() {
+        if (!this.fullscreen) {
+            this._toggleFullscreen();
+        }
+    },
 
-  _goFullscreen () {
-      if (!this.fullscreen) {
-          this._toggleFullscreen();
-      }
-  },
+    _cancelFullscreen() {
+        if (this.fullscreen) {
+            this._toggleFullscreen();
+        }
+    },
 
-  _cancelFullscreen () {
-      if (this.fullscreen) {
-          this._toggleFullscreen();
-      }
-  },
+    _toggleFullscreen() {
+        this.toggleClass('fullscreen');
+        this.fire('tracking-event', {
+            name: 'app_size_toggled',
+            data: {
+                size: this.fullscreen ? 'normal' : 'fullscreen',
+            },
+        });
+        this.fullscreen = !this.fullscreen;
+        this._setViewportHeight();
 
-  _toggleFullscreen () {
-      this.toggleClass('fullscreen');
-      this.fire('tracking-event', {
-          name: 'app_size_toggled',
-          data: {
-              size: this.fullscreen ? 'normal' : 'fullscreen'
-          }
-      });
-      this.fullscreen = !this.fullscreen;
-      this._setViewportHeight();
+        Utils.triggerResize();
+    },
 
-      Utils.triggerResize();
-  },
+    _resetAppState() {
+        this.fire('reset-app-state');
+    },
 
-  _resetAppState () {
-      this.fire('reset-app-state');
-  },
+    _runButtonClicked() {
+        this.fire('run-button-clicked');
+    },
 
-  _runButtonClicked () {
-      this.fire('run-button-clicked');
-  },
-
-  getViewportScale () {
-      return this.$.content.getScale();
-  }
+    getViewportScale() {
+        return this.$.content.getScale();
+    },
 });

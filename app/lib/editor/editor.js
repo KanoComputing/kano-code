@@ -5,7 +5,6 @@ import ModeActions from '../actions/mode.js';
 import EditorActions from '../actions/editor.js';
 import StoreObserver from './store-observer.js';
 import Toolbox from './toolbox.js';
-import { getMessages } from '../i18n/index.js';
 
 const PROXY_EVENTS = [
     'share',
@@ -37,6 +36,7 @@ class Editor extends EventEmitter {
             blockly: {
                 flyoutMode: false,
             },
+            editingBackground: false,
         });
         this.storeObserver = new StoreObserver(this.store, this);
         this.modeActions = ModeActions(this.store);

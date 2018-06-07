@@ -44,12 +44,14 @@ class Part {
         this.codes = {};
         this.userStyle = Object.assign({}, opts.userStyle);
         this.userProperties = Object.assign({}, opts.userProperties);
-        this.nonvolatileProperties = Array.isArray(opts.nonvolatileProperties) ? opts.nonvolatileProperties : [];
+        this.nonvolatileProperties = Array.isArray(opts.nonvolatileProperties)
+            ? opts.nonvolatileProperties : [];
         this.removable = typeof opts.removable === 'undefined' ? true : opts.removable;
         this.supportedHardware = opts.supportedHardware || [];
         this.fullscreenEdit = opts.fullscreenEdit || false;
         // Define whether a part can be added more than once in an app
         this.singleton = opts.singleton || false;
+        this.config = opts.config || {};
     }
     addBlock(block) {
         this.blocks.push(block);

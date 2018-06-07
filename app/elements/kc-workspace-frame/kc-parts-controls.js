@@ -1,26 +1,26 @@
 import '@polymer/polymer/polymer-legacy.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@kano/polymer-sortablejs/polymer-sortablejs.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '../kano-icons/kc-ui.js';
 import '../kano-add-parts/kano-add-parts.js';
 import '../kano-part-list-item/kano-part-list-item.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 
 class KCPartsControls extends mixinBehaviors([
-        I18nBehavior,
-        AppEditorBehavior,
-        AppElementRegistryBehavior,
-        IronResizableBehavior,
+    I18nBehavior,
+    AppEditorBehavior,
+    AppElementRegistryBehavior,
+    IronResizableBehavior,
 ], PolymerElement) {
-  static get template() {
-    return html`
+    static get template() {
+        return html`
         <style>
             :host {
                 display: block;
@@ -151,93 +151,92 @@ class KCPartsControls extends mixinBehaviors([
             </sortable-js>
         </div>
 `;
-  }
+    }
 
-  static get is() { return 'kc-parts-controls'; }
-  static get properties() {
-      return {
-          partsMenuOpen: {
-              type: Boolean,
-              value: false,
-              notify: true
-          },
-          noPartsControls: {
-              type: Boolean
-          },
-          parts: {
-              type: Array,
-              value: () => {
-                  return [];
-              },
-              notify: true
-          }
-      };
-  }
-  static get observers() {
-      return [
-          '_partsAddedOrRemoved(parts.splices)'
-      ];
-  }
-  _partsAddedOrRemoved(changeRecord) {
-      if (changeRecord && changeRecord.keySplices) {
-          changeRecord.keySplices.forEach(splice => {
-              const added = splice.added,
+    static get is() { return 'kc-parts-controls'; }
+    static get properties() {
+        return {
+            partsMenuOpen: {
+                type: Boolean,
+                value: false,
+                notify: true,
+            },
+            noPartsControls: {
+                type: Boolean,
+            },
+            parts: {
+                type: Array,
+                value: () => [],
+                notify: true,
+            },
+        };
+    }
+    static get observers() {
+        return [
+            '_partsAddedOrRemoved(parts.splices)',
+        ];
+    }
+    _partsAddedOrRemoved(changeRecord) {
+        if (changeRecord && changeRecord.keySplices) {
+            changeRecord.keySplices.forEach((splice) => {
+                const added = splice.added,
                     removed = splice.removed;
-              added.forEach(key => {
-                  const part = this.get(`parts.${key}`);
-                  if (!part) {
-                      return;
-                  }
-                  this._partsToAnimateIn.push(part);
-              });
-          });
-      }
-  }
-  _partsElementsRepeaterChanged() {
-      let allPartsEl = dom(this.root).querySelectorAll('.part'),
-          partEl, partElId;
-      for (let i = 0; i < allPartsEl.length; i++) {
-          partEl = allPartsEl[i];
-          partElId = partEl.getAttribute('id');
-          this._registerElement(`parts-controls-${partElId}`, partEl);
-      }
-      this._partsToAnimateIn.forEach(part => {
-          let partEl = this.$$(`#part-${part.id}`),
-              partInlineControlsEl;
-          if (!partEl) {
-              return;
-          }
-          partEl.querySelector('kano-part-list-item').animate({
-              opacity: [0, 1]
-          }, {
-              duration: 300,
-              fill: 'forwards'
-          });
-      });
-      this._partsToAnimateIn = [];
-  }
-  constructor() {
-      super();
-      this._partsToAnimateIn = [];
-  }
-  connectedCallback() {
-      super.connectedCallback();
-      this._registerElement('add-part-button', this.$['add-part-button']);
-  }
-  _addPartsTapped() {
-      this._openPartsModal();
-  }
-  _openPartsModal() {
-      this.fire('open-parts-dialog');
-  }
-  _removePart(e) {
-      let part = e.model.get('part');
-      this.fire('remove-part', part);
-  }
-  _partItemTapped(e) {
-      e.preventDefault();
-      let part = e.model.get('part');
-      this.fire('part-selected', part);
-  }
+                added.forEach((key) => {
+                    const part = this.get(`parts.${key}`);
+                    if (!part) {
+                        return;
+                    }
+                    this._partsToAnimateIn.push(part);
+                });
+            });
+        }
+    }
+    _partsElementsRepeaterChanged() {
+        let allPartsEl = dom(this.root).querySelectorAll('.part'),
+            partEl, 
+partElId;
+        for (let i = 0; i < allPartsEl.length; i++) {
+            partEl = allPartsEl[i];
+            partElId = partEl.getAttribute('id');
+            this._registerElement(`parts-controls-${partElId}`, partEl);
+        }
+        this._partsToAnimateIn.forEach((part) => {
+            let partEl = this.$$(`#part-${part.id}`),
+                partInlineControlsEl;
+            if (!partEl) {
+                return;
+            }
+            partEl.querySelector('kano-part-list-item').animate({
+                opacity: [0, 1],
+            }, {
+                duration: 300,
+                fill: 'forwards',
+            });
+        });
+        this._partsToAnimateIn = [];
+    }
+    constructor() {
+        super();
+        this._partsToAnimateIn = [];
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this._registerElement('add-part-button', this.$['add-part-button']);
+    }
+    _addPartsTapped() {
+        this._openPartsModal();
+    }
+    _openPartsModal() {
+        this.fire('open-parts-dialog');
+    }
+    _removePart(e) {
+        const part = e.model.get('part');
+        this.fire('remove-part', part);
+    }
+    _partItemTapped(e) {
+        e.preventDefault();
+        const part = e.model.get('part');
+        this.fire('part-selected', part);
+    }
 }
 customElements.define(KCPartsControls.is, KCPartsControls);

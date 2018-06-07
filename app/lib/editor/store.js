@@ -1,12 +1,12 @@
-import GlobalStore from '../global-store.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import GlobalStore from '../global-store.js';
 
 const Store = {
     create(initState) {
         const store = GlobalStore.create(initState);
 
         class StoreElement extends store.StateProvider(PolymerElement) {
-            static get is() { return `kc-store-${store.id}` }
+            static get is() { return `kc-store-${store.id}`; }
         }
 
         customElements.define(StoreElement.is, StoreElement);

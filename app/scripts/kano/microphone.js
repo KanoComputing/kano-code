@@ -1,11 +1,13 @@
 // Cross browser tweaks
-// Putting getUserMedia in navigator is a wrong practice, since the spec moved it inside MediaDevices
+// Putting getUserMedia in navigator is a wrong practice since the spec moved it inside MediaDevices
 // but calling it outside of navigator will fail on chrome
 window.MediaDevices = window.MediaDevices || {};
 if (window.MediaDevices && window.MediaDevices.getUserMedia) {
     navigator.getUserMedia = window.MediaDevices.getUserMedia;
 }
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+navigator.getUserMedia = navigator.getUserMedia
+    || navigator.webkitGetUserMedia
+    || navigator.mozGetUserMedia;
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
 const VOLUME_REFRESH_RATE = 32;
@@ -16,11 +18,11 @@ const PITCH_REFRESH_RATE = 100;
  * Intended to be used as a singleton
  */
 class MicrophoneImpl {
-
-    constructor () {
+    constructor() {
         this._onStreamReady = this._onStreamReady.bind(this);
         this._onStreamError = this._onStreamError.bind(this);
-        // Internal Promise with resolution and rejection bound to the instance's _onReady and _onError methods
+        // Internal Promise with resolution and rejection
+        // bound to the instance's _onReady and _onError methods
         this.ready = new Promise((resolve, reject) => {
             this._onReady = resolve;
             this._onFail = reject;
@@ -28,7 +30,7 @@ class MicrophoneImpl {
         this.started = false;
     }
 
-    start () {
+    start() {
         // start can be called multiple times, but we only get the user media once
         if (this.started) {
             return this.ready;
@@ -43,7 +45,7 @@ class MicrophoneImpl {
         return this.ready;
     }
 
-    stop () {
+    stop() {
         if (this.stream) {
             this.stream.getAudioTracks().forEach((track) => {
                 track.stop();
@@ -53,7 +55,7 @@ class MicrophoneImpl {
         this.stream = null;
     }
 
-    _onStreamReady (stream) {
+    _onStreamReady(stream) {
         this.stream = stream;
         this.audioContext = new window.AudioContext();
         this.analyser = this.audioContext.createAnalyser();
@@ -67,31 +69,29 @@ class MicrophoneImpl {
         this._onReady();
     }
 
-    _updateVolumeData () {
+    _updateVolumeData() {
         if (!this.analyser) {
             return;
         }
-        let stats;
         // Populates the sound data array
         this.analyser.getByteFrequencyData(this.soundData);
-        stats = this._getSoundStats(this.soundData);
+        const stats = this._getSoundStats(this.soundData);
         this.volume = Math.min(120, stats.volume) / 1.2;
         this.low = Math.min(120, stats.low) / 1.2;
     }
 
-    _updatePitchData () {
+    _updatePitchData() {
         if (!this.analyser) {
             return;
         }
-        let frequency;
         this.analyser.getFloatTimeDomainData(this.pitchData);
-        frequency = this._correlatePitch(this.pitchData, this.audioContext.sampleRate);
+        const frequency = this._correlatePitch(this.pitchData, this.audioContext.sampleRate);
         if (frequency !== -1 && frequency < 2000) {
             this.pitch = Math.min(100, Math.max(0, (Math.log(frequency) - 5.4) * (100 / 3)));
         }
     }
 
-    _getSoundStats (array) {
+    _getSoundStats(array) {
         let values = 0,
             lows = 0,
             length = array.length,
@@ -109,8 +109,8 @@ class MicrophoneImpl {
         return { volume: average, low: lows / 21 };
     }
 
-    _correlatePitch (buf, sampleRate) {
-        const MIN_SAMPLES = 0,  // will be initialized when AudioContext is created.
+    _correlatePitch(buf, sampleRate) {
+        const MIN_SAMPLES = 0, // will be initialized when AudioContext is created.
             GOOD_ENOUGH_CORRELATION = 0.9, // this is the "bar" for how close a correlation needs to be
             SIZE = buf.length,
             MAX_SAMPLES = Math.floor(SIZE / 2),
@@ -121,8 +121,8 @@ class MicrophoneImpl {
             foundGoodCorrelation = false;
 
         for (let i = 0; i < SIZE; i++) {
-            let val = buf[i];
-            rms = rms + val * val;
+            const val = buf[i];
+            rms += val * val;
         }
         rms = Math.sqrt(rms / SIZE);
         if (rms < 0.01) { // not enough signal
@@ -154,7 +154,7 @@ class MicrophoneImpl {
                 // we know best_offset >=1,
                 // since foundGoodCorrelation cannot go to true until the second pass (offset=1), and
                 // we can't drop into this clause until the following pass (else if).
-                let shift = (correlations[best_offset + 1] - correlations[best_offset - 1]) / correlations[best_offset];
+                const shift = (correlations[best_offset + 1] - correlations[best_offset - 1]) / correlations[best_offset];
                 return sampleRate / (best_offset + (8 * shift));
             }
             lastCorrelation = correlation;
@@ -165,16 +165,16 @@ class MicrophoneImpl {
         return -1;
     }
 
-    _updateVolumeDataIfNeeded () {
-        let now = new Date();
+    _updateVolumeDataIfNeeded() {
+        const now = new Date();
         if (!this._lastVolumeUpdate || now - this._lastVolumeUpdate > VOLUME_REFRESH_RATE) {
             this._updateVolumeData();
             this._lastVolumeUpdate = now;
         }
     }
 
-    _updatePitchDataIfNeeded () {
-        let now = new Date();
+    _updatePitchDataIfNeeded() {
+        const now = new Date();
         if (!this._lastPitchUpdate || now - this._lastPitchUpdate > PITCH_REFRESH_RATE) {
             this._updatePitchData();
             this._lastPitchUpdate = now;
@@ -182,25 +182,24 @@ class MicrophoneImpl {
     }
 
     /**
-     * Return the volume data from the microphone ( between 0 and 100 ). Updates if the data is stale.
+     * Return the volume data from the microphone ( between 0 and 100 ) Updates if the data is stale
      */
-    getVolume () {
+    getVolume() {
         this._updateVolumeDataIfNeeded();
         return this.volume || 0;
     }
 
     /**
-     * Return the pitch data from the microphone ( between 0 and 100 ). Updates if the data is stale.
+     * Return the pitch data from the microphone ( between 0 and 100 ) Updates if the data is stale
      */
-    getPitch () {
+    getPitch() {
         this._updatePitchDataIfNeeded();
         return this.pitch;
     }
 
-    _onStreamError (e) {
+    _onStreamError(e) {
         this._onFail(e);
     }
-
 }
 
 // Is a singleton, all microphone data is shared

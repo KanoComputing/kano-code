@@ -10,6 +10,7 @@ const CONSTANTS = [
     'UPDATE_PART',
     'UPDATE_BACKGROUND',
     'SET_FLYOUT_MODE',
+    'EDIT_BACKGROUND',
 ];
 const EDITOR_TYPES = Store.types(CONSTANTS);
 
@@ -41,10 +42,8 @@ const EditorActions = (store) => {
         }
         case EDITOR_TYPES.SELECT_PART: {
             this.set('state.selectedPartIndex', action.index);
-            if (action.index === null) {
-                this.set('state.selectedPart', null);
-            } else {
-                this.set('state.selectedPart', this.get(`state.addedParts.${action.index}`));
+            if (action.index !== null) {
+                this.set('state.editingBackground', false);
             }
             break;
         }
@@ -64,6 +63,11 @@ const EditorActions = (store) => {
         }
         case EDITOR_TYPES.SET_FLYOUT_MODE: {
             this.set('state.blockly.flyoutMode', action.isFlyoutMode);
+            break;
+        }
+        case EDITOR_TYPES.EDIT_BACKGROUND: {
+            this.set('state.editingBackground', action.state);
+            this.set('state.selectedPartIndex', null);
             break;
         }
         default: {
@@ -90,6 +94,9 @@ const EditorActions = (store) => {
         },
         setFlyoutMode(isFlyoutMode) {
             store.dispatch({ type: EDITOR_TYPES.SET_FLYOUT_MODE, isFlyoutMode });
+        },
+        editBackground(state) {
+            store.dispatch({ type: EDITOR_TYPES.EDIT_BACKGROUND, state });
         },
     };
 };

@@ -1,4 +1,5 @@
 import { localize } from '../../../i18n/index.js';
+import '../../../../elements/kano-light-shape-configuration/kano-light-shape-configuration.js';
 
 const lightRectangle = {
     partType: 'ui',
@@ -17,14 +18,14 @@ const lightRectangle = {
             type: 'range',
             label: localize('WIDTH'),
             min: 1,
-            max: 16
-        },{
+            max: 16,
+        }, {
             key: 'height',
             type: 'range',
             label: localize('HEIGHT'),
             min: 1,
-            max: 8
-        },{
+            max: 8,
+        }, {
             key: 'color',
             type: 'color',
             label: localize('COLOR'),
@@ -37,8 +38,7 @@ const lightRectangle = {
         color: '#ffffff',
     },
     blocks: [{
-        block: (part) => {
-            return {
+        block: (part) => ({
                 id: 'set_x',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_UI_SET_X}`,
                 args0: [{
@@ -52,18 +52,14 @@ const lightRectangle = {
                 shadow: {
                     'X': `<shadow type="math_number"><field name="NUM">1</field></shadow>`,
                 },
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let x = Blockly.JavaScript.valueToCode(block, 'X') || 0,
                     code = `devices.get('${part.id}').setX(${x}-1);\n`;
                 return code;
-            };
-        },
+            },
     }, {
-        block: (part) => {
-            return {
+        block: (part) => ({
                 id: 'set_y',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_UI_SET_Y}`,
                 args0: [{
@@ -77,18 +73,14 @@ const lightRectangle = {
                 shadow: {
                     'Y': `<shadow type="math_number"><field name="NUM">1</field></shadow>`
                 }
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let y = Blockly.JavaScript.valueToCode(block, 'Y') || 0,
                     code = `devices.get('${part.id}').setY(${y}-1);\n`;
                 return code;
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'set_width',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_LIGHT_RECTANGLE_SET_WIDTH}`,
                 args0: [{
@@ -102,18 +94,14 @@ const lightRectangle = {
                 shadow: {
                     'WIDTH': `<shadow type="math_number"><field name="NUM">1</field></shadow>`
                 }
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let width = Blockly.JavaScript.valueToCode(block, 'WIDTH') || 1,
                     code = `devices.get('${part.id}').setWidth(${width});\n`;
                 return code;
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'set_height',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_LIGHT_RECTANGLE_SET_HEIGHT}`,
                 args0: [{
@@ -127,18 +115,14 @@ const lightRectangle = {
                 shadow: {
                     'HEIGHT': `<shadow type="math_number"><field name="NUM">1</field></shadow>`
                 }
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let height = Blockly.JavaScript.valueToCode(block, 'HEIGHT') || 1,
                     code = `devices.get('${part.id}').setHeight(${height});\n`;
                 return code;
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'move_by',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_LIGHT_MOVE_BY}`,
                 args0: [{
@@ -173,10 +157,8 @@ const lightRectangle = {
                 shadow: {
                     'MOVEMENT': `<shadow type="math_number"><field name="NUM">1</field></shadow>`
                 }
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let direction = block.getFieldValue('direction'),
                     movement = Blockly.JavaScript.valueToCode(block, 'MOVEMENT') || 0,
                     x = 0,
@@ -198,11 +180,9 @@ const lightRectangle = {
                 }
                 code = `devices.get('${part.id}').move(${x}, ${y});\n`;
                 return code;
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'set_color',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_LIGHT_CIRCLE_SET_COLOR}`,
                 args0: [{
@@ -216,86 +196,63 @@ const lightRectangle = {
                 shadow: {
                     'COLOR': `<shadow type="colour_picker"><field name="COLOUR">#ffffff</field></shadow>`
                 }
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || '"#ffffff"',
                     code = `devices.get('${part.id}').setColor(${color});\n`;
                 return code;
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'get_x',
                 message0: `${part.name} X`,
                 output: 'Number'
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let code = `devices.get('${part.id}').getX()+1`;
                 return [code];
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'get_y',
                 message0: `${part.name} Y`,
                 output: 'Number'
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let code = `devices.get('${part.id}').getY()+1`;
                 return [code];
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'get_width',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_LIGHT_RECTANGLE_WIDTH}`,
                 output: 'Number'
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let code = `devices.get('${part.id}').getWidth()`;
                 return [code];
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'get_height',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_LIGHT_RECTANGLE_HEIGHT}`,
                 output: 'Number'
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let code = `devices.get('${part.id}').getHeight()`;
                 return [code];
-            };
-        }
-    },{
-        block: (part) => {
-            return {
+            },
+    }, {
+        block: (part) => ({
                 id: 'get_color',
                 message0: `${part.name} ${Blockly.Msg.BLOCK_LIGHT_CIRCLE_COLOR}`,
                 output: 'Colour'
-            };
-        },
-        javascript: (part) => {
-            return (block) => {
+            }),
+        javascript: (part) => (block) => {
                 let code = `devices.get('${part.id}').getColor()`;
                 return [code];
-            };
-        }
-    }]
+            },
+    }],
 };
 
 export default lightRectangle;

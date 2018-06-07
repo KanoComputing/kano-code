@@ -1,19 +1,20 @@
 import '@polymer/polymer/polymer-legacy.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icon/iron-icon.js';
-import '../kano-icons/parts.js';
-import '@kano/kwc-style/color.js';
-import '../inline-controls/kano-inline-controls.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { Templatizer } from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
-var themeColors = {
-    'ui': '#00d9c7',
-    'data': '#9b61bd',
-    'hardware': '#ef5285'
+import '@kano/kwc-style/color.js';
+import '../kano-icons/parts.js';
+import '../inline-controls/kano-inline-controls.js';
+
+const themeColors = {
+    ui: '#00d9c7',
+    data: '#9b61bd',
+    hardware: '#ef5285',
 };
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 @apply --layout-horizontal;
@@ -63,79 +64,63 @@ Polymer({
         </template>
 `,
 
-  is:'kano-part-list-item',
-  behaviors: [Templatizer],
+    is: 'kano-part-list-item',
+    behaviors: [Templatizer],
 
-  properties: {
-      model: Object
-  },
+    properties: {
+        model: Object,
+    },
 
-  observers: [
-      '_mutedChanged(model.muted)',
-      '_typeChanged(model.type)'
-  ],
+    observers: [
+        '_mutedChanged(model.muted)',
+        '_typeChanged(model.type)',
+    ],
 
-  listeners: {
-      'mouseenter': '_applyColor',
-      'mouseleave': '_unApplyColor'
-  },
+    listeners: {
+        mouseenter: '_applyColor',
+        mouseleave: '_unApplyColor',
+    },
 
-  _forwardParentProp (prop, value) {
-      if (this.instance) {
-          this.instance.__setProperty(prop, value);
-      }
-  },
+    _applyColor() {
+        this.$.icon.style.fill = themeColors[this.model.partType];
+    },
 
-  _forwardParentPath (path, value) {
-      if (this.instance) {
-          this.instance._notifyPath(path, value, true);
-      }
-  },
+    _unApplyColor() {
+        this.$.icon.style.fill = '#8F9195';
+    },
 
-  _applyColor () {
-      this.$.icon.style.fill = themeColors[this.model.partType];
-  },
+    _computeLabelClass(connected) {
+        return connected === false ? 'disconnected' : '';
+    },
 
-  _unApplyColor () {
-      this.$.icon.style.fill = '#8F9195';
-  },
+    _computeLabel(connected) {
+        if (this.model.partType === 'data') {
+            return connected === false ? '(data offline)' : '';
+        } else if (this.model.partType === 'hardware') {
+            return connected === false ? '(disconnected)' : '';
+        }
+        return '';
+    },
 
-  _computeLabelClass (connected) {
-      return connected === false ? 'disconnected' : '';
-  },
+    _mutedChanged() {
+        this.fire('change', {
+            type: 'change-part-volume',
+            part: this.model,
+        });
+    },
 
-  _computeLabel (connected) {
-      if (this.model.partType === 'data') {
-          return connected === false ? '(data offline)' : '';
-      } else if (this.model.partType === 'hardware') {
-          return connected === false ? '(disconnected)' : '';
-      }
-  },
+    _typeChanged(type) {
+        const templateEl = this.$[type];
 
-  _mutedChanged (muted) {
-      this.fire('change', {
-          type: 'change-part-volume',
-          part: this.model
-      });
-  },
+        if (!templateEl) {
+            return;
+        }
+        const stamp = this._stampTemplate(templateEl);
 
-  _typeChanged (type) {
-      let template = this.$[type];
+        while (this.$.controls.firstChild) {
+            this.$.controls.removeChild(this.$.controls.firstChild);
+        }
 
-      if (!template) {
-          return;
-      }
-
-      this.templatize(template);
-
-      this.instance = this.stamp({
-          model: this.model
-      });
-
-      while (this.$.controls.firstChild) {
-          this.$.controls.removeChild(this.$.controls.firstChild);
-      }
-
-      this.$.controls.appendChild(this.instance.root);
-  }
+        this.$.controls.appendChild(stamp);
+    },
 });

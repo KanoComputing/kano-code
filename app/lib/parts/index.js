@@ -3,9 +3,8 @@ import PartsActions from '../actions/parts.js';
 import Plugin from '../editor/plugin.js';
 
 class PartsPlugin extends Plugin {
-    constructor(types) {
+    constructor() {
         super();
-        this.types = types;
         this.parts = new Parts();
         this.partList = [];
     }
@@ -22,19 +21,27 @@ class PartsPlugin extends Plugin {
         const workspace = this.editor.getWorkspace();
         workspace.addEventListener('open-parts-dialog', this._openPartsDialog.bind(this));
 
+        this.updateAddPartsForm();
+    }
+    setPartTypes(types) {
+        this.types = types;
         this.types.forEach((PartClass) => {
             this.parts.defineType(PartClass.id, PartClass);
         });
+    }
+    setParts(parts) {
+        this.partList = parts;
         this.partList.forEach((partDefinition) => {
             this.parts.define(partDefinition);
         });
-        this.updateAddPartsForm();
     }
     onModeSet(modeDefinition) {
-        const modeParts = this.partList
-            .filter(part => modeDefinition.parts.indexOf(part.type) !== -1);
-        this.partsActions.updatePartsList(modeParts);
-        this.editor.emit('parts-changed', modeParts);
+        const parts = modeDefinition.parts || [];
+        const partTypes = modeDefinition.partTypes || [];
+        this.setParts(parts);
+        this.setPartTypes(partTypes);
+        this.partsActions.updatePartsList(parts);
+        this.editor.emit('parts-changed', parts);
         this.updateAddPartsForm();
     }
     updateAddPartsForm() {
@@ -46,9 +53,7 @@ class PartsPlugin extends Plugin {
         if (!mode) {
             return;
         }
-        const modeParts = this.partList
-            .filter(part => mode.parts.indexOf(part.type) !== -1);
-        addPartsForm.availableParts = modeParts;
+        addPartsForm.availableParts = this.partList;
     }
     _onAddPartsFormConfirmed(e) {
         const addPartsDialog = this.editor.getElement('add-parts-dialog');
@@ -75,9 +80,6 @@ class PartsPlugin extends Plugin {
             });
         }
         this.editor.rootEl.load(app);
-    }
-    setParts(parts) {
-        this.partList = parts;
     }
     _onAddPartRequest(e) {
         this.addPart(e);

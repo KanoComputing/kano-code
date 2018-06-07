@@ -1,7 +1,11 @@
 import FlowDown from 'flow-down/flow-down.js';
+import ArraySelector from 'flow-down/plugin/array-selector.js';
+
 const StoreFactory = {
     create(initState) {
         const store = FlowDown.createStore(initState);
+
+        ArraySelector(store);
 
         const { getStoreId } = store.ReceiverBehavior;
 
