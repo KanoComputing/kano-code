@@ -1,34 +1,27 @@
 /* jshint node:true */
-'use strict';
 
-let gulp = require('gulp'),
-    $ = require('gulp-load-plugins')({ lazy: false }),
-    watchify = require('watchify'),
-    source = require('vinyl-source-stream'),
-    es = require('event-stream'),
-    htmlAutoprefixer = require("html-autoprefixer"),
-    connect = require('connect'),
-    livereload = require('livereload'),
-    serveStatic = require('./tasks/serve'),
-    history = require('connect-history-api-fallback'),
-    validateChallenges = require('./tasks/validate-challenges-locales'),
-    runSequence = require('run-sequence'),
-    env = process.env.NODE_ENV || 'development',
-    target = process.env.TARGET || 'web',
-    version = require('./package.json').version,
-    utils;
+const gulp = require('gulp');
+const $ = require('gulp-load-plugins')({ lazy: false });
+const source = require('vinyl-source-stream');
+const es = require('event-stream');
+const htmlAutoprefixer = require('html-autoprefixer');
+const validateChallenges = require('./tasks/validate-challenges-locales');
+const runSequence = require('run-sequence');
+const { version } = require('./package.json');
 
-const namedResolutionMiddleware = require('./tasks/named-resolution-middleware');
+const env = process.env.NODE_ENV || 'development';
+const target = process.env.TARGET || 'web';
+let utils;
 
 const DEFAULT_META_DATA = [
-    ["og:title", "Kano Code"],
-    ["og:description", "Make real apps, real fast"],
-    ["og:site-name", "Kano Code"],
-    ["og:url", "https://apps.kano.me/"],
-    ["og:image", ""],
-    ["twitter:card", "summary_large_image"],
-    ["twitter:site", "@teamkano"],
-    ["theme-color", "#ff842a"]
+    ['og:title', 'Kano Code'],
+    ['og:description', 'Make real apps, real fast'],
+    ['og:site-name', 'Kano Code'],
+    ['og:url', 'https://apps.kano.me/'],
+    ['og:image', ''],
+    ['twitter:card', 'summary_large_image'],
+    ['twitter:site', '@teamkano'],
+    ['theme-color', '#ff842a'],
 ];
 
 utils = {
@@ -36,11 +29,11 @@ utils = {
         $.util.beep();
         return error.message || error;
     }),
-    notifyUpdate (message) {
+    notifyUpdate(message) {
         return $.util.log($.util.colors.blue(message));
     },
     // Wrap vulcanize to automatically add error reporting
-    vulcanize (options) {
+    vulcanize(options) {
         return $.vulcanize(options)
             .on('error', utils.notifyError);
     },
@@ -48,8 +41,8 @@ utils = {
      * gulp-html-autoprefixer points to an outdated version.
      * Putting this here until they fix it.
      */
-    htmlAutoprefixerStream () {
-        return es.map(function (file, done) {
+    htmlAutoprefixerStream() {
+        return es.map((file, done) => {
             let htmlString = file.contents.toString(),
                 prefixed = htmlAutoprefixer.process(htmlString);
             file.contents = new Buffer(prefixed);
@@ -61,7 +54,7 @@ utils = {
             }
         });
     },
-    getEnvVars () {
+    getEnvVars() {
         let code = '';
 
         code += 'window.Kano = {};';
@@ -74,22 +67,21 @@ utils = {
 
         return code;
     },
-    isEnv (env) {
+    isEnv(env) {
         return process.env.NODE_ENV === env;
     },
-    getHtmlReplaceOptions () {
-
-        let mapping = {
+    getHtmlReplaceOptions() {
+        const mapping = {
             env: `<script type="text/javascript">
                     ${utils.getEnvVars()}
                 </script>`,
             config: `<link rel="import" href="./${env}.html">
                 <link rel="import" href="./${target}.html">`,
-            base: `<base href="/" />`,
+            base: '<base href="/" />',
             meta: {
                 src: DEFAULT_META_DATA,
-                tpl: '<meta name="%s" content="%s">'
-            }
+                tpl: '<meta name="%s" content="%s">',
+            },
         };
 
         if (process.env.TARGET === 'rpi' || process.env.TARGET === 'osonline') {
@@ -107,79 +99,42 @@ utils = {
         }
 
         return mapping;
-    }
+    },
 };
 
 $.pump = require('pump');
+
 $.utils = utils;
 $.source = source;
-$.watchify = watchify;
 $.runSequence = runSequence;
-$.connect = connect;
-$.serveStatic = serveStatic;
-$.history = history;
 $.debug = env === 'development' || process.env.DEBUG;
 
-$.transpile = () => {
-    return $.babel({
-        presets: [
-            ['env', {
-                targets: {
-                    browsers: ["last 2 versions"]
-                },
-                modules: false
-            }]
-        ],
-        sourceMaps: $.debug ? 'inline' : false
-    });
-};
-
-$.startServer = (lr) => {
-    let server = $.connect();
-    if (lr) {
-        server = server.use(require('connect-livereload')());
-    }
-    return server
-        .use($.history())
-        .use($.serveStatic({
-            root: __dirname + '/app',
-        }))
-        .use($.serveStatic({
-            root: __dirname + '/',
-        }))
-        .use(namedResolutionMiddleware({ modulesDir: '/' }))
-        .listen(4000);
-};
-
-gulp.task('serve', () => {
-    return $.startServer();
-});
-
-gulp.task('watch', () => {
-    $.startServer(true);
-    livereload.createServer().watch(__dirname + "/app");
+$.transpile = () => $.babel({
+    presets: [
+        ['env', {
+            targets: {
+                browsers: ['last 2 versions'],
+            },
+            modules: false,
+        }],
+    ],
+    sourceMaps: $.debug ? 'inline' : false,
 });
 
 // Copy the webcomponents polyfill to the vendor folder
-gulp.task('polyfill', () => {
-    return gulp.src('app/bower_components/webcomponentsjs/webcomponents-lite.min.js')
-        .pipe(gulp.dest('www/assets/vendor/webcomponentsjs/'));
-});
+gulp.task('polyfill', () => gulp.src('app/bower_components/webcomponentsjs/webcomponents-lite.min.js')
+    .pipe(gulp.dest('www/assets/vendor/webcomponentsjs/')));
 
-gulp.task('validate-challenges', () => {
-    return validateChallenges.validateChallenges(true);
-});
+gulp.task('validate-challenges', () => validateChallenges.validateChallenges(true));
 
-gulp.task('build-engine', () => {
-    return gulp.src([
-        'app/elements/**/*',
-        'app/lib/**/*',
-        'app/locale/**/*',
-        'app/scripts/**/*',
-        'app/assets/vendor/**/*',
-    ], { base: './' })
-        .pipe(gulp.dest('kc'));
-});
+gulp.task('build-engine', () => gulp.src([
+    'app/elements/**/*',
+    'app/lib/**/*',
+    'app/locale/**/*',
+    'app/scripts/**/*',
+    'app/assets/vendor/**/*',
+], { base: './' })
+    .pipe(gulp.dest('kc')));
 
 require('./tasks/service-worker')(gulp, $);
 require('./tasks/workers')(gulp, $);

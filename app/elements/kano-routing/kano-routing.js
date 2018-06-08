@@ -53,19 +53,19 @@ class KanoRouting extends Store.StateReceiver(PolymerElement) {
                     <button class="kano-alert-primary" slot="actions" on-tap="_goToTapcode">Try it</button>
                 </kano-alert>
                 <iron-lazy-pages>
-                    <template is="dom-if" data-route="story" data-path="/views/kano-view-story/kano-view-story.js" restamp>
+                    <template is="dom-if" data-route="story" data-path="../../views/kano-view-story/kano-view-story.js" restamp>
                         <kano-view-story show-save-prompt="{{leaveAlert}}"></kano-view-story>
                     </template>
-                    <template is="dom-if" data-route="tutorial" data-path="/views/kano-view-tutorial/kano-view-tutorial.js" restamp>
+                    <template is="dom-if" data-route="tutorial" data-path="../../views/kano-view-tutorial/kano-view-tutorial.js" restamp>
                         <kano-view-tutorial></kano-view-tutorial>
                     </template>
-                    <template is="dom-if" data-route="editor" data-path="/views/kano-view-editor/kano-view-editor.js" restamp>
+                    <template is="dom-if" data-route="editor" data-path="../../views/kano-view-editor/kano-view-editor.js" restamp>
                         <kano-view-editor show-save-prompt="{{leaveAlert}}"></kano-view-editor>
                     </template>
-                    <template is="dom-if" data-route="flags" data-path="/views/kano-view-flags/kano-view-flags.js" restamp>
+                    <template is="dom-if" data-route="flags" data-path="../../views/kano-view-flags/kano-view-flags.js" restamp>
                         <kano-view-flags></kano-view-flags>
                     </template>
-                    <template is="dom-if" data-route="demo" data-path="/views/kano-view-demo/kano-view-demo.js" restamp>
+                    <template is="dom-if" data-route="demo" data-path="../../views/kano-view-demo/kano-view-demo.js" restamp>
                         <kano-view-demo></kano-view-demo>
                     </template>
                 </iron-lazy-pages>

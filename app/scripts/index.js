@@ -67,7 +67,7 @@ const Bootstrap = {
         Promise.all([
             I18n.load(`/locale/editor/${lang}.json`),
             I18n.load(`/locale/blockly/${lang}.json`).then(m => window.CustomBlocklyMsg = m),
-            import('/elements/elements.js'),
+            import('../elements/elements.js'),
         ]).then(() => {
             this.onElementsLoaded();
         });
