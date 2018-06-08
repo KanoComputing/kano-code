@@ -164,7 +164,7 @@ Polymer({
                     on-change="_onBlocklyChanged"
                     on-code-changed="_onCodeChanged"
                     on-blockly-ready="_onBlocklyReady"
-                    media="http://localhost:4000/node_modules/@kano/kwc-blockly/blockly_built/media/">
+                    media="[[media]]">
             <div id="toolbox-enhancer-above" class="toolbox-enhancer above" slot="above-toolbox">
                 <button type="button" class="logo icon" on-tap="_exitButtonTapped" hidden\$="[[noUser]]">
                     <iron-icon class="block-logo" src\$="/assets/kano-logo-simple.svg"></iron-icon>
@@ -351,7 +351,6 @@ Polymer({
     },
 
     ready() {
-        console.log('ready');
         const { config } = this.getState();
         this.media = config.BLOCKLY_MEDIA;
         this.toolboxReady = false;
