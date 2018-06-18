@@ -6,6 +6,7 @@ const COLOR = '#f75846';
 class BlocklyLogic {
     static get type() { return 'blockly'; }
     static get id() { return 'logic'; }
+    static get color() { return COLOR; }
     static register(Blockly) {
         Blockly.Blocks.logic_compare = {
             init() {
@@ -38,48 +39,6 @@ class BlocklyLogic {
                 this.setHelpUrl('%{BKY_LOGIC_COMPARE_HELPURL}');
             },
         };
-
-        Blockly.Blocks.if_collides = {
-            init() {
-                Blockly.Blocks.collision_event.applyCollisionFields('', this);
-
-                this.setOutput('Boolean');
-
-                this.setColour(COLOR);
-            },
-            getFirstPartOptions() {
-                const parts = Blockly.Blocks.collision_event.getParts() || [];
-                const options = parts.map(this.formatPartOption);
-
-                if (!options.length) {
-                    options.push(['No available part', '']);
-                }
-
-                return options;
-            },
-            getSecondPartOptions() {
-                const parts = Blockly.Blocks.collision_event.getParts() || [];
-                const options = parts.filter(part => part.id !== this.getFieldValue('PART1')).map(this.formatPartOption);
-
-                // The @ here is to make sure no part id will collide with this name
-                options.push(['Top Edge', "'@top-edge'"]);
-                options.push(['Right Edge', "'@right-edge'"]);
-                options.push(['Bottom Edge', "'@bottom-edge'"]);
-                options.push(['Left Edge', "'@left-edge'"]);
-
-                return options;
-            },
-            formatPartOption(part) {
-                return [part.name, `parts.get('${part.id}')`];
-            },
-        };
-
-        Blockly.JavaScript.if_collides = (block) => {
-            const part1Id = block.getFieldValue('PART1');
-            const part2Id = block.getFieldValue('PART2');
-            const code = `parts.collisionBetween(${part1Id || null}, ${part2Id})`;
-            return [code];
-        };
         // Assign custom color to blockly core blocks
         [
             'controls_if',
@@ -102,7 +61,6 @@ class BlocklyLogic {
                 'logic_operation',
                 'logic_negate',
                 'logic_boolean',
-                'if_collides',
             ],
         };
     }

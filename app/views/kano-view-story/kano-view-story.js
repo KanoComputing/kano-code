@@ -3,6 +3,9 @@ import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@kano/web-components/kano-reward-modal/kano-reward-modal.js';
 import '@kano/web-components/kano-alert/kano-alert.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { SoundPlayerBehavior } from '@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
 import '../../elements/kano-app-challenge/kano-app-challenge.js';
 import '../../elements/kano-app-editor/kano-app-editor.js';
@@ -20,13 +23,10 @@ import '../../scripts/kano/make-apps/actions/app.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
 import { experiments } from '../../scripts/kano/make-apps/experiments.js';
 import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { Editor, UserPlugin, PartsPlugin, Runner, Mode } from '../../lib/index.js';
 import { PartTypes, Parts } from '../../lib/parts/all.js';
 import { AllModules } from '../../lib/app-modules/all.js';
-import { AllApis } from '../../lib/meta-api/modules/all.js';
+import { AllApis } from '../../scripts/meta-api/all.js';
 import { Challenge } from '../../lib/challenge/index.js';
 
 const behaviors = [

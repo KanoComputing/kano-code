@@ -12,7 +12,7 @@ import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
 import { AllModules } from '../../lib/app-modules/all.js';
 import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
 import { Editor, FileUploadPlugin, I18n, LocalStoragePlugin, Mode, PartsPlugin, Runner, UserPlugin } from '../../lib/index.js';
-import { AllApis } from '../../lib/meta-api/modules/all.js';
+import { AllApis } from '../../scripts/meta-api/all.js';
 import '../../scripts/kano/make-apps/actions/app.js';
 import '../../scripts/kano/make-apps/blockly/blockly.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
