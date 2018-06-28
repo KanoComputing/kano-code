@@ -241,20 +241,19 @@ class BlocklyMetaRenderer {
         case String:
         default: {
             if (param.def.blockly && param.def.blockly.field) {
-                let t;
                 switch (type) {
                 case Number:
-                    t = 'field_number';
-                    break;
+                    return {
+                        type: 'field_number',
+                        value: param.def.default,
+                    };
                 case String:
                 default:
-                    t = 'field_input';
-                    break;
+                    return {
+                        type: 'field_input',
+                        text: param.def.default,
+                    };
                 }
-                return {
-                    type: t,
-                    value: param.def.default,
-                };
             }
             return {
                 type: 'input_value',

@@ -3,6 +3,7 @@ import { GeneratorAPIProvider } from './api.js';
 
 const GENERATOR_BLOCKS = [
     'generator_banner',
+    'generator_step',
 ];
 
 const DEFAULT_COPY = {
@@ -113,6 +114,13 @@ class Challenge extends Plugin {
         };
         return data;
     }
+    static cleanTree(node) {
+        const comments = [...node.querySelectorAll('comment')];
+        comments.forEach((comment) => {
+            comment.parentNode.removeChild(comment);
+        });
+        return node;
+    }
     addGeneratorItem(frame) {
         this.generatorItem = frame.addMenuOption('Generate Challenge', 'kc-ui:export', () => {
             this.download();
@@ -179,9 +187,7 @@ class Challenge extends Plugin {
         const { Blockly } = sourceEditor;
         const app = this.editor.save();
         const { source, parts, mode } = app;
-        const fullMode = this.editor.getMode();
         const xml = Blockly.Xml.textToDom(source);
-        const defaultXml = Blockly.Xml.textToDom(fullMode.defaultSource || fullMode.defaultBlocks);
         this.data.mode = mode;
         this.fieldDefaults = {};
         Object.keys(this.defaults.values).forEach((blockId) => {
@@ -202,142 +208,70 @@ class Challenge extends Plugin {
         if (parts) {
             this.generatePartsSteps(parts);
         }
-        const startOptions = Challenge.findStartNode(xml);
-        if (startOptions) {
-            this.addSteps(this.blockToSteps(startOptions.start));
-            this.data.defaultApp = Blockly.Xml.domToText(startOptions.preloaded);
-        } else {
-            const defaultBlocksSteps = this.matchDefaultBlocks(xml.children, defaultXml.children);
-            this.addSteps(defaultBlocksSteps);
-        }
-        this.data.steps.push({
-            banner: {
-                text: 'You can now test the app',
-                next_button: true,
-            },
-            beacon: {
-                target: 'banner-button',
-                offset: 0,
-            },
+        const startOptions = Challenge.findStartNodes(xml);
+        startOptions.forEach((startOption) => {
+            if (!startOption.start || startOption.start.tagName === 'variables') {
+                return;
+            }
+            this.addSteps(this.blockToSteps(startOption.start));
         });
+        const rootNode = startOptions.reduce((acc, options) => {
+            if (options.preloaded) {
+                acc.appendChild(Challenge.cleanTree(options.preloaded));
+            }
+            return acc;
+        }, xml.cloneNode(false));
+        this.data.defaultApp = Blockly.Xml.domToText(rootNode);
         return this.data;
     }
-    static findStartNode(root) {
+    static findStartNodes(root) {
         const clone = root.cloneNode(true);
-        const startNode = clone.querySelector('block[type="generator_start"]');
-        if (startNode) {
+        const entryNodes = [...clone.children];
+        return entryNodes.map((entryNode) => {
+            const startNode = entryNode.querySelector('block[type="generator_start"]');
+            if (!startNode) {
+                return {
+                    preloaded: null,
+                    start: entryNode,
+                    root: entryNode,
+                };
+            }
             const nextNode = startNode.querySelector('next>block');
+            if (!nextNode) {
+                startNode.parentNode.removeChild(startNode);
+                return {
+                    preloaded: entryNode,
+                    start: null,
+                    root: null,
+                };
+            }
             // Replace the generator block with the real first block
             startNode.parentNode.insertBefore(nextNode, startNode);
             startNode.parentNode.removeChild(startNode);
             // Tag the start of the challenge
             nextNode.setAttribute('challenge-start-node', '');
             // Create a new tree for the generator to parse
-            const cleanRoot = clone.cloneNode(true);
+            const cleanRoot = entryNode.cloneNode(true);
             // Grab the entry point of the challenge
             const cleanStartNode = cleanRoot.querySelector('[challenge-start-node]');
             // Remove the start node from the original clone, this leaves the default blocks on
             // the workspace
             nextNode.parentNode.removeChild(nextNode);
             return {
-                preloaded: clone,
+                preloaded: entryNode,
                 start: cleanStartNode,
                 root: cleanRoot,
             };
-        }
-        return null;
-    }
-    matchDefaultBlocks(blocks, defaultBlocks) {
-        let steps = [];
-        const appChildren = [...blocks].filter(block => block.tagName !== 'variables');
-        for (let i = 0; i < appChildren.length; i += 1) {
-            steps = steps.concat(this.matchDefaultNode(appChildren[i], defaultBlocks[i]));
-        }
-        return steps;
-    }
-    matchDefaultNode(node, defaultNode) {
-        let steps = [];
-        switch (node.tagName) {
-        /**
-         * Compare the blocks. Jump to children if they match, add a delete step
-         * to remove the existing the default block
-         * if the block from the challenge is different from the one defined in the mode
-         */
-        case 'block': {
-            if (!defaultNode) {
-                steps = steps.concat(this.blockToSteps(node));
-            } else if (node.getAttribute('type') === defaultNode.getAttribute('type') &&
-                    node.getAttribute('id') === defaultNode.getAttribute('id')) {
-                steps = steps.concat(this.matchDefaultBlocks(node.children, defaultNode.children));
-            } else {
-                steps.push({
-                    tooltips: [{
-                        text: "You can remove this block we won't need it for this app",
-                        position: 'right',
-                        location: {
-                            block: {
-                                rawId: defaultNode.getAttribute('id'),
-                            },
-                        },
-                    }],
-                    arrow: {
-                        target: 'blockly-bin',
-                        angle: 210,
-                        size: 80,
-                    },
-                    validation: {
-                        blockly: {
-                            delete: {
-                                target: {
-                                    rawId: defaultNode.getAttribute('id'),
-                                },
-                            },
-                        },
-                    },
-                });
-                steps = steps.concat(this.blockToSteps(node));
-            }
-            break;
-        }
-        /**
-         * Adds a change step if the value is different
-         */
-        case 'field': {
-            if (node.firstChild.nodeValue !== defaultNode.firstChild.nodeValue) {
-                steps = steps.concat(this.fieldToSteps(node, defaultNode.firstChild.nodeValue));
-            }
-            break;
-        }
-        case 'statement': {
-            if (defaultNode) {
-                const stSteps = this.matchDefaultNode(node.firstChild, defaultNode.firstChild);
-                steps = steps.concat(stSteps);
-            }
-            if (node) {
-                steps = steps.concat(this.blockToSteps(node.firstChild));
-            }
-            break;
-        }
-        case 'next': {
-            if (!defaultNode) {
-                steps = steps.concat(this.blockToSteps(node.firstChild));
-            } else {
-                const nextSteps = this.matchDefaultNode(node.firstChild, defaultNode.firstChild);
-                steps = steps.concat(nextSteps);
-            }
-            break;
-        }
-        default: {
-            break;
-        }
-        }
-        return steps;
+        });
     }
     static generatorBlockToSteps(node) {
         const type = node.getAttribute('type');
         switch (type) {
         case 'generator_banner': {
             return Challenge.generatorBannerToSteps(node);
+        }
+        case 'generator_step': {
+            return Challenge.generatorStepToSteps(node);
         }
         default: {
             return [];
@@ -353,6 +287,11 @@ class Challenge extends Plugin {
                 next_button: true,
             },
         }];
+    }
+    static generatorStepToSteps(node) {
+        const textField = node.querySelector('field[name="JSON"]');
+        const jsonString = textField.innerText;
+        return [JSON.parse(jsonString)];
     }
     parseComment(node) {
         const commentNode = node.getElementsByTagName('comment')[0];
@@ -497,9 +436,14 @@ class Challenge extends Plugin {
         if (GENERATOR_BLOCKS.indexOf(type) !== -1) {
             steps = steps.concat(Challenge.generatorBlockToSteps(node));
             const nextNode = node.querySelector('next>block');
+            // Nothing connected to block, stop here
+            if (!nextNode) {
+                return steps;
+            }
             // Move the next node in place of the current generator node
             node.parentNode.insertBefore(nextNode, node);
             node.parentNode.removeChild(node);
+            // Continue genratin the challenge from next block
             return steps.concat(this.blockToSteps(nextNode));
         }
 
