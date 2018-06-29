@@ -13,7 +13,6 @@ import '../../elements/kano-share-modal/kano-share-modal.js';
 import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
 import { GABehavior } from '../../elements/behaviors/kano-code-ga-tracking-behavior.js';
 import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
-import '../../scripts/kano/make-apps/blockly/blockly.js';
 import '../../scripts/kano/util/router.js';
 import { Stories } from '../../scripts/kano/make-apps/stories.js';
 import { Progress } from '../../scripts/kano/make-apps/progress.js';
@@ -24,7 +23,7 @@ import { experiments } from '../../scripts/kano/make-apps/experiments.js';
 import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
 import { Editor, UserPlugin, PartsPlugin, Mode } from '../../lib/index.js';
 import { AllModules } from '../../lib/app-modules/all.js';
-import { AllApis } from '../../scripts/meta-api/all.js';
+import { AllApis, EventsModuleFactory } from '../../scripts/meta-api/all.js';
 import { Challenge } from '../../lib/challenge/index.js';
 import { KanoCodeWorkspaceViewProvider } from '../../scripts/workspace/index.js';
 
@@ -185,7 +184,11 @@ class KanoViewStory extends Store.StateReceiver(
         this.partsPlugin = new PartsPlugin();
         this.editor.addPlugin(this.partsPlugin);
 
-        this.editor.toolbox.setEntries(AllApis);
+        const EventsModule = EventsModuleFactory(this.editor);
+
+        const toolboxEntries = [EventsModule, ...AllApis];
+
+        this.editor.toolbox.setEntries(toolboxEntries);
 
         this.editor.runner.addModule(AllModules);
 
@@ -232,7 +235,7 @@ class KanoViewStory extends Store.StateReceiver(
                         return this.loadMode(story.scene.mode || 'normal');
                     })
                     .then((mode) => {
-                        this.setupEditor();
+                        this.setupEditor(mode);
                         this.challenge.load(story, mode);
                         this.$['share-modal-content'].set('nextButtonLabel', Boolean(this.story.next) ? this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
                         this.loading = false;
@@ -244,11 +247,10 @@ class KanoViewStory extends Store.StateReceiver(
         return Mode.load(id, url);
     }
     save() {}
-    setupEditor() {
+    setupEditor(mode) {
         if (this.injected) {
             return;
         }
-        const mode = this.editor.getMode();
         const workspaceViewProvider = new KanoCodeWorkspaceViewProvider(
             this.editor,
             mode.editorTagName || `kano-editor-${mode.id}`,

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Tracking Kano Code</title>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            kano-app-editor {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import '../../node_modules/tracking/build/tracking.js';
+            import { Editor, AppModule, WorkspaceViewProvider, OutputViewProvider } from '../../app/lib/index.js';
+
+            // Define what the output will be, In this case, the video output
+            class TrackingOutputView extends OutputViewProvider {
+                constructor(...args) {
+                    super(...args);
+                    this.root = document.createElement('div');
+                    this.root.style.width = '600px';
+                    this.root.style.height = '450px';
+                    this.root.style.position = 'relative';
+                    this.root.innerHTML = `
+                        <style>
+                            #video, #canvas {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                            }    
+                        </style>
+                        <video id="video" width="600" height="450" preload autoplay loop muted controls></video>
+                        <canvas id="canvas" width="600" height="450"></canvas>
+                    `;
+                    this.tracker = new tracking.ColorTracker();
+                    tracking.track(this.root.querySelector('#video'), this.tracker, { camera: true });
+                    this.canvas = this.root.querySelector('#canvas');
+                }
+                // Every time the output restarts, resets all values
+                start() {
+                    const ctx = this.canvas.getContext('2d');
+                    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                }
+            }
+
+            // Define what the workpsace will be, in this case, it only contains the output
+            // and an output code element to display the generated code in real time
+            class TrackingWorkspaceViewProvider extends WorkspaceViewProvider {
+                constructor(...args) {
+                    super(...args);
+                    this.root = document.createElement('div');
+                    this.root.innerHTML = `
+                        <style>
+                            #tools {
+                                color: white;
+                                padding: 32px;
+                                font-family: Arial;
+                            }    
+                        </style>
+                        <div id="output"></div>
+                        <div id="tools">
+                            <pre>
+                                <code id="code-output"></code>    
+                            </pre>
+                        </div>
+                    `;
+                    this.root.style.width = '100%';
+                    this.output = new TrackingOutputView(...args);
+                    this.root.querySelector('#output').appendChild(this.output.root);
+                    // Listen to the running state change
+                    this.editor.on('running-state-changed', () => {
+                        this.updateCodeOutput();
+                    });
+                }
+                get outputView() {
+                    return this.output;
+                }
+                updateCodeOutput() {
+                    // Put the current code from the editor in the code element
+                    this.root.querySelector('#code-output').innerHTML = `\n${this.editor.getCode() || ''}`;
+                }
+            }
+            class TrackModule extends AppModule {
+                static get name() { return 'track'; }
+                constructor(...args) {
+                    super(...args);
+                    this.addMethod('onColor', '_onColor');
+                    this.addLifecycleStep('start', '_start');
+                    this.addLifecycleStep('stop', '_stop');
+                    this.onTrack = (e) => {
+                        e.data.forEach((event) => {
+                            const match = this.colors.get(event.color);
+                            if (!match) {
+                                return;
+                            }
+                            event.color = match.color;
+                            match.callback(event);
+                        });
+                    };
+                }
+                _start() {
+                    const { outputView } = this.editor;
+                    this.colors = new Map();
+                    this.counter = 0;
+                    outputView.tracker.on('track', this.onTrack);
+                }
+                _stop() {
+                    const { outputView } = this.editor;
+                    outputView.tracker.removeListener('track', this.onTrack);
+                }
+                _onColor(color, callback) {
+                    const { outputView } = this.editor;
+                    const id = this.counter;
+                    this.counter++;
+                    this.colors.set(id, { id, color, callback })
+                    this.createCustomColor(id, color);
+                    outputView.tracker.setColors(Array.from(this.colors.keys()));
+                }
+                createCustomColor(id, value) {
+                    var components = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value);
+                    var customColorR = parseInt(components[1], 16);
+                    var customColorG = parseInt(components[2], 16);
+                    var customColorB = parseInt(components[3], 16);
+
+                    var colorTotal = customColorR + customColorG + customColorB;
+
+                    if (colorTotal === 0) {
+                    tracking.ColorTracker.registerColor(id, function(r, g, b) {
+                        return r + g + b < 10;
+                    });
+                    } else {
+                    var rRatio = customColorR / colorTotal;
+                    var gRatio = customColorG / colorTotal;
+
+                    tracking.ColorTracker.registerColor(id, function(r, g, b) {
+                        var colorTotal2 = r + g + b;
+
+                        if (colorTotal2 === 0) {
+                        if (colorTotal < 10) {
+                            return true;
+                        }
+                        return false;
+                        }
+
+                        var rRatio2 = r / colorTotal2,
+                        gRatio2 = g / colorTotal2,
+                        deltaColorTotal = colorTotal / colorTotal2,
+                        deltaR = rRatio / rRatio2,
+                        deltaG = gRatio / gRatio2;
+
+                        return deltaColorTotal > 0.9 && deltaColorTotal < 1.1 &&
+                        deltaR > 0.9 && deltaR < 1.1 &&
+                        deltaG > 0.9 && deltaG < 1.1;
+                    });
+                    }
+                }
+            }
+
+             class DrawModule extends AppModule {
+                static get name() { return 'draw'; }
+                constructor(...args) {
+                    super(...args);
+                    this.addMethod('square', '_square');
+                }
+                _square(x, y, w, h, c) {
+                    const { outputView } = this.editor.workspaceView;
+                    const canvas = outputView.canvas;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = c;
+                    ctx.fillRect(x, y, w, h);
+                }
+            }
+
+            // CReate the editor
+            const editor = new Editor();
+
+            // Create the toolbox defining three methods in the track module
+            const TrackToolbox = {
+                type: 'module',
+                name: 'track',
+                verbose: 'Track',
+                color: '#00796b',
+                symbols: [{
+                    type: 'function',
+                    name: 'onColor',
+                    verbose: 'Track',
+                    parameters: [{
+                        name: 'color',
+                        returnType: 'Color',
+                        default: '#ff0000',
+                    }, {
+                        name: 'callback',
+                        verbose: 'do',
+                        returnType: Function,
+                    }],
+                    blockly: {
+                        javascript(Blockly, block) {
+                            const color = Blockly.JavaScript.valueToCode(block, 'COLOR');
+                            const statement = Blockly.JavaScript.statementToCode(block, 'CALLBACK');
+                            console.log(statement)
+                            return `track.onColor(${color}, function(track) {${statement}\n});\n`;
+                        }
+                    }
+                }, {
+                    type: 'variable',
+                    name: 'x',
+                    returnType: Number,
+                }, {
+                    type: 'variable',
+                    name: 'y',
+                    returnType: Number,
+                }, {
+                    type: 'variable',
+                    name: 'width',
+                    returnType: Number,
+                }, {
+                    type: 'variable',
+                    name: 'height',
+                    returnType: Number,
+                }, {
+                    type: 'variable',
+                    name: 'color',
+                    returnType: 'Color',
+                }],
+            };
+
+            const DrawToolbox = {
+                type: 'module',
+                name: 'draw',
+                color: '#00796b',
+                symbols: [{
+                    type: 'function',
+                    name: 'square',
+                    parameters: [{
+                        name: 'x',
+                        returnType: Number,
+                        default: 0,
+                    }, {
+                        name: 'y',
+                        returnType: Number,
+                        default: 0,
+                    }, {
+                        name: 'width',
+                        returnType: Number,
+                        default: 100,
+                    }, {
+                        name: 'height',
+                        returnType: Number,
+                        default: 100,
+                    }, {
+                        name: 'color',
+                        returnType: 'Color',
+                        default: '#ff00ff',
+                    }],
+                }],
+            };
+
+            // Add the toolbox entry and runner module
+            editor.toolbox.addEntry(TrackToolbox);
+            editor.toolbox.addEntry(DrawToolbox);
+            editor.runner.addModule(TrackModule);
+            editor.runner.addModule(DrawModule);
+
+            // Create the workpsaceViewProvider
+            const trackView = new TrackingWorkspaceViewProvider(editor);
+
+            editor.registerWorkspaceViewProvider(trackView);
+
+            editor.inject();
+        </script>
+    </body>
+</html>

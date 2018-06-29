@@ -40,8 +40,12 @@ class PartsModule extends AppModule {
     }
 
     _start() {
-        const { addedParts } = this.editor.store.getState();
-        this._parts = addedParts || [];
+        const { workspaceView } = this.editor;
+        const elements = [...workspaceView.partsRoot.querySelectorAll('[id]')];
+        this._parts = elements.reduce((acc, element) => {
+            acc[element.getAttribute('id')] = element;
+            return acc;
+        }, {});
         this._runDevicesMethod('start');
         this._reset();
         this._startCollisionLoop();

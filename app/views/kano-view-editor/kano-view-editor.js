@@ -13,7 +13,6 @@ import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
 import { Editor, FileUploadPlugin, I18n, LocalStoragePlugin, Mode, PartsPlugin, UserPlugin } from '../../lib/index.js';
 import { AllApis, EventsModuleFactory } from '../../scripts/meta-api/all.js';
 import '../../scripts/kano/make-apps/actions/app.js';
-import '../../scripts/kano/make-apps/blockly/blockly.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import '../../scripts/kano/make-apps/utils.js';
