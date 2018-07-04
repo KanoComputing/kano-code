@@ -208,6 +208,9 @@ Polymer({
   },
 
   _onClickEvent (e) {
+      if (this.openedEvent === e) {
+          return;
+      }
       let target = e.path ? e.path[0] : e.target;
       if (this.autoClose && this.opened) {
           // Go up the dom to check if the event originated from inside the tooltip or not
@@ -283,7 +286,8 @@ Polymer({
       }, 10);
   },
 
-  open () {
+  open (e) {
+      this.openedEvent = e;
       // Let an eventual click event triggering the open go the the click handler
       this.async(() => {
           let style = this.style;
