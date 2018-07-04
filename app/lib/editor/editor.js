@@ -9,6 +9,8 @@ import Runner from './runner.js';
 import { Logger } from '../log/index.js';
 import { DefaultWorkspaceViewProvider } from './workspace/default.js';
 import { OutputModule } from './output/module.js';
+import { Dialogs } from './dialogs/index.js';
+import { Keybindings } from './keybindings/index.js';
 
 import '../../elements/kano-app-editor/kano-app-editor.js';
 
@@ -29,9 +31,9 @@ class Editor extends EventEmitter {
         this.config.restartCodeHandler = this.restartApp.bind(this);
         this.logger = new Logger();
         this.logger.setLevel(this.config.LOG_LEVEL);
-        this.elRegistry = new Map();
+        this.elementsRegistry = new Map();
         this.rootEl = document.createElement('kano-app-editor');
-        this.elRegistry.set('editor', this.rootEl);
+        this.elementsRegistry.set('editor', this.rootEl);
         this.rootEl.editor = this;
         this.sourceType = opts.sourceType || 'blockly';
         this.store = Store.create({
@@ -61,6 +63,12 @@ class Editor extends EventEmitter {
 
         this.plugins = [];
 
+        this.dialogs = new Dialogs();
+        this.addPlugin(this.dialogs);
+
+        this.keybindings = new Keybindings();
+        this.addPlugin(this.keybindings);
+
         this.toolbox = new Toolbox();
         this.addPlugin(this.toolbox);
 
@@ -87,14 +95,14 @@ class Editor extends EventEmitter {
         const addPartForm = this.rootEl.$['add-parts'];
         const sourceView = this.rootEl.shadowRoot.querySelector('#root-view');
         const addPartDialog = this.rootEl.$['parts-modal'];
-        this.elRegistry.set('workspace', workspace);
-        this.elRegistry.set('add-parts-form', addPartForm);
-        this.elRegistry.set('add-parts-dialog', addPartDialog);
-        this.elRegistry.set('source-view', sourceView);
-        this.elRegistry.set('toolbox-enhancer-above', sourceView.$['toolbox-enhancer-above']);
+        this.elementsRegistry.set('workspace', workspace);
+        this.elementsRegistry.set('add-parts-form', addPartForm);
+        this.elementsRegistry.set('add-parts-dialog', addPartDialog);
+        this.elementsRegistry.set('source-view', sourceView);
+        this.elementsRegistry.set('toolbox-enhancer-above', sourceView.$['toolbox-enhancer-above']);
     }
     getElement(id) {
-        return this.elRegistry.get(id);
+        return this.elementsRegistry.get(id);
     }
     static proxyEvent(el, emitter, name) {
         const onEvent = (e) => {
@@ -212,6 +220,9 @@ class Editor extends EventEmitter {
     }
     get workspaceView() {
         return this.workspaceProvider;
+    }
+    get root() {
+        return this.rootEl.shadowRoot;
     }
 }
 

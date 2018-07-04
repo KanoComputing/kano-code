@@ -83,9 +83,6 @@ class KCCodeEditor extends Store.StateReceiver(PolymerElement) {
                 .addExtraLib(category.definitionFile, category.id);
         });
     }
-    canRemovePart(part) {
-        return false;
-    }
     getSource() {
         return this.$.editor.value;
     }

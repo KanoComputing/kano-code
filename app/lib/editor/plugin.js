@@ -1,7 +1,7 @@
 /* eslint class-methods-use-this: "off" */
 import EventEmitter from '../util/event-emitter.js';
 
-class EditorPlugin extends EventEmitter {
+export class Plugin extends EventEmitter {
     onInstall() {}
     onModeSet() {}
     onInject() {}
@@ -11,4 +11,4 @@ class EditorPlugin extends EventEmitter {
     }
 }
 
-export default EditorPlugin;
+export default Plugin;

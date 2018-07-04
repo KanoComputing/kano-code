@@ -83,6 +83,18 @@ class Part {
         plain.supportedHardware = this.supportedHardware;
         return plain;
     }
+    _getAPI() {
+        return {
+            type: 'module',
+            name: this.id,
+            verbose: this.name,
+            color: this.color,
+            symbols: [],
+        };
+    }
+    get api() {
+        return this._getAPI();
+    }
 }
 
 export default Part;

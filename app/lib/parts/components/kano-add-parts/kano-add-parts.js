@@ -1,16 +1,18 @@
-import '@polymer/polymer/polymer-legacy.js';
+import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@kano/kwc-style/kwc-style.js';
-import '../kano-style/themes/dark.js';
-import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
-import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import './kano-add-parts-item.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-Polymer({
-  _template: html`
+import '../../../../elements/kano-style/themes/dark.js';
+
+import { localize } from '../../../i18n/index.js';
+
+class KanoAddParts extends PolymerElement {
+    static get is() { return 'kano-add-parts'; }
+    static get template() {
+        return html`
         <style>
             :host {
                 @apply --layout-vertical;
@@ -177,76 +179,60 @@ Polymer({
                 </div>
             </div>
         </div>
-`,
+`;
+    }
+    static get properties() {
+        return {
+            availableParts: {
+                type: Array,
+                observer: '_onAvailablePartsChanged',
+            },
+            empty: {
+                type: Boolean,
+                value: false,
+            },
+            usedParts: {
+                type: Array,
+                value: () => [],
+            },
+            _usedParts: {
+                type: Array,
+                computed: '_computeUsedPartsIndex(usedParts.splices)',
+            },
+        };
+    }
+    constructor() {
+        super();
+        this.selection = {};
+    }
+    localize(...args) {
+        return localize(...args);
+    }
+    _onAvailablePartsChanged(parts) {
+        this.empty = !parts.length;
+    }
+    _getFilter(type) {
+        return (item) => item.partType === type;
+    }
+    _addPart(e) {
+        const type = e.detail;
+        this.dispatchEvent(new CustomEvent('confirm', { bubbles: true, detail: type }));
+    }
+    reset() {
+        this.selection = {};
+    }
+    _repeaterChanged(e) {
+        const target = e.path ? e.path[0] : e.target;
+        const elements = [...dom(target.parentNode).querySelectorAll('kano-add-parts-item')];
+        this.dispatchEvent(new CustomEvent('elements-changed', { detail: elements, bubbles: true }));
+    }
+    _computeUsedPartsIndex() {
+        return this.usedParts.map(part => part.type);
+    }
+    _isPartDisabled(part) {
+        // Part is a singleton and was added before, disable it
+        return part.singleton && this._usedParts.indexOf(part.type) !== -1;
+    }
+}
 
-  is:'kano-add-parts',
-
-  behaviors: [
-      I18nBehavior,
-      AppElementRegistryBehavior
-  ],
-
-  properties: {
-      availableParts: {
-          type: Array,
-          observer: '_onAvailablePartsChanged'
-      },
-      empty: {
-          type: Boolean,
-          value: false
-      },
-      usedParts: {
-          type: Array,
-          value: () => {
-              return [];
-          }
-      },
-      _usedParts: {
-          type: Array,
-          computed: '_computeUsedPartsIndex(usedParts.splices)'
-      }
-  },
-
-  ready () {
-      this.selection = {};
-  },
-
-  _onAvailablePartsChanged (parts) {
-      this.empty = !Boolean(parts.length);
-  },
-
-  _getFilter (type) {
-      return (item) => {
-          return item.partType === type;
-      };
-  },
-
-  _addPart (e) {
-      let type = e.detail;
-      this.fire('confirm', type);
-  },
-
-  reset () {
-      this.selection = {};
-  },
-
-  _repeaterChanged (e) {
-      let target = e.path ? e.path[0] : e.target,
-          partEls = dom(target.parentNode).querySelectorAll('kano-add-parts-item'),
-          partEl;
-
-      for (let i = 0; i < partEls.length; i++) {
-          partEl = partEls[i];
-          this._registerElement(`parts-panel-${partEl.getAttribute('id')}`, partEl);
-      }
-  },
-
-  _computeUsedPartsIndex () {
-      return this.usedParts.map(part => part.type);
-  },
-
-  _isPartDisabled(part) {
-      // Part is a singleton and was added before, disable it
-      return part.singleton && this._usedParts.indexOf(part.type) !== -1;
-  }
-});
+customElements.define(KanoAddParts.is, KanoAddParts);

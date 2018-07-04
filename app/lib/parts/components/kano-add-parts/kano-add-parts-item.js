@@ -1,12 +1,13 @@
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/polymer/polymer-legacy.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-import '../kano-icons/parts.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import '../../../../elements/kano-icons/parts.js';
+
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 @apply --layout-vertical;
@@ -75,40 +76,40 @@ Polymer({
         </button>
 `,
 
-  is:'kano-add-parts-item',
+    is: 'kano-add-parts-item',
 
-  properties: {
-      label: String,
-      type: String,
-      colorFill: String,
-      disabled: Boolean
-  },
+    properties: {
+        label: String,
+        type: String,
+        colorFill: String,
+        disabled: Boolean,
+    },
 
-  listeners: {
-      'mouseenter': '_applyColor',
-      'mouseleave': '_unApplyColor'
-  },
+    listeners: {
+        mouseenter: '_applyColor',
+        mouseleave: '_unApplyColor',
+    },
 
-  _applyColor () {
-      if (this.disabled) {
-          return;
-      }
-      this.$['part-icon'].style.fill = this.colorFill;
-  },
+    _applyColor() {
+        if (this.disabled) {
+            return;
+        }
+        this.$['part-icon'].style.fill = this.colorFill;
+    },
 
-  _unApplyColor () {
-      if (this.disabled) {
-          return;
-      }
-      this.$['part-icon'].style.fill = '#8f9195';
-  },
+    _unApplyColor() {
+        if (this.disabled) {
+            return;
+        }
+        this.$['part-icon'].style.fill = '#8f9195';
+    },
 
-  _tapped (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (this.disabled) {
-          return;
-      }
-      this.fire('part-tap', this.type);
-  }
+    _tapped(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (this.disabled) {
+            return;
+        }
+        this.fire('part-tap', this.type);
+    },
 });

@@ -3,6 +3,10 @@ class AppModule {
         this.editor = editor;
         this.lifecycle = {};
         this.methods = {};
+        this.symbols = [];
+    }
+    getSymbols() {
+        return this.symbols;
     }
     config() {}
     addMethod(name, cbName) {

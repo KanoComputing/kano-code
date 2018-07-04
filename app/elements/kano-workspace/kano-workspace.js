@@ -43,13 +43,7 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
             }
         </style>
         <!-- The variable workspace component will be inserted here -->
-        <div id="workspace-placeholder" on-tap="onTap"></div>
-        <iron-a11y-keys keys="tab" on-keys-pressed="_selectNextPart" target="[[target]]"></iron-a11y-keys>
-        <iron-a11y-keys keys="shift+tab" on-keys-pressed="_selectPrevPart" target="[[target]]"></iron-a11y-keys>
-        <iron-a11y-keys keys="shift+left left" on-keys-pressed="_moveLeft" target="[[target]]"></iron-a11y-keys>
-        <iron-a11y-keys keys="shift+right right" on-keys-pressed="_moveRight" target="[[target]]"></iron-a11y-keys>
-        <iron-a11y-keys keys="shift+up up" on-keys-pressed="_moveUp" target="[[target]]"></iron-a11y-keys>
-        <iron-a11y-keys keys="shift+down down" on-keys-pressed="_moveDown" target="[[target]]"></iron-a11y-keys>
+        <div id="workspace-placeholder"></div>
 `;
     }
 
@@ -66,20 +60,6 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
                 observer: 'runningChanged',
                 linkState: 'running',
             },
-            selectedIndex: {
-                type: Number,
-                linkState: 'selectedPartIndex',
-            },
-            selected: {
-                type: Object,
-                linkArray: 'parts',
-                linkIndex: 'selectedIndex',
-                observer: '_selectedChanged',
-            },
-            internalSelection: {
-                type: Object,
-                value: null,
-            },
             mode: {
                 type: Object,
                 linkState: 'mode',
@@ -91,104 +71,14 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
             },
         };
     }
-    static get observers() {
-        return [
-            'partsChanged(parts.*)',
-        ];
-    }
-    _computeSelectedPart(parts, index) {
-        if (!parts) {
-            return;
-        }
-        return parts[index];
-    }
     constructor() {
         super();
         this.elements = {};
         this.tappedElement = null;
         this.dropzone = null;
-        this.devices = {};
-        this.devices.get = this._getPartById.bind(this);
-        this._partSelected = this._partSelected.bind(this);
     }
     get view() {
         return this.dropzone;
-    }
-    connectedCallback() {
-        super.connectedCallback();
-        this.addEventListener('part-selected', this._partSelected);
-        this.target = document.body;
-        // Enable pop on drop part only after initialisation
-        this.async(() => {
-            this.soundReady = true;
-        }, 500);
-    }
-    disconnectedCallback() {
-        super.disconnectedCallback();
-        this.removeEventListener('part-selected', this._partSelected);
-    }
-    _moveLeft(e) {
-        this._movePart('left', e.detail.keyboardEvent.shiftKey);
-    }
-    _moveRight(e) {
-        this._movePart('right', e.detail.keyboardEvent.shiftKey);
-    }
-    _moveUp(e) {
-        this._movePart('up', e.detail.keyboardEvent.shiftKey);
-    }
-    _moveDown(e) {
-        this._movePart('down', e.detail.keyboardEvent.shiftKey);
-    }
-    _movePart(dir, shift) {
-        let movement,
-            axis,
-            partElem,
-            x,
-            y;
-        if (!this.selected || !this.dropzone) {
-            return;
-        }
-        movement = (dir === 'right' || dir === 'down') ? 1 : -1;
-        if (shift) {
-            movement *= 10;
-        }
-        x = (dir === 'right' || dir === 'left') ? movement : 0;
-        y = (dir === 'up' || dir === 'down') ? movement : 0;
-        partElem = this.dropzone.querySelector(`#${this.selected.id}`);
-        partElem.move(x, y);
-    }
-    _selectNextPart(e) {
-        let selectedIndex = this.parts.indexOf(this.selected),
-            nextPartIndex;
-        if (this.parts.length) {
-            nextPartIndex = selectedIndex + 1;
-            if (nextPartIndex >= this.parts.length) {
-                nextPartIndex = 0;
-            }
-            this.dispatch({ type: 'SELECT_PART', index: nextPartIndex });
-        }
-        e.detail.keyboardEvent.preventDefault();
-        e.detail.keyboardEvent.stopPropagation();
-    }
-    _selectPrevPart(e) {
-        let selectedIndex = this.parts.indexOf(this.selected),
-            prevPartIndex;
-        if (this.parts.length) {
-            if (selectedIndex <= -1) {
-                selectedIndex = this.parts.length;
-            }
-            prevPartIndex = selectedIndex - 1;
-            this.dispatch({ type: 'SELECT_PART', index: prevPartIndex });
-        }
-        e.detail.keyboardEvent.preventDefault();
-        e.detail.keyboardEvent.stopPropagation();
-    }
-    _getPartById(id) {
-        const dropzone = this.$$('.dropzone');
-        if (id === dropzone.getAttribute('id') || id === 'dropzone') {
-            return dropzone.getWorkspace();
-        }
-        return dropzone.querySelector(`#${id}`);
     }
     backgroundChanged(bg) {
         const dropzone = this.$$('.dropzone');
@@ -200,191 +90,12 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
         this.workspaceView = workspaceView;
         const placeholder = this.$$('#workspace-placeholder');
         placeholder.appendChild(workspaceView.root);
-        this.parts.forEach((model, index) => {
-            this.insertPart(`#${index}`);
-        });
-    }
-    onTap(e) {
-        let target;
-        if (this.running) {
-            return;
-        }
-        target = e.path ? e.path[0] : e.target;
-        if (target === this.workspaceView.root) {
-            this.clearSelection();
-        } else if (target === this.$.content) {
-            this.clearSelection();
-            this.fire('close-settings');
-        }
-    }
-    clearSelection() {
-        if (this.workspaceView) {
-            const selectedPartElement = this.workspaceView.root.querySelector('.selected');
-            this.toggleClass('selected', false, selectedPartElement);
-        }
-        this.dispatch({ type: 'SELECT_PART', index: null });
-    }
-    partFromElement() {
-        const { model } = this.tappedElement;
-        for (let i = 0; i <= this.parts.length; i += 1) {
-            const part = this.parts[i];
-            if (model.id === part.id) {
-                return part;
-            }
-        }
-        return null;
-    }
-    _partSelected(e) {
-        const part = e.detail;
-        this.fire('change', {
-            type: 'select-part',
-            part,
-        });
-        if (this.selected && part.id === this.selected.id) {
-            this.fire('close-settings');
-            this.clearSelection();
-        } else {
-            const selectedPartElement = this.workspaceView.root.querySelector('.selected');
-            this.toggleClass('selected', false, selectedPartElement);
-            const partIndex = this.parts.indexOf(part);
-            this.dispatch({ type: 'SELECT_PART', index: partIndex });
-        }
-    }
-    _selectedChanged() {
-        const part = this.selected;
-        let partElement;
-        if (!this.workspaceView || !part) {
-            return;
-        }
-        partElement = this.workspaceView.root.querySelector(`#${part.id}`);
-        this.toggleClass('selected', true, partElement);
-        this.fire('open-settings');
-    }
-    partsChanged(e) {
-        if (!e) {
-            return;
-        }
-        const { path } = e;
-        if (path === 'parts.splices') {
-            e.value.indexSplices.forEach((s) => {
-                s.removed.forEach((removedPart, i) => {
-                    const oldIndex = s.index + i;
-                    this.removePart(oldIndex);
-                });
-                for (let i = 0; i < s.addedCount; i += 1) {
-                    const index = s.index + i;
-                    this.insertPart(index);
-                }
-            });
-        } else if (path === 'parts') {
-            if (this.elements) {
-                // Clean the dropzone
-                Object.keys(this.elements).forEach(this.removePart.bind(this));
-            }
-            if (!this.parts) {
-                return;
-            }
-            // Insert the elements from the models
-            this.parts.forEach((model, index) => {
-                this.insertPart(`${index}`);
-            });
-        }
-    }
-    propagateChange(key, path, value) {
-        const element = this.elements[key];
-        if (!element) {
-            return;
-        }
-        element.set(path, value);
-    }
-    insertPart(key) {
-        const model = this.get(`parts.${key}`);
-        if (!this.workspaceView) {
-            return;
-        }
-        const { tagName } = model;
-        const tpl = document.createElement('template');
-        tpl.innerHTML = `<${tagName} id="${model.id}" slot="part" class="${model.partType}" model="{{parts.${key}}}"></${tagName}>`;
-        const template = html`${tpl}`;
-        const stamp = this._stampTemplate(template);
-        const element = stamp.firstChild;
-        this.elements[key] = element;
-        this._attachPartElementToDOM(element);
-        if (this.soundReady) {
-            this.debounce('playStartupSound', () => {
-                this.playSound('/assets/audio/sounds/pop.wav');
-            }, 100);
-        }
-        this._registerElement(`workspace-part-${model.id}`, element);
-    }
-    /*
-  * Insert the element to the dropzone by reverse-sorting it
-  * into the DOM so z-indexes match the order in the parts
-  * array (e.g., the part with index 0 will be rendered on
-  * top, which means it needs to be last the DOM).
-  */
-    _attachPartElementToDOM(element) {
-        const { model } = element;
-        const reverseParts = this.parts.slice().reverse();
-        const index = reverseParts.indexOf(model);
-        const { partsRoot } = this.workspaceView;
-
-        if (partsRoot.lastChild && index < reverseParts.indexOf(partsRoot.lastChild.model)) {
-            /* If the element doesn't belong at the end,
-          find the right element to insert it before */
-            for (let i = 0; i < partsRoot.children.length; i += 1) {
-                const child = partsRoot.children[i];
-                const childIndex = reverseParts.indexOf(child.model);
-                if (childIndex > index) {
-                    partsRoot.insertBefore(element, child);
-                    break;
-                }
-            }
-        } else {
-            /* If ll existing elements come before this one, append it. */
-            partsRoot.appendChild(element);
-        }
-    }
-    removePart(key) {
-        const element = this.elements[key];
-        if (!element) {
-            return;
-        }
-        const { partsRoot } = this.workspaceView;
-        partsRoot.removeChild(element);
-        delete this.elements[key];
-    }
-    getPartsDict() {
-        const dict = Object.keys(this.elements).reduce((acc, key) => {
-            // Get the model linked to the element
-            const model = this.get(`parts.${key}`);
-            if (!model) {
-                return acc;
-            }
-            acc[model.id] = this.elements[key];
-            return acc;
-        }, {});
-        if (this.workspaceView) {
-            dict[this.mode.id] = this.workspaceView.outputView;
-            // Support legacy apps
-            dict.dropzone = this.workspaceView.outputView;
-        }
-        return dict;
     }
     runningChanged() {
         if (this.running) {
             this.classList.add('running');
-            this.clearSelection();
         } else {
             this.classList.remove('running');
-        }
-    }
-    getPartIndexById(id) {
-        const elements = this.parts;
-        for (let i = 0, len = elements.length; i < len; i++) {
-            if (elements[i].id === id) {
-                return i;
-            }
         }
     }
     getViewport() {

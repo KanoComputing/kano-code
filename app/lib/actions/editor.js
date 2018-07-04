@@ -6,8 +6,6 @@ const CONSTANTS = [
     'UPDATE_CODE',
     'LOAD_Source',
     'RESET_EDITOR',
-    'SELECT_PART',
-    'UPDATE_PART',
     'UPDATE_BACKGROUND',
     'SET_FLYOUT_MODE',
     'EDIT_BACKGROUND',
@@ -38,19 +36,6 @@ const EditorActions = (store) => {
             this.set('state.code', '');
             this.set('state.addedParts', []);
             this.set('state.background', '');
-            break;
-        }
-        case EDITOR_TYPES.SELECT_PART: {
-            this.set('state.selectedPartIndex', action.index);
-            if (action.index !== null) {
-                this.set('state.editingBackground', false);
-            }
-            break;
-        }
-        case EDITOR_TYPES.UPDATE_PART: {
-            const index = this.get('state.selectedPartIndex');
-            this.set(`state.selectedPart.${action.property}`, action.value);
-            store.appStateComponent.notifyPath(`state.addedParts.${index}.${action.property}`);
             break;
         }
         case EDITOR_TYPES.UPDATE_BACKGROUND: {

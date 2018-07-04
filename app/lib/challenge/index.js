@@ -9,11 +9,13 @@ const EDITOR_EVENTS = [
     'add-part',
 ];
 
+const DEFAULT_OPTS = {};
+
 /* eslint no-underscore-dangle: "off" */
 class Challenge extends Plugin {
-    constructor(partsPlugin) {
+    constructor(opts = {}) {
         super();
-        this.partsPlugin = partsPlugin;
+        this.options = Object.assign({}, DEFAULT_OPTS, opts);
         this.rootEl = document.createElement('kano-app-challenge');
         this.rootEl.addEventListener('next-step', this._nextStep.bind(this));
         this.rootEl.addEventListener('save', this._save.bind(this));

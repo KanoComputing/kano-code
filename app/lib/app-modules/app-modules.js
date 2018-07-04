@@ -58,9 +58,13 @@ class AppModules {
     }
 
     createAppCode(prefix, code) {
-        const moduleNames = Object.keys(this.modules);
-        const moduleImports = moduleNames.filter(name => name).map(name => `${prefix}.getModule('${name}')`);
-        return `(function (${moduleNames.join(', ')}) {\n${code}\n})(${moduleImports.join(', ')});\n`;
+        const moduleImports = Object.keys(this.modules).reduce((acc, name) => {
+            const symbols = this.modules[name].getSymbols();
+            acc += `var ${name} = ${prefix}.getModule('${name}');\n`;
+            acc += symbols.map(s => `var ${s} = ${prefix}.getModule('${name}').${s};\n`).join('');
+            return acc;
+        }, '');
+        return `(function () {\n${moduleImports}\n${code}\n})();\n`;
     }
 
     generateStandaloneComponent(componentName, parts, background, mode, codes) {

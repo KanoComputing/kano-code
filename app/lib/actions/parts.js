@@ -1,6 +1,13 @@
 import Store from '../store.js';
 
-const CONSTANTS = ['UPDATE_PART_LIST', 'ADD_PART', 'REMOVE_PART', 'LOAD_ADDED_PARTS'];
+const CONSTANTS = [
+    'UPDATE_PART_LIST',
+    'ADD_PART',
+    'REMOVE_PART',
+    'LOAD_ADDED_PARTS',
+    'SELECT',
+    'UPDATE',
+];
 const PARTS_TYPES = Store.types(CONSTANTS);
 
 const PartsActions = (store) => {
@@ -33,6 +40,20 @@ const PartsActions = (store) => {
             this.set('state.addedParts', action.parts);
             break;
         }
+        case PARTS_TYPES.SELECT: {
+            this.set('state.selectedPartIndex', action.index);
+            if (action.index !== null) {
+                this.set('state.editingBackground', false);
+            }
+            break;
+        }
+        case PARTS_TYPES.UPDATE: {
+            const index = this.get('state.selectedPartIndex');
+            this.set(`state.addedParts.${index}.${action.property}`, action.value);
+            // FIXME: Maybe flowdown should notify properties that changes all the time
+            store.appStateComponent.notifyPath(`state.addedParts.${index}.${action.property}`);
+            break;
+        }
         default: {
             break;
         }
@@ -51,6 +72,12 @@ const PartsActions = (store) => {
         },
         loadAddedParts(part) {
             store.dispatch({ type: PARTS_TYPES.LOAD_ADDED_PARTS, part });
+        },
+        select(index) {
+            store.dispatch({ type: PARTS_TYPES.SELECT, index });
+        },
+        updatePart(property, value) {
+            store.dispatch({ type: PARTS_TYPES.UPDATE, property, value });
         },
     };
 };

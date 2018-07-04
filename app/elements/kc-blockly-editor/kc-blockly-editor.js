@@ -255,10 +255,8 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
     }
     static get observers() {
         return [
-            'computeToolbox(parts)',
             'computeToolbox(defaultCategories.*)',
             'computeToolbox(mode)',
-            '_partsChanged(parts.*)',
         ];
     }
     _logoutTapped() {
@@ -334,22 +332,6 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
     }
     computeBlocks() {
         const blocks = [];
-        if (this.parts) {
-            this.parts
-                .forEach((part) => {
-                    part.blocks.forEach((definition) => {
-                        if (typeof definition === 'object') {
-                            blocks.push({ part, definition });
-                        }
-                    });
-                    // Also register the legacy blocks to support shares made with previous block API
-                    part.legacyBlocks.forEach((definition) => {
-                        if (typeof definition === 'object') {
-                            blocks.push({ part, definition });
-                        }
-                    });
-                });
-        }
         if (this.mode && this.mode.categories) {
             this.mode.categories.forEach((category) => {
                 category.blocks.forEach((definition) => {
@@ -387,58 +369,14 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
         }
     }
     computeToolbox() {
-        let categories,
-            toolbox,
-            parts = this.parts,
-            blocks,
-            weight;
+        let categories;
+        let toolbox;
         if (!this.defaultCategories) {
             return;
         }
         this.computeBlocks();
-        weight = {
-            ui: 1,
-            data: 2,
-            hardware: 3,
-        };
-        if (parts) {
-            categories = parts
-                .map((ui) => {
-                    blocks = ui.blocks.map((definition) => {
-                        if (typeof definition === 'string') {
-                            return {
-                                id: definition,
-                                colour: ui.colour,
-                            };
-                        }
-                        const block = definition.block(ui);
-                        block.colour = ui.colour;
-                        block.id = `${ui.id}#${block.id}`;
-                        return {
-                            id: block.id,
-                            colour: block.colour,
-                            shadow: block.shadow,
-                        };
-                    });
-                    return {
-                        name: ui.name,
-                        colour: ui.colour,
-                        id: ui.id,
-                        weight: weight[ui.partType],
-                        blocks,
-                    };
-                })
-                .sort((a, b) => a.weight - b.weight);
-        }
-
         categories = categories || [];
         categories = categories.filter(category => category.blocks.length);
-        Object.keys(this.defaultCategories).forEach((id) => {
-            const cat = this.defaultCategories[id];
-            cat.blocks.forEach((block) => {
-                block.colour = cat.colour;
-            });
-        });
 
         toolbox = Object.keys(this.defaultCategories).map(id => this.defaultCategories[id]);
 
@@ -462,6 +400,9 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
             });
         }
         toolbox = toolbox.concat(categories);
+        const unorderedEntries = toolbox.filter(e => typeof e.order === 'undefined');
+        const orderedEntries = toolbox.filter(e => typeof e.order !== 'undefined');
+        toolbox = unorderedEntries.concat(orderedEntries.sort((a, b) => (a.order || 0) - (b.order || 0)));
         if (this.flyoutMode) {
             const flyout = toolbox.reduce((acc, entry) => acc.concat(entry.blocks), []);
             this.set('flyout', flyout);
@@ -482,43 +423,6 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
             this.$['code-editor'].loadBlocks(this.blocks);
         }
     }
-    _partsChanged(e) {
-        // If the name changes, the id will do as well
-        const idChanged = e.path.indexOf('name') === e.path.length - 4;
-        if (e.path === 'parts' || e.path === 'parts.splices') {
-            // Update the id registry when the parts array is changed or if any item is added/removed
-            this._updateIdRegistry();
-        }
-        // Only update if the splices changes (part added or removed) or if the name of the part changes
-        if (e.path === 'parts' || e.path === 'parts.splices' || idChanged) {
-            this.computeToolboxDebounced();
-            if (Blockly.Blocks && Blockly.Blocks.collision_event) {
-                // Update the collision block with the new parts
-                Blockly.Blocks.collision_event.setParts(this.parts);
-            }
-            // If the id changed, we need to upgrade the blocks already added
-            if (idChanged) {
-                this.debounce('reloadAfterIdChanged', () => {
-                    let key = e.path.replace('parts.#', '').split('.').shift(),
-                        oldId = this._idRegistry[key],
-                        blocks = this.$['code-editor'].getBlocks(),
-                        replaceRegexp = new RegExp(`type="${oldId}#`, 'g');
-
-                    blocks = blocks.replace(replaceRegexp, `type="${this.parts[key].id}#`);
-                    this.$['code-editor'].load({ blocks });
-                    // Reflect the id change by updating the id registry
-                    this._updateIdRegistry();
-                }, 200);
-            }
-        }
-    }
-    _updateIdRegistry() {
-        // Keeps a record of all the ids. If one changes, we can get the old value from here
-        this._idRegistry = this.parts.map(part => part.id);
-    }
-    computeToolboxDebounced() {
-        this.computeToolbox();
-    }
     getBlocklyWorkspace() {
         return this.$['code-editor'].getWorkspace();
     }
@@ -529,34 +433,11 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
         // TODO: Get kwc-blockly to give it to us
         return window.Blockly;
     }
-    canRemovePart(part) {
-        let xmlString,
-            xml,
-            parser,
-            blocks,
-            block,
-            blockId,
-            pieces;
-        // Get the blockly xml and parse it
-        xmlString = this.$['code-editor'].getBlocks();
-        parser = new DOMParser();
-        xml = parser.parseFromString(xmlString, 'text/xml');
-        // Get all the 'block' elements
-        blocks = xml.getElementsByTagName('block');
-        // Check for every one of them...
-        for (let k = 0, len = blocks.length; k < len; k += 1) {
-            block = blocks[k];
-            blockId = block.getAttribute('type');
-            pieces = blockId.split('#');
-            // ...if the type of the block is the part we're trying to delete
-            if (pieces[0] === part.id) {
-                return true;
-            }
-        }
-        return false;
-    }
     getSource() {
         return this.$['code-editor'].getBlocks();
+    }
+    load(blocks) {
+        this.$['code-editor'].load({ blocks });
     }
 }
 

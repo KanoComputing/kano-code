@@ -29,6 +29,9 @@ class KanoPartBox extends WebCollidableMixin(UIMixin(PolymerElement)) {
         this.fire('clicked');
     }
     computeImageStyle() {
+        if (!this.model) {
+            return '';
+        }
         let style = this.getPartialStyle(['width', 'height', 'background-color']);
         style += `border: ${this.model.userProperties.strokeSize}px solid ${this.model.userProperties.strokeColor};`;
         return style;

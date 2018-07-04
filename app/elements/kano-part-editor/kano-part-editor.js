@@ -3,11 +3,6 @@
 @hero hero.svg
 @demo demo/kano-part-editor.html
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icon/iron-icon.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
@@ -15,7 +10,6 @@ import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/polymer-legacy.js';
-import { Store } from '../../scripts/legacy/store.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { MediaQueryBehavior } from '../behaviors/kano-media-query-behavior.js';
 import '../kano-code-shared-styles/kano-code-shared-styles.js';
@@ -33,7 +27,7 @@ const behaviors = [
     MediaQueryBehavior,
     I18nBehavior,
 ];
-class KanoPartEditor extends Store.StateReceiver(mixinBehaviors(behaviors, PolymerElement)) {
+class KanoPartEditor extends mixinBehaviors(behaviors, PolymerElement) {
     static get template() {
         return html`
         <style include="kano-code-shared-styles">
@@ -64,8 +58,6 @@ class KanoPartEditor extends Store.StateReceiver(mixinBehaviors(behaviors, Polym
         return {
             selected: {
                 type: Object,
-                linkState: 'selectedPart',
-                // computed: '_computeSelected(parts, selectedIndex)',
                 observer: '_selectedSet',
             },
             theme: {
@@ -80,10 +72,6 @@ class KanoPartEditor extends Store.StateReceiver(mixinBehaviors(behaviors, Polym
                 type: Array,
                 linkState: 'addedParts',
             },
-            selectedIndex: {
-                type: Number,
-                linkState: 'selectedPartIndex',
-            },
         };
     }
     static get observers() {
@@ -91,12 +79,6 @@ class KanoPartEditor extends Store.StateReceiver(mixinBehaviors(behaviors, Polym
             '_configPanelChanged(selected.configPanel)',
             '_updateName(selected)',
         ];
-    }
-    _computeSelected(parts, index) {
-        if (!parts) {
-            return null;
-        }
-        return parts[index];
     }
     _configPanelChanged(panel, oldValue) {
         const tagName = panel || 'div';
@@ -165,7 +147,7 @@ class KanoPartEditor extends Store.StateReceiver(mixinBehaviors(behaviors, Polym
     }
     _onSelectedChanged(e) {
         const { path, value } = e.detail;
-        this.dispatch({ type: 'UPDATE_PART', property: path.replace('element.', ''), value });
+        this.dispatchEvent(new CustomEvent('update', { detail: { property: path.replace('element.', ''), value }, bubbles: true }));
     }
 }
 customElements.define(KanoPartEditor.is, KanoPartEditor);

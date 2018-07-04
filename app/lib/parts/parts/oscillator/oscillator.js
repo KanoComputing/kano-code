@@ -21,7 +21,7 @@ const WAVES = {
 
 export const OscillatorMixin = base => class extends BaseMixin(base) {
     onDestroyed() {
-        super.onDestroy();
+        super.onDestroyed();
         this._stopOscillating();
     }
     start(...args) {

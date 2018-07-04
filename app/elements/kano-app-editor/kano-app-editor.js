@@ -31,7 +31,6 @@ import '../kano-background-editor/kano-background-editor.js';
 import '../kc-blockly-editor/kc-blockly-editor.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import '../kano-code-display/kano-code-display.js';
-import '../kano-add-parts/kano-add-parts.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
 import { Store } from '../../scripts/legacy/store.js';
 
@@ -115,11 +114,8 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             'selectedPartChanged(selected.*)',
             'backgroundChanged(background.*)',
             'resetAppState(addedParts.splices)',
-            'updateColors(addedParts.splices)',
-            'updateColors(toolbox.*)',
             '_codeChanged(code)',
             '_onPartsSet(parts)',
-            '_dialogsStateChanged(selectedPartIndex, editingBackground)',
         ];
     }
     static get template() {
@@ -247,16 +243,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             :host #background-editor {
                 margin: 0;
             }
-            .code-overlay {
-                @apply --layout-fit;
-                background: #414a51;
-                opacity: 0;
-                transition: opacity 200ms linear;
-                pointer-events: none;
-            }
-            .code-overlay.open {
-                opacity: 0.85;
-            }
             .icon-button {
                 background: transparent;
                 border: 0px;
@@ -284,7 +270,7 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                     </paper-tabs>
                 </template>
                 <iron-pages class="workspace-pages" attr-for-selected="id" selected="[[workspaceTab]]">
-                    <kano-workspace id="workspace" store-id="[[storeId]]" class="visible-when-running" selected="{{selected}}" editable-layout="{{editableLayout}}" parts-menu-open="[[partsMenuOpen]]" on-ui-ready="workspaceUiReady" on-change="_proxyChange" on-run-button-clicked="_runButtonClicked" on-reset-app-state="resetAppState" on-toggle-parts-menu="toggleParts"></kano-workspace>
+                    <kano-workspace id="workspace" store-id="[[storeId]]" class="visible-when-running" selected="{{selected}}" editable-layout="{{editableLayout}}" parts-menu-open="[[partsMenuOpen]]" on-ui-ready="workspaceUiReady" on-change="_proxyChange" on-run-button-clicked="_runButtonClicked" on-reset-app-state="resetAppState"></kano-workspace>
                     <kano-code-display id="code-display" code="[[_setCodeDisplay(code, workspaceTab)]]" lang="javascript"></kano-code-display>
                 </iron-pages>
             </div>
@@ -294,30 +280,17 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                     <slot name="above-code"></slot>
                     <div id="source-container"></div>
                     <slot name="under-code"></slot>
-                    <div id="code-overlay" class="code-overlay"></div>
                 </div>
             </div>
         </section>
-        <kano-alert id="dialog-confirm-delete" heading="[[localize('ARE_YOU_SURE', 'Are you sure')]]" text="[[localize('ABOUT_TO_DELETE', 'You are about to delete')]] '[[toBeRemoved.name]]'" on-iron-overlay-closed="_modalClosed" with-backdrop="">
+        <kano-alert id="dialog-reset-warning" heading="[[localize('RESET', 'Reset')]]" text="[[localize('ABOUT_TO_RESET', 'You\\'ll lose any unsaved changes')]]" on-iron-overlay-closed="_modalClosed" with-backdrop>
         </kano-alert>
-        <kano-alert id="dialog-external-use" heading="[[localize('OH_OH', 'Oh oh')]]…" text="[[localize('CANT_DELETE', 'You can\\'t delete')]] '[[toBeRemoved.name]]' [[localize('USED_IN_CODE', 'because it is used in the code')]]" with-backdrop="">
-            <button class="kano-alert-secondary" dialog-dismiss="" slot="actions">[[localize('GOT_IT', 'Got it')]]</button>
-        </kano-alert>
-        <kano-alert id="dialog-reset-warning" heading="[[localize('RESET', 'Reset')]]" text="[[localize('ABOUT_TO_RESET', 'You\\'ll lose any unsaved changes')]]" on-iron-overlay-closed="_modalClosed" with-backdrop="">
-        </kano-alert>
-        <kano-alert id="dialog-offline" heading="[[localize('SHARING_NOT_AVAILABLE', 'This feature isn\\'t available offline')]]" text="[[localize('CONNECT_TO_INTERNET', 'Make sure you\\'re connected to the internet.')]]" with-backdrop="">
+        <kano-alert id="dialog-offline" heading="[[localize('SHARING_NOT_AVAILABLE', 'This feature isn\\'t available offline')]]" text="[[localize('CONNECT_TO_INTERNET', 'Make sure you\\'re connected to the internet.')]]" with-backdrop>
             <button class="kano-alert-primary" dialog-confirm="" slot="actions">[[localize('GOT_IT', 'Got it')]]</button>
         </kano-alert>
-        <paper-dialog id="edit-part-dialog" on-iron-overlay-closed="_partEditorDialogClosed" opened="[[_hasSelectedPart(selectedPartIndex)]]" no-cancel-on-outside-click>
-            <kano-part-editor id="edit-part-dialog-content" store-id="[[storeId]]" selected="{{selected}}" mode="[[mode]]" class="modal no-padding" on-config-panel-changed="_repositionPanel" on-delete-part="deletePartClicked"></kano-part-editor>
-        </paper-dialog>
         <paper-dialog id="edit-background-dialog" fit-into="[[codeEditor]]" on-iron-overlay-closed="_backgroundEditorDialogClosed" opened="[[editingBackground]]" no-cancel-on-outside-click>
             <kano-background-editor id="background-editor" class="no-padding" value="[[background]]" on-value-changed="_backgroundChanged" name="background"></kano-background-editor>
         </paper-dialog>
-        <paper-dialog id="parts-modal" with-backdrop="">
-            <kano-add-parts id="add-parts" class="no-padding" used-parts="[[addedParts]]" on-cancel="_closePartsModal"></kano-add-parts>
-        </paper-dialog>
-        <iron-a11y-keys target="[[target]]" keys="alt+p" on-keys-pressed="toggleParts"></iron-a11y-keys>
         <iron-a11y-keys target="[[target]]" keys="alt+s" on-keys-pressed="share"></iron-a11y-keys>
         `;
     }
@@ -326,12 +299,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     }
     _backgroundChanged(e) {
         this.dispatch({ type: 'UPDATE_BACKGROUND', value: e.detail.value });
-    }
-    _dialogsStateChanged() {
-        const partsDialogOpened = this._hasSelectedPart();
-        const backgroundDialogOpened = this.editingBackground;
-        const overlayOpened = partsDialogOpened || backgroundDialogOpened;
-        this.toggleClass('open', overlayOpened, this.$['code-overlay']);
     }
     _exitTapped() {
         this.fire('tracking-event', {
@@ -343,7 +310,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     _manageModals(e) {
         const notifier = dom(e).rootTarget.id;
         const nonConcurringModalIds = [
-            'parts-modal',
             'edit-background-dialog',
             'edit-part-dialog',
         ];
@@ -366,16 +332,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     _backgroundEditorDialogClosed() {
         this.dispatch({ type: 'EDIT_BACKGROUND', state: false });
     }
-    // _openPartsModal() {
-    //     TODO: Notify somehow
-    //     this.async(() => {
-    //         this.notifyChange('open-parts');
-    //     }, 500);
-    // },
-    // _partsModalClosed() {
-    //     TODO: Notify somehow
-    //     this.notifyChange('close-parts');
-    // },
     _newPartRequest(e) {
         if (!e.detail || !e.detail.data || !e.detail.data.product) {
             return;
@@ -406,21 +362,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     _addPart(e) {
         const type = e.detail;
         this.dispatchEvent(new CustomEvent('add-part-request', { detail: type }));
-        // TODO: Notify the change in the plugin
-        // this.notifyChange('add-part', { part });
-    }
-    _partEditorDialogClosed(e) {
-        const target = e.path ? e.path[0] : e.target;
-        if (target === this.$['edit-part-dialog']) {
-            this.dispatch({ type: 'SELECT_PART', index: null });
-            // Ensure the id will update
-            this.set('selected.id', null);
-            this.set('selected.name', this.$['edit-part-dialog-content'].name);
-            this.notifyChange('close-part-settings', { part: this.selected });
-            this.editableLayout = false;
-            // Stop eventual actions the part editor might be doing
-            this.$['edit-part-dialog-content'].stop();
-        }
     }
     _isPauseOverlayHidden(running, editableLayout) {
         return running || editableLayout;
@@ -439,31 +380,9 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         e.stopPropagation();
         this.fire('change', e.detail);
     }
-    deletePartClicked() {
-        this._removePartInitiated(this.selected);
-    }
-    _removePartInitiated(part) {
-        this.toBeRemoved = part;
-        this.fire('tracking-event', {
-            name: 'part_remove_dialog_opened',
-        });
-        if (this.checkBlockDependency(part)) {
-            this.$['dialog-external-use'].open();
-        } else {
-            this.$['dialog-confirm-delete'].open();
-        }
-    }
-    _removePartReceived(e) {
-        const part = e.detail;
-        this._removePartInitiated(part);
-    }
     _modalClosed(e) {
         if (e.detail.confirmed) {
             switch (dom(e).rootTarget.id) {
-            case 'dialog-confirm-delete': {
-                this._dialogConfirmedDelete();
-                break;
-            }
             case 'dialog-reset-warning': {
                 this._dialogConfirmedReset();
                 break;
@@ -474,12 +393,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             }
         } else {
             switch (dom(e).rootTarget.id) {
-            case 'dialog-confirm-delete': {
-                this.fire('tracking-event', {
-                    name: 'part_remove_dialog_closed',
-                });
-                break;
-            }
             case 'dialog-reset-warning': {
                 this.fire('tracking-event', {
                     name: 'workspace_reset_dialog_closed',
@@ -492,13 +405,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             }
         }
     }
-    _dialogConfirmedDelete() {
-        this._closePartSettings();
-        this._deletePart(this.toBeRemoved);
-        this.notifyChange('remove-part', {
-            part: this.toBeRemoved,
-        });
-    }
     _dialogConfirmedReset() {
         this.dispatch({ type: 'RESET_EDITOR' });
         this.fire('tracking-event', {
@@ -507,18 +413,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         this.$.workspace.reset();
         this.dispatchEvent(new CustomEvent('reset'));
         this.unsavedChanges = false;
-    }
-    checkBlockDependency(part) {
-        const sourceEditor = this.$['root-view'];
-        return sourceEditor.canRemovePart(part);
-    }
-    updateColors() {
-        if (!this.toolbox) {
-            return;
-        }
-        this.debounce('updateColors', () => {
-            Utils.updatePartsColors(this.addedParts);
-        }, 10);
     }
     isPartDeletionDisabled() {
         return this.partEditorOpened || this.backgroundEditorOpened || this.running;
@@ -631,8 +525,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         this.$['edit-part-dialog'].fitInto = isFullScreen ? window : this.$['source-panel'];
         this.$['edit-part-dialog'].withBackdrop = isFullScreen;
         this.toggleClass('large-modal', isFullScreen, this.$['edit-part-dialog-content']);
-        // If modal is not fullscreen, use a custom overlay
-        this.toggleClass('open', !isFullScreen, this.$['code-overlay']);
     }
     _repositionPanel(e) {
         const target = this.$[dom(e).rootTarget.id];
@@ -727,10 +619,8 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         });
     }
     bindEvents() {
-        this.addEventListener('remove-part', this._removePartReceived);
         this.addEventListener('save-button-clicked', this.share);
         this.addEventListener('edit-background', this._editBackground);
-        this.addEventListener('iron-resize', this._refitPartModal);
         this.addEventListener('feature-not-available-offline', this._openOfflineDialog);
         this.addEventListener('opened-changed', this._manageModals);
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
@@ -740,10 +630,8 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         document.addEventListener('iron-signal', this.onIronSignal);
     }
     detachEvents() {
-        this.removeEventListener('remove-part', this._removePartReceived);
         this.removeEventListener('save-button-clicked', this.share);
         this.removeEventListener('edit-background', this._editBackground);
-        this.removeEventListener('iron-resize', this._refitPartModal);
         this.removeEventListener('feature-not-available-offline', this._openOfflineDialog);
         this.removeEventListener('opened-changed', this._manageModals);
         this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
@@ -751,11 +639,8 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     }
     constructor() {
         super();
-
-        this._removePartReceived = this._removePartReceived.bind(this);
         this.share = this.share.bind(this);
         this._editBackground = this._editBackground.bind(this);
-        this._refitPartModal = this._refitPartModal.bind(this);
         this._openOfflineDialog = this._openOfflineDialog.bind(this);
         this._manageModals = this._manageModals.bind(this);
 
@@ -773,7 +658,8 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         this.bindEvents();
         this._registerElement('workspace-panel', this.$['workspace-panel']);
         this._registerElement('source-panel', this.$['source-panel']);
-        this._registerElement('parts-panel', this.$['parts-modal']);
+        // TODO: solve this
+        // this._registerElement('parts-panel', this.$['parts-modal']);
         // Legacy
         this._registerElement('blocks-panel', this.$['source-panel']);
 
@@ -971,10 +857,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 },
             });
         });
-    }
-
-    _refitPartModal() {
-        this.$['edit-part-dialog'].refit();
     }
 
     getMakeButtonClass(running, editableLayout) {

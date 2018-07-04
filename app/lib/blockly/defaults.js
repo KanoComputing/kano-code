@@ -168,6 +168,7 @@ class Defaults {
             id: opts.id,
             colour: opts.colour,
             blocks,
+            order: opts.order,
         };
     }
     define(blockId, defaults) {

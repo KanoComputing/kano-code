@@ -1,4 +1,5 @@
 import Part from '../part.js';
+import { getAPI } from './api.js';
 
 const STYLE_CONF = {
     'background-color': {
@@ -65,6 +66,21 @@ const STYLE_CONF = {
 
 class UI extends Part {
     static get id() { return 'ui'; }
+    get api() {
+        const api = super.api;
+        api.symbols.push({
+            type: 'function',
+            aliases: [`${this.id}#ui_move_by`],
+            name: 'moveAlong',
+            verbose: `${this.name}: Move by`,
+            parameters: [{
+                name: 'pixels',
+                returnType: Number,
+                default: 0,
+            }],
+        });
+        return api;
+    }
     constructor(opts, manager, size) {
         super(opts, manager);
         this.customizable = Object.assign({}, opts.customizable) || { style: [], properties: [] };

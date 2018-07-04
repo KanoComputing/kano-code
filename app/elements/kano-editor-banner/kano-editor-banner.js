@@ -1,3 +1,5 @@
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/polymer/polymer-legacy.js';
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -8,13 +10,10 @@ import '@kano/web-components/kano-circle-progress/kano-circle-progress.js';
 import '@kano/kwc-style/color.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../kano-icons/kc-ui.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-/* globals Polymer, Kano */
 
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 position: relative;
@@ -214,188 +213,188 @@ Polymer({
         </div>
 `,
 
-  is: 'kano-editor-banner',
-  behaviors: [AppElementRegistryBehavior, I18nBehavior],
+    is: 'kano-editor-banner',
+    behaviors: [AppElementRegistryBehavior, I18nBehavior],
 
-  properties: {
-      head: {
-          type: String,
-          value: null
-      },
-      text: {
-          type: String,
-          value: null
-      },
-      imgSrc: {
-          type: String,
-          value: '/assets/avatar/judoka-face.svg'
-      },
-      imgPage: {
-          type: String,
-          value: 'judoka'
-      },
-      buttonLabel: {
-          type: String,
-          observer: '_onButtonLabelChanged'
-      },
-      buttonState: {
-          type: String,
-          value: null, /* values = { "active", "inactive", "hidden" || null } */
-          observer: '_buttonStateChanged'
-      },
-      showSaveButton: {
-          type: Boolean,
-          value: false,
-          reflectToAttribute: true,
-          observer: '_showSaveButtonChanged'
-      },
-      progress: {
-          type: Number,
-          value: 0
-      },
-      canGoBack: {
-          type: Boolean
-      },
-      canGoForward: {
-          type: Boolean
-      }
-  },
+    properties: {
+        head: {
+            type: String,
+            value: null,
+        },
+        text: {
+            type: String,
+            value: null,
+        },
+        imgSrc: {
+            type: String,
+            value: '/assets/avatar/judoka-face.svg',
+        },
+        imgPage: {
+            type: String,
+            value: 'judoka',
+        },
+        buttonLabel: {
+            type: String,
+            observer: '_onButtonLabelChanged',
+        },
+        buttonState: {
+            type: String,
+            value: null, /* values = { "active", "inactive", "hidden" || null } */
+            observer: '_buttonStateChanged',
+        },
+        showSaveButton: {
+            type: Boolean,
+            value: false,
+            reflectToAttribute: true,
+            observer: '_showSaveButtonChanged',
+        },
+        progress: {
+            type: Number,
+            value: 0,
+        },
+        canGoBack: {
+            type: Boolean,
+        },
+        canGoForward: {
+            type: Boolean,
+        },
+    },
 
-  attached () {
-      this._registerElement('banner-button', this.$['banner-button']);
-  },
+    attached() {
+        this._registerElement('banner-button', this.$['banner-button']);
+    },
 
-  _fadeInButton (id, duration) {
-      this.$['banner-button'].setAttribute('data-animate', (duration + 150));
-      //register element with updated 'data-animate' attribute
-      this._registerElement(id, this.$[id]);
+    _fadeInButton(id, duration) {
+        this.$['banner-button'].setAttribute('data-animate', (duration + 150));
+        // register element with updated 'data-animate' attribute
+        this._registerElement(id, this.$[id]);
 
-      this.$[id].animate([{
-              transform: 'scale(0)',
-              opacity: '0'
-          },{
-              transform: 'scale(1)',
-              opacity: '1'
-          }
-      ], {
-          duration: duration,
-          fill: 'forwards'
-      }).onfinish = () => {
-          this.$['banner-button'].removeAttribute('data-animate');
-          this._registerElement(id, this.$[id]);
-      };
-  },
+        this.$[id].animate([{
+            transform: 'scale(0)',
+            opacity: '0',
+        }, {
+            transform: 'scale(1)',
+            opacity: '1',
+        },
+        ], {
+            duration,
+            fill: 'forwards',
+        }).onfinish = () => {
+            this.$['banner-button'].removeAttribute('data-animate');
+            this._registerElement(id, this.$[id]);
+        };
+    },
 
-  shakeButton () {
-      this.$['banner-button-container'].animate([{
-              offset: 0.0,
-              transform: 'translate3d(0, 0, 0)'
-          },{
-              offset: 0.1,
-              transform: 'translate3d(-1px, 0, 0)'
-          }, {
-              offset: 0.2,
-              transform: 'translate3d(2px, 0, 0)'
-          }, {
-              offset: 0.3,
-              transform: 'translate3d(-3px, 0, 0)'
-          }, {
-              offset: 0.4,
-              transform: 'translate3d(3px, 0, 0)'
-          }, {
-              offset: 0.5,
-              transform: 'translate3d(-3px, 0, 0)'
-          }, {
-              offset: 0.6,
-              transform: 'translate3d(3px, 0, 0)'
-          }, {
-              offset: 0.7,
-              transform: 'translate3d(-3px, 0, 0)'
-          }, {
-              offset: 0.8,
-              transform: 'translate3d(2px, 0, 0)'
-          }, {
-              offset: 0.9,
-              transform: 'translate3d(-1px, 0, 0)'
-          }, {
-              offset: 1,
-              transform: 'translate3d(0, 0, 0)'
-          }
-      ], {
-          duration: 1200,
-          easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
-          fill: 'both',
-          iterations: 1
-      });
-  },
+    shakeButton() {
+        this.$['banner-button-container'].animate([{
+            offset: 0.0,
+            transform: 'translate3d(0, 0, 0)',
+        }, {
+            offset: 0.1,
+            transform: 'translate3d(-1px, 0, 0)',
+        }, {
+            offset: 0.2,
+            transform: 'translate3d(2px, 0, 0)',
+        }, {
+            offset: 0.3,
+            transform: 'translate3d(-3px, 0, 0)',
+        }, {
+            offset: 0.4,
+            transform: 'translate3d(3px, 0, 0)',
+        }, {
+            offset: 0.5,
+            transform: 'translate3d(-3px, 0, 0)',
+        }, {
+            offset: 0.6,
+            transform: 'translate3d(3px, 0, 0)',
+        }, {
+            offset: 0.7,
+            transform: 'translate3d(-3px, 0, 0)',
+        }, {
+            offset: 0.8,
+            transform: 'translate3d(2px, 0, 0)',
+        }, {
+            offset: 0.9,
+            transform: 'translate3d(-1px, 0, 0)',
+        }, {
+            offset: 1,
+            transform: 'translate3d(0, 0, 0)',
+        },
+        ], {
+            duration: 1200,
+            easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
+            fill: 'both',
+            iterations: 1,
+        });
+    },
 
-  _buttonTapped () {
-      if (this.buttonState !== "inactive") {
-          this.fire('button-tapped');
-      }
-  },
+    _buttonTapped() {
+        if (this.buttonState !== 'inactive') {
+            this.fire('button-tapped');
+        }
+    },
 
-  _saveTapped () {
-      this.fire('save-button-clicked');
-  },
+    _saveTapped() {
+        this.fire('save-button-clicked');
+    },
 
-  _buttonStateChanged (value, oldValue) {
-      if (value && !oldValue && !this.showSaveButton) {
-          this._fadeInButton('banner-button', 200);
-      }
-  },
+    _buttonStateChanged(value, oldValue) {
+        if (value && !oldValue && !this.showSaveButton) {
+            this._fadeInButton('banner-button', 200);
+        }
+    },
 
-  _buttonHidden (state) {
-      return !state || state === "hidden";
-  },
+    _buttonHidden(state) {
+        return !state || state === 'hidden';
+    },
 
-  _buttonActive (state) {
-      return state === 'active';
-  },
+    _buttonActive(state) {
+        return state === 'active';
+    },
 
-  _buttonInactive (state) {
-      return state === 'inactive';
-  },
+    _buttonInactive(state) {
+        return state === 'inactive';
+    },
 
-  _computeButtonClass (state) {
-      if (state) {
-          return state;
-      }
+    _computeButtonClass(state) {
+        if (state) {
+            return state;
+        }
 
-      return 'hidden';
-  },
+        return 'hidden';
+    },
 
-  _showSaveButtonChanged (value) {
-      if (value) {
-          this._fadeInButton('banner-save-button', 200);
-          this._fadeInButton('banner-button', 400);
-      }
-  },
+    _showSaveButtonChanged(value) {
+        if (value) {
+            this._fadeInButton('banner-save-button', 200);
+            this._fadeInButton('banner-button', 400);
+        }
+    },
 
-  _onButtonLabelChanged (label) {
-      //FIXME this should consider localization
-      this.toggleClass('green-cta', label === 'Next' || this.showSaveButton);
-  },
+    _onButtonLabelChanged(label) {
+        // FIXME this should consider localization
+        this.toggleClass('green-cta', label === 'Next' || this.showSaveButton);
+    },
 
-  _computeGlint (label, buttonState) {
-      //FIXME this should consider localization
-      return buttonState !== "inactive" &&
+    _computeGlint(label, buttonState) {
+        // FIXME this should consider localization
+        return buttonState !== 'inactive' &&
              (label === 'Next' || this.showSaveButton || label === 'Hints');
-  },
+    },
 
-  _undoRedoHidden (buttonState, showSaveButton) {
-      return showSaveButton || buttonState !== 'hidden';
-  },
+    _undoRedoHidden(buttonState, showSaveButton) {
+        return showSaveButton || buttonState !== 'hidden';
+    },
 
-  _undoTapped () {
-      this.fire('undo');
-  },
+    _undoTapped() {
+        this.fire('undo');
+    },
 
-  _redoTapped () {
-      this.fire('redo');
-  },
+    _redoTapped() {
+        this.fire('redo');
+    },
 
-  _computeUndoRedoClass(flag) {
-      return flag ? 'active' : '';
-  }
+    _computeUndoRedoClass(flag) {
+        return flag ? 'active' : '';
+    },
 });

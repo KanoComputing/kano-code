@@ -17,6 +17,9 @@ export class KanoCodeWorkspaceViewProvider extends WorkspaceViewProvider {
     get partsRoot() {
         return this.root;
     }
+    get partsControls() {
+        return this.root.$['parts-controls'];
+    }
 }
 
 export default KanoCodeWorkspaceViewProvider;

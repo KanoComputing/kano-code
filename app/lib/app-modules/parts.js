@@ -3,17 +3,24 @@ import AppModule from './app-module.js';
 class PartsModule extends AppModule {
     constructor(editor) {
         super(editor);
-        this.addMethod('get', '_get');
-        this.addMethod('whenCollisionBetween', '_whenCollision');
-        this.addMethod('collisionBetween', '_collides');
         this.addLifecycleStep('stop', '_stop');
         this.addLifecycleStep('start', '_start');
         this._parts = {};
+        this._methods = {
+            get: this._get.bind(this),
+            whenCollisionBetween: this._whenCollision.bind(this),
+            collisionBetween: this._collides.bind(this),
+        };
     }
 
     static get name() { return 'parts'; }
 
     static get aliases() { return ['devices']; }
+
+    getSymbols() {
+        const { addedParts } = this.editor;
+        return addedParts.map(p => p.id);
+    }
 
     _get(name) {
         const mode = this.editor.getMode();
@@ -46,6 +53,7 @@ class PartsModule extends AppModule {
             acc[element.getAttribute('id')] = element;
             return acc;
         }, {});
+        this.methods = Object.assign({}, this._methods, this._parts);
         this._runDevicesMethod('start');
         this._reset();
         this._startCollisionLoop();

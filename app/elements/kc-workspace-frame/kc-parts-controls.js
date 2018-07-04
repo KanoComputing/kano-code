@@ -7,7 +7,6 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import '../kano-icons/kc-ui.js';
-import '../kano-add-parts/kano-add-parts.js';
 import '../kano-part-list-item/kano-part-list-item.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
@@ -61,13 +60,6 @@ class KCPartsControls extends Store.StateReceiver(mixinBehaviors([
             }
             paper-dialog {
                 background: transparent;
-            }
-            kano-add-parts#add-parts {
-                margin: 0px;
-                max-width: 680px;
-                width: 680px;
-                border-radius: 3px;
-                font-family: var(--font-body);
             }
             .part-list {
                 @apply --layout-flex;

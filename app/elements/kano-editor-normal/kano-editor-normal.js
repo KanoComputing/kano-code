@@ -58,7 +58,7 @@ Polymer({
             <kano-workspace-normal id="workspace" width="[[width]]" height="[[height]]" slot="workspace">
                 <slot name="part" slot="part"></slot>
             </kano-workspace-normal>
-            <kc-parts-controls slot="controls" parts-menu-open="[[partsMenuOpen]]" parts="[[parts]]" store-id="[[storeId]]">
+            <kc-parts-controls id="parts-controls" slot="controls" parts-menu-open="[[partsMenuOpen]]" parts="[[parts]]" store-id="[[storeId]]">
                 <div class="part" id\$="background" slot="extra-parts" on-tap="_editBackground">
                     <iron-icon class="background-icon" icon="aspect-ratio"></iron-icon>
                     <div>Background</div>
