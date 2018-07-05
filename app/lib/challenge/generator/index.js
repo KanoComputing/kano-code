@@ -16,6 +16,11 @@ class Challenge extends Plugin {
     constructor() {
         super();
         this.reset();
+        this.middlewares = [];
+        this.blockCount = {};
+    }
+    addMiddleware(middleware) {
+        this.middlewares.push(middleware);
     }
     reset() {
         // Namespaces for the unique ids
@@ -55,6 +60,21 @@ class Challenge extends Plugin {
     }
     onInject() {
         this.reloadState();
+        const { workspaceView, plugins } = this.editor;
+        // Add middleware declared by the WorkspaceViewProvider
+        if (typeof workspaceView.challengeGeneratorMiddleware === 'function') {
+            this.addMiddleware(workspaceView.challengeGeneratorMiddleware);
+        }
+        // Add all the middlewares declared by the plugins
+        plugins.forEach((plugin) => {
+            if (typeof plugin.challengeGeneratorMiddleware !== 'function') {
+                return;
+            }
+            this.addMiddleware(plugin.challengeGeneratorMiddleware);
+        });
+        this.setupUI();
+    }
+    setupUI() {
         const { workspaceView } = this.editor;
         const root = workspaceView.root.shadowRoot || workspaceView.root;
         const frame = root.querySelector('kc-workspace-frame');
@@ -83,27 +103,32 @@ class Challenge extends Plugin {
         }
         if (this.editor.sourceType === 'blockly') {
             const { sourceEditor } = this.editor;
-            const { workspace, Blockly } = sourceEditor;
+            const { workspace } = sourceEditor;
             workspace.addChangeListener((event) => {
                 if (!this.creator) {
                     return;
                 }
-                if (event.type !== Blockly.Events.UI) {
-                    return;
-                }
-                if (event.element !== 'commentOpen') {
-                    return;
-                }
-                const block = workspace.getBlockById(event.blockId);
-                const { comment } = block;
-                if (!comment) {
-                    return;
-                }
-                const text = comment.getText();
-                if (text === '') {
-                    comment.setText(JSON.stringify(Challenge.getDefaultCommentData(), null, '    '));
-                }
+                this.populateComment(event);
             });
+        }
+    }
+    populateComment(event) {
+        const { sourceEditor } = this.editor;
+        const { workspace, Blockly } = sourceEditor;
+        if (event.type !== Blockly.Events.UI) {
+            return;
+        }
+        if (event.element !== 'commentOpen') {
+            return;
+        }
+        const block = workspace.getBlockById(event.blockId);
+        const { comment } = block;
+        if (!comment) {
+            return;
+        }
+        const text = comment.getText();
+        if (text === '') {
+            comment.setText(JSON.stringify(Challenge.getDefaultCommentData(), null, '    '));
         }
     }
     static getDefaultCommentData() {
@@ -157,25 +182,11 @@ class Challenge extends Plugin {
         this.uidNss[ns] += 1;
         return this.uidNss[ns];
     }
-    generatePartsSteps(parts) {
-        parts.forEach((part) => {
-            if (this.data.parts.indexOf(part.type) === -1) {
-                this.data.parts.push(part.type);
-            }
-            this.partsIds[part.id] = `part_${this.uid('part')}`;
-            this.appParts[part.id] = part;
-
-            this.data.steps.push({
-                type: 'create-part',
-                part: part.type,
-                alias: this.partsIds[part.id],
-                openPartsCopy: '<OPEN PARTS DIALOG>',
-                addPartCopy: '<ADD PART>',
-            });
-        });
-    }
     addSteps(steps) {
         this.data.steps = this.data.steps.concat(steps);
+    }
+    runMiddlewares(data) {
+        return this.middlewares.reduce((acc, middleware) => middleware(acc, this), data);
     }
     generate() {
         this.reset();
@@ -204,10 +215,27 @@ class Challenge extends Plugin {
                 }
             });
         });
-        // TODO: Defer that to the parts plugin
+        /* TODO: This uses the properties inside the generator that still refers to parts
+         * Think of a better way to generate block steps while being aware of their
+         * parts context
+         * Possible way would be to make the generator ignore composed block ids from parts
+         * and scan here all the steps and all their locations to translate them to their
+         * part + block equivalents
+         * box#set_stroke_size => { "part": "part_0", "block": "set_stroke_size" }
+         * Other option is to not transform them at all and update the challenge parser to
+         * Support hashtag part syntax
+         * Last option is to leave it as it is but allow the generator plugin to support two
+         * types of middlewares, pre and post. We could use pre to generate the parts steps and
+         * populate the id map before the generator tries to read it
+         */
         if (parts) {
-            this.generatePartsSteps(parts);
+            parts.forEach((part) => {
+                this.partsIds[part.id] = `part_${this.uid('part')}`;
+                this.appParts[part.id] = part;
+            });
         }
+        this.data.id = Challenge.findId(xml);
+        const metadata = Challenge.findMetadata(xml);
         const startOptions = Challenge.findStartNodes(xml);
         startOptions.forEach((startOption) => {
             if (!startOption.start || startOption.start.tagName === 'variables') {
@@ -221,8 +249,49 @@ class Challenge extends Plugin {
             }
             return acc;
         }, xml.cloneNode(false));
-        this.data.defaultApp = Blockly.Xml.domToText(rootNode);
+        this.data.defaultApp = JSON.stringify({
+            source: Blockly.Xml.domToText(rootNode),
+        });
+        this.data = this.runMiddlewares(this.data);
+        // Add the metadata to the challenge
+        Object.assign(this.data, metadata);
         return this.data;
+    }
+    static findId(xml) {
+        // Find generator id block
+        const idNode = xml.querySelector('block[type="generator_id"]');
+        if (!idNode) {
+            // Return default id if not defined
+            return 'missingno';
+        }
+        // Extract Text field containing the id
+        const textField = idNode.querySelector('field[name="ID"]');
+        // Get all the id blocks and remove them from the XML tree
+        const idNodes = [...xml.querySelectorAll('block[type="generator_id"]')];
+        idNodes.forEach(node => node.parentNode.removeChild(node));
+        // Return the contents of the text field
+        return textField.innerText;
+    }
+    static findMetadata(xml) {
+        // Find generator metadata block
+        const metadataNode = xml.querySelector('block[type="generator_metadata"]');
+        if (!metadataNode) {
+            // Return empty object if no metadata
+            return {};
+        }
+        // Extract Text field containing the JSON data
+        const textField = metadataNode.querySelector('field[name="JSON"]');
+        // Get all the id blocks and remove them from the XML tree
+        const metadataNodes = [...xml.querySelectorAll('block[type="generator_metadata"]')];
+        metadataNodes.forEach(node => node.parentNode.removeChild(node));
+        let data;
+        // Safely parse the text field contents
+        try {
+            data = JSON.parse(textField.innerText) || {};
+        } catch (e) {
+            data = {};
+        }
+        return data;
     }
     static findStartNodes(root) {
         const clone = root.cloneNode(true);
@@ -325,16 +394,14 @@ class Challenge extends Plugin {
     /**
      * Generate the steps matching a `field` node in a Blockly XML tree
      */
-    fieldToSteps(node, fieldDefault) {
+    fieldToSteps(node) {
         let parent = node.parentNode;
         let parentBlockType = Challenge.parseBlockType(parent.getAttribute('type'));
         const parentTagName = parent.tagName;
         const steps = [];
-        let fieldValue;
         let inputName;
         let fieldName;
         let shadowSelector;
-        let defaults = fieldDefault;
 
         let ptag = parentTagName;
         let absParent = parent;
@@ -368,7 +435,8 @@ class Challenge extends Plugin {
             } else {
                 fieldName = node.getAttribute('name');
             }
-            if (fieldName && !defaults) {
+            let defaults;
+            if (fieldName) {
                 if (!this.fieldDefaults[parentBlockType.block]) {
                     this.editor.logger.warn('missing default field: ', parentBlockType.block, fieldName);
                 } else {
@@ -379,9 +447,10 @@ class Challenge extends Plugin {
                 }
             }
             const commentData = this.parseComment(parent);
+            const fieldValue = node.firstChild.nodeValue;
             // Loose check of the value
             /* eslint eqeqeq: "off" */
-            if (node.firstChild.nodeValue != defaults) {
+            if (fieldValue != defaults) {
                 const challengeId = absParent.getAttribute('challengeId');
                 const rawId = absParent.getAttribute('id');
                 const selector = {
@@ -392,9 +461,8 @@ class Challenge extends Plugin {
                 } else {
                     selector.rawId = rawId;
                 }
-                fieldValue = this.translate('field', node.firstChild.nodeValue);
-                const fieldPreview = Challenge.generateFieldPreview(node, fieldValue);
-                const currentFieldPreview = Challenge.generateFieldPreview(node, fieldDefault);
+                const fieldPreview = Challenge.generateFieldPreview(node, this.translate('field', fieldValue));
+                const currentFieldPreview = Challenge.generateFieldPreview(node, defaults);
                 let bannerCopy = commentData.bannerCopy || 'Change $currentFieldPreview to $fieldPreview';
                 bannerCopy = bannerCopy.replace(/\$fieldPreview/g, fieldPreview);
                 bannerCopy = bannerCopy.replace(/\$currentFieldPreview/g, currentFieldPreview);

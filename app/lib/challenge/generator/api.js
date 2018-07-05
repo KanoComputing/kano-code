@@ -63,10 +63,34 @@ export const GeneratorAPIProvider = editor => ({
     color: '#676767',
     symbols: [{
         type: 'function',
+        name: 'id',
+        verbose: 'Challenge id',
+        parameters: [{
+            name: 'id',
+            verbose: '',
+            default: 'challenge-id',
+            returnType: String,
+            blockly: {
+                field: true,
+            },
+        }],
+        blockly: {
+            javascript(Blockly, block) {
+                const text = block.getFieldValue('ID');
+                return `// @challenge-id: ${text}\n`;
+            },
+            postProcess(json) {
+                delete json.previousStatement;
+                delete json.nextStatement;
+                return json;
+            },
+        },
+    }, {
+        type: 'function',
         name: 'banner',
         parameters: [{
             name: 'text',
-            default: "'Banner content'",
+            default: 'Banner content',
             returnType: String,
             blockly: {
                 field: true,
@@ -104,6 +128,31 @@ export const GeneratorAPIProvider = editor => ({
         blockly: {
             javascript(Blockly) {
                 return '// @step\n';
+            },
+        },
+    }, {
+        type: 'function',
+        name: 'metadata',
+        parameters: [{
+            name: 'json',
+            returnType: String,
+            blockly: {
+                customField(Blockly) {
+                    const TextareaField = TextareaFieldProvider(Blockly);
+                    return new TextareaField(`{
+    
+}`);
+                },
+            },
+        }],
+        blockly: {
+            javascript(Blockly) {
+                return '// @metadata\n';
+            },
+            postProcess(json) {
+                delete json.previousStatement;
+                delete json.nextStatement;
+                return json;
             },
         },
     }],

@@ -10,7 +10,83 @@ This entry allows to go in and out of challenge creation mode. This gives two fe
  - The ability to download challenges file from the settings button
  - A set of Challenge blocks allowing the customisation of the generated challenge
 
+### Middlewares
+
+By default the genrator will be able to generate the core bits for a challenge (steps, modules, filters).
+If you Kano Code implementation used the challenge file to store metadata, you can use a middleware
+to add this metadata to your generated challenges.
+
+
+Example adding a version number to your generated challenges
+```js
+challengeGeneratorPlugin = new ChallengeGeneratorPlugin();
+challengeGeneratorPlugin.addMiddleware((challenge, generator) => {
+    challenge.version = '0.4.7'
+    return challenge;
+});
+editor.addPlugin(challengeGeneratorPlugin);
+
+```
+
+Using the WorkspaceView API:
+
+The challenge genrator plugin will look into your WorkspaceViewProvider for the `challengeGeneratorMiddleware` key,
+and add it automatically to its list of middlewares:
+
+Example using the WorkspaceViewProvider to add the number of blocks a generated challenge
+```js
+
+class MyWorkspaceViewProvider extends code.WorkspaceViewProvider {
+    get challengeGeneratorMiddleware() {
+        return (challenge, generator) => {
+            if (this.editor.sourceType !== 'blockly') {
+                return challenge;
+            }
+            const { sourceEditor } = this.editor;
+            const { Blockly } = sourceEditor;
+            const xml = Blockly.Xml.textToDom(sourceEditor.getSource());
+            const blocks = xml.querySelectorAll('block');
+            challenge.numberOfBlocks = blocks.length;
+            return challenge;
+        };
+    }
+}
+
+```
+
+In a plugin:
+
+If a plugin exposes a `challengeGeneratorMiddleware`, it will automatically be added to the list of middlewares.
+
+Example on how the Parts Plugin might generate steps for parts:
+
+```js
+
+class PartsPlugin extends Plugin {
+    // ...
+    get challengeGeneratorMiddleware() {
+        return (challenge, generator) => {
+            if (this.editor.sourceType !== 'blockly') {
+                return challenge;
+            }
+            // Get all the parts
+            const { addedParts } = this.editor.store.getState();
+            const partsSteps = this.generatePartsChallengeSteps(addedParts);
+            // Prepend the parts step
+            challenge.steps = partsSteps.concat(challenge.steps);
+            return challenge;
+        };
+    }
+    // ...
+}
+
+```
+
 ### Blocks
+
+#### id
+
+This block allows to choose the id on the generated challenge. Only one allowed.
 
 #### Start
 
@@ -33,4 +109,10 @@ fill it with a JSON object containing
 }
 ```
 
-This data will be used to generate the step creating the very same block
+This data will be used to generate the step creating the very same block.
+
+### Metadata
+
+This block allows you to write extra information that need to be added to the challenge. This data will be merged with the generated challenge.
+WARNING: The data in this block will override the data generated, use only if you know what you're doing.
+WARNING: The data is merged after everything was generated, including the middlewares

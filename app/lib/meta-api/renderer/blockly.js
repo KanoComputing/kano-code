@@ -136,7 +136,7 @@ class BlocklyMetaRenderer {
         }
         const defaults = params.filter(p => typeof p.def.default !== 'undefined').reduce((acc, p) => {
             if (p.def.blockly && p.def.blockly.shadow) {
-                acc[p.def.name.toUpperCase()] = { shadow: p.def.blockly.shadow(p.def.default) };
+                acc[p.def.name.toUpperCase()] = { shadow: p.def.blockly.shadow(p.def.default), default: p.def.default };
             } else {
                 acc[p.def.name.toUpperCase()] = p.def.default;
             }

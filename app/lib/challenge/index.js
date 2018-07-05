@@ -107,11 +107,13 @@ class Challenge extends Plugin {
             'banner.text',
         ], this.rootEl._processMarkdown.bind(this));
 
-        const state = this.store.getState();
+        const challenge = this.store.getState();
 
-        if (state.scene.steps) {
+        const { steps } = (challenge.scene || challenge);
+
+        if (steps) {
             setTimeout(() => {
-                this.engine.setSteps(state.scene.steps);
+                this.engine.setSteps(steps);
                 this.engine.start();
                 this.challengeActions.updateSteps(this.engine.steps);
             }, config.CHALLENGE_START_DELAY || 500);
@@ -158,7 +160,7 @@ class Challenge extends Plugin {
     }
     _shouldSaveStep() {
         const { step } = this.engine;
-        if (step.validation) {
+        if (step && step.validation) {
             if (step.validation.blockly) {
                 const { blockly } = step.validation;
                 if (blockly['open-flyout'] || blockly.value) {
@@ -169,7 +171,7 @@ class Challenge extends Plugin {
                 return true;
             }
         }
-        if (step.banner && step.banner['open-parts']) {
+        if (step && step.banner && step.banner['open-parts']) {
             return true;
         }
 
@@ -263,17 +265,18 @@ class Challenge extends Plugin {
     load(challenge, mode) {
         this.originalMode = mode;
         const { toolbox } = this.editor.store.getState();
+        const { flyoutMode, variables, defaultApp } = (challenge.scene || challenge);
         // Filter Mode to get the challenge view of its features
         const challengeMode = Challenge.getChallengeMode(challenge, mode);
         this.editor.setMode(challengeMode);
         // Filter Catergories to get the categories view of their features
         const challengeToolbox = Challenge.getChallengeToolbox(challenge, toolbox);
         this.editor.editorActions.setToolbox(challengeToolbox);
-        this.editor.editorActions.setFlyoutMode(challenge.scene.flyoutMode);
+        this.editor.editorActions.setFlyoutMode(flyoutMode);
         this.setSceneVariables(Challenge.getSceneVariables(challengeToolbox));
-        this.editor.loadVariables(challenge.scene.variables);
-        if (challenge.scene.defaultApp) {
-            this.editor.load(JSON.parse(challenge.scene.defaultApp));
+        this.editor.loadVariables(variables);
+        if (defaultApp) {
+            this.editor.load(JSON.parse(defaultApp));
         } else {
             this.editor.loadDefault();
         }
@@ -288,9 +291,10 @@ class Challenge extends Plugin {
     }
     static getChallengeMode(challenge, mode) {
         const newMode = Object.assign({}, mode);
+        const { filterBlocks, parts } = (challenge.scene || challenge);
         // In case we filter blocks in the categories of the mode
-        if (challenge.scene.filterBlocks) {
-            const whitelist = challenge.scene.filterBlocks[mode.id];
+        if (filterBlocks) {
+            const whitelist = filterBlocks[mode.id];
             if (whitelist) {
                 newMode.categories = newMode.categories.map((category, index) => {
                     const newCategory = Object.assign({}, category);
@@ -303,23 +307,24 @@ class Challenge extends Plugin {
                 });
             }
         }
-        if (challenge.scene.parts) {
-            newMode.parts = mode.parts.filter(part => challenge.scene.parts.indexOf(part.type) !== -1);
+        if (parts) {
+            newMode.parts = mode.parts.filter(part => parts.indexOf(part.type) !== -1);
         }
         return newMode;
     }
     static getChallengeToolbox(challenge, toolbox) {
-        if (challenge.scene.blocks) {
-            return challenge.scene.blocks;
+        const { blocks, modules, filterBlocks, filterToolbox } = (challenge.scene || challenge);
+        if (blocks) {
+            return blocks;
         }
-        if (!challenge.scene.modules) {
+        if (!modules) {
             return toolbox;
         }
-        const filter = challenge.scene.filterBlocks || challenge.scene.filterToolbox;
-        const filtered = toolbox.filter(entry => challenge.scene.modules.indexOf(entry.id) >= 0)
+        const filter = filterBlocks || filterToolbox;
+        const filtered = toolbox.filter(entry => modules.indexOf(entry.id) >= 0)
             .map((entry) => {
                 const clone = Object.assign({}, entry);
-                if (!challenge.scene.filterBlocks || !filter[entry.id]) {
+                if (!filterBlocks || !filter[entry.id]) {
                     return clone;
                 }
                 clone.blocks = clone.blocks

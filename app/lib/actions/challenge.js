@@ -130,11 +130,12 @@ const ChallengeActions = (store) => {
             break;
         }
         case CHALLENGE_TYPES.COMPLETE_CHALLENGE: {
-            const scene = this.get('state.scene');
-            if (scene.show_remix_options) {
+            const challenge = this.get('state');
+            const { show_remix_options, autoshare_disabled } = (challenge.scene || challenge);
+            if (show_remix_options) {
                 this.set('scene.completed', true);
             }
-            if (scene.autoshare_disabled) {
+            if (autoshare_disabled) {
                 this.set('scene.autoshareDisabled', true);
             }
             break;
