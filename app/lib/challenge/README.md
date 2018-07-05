@@ -6,18 +6,18 @@
 
 This plugin embeds a challenge generator. This generator will add an entry to the settings button on the WorkspaceView.
 
-This entry allows to go in and out of challenge creation mode. This gives two features:
+This entry allows you to go in and out of challenge creation mode. This adds two features:
  - The ability to download challenges file from the settings button
  - A set of Challenge blocks allowing the customisation of the generated challenge
 
 ### Middlewares
 
-By default the genrator will be able to generate the core bits for a challenge (steps, modules, filters).
-If you Kano Code implementation used the challenge file to store metadata, you can use a middleware
+By default the generator will be able to generate the core bits for a challenge (steps, modules, filters).
+If your Kano Code implementation used the challenge file to store metadata, you can use a middleware
 to add this metadata to your generated challenges.
 
 
-Example adding a version number to your generated challenges
+Example of adding a version number to your generated challenges
 ```js
 challengeGeneratorPlugin = new ChallengeGeneratorPlugin();
 challengeGeneratorPlugin.addMiddleware((challenge, generator) => {
@@ -58,7 +58,7 @@ In a plugin:
 
 If a plugin exposes a `challengeGeneratorMiddleware`, it will automatically be added to the list of middlewares.
 
-Example on how the Parts Plugin might generate steps for parts:
+Example of how the Parts Plugin might generate steps for parts:
 
 ```js
 
@@ -86,7 +86,7 @@ class PartsPlugin extends Plugin {
 
 #### id
 
-This block allows to choose the id on the generated challenge. Only one allowed.
+This block allows you to choose the id of the generated challenge. Only one is allowed.
 
 #### Start
 
@@ -98,7 +98,7 @@ This block will inject a banner step after the creation of the previous block an
 
 ### Comments
 
-In creator mode, when adding openning a block comment for the first time (or if the comment has no content) it will
+In creator mode, when adding a block comment for the first time (or if the comment has no content) it will
 fill it with a JSON object containing
 
 ```json
@@ -115,4 +115,4 @@ This data will be used to generate the step creating the very same block.
 
 This block allows you to write extra information that need to be added to the challenge. This data will be merged with the generated challenge.
 WARNING: The data in this block will override the data generated, use only if you know what you're doing.
-WARNING: The data is merged after everything was generated, including the middlewares
+WARNING: The data is merged after everything was generated, including middlewares
