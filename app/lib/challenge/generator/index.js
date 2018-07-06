@@ -363,14 +363,16 @@ class Challenge extends Plugin {
         return [JSON.parse(jsonString)];
     }
     parseComment(node) {
-        const commentNode = node.getElementsByTagName('comment')[0];
         let data = {};
-        if (commentNode) {
-            try {
-                data = JSON.parse(commentNode.innerText);
-            } catch (e) {
-                this.editor.logger.warn(`Could not parse comment '${commentNode.innerText}'`);
-            }
+        const commentNode = node.querySelector('comment');
+        // No comment found or comment node is not direct child of node
+        if (!commentNode || commentNode.parentNode !== node) {
+            return data;
+        }
+        try {
+            data = JSON.parse(commentNode.innerText);
+        } catch (e) {
+            this.editor.logger.warn(`Could not parse comment '${commentNode.innerText}'`);
         }
         return data;
     }

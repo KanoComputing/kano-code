@@ -32,7 +32,7 @@ module.exports = (opts = {}) => {
         const decoder = new StringDecoder('utf-8');
 
         function sendData() {
-            if (!queue.length) {
+            if (!queue || !queue.length) {
                 return _end.call(res);
             }
             if (_write.call(res, queue.shift())) {
