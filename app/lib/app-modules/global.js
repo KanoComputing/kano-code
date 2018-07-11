@@ -1,8 +1,8 @@
 import AppModule from './app-module.js';
 
 class GlobalModule extends AppModule {
-    constructor() {
-        super();
+    constructor(editorOrPlayer) {
+        super(editorOrPlayer);
         this.addMethod('when', '_when');
         this.addMethod('emit', '_emit');
         this.addMethod('restartCode', '_restartCode');
@@ -12,10 +12,6 @@ class GlobalModule extends AppModule {
     }
 
     static get name() { return 'global'; }
-
-    config(opts) {
-        this._restartCodeHandler = opts.restartCodeHandler;
-    }
 
     _when(name, callback) {
         this._listeners[name] = this._listeners[name] || [];
@@ -41,9 +37,7 @@ class GlobalModule extends AppModule {
     }
 
     _restartCode() {
-        if (this._restartCodeHandler) {
-            this._restartCodeHandler();
-        }
+        this.editor.restartApp();
     }
 
     _afterRun() {
