@@ -1,4 +1,4 @@
-import Plugin from '../../editor/plugin.js';
+import { Plugin } from '../../editor/plugin.js';
 import { GeneratorAPIProvider } from './api.js';
 
 const GENERATOR_BLOCKS = [
@@ -7,7 +7,7 @@ const GENERATOR_BLOCKS = [
 ];
 
 const DEFAULT_COPY = {
-    openFlyout: 'Open this tray',
+    openFlyout(label = 'this') { return `Open ${label} tray`; },
     grabBlock: 'Drag the block onto your code space',
     connect: 'Connect to this block',
     drop: 'Drop this block anywhere in your code space',
@@ -134,7 +134,7 @@ class Challenge extends Plugin {
     }
     static getDefaultCommentData() {
         const data = {
-            openFlyoutCopy: DEFAULT_COPY.openFlyout,
+            openFlyoutCopy: DEFAULT_COPY.openFlyout(),
             grabBlockCopy: DEFAULT_COPY.grabBlock,
             connectCopy: DEFAULT_COPY.connect,
         };
@@ -378,21 +378,30 @@ class Challenge extends Plugin {
         return data;
     }
     getCategoryLabel(categoryId) {
-        const { entries } = this.editor.toolbox;
-        for (let i = 0; i < entries.length; i += 1) {
-            const id = entries[i].type === 'blockly' ? entries[i].id : entries[i].name;
-            if (id === categoryId) {
-                const name = entries[i].type === 'blockly' ? entries[i].category.name : entries[i].verbose;
-                return name;
-            }
+        // FIXME: Hard coded translation for normal mode. This will disapera once modes are not a
+        // thing anymore and the block names will be matching in the toolbox entries
+        switch (categoryId) {
+        case 'normal': {
+            return 'Draw';
         }
-        const { addedParts } = this.editor;
-        for (let i = 0; i < addedParts.length; i += 1) {
-            if (addedParts[i].id === categoryId) {
-                return addedParts[i].label;
+        default: {
+            const { entries } = this.editor.toolbox;
+            for (let i = 0; i < entries.length; i += 1) {
+                const id = entries[i].type === 'blockly' ? entries[i].id : entries[i].name;
+                if (id === categoryId) {
+                    const name = entries[i].type === 'blockly' ? entries[i].category.name : entries[i].verbose;
+                    return name;
+                }
             }
+            const { addedParts } = this.editor;
+            for (let i = 0; i < addedParts.length; i += 1) {
+                if (addedParts[i].id === categoryId) {
+                    return addedParts[i].label;
+                }
+            }
+            return categoryId;
         }
-        return categoryId;
+        }
     }
     /**
      * Generate the steps matching a `field` node in a Blockly XML tree
@@ -481,7 +490,10 @@ class Challenge extends Plugin {
                 // Otherwise use the array to check which inputs to ignore
                 if ((Array.isArray(ignoreInputs) && ignoreInputs.indexOf(fieldName) === -1)
                     || (!Array.isArray(ignoreInputs) && ignoreInputs !== true)) {
-                    step.value = node.firstChild.nodeValue;
+                    // Matches a hex color value. By default any change of value for a color will be ignored
+                    if (!/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(node.firstChild.nodeValue)) {
+                        step.value = node.firstChild.nodeValue;
+                    }
                 }
                 steps.push(step);
             }
@@ -562,7 +574,7 @@ class Challenge extends Plugin {
 
         const step = {
             type: 'create-block',
-            openFlyoutCopy: commentData.openFlyoutCopy || DEFAULT_COPY.openFlyout,
+            openFlyoutCopy: commentData.openFlyoutCopy || DEFAULT_COPY.openFlyout(categoryLabel),
             grabBlockCopy: commentData.grabBlockCopy || DEFAULT_COPY.grabBlock,
             category: categoryLocation,
             blockType: blockLocation,
