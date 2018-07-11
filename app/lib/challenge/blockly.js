@@ -129,6 +129,17 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
+    _getDropBlockStep(data) {
+        return {
+            validation: {
+                blockly: {
+                    drop: {
+                        target: data.alias,
+                    },
+                },
+            },
+        };
+    }
     _createBlockShorthand(data) {
         const openFlyoutStep = this._getOpenFlyoutStep(data);
         const createStep = this._getCreateBlockStep(data);
@@ -138,6 +149,8 @@ class BlocklyChallenge extends Challenge {
         }
         if (data.connectTo) {
             steps.push(this._getConnectBlockStep(data));
+        } else {
+            steps.push(this._getDropBlockStep(data));
         }
         return steps;
     }

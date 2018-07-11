@@ -208,6 +208,14 @@ class KanoCodeChallenge extends BlocklyChallenge {
             },
         });
     }
+    _getDropBlockStep(data) {
+        const step = super._getDropBlockStep(data);
+        return Object.assign(step, {
+            banner: {
+                text: data.dropCopy || 'Drop this block anywhere in your code space',
+            },
+        });
+    }
     _changeInputShorthand(data) {
         const step = super._changeInputShorthand(data);
         Object.assign(step, {

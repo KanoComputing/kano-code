@@ -10,6 +10,7 @@ const DEFAULT_COPY = {
     openFlyout: 'Open this tray',
     grabBlock: 'Drag the block onto your code space',
     connect: 'Connect to this block',
+    drop: 'Drop this block anywhere in your code space',
 };
 
 class Challenge extends Plugin {
@@ -600,7 +601,7 @@ class Challenge extends Plugin {
             }
             step.connectTo = connectTo;
         } else {
-            step.dropCopy = 'Drop anywhere in the code';
+            step.dropCopy = commentData.dropCopy || DEFAULT_COPY.drop;
         }
 
         steps.push(step);
