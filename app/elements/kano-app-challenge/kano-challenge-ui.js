@@ -905,13 +905,25 @@ Polymer({
 
     getTargetBlock(selector) {
         let block = this.workspace.getBlockById(selector.id);
-
         if (selector.shadow) {
-            block = block.getInput(selector.shadow).connection.targetBlock();
+            block = this.getTargetBlockShadow(block, selector.shadow);
         }
         return block;
     },
 
+    getTargetBlockShadow(block, selector) {
+        if (typeof selector === 'string') {
+            return block.getInput(selector).connection.targetBlock();
+        } else if ('shadow' in selector) {
+            let shadowSelector = selector;
+            if (typeof shadowSelector !== 'string' && shadowSelector.name) {
+                shadowSelector = shadowSelector.name;
+            }
+            return this.getTargetBlockShadow(block, shadowSelector);
+        }
+        return null;
+    },
+    
     getTargetBlockInput(selector) {
         let block = this.getTargetBlock(selector),
             connection,
