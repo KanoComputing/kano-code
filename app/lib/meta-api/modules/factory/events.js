@@ -1,7 +1,7 @@
 import { localize } from '../../../i18n/index.js';
 
 function getEventOptions(editor) {
-    const { mode, addedParts } = editor.store.getState();
+    const { addedParts } = editor.store.getState();
     const options = [['app starts', 'global.start']];
     if (addedParts) {
         addedParts.forEach((part) => {
@@ -11,8 +11,8 @@ function getEventOptions(editor) {
         });
     }
     // Add events of the current mode
-    if (mode.events) {
-        mode.events.forEach((ev) => {
+    if (editor.output.outputProfile.events) {
+        editor.output.outputProfile.events.forEach((ev) => {
             options.push([`${this.mode.name} ${ev.label}`, `${this.mode.id}.${ev.id}`]);
         });
     }

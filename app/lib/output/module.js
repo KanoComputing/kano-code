@@ -1,4 +1,4 @@
-import AppModule from '../../app-modules/app-module.js';
+import AppModule from '../app-modules/app-module.js';
 
 export class OutputModule extends AppModule {
     constructor(...args) {
@@ -7,10 +7,10 @@ export class OutputModule extends AppModule {
         this.addLifecycleStep('stop', '_stop');
     }
     _start() {
-        this.editor.outputView.start();
+        this.output.outputView.start();
     }
     _stop() {
-        this.editor.outputView.stop();
+        this.output.outputView.stop();
     }
 }
 

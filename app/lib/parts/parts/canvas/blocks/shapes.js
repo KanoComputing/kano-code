@@ -23,7 +23,7 @@ const shapes = [{
     javascript: (part) => {
         return function (block) {
             let radius = Blockly.JavaScript.valueToCode(block, 'RADIUS') || 'null';
-            return `devices.get('${part.id}').modules.shapes.circle(${radius});\n`;
+            return `ctx.circle(${radius});\n`;
         };
     }
 },{
@@ -54,7 +54,7 @@ const shapes = [{
         return function (block) {
             let radiusx = Blockly.JavaScript.valueToCode(block, 'RADIUSX') || 'null',
                 radiusy = Blockly.JavaScript.valueToCode(block, 'RADIUSY') || 'null';
-            return `devices.get('${part.id}').modules.shapes.ellipse(${radiusx}, ${radiusy});`;
+            return `ctx.ellipse(${radiusx}, ${radiusy});`;
         };
     }
 },{
@@ -78,7 +78,7 @@ const shapes = [{
     javascript: (part) => {
         return function (block) {
             let size = Blockly.JavaScript.valueToCode(block, 'SIZE') || 'null';
-            return `devices.get('${part.id}').modules.shapes.square(${size});`;
+            return `ctx.square(${size});`;
         };
     }
 },{
@@ -109,7 +109,7 @@ const shapes = [{
         return function (block) {
             let width = Blockly.JavaScript.valueToCode(block, 'WIDTH') || 'null',
                 height = Blockly.JavaScript.valueToCode(block, 'HEIGHT') || 'null';
-            return `devices.get('${part.id}').modules.shapes.rectangle(${width}, ${height});`;
+            return `ctx.rectangle(${width}, ${height});`;
         };
     }
 },{
@@ -151,7 +151,7 @@ const shapes = [{
                 start = Blockly.JavaScript.valueToCode(block, 'START') || 'null',
                 end = Blockly.JavaScript.valueToCode(block, 'END') || 'null',
                 close = block.getFieldValue('CLOSE') || false;
-            return `devices.get('${part.id}').modules.shapes.arc(${radius}, ${start}, ${end}, ${close});`;
+            return `ctx.arc(${radius}, ${start}, ${end}, ${close});`;
         };
     }
 },{
@@ -273,7 +273,7 @@ const shapes = [{
                 points.push(Blockly.JavaScript.valueToCode(block, `X${i}`) || 0);
                 points.push(Blockly.JavaScript.valueToCode(block, `Y${i}`) || 0);
             }
-            return `devices.get('${part.id}').modules.shapes.polygon(${points.join(', ')}, ${close});`;
+            return `ctx.polygon(${points.join(', ')}, ${close});`;
         };
     }
 },{
@@ -288,7 +288,7 @@ const shapes = [{
     },
     javascript: (part) => {
         return function (block) {
-            return `devices.get('${part.id}').modules.shapes.pixel();`;
+            return `ctx.pixel();`;
         };
     }
 }];

@@ -27,7 +27,6 @@ import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-regist
 import '../kano-media-query/kano-media-query.js';
 import '../kano-workspace/kano-workspace.js';
 import '../kano-part-editor/kano-part-editor.js';
-import '../kano-background-editor/kano-background-editor.js';
 import '../kc-blockly-editor/kc-blockly-editor.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import '../kano-code-display/kano-code-display.js';
@@ -45,10 +44,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         return {
             storeId: {
                 type: Number,
-            },
-            background: {
-                type: String,
-                linkState: 'background',
             },
             parts: {
                 type: Array,
@@ -104,17 +99,10 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 value: false,
                 notify: true,
             },
-            editingBackground: {
-                linkState: 'editingBackground',
-            },
         };
     }
     static get observers() {
         return [
-            'selectedPartChanged(selected.*)',
-            'backgroundChanged(background.*)',
-            'resetAppState(addedParts.splices)',
-            '_codeChanged(code)',
             '_onPartsSet(parts)',
         ];
     }
@@ -122,7 +110,7 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         return html`
         <style>
             :host {
-                @apply --layout-vertical;
+                @apply --layout-horizontal;
                 position: relative;
                 max-width: 100vw;
             }
@@ -231,16 +219,11 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             .large-modal {
                 width: 880px;
             }
-            :host([small-screen]) #edit-part-dialog,
-            :host([small-screen]) #edit-background-dialog {
+            :host([small-screen]) #edit-part-dialog {
                 width: 100%;
                 left: -32px !important;
             }
-            :host #background-editor {
-                background: #292f35;
-            }
-            :host #edit-part-dialog-content,
-            :host #background-editor {
+            :host #edit-part-dialog-content {
                 margin: 0;
             }
             .icon-button {
@@ -255,22 +238,54 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             paper-dialog > * {
                 border-radius: 6px;
             }
-            kano-add-parts#add-parts {
-                margin: 0px;
+            .activity-bar {
+                background: #1A1A1A;
+                display: flex;
+                flex-direction: column;
+            }
+            .activity-bar > * {
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                width: 48px;
+                height: 40px;
+            }
+            .activity-bar > *:not([disabled]) {
+                cursor: pointer;
+            }
+            .activity-bar button {
+                background: transparent;
+                border: none;
+                padding: 0px;
+            }
+            .activity-bar button:focus {
+                outline: none;
+            }
+            .activity-bar button img {
+                margin: 8px 8px 0 8px;
+                width: 32px;
+                height: 32px;
+            }
+            .activity-bar button img {
+                transition: opacity 0.15s ease;
+                opacity: 0.6;
+            }
+            .activity-bar button:not([disabled]):hover img {
+                opacity: 1;
             }
         </style>
         <kano-media-query small-screen="{{smallScreen}}" medium-screen="{{mediumScreen}}" large-screen="{{largeScreen}}">
         </kano-media-query>
+        <div class="activity-bar" id="activity-bar"></div>
         <section id="section" on-mousemove="mouseMoved" on-mouseup="completedResizing">
             <div class="ui-edition" id="workspace-panel">
-                <template is="dom-if" if="[[mode]]">
-                    <paper-tabs class="tab-selector" attr-for-selected="id" selected="{{workspaceTab}}" autoselect="">
-                        <paper-tab id="workspace" class="tab">Canvas</paper-tab>
-                        <paper-tab id="code-display" class="tab">JavaScript</paper-tab>
-                    </paper-tabs>
-                </template>
+                <paper-tabs class="tab-selector" attr-for-selected="id" selected="{{workspaceTab}}" autoselect="">
+                    <paper-tab id="workspace" class="tab">Canvas</paper-tab>
+                    <paper-tab id="code-display" class="tab">JavaScript</paper-tab>
+                </paper-tabs>
                 <iron-pages class="workspace-pages" attr-for-selected="id" selected="[[workspaceTab]]">
-                    <kano-workspace id="workspace" store-id="[[storeId]]" class="visible-when-running" selected="{{selected}}" editable-layout="{{editableLayout}}" parts-menu-open="[[partsMenuOpen]]" on-ui-ready="workspaceUiReady" on-change="_proxyChange" on-run-button-clicked="_runButtonClicked" on-reset-app-state="resetAppState"></kano-workspace>
+                    <kano-workspace id="workspace" store-id="[[storeId]]" class="visible-when-running" selected="{{selected}}" editable-layout="{{editableLayout}}" parts-menu-open="[[partsMenuOpen]]" on-ui-ready="workspaceUiReady" on-change="_proxyChange"></kano-workspace>
                     <kano-code-display id="code-display" code="[[_setCodeDisplay(code, workspaceTab)]]" lang="javascript"></kano-code-display>
                 </iron-pages>
             </div>
@@ -288,17 +303,11 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         <kano-alert id="dialog-offline" heading="[[localize('SHARING_NOT_AVAILABLE', 'This feature isn\\'t available offline')]]" text="[[localize('CONNECT_TO_INTERNET', 'Make sure you\\'re connected to the internet.')]]" with-backdrop>
             <button class="kano-alert-primary" dialog-confirm="" slot="actions">[[localize('GOT_IT', 'Got it')]]</button>
         </kano-alert>
-        <paper-dialog id="edit-background-dialog" fit-into="[[codeEditor]]" on-iron-overlay-closed="_backgroundEditorDialogClosed" opened="[[editingBackground]]" no-cancel-on-outside-click>
-            <kano-background-editor id="background-editor" class="no-padding" value="[[background]]" on-value-changed="_backgroundChanged" name="background"></kano-background-editor>
-        </paper-dialog>
         <iron-a11y-keys target="[[target]]" keys="alt+s" on-keys-pressed="share"></iron-a11y-keys>
         `;
     }
     _hasSelectedPart() {
         return typeof this.selectedPartIndex !== 'undefined' && this.selectedPartIndex !== null;
-    }
-    _backgroundChanged(e) {
-        this.dispatch({ type: 'UPDATE_BACKGROUND', value: e.detail.value });
     }
     _exitTapped() {
         this.fire('tracking-event', {
@@ -310,7 +319,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     _manageModals(e) {
         const notifier = dom(e).rootTarget.id;
         const nonConcurringModalIds = [
-            'edit-background-dialog',
             'edit-part-dialog',
         ];
 
@@ -325,12 +333,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 this.$[modal].close();
             }
         });
-    }
-    _editBackground() {
-        this.dispatch({ type: 'EDIT_BACKGROUND', state: true });
-    }
-    _backgroundEditorDialogClosed() {
-        this.dispatch({ type: 'EDIT_BACKGROUND', state: false });
     }
     _newPartRequest(e) {
         if (!e.detail || !e.detail.data || !e.detail.data.product) {
@@ -366,14 +368,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     _isPauseOverlayHidden(running, editableLayout) {
         return running || editableLayout;
     }
-    _codeChanged() {
-        this.unsavedChanges = true;
-        // Restart code if not editing
-        if (!this.editableLayout) {
-            this.toggleRunning(false);
-            this.toggleRunning(true);
-        }
-    }
     _proxyChange(e) {
         // Bug on chrome 49 on the kit, the event from kano-blockly stops here
         e.preventDefault();
@@ -406,41 +400,14 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         }
     }
     _dialogConfirmedReset() {
-        this.dispatch({ type: 'RESET_EDITOR' });
         this.fire('tracking-event', {
             name: 'workspace_reset_dialog_confirmed',
         });
-        this.$.workspace.reset();
         this.dispatchEvent(new CustomEvent('reset'));
         this.unsavedChanges = false;
     }
     isPartDeletionDisabled() {
-        return this.partEditorOpened || this.backgroundEditorOpened || this.running;
-    }
-    backgroundChanged(e) {
-        let property = e.path.split('.');
-        property.shift();
-        property = property.join('.');
-        this.notifyChange('background', {
-            property,
-            value: e.value,
-        });
-    }
-    selectedPartChanged(e) {
-        let property = e.path.split('.');
-        property.shift();
-        property = property.join('.');
-        this.notifyChange('selected-part-change', {
-            property,
-            value: e.value,
-        });
-    }
-    computeBackground() {
-        const style = this.background.userStyle;
-        return Object.keys(style).reduce((acc, property) => {
-            acc += `${property}:${style[property]};`;
-            return acc;
-        }, '');
+        return this.partEditorOpened || this.running;
     }
     /**
    * Save the current work in the local storage
@@ -450,8 +417,9 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         const savedApp = {};
         savedApp.code = state.code;
         savedApp.source = this.$['root-view'].getSource();
-        savedApp.background = this.background;
-        savedApp.mode = state.mode.id;
+        if (state.mode) {
+            savedApp.mode = state.mode.id;
+        }
         if (snapshot) {
             savedApp.snapshot = true;
             savedApp.selectedPart = state.addedParts.indexOf(this.selected);
@@ -477,8 +445,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         return {
             app: this.save(false, false),
             workspaceInfo: JSON.stringify(this.save()),
-            background: this.background,
-            mode: this.mode,
             code: this.code,
             parts: this.addedParts,
         };
@@ -498,9 +464,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         // TODO: Move to blockly plugin
         Utils.updatePartsColors(this.addedParts);
         this.$['root-view'].computeBlocks();
-
-        // If there is no background, fall back to the default value
-        this.dispatch({ type: 'UPDATE_BACKGROUND', value: savedApp.background });
         this.unsavedChanges = false;
     }
     reset() {
@@ -510,8 +473,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         // No part selected, show the background editor
         if (!this.selected) {
             this._toggleFullscreenModal(false);
-            this._editBackground();
-            this.notifyChange('open-background-settings');
         } else {
             this._toggleFullscreenModal(this.selected.fullscreenEdit);
             this.$['edit-part-dialog'].open();
@@ -620,7 +581,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     }
     bindEvents() {
         this.addEventListener('save-button-clicked', this.share);
-        this.addEventListener('edit-background', this._editBackground);
         this.addEventListener('feature-not-available-offline', this._openOfflineDialog);
         this.addEventListener('opened-changed', this._manageModals);
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
@@ -631,7 +591,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     }
     detachEvents() {
         this.removeEventListener('save-button-clicked', this.share);
-        this.removeEventListener('edit-background', this._editBackground);
         this.removeEventListener('feature-not-available-offline', this._openOfflineDialog);
         this.removeEventListener('opened-changed', this._manageModals);
         this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
@@ -640,7 +599,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     constructor() {
         super();
         this.share = this.share.bind(this);
-        this._editBackground = this._editBackground.bind(this);
         this._openOfflineDialog = this._openOfflineDialog.bind(this);
         this._manageModals = this._manageModals.bind(this);
 
@@ -652,7 +610,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         super.connectedCallback();
         this.target = document.body;
         this.partEditorOpened = false;
-        this.backgroundEditorOpened = false;
         this.codeEditor = this.$['root-view'];
 
         this.bindEvents();
@@ -806,16 +763,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             y: point.y / rect.height * fullSize.height,
         };
     }
-    _runButtonClicked() {
-        this.fire('tracking-event', {
-            name: this.running ? 'app_paused' : 'app_played',
-        });
-        this.toggleRunning();
-    }
-    toggleRunning(state) {
-        const running = typeof state === 'undefined' ? !this.running : state;
-        this.dispatch({ type: 'SET_RUNNING_STATE', state: running });
-    }
     _cleanDraggables() {
         if (!this.draggables) {
             this.draggables = [];
@@ -858,24 +805,9 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             });
         });
     }
-
-    getMakeButtonClass(running, editableLayout) {
-        const classes = [];
-        if (running) {
-            classes.push('running');
-        } else {
-            classes.push('stopped');
-        }
-        if (editableLayout) {
-            classes.push('editable-layout');
-        }
-        return classes.join(' ');
-    }
-
     applyHiddenClass() {
         return this.running ? '' : 'hidden';
     }
-
     /**
    * Resize the workspace
    */
@@ -883,14 +815,12 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         this.pauseEvent(e);
         this.isResizing = true;
     }
-
     /**
    * Completed the resize action
    */
     completedResizing() {
         this.isResizing = false;
     }
-
     /**
    * Used to prevent text selection when dragging
    */
@@ -950,17 +880,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
     }
     getWorkspace() {
         return this.$.workspace;
-    }
-    resetAppState() {
-        this.dispatch({ type: 'SET_RUNNING_STATE', state: false });
-
-        setTimeout(() => {
-            this.dispatch({ type: 'SET_RUNNING_STATE', state: true });
-        }, 0);
-
-        this.fire('tracking-event', {
-            name: 'app_restarted',
-        });
     }
     _openOfflineDialog() {
         this.$['dialog-offline'].open();

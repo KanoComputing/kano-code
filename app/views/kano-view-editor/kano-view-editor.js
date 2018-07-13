@@ -8,16 +8,15 @@ import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.
 import '../../elements/kano-editor-topbar/kano-editor-topbar.js';
 import '../../elements/kano-share-modal/kano-share-modal.js';
 import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
-import { AllModules } from '../../lib/app-modules/all.js';
 import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
-import { Editor, FileUploadPlugin, I18n, LocalStoragePlugin, Mode, PartsPlugin, UserPlugin } from '../../lib/index.js';
-import { AllApis, EventsModuleFactory } from '../../scripts/meta-api/all.js';
+import { Editor, FileUploadPlugin, I18n, LocalStoragePlugin, UserPlugin } from '../../lib/index.js';
 import '../../scripts/kano/make-apps/actions/app.js';
 import { SDK } from '../../scripts/kano/make-apps/sdk.js';
 import { Store } from '../../scripts/kano/make-apps/store.js';
 import '../../scripts/kano/make-apps/utils.js';
 import { Router } from '../../scripts/kano/util/router.js';
-import { KanoCodeWorkspaceViewProvider } from '../../scripts/workspace/index.js';
+
+import { DrawEditorProfile } from '../../profiles/normal/index.js';
 
 const behaviors = [
     SharingBehavior,
@@ -135,31 +134,22 @@ class KanoViewEditor extends Store.StateReceiver(
         const userPlugin = new UserPlugin();
         this.editor.addPlugin(userPlugin);
 
-        this.partsPlugin = new PartsPlugin();
-        this.editor.addPlugin(this.partsPlugin);
-
         this.storagePlugin = new LocalStoragePlugin(this._getStorageKey.bind(this));
         this.editor.addPlugin(this.storagePlugin);
-
-        const EventsModule = EventsModuleFactory(this.editor);
-
-        const toolboxEntries = [EventsModule, ...AllApis];
-
-        this.editor.toolbox.setEntries(toolboxEntries);
-
-        this.editor.runner.addModule(AllModules);
 
         if (config.ENABLE_CHALLENGE_GENERATOR) {
             this.challengeGeneratorPlugin = new ChallengeGeneratorPlugin();
             this.editor.addPlugin(this.challengeGeneratorPlugin);
         }
 
-
         this._deactivateSavePrompt = this._deactivateSavePrompt.bind(this);
         this._deactivateSavePrompt = this._deactivateSavePrompt.bind(this);
     }
     connectedCallback() {
         super.connectedCallback();
+        this.profiles = new Map();
+        this.profiles.set('normal', new DrawEditorProfile(this.editor));
+        this.profiles.set('draw', new DrawEditorProfile(this.editor));
         this.setupListeners();
         this.modal = this.$['share-modal'];
 
@@ -167,29 +157,27 @@ class KanoViewEditor extends Store.StateReceiver(
         this.fileUpload.on('upload', this._onFileDropped.bind(this));
         this.editor.addPlugin(this.fileUpload);
 
-        const slug = this.context.params.slug;
+        const { slug } = this.context.params;
         let p;
         if (slug) {
-            p = this.loadRemix(slug).then(share => {
-                const app = share;
-                return this.loadMode(share.mode)
-                    .then((mode) => {
-                        if (app.code && app.code.snapshot) {
-                            app.source = app.code.snapshot.blocks;
-                        }
-                        this.editor.setMode(mode);
-                        this.setupEditor();
-                        this.editor.load(app);
-                    });
-            });
-        } else {
-            const modeId = this._getMode(this.context);
-            p = this.loadMode(modeId)
-                .then((mode) => {
-                    this.editor.setMode(mode);
+            p = this.loadRemix(slug)
+                .then((share) => {
+                    const app = share;
+                    if (app.code && app.code.snapshot) {
+                        app.source = app.code.snapshot.blocks;
+                    }
+                    const profile = this.profiles.get(share.mode);
+                    this.editor.registerProfile(profile);
                     this.setupEditor();
-                    this.storagePlugin.load();
+                    this.editor.load(app);
                 });
+        } else {
+            const profileId = this._getMode(this.context);
+            const profile = this.profiles.get(profileId);
+            this.editor.registerProfile(profile);
+            this.setupEditor();
+            this.storagePlugin.load();
+            p = Promise.resolve();
         }
         Promise.all([
             p,
@@ -241,23 +229,12 @@ class KanoViewEditor extends Store.StateReceiver(
                 this.$['error-dialog'].open();
             });
     }
-    loadMode(id) {
-        const url = `/mode/${id}.js`;
-        return Mode.load(id, url);
-    }
     setupEditor() {
-        const mode = this.editor.getMode();
-        const workspaceViewProvider = new KanoCodeWorkspaceViewProvider(
-            this.editor,
-            mode.editorTagName || `kano-editor-${mode.id}`,
-            mode.workspace.viewport,
-        );
-        this.editor.registerWorkspaceViewProvider(workspaceViewProvider);
         this.editor.inject(this.root, this.root.firstChild);
         this.editor.on('share', shareInfo => this.share({ detail: shareInfo }));
         this.editor.on('exit', () => this._exit());
 
-        this.editor.setRunningState(true);
+        this.editor.output.setRunningState(true);
     }
     _appChanged() {
         if (!this.app) {
@@ -270,10 +247,10 @@ class KanoViewEditor extends Store.StateReceiver(
             return;
         }
         if (modalOpen) {
-            this._wasRunning = this.editor.getRunningState();
-            this.editor.setRunningState(false);
+            this._wasRunning = this.editor.output.getRunningState();
+            this.editor.output.setRunningState(false);
         } else {
-            this.editor.setRunningState(this._wasRunning);
+            this.editor.output.setRunningState(this._wasRunning);
             this._wasRunning = undefined;
         }
     }
@@ -286,12 +263,12 @@ class KanoViewEditor extends Store.StateReceiver(
         }
         this.dispatch({ type: 'LOAD_EDITOR_APP', data: app });
     }
-    _getMode(context) {
-        var modeFromQs = Router.parseQsParam(this.context.querystring, 'mode');
-        return modeFromQs ? modeFromQs : 'normal';
+    _getMode() {
+        const modeFromQs = Router.parseQsParam(this.context.querystring, 'mode');
+        return modeFromQs || 'draw';
     }
     _getStorageKey() {
-        const { id } = this.editor.getMode();
+        const { id } = this.editor.output;
         return `savedApp-${id}`;
     }
     _activateSavePrompt() {
@@ -303,7 +280,7 @@ class KanoViewEditor extends Store.StateReceiver(
     _confirmExit() {
         this.fire('exit-confirmed');
         this.fire('tracking-event', {
-            name: 'ide_exit_confirmed'
+            name: 'ide_exit_confirmed',
         });
     }
     _launchShare() {

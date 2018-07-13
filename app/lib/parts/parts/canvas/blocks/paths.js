@@ -27,7 +27,7 @@ const paths = [{
         return function (block) {
             let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
                 y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
-            return `devices.get('${part.id}').modules.paths.lineTo(${x}, ${y});\n`;
+            return `ctx.lineTo(${x}, ${y});\n`;
         };
     }
 },{
@@ -59,7 +59,7 @@ const paths = [{
         return function (block) {
             let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
                 y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
-            return `devices.get('${part.id}').modules.paths.line(${x}, ${y});\n`;
+            return `ctx.line(${x}, ${y});\n`;
         };
     },
 }];

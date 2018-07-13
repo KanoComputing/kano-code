@@ -1,7 +1,7 @@
 
 class AppModules {
-    constructor(editor) {
-        this.editor = editor;
+    constructor(output) {
+        this.output = output;
         this.modules = {};
     }
     get componentStyles() {
@@ -27,7 +27,7 @@ class AppModules {
     }
 
     define(name, ModuleClass) {
-        this.modules[name] = new ModuleClass(this.editor);
+        this.modules[name] = new ModuleClass(this.output);
         if (ModuleClass.aliases) {
             ModuleClass.aliases.forEach((alias) => {
                 this.modules[alias] = this.modules[name];

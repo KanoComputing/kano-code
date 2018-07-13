@@ -1,18 +1,17 @@
-import EventEmitter from '../util/event-emitter.js';
 import Config from '../config.js';
 import Store from './store.js';
-import ModeActions from '../actions/mode.js';
 import EditorActions from '../actions/editor.js';
 import StoreObserver from './store-observer.js';
 import Toolbox from './toolbox.js';
-import Runner from './runner.js';
 import { Logger } from '../log/index.js';
 import { DefaultWorkspaceViewProvider } from './workspace/default.js';
-import { OutputModule } from './output/module.js';
 import { Dialogs } from './dialogs/index.js';
 import { Keybindings } from './keybindings/index.js';
 
 import '../../elements/kano-app-editor/kano-app-editor.js';
+import { EditorOrPlayer } from './editor-or-player.js';
+import { Output } from '../output/output.js';
+import { ActivityBar } from './activity-bar.js';
 
 const PROXY_EVENTS = [
     'share',
@@ -24,11 +23,10 @@ const PROXY_EVENTS = [
     'import',
 ];
 
-class Editor extends EventEmitter {
+class Editor extends EditorOrPlayer {
     constructor(opts = {}) {
         super();
         this.config = Config.merge(opts);
-        this.config.restartCodeHandler = this.restartApp.bind(this);
         this.logger = new Logger();
         this.logger.setLevel(this.config.LOG_LEVEL);
         this.elementsRegistry = new Map();
@@ -37,7 +35,6 @@ class Editor extends EventEmitter {
         this.rootEl.editor = this;
         this.sourceType = opts.sourceType || 'blockly';
         this.store = Store.create({
-            running: false,
             config: this.config,
             addedParts: [],
             workspaceTab: 'workspace',
@@ -49,7 +46,6 @@ class Editor extends EventEmitter {
             editingBackground: false,
         });
         this.storeObserver = new StoreObserver(this.store, this);
-        this.modeActions = ModeActions(this.store);
         this.editorActions = EditorActions(this.store);
 
         this.rootEl.storeId = this.store.id;
@@ -61,7 +57,7 @@ class Editor extends EventEmitter {
 
         this.eventRemovers = PROXY_EVENTS.map(name => Editor.proxyEvent(this.rootEl, this, name));
 
-        this.plugins = [];
+        this.output = new Output();
 
         this.dialogs = new Dialogs();
         this.addPlugin(this.dialogs);
@@ -72,23 +68,19 @@ class Editor extends EventEmitter {
         this.toolbox = new Toolbox();
         this.addPlugin(this.toolbox);
 
-        this.runner = new Runner();
-        this.runner.addModule(OutputModule);
-        this.addPlugin(this.runner);
-
         this.on('import', (event) => {
             this.load(event.app);
         });
+
+        this.activityBar = new ActivityBar();
+        this.addPlugin(this.activityBar);
     }
     addPlugin(plugin) {
-        this.plugins.push(plugin);
+        super.addPlugin(plugin);
         plugin.onInstall(this);
         if (this.injected) {
             plugin.onInject();
         }
-    }
-    runPluginTask(taskName, ...args) {
-        this.plugins.forEach(plugin => plugin[taskName](...args));
     }
     setupElements() {
         const workspace = this.rootEl.getWorkspace();
@@ -100,6 +92,13 @@ class Editor extends EventEmitter {
         this.elementsRegistry.set('add-parts-dialog', addPartDialog);
         this.elementsRegistry.set('source-view', sourceView);
         this.elementsRegistry.set('toolbox-enhancer-above', sourceView.$['toolbox-enhancer-above']);
+
+        this.sourceEditor.addEventListener('code-changed', (e) => {
+            this.output.setCode(e.detail.value);
+            this.rootEl.code = e.detail.value;
+            this.unsavedChanges = true;
+            this.output.restart();
+        });
     }
     /**
      * TODO: Remove once the editor moved to a better element registry API
@@ -134,44 +133,45 @@ class Editor extends EventEmitter {
         }
         this.appendWorkspaceView();
         this.setupElements();
+        if (this.workspaceProvider) {
+            this.workspaceProvider.onInject();
+        }
         this.runPluginTask('onInject');
     }
-    setMode(modeDefinition) {
-        this.modeActions.updateMode(modeDefinition);
-        this.runPluginTask('onModeSet', modeDefinition);
-    }
-    loadDefault() {
-        const { mode } = this.store.getState();
-        this.load({
-            parts: [],
-            source: mode.defaultSource,
-        });
-    }
     load(app) {
-        this.runPluginTask('onAppLoad', app);
+        this.runPluginTask('onImport', app);
+        this.output.runPluginTask('onImport', app);
         this.editorActions.loadSource(app.source);
         this.emit('loaded');
     }
     reset() {
-        this.loadDefault();
+        const source = this.profile ? this.profile.source : '';
+        this.load({ source });
     }
     restartApp() {
-        this.editorActions.setRunningState(false);
-        this.editorActions.setRunningState(true);
+        this.output.restart();
     }
-    save() {
+    exportCreation() {
+        let data = this.export();
+        this.plugins.forEach((plugin) => {
+            data = plugin.onCreationExport(data);
+        });
+        data = this.output.onCreationExport(data);
+        return data;
+    }
+    export() {
         let app = this.rootEl.save();
         this.plugins.forEach((plugin) => {
-            app = plugin.onSave(app);
+            app = plugin.onExport(app);
         });
+        app = this.output.onExport(app);
         return app;
+    }
+    save() {
+        return this.export();
     }
     share() {
         this.rootEl.share();
-    }
-    getMode() {
-        const { mode } = this.store.getState();
-        return mode;
     }
     getSource() {
         const { source } = this.store.getState();
@@ -180,13 +180,6 @@ class Editor extends EventEmitter {
     getCode() {
         const { code } = this.store.getState();
         return code;
-    }
-    setRunningState(state) {
-        this.editorActions.setRunningState(state);
-    }
-    getRunningState() {
-        const { running } = this.store.getState();
-        return running;
     }
     getViewport() {
         const ws = this.getWorkspace();
@@ -206,24 +199,36 @@ class Editor extends EventEmitter {
             });
         }
     }
+    registerProfile(profile) {
+        if (profile && !Array.isArray(profile.toolbox)) {
+            throw new Error('Could not register EditorProfile: toolbox is not an array');
+        }
+        if (profile.plugins && !Array.isArray(profile.plugins)) {
+            throw new Error('Could not register EditorProfile: plugins is not an array');
+        }
+        this.profile = profile;
+        this.output.registerProfile(this.profile.outputProfile);
+        this.registerWorkspaceViewProvider(this.profile.workspaceViewProvider);
+        if (this.profile.plugins) {
+            this.profile.plugins.forEach(p => this.addPlugin(p));
+        }
+        if (this.profile.toolbox) {
+            this.profile.toolbox.forEach(t => this.toolbox.addEntry(t));
+        }
+    }
     registerWorkspaceViewProvider(provider) {
         this.workspaceProvider = provider;
+        this.workspaceProvider.onInstall(this);
     }
     appendWorkspaceView() {
         if (!this.workspaceProvider) {
             this.workspaceProvider = new DefaultWorkspaceViewProvider(this);
         }
         this.rootEl.$.workspace.appendView(this.workspaceProvider);
-    }
-    get addedParts() {
-        const { addedParts } = this.store.getState();
-        return addedParts;
+        this.workspaceProvider.setOutputView(this.output.outputView);
     }
     get sourceEditor() {
         return this.getElement('source-view');
-    }
-    get outputView() {
-        return this.workspaceView.outputView;
     }
     get workspaceView() {
         return this.workspaceProvider;

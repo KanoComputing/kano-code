@@ -1,4 +1,4 @@
-# Banner API
+# [DRAFT] Banner API
 
 Provides a way to display a banner in the `sourceEditor`.
 If multiple banners are opened at the same time, it will stack them up.

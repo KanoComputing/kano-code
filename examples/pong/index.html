@@ -21,51 +21,13 @@
     <body>
         <script type="module">
             import './pong.js';
-            import { Editor, AppModule, WorkspaceViewProvider, OutputViewProvider } from '../../app/lib/index.js';
+            import * as code from '../../app/lib/index.js';
             import '../../node_modules/@kano/kwc-blockly/blockly_built/msg/js/en.js';
-
-            // Define what the output will be, In this case, an instance of Pong.js
-            class PongOutputView extends OutputViewProvider {
-                constructor(...args) {
-                    super(...args);
-                    this.root = document.createElement('div');
-                    this.root.style.width = '100%';
-                    this.root.style.height = '420px';
-                    this.pong = new Pong(this.root);
-                    // Add keyboard controls for player A
-                    this.pong.players.a.addControls({
-                        'up': 'w',
-                        'down': 's',
-                    });
-
-                    // Add behaviour for player B
-                    this.pong.on('update', () => {
-                        if (this.pong.players.b.y < this.pong.balls[0].y) {
-                            this.pong.players.b.move(1);
-                        } else if (this.pong.players.b.y > this.pong.balls[0].y) {
-                            this.pong.players.b.move(-1);
-                        }
-                    });
-                }
-                // Every time the output restarts, resets all values
-                start() {
-                    if (!this.started) {
-                        this.pong.resize();
-                        this.started = true;
-                    }
-                    this.pong.reset();
-                    this.pong.setBackgroundColor(0x000000);
-                    this.pong.setBallColor(0xffffff);
-                    this.pong.setBallSize(10);
-                    setTimeout(() => {
-                        this.pong.start();
-                    });
-                }
-            }
+            import { PongOutputProfile } from './profile.js';
 
             // Define what the workpsace will be, in this case, it only contains the output
             // and an output code element to display the generated code in real time
-            class PongWorkspaceViewProvider extends WorkspaceViewProvider {
+            class PongWorkspaceViewProvider extends code.WorkspaceViewProvider {
                 constructor(...args) {
                     super(...args);
                     this.root = document.createElement('div');
@@ -85,39 +47,22 @@
                         </div>
                     `;
                     this.root.style.width = '100%';
-                    this.output = new PongOutputView(...args);
-                    this.root.querySelector('#output').appendChild(this.output.root);
                     // Listen to the running state change
-                    this.editor.on('running-state-changed', () => {
+                    this.editor.output.on('running-state-changed', () => {
                         this.updateCodeOutput();
                     });
                 }
-                get outputView() {
-                    return this.output;
+                get outputViewRoot() {
+                    return this.root.querySelector('#output');
                 }
                 updateCodeOutput() {
                     // Put the current code from the editor in the code element
-                    this.root.querySelector('#code-output').innerHTML = `\n${this.editor.getCode() || ''}`;
-                }
-            }
-
-            // Pong runner module. It just sets the methods to be the instance of pong running
-            // In more complex situations, you will need to wrap the methods to not expose the
-            // whole API to the VM
-            class PongModule extends AppModule {
-                static get name() { return 'pong'; }
-                constructor(...args) {
-                    super(...args);
-                    this.addLifecycleStep('start', '_start');
-                }
-                _start(s) {
-                    const { outputView } = this.editor;
-                    this.methods = outputView.pong;
+                    this.root.querySelector('#code-output').innerHTML = `\n${this.editor.output.getCode() || ''}`;
                 }
             }
 
             // CReate the editor
-            const editor = new Editor();
+            const editor = new code.Editor();
 
             // Create the toolbox defining three methods in the pong module
             const PongToolbox = {
@@ -159,14 +104,17 @@
 
             // Add the toolbox entry and runner module
             editor.toolbox.addEntry(PongToolbox);
-            editor.runner.addModule(PongModule);
 
             // Create the workpsaceViewProvider
             const pongView = new PongWorkspaceViewProvider(editor);
 
             editor.registerWorkspaceViewProvider(pongView);
 
+            editor.output.registerProfile(new PongOutputProfile());
+
             editor.inject();
+
+            editor.output.setRunningState(true);
         </script>
     </body>
 </html>

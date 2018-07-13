@@ -49,6 +49,9 @@ class KanoWorkspaceNormal extends mixinBehaviors(
             },
         };
     }
+    get partsRoot() {
+        return this;
+    }
     constructor() {
         super();
         this.mousePositionX = 250;
@@ -60,6 +63,27 @@ class KanoWorkspaceNormal extends mixinBehaviors(
             this.start();
         }
         this.ctx = this.$.canvas;
+    }
+    get api() {
+        return {
+            setBackgroundColor: this.setBackgroundColor.bind(this),
+            setTransparency: this.setTransparency.bind(this),
+            reset: this.reset.bind(this),
+            lineTo: this.modules.paths.lineTo.bind(this.modules.paths),
+            line: this.modules.paths.line.bind(this.modules.paths),
+            color: this.modules.setters.color.bind(this.modules.setters),
+            stroke: this.modules.setters.stroke.bind(this.modules.setters),
+            circle: this.modules.shapes.circle.bind(this.modules.shapes),
+            ellipse: this.modules.shapes.ellipse.bind(this.modules.shapes),
+            square: this.modules.shapes.square.bind(this.modules.shapes),
+            rectangle: this.modules.shapes.rectangle.bind(this.modules.shapes),
+            arc: this.modules.shapes.arc.bind(this.modules.shapes),
+            polygon: this.modules.shapes.polygon.bind(this.modules.shapes),
+            pixel: this.modules.shapes.pixel.bind(this.modules.shapes),
+            moveTo: this.modules.space.moveTo.bind(this.modules.space),
+            moveToRandom: this.modules.space.moveToRandom.bind(this.modules.space),
+            move: this.modules.space.move.bind(this.modules.space),
+        };
     }
     /**
    * Apply background and store the value
@@ -105,8 +129,8 @@ class KanoWorkspaceNormal extends mixinBehaviors(
         this.ctx.globalAlpha = 1;
         this.modules = new Canvas({
             ctx: this.ctx,
-            width: this.width,
-            height: this.height,
+            width: this.ctx.canvas.width,
+            height: this.ctx.canvas.height,
         });
     }
     clear() {

@@ -1,5 +1,5 @@
-import GlobalStore from './global-store.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import GlobalStore from './global-store.js';
 
 const Store = {
     create(initState) {
@@ -7,10 +7,6 @@ const Store = {
 
         class StoreElement extends store.StateProvider(PolymerElement) {
             static get is() { return `kc-store-${store.id}`; }
-            static get observers() { return ['_runningChanged(state.running)']; }
-            _runningChanged() {
-                this.dispatchEvent(new CustomEvent('running-changed'), { bubbles: true });
-            }
         }
 
         customElements.define(StoreElement.is, StoreElement);

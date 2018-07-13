@@ -1,8 +1,8 @@
 import AppModule from './app-module.js';
 
 class GlobalModule extends AppModule {
-    constructor(editorOrPlayer) {
-        super(editorOrPlayer);
+    constructor(output) {
+        super(output);
         this.addMethod('when', '_when');
         this.addMethod('emit', '_emit');
         this.addMethod('restartCode', '_restartCode');
@@ -37,7 +37,7 @@ class GlobalModule extends AppModule {
     }
 
     _restartCode() {
-        this.editor.restartApp();
+        this.output.restartApp();
     }
 
     _afterRun() {

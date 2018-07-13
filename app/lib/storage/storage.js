@@ -33,7 +33,7 @@ class StoragePlugin extends Plugin {
         if (!this.enabled) {
             return;
         }
-        const savedApp = this.editor.save();
+        const savedApp = this.editor.export();
         this.write(this.getKey(), savedApp);
     }
     write(key, value) {

@@ -1,6 +1,8 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import '@kano/kwc-blockly/kwc-blockly.js';
+// TODO: This forces loading the en messages. Blockly has synchronous msg loading
+import '@kano/kwc-blockly/blockly_built/msg/js/en.js';
 import '@kano/kwc-blockly/blocks.js';
 import '@kano/kwc-blockly/javascript.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
@@ -301,7 +303,7 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
         this._registerElement('blockly-flyout', flyout);
     }
     _onCodeChanged(e) {
-        this.dispatch({ type: 'UPDATE_CODE', code: e.detail.value });
+        this.dispatchEvent(new CustomEvent('code-changed', { detail: { value: e.detail.value } }));
     }
     blocksChanged() {
         if (!this.blocks) {

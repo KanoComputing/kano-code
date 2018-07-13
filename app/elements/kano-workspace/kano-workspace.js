@@ -112,14 +112,6 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
             this.mode.workspace.viewport.height,
         );
     }
-    reset() {
-        if (this.workspaceView) {
-            this.workspaceView.clear();
-        }
-        this.fire('tracking-event', {
-            name: 'workspace_reset',
-        });
-    }
 }
 
 customElements.define(KanoWorkspace.is, KanoWorkspace);

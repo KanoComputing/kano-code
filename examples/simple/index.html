@@ -20,23 +20,8 @@
     </head>
     <body>
         <script type="module">
-            import { Editor, AppModule } from '../../app/lib/index.js';
-            import '../../node_modules/@kano/kwc-blockly/blockly_built/msg/js/en.js';
-
-            class DrawModule extends AppModule {
-                static get name() { return 'draw'; }
-                constructor(...args) {
-                    super(...args);
-                    this.addMethod('square', '_square');
-                }
-                _square(x, y, w, h) {
-                    const { outputView } = this.editor.workspaceView;
-                    const canvas = outputView.root;
-                    const ctx = canvas.getContext('2d');
-                    ctx.fillStyle = 'red';
-                    ctx.fillRect(x, y, w, h);
-                }
-            }
+            import { Editor, EditorProfile } from '../../app/lib/index.js';
+            import { DrawOutputProfile } from './profile.js';
 
             const editor = new Editor();
 
@@ -67,10 +52,20 @@
                 }],
             };
 
-            editor.toolbox.addEntry(DrawToolbox);
-            editor.runner.addModule(DrawModule);
+            class DrawProfile extends EditorProfile {
+                get toolbox() {
+                    return [DrawToolbox];
+                }
+                get outputProfile() {
+                    return new DrawOutputProfile();
+                }
+            }
+
+            editor.registerProfile(new DrawProfile());
 
             editor.inject();
+
+            editor.output.setRunningState(true);
         </script>
     </body>
 </html>

@@ -3,11 +3,14 @@ import EventEmitter from '../util/event-emitter.js';
 
 export class Plugin extends EventEmitter {
     onInstall() {}
-    onModeSet() {}
     onInject() {}
-    onAppLoad() {}
-    onSave(app) {
-        return app;
+    onImport() {}
+    onCreationImport() {}
+    onExport(data) {
+        return data;
+    }
+    onCreationExport(data) {
+        return data;
     }
 }
 

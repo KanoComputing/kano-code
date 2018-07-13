@@ -17,10 +17,10 @@ const general = [{
             },
         };
     },
-    javascript: (part) => {
+    javascript: () => {
         return function javascript(block) {
             const color = Blockly.JavaScript.valueToCode(block, 'COLOR');
-            return `devices.get('${part.id}').setBackgroundColor(${color});\n`;
+            return `ctx.setBackgroundColor(${color});\n`;
         };
     },
 }];

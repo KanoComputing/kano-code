@@ -19,7 +19,7 @@ const setters = [{
     javascript: (part) => {
         return function (block) {
             let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || 'null';
-            return `devices.get('${part.id}').modules.setters.color(${color});\n`;
+            return `ctx.color(${color});\n`;
         };
     }
 }, {
@@ -34,7 +34,7 @@ const setters = [{
     },
     javascript: (part) => {
         return function (block) {
-            return `devices.get('${part.id}').modules.setters.color('transparent');\n`;
+            return `ctx.color('transparent');\n`;
         };
     }
 }, {
@@ -65,7 +65,7 @@ const setters = [{
         return function (block) {
             let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || 'null',
                 size = Blockly.JavaScript.valueToCode(block, 'SIZE') || 'null';
-            return `devices.get('${part.id}').modules.setters.stroke(${color}, ${size});\n`;
+            return `ctx.stroke(${color}, ${size});\n`;
         };
     },
 }];

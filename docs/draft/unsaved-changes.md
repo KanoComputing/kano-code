@@ -1,4 +1,4 @@
-# Unsaved changes plugin
+# [DRAFT] Unsaved changes plugin
 
 Editor plugin that records sourceEditor changes and save events.
 

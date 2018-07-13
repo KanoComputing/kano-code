@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Pong Player</title>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import * as code from '../../app/lib/index.js';
+            import { PongOutputProfile } from './profile.js';
+
+            code.Player.registerProfile(new PongOutputProfile());
+
+            const player = new code.Player();
+
+            player.load({"code":"pong.setBackgroundColor('#5E35B1');\npong.setBallSize(4);\n","source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"pong_setBackgroundColor\" id=\"A|9y+yd!se#aeb^*e7)(\" x=\"54\" y=\"88\"><value name=\"S\"><shadow type=\"colour_picker\" id=\"[MOzYlI4%uY~T1bf:ijP\"><field name=\"COLOUR\">#5E35B1</field></shadow></value><next><block type=\"pong_setBallSize\" id=\"h.ZYE;G}(!1ZUJ.r3J@A\"><value name=\"S\"><shadow type=\"math_number\" id=\"+3lo,7be2aFF~^%GFU8a\"><field name=\"NUM\">4</field></shadow></value></block></next></block></xml>","background":"#FFFFFF","profile":"pong"});
+
+            player.inject();
+
+            window.player = player;
+        </script>
+    </body>
+</html>

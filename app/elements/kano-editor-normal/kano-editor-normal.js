@@ -1,9 +1,9 @@
 import '@polymer/polymer/polymer-legacy.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '../kc-workspace-frame/kc-workspace-frame.js';
 import '../kc-workspace-frame/kc-parts-controls.js';
 import '../kano-workspace-normal/kano-workspace-normal.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
 
 Polymer({
@@ -54,22 +54,14 @@ Polymer({
                 color: #3A4248;
             }
         </style>
-        <kc-workspace-frame id="wrapper" width="[[width]]" height="[[height]]" running="[[running]]" mouse-x="[[mousePositionX]]" mouse-y="[[mousePositionY]]" show-mouse-position="">
-            <kano-workspace-normal id="workspace" width="[[width]]" height="[[height]]" slot="workspace">
-                <slot name="part" slot="part"></slot>
-            </kano-workspace-normal>
-            <kc-parts-controls id="parts-controls" slot="controls" parts-menu-open="[[partsMenuOpen]]" parts="[[parts]]" store-id="[[storeId]]">
-                <div class="part" id\$="background" slot="extra-parts" on-tap="_editBackground">
-                    <iron-icon class="background-icon" icon="aspect-ratio"></iron-icon>
-                    <div>Background</div>
-                </div>
+        <kc-workspace-frame id="wrapper" width="[[width]]" height="[[height]]" running="[[running]]" mouse-x="[[mousePositionX]]" mouse-y="[[mousePositionY]]" show-mouse-position>
+            <kc-parts-controls id="parts-controls" slot="controls" parts="[[parts]]" store-id="[[storeId]]">
             </kc-parts-controls>
         </kc-workspace-frame>
 `,
 
     is: 'kano-editor-normal',
     behaviors: [WorkspaceBehavior],
-
     properties: {
         autoStart: Boolean,
         mousePositionX: {
@@ -82,9 +74,6 @@ Polymer({
             value: 250,
             notify: true,
         },
-        mode: {
-            type: Object,
-        },
         running: {
             type: Boolean,
         },
@@ -92,32 +81,26 @@ Polymer({
             type: Array,
         },
     },
-
     ready() {
         this.mousePositionX = 250;
         this.mousePositionY = 250;
     },
-
     attached() {
-        this.$.workspace.addEventListener('mouseover', this._onMouseOver.bind(this));
-        this.$.workspace.addEventListener('mouseout', this._onMouseOut.bind(this));
-        this.$.workspace.addEventListener('mousemove', this._onMouseMove.bind(this));
+        // this.$.workspace.addEventListener('mouseover', this._onMouseOver.bind(this));
+        // this.$.workspace.addEventListener('mouseout', this._onMouseOut.bind(this));
+        // this.$.workspace.addEventListener('mousemove', this._onMouseMove.bind(this));
     },
-
     getWorkspace() {
         return this.$.workspace;
     },
-
     _onMouseOver(e) {
         this._isMouseOver = true;
     },
-
     _onMouseOut(e) {
         this._isMouseOver = false;
         this.mousePositionX = 250;
         this.mousePositionY = 250;
     },
-
     _onMouseMove(e) {
         if (this._isMouseOver) {
             this.rectangle = this.$.workspace.getBoundingClientRect();
@@ -127,23 +110,15 @@ Polymer({
             this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
         }
     },
-
     getRestrictElement() {
         return this.$.workspace;
     },
-
     getViewport() {
         return this.$.workspace;
     },
-
     getViewportScale() {
         return this.$.wrapper.getViewportScale();
     },
-
-    _editBackground() {
-        this.fire('edit-background');
-    },
-
     setBackground(value) {
         this.$.workspace.setBackground(value);
     },

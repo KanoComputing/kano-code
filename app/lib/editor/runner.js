@@ -2,7 +2,7 @@ import VM from '../vm.js';
 import AppModulesLoader from '../app-modules/index.js';
 import { Plugin } from './plugin.js';
 
-class Runner extends Plugin {
+export class Runner extends Plugin {
     constructor() {
         super();
         this.modules = [];
@@ -13,34 +13,32 @@ class Runner extends Plugin {
         mods.forEach(m => this.modules.push(m));
         this._updateModules();
     }
-    onInstall(editor) {
-        this.editor = editor;
-    }
-    onInject() {
+    onInstall(output) {
+        this.output = output;
         this._updateModules();
-        this.editor.on('running-state-changed', this._onRunningStateChange);
+        this.output.on('running-state-changed', this._onRunningStateChange);
     }
-    onAppload() {
+    onImport() {
         // Force refresh app state if was running
-        const running = this.editor.getRunningState();
+        const running = this.output.getRunningState();
         if (running) {
-            this.editor.setRunningState(!running);
-            this.editor.setRunningState(running);
+            this.output.setRunningState(!running);
+            this.output.setRunningState(running);
         }
     }
     _updateModules() {
-        if (!this.editor || !this.editor.injected) {
+        if (!this.output) {
             return;
         }
         if (this.appModulesLoader) {
             const { appModules } = this.appModulesLoader;
             appModules.stop();
         }
-        this.appModulesLoader = new AppModulesLoader(this.editor, this.modules);
+        this.appModulesLoader = new AppModulesLoader(this.output, this.modules);
         this.appModulesLoader.start();
     }
     _onRunningStateChange() {
-        const running = this.editor.getRunningState();
+        const running = this.output.getRunningState();
         const { appModules } = this.appModulesLoader;
         clearTimeout(this.asyncModule);
         this.asyncModule = setTimeout(() => {
@@ -48,7 +46,7 @@ class Runner extends Plugin {
             if (!running) {
                 return;
             }
-            const code = this.editor.getCode();
+            const code = this.output.getCode();
             // Generate the code
             const appCode = appModules.createAppCode('AppModules', code);
             // Start all the modules. Will also trigger the `start` event from `global`

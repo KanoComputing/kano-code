@@ -42,7 +42,11 @@ const BaseMixin = base => class extends base {
     onCreated() {
         // In old apps, we refered to Kano.AppModules directly. Now we set a standalone appModules.
         // Keep this to ensure old apps and not yet updated clients still work
-        this.appModules = this.appModules || Kano.AppModules;
+        let { appModules } = this;
+        if (!appModules && window.Kano) {
+            appModules = window.Kano.AppModules;
+        }
+        this.appModules = appModules;
     }
     onDestroyed() {}
     start() {

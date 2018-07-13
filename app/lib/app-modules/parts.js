@@ -1,8 +1,8 @@
 import AppModule from './app-module.js';
 
 class PartsModule extends AppModule {
-    constructor(editor) {
-        super(editor);
+    constructor(output) {
+        super(output);
         this.addLifecycleStep('stop', '_stop');
         this.addLifecycleStep('start', '_start');
         this._parts = {};
@@ -18,15 +18,11 @@ class PartsModule extends AppModule {
     static get aliases() { return ['devices']; }
 
     getSymbols() {
-        const { addedParts } = this.editor;
-        return addedParts.map(p => p.id);
+        const { partsPlugin } = this.output;
+        return partsPlugin.parts.map(p => p.id);
     }
 
     _get(name) {
-        const mode = this.editor.getMode();
-        if (name === mode.id) {
-            return this.editor.outputView;
-        }
         return this._parts[name];
     }
 
@@ -41,14 +37,14 @@ class PartsModule extends AppModule {
                 this._parts[deviceName][name]();
             }
         });
-        if (typeof this.editor.outputView[name] === 'function') {
-            this.editor.outputView[name]();
+        if (typeof this.output.outputView[name] === 'function') {
+            this.output.outputView[name]();
         }
     }
 
     _start() {
-        const { workspaceView } = this.editor;
-        const elements = [...workspaceView.partsRoot.querySelectorAll('[id]')];
+        const { outputView } = this.output;
+        const elements = [...outputView.partsRoot.querySelectorAll('[id]')];
         this._parts = elements.reduce((acc, element) => {
             acc[element.getAttribute('id')] = element;
             return acc;
@@ -76,7 +72,7 @@ class PartsModule extends AppModule {
 
     _whenCollision(part1, part2, callback) {
         let part1Id, 
-part2Id;
+            part2Id;
         if (!part1 || !part2) {
             return;
         }

@@ -11,15 +11,11 @@ class StoreObserver {
                         addedParts: {
                             linkState: 'addedParts',
                         },
-                        running: {
-                            linkState: 'running',
-                        },
                     };
                 }
                 static get observers() {
                     return [
                         '_addedPartsSplices(addedParts.splices)',
-                        '_runningChanged(running)',
                     ];
                 }
                 _addedPartsSplices(changes) {
@@ -36,9 +32,6 @@ class StoreObserver {
                             this.editor.trigger('part-added', part);
                         }
                     });
-                }
-                _runningChanged() {
-                    this.editor.trigger('running-state-changed');
                 }
             }
             customElements.define(Observer.is, Observer);

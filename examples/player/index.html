@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
+        <script type="module">
+            import * as code from '../../app/lib/index.js';
+            import { DrawOutputProfile } from '../../app/profiles/normal/index.js';
+
+            code.Player.registerProfile(new DrawOutputProfile());
+
+            const player = new code.Player();
+
+            player.load({"code":"time.every(1, 'frames', function () {\n  ctx.reset();\n  ctx.moveTo(math.lerp(0, 512, devices.get('osc').getValue()), 100);\n  ctx.color('#ff0000');\n  ctx.circle(20);\n  devices.get('button').setXY(math.lerp(0, 512, devices.get('osc').getValue())-1,0-1);\n});\n","source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"every_x_seconds\" id=\"e]OnXFq)3Dr0Ey^sF+t:\" x=\"105\" y=\"408\"><field name=\"UNIT\">frames</field><value name=\"INTERVAL\"><shadow type=\"math_number\" id=\"~p.G[(MY$mRE3?U91n;p\"><field name=\"NUM\">1</field></shadow></value><statement name=\"DO\"><block type=\"draw#clear\" id=\";3KKTvH6:!V$;0gG8@I`\"><next><block type=\"draw#move_to\" id=\"L?`=NwbVtOc),T]X)rYy\"><value name=\"X\"><block type=\"math_lerp\" id=\"b(h)PZ^BopO!t}[90xDv\"><value name=\"FROM\"><shadow type=\"math_number\" id=\"rV@]Z#IY9uTRyUz~x0`=\"><field name=\"NUM\">0</field></shadow></value><value name=\"TO\"><shadow type=\"math_number\" id=\"zcM1a=.!gwzl*v~jQduW\"><field name=\"NUM\">512</field></shadow></value><value name=\"PERCENT\"><block type=\"osc#osc_get_value\" id=\"}PYmAoCn]y%MaJG%AJRg\"></block></value></block></value><value name=\"Y\"><block type=\"math_number\" id=\":HdMJR#@Z2wSeg,EH(+.\"><field name=\"NUM\">100</field></block></value><next><block type=\"draw#color\" id=\"705eR!B677gvy2kx-P$-\"><value name=\"COLOR\"><block type=\"colour_picker\" id=\"({RyVf5e#TO52HgM^GF6\"><field name=\"COLOUR\">#ff0000</field></block></value><next><block type=\"draw#circle\" id=\"Ud7JSN0`Agt4eJp.k6R5\"><value name=\"RADIUS\"><block type=\"math_number\" id=\"DyN@e47--:P+6Y4sXK#L\"><field name=\"NUM\">20</field></block></value><next><block type=\"button#ui_set_x_y\" id=\"Fk=gc0X9B[yXxfsMZC$2\"><value name=\"X\"><block type=\"math_lerp\" id=\"|rT%%fsn2yJ-Bt]DO(FX\"><value name=\"FROM\"><shadow type=\"math_number\" id=\"$UH?+QhV,pXf[eSG+/Ew\"><field name=\"NUM\">0</field></shadow></value><value name=\"TO\"><shadow type=\"math_number\" id=\"mN6EP3e[8^^HbBN,hn|;\"><field name=\"NUM\">512</field></shadow></value><value name=\"PERCENT\"><block type=\"osc#osc_get_value\" id=\"z#MvTca-+#fQ%L3qRk%l\"></block></value></block></value></block></next></block></next></block></next></block></next></block></statement></block></xml>","background":"#FFFFFF","parts":[{"id":"osc","name":"Osc","type":"oscillator","tagName":"kano-part-oscillator","userStyle":{},"userProperties":{"wave":"sine","speed":50,"delay":0},"nonvolatileProperties":[],"position":{"x":73,"y":54.75},"partType":"ui","supportedHardware":[],"excludeDefaultBlocks":true,"showDefaultConfiguration":false,"rotation":0,"scale":100,"visible":true},{"id":"button","name":"Button","type":"button","tagName":"kano-ui-button","userStyle":{"background-color":"#3caa36"},"userProperties":{"label":"Click me"},"nonvolatileProperties":[],"position":{"x":504.83469105631934,"y":-1},"partType":"ui","supportedHardware":[],"excludeDefaultBlocks":false,"showDefaultConfiguration":true,"rotation":0,"scale":100,"visible":true}],"profile":"draw"});
+            player.inject();
+        </script>
+    </body>
+</html>

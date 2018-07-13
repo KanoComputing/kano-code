@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Simple Kano Code</title>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import { Player } from '../../app/lib/index.js';
+            import { DrawOutputProfile } from './profile.js';
+
+            Player.registerProfile(new DrawOutputProfile());
+
+            const player = new Player();
+
+            player.load({"code":"draw.square(200, 0, 100, 100);\n","source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"draw_square\" id=\"m+lDIrfC}h:YAlze^?]=\" x=\"380\" y=\"203\"><value name=\"X\"><shadow type=\"math_number\" id=\"N(?Si*jAtf4%,grkK]RK\"><field name=\"NUM\">0</field></shadow></value><value name=\"Y\"><shadow type=\"math_number\" id=\"FoD-CO%;pb~-phcd@GNh\"><field name=\"NUM\">0</field></shadow></value><value name=\"WIDTH\"><shadow type=\"math_number\" id=\"PxT9e]68Z5OZQC,t3{+N\"><field name=\"NUM\">100</field></shadow></value><value name=\"HEIGHT\"><shadow type=\"math_number\" id=\"JWNk,^qY(.5W{)q(]_9#\"><field name=\"NUM\">100</field></shadow></value></block></xml>","background":"#FFFFFF","profile":"default"});
+
+            player.inject();
+
+            window.player = player;
+        </script>
+    </body>
+</html>

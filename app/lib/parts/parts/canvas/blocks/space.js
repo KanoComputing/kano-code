@@ -27,7 +27,7 @@ const space = [{
         return function (block) {
             let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
                 y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
-            return `devices.get('${part.id}').modules.space.moveTo(${x}, ${y});\n`;
+            return `ctx.moveTo(${x}, ${y});\n`;
         };
     }
 },{
@@ -45,7 +45,7 @@ const space = [{
     },
     javascript: (part) => {
         return function (block) {
-            return `devices.get('${part.id}').modules.space.moveToRandom();\n`;
+            return `ctx.moveToRandom();\n`;
         };
     }
 },{
@@ -77,7 +77,7 @@ const space = [{
         return function (block) {
             let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
                 y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
-            return `devices.get('${part.id}').modules.space.move(${x}, ${y});\n`;
+            return `ctx.move(${x}, ${y});\n`;
         };
     },
 }];

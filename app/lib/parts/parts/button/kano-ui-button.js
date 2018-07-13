@@ -28,7 +28,7 @@ class KanoPartButton extends WebCollidableMixin(UIMixin(PolymerElement)) {
         `;
     }
     buttonClicked() {
-        this.fire('clicked');
+        this.dispatchEvent(new CustomEvent('clicked'));
     }
     computeButtonStyle() {
         return this.getPartialStyle(['background-color', 'color']);

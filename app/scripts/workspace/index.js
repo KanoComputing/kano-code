@@ -11,11 +11,8 @@ export class KanoCodeWorkspaceViewProvider extends WorkspaceViewProvider {
             this.root.running = editor.getRunningState();
         });
     }
-    get outputView() {
-        return this.root.getViewport();
-    }
-    get partsRoot() {
-        return this.root;
+    get outputViewRoot() {
+        return this.root.$.wrapper;
     }
     get partsControls() {
         return this.root.$['parts-controls'];

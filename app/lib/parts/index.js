@@ -6,20 +6,29 @@ import { LegacyFactory } from './legacy-factory.js';
 import { getPartColor } from './util/color.js';
 import { AddPartDialogProvider } from './dialogs/add-part.js';
 import { EditPartDialogProvider } from './dialogs/edit-part.js';
+import { PartsOutputPlugin } from './output.js';
 
-class PartsPlugin extends Plugin {
-    constructor() {
+export { PartsOutputPlugin };
+
+export class PartsPlugin extends Plugin {
+    constructor(outputPlugin) {
         super();
+        this.outputPlugin = outputPlugin;
         this.parts = new Parts();
         this.partList = [];
         this.toolbox = new Map();
         this.elements = {};
+        this.setPartTypes(this.outputPlugin.partTypes);
+        this.setParts(this.outputPlugin.partList);
         this._onPartSelected = this._onPartSelected.bind(this);
         this._onEditPartDialogClosed = this._onEditPartDialogClosed.bind(this);
     }
     onInstall(editor) {
         this.editor = editor;
         this.partsActions = PartsActions(this.editor.store);
+        if (this.partsActions) {
+            this.partsActions.updatePartsList(this.partList);
+        }
         // app-editor is still requesting to create parts on hardware detection
         this.editor.on('add-part-request', this._onAddPartRequest.bind(this));
         this.editor.on('remove-part-request', this._onRemovePartRequest.bind(this));
@@ -29,8 +38,8 @@ class PartsPlugin extends Plugin {
         this.setupPartsControls();
         this.setupKeybindings();
 
-        this.editor.on('running-state-changed', () => {
-            const running = this.editor.getRunningState();
+        this.editor.output.on('running-state-changed', () => {
+            const running = this.editor.output.getRunningState();
             if (!running) {
                 return;
             }
@@ -212,49 +221,47 @@ class PartsPlugin extends Plugin {
         this.partList.forEach((partDefinition) => {
             this.parts.define(partDefinition);
         });
-    }
-    onModeSet(modeDefinition) {
-        const parts = modeDefinition.parts || [];
-        const partTypes = modeDefinition.partTypes || [];
-        this.setParts(parts);
-        this.setPartTypes(partTypes);
-        this.partsActions.updatePartsList(parts);
-        this.editor.emit('parts-changed', parts);
+        if (this.partsActions) {
+            this.partsActions.updatePartsList(parts);
+        }
     }
     _onAddPartsFormConfirmed(type) {
         this.addPartDialog.close();
         this.addPart(type);
     }
     _openPartsDialog() {
-        const { addedParts } = this.editor;
+        const { addedParts } = this.editor.store.getState();
         this.addPartDialogProvider.setUsedParts(addedParts);
         this.addPartDialogProvider.setParts(this.partList);
         this.addPartDialog.open();
         this.editor.emit('open-parts');
     }
-    onAppLoad(app) {
+    onImport(app) {
         this.parts.clear();
         if (!app) {
             return;
         }
-        const { partsMap, mode } = this.editor.store.getState();
+        const { partsMap, addedParts } = this.editor.store.getState();
         this.toolbox.forEach((entry) => {
             entry.dispose();
         });
         Object.keys(this.elements).forEach((key) => {
             this.elements[key].parentNode.removeChild(this.elements[key]);
         });
+        addedParts.forEach(part => this.partsActions.removePart(part));
         this.elements = {};
         this.toolbox = new Map();
         if (app.parts) {
             app.parts.forEach((savedPart) => {
                 const model = partsMap[savedPart.type];
                 const instanceModel = Object.assign({}, model, savedPart);
-                const part = this.parts.create(instanceModel, mode.workspace.viewport);
+                const part = this.parts.create(instanceModel);
                 this.addToolboxEntry(part);
                 this.partsActions.addPart(part);
                 this.insertPart(part);
             });
+            const { addedParts } = this.editor.store.getState();
+            this.outputPlugin.setParts(addedParts);
         }
         this.editor.rootEl.load(app);
     }
@@ -274,23 +281,25 @@ class PartsPlugin extends Plugin {
         }
     }
     addPart(type) {
-        const { outputView } = this.editor;
-        const outputRect = outputView.getBoundingClientRect();
+        const { outputView } = this.editor.output;
+        // TODO: This is to allow legacy workspaces to function normally
+        const root = 'getBoundingClientRect' in outputView.root ? outputView.root : outputView;
+        const outputRect = root.getBoundingClientRect();
         const { partsMap } = this.editor.store.getState();
         const model = partsMap[type];
         const instanceModel = Object.assign({}, model);
         const { addedParts } = this.editor.store.getState();
         instanceModel.position = PartsPlugin.getNewPartPosition(outputRect, addedParts.length);
-        const { mode } = this.editor.store.getState();
-        const part = this.parts.create(instanceModel, mode.workspace.viewport);
+        const part = this.parts.create(instanceModel);
         this.partsActions.addPart(part);
         this.insertPart(part);
         this.addToolboxEntry(part);
+        this.outputPlugin.setParts(addedParts);
         this.editor.emit('add-part', { part });
     }
     addToolboxEntry(part) {
         const { blocks } = part;
-        const { addedParts } = this.editor;
+        const { addedParts } = this.editor.store.getState();
         part.color = getPartColor(part, addedParts);
         let entry;
         if (blocks) {
@@ -329,13 +338,13 @@ class PartsPlugin extends Plugin {
 
         return { x, y };
     }
-    onSave(app) {
+    onExport(app) {
         const { addedParts } = this.editor.store.getState();
         app.parts = addedParts.map(part => part.toJSON());
         return app;
     }
     insertPart(part, skipSound = false) {
-        const { addedParts } = this.editor;
+        const { addedParts } = this.editor.store.getState();
         const index = addedParts.indexOf(part);
         const workspace = this.editor.getElement('workspace');
         if (!workspace.workspaceView) {
@@ -364,10 +373,10 @@ class PartsPlugin extends Plugin {
      */
     _attachPartElementToDOM(element) {
         const { model } = element;
-        const { addedParts } = this.editor;
+        const { addedParts } = this.editor.store.getState();
         const reverseParts = addedParts.slice().reverse();
         const index = reverseParts.indexOf(model);
-        const { partsRoot } = this.editor.workspaceView;
+        const { partsRoot } = this.editor.output.outputView;
 
         if (partsRoot.lastChild && index < reverseParts.indexOf(partsRoot.lastChild.model)) {
             /* If the element doesn't belong at the end,
@@ -386,13 +395,13 @@ class PartsPlugin extends Plugin {
         }
     }
     removePartElement(part) {
-        const { addedParts } = this.editor;
+        const { addedParts } = this.editor.store.getState();
         const index = addedParts.indexOf(part);
         const element = this.elements[index];
         if (!element) {
             return;
         }
-        const { partsRoot } = this.editor.workspaceView;
+        const { partsRoot } = this.editor.output.outputView;
         partsRoot.removeChild(element);
         delete this.elements[index];
     }

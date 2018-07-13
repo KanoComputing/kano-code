@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Plugin Editor Demo</title>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            kano-app-editor {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import * as code from '../../app/lib/index.js';
+            import { SpiralEditorProfile } from './profile.js';
+
+            const editor = new code.Editor();
+
+            editor.registerProfile(new SpiralEditorProfile());
+
+            editor.inject();
+
+            editor.output.setRunningState(true);
+        </script>
+    </body>
+</html>

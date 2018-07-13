@@ -4,8 +4,22 @@ export const WorkspaceViewProviderMixin = base => class extends base {
         this.editor = editor;
     }
     clear() {}
+    setOutputView(outputView) {
+        if (this.outputViewRoot) {
+            // Trick to get custom els added
+            const root = outputView instanceof HTMLElement ? outputView : outputView.root;
+            if (!root) {
+                throw new Error('Could not create WorkspaceView: OutputView provided does not have a root');
+            }
+            this.outputViewRoot.appendChild(root);
+        }
+    }
+    onInstall(editor) {
+        this.editor = editor;
+    }
+    onInject() {}
     /* eslint class-methods-use-this: "off" */
-    get outputView() {
+    get outputViewRoot() {
         return null;
     }
     get partsRoot() {

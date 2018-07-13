@@ -1,4 +1,4 @@
-import { Utils } from "../utils.js";
+import { Utils } from '../utils.js';
 
 function General(session) {
     this.session = session;
@@ -9,8 +9,8 @@ function General(session) {
 *
 * @return void
 */
-General.prototype.clear = function () {
-    var width = this.session.width * this.session.ratio,
+General.prototype.clear = function clear() {
+    let width = this.session.width * this.session.ratio,
         height = this.session.height * this.session.ratio;
 
     this.session.ctx.clearRect(0, 0, width, height);
@@ -26,9 +26,9 @@ General.prototype.clear = function () {
 * @param {String} color
 * @return void
 */
-General.prototype.background = function (color) {
-    var width = this.session.width * this.session.ratio,
-    height = this.session.height * this.session.ratio;
+General.prototype.background = function background(color) {
+    let width = this.session.width * this.session.ratio,
+        height = this.session.height * this.session.ratio;
 
     color = Utils.parseColor(color);
     this.session.ctx.globalCompositeOperation = 'destination-over';
@@ -51,21 +51,21 @@ General.prototype.reset = function () {
     this.session.pos = Utils.getCenter(this.session);
 
     this.session.settings = {
-        bg     : null,
-        fill   : '#333',
-        stroke : {
-            width : 0,
-            color : '#222',
-            cap   : 'butt'
+        bg: null,
+        fill: '#333',
+        stroke: {
+            width: 0,
+            color: '#222',
+            cap: 'butt',
         },
-        text   : {
-            size     : 25,
-            font     : 'Bariol',
-            align    : 'center',
-            bold     : false,
-            italic   : false,
-            baseline : 'alphabetic'
-        }
+        text: {
+            size: 25,
+            font: 'Bariol',
+            align: 'center',
+            bold: false,
+            italic: false,
+            baseline: 'alphabetic',
+        },
     };
 
     this.clear();
@@ -81,7 +81,7 @@ General.prototype.reset = function () {
 * @return {Number}
 */
 General.prototype.random = function (min, max, float) {
-    var out;
+    let out;
 
     if (typeof min !== 'number' || typeof max !== 'number') {
         return Math.random();

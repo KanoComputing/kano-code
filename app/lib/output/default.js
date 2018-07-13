@@ -14,6 +14,9 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         ctx.fillStyle = 'white';
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     }
+    get canvas() {
+        return this.root;
+    }
 }
 
 export default DefaultOutputViewProvider;
