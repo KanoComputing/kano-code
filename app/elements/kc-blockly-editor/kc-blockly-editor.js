@@ -295,7 +295,10 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
         this.dispatchEvent(new CustomEvent('exit-tapped', { bubbles: true }));
     }
     _onBlocklyReady() {
-        this._registerElement('blockly-bin', this.$['code-editor'].workspace.svgGroup_.querySelector('.blocklyTrash'));
+        const binGroup = this.$['code-editor'].workspace.svgGroup_;
+        if (binGroup) {
+            this._registerElement('blockly-bin', binGroup.querySelector('.blocklyTrash'));
+        }
         this._registerElement('blockly-toolbox', this.$['code-editor'].getToolbox());
         // TODO: kwc-blockly should be able to report this at any moment. But at this exact point
         // it doesn't. Use `getFlyout` once kwc-blockly fixes this issue

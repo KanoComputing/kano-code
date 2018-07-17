@@ -138,6 +138,12 @@ class Editor extends EditorOrPlayer {
         }
         this.runPluginTask('onInject');
     }
+    dispose() {
+        this.store.providerElement.parentNode.removeChild(this.store.providerElement);
+        this.storeObserver.rootEl.parentNode.removeChild(this.storeObserver.rootEl);
+        this.rootEl.parentNode.removeChild(this.rootEl);
+        this.runPluginTask('onDispose');
+    }
     load(app) {
         this.runPluginTask('onImport', app);
         this.output.runPluginTask('onImport', app);
@@ -225,6 +231,7 @@ class Editor extends EditorOrPlayer {
             this.workspaceProvider = new DefaultWorkspaceViewProvider(this);
         }
         this.rootEl.$.workspace.appendView(this.workspaceProvider);
+        this.output.checkOutputView();
         this.workspaceProvider.setOutputView(this.output.outputView);
     }
     get sourceEditor() {

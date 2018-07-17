@@ -4,6 +4,7 @@ import EventEmitter from '../util/event-emitter.js';
 export class Plugin extends EventEmitter {
     onInstall() {}
     onInject() {}
+    onDispose() {}
     onImport() {}
     onCreationImport() {}
     onExport(data) {

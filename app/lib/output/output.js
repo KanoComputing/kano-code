@@ -49,6 +49,11 @@ export class Output extends PluginReceiver {
             this.outputProfile.modules.forEach(m => this.runner.addModule(m));
         }
     }
+    checkOutputView() {
+        if (!this.outputViewProvider) {
+            this.outputViewProvider = new DefaultOutputViewProvider();
+        }
+    }
     setRunningState(running) {
         this._running = running;
         this.emit('running-state-changed');

@@ -1,8 +1,4 @@
 export const OutputViewProviderMixin = base => class extends base {
-    constructor(editor) {
-        super();
-        this.editor = editor;
-    }
     start() {}
     stop() {}
     onInstall(output) {
