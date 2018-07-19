@@ -76,12 +76,7 @@ class Challenge extends Plugin {
         this.setupUI();
     }
     setupUI() {
-        const { workspaceView } = this.editor;
-        const root = workspaceView.root.shadowRoot || workspaceView.root;
-        const frame = root.querySelector('kc-workspace-frame');
-        if (!frame) {
-            return;
-        }
+        const { workspaceToolbar } = this.editor;
         let toolboxItem;
         const GeneratorAPI = GeneratorAPIProvider(this.editor);
         GeneratorAPI.toolbox = this.creator;
@@ -90,17 +85,21 @@ class Challenge extends Plugin {
             this.creator = !this.creator;
             GeneratorAPI.toolbox = this.creator;
             this.creatorEntry.update(GeneratorAPI);
-            toolboxItem.update(`${this.creator ? 'Disable' : 'Enable'} creator mode`, 'kwc-ui-icons:new-creation', toolboxItemClickCallback);
+            toolboxItem.updateTitle(`${this.creator ? 'Disable' : 'Enable'} creator mode`);
+            toolboxItem.updateIronIcon('kwc-ui-icons:new-creation');
             if (this.creator) {
-                this.addGeneratorItem(frame);
+                this.addGeneratorItem();
             } else if (this.generatorItem) {
                 this.removeGeneratorItem();
             }
             this.saveState();
         };
-        toolboxItem = frame.addMenuOption(`${this.creator ? 'Disable' : 'Enable'} creator mode`, 'kwc-ui-icons:new-creation', toolboxItemClickCallback);
+        toolboxItem = workspaceToolbar.addSettingsEntry({
+            title: `${this.creator ? 'Disable' : 'Enable'} creator mode`,
+            ironIcon: 'kwc-ui-icons:new-creation',
+        }).on('activate', () => toolboxItemClickCallback());
         if (this.creator) {
-            this.addGeneratorItem(frame);
+            this.addGeneratorItem();
         }
         if (this.editor.sourceType === 'blockly') {
             const { sourceEditor } = this.editor;
@@ -147,10 +146,11 @@ class Challenge extends Plugin {
         });
         return node;
     }
-    addGeneratorItem(frame) {
-        this.generatorItem = frame.addMenuOption('Generate Challenge', 'kc-ui:export', () => {
-            this.download();
-        });
+    addGeneratorItem() {
+        this.generatorItem = this.editor.workspaceToolbar.addSettingsEntry({
+            title: 'Generate Challenge',
+            ironIcon: 'kc-ui:export',
+        }).on('activate', () => this.download());
     }
     removeGeneratorItem() {
         if (!this.generatorItem) {

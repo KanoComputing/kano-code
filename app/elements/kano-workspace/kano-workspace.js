@@ -4,11 +4,9 @@ import { SoundPlayerBehavior } from '@kano/web-components/kano-sound-player-beha
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import { CoverGeneratorBehavior } from '../behaviors/kano-cover-generator-behavior.js';
 import { Store } from '../../scripts/legacy/store.js';
 
 const behaviors = [
-    CoverGeneratorBehavior,
     SoundPlayerBehavior,
     AppElementRegistryBehavior,
 ];
@@ -103,14 +101,6 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
     }
     getViewportScale() {
         return this.dropzone.getViewportScale();
-    }
-    generateCover() {
-        return CoverGeneratorBehavior.generateCover(
-            this.dropzone,
-            this.parts,
-            this.mode.workspace.viewport.width,
-            this.mode.workspace.viewport.height,
-        );
     }
 }
 

@@ -25,6 +25,9 @@ export const WorkspaceViewProviderMixin = base => class extends base {
     get partsRoot() {
         return null;
     }
+    get toolbar() {
+        return this.root.querySelector('kc-workspace-toolbar');
+    }
 };
 
 export const WorkspaceViewProvider = WorkspaceViewProviderMixin(class {});

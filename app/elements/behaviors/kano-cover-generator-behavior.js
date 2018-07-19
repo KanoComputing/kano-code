@@ -1,5 +1,3 @@
-import { GifEncoder } from '../../scripts/kano/gif-encoder/encoder.js';
-
 // @polymerBehavior
 export const CoverGeneratorBehavior = {
     generateCover (workspace, parts, width, height, scale=1, padding=0, background='#ffffff') {

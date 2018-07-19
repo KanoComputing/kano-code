@@ -6,7 +6,6 @@ import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
 import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
 import '../../elements/kano-editor-topbar/kano-editor-topbar.js';
-import '../../elements/kano-share-modal/kano-share-modal.js';
 import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
 import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
 import { Editor, FileUploadPlugin, I18n, LocalStoragePlugin, UserPlugin } from '../../lib/index.js';
@@ -48,10 +47,6 @@ class KanoViewEditor extends Store.StateReceiver(
                         overflow: hidden;
                         background: transparent;
                     }
-                    paper-dialog#share-modal kano-share-modal {
-                        padding: 0px;
-                        margin: 0px;
-                    }
                     :host(.dragging) * {
                         pointer-events: none;
                     }
@@ -73,15 +68,6 @@ class KanoViewEditor extends Store.StateReceiver(
                 <paper-dialog id="error-dialog" with-backdrop>
                     <h2 class="title">{{error.title}}</h2>
                     <p class="description">{{error.description}}</p>
-                </paper-dialog>
-                <paper-dialog id="share-modal" opened="{{shareOpened}}" modal>
-                    <kano-share-modal id="share-modal-content"
-                                    on-confirm="confirmShare"
-                                    on-dismiss="dismissShare"
-                                    opened="[[shareOpened]]"
-                                    share-info="{{shareInfo}}"
-                                    world-url="[[config.WORLD_URL]]"
-                                    is-authenticated="[[user]]"></kano-share-modal>
                 </paper-dialog>
                 <kano-reward-modal id="reward-modal" on-second-action="_openSignup"></kano-reward-modal>
                 <kc-file-upload-overlay id="file-upload-overlay"></kc-file-upload-overlay>

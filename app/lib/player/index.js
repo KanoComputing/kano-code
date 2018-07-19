@@ -19,7 +19,7 @@ export class Player extends EditorOrPlayer {
         }
         this.output.registerProfile(profile);
         this._injectOutputView();
-        this.output.onCreationImport(data);
+        return this.output.onCreationImport(data);
     }
     _injectOutputView() {
         if (!this.element) {

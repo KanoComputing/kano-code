@@ -300,10 +300,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         </section>
         <kano-alert id="dialog-reset-warning" heading="[[localize('RESET', 'Reset')]]" text="[[localize('ABOUT_TO_RESET', 'You\\'ll lose any unsaved changes')]]" on-iron-overlay-closed="_modalClosed" with-backdrop>
         </kano-alert>
-        <kano-alert id="dialog-offline" heading="[[localize('SHARING_NOT_AVAILABLE', 'This feature isn\\'t available offline')]]" text="[[localize('CONNECT_TO_INTERNET', 'Make sure you\\'re connected to the internet.')]]" with-backdrop>
-            <button class="kano-alert-primary" dialog-confirm="" slot="actions">[[localize('GOT_IT', 'Got it')]]</button>
-        </kano-alert>
-        <iron-a11y-keys target="[[target]]" keys="alt+s" on-keys-pressed="share"></iron-a11y-keys>
         `;
     }
     _hasSelectedPart() {
@@ -426,20 +422,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         }
 
         return savedApp;
-    }
-    share(e) {
-        if (e && e.detail && e.detail.keyboardEvent) {
-            e.detail.keyboardEvent.preventDefault();
-            e.detail.keyboardEvent.stopPropagation();
-        }
-
-        Utils.onLine().then((isOnline) => {
-            if (isOnline) {
-                this.fire('share', this.compileApp());
-            } else {
-                this._openOfflineDialog();
-            }
-        });
     }
     compileApp() {
         return {
@@ -574,14 +556,12 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 interaction.start(
                     { name: 'drag' },
                     event.interactable,
-                    clone
+                    clone,
                 );
             }
         });
     }
     bindEvents() {
-        this.addEventListener('save-button-clicked', this.share);
-        this.addEventListener('feature-not-available-offline', this._openOfflineDialog);
         this.addEventListener('opened-changed', this._manageModals);
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
         this.onIronSignal = this.onIronSignal.bind(this);
@@ -590,21 +570,16 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         document.addEventListener('iron-signal', this.onIronSignal);
     }
     detachEvents() {
-        this.removeEventListener('save-button-clicked', this.share);
-        this.removeEventListener('feature-not-available-offline', this._openOfflineDialog);
         this.removeEventListener('opened-changed', this._manageModals);
         this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
         document.removeEventListener('iron-signal', this.onIronSignal);
     }
     constructor() {
         super();
-        this.share = this.share.bind(this);
         this._openOfflineDialog = this._openOfflineDialog.bind(this);
         this._manageModals = this._manageModals.bind(this);
 
         this.reset = this.reset.bind(this);
-        this._exportApp = this._exportApp.bind(this);
-        this._importApp = this._importApp.bind(this);
     }
     connectedCallback() {
         super.connectedCallback();
@@ -655,59 +630,12 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             return;
         }
         switch (e.detail.name) {
-        case 'export-app':
-            this._exportApp();
-            break;
-        case 'import-app':
-            this._importApp();
-            break;
-        case 'reset-workspace':
-            this.reset();
-            break;
         case 'new-part-request':
             this._newPartRequest(e);
             break;
         default:
             break;
         }
-    }
-    _exportApp() {
-        const savedApp = this.save();
-        const a = document.createElement('a');
-        const file = new Blob([JSON.stringify(savedApp)], { type: 'application/kcode' });
-        const url = URL.createObjectURL(file);
-        document.body.appendChild(a);
-        a.download = 'my-app.kcode';
-        a.href = url;
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        this.fire('tracking-event', {
-            name: 'app_exported',
-        });
-    }
-    _importApp() {
-        this.fileInput = document.createElement('input');
-        this.fileInput.setAttribute('type', 'file');
-        this.fileInput.style.display = 'none';
-        this.fileInput.addEventListener('change', (evt) => {
-            const f = evt.target.files[0];
-            if (f) {
-                const r = new FileReader();
-                r.onload = (e) => {
-                    // Read the mode
-                    const app = JSON.parse(e.target.result);
-                    this.dispatchEvent(new CustomEvent('import', { detail: { app } }));
-                };
-                r.readAsText(f);
-                document.body.removeChild(this.fileInput);
-            }
-        });
-        document.body.appendChild(this.fileInput);
-        this.fileInput.click();
-        this.fire('tracking-event', {
-            name: 'app_imported',
-        });
     }
     _setCodeDisplay(code, workspaceTab) {
         if (workspaceTab === 'workspace') {

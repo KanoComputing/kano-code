@@ -309,9 +309,6 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
         this.dispatchEvent(new CustomEvent('code-changed', { detail: { value: e.detail.value } }));
     }
     blocksChanged() {
-        if (!this.blocks) {
-            return;
-        }
         this.$['code-editor'].loadBlocks(this.blocks);
     }
     _onBlocklyChanged(e) {

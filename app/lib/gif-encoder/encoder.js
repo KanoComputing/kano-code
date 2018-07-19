@@ -1,7 +1,8 @@
+import './lol.js';
 import 'omggif/omggif.js';
 
-class GifEncoder {
-    constructor (opts) {
+export class GifEncoder {
+    constructor(opts) {
         this.generating = false;
 
         this.lastJobId = 0;
@@ -17,19 +18,19 @@ class GifEncoder {
         this.frames = [];
 
         this.workerPool = [];
-        for(let i = 0; i < this.workerPoolSize; i++) {
+        for (let i = 0; i < this.workerPoolSize; i += 1) {
             this.workerPool.push({
                 worker: new Worker(this.workerUrl),
-                inUse: false
+                inUse: false,
             });
         }
     }
 
-    static get WORKER_URL () {
+    static get WORKER_URL() {
         return '/libs/QuantWorker.js';
     }
 
-    addFrame (context, delay) {
+    addFrame(context, delay) {
         // Add the frame to the queue
         this.queue.push({ context, delay, i: this.frames.length });
         // Keep a slot for the frame
@@ -37,11 +38,11 @@ class GifEncoder {
         this.tick();
     }
 
-    tick () {
+    tick() {
         let nextInQueue;
         if (!this.queue.length) {
             // Don't end here if there are frames left to render
-            for (let i = 0; i < this.frames.length; i++) {
+            for (let i = 0; i < this.frames.length; i += 1) {
                 if (!this.frames[i]) {
                     return;
                 }
@@ -53,7 +54,7 @@ class GifEncoder {
             return;
         }
         nextInQueue = this.queue[0];
-        for (let i = 0; i < this.workerPool.length; i++) {
+        for (let i = 0; i < this.workerPool.length; i += 1) {
             if (!this.workerPool[i].inUse) {
                 this.workerPool[i].inUse = true;
                 this.renderFrame(nextInQueue.context, nextInQueue.delay, nextInQueue.i, this.workerPool[i].worker)
@@ -67,22 +68,21 @@ class GifEncoder {
         }
     }
 
-    renderFrame (context, delay, i, worker) {
+    renderFrame(context, delay, i, worker) {
         return new Promise((resolve, reject) => {
-            let frameContext = context.getImageData(0, 0, this.width, this.height),
-                frameData = frameContext.data,
-                frameJobId = i,
-                onCompletion;
+            const frameContext = context.getImageData(0, 0, this.width, this.height);
+            const frameData = frameContext.data;
+            const frameJobId = i;
+            let onCompletion;
 
             onCompletion = (e) => {
                 if (e.data.job_id === frameJobId) {
-                    let pixels_for_gif = e.data.pixels_for_gif,
-                        palette = e.data.palette;
+                    const { palette, pixels_for_gif } = e.data;
                     this.frames[i] = {
                         pixels: pixels_for_gif,
                         duration: e.data.job_duration,
                         palette,
-                        delay
+                        delay,
                     };
                     worker.removeEventListener('message', onCompletion);
                     resolve();
@@ -95,25 +95,25 @@ class GifEncoder {
                 job_id: frameJobId,
                 width: this.width,
                 height: this.height,
-                frameData: frameData
+                frameData,
             });
         });
     }
 
-    end () {
+    end() {
         return new Promise((resolve, reject) => {
             this.finishedQueue = () => {
-                let string = '',
-                    buffer;
+                let string = '';
+                let buffer;
 
                 this.buffer = new Uint8Array(this.width * this.height * this.frames.length);
                 this.gif = new GifWriter(this.buffer, this.width, this.height, { loop: 0 });
 
-                this.frames.forEach(frame => {
+                this.frames.forEach((frame) => {
                     this.gif.addFrame(0, 0, this.width, this.height, frame.pixels, {
                         palette: new Uint32Array(frame.palette),
                         delay: frame.delay / 10,
-                        disposal: 1
+                        disposal: 1,
                     });
                 });
 
@@ -130,14 +130,14 @@ class GifEncoder {
                     buffer[i] = this.buffer[i];
                 }
 
-                this.data_url = 'data:image/gif;base64,' + window.btoa(string);
+                this.data_url = `data:image/gif;base64,${window.btoa(string)}`;
 
                 this.generating = false;
-                return resolve(new Blob([buffer], { type: "image/gif" }));
+                return resolve(new Blob([buffer], { type: 'image/gif' }));
             };
             this.tick();
         });
     }
 }
 
-export { GifEncoder };
+export default { GifEncoder };

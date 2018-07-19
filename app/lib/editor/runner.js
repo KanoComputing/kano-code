@@ -40,23 +40,20 @@ export class Runner extends Plugin {
     _onRunningStateChange() {
         const running = this.output.getRunningState();
         const { appModules } = this.appModulesLoader;
-        clearTimeout(this.asyncModule);
-        this.asyncModule = setTimeout(() => {
+        if (!running) {
             appModules.stop();
-            if (!running) {
-                return;
-            }
-            const code = this.output.getCode();
-            // Generate the code
-            const appCode = appModules.createAppCode('AppModules', code);
-            // Start all the modules. Will also trigger the `start` event from `global`
-            appModules.start();
-            // Prepare a sandbox exposing AppModules
-            const vm = new VM({ AppModules: appModules });
-            // Run the code
-            vm.runInContext(appCode);
-            appModules.afterRun();
-        });
+            return;
+        }
+        const code = this.output.getCode();
+        // Generate the code
+        const appCode = appModules.createAppCode('AppModules', code);
+        // Start all the modules. Will also trigger the `start` event from `global`
+        appModules.start();
+        // Prepare a sandbox exposing AppModules
+        const vm = new VM({ AppModules: appModules });
+        // Run the code
+        vm.runInContext(appCode);
+        appModules.afterRun();
     }
 }
 

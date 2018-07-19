@@ -29,7 +29,8 @@
                 this.output = output;
                 this._root = document.createElement('canvas');
                 this._root.style.background = '#f9f9f9';
-                this._root.style.width = '100%';
+                this._root.style.maxWidth = '100%';
+                this._root.style.maxHeight = '100%';
                 this._root.width = 500;
                 this._root.height = 500;
 
@@ -40,10 +41,19 @@
             }
             start() {
                 const ctx = this._root.getContext('2d');
-                ctx.clearRect(0 ,0, ctx.canvas.width, ctx.canvas.height);
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
                 setTimeout(() => {
                     Joy.render(this._root, this.step);
                 });
+            }
+            render(ctx) {
+                // Ensures the output rendered
+                return new Promise(resolve => setTimeout(() => {
+                    ctx.fillStyle = '#f9f9f9';
+                    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                    ctx.drawImage(this._root, 0, 0);
+                    resolve();
+                }, 100));
             }
         }
 
@@ -52,6 +62,7 @@
             onInstall(editor) {
                 this.editor = editor;
                 this._root = document.createElement('div');
+                this._root.style.textAlign = 'center';
             }
             get root() {
                 return this._root;
@@ -75,13 +86,21 @@
                 outputView.step = s;
             }
         }
-
+        
         // OutputProfile: Loads OutputView and modules together
-        const outputProfile = {
-            id: 'joy',
-            outputViewProvider: new JoyOutputViewProvider(),
-            modules: [JoyModule],
-        };
+        class JoyOutputProfile extends code.OutputProfile {
+            constructor() {
+                super();
+                this._outputViewProvider = new JoyOutputViewProvider();
+            }
+            get id() { return 'joy'; }
+            get outputViewProvider() {
+                return this._outputViewProvider;
+            }
+            get modules() {
+                return [JoyModule];
+            }
+        }
 
         // Toolbox: Defines coding API available for users
         const JoyToolbox = {
@@ -101,11 +120,23 @@
             }],
         };
 
+        class CreationLocalStorageProvider extends code.CreationStorageProvider {
+            write(creationBundle) {
+                localStorage.setItem('joy-creation', JSON.stringify({
+                    title: creationBundle.title,
+                    description: creationBundle.description,
+                    creation: creationBundle.creation,
+                }));
+            }
+        }
+
         // EditorProfile: Loads WorkspaceViewProvider and Toolbox together
         const workspaceProfile = {
-            outputProfile,
+            outputProfile: new JoyOutputProfile(),
             workspaceViewProvider: new JoyWorkspaceViewProvider(),
             toolbox: [JoyToolbox],
+            creationPreviewProvider: new code.CreationImagePreviewProvider({ width: 500, height: 500 }),
+            creationStorageProvider: new CreationLocalStorageProvider(),
         };
 
         // Create editor

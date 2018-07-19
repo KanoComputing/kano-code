@@ -7,11 +7,13 @@ import { Logger } from '../log/index.js';
 import { DefaultWorkspaceViewProvider } from './workspace/default.js';
 import { Dialogs } from './dialogs/index.js';
 import { Keybindings } from './keybindings/index.js';
+import { CreationPlugin } from '../creation/index.js';
 
 import '../../elements/kano-app-editor/kano-app-editor.js';
 import { EditorOrPlayer } from './editor-or-player.js';
 import { Output } from '../output/output.js';
 import { ActivityBar } from './activity-bar.js';
+import { WorkspaceToolbar } from './workspace/toolbar.js';
 
 const PROXY_EVENTS = [
     'share',
@@ -22,6 +24,10 @@ const PROXY_EVENTS = [
     'remove-part-request',
     'import',
 ];
+
+// window namespaces used for easy access to editors in development
+window.Kano = window.Kano || {};
+window.Kano.Code = window.Kano.Code || {};
 
 class Editor extends EditorOrPlayer {
     constructor(opts = {}) {
@@ -68,12 +74,20 @@ class Editor extends EditorOrPlayer {
         this.toolbox = new Toolbox();
         this.addPlugin(this.toolbox);
 
+        this.creation = new CreationPlugin();
+        this.addPlugin(this.creation);
+
         this.on('import', (event) => {
             this.load(event.app);
         });
 
         this.activityBar = new ActivityBar();
         this.addPlugin(this.activityBar);
+
+        this.workspaceToolbar = new WorkspaceToolbar();
+        this.addPlugin(this.workspaceToolbar);
+
+        window.Kano.Code.mainEditor = this;
     }
     addPlugin(plugin) {
         super.addPlugin(plugin);
@@ -177,6 +191,60 @@ class Editor extends EditorOrPlayer {
         app = this.output.onExport(app);
         return app;
     }
+    exportToDisk() {
+        const savedApp = this.export();
+        const a = document.createElement('a');
+        const file = new Blob([JSON.stringify(savedApp)], { type: 'application/kcode' });
+        const url = URL.createObjectURL(file);
+        document.body.appendChild(a);
+        a.download = 'my-app.kcode';
+        a.href = url;
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    importFromDisk() {
+        this.fileInput = document.createElement('input');
+        this.fileInput.setAttribute('type', 'file');
+        this.fileInput.style.display = 'none';
+        this.fileInput.addEventListener('change', (evt) => {
+            const f = evt.target.files[0];
+            if (f) {
+                const r = new FileReader();
+                r.onload = (e) => {
+                    const app = JSON.parse(e.target.result);
+                    this.load(app);
+                };
+                r.readAsText(f);
+                document.body.removeChild(this.fileInput);
+            }
+        });
+        document.body.appendChild(this.fileInput);
+        this.fileInput.click();
+    }
+    createCreationPreview(externalOutput) {
+        const output = externalOutput || this.output;
+        if (!this.creationPreviewProvider) {
+            throw new Error('Could not create creation preview: No CreationPreviewProvider was registered');
+        }
+        return this.creationPreviewProvider.createFile(output);
+    }
+    createCreationDisplay(blob) {
+        if (!this.creationPreviewProvider) {
+            throw new Error('Could not create creation display: No CreationPreviewProvider was registered');
+        }
+        return this.creationPreviewProvider.display(blob);
+    }
+    storeCreation(creationBundle) {
+        if (!this.creationStorageProvider) {
+            return Promise.reject(new Error('Could not store creation: No CreationStorageProvider was registered'));
+        }
+        const p = this.creationStorageProvider.write(creationBundle);
+        if (p instanceof Promise) {
+            return p;
+        }
+        return Promise.resolve(p);
+    }
     save() {
         return this.export();
     }
@@ -228,6 +296,14 @@ class Editor extends EditorOrPlayer {
         }
         if (this.profile.toolbox) {
             this.profile.toolbox.forEach(t => this.toolbox.addEntry(t));
+        }
+        if (this.profile.creationPreviewProvider) {
+            this.creationPreviewProvider = this.profile.creationPreviewProvider;
+            this.addPlugin(this.creationPreviewProvider);
+        }
+        if (this.profile.creationStorageProvider) {
+            this.creationStorageProvider = this.profile.creationStorageProvider;
+            this.addPlugin(this.creationStorageProvider);
         }
     }
     registerWorkspaceViewProvider(provider) {

@@ -9,7 +9,6 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { SoundPlayerBehavior } from '@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
 import '../../elements/kano-app-challenge/kano-app-challenge.js';
 import '../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.js';
-import '../../elements/kano-share-modal/kano-share-modal.js';
 import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
 import { GABehavior } from '../../elements/behaviors/kano-code-ga-tracking-behavior.js';
 import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
@@ -57,10 +56,6 @@ class KanoViewStory extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
                 overflow: hidden;
                 background: transparent;
             }
-            paper-dialog#share-modal kano-share-modal {
-                padding: 0px;
-                margin: 0px;
-            }
             .bolt {
                 background: black;
                 width: 11px;
@@ -70,20 +65,6 @@ class KanoViewStory extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
                 padding: 3px;
             }
         </style>
-        <paper-dialog id="share-modal" opened={{shareOpened}} modal>
-            <kano-share-modal id="share-modal-content"
-                            on-confirm="confirmShare"
-                            on-dismiss="dismissShare"
-                            on-share-attempted="_setUserShared"
-                            on-share-successful="_setUserShared"
-                            opened="[[shareOpened]]"
-                            on-next-story="goToNextChallenge"
-                            share-info="{{shareInfo}}"
-                            world-url="[[config.WORLD_URL]]"
-                            is-authenticated="[[user]]"
-                            in-challenge>
-                            </kano-share-modal>
-        </paper-dialog>
         <kano-challenge-completed-modal id="challenge-completed"></kano-challenge-completed-modal>
         <kano-reward-modal id="reward-modal"
                            on-request-signup="_openSignup"

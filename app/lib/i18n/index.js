@@ -35,6 +35,12 @@ function getMessages() {
     return messages;
 }
 
+export const I18nMixin = base => class extends base {
+    localize(...args) {
+        return localize(...args);
+    }
+};
+
 export default {
     localize,
     addMessage,

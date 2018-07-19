@@ -64,6 +64,16 @@ export class Output extends PluginReceiver {
     toggleRunningState() {
         this.setRunningState(!this.getRunningState());
     }
+    setFullscreen(state) {
+        this._fullscreen = state;
+        this.emit('fullscreen-changed');
+    }
+    getFullscreen() {
+        return this._fullscreen;
+    }
+    toggleFullscreen() {
+        this.setFullscreen(!this.getFullscreen());
+    }
     restart() {
         this.setRunningState(false);
         this.setRunningState(true);
@@ -86,9 +96,7 @@ export class Output extends PluginReceiver {
         }
     }
     onExport(data) {
-        return this.plugins.reduce((d, plugin) => {
-            return plugin.onExport(d);
-        }, data);
+        return this.plugins.reduce((d, plugin) => plugin.onExport(d), data);
     }
     onImport(data) {
         this.runPluginTask('onImport', data);
@@ -105,11 +113,9 @@ export class Output extends PluginReceiver {
                 if (res instanceof Promise) {
                     return res.then(() => {
                         this.setCode(data.code);
-                        this.setRunningState(true);
                     });
                 }
                 this.setCode(data.code);
-                this.setRunningState(true);
                 return null;
             });
     }
@@ -118,6 +124,12 @@ export class Output extends PluginReceiver {
     }
     setMode(mode) {
         this._mode = mode;
+    }
+    render(...args) {
+        if (this.outputView) {
+            return this.outputView.render(...args);
+        }
+        return null;
     }
 }
 

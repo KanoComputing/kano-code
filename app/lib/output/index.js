@@ -13,9 +13,7 @@ export const OutputViewProviderMixin = base => class extends base {
     onCreationExport(data) {
         return data;
     }
-    renderOnCanvas() {
-        return Promise.resolve();
-    }
+    render() {}
     getRestrictElement() {
         return this;
     }

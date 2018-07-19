@@ -7,7 +7,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import '../ui/kano-ui-viewport/kano-ui-viewport.js';
 import '../kano-icons/kc-ui.js';
-import '../kano-workspace-toolbar/kano-workspace-toolbar.js';
+import '../kc-workspace-toolbar/kc-workspace-toolbar.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
@@ -58,7 +58,7 @@ Polymer({
             #workspace-placeholder>* {
                 animation: fade-in 200ms linear;
             }
-            kano-workspace-toolbar {
+            kc-workspace-toolbar {
                 padding: 20px 0;
             }
             .controls {
@@ -79,7 +79,7 @@ Polymer({
                 z-index: 300;
                 background: var(--kano-app-editor-workspace-background, #f2f2f2);
             }
-            .overlay kano-workspace-toolbar {
+            .overlay kc-workspace-toolbar {
                 position: absolute;
                 bottom: 0px;
                 width: 100%;
@@ -147,14 +147,14 @@ Polymer({
             </div>
         </kano-ui-viewport>
         <div class="controls">
-            <kano-workspace-toolbar running="[[running]]" no-part-controls="" show-settings="" on-pause-run-button-clicked="_runButtonClicked" on-fullscreen-button-clicked="_toggleFullscreen" on-restart-button-clicked="_resetAppState" show-mouse-position="[[showMousePosition]]" mouse-x="[[mouseX]]" mouse-y="[[mouseY]]" fullscreen="[[fullscreen]]"></kano-workspace-toolbar>
+            <kc-workspace-toolbar running="[[running]]" no-part-controls="" show-settings="" on-pause-run-button-clicked="_runButtonClicked" on-fullscreen-button-clicked="_toggleFullscreen" on-restart-button-clicked="_resetAppState" show-mouse-position="[[showMousePosition]]" mouse-x="[[mouseX]]" mouse-y="[[mouseY]]" fullscreen="[[fullscreen]]"></kc-workspace-toolbar>
             <slot name="controls"></slot>
         </div>
         <div class="overlay">
             <button id="fullscreen-close" on-tap="_toggleFullscreen">
                 <iron-icon icon="kc-ui:close"></iron-icon>
             </button>
-            <kano-workspace-toolbar running="[[running]]" no-part-controls="" on-save-button-clicked="_toggleFullscreen" on-pause-run-button-clicked="_runButtonClicked" on-fullscreen-button-clicked="_toggleFullscreen" on-restart-button-clicked="_resetAppState" fullscreen="[[fullscreen]]"></kano-workspace-toolbar>
+            <kc-workspace-toolbar running="[[running]]" no-part-controls="" on-save-button-clicked="_toggleFullscreen" on-pause-run-button-clicked="_runButtonClicked" on-fullscreen-button-clicked="_toggleFullscreen" on-restart-button-clicked="_resetAppState" fullscreen="[[fullscreen]]"></kc-workspace-toolbar>
         </div>
         <iron-a11y-keys keys="meta+enter" on-keys-pressed="_goFullscreen" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="esc" on-keys-pressed="_cancelFullscreen" target="[[target]]"></iron-a11y-keys>

@@ -9,6 +9,7 @@ export class EditorProfile {
     get outputProfile() { return new OutputProfile(); }
     get workspaceViewProvider() { return null; }
     get source() { return ''; }
+    get creationPreviewProvider() { return null; }
 }
 
 export default EditorProfile;

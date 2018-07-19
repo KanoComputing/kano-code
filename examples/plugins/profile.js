@@ -1,5 +1,6 @@
 import * as code from '../../app/lib/index.js';
 import { Spiral } from './spiral.js';
+import '../../app/elements/kc-workspace-toolbar/kc-workspace-toolbar.js';
 
 // OUTPUT CONFIGURATION
 
@@ -32,15 +33,31 @@ export class SpiralOutputViewProvider extends code.OutputViewProvider {
         super();
         this._root = document.createElement('canvas');
         this._root.style.background = 'black';
+        this._root.style.maxHeight = '100%';
         this.spiral = new Spiral(this._root);
     }
     start() {
         if (this.spiral) {
             this.spiral.dispose();
         }
-        const rect = this._root.parentNode.getBoundingClientRect();
-        this.spiral = new Spiral(this._root, rect.width, rect.height);
+        this.spiral = new Spiral(this._root, 500, 500);
         this.spiral.setup();
+    }
+    stop() {
+        if (this.spiral) {
+            this.spiral.dispose();
+        }
+    }
+    render(ctx) {
+        if (!this.resizedRender) {
+            this.output.restart();
+            this.resizedRender = true;
+        }
+        // Runner can take a step to restart code. Everything is rendering before painting frame
+        return new Promise(resolve => setTimeout(resolve, 10))
+            .then(() => {
+                ctx.drawImage(this._root, 0, 0);
+            });
     }
     get root() {
         return this._root;
@@ -140,8 +157,11 @@ export class SpiralWorkspaceViewProvider extends code.WorkspaceViewProvider {
         this._root = document.createElement('div');
         this._root.innerHTML = `
             <style>
+                #output {
+                    text-align: center;
+                }
                 #tools {
-                    padding: 16px;
+                    padding: 32px;
                 }
                 button {
                     background: #ba68c8;
@@ -155,8 +175,12 @@ export class SpiralWorkspaceViewProvider extends code.WorkspaceViewProvider {
                 button:hover {
                     background: #ab47bc;
                 }
+                kc-workspace-toolbar {
+                    margin: 32px;
+                }
             </style>
             <div id="output" style="width: 100%; height: 500px;"></div>
+            <kc-workspace-toolbar></kc-workspace-toolbar>
             <div id="tools">
                 <button id="alert">Display Alert</button>
                 <button id="activity-bar">Add ActivityBar entry</button>
@@ -219,6 +243,9 @@ export class SpiralEditorProfile extends code.EditorProfile {
     }
     get toolbox() {
         return [SpiralToolbox];
+    }
+    get creationPreviewProvider() {
+        return new code.CreationAnimationPreviewProvider({ width: 500, height: 500 }, 10, 10);
     }
 }
 

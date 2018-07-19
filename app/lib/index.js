@@ -16,6 +16,15 @@ import { Plugin } from './editor/plugin.js';
 
 import { DialogProvider } from './editor/dialogs/dialog-provider.js';
 
+import {
+    CreationCustomPreviewProvider,
+    CreationImagePreviewProvider,
+    CreationAnimationPreviewProvider,
+} from './creation/creation-preview-provider.js';
+import { CreationStorageProvider } from './creation/creation-storage-provider.js';
+
+import * as Icon from './icon/index.js';
+
 export {
     Editor,
     Player,
@@ -33,4 +42,9 @@ export {
     EditorProfile,
     Plugin,
     DialogProvider,
+    CreationCustomPreviewProvider,
+    CreationImagePreviewProvider,
+    CreationStorageProvider,
+    CreationAnimationPreviewProvider,
+    Icon,
 };

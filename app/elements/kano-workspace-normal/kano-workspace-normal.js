@@ -64,6 +64,9 @@ class KanoWorkspaceNormal extends mixinBehaviors(
         }
         this.ctx = this.$.canvas;
     }
+    onInstall() {}
+    onCreationImport() {}
+    onInject() {}
     get api() {
         return {
             setBackgroundColor: this.setBackgroundColor.bind(this),
