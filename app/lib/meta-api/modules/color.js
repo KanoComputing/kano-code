@@ -2,23 +2,23 @@ import { localize } from '../../i18n/index.js';
 
 const COLOR = '#88c440';
 
-class BlocklyColor {
-    static get type() { return 'blockly'; }
-    static get id() { return 'color'; }
-    static get typeScriptDefinition() {
-        return `
-            declare namespace colour {
-                declare enum type {
-                    RGB: 'rgb',
-                    HSV: 'hsv'
-                }
-                declare function random(): string;
-                declare function create(type: color.type, a: number, b: number, c: number): string;
-                declare function lerp(from: number, to: number, percent: number): string;
+const ID = 'color';
+
+const BlocklyColor = {
+    type: 'blockly',
+    id: ID,
+    typeScriptDefinition: `
+        declare namespace colour {
+            declare enum type {
+                RGB: 'rgb',
+                HSV: 'hsv'
             }
-        `;
-    }
-    static register(Blockly) {
+            declare function random(): string;
+            declare function create(type: color.type, a: number, b: number, c: number): string;
+            declare function lerp(from: number, to: number, percent: number): string;
+        }
+    `,
+    register(Blockly) {
         Blockly.Blocks.random_colour = {
             init() {
                 const json = {
@@ -143,37 +143,33 @@ class BlocklyColor {
         };
 
         Blockly.Blocks.colour_picker.customColor = COLOR;
-    }
-    static get category() {
-        return {
-            name: localize('CATEGORY_COLOR', 'Color'),
-            id: BlocklyColor.id,
-            colour: COLOR,
-            blocks: [
-                'colour_picker',
-                'create_color',
-                'random_colour',
-                {
-                    id: 'color_lerp',
-                    defaults: ['FROM', 'TO', 'PERCENT'],
-                },
-            ],
-        };
-    }
-    static get defaults() {
-        return {
-            colour_picker: {
-                COLOUR: '#ff0000',
+    },
+    category: {
+        name: localize('CATEGORY_COLOR', 'Color'),
+        id: ID,
+        colour: COLOR,
+        blocks: [
+            'colour_picker',
+            'create_color',
+            'random_colour',
+            {
+                id: 'color_lerp',
+                defaults: ['FROM', 'TO', 'PERCENT'],
             },
-            create_color: {
-                TYPE: 'rgb',
-            },
-            color_lerp: {
-                FROM: '#000000',
-                TO: '#ffffff',
-                PERCENT: 50,
-            },
-        };
+        ],
+    },
+    defaults: {
+        colour_picker: {
+            COLOUR: '#ff0000',
+        },
+        create_color: {
+            TYPE: 'rgb',
+        },
+        color_lerp: {
+            FROM: '#000000',
+            TO: '#ffffff',
+            PERCENT: 50,
+        },
     }
 }
 

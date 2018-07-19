@@ -1,25 +1,25 @@
 const COLOR = '#1198ff';
 
-class BlocklyControl {
-    static get type() { return 'blockly'; }
-    static get id() { return 'control'; }
-    static get typeScriptDefinition() {
-        return `
-            declare namespace loop {
-                declare function forever(callback: function): void;
+const ID = 'control';
+
+const BlocklyControl = {
+    type: 'blockly',
+    id: ID,
+    typeScriptDefinition: `
+        declare namespace loop {
+            declare function forever(callback: function): void;
+        }
+        declare namespace time {
+            declare enum units {
+                frames = 'frames',
+                seconds = 'seconds',
+                milliseconds = 'milliseconds',
             }
-            declare namespace time {
-                declare enum units {
-                    frames = 'frames',
-                    seconds = 'seconds',
-                    milliseconds = 'milliseconds',
-                }
-                declare function every(interval: number, unit: time.units, callback: function): void;
-                declare function later(delay: number, unit: time.units, callback: function): void;
-            }
-        `;
-    }
-    static register(Blockly) {
+            declare function every(interval: number, unit: time.units, callback: function): void;
+            declare function later(delay: number, unit: time.units, callback: function): void;
+        }
+    `,
+    register(Blockly) {
         Blockly.Blocks.loop_forever = {
             init() {
                 const json = {
@@ -180,45 +180,41 @@ class BlocklyControl {
         };
 
         Blockly.JavaScript.restart_code = () => 'global.restartCode();';
-    }
-    static get category() {
-        return {
-            name: Blockly.Msg.CATEGORY_CONTROL,
-            id: BlocklyControl.id,
-            colour: COLOR,
-            blocks: [
-                {
-                    id: 'repeat_x_times',
-                    defaults: ['N'],
-                },
-                'loop_forever',
-                {
-                    id: 'every_x_seconds',
-                    defaults: ['INTERVAL'],
-                },
-                {
-                    id: 'in_x_time',
-                    defaults: ['DELAY'],
-                },
-                'restart_code',
-            ],
-        };
-    }
-    static get defaults() {
-        return {
-            every_x_seconds: {
-                INTERVAL: 1,
-                UNIT: 'seconds',
+    },
+    category: {
+        name: Blockly.Msg.CATEGORY_CONTROL,
+        id: ID,
+        colour: COLOR,
+        blocks: [
+            {
+                id: 'repeat_x_times',
+                defaults: ['N'],
             },
-            in_x_time: {
-                DELAY: 1,
-                UNIT: 'seconds',
+            'loop_forever',
+            {
+                id: 'every_x_seconds',
+                defaults: ['INTERVAL'],
             },
-            repeat_x_times: {
-                N: 10,
+            {
+                id: 'in_x_time',
+                defaults: ['DELAY'],
             },
-        };
-    }
-}
+            'restart_code',
+        ],
+    },
+    defaults: {
+        every_x_seconds: {
+            INTERVAL: 1,
+            UNIT: 'seconds',
+        },
+        in_x_time: {
+            DELAY: 1,
+            UNIT: 'seconds',
+        },
+        repeat_x_times: {
+            N: 10,
+        },
+    },
+};
 
 export default BlocklyControl;

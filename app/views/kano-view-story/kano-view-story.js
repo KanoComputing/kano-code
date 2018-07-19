@@ -21,11 +21,9 @@ import '../../scripts/kano/make-apps/actions/app.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
 import { experiments } from '../../scripts/kano/make-apps/experiments.js';
 import { ViewBehavior } from '../../elements/behaviors/kano-view-behavior.js';
-import { Editor, UserPlugin, PartsPlugin, Mode } from '../../lib/index.js';
-import { AllModules } from '../../lib/app-modules/all.js';
-import { AllApis, EventsModuleFactory } from '../../scripts/meta-api/all.js';
+import { Editor, UserPlugin } from '../../lib/index.js';
+import { DrawEditorProfile } from '../../profiles/normal/index.js';
 import { Challenge } from '../../lib/challenge/index.js';
-import { KanoCodeWorkspaceViewProvider } from '../../scripts/workspace/index.js';
 
 const behaviors = [
     ViewBehavior,
@@ -35,9 +33,7 @@ const behaviors = [
     SoundPlayerBehavior,
 ];
 
-class KanoViewStory extends Store.StateReceiver(
-    mixinBehaviors(behaviors, PolymerElement)
-) {
+class KanoViewStory extends Store.StateReceiver(mixinBehaviors(behaviors, PolymerElement),) {
     static get is() { return 'kano-view-story'; }
     static get template() {
         return html`
@@ -174,25 +170,18 @@ class KanoViewStory extends Store.StateReceiver(
         super.connectedCallback();
         const { config } = this.getState();
 
+        
         this.modal = this.$['share-modal'];
-
+        
         this.editor = new Editor(config);
+        this.profiles = new Map();
+        this.profiles.set('draw', new DrawEditorProfile(this.editor));
+        this.profiles.set('normal', new DrawEditorProfile(this.editor));
 
         const userPlugin = new UserPlugin();
         this.editor.addPlugin(userPlugin);
 
-        this.partsPlugin = new PartsPlugin();
-        this.editor.addPlugin(this.partsPlugin);
-
-        const EventsModule = EventsModuleFactory(this.editor);
-
-        const toolboxEntries = [EventsModule, ...AllApis];
-
-        this.editor.toolbox.setEntries(toolboxEntries);
-
-        this.editor.runner.addModule(AllModules);
-
-        this.challenge = new Challenge(this.partsPlugin);
+        this.challenge = new Challenge();
         this.challenge.on('completed', this.challengeCompleted.bind(this));
 
         this.editor.addPlugin(this.challenge);
@@ -217,9 +206,7 @@ class KanoViewStory extends Store.StateReceiver(
                             this.set('story.next', nextStory);
                             return story;
                         })
-                        .catch(() => {
-                            return story;
-                        });
+                        .catch(() => story);
                 }
                 return story;
             })
@@ -232,41 +219,28 @@ class KanoViewStory extends Store.StateReceiver(
                         // FIXME This merging of scene and scene data will not be necessary once we restructure the challenge files
                         story.scene = Object.assign({}, scene, scene.data);
                         delete story.scene.data;
-                        return this.loadMode(story.scene.mode || 'normal');
-                    })
-                    .then((mode) => {
-                        this.setupEditor(mode);
-                        this.challenge.load(story, mode);
-                        this.$['share-modal-content'].set('nextButtonLabel', Boolean(this.story.next) ? this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
+                        const profile = this.profiles.get(story.scene.mode || 'draw');
+                        this.challenge.registerProfile(profile);
+                        this.challenge.load(story);
+                        this.setupEditor();
+                        this.$['share-modal-content'].set('nextButtonLabel', this.story.next ? this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges'));
                         this.loading = false;
                     });
             });
     }
-    loadMode(id) {
-        const url = `/mode/${id}.js`;
-        return Mode.load(id, url);
-    }
-    save() {}
-    setupEditor(mode) {
+    setupEditor() {
         if (this.injected) {
             return;
         }
-        const workspaceViewProvider = new KanoCodeWorkspaceViewProvider(
-            this.editor,
-            mode.editorTagName || `kano-editor-${mode.id}`,
-            mode.workspace.viewport,
-        );
-        this.editor.registerWorkspaceViewProvider(workspaceViewProvider);
         this.injected = true;
         this.challenge.inject(this.root, this.root.firstChild);
-        this.editor.on('share', (shareInfo) => this.share({ detail: shareInfo }));
+        this.editor.on('share', shareInfo => this.share({ detail: shareInfo }));
         this.editor.on('exit', () => this._exit());
-        this.editor.on('change', () => this.save());
         this.editor.on('save', () => this.saveApp());
 
         this.challenge.on('next-challenge', this._nextChallenge);
 
-        this.editor.setRunningState(true);
+        this.editor.output.setRunningState(true);
     }
     _nextChallenge() {
         this.goToNextChallenge();
@@ -293,11 +267,11 @@ class KanoViewStory extends Store.StateReceiver(
         const challenge = this.challenge.store.getState();
 
         this.fire('ga-tracking-event', {
-            event: 'worldTutorialCompleted'
+            event: 'worldTutorialCompleted',
         });
 
         this.trackUserProgress(challenge.id);
-        //story completed
+        // story completed
         let progress = challenge.progress,
             extension = challenge.extension ? challenge.id : null;
         this.progress.updateProgress(progress.group, progress.storyNo, extension, challenge.id);
@@ -332,24 +306,24 @@ class KanoViewStory extends Store.StateReceiver(
         const payload = {
             name: 'kano-code-challenge-completed',
             detail: {
-                id: challenge.id
-            }
+                id: challenge.id,
+            },
         };
         const trackingData = {
             id: challenge.id,
-            name: challenge.name
+            name: challenge.name,
         };
         if (challenge.progress && challenge.progress.group) {
             trackingData.group = challenge.progress.group;
         }
         this.fire('track-challenge-event', {
             type: 'complete',
-            data: trackingData
+            data: trackingData,
         });
         // this.bannerButtonInactive = true;
         // this.$.challenge.computeBanner(this.currentStep);
         this.triggerGamificationEngine(payload)
-            .then(res => {
+            .then((res) => {
                 // this.bannerButtonInactive = false;
                 // this.$.challenge.computeBanner(this.currentStep);
                 this._trackRewards(res.update);
@@ -368,18 +342,18 @@ class KanoViewStory extends Store.StateReceiver(
                     previous_level: xpChanges.oldValue,
                     new_level: xpChanges.newValue,
                     xp_earned: xpChanges.newValue - xpChanges.oldValue,
-                    leveled_up: !!levelChanges.level
-                }
+                    leveled_up: !!levelChanges.level,
+                },
             });
         }
         if (badgeChanges) {
-            badgeChanges.new.forEach(badge => {
+            badgeChanges.new.forEach((badge) => {
                 this.fire('tracking-event', {
                     name: 'badge_unlocked',
                     data: {
                         badge_id: badge.id,
-                        badge_name: badge.title
-                    }
+                        badge_name: badge.title,
+                    },
                 });
             });
         }
@@ -427,14 +401,14 @@ class KanoViewStory extends Store.StateReceiver(
         this.addToStore(id, {
             app,
             blockIds,
-            stepIds
+            stepIds,
         });
     }
     shareApp() {
         this.$.editor.share();
     }
     saveToStorage() {
-        let app = this.$.editor.save();
+        const app = this.$.editor.save();
         localStorage.setItem('savedApp', JSON.stringify(app));
     }
     showHints() {
@@ -466,7 +440,7 @@ class KanoViewStory extends Store.StateReceiver(
         let groups = this._getProgressGroups(user),
             stories = [];
         if (groups) {
-            Object.keys(groups).forEach(key => {
+            Object.keys(groups).forEach((key) => {
                 stories = stories.concat(groups[key].completedStories);
             });
         }
@@ -502,23 +476,25 @@ class KanoViewStory extends Store.StateReceiver(
      * Observes the `addedParts` array. Goes through the added splice and removes the blocks from a part if needed.
      * Stores the removed blocks in a `removedBlocks` object for future re-injection
      */
-    _addedPartsChanged (e) {
+    _addedPartsChanged(e) {
         if (!e || this.remix || !this.scene.filterBlocks) {
             return;
         }
-        e.indexSplices.forEach(splice => {
-            splice.object.forEach(part => {
-                Object.keys(this.scene.filterBlocks).forEach(key => {
+        e.indexSplices.forEach((splice) => {
+            splice.object.forEach((part) => {
+                Object.keys(this.scene.filterBlocks).forEach((key) => {
                     if (part.id !== key) {
                         return;
                     }
                     part.blocks = part.blocks.filter((block, index) => {
-                        let id, definition, remove;
+                        let id, 
+definition, 
+remove;
                         if (typeof block === 'string') {
                             id = block;
                         } else {
                             definition = block.block(part);
-                            id = definition.id
+                            id = definition.id;
                         }
                         remove = this.scene.filterBlocks[key].indexOf(id) === -1;
                         // We're about to remove the block from the part. Save it under another object to
@@ -537,7 +513,7 @@ class KanoViewStory extends Store.StateReceiver(
         if (!this.story) {
             return;
         }
-        //TODO Refactor this when challenge modal is implemented similarly to share-modal i.e. as child of a paper dialog
+        // TODO Refactor this when challenge modal is implemented similarly to share-modal i.e. as child of a paper dialog
         const pathIds = dom(e).path.map(path => path.id);
 
         if (pathIds.indexOf('share-modal') > -1 || pathIds.indexOf('reward-modal') > -1) {

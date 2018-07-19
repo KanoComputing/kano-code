@@ -336,79 +336,18 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
         this.media = config.BLOCKLY_MEDIA;
         this.toolboxReady = false;
     }
-    computeBlocks() {
-        const blocks = [];
-        if (this.mode && this.mode.categories) {
-            this.mode.categories.forEach((category) => {
-                category.blocks.forEach((definition) => {
-                    blocks.push({ part: this.mode, definition });
-                });
-            });
-        }
-        blocks.forEach(({ part, definition }) => this._registerBlock(part, definition));
-    }
-    _registerBlock(part, definition) {
-        const block = definition.block(part);
-        block.colour = part.colour;
-        block.id = `${part.id}#${block.id}`;
-        if (!block.doNotRegister) {
-            Blockly.Blocks[block.id] = {
-                init() {
-                    this.jsonInit(block);
-                },
-            };
-            Blockly.Blocks[block.id].customColor = block.colour;
-        }
-        Blockly.JavaScript[block.id] = definition.javascript(part);
-        // Hack to register blocks from the normal mode under the dropzone id to support older shares
-        if (part.id === 'normal') {
-            block.id = block.id.replace('normal', 'dropzone');
-            if (!block.doNotRegister) {
-                Blockly.Blocks[block.id] = {
-                    init() {
-                        this.jsonInit(block);
-                    },
-                };
-                Blockly.Blocks[block.id].customColor = block.colour;
-            }
-            Blockly.JavaScript[block.id] = definition.javascript(part);
-        }
-    }
     computeToolbox() {
-        let categories;
-        let toolbox;
         if (!this.defaultCategories) {
             return;
         }
-        this.computeBlocks();
-        categories = categories || [];
-        categories = categories.filter(category => category.blocks.length);
 
-        toolbox = Object.keys(this.defaultCategories).map(id => this.defaultCategories[id]);
+        let toolbox = Object.keys(this.defaultCategories).map(id => this.defaultCategories[id]);
 
-        // Generate the toolbox for the special mode
-        if (this.mode && this.mode.categories) {
-            this.mode.categories.forEach((category) => {
-                const modeCat = {
-                    name: category.name,
-                    id: category.id,
-                    colour: category.colour,
-                };
-                modeCat.blocks = category.blocks.map((definition) => {
-                    const block = definition.block(this.mode);
-                    return {
-                        id: `${this.mode.id}#${block.id}`,
-                        colour: this.mode.colour,
-                        shadow: block.shadow,
-                    };
-                });
-                toolbox.push(modeCat);
-            });
-        }
-        toolbox = toolbox.concat(categories);
         const unorderedEntries = toolbox.filter(e => typeof e.order === 'undefined');
         const orderedEntries = toolbox.filter(e => typeof e.order !== 'undefined');
-        toolbox = unorderedEntries.concat(orderedEntries.sort((a, b) => (a.order || 0) - (b.order || 0)));
+        toolbox = unorderedEntries
+            .concat(orderedEntries.sort((a, b) => (a.order || 0) - (b.order || 0)))
+            .filter(entry => entry.blocks.length);
         if (this.flyoutMode) {
             const flyout = toolbox.reduce((acc, entry) => acc.concat(entry.blocks), []);
             this.set('flyout', flyout);

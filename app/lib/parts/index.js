@@ -263,7 +263,7 @@ export class PartsPlugin extends Plugin {
             const { addedParts } = this.editor.store.getState();
             this.outputPlugin.setParts(addedParts);
         }
-        this.editor.rootEl.load(app);
+        // this.editor.rootEl.load(app);
     }
     _onAddPartRequest(e) {
         this.addPart(e);

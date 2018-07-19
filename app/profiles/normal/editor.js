@@ -59,15 +59,35 @@ blocks = blocks.concat(space);
 blocks = blocks.concat(paths);
 blocks = blocks.concat(shapes);
 
-class DrawToolbox {
-    static get type() { return 'blockly'; }
-    static get id() { return 'draw'; }
-    static get typeScriptDefinition() {
-        return `
-            declare namespace draw {}
-        `;
+const categoryBlocks = blocks.map((definition) => {
+    if (typeof definition === 'string') {
+        return {
+            id: definition,
+            colour: COLOR,
+        };
     }
-    static register(Blockly) {
+    const block = definition.block({ id: 'draw' });
+    block.colour = COLOR;
+    return {
+        id: block.id,
+        colour: block.colour,
+        shadow: block.shadow,
+    };
+});
+const category = {
+    name: 'Draw',
+    id: 'draw',
+    colour: COLOR,
+    blocks: categoryBlocks,
+};
+
+const DrawToolbox = {
+    type: 'blockly',
+    id: 'draw',
+    typeScriptDefinition: `
+        declare namespace draw {}
+    `,
+    register(Blockly) {
         const definitions = [];
         blocks.forEach((definition) => {
             if (typeof definition === 'object') {
@@ -77,7 +97,6 @@ class DrawToolbox {
         definitions.forEach((definition) => {
             const block = definition.block(DrawToolbox.category);
             block.colour = COLOR;
-            block.id = `${DrawToolbox.category.id}#${block.id}`;
             if (!block.doNotRegister) {
                 Blockly.Blocks[block.id] = {
                     init() {
@@ -88,47 +107,10 @@ class DrawToolbox {
             }
             Blockly.JavaScript[block.id] = definition.javascript(DrawToolbox.category);
         });
-    }
-    static get category() {
-        const categoryBlocks = blocks.map((definition) => {
-            if (typeof definition === 'string') {
-                return {
-                    id: definition,
-                    colour: COLOR,
-                };
-            }
-            const block = definition.block({ id: DrawToolbox.id });
-            block.colour = COLOR;
-            block.id = `${DrawToolbox.id}#${block.id}`;
-            return {
-                id: block.id,
-                colour: block.colour,
-                shadow: block.shadow,
-            };
-        });
-        return {
-            name: 'Draw',
-            id: DrawToolbox.id,
-            colour: COLOR,
-            blocks: categoryBlocks,
-        };
-    }
-    static get defaults() {
-        return {
-            colour_picker: {
-                COLOUR: '#ff0000',
-            },
-            create_color: {
-                TYPE: 'rgb',
-            },
-            color_lerp: {
-                FROM: '#000000',
-                TO: '#ffffff',
-                PERCENT: 50,
-            },
-        };
-    }
-}
+    },
+    category,
+    defaults: {},
+};
 
 class WorkspaceFramePlugin extends code.Plugin {
     onInstall(editor) {
@@ -144,6 +126,17 @@ class WorkspaceFramePlugin extends code.Plugin {
     }
 }
 
+class DefaultSourcePlugin extends code.Plugin {
+    onInstall(editor) {
+        this.editor = editor;
+    }
+    onImport(data) {
+        if (!data || !data.source) {
+            data.source = '<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables><block type="global_when" id="default_part_event_id" x="62" y="120"><field name="EVENT">global.start</field></block></xml>';
+        }
+    }
+}
+
 export class DrawEditorProfile extends code.EditorProfile {
     constructor(editor) {
         super();
@@ -156,7 +149,6 @@ export class DrawEditorProfile extends code.EditorProfile {
     get id() { return 'draw'; }
     get workspaceViewProvider() {
         const workspaceViewProvider = new KanoCodeWorkspaceViewProvider(
-            this.editor,
             'kano-editor-normal',
             {
                 width: 512,
@@ -169,7 +161,7 @@ export class DrawEditorProfile extends code.EditorProfile {
         return this._outputProfile;
     }
     get plugins() {
-        return [new PartsPlugin(this.outputProfile.partsPlugin), new BackgroundEditorPlugin(this.outputProfile.backgroundPlugin), new WorkspaceFramePlugin()];
+        return [new PartsPlugin(this.outputProfile.partsPlugin), new BackgroundEditorPlugin(this.outputProfile.backgroundPlugin), new WorkspaceFramePlugin(), new DefaultSourcePlugin()];
     }
     get toolbox() {
         return this._toolbox;

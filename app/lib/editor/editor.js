@@ -136,6 +136,10 @@ class Editor extends EditorOrPlayer {
         if (this.workspaceProvider) {
             this.workspaceProvider.onInject();
         }
+        if (this._queuedVariables) {
+            this.loadVariables(this._queuedVariables);
+            this._queuedVariables = null;
+        }
         this.runPluginTask('onInject');
     }
     dispose() {
@@ -198,6 +202,10 @@ class Editor extends EditorOrPlayer {
         return this.rootEl.getBlocklyWorkspace();
     }
     loadVariables(variables) {
+        if (!this.injected) {
+            this._queuedVariables = variables;
+            return;
+        }
         const workspace = this.getBlocklyWorkspace();
         if (variables && workspace) {
             variables.forEach((v) => {

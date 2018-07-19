@@ -2,8 +2,13 @@ import BaseLogic from '../../lib/meta-api/modules/logic.js';
 
 // Logic module specific to Kano Code. Adds a collision if statement
 
-class BlocklyLogic extends BaseLogic {
-    static register(Blockly) {
+const baseCategory = Object.assign({}, BaseLogic.category);
+baseCategory.blocks = baseCategory.blocks.slice(0);
+baseCategory.blocks.push('if_collides');
+const category = baseCategory;
+
+const BlocklyLogic = Object.assign({}, BaseLogic, {
+    register(Blockly) {
         BaseLogic.register(Blockly);
         Blockly.Blocks.if_collides = {
             init() {
@@ -46,13 +51,8 @@ class BlocklyLogic extends BaseLogic {
             const code = `parts.collisionBetween(${part1Id || null}, ${part2Id})`;
             return [code];
         };
-    }
-    static get category() {
-        const baseCategory = Object.assign({}, BaseLogic.category);
-        baseCategory.blocks = baseCategory.blocks.slice(0);
-        baseCategory.blocks.push('if_collides');
-        return baseCategory;
-    }
-}
+    },
+    category,
+});
 
 export default BlocklyLogic;

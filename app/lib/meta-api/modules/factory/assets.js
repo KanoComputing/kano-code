@@ -1,10 +1,12 @@
 export const AssetsModuleFactory = (stickers, defaultSet) => {
     const COLOR = '#1198ff';
 
-    return class BlocklyAssets {
-        static get type() { return 'blockly'; }
-        static get id() { return 'assets'; }
-        static register(Blockly) {
+    const ID = 'assets';
+
+    return {
+        type: 'blockly',
+        id: ID,
+        register(Blockly) {
             const stickerSet = Object.keys(stickers);
             Blockly.Blocks.assets_get_sticker = {
                 init: function init() {
@@ -92,7 +94,7 @@ export const AssetsModuleFactory = (stickers, defaultSet) => {
                 const code = [`assets.randomSticker('${set}')`];
                 return code;
             };
-        }
+        },
     };
 };
 

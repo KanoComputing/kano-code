@@ -16,12 +16,12 @@
             },
             "beacon": {
                 "target": {
-                    "category": "normal"
+                    "category": "draw"
                 }
             },
             "validation": {
                 "blockly": {
-                    "open-flyout": "normal"
+                    "open-flyout": "draw"
                 }
             }
         },
@@ -31,13 +31,13 @@
             },
             "beacon": {
                 "target": {
-                    "flyout_block": "normal#set_background_color"
+                    "flyout_block": "set_background_color"
                 }
             },
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "normal#set_background_color",
+                        "type": "set_background_color",
                         "id": "block_1"
                     }
                 }
@@ -104,12 +104,12 @@
             },
             "beacon": {
                 "target": {
-                    "category": "normal"
+                    "category": "draw"
                 }
             },
             "validation": {
                 "blockly": {
-                    "open-flyout": "normal"
+                    "open-flyout": "draw"
                 }
             }
         },
@@ -119,13 +119,13 @@
             },
             "beacon": {
                 "target": {
-                    "flyout_block": "normal#color"
+                    "flyout_block": "color"
                 }
             },
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "normal#color",
+                        "type": "color",
                         "id": "block_2"
                     }
                 }
@@ -268,12 +268,12 @@
             },
             "beacon": {
                 "target": {
-                    "category": "normal"
+                    "category": "draw"
                 }
             },
             "validation": {
                 "blockly": {
-                    "open-flyout": "normal"
+                    "open-flyout": "draw"
                 }
             }
         },
@@ -283,13 +283,13 @@
             },
             "beacon": {
                 "target": {
-                    "flyout_block": "normal#move_to_random"
+                    "flyout_block": "move_to_random"
                 }
             },
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "normal#move_to_random",
+                        "type": "move_to_random",
                         "id": "block_4"
                     }
                 }
@@ -335,12 +335,12 @@
             },
             "beacon": {
                 "target": {
-                    "category": "normal"
+                    "category": "draw"
                 }
             },
             "validation": {
                 "blockly": {
-                    "open-flyout": "normal"
+                    "open-flyout": "draw"
                 }
             }
         },
@@ -350,13 +350,13 @@
             },
             "beacon": {
                 "target": {
-                    "flyout_block": "normal#circle"
+                    "flyout_block": "circle"
                 }
             },
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "normal#circle",
+                        "type": "circle",
                         "id": "block_5"
                     }
                 }
@@ -481,7 +481,7 @@
             "part_event"
         ],
         "color": ["random_colour"],
-        "normal": [
+        "draw": [
             "set_background_color",
             "color",
             "move_to_random",
@@ -491,5 +491,9 @@
             "every_x_seconds"
         ]
     },
-    "mode": "normal"
+    "toolbox": [
+        "draw.set_background_color",
+        "draw.color"
+    ],
+    "mode": "draw"
 }

@@ -151,6 +151,7 @@ class Defaults {
     createCategory(opts) {
         let shadow;
         const blocks = opts.blocks.map((block) => {
+            shadow = block.shadow;
             if (typeof block === 'string') {
                 // Map the block id to its category
                 this.categoryMap.set(block, opts.id);
@@ -158,7 +159,9 @@ class Defaults {
             }
             // Map the block id to its category
             this.categoryMap.set(block.id, opts.id);
-            shadow = this.getShadowForBlock(block.id, block.defaults);
+            if (block.defaults) {
+                shadow = this.getShadowForBlock(block.id, block.defaults);
+            }
             this.shadowMap.set(block.id, shadow);
             return { id: block.id, shadow };
         });

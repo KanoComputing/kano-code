@@ -1,17 +1,17 @@
 const COLOR = '#ff9800';
 
-class BlocklyMath {
-    static get type() { return 'blockly'; }
-    static get id() { return 'math'; }
-    static get typeScriptDefinition() {
-        return `
-            declare namespace math {
-                declare function random(min: number, max: number): number;
-                declare function lerp(from: number, to: number, percent: number): number;
-            }
-        `;
-    }
-    static register(Blockly) {
+const ID = 'math';
+
+const BlocklyMath = {
+    type: 'blockly',
+    id: ID,
+    typeScriptDefinition: `
+        declare namespace math {
+            declare function random(min: number, max: number): number;
+            declare function lerp(from: number, to: number, percent: number): number;
+        }
+    `,
+    register(Blockly) {
         Blockly.Blocks.math_arithmetic = {
             init() {
                 const options = [
@@ -323,62 +323,58 @@ class BlocklyMath {
         ].forEach((blockId) => {
             Blockly.Blocks[blockId].customColor = COLOR;
         });
-    }
-    static get category() {
-        return {
-            name: Blockly.Msg.CATEGORY_MATH,
-            id: BlocklyMath.id,
-            colour: COLOR,
-            blocks: [
-                'math_number',
-                'math_arithmetic',
-                {
-                    id: 'unary',
-                    defaults: ['RIGHT_HAND'],
-                }, {
-                    id: 'math_random',
-                    defaults: ['MIN', 'MAX'],
-                }, {
-                    id: 'math_lerp',
-                    defaults: ['FROM', 'TO', 'PERCENT'],
-                },
-                'math_single',
-                'math_trig',
-                'math_constant',
-                'math_number_property',
-                'math_round',
-                'math_modulo',
-                'math_constrain',
-                'math_min_max',
-                'math_sign',
-            ],
-        };
-    }
-    static get defaults() {
-        return {
-            math_number: {
-                NUM: 0,
+    },
+    category: {
+        name: Blockly.Msg.CATEGORY_MATH,
+        id: ID,
+        colour: COLOR,
+        blocks: [
+            'math_number',
+            'math_arithmetic',
+            {
+                id: 'unary',
+                defaults: ['RIGHT_HAND'],
+            }, {
+                id: 'math_random',
+                defaults: ['MIN', 'MAX'],
+            }, {
+                id: 'math_lerp',
+                defaults: ['FROM', 'TO', 'PERCENT'],
             },
-            math_arithmetic: {
-                OP: 'ADD',
-            },
-            unary: {
-                LEFT_HAND: 'item',
-                OPERATOR: '+=',
-                RIGHT_HAND: 1,
-            },
-            math_random: {
-                TYPE: 'integer',
-                MIN: 0,
-                MAX: 10,
-            },
-            math_lerp: {
-                FROM: 0,
-                TO: 200,
-                PERCENT: 50,
-            },
-        };
-    }
-}
+            'math_single',
+            'math_trig',
+            'math_constant',
+            'math_number_property',
+            'math_round',
+            'math_modulo',
+            'math_constrain',
+            'math_min_max',
+            'math_sign',
+        ],
+    },
+    defaults: {
+        math_number: {
+            NUM: 0,
+        },
+        math_arithmetic: {
+            OP: 'ADD',
+        },
+        unary: {
+            LEFT_HAND: 'item',
+            OPERATOR: '+=',
+            RIGHT_HAND: 1,
+        },
+        math_random: {
+            TYPE: 'integer',
+            MIN: 0,
+            MAX: 10,
+        },
+        math_lerp: {
+            FROM: 0,
+            TO: 200,
+            PERCENT: 50,
+        },
+    },
+};
 
 export default BlocklyMath;

@@ -3,11 +3,12 @@
  */
 const COLOR = '#f75846';
 
-class BlocklyLogic {
-    static get type() { return 'blockly'; }
-    static get id() { return 'logic'; }
-    static get color() { return COLOR; }
-    static register(Blockly) {
+const ID = 'logic';
+
+const BlocklyLogic = {
+    type: 'blockly',
+    id: ID,
+    register(Blockly) {
         Blockly.Blocks.logic_compare = {
             init() {
                 const options = [
@@ -49,31 +50,27 @@ class BlocklyLogic {
         ].forEach((blockId) => {
             Blockly.Blocks[blockId].customColor = COLOR;
         });
-    }
-    static get category() {
-        return {
-            name: Blockly.Msg.CATEGORY_LOGIC,
-            id: BlocklyLogic.id,
-            colour: COLOR,
-            blocks: [
-                'controls_if',
-                'logic_compare',
-                'logic_operation',
-                'logic_negate',
-                'logic_boolean',
-            ],
-        };
-    }
-    static get defaults() {
-        return {
-            logic_compare: {
-                OP: 'EQ',
-            },
-            logic_boolean: {
-                BOOL: 'TRUE',
-            },
-        };
-    }
-}
+    },
+    category: {
+        name: Blockly.Msg.CATEGORY_LOGIC,
+        id: ID,
+        colour: COLOR,
+        blocks: [
+            'controls_if',
+            'logic_compare',
+            'logic_operation',
+            'logic_negate',
+            'logic_boolean',
+        ],
+    },
+    defaults: {
+        logic_compare: {
+            OP: 'EQ',
+        },
+        logic_boolean: {
+            BOOL: 'TRUE',
+        },
+    },
+};
 
 export default BlocklyLogic;

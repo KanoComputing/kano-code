@@ -14,6 +14,12 @@ class BlocklyMetaRenderer {
         if (!mod.def.category) {
             return null;
         }
+        if (mod.def.whitelist) {
+            mod.def.category.blocks = mod.def.category.blocks.filter((block) => {
+                const id = block.id || block;
+                return mod.def.whitelist.indexOf(id) !== -1;
+            });
+        }
         return this.defaults.createCategory(mod.def.category);
     }
     renderToolboxEntry(mod) {
@@ -27,7 +33,11 @@ class BlocklyMetaRenderer {
             blocks.forEach(block => block.register(Blockly));
         };
 
-        const filteredBlocks = blocks.filter(block => block.toolbox);
+        let filteredBlocks = blocks.filter(block => block.toolbox);
+
+        if (mod.def.whitelist) {
+            filteredBlocks = blocks.filter(block => mod.def.whitelist.indexOf(block.id) !== -1);
+        }
 
         const category = {
             name: mod.getVerboseDisplay(),

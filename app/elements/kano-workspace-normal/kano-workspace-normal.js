@@ -151,6 +151,7 @@ class KanoWorkspaceNormal extends mixinBehaviors(
         ctx.drawImage(this.$.canvas, 0, 0);
         return Promise.resolve();
     }
+    onInstall() {}
 }
 
 customElements.define(KanoWorkspaceNormal.is, KanoWorkspaceNormal);

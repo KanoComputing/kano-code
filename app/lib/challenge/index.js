@@ -1,8 +1,10 @@
-import Plugin from '../editor/plugin.js';
+import { Plugin } from '../editor/plugin.js';
 import KanoCodeChallenge from './kano-code.js';
 import Store from '../store.js';
 import ChallengeActions from '../actions/challenge.js';
 import { Challenge as ChallengeGeneratorPlugin } from './generator/index.js';
+
+import '../../elements/kano-app-challenge/kano-app-challenge.js';
 
 const EDITOR_EVENTS = [
     'open-parts',
@@ -56,14 +58,8 @@ class Challenge extends Plugin {
     onInstall(editor) {
         this.setEditor(editor);
     }
-    localize(...args) {
-        return this.rootEl.localize(...args);
-    }
-    setEditor(editor) {
-        this.editor = editor;
-    }
-    initializeChallenge() {
-        const { config } = this.editor;
+    onInject() {
+        const { sourceEditor } = this.editor;
         const blocklyWorkspace = this.editor.getBlocklyWorkspace();
         this.engine = new KanoCodeChallenge(blocklyWorkspace);
         this.engine.addEventListener('done', this._onDone);
@@ -106,7 +102,15 @@ class Challenge extends Plugin {
             'banner.head',
             'banner.text',
         ], this.rootEl._processMarkdown.bind(this));
-
+    }
+    localize(...args) {
+        return this.rootEl.localize(...args);
+    }
+    setEditor(editor) {
+        this.editor = editor;
+    }
+    initializeChallenge() {
+        const { config } = this.editor;
         const challenge = this.store.getState();
 
         const { steps } = (challenge.scene || challenge);
@@ -262,23 +266,22 @@ class Challenge extends Plugin {
     setDefaultApp(defaultApp) {
         this.defaultApp = defaultApp;
     }
-    load(challenge, mode) {
-        this.originalMode = mode;
-        const { toolbox } = this.editor.store.getState();
+    registerProfile(profile) {
+        this.profile = profile;
+    }
+    load(challenge) {
+        const { toolbox } = this.profile;
         const { flyoutMode, variables, defaultApp } = (challenge.scene || challenge);
-        // Filter Mode to get the challenge view of its features
-        const challengeMode = Challenge.getChallengeMode(challenge, mode);
-        this.editor.setMode(challengeMode);
         // Filter Catergories to get the categories view of their features
-        const challengeToolbox = Challenge.getChallengeToolbox(challenge, toolbox);
-        this.editor.editorActions.setToolbox(challengeToolbox);
+        Challenge.enableToolboxWhitelist(challenge, toolbox);
+        this.editor.registerProfile(this.profile);
         this.editor.editorActions.setFlyoutMode(flyoutMode);
-        this.setSceneVariables(Challenge.getSceneVariables(challengeToolbox));
+        this.setSceneVariables(Challenge.getSceneVariables(toolbox));
         this.editor.loadVariables(variables);
         if (defaultApp) {
             this.editor.load(JSON.parse(defaultApp));
         } else {
-            this.editor.loadDefault();
+            this.editor.load({});
         }
         this.challengeActions.load(challenge);
     }
@@ -289,49 +292,49 @@ class Challenge extends Plugin {
         });
         return sceneVariables;
     }
-    static getChallengeMode(challenge, mode) {
-        const newMode = Object.assign({}, mode);
-        const { filterBlocks, parts } = (challenge.scene || challenge);
-        // In case we filter blocks in the categories of the mode
-        if (filterBlocks) {
-            const whitelist = filterBlocks[mode.id];
-            if (whitelist) {
-                newMode.categories = newMode.categories.map((category, index) => {
-                    const newCategory = Object.assign({}, category);
-                    // Filter the blocks of this category to the one whitelisted
-                    newCategory.blocks = newCategory.blocks.filter((block) => {
-                        const definition = block.block(newMode);
-                        return whitelist.indexOf(definition.id) !== -1;
-                    });
-                    return newCategory;
-                });
-            }
-        }
-        if (parts) {
-            newMode.parts = mode.parts.filter(part => parts.indexOf(part.type) !== -1);
-        }
-        return newMode;
+    static filterToToolbox(filter) {
+        return Object.keys(filter).reduce((acc, key) => {
+            return acc.concat(filter[key].map(block => `${key}.${block}`));
+        }, []);
     }
-    static getChallengeToolbox(challenge, toolbox) {
-        const { blocks, modules, filterBlocks, filterToolbox } = (challenge.scene || challenge);
+    static enableToolboxWhitelist(challenge, entries) {
+        const {
+            blocks,
+            modules,
+            filterBlocks,
+            filterToolbox,
+            toolbox,
+        } = (challenge.scene || challenge);
         if (blocks) {
-            return blocks;
+            return;
         }
         if (!modules) {
-            return toolbox;
+            return;
         }
         const filter = filterBlocks || filterToolbox;
-        const filtered = toolbox.filter(entry => modules.indexOf(entry.id) >= 0)
-            .map((entry) => {
-                const clone = Object.assign({}, entry);
-                if (!filterBlocks || !filter[entry.id]) {
-                    return clone;
-                }
-                clone.blocks = clone.blocks
-                    .filter(block => filter[entry.id].indexOf(block.id) !== -1);
-                return clone;
-            });
-        return filtered;
+        let toolboxWhitelist;
+        if (filter) {
+            toolboxWhitelist = Challenge.filterToToolbox(filter);
+        } else {
+            toolboxWhitelist = toolbox;
+        }
+        const whitelistMap = toolboxWhitelist.reduce((acc, path) => {
+            const parts = path.split('.');
+            const root = parts.shift();
+            if (!acc[root]) {
+                acc[root] = [];
+            }
+            acc[root].push(parts.join('.'));
+            return acc;
+        }, {});
+        entries.forEach((entry) => {
+            const id = entry.id || entry.name;
+            if (whitelistMap[id]) {
+                entry.whitelist = whitelistMap[id];
+            } else {
+                entry.whitelist = [];
+            }
+        });
     }
     setSceneVariables(variables) {
         this.challengeActions.loadVariables(variables);

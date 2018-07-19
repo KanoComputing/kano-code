@@ -152,6 +152,9 @@ Utils.setColorRange = function (hs, items = []) {
 };
 
 Utils.updatePartsColors = function (partsArray) {
+    if (!partsArray) {
+        return;
+    }
     const colorMapHS = {
             system: [206, 100],
             ui: [175, 100, 39],
