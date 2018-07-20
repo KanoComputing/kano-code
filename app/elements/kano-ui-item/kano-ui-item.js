@@ -1,7 +1,6 @@
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/iron-image/iron-image.js';
-import { AnimatableBehavior } from '../behaviors/kano-animatable-behavior.js';
 
 const IMAGE_PADDING = 20;
 const DEFAULT_SELECTED_COLOUR = '#84C69E';
@@ -65,7 +64,6 @@ Polymer({
 `,
 
     is: 'kano-ui-item',
-    behaviors: [AnimatableBehavior],
 
     properties: {
         model: {

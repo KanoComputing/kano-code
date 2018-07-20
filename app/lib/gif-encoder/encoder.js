@@ -1,5 +1,4 @@
-import './lol.js';
-import 'omggif/omggif.js';
+import { GifWriter } from './omggif/import.js';
 
 export class GifEncoder {
     constructor(opts) {
@@ -39,7 +38,6 @@ export class GifEncoder {
     }
 
     tick() {
-        let nextInQueue;
         if (!this.queue.length) {
             // Don't end here if there are frames left to render
             for (let i = 0; i < this.frames.length; i += 1) {
@@ -53,11 +51,16 @@ export class GifEncoder {
             }
             return;
         }
-        nextInQueue = this.queue[0];
+        const nextInQueue = this.queue[0];
         for (let i = 0; i < this.workerPool.length; i += 1) {
             if (!this.workerPool[i].inUse) {
                 this.workerPool[i].inUse = true;
-                this.renderFrame(nextInQueue.context, nextInQueue.delay, nextInQueue.i, this.workerPool[i].worker)
+                this.renderFrame(
+                    nextInQueue.context,
+                    nextInQueue.delay,
+                    nextInQueue.i,
+                    this.workerPool[i].worker,
+                )
                     .then(() => {
                         this.workerPool[i].inUse = false;
                         this.tick();
@@ -73,9 +76,8 @@ export class GifEncoder {
             const frameContext = context.getImageData(0, 0, this.width, this.height);
             const frameData = frameContext.data;
             const frameJobId = i;
-            let onCompletion;
 
-            onCompletion = (e) => {
+            const onCompletion = (e) => {
                 if (e.data.job_id === frameJobId) {
                     const { palette, pixels_for_gif } = e.data;
                     this.frames[i] = {
@@ -101,10 +103,9 @@ export class GifEncoder {
     }
 
     end() {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.finishedQueue = () => {
                 let string = '';
-                let buffer;
 
                 this.buffer = new Uint8Array(this.width * this.height * this.frames.length);
                 this.gif = new GifWriter(this.buffer, this.width, this.height, { loop: 0 });
@@ -123,9 +124,9 @@ export class GifEncoder {
                     return acc;
                 }, { total: 0, frames: [] });
 
-                buffer = new Uint8Array(this.gif.end());
+                const buffer = new Uint8Array(this.gif.end());
 
-                for (let i = 0, l = this.gif.end(); i < l; i++) {
+                for (let i = 0, l = this.gif.end(); i < l; i += 1) {
                     string += String.fromCharCode(this.buffer[i]);
                     buffer[i] = this.buffer[i];
                 }
