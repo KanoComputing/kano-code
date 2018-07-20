@@ -587,67 +587,6 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
     dismiss() {
         this.dispatchEvent(new CustomEvent('dismiss'));
     }
-    _generateAppGif() {
-        let workspace = this.$['app-preview'].getWorkspace(),
-            parts = Object.keys(this.$['app-preview'].component.parts).map(key => this.$['app-preview'].component.parts[key]),
-            sharingConfig = this.shareInfo.mode.sharing,
-            FPS = 9,
-            LENGTH = 30;
-
-        this.recording = true;
-
-        this.spriteSrc = null;
-
-        if (sharingConfig.cover === 'still') {
-            if (sharingConfig.spritesheet) {
-                if (this.shareInfo.animation) {
-                    p = this.generateAnimationSpriteSheet(this.shareInfo.animation);
-                } else {
-                    p = this.generateAppSpriteSheet(workspace, FPS, 4);
-                }
-                p.then((url) => {
-                    let data = url.split(',').pop(),
-                        spriteSheetBlob = this.base64toBlob(data, 'image/png');
-
-                    this.shareInfo.spriteSheetBlob = spriteSheetBlob;
-                    this.spriteSrc = URL.createObjectURL(spriteSheetBlob);
-
-                    return this.generateCover(
-                        workspace,
-                        parts,
-                        workspace.width,
-                        workspace.height,
-                        1,
-                        sharingConfig.padding,
-                        sharingConfig.color,
-                    );
-                })
-                    .then((canvas) => {
-                        let image = new Image(),
-                            base64Data,
-                            blob;
-                        image.src = canvas.toDataURL();
-                        base64Data = image.src.split(',').pop(),
-                        blob = this.base64toBlob(base64Data, 'image/png');
-                        this.gifSrc = image.src;
-                        this.shareInfo.coverBlob = blob;
-                        this.fire('cover-generated');
-                        // Reset for potential future gif-creation
-                        this._resetCoverGenerator();
-                    });
-            }
-        } else {
-            this._generateGifCover(workspace, parts, 0.75, sharingConfig.padding, sharingConfig.color, FPS, LENGTH).then((blob) => {
-                const url = URL.createObjectURL(blob);
-                this.gifSrc = url;
-                this.shareInfo.coverBlob = blob;
-                this.$['app-preview'].stop();
-                this.fire('cover-generated');
-                // Reset for potential future gif-creation
-                this._resetCoverGenerator();
-            });
-        }
-    }
     _shareOnKW() {
         if (this._checkTitleInput()) {
             this.dispatchEvent(new CustomEvent('submit', {
