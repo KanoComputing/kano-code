@@ -20,6 +20,14 @@ Polymer({
                 @apply --layout-horizontal;
                 @apply --layout-start;
                 padding: 16px;
+                display: block;
+            }
+            .container {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .avatar {
+                margin-bottom: 10px;
             }
             .content {
                 @apply --layout-flex;
@@ -29,6 +37,10 @@ Polymer({
                 font-family: var(--font-body);
                 font-size: 16px;
                 color: #414a51;
+                margin-bottom: 10px;
+                margin-right: 10px;
+                min-width: 200px;
+                display: inline-block;
             }
             .content .head {
                 color: #888;
@@ -46,8 +58,12 @@ Polymer({
                 @apply --layout-vertical;
                 @apply --layout-flex;
             }
+            .buttons {
+                display: block;
+                margin - bottom: 10 px;
+            }
             kano-glint-animation {
-                margin: 0 20px 0 10px;
+                margin: 0 20px 0 0;
             }
             .button {
                 opacity: 0;
@@ -77,7 +93,7 @@ Polymer({
             #banner-save-button {
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                margin: 0 10px;
+                margin: 0 10px 10px 0;
             }
             #banner-save-button iron-icon {
                 --iron-icon-width: 24px;
@@ -174,42 +190,46 @@ Polymer({
                 height: 38px;
             }
         </style>
-        <div class="avatar">
-            <kano-circle-progress radius="40" stroke-width="7" value="[[progress]]"></kano-circle-progress>
-        </div>
-        <div class="content">
-            <div class="text">
-                <div class="head" hidden\$="[[!head]]">
-                    <marked-element markdown="[[head]]">
-                        <div class="markdown-html" slot="markdown-html"></div>
-                    </marked-element>
-                </div>
-                <div class="body">
-                    <marked-element markdown="[[text]]">
-                        <div class="markdown-html" slot="markdown-html"></div>
-                    </marked-element>
+        <div class="container">
+            <div class="avatar">
+                <kano-circle-progress radius="40" stroke-width="7" value="[[progress]]"></kano-circle-progress>
+            </div>
+            <div class="content">
+                <div class="text">
+                    <div class="head" hidden\$="[[!head]]">
+                        <marked-element markdown="[[head]]">
+                            <div class="markdown-html" slot="markdown-html"></div>
+                        </marked-element>
+                    </div>
+                    <div class="body">
+                        <marked-element markdown="[[text]]">
+                            <div class="markdown-html" slot="markdown-html"></div>
+                        </marked-element>
+                    </div>
                 </div>
             </div>
-        </div>
-        <button id="banner-save-button" type="button" class="button" hidden\$="[[!showSaveButton]]" on-tap="_saveTapped">
-            <iron-icon class="save-icon" icon="kc-ui:save"></iron-icon>
-            <div>[[localize('SAVE', 'Save')]]</div>
-        </button>
-        <kano-glint-animation id="banner-button-container" running="[[_computeGlint(buttonLabel, buttonState)]]">
-            <button id="banner-button" class\$="button [[_computeButtonClass(buttonState)]]" type="button" on-tap="_buttonTapped" data-animate="300">
-                <paper-spinner-lite active="[[_buttonInactive(buttonState)]]"></paper-spinner-lite>
-                <span hidden\$="[[!_buttonActive(buttonState)]]">
-                    [[buttonLabel]]
-                </span>
-            </button>
-        </kano-glint-animation>
-        <div class="undo-redo" hidden\$="[[_undoRedoHidden(buttonState, showSaveButton)]]">
-            <button id="undo-button" type="button" on-tap="_undoTapped" class\$="[[_computeUndoRedoClass(canGoBack)]]">
-                <iron-icon icon="kc-ui:undo"></iron-icon>
-            </button>
-            <button id="redo-button" type="button" on-tap="_redoTapped" class\$="[[_computeUndoRedoClass(canGoForward)]]">
-                <iron-icon icon="kc-ui:redo"></iron-icon>
-            </button>
+            <div class="buttons">
+                <button id="banner-save-button" type="button" class="button" hidden\$="[[!showSaveButton]]" on-tap="_saveTapped">
+                    <iron-icon class="save-icon" icon="kc-ui:save"></iron-icon>
+                    <div>[[localize('SAVE', 'Save')]]</div>
+                </button>
+                <kano-glint-animation id="banner-button-container" running="[[_computeGlint(buttonLabel, buttonState)]]">
+                    <button id="banner-button" class\$="button [[_computeButtonClass(buttonState)]]" type="button" on-tap="_buttonTapped" data-animate="300">
+                        <paper-spinner-lite active="[[_buttonInactive(buttonState)]]"></paper-spinner-lite>
+                        <span hidden\$="[[!_buttonActive(buttonState)]]">
+                            [[buttonLabel]]
+                        </span>
+                    </button>
+                </kano-glint-animation>
+                <div class="undo-redo" hidden\$="[[_undoRedoHidden(buttonState, showSaveButton)]]">
+                    <button id="undo-button" type="button" on-tap="_undoTapped" class\$="[[_computeUndoRedoClass(canGoBack)]]">
+                        <iron-icon icon="kc-ui:undo"></iron-icon>
+                    </button>
+                    <button id="redo-button" type="button" on-tap="_redoTapped" class\$="[[_computeUndoRedoClass(canGoForward)]]">
+                        <iron-icon icon="kc-ui:redo"></iron-icon>
+                    </button>
+                </div>
+            </div>
         </div>
 `,
 

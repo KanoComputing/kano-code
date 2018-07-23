@@ -250,9 +250,9 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
         const metrics = workspace.getMetrics();
         const flyout = workspace.getFlyout_();
         const width = workspace.toolbox_ && !workspace.toolbox_.opened ?
-            metrics.toolboxWidth : flyout.getWidth() + 44;
-        const bannerWidth = (metrics.viewWidth + metrics.toolboxWidth) - width;
-        this.$['banner-container'].style.left = `${width}px`;
+            metrics.toolboxWidth : flyout.getWidth();
+        const bannerWidth = (metrics.viewWidth + metrics.toolboxWidth + 12) - width;
+        this.$['banner-container'].style.left = `${width + 44}px`;
         this.$['banner-container'].style.top = '0px';
         this.$['banner-container'].style.width = `${bannerWidth}px`;
     }
