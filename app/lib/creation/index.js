@@ -13,13 +13,22 @@ export class CreationPlugin extends Plugin {
     }
     onInject() {
         this.creationDialogProvider = new CreationDialogProvider();
-        // Listen to the submit event from the form
-        const submitSubscription = subscribe(this.creationDialogProvider, 'submit', this._onSubmit.bind(this));
-        const dismissSubscription = subscribe(this.creationDialogProvider, 'dismiss', this._onDismiss.bind(this));
         this.creationDialog = this.editor.dialogs.registerDialog(this.creationDialogProvider);
-
+        this.creationDialog.root.style.borderRadius = '5px';
+        this.creationDialog.root.style.overflow = 'hidden';
         // Add to subscriptions
-        this.subscriptions.push(submitSubscription, dismissSubscription);
+        this.subscriptions.push(
+            // Listen to the submit event from the form
+            subscribe(this.creationDialogProvider, 'submit', this._onSubmit.bind(this)),
+            subscribe(this.creationDialogProvider, 'dismiss', this._onDismiss.bind(this)),
+            subscribe(this.creationDialog, 'close', () => this._onClose()),
+        );
+    }
+    _onClose() {
+        if (this.player) {
+            this.player.dispose();
+            this.creationDialogProvider.resetPreviewSlot();
+        }
     }
     _onSubmit(data) {
         const creationBundle = {
@@ -49,10 +58,9 @@ export class CreationPlugin extends Plugin {
         this.creation = this.editor.exportCreation();
         this.creationDialog.open();
         const player = new Player();
-        Player.registerProfile(new this.editor.output.outputProfile.constructor());
+        player.inject(this.creationDialogProvider.getPreviewSlot());
         player.load(this.creation)
             .then(() => {
-                player.inject(this.creationDialogProvider.getPreviewSlot());
                 player.output.setRunningState(true);
                 return this.editor.createCreationPreview(player.output);
             })

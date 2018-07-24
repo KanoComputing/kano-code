@@ -30,6 +30,7 @@ class PongOutputView extends code.OutputViewProvider {
             this.pong.resize();
             this.started = true;
         }
+        this.pong.resize();
         this.pong.reset();
         this.pong.setBackgroundColor(0x000000);
         this.pong.setBallColor(0xffffff);

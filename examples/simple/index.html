@@ -20,10 +20,23 @@
     </head>
     <body>
         <script type="module">
-            import { Editor, EditorProfile } from '../../app/lib/index.js';
+            import { Editor, EditorProfile, WorkspaceViewProvider } from '../../app/lib/index.js';
             import { DrawOutputProfile } from './profile.js';
 
             const editor = new Editor();
+
+            class DrawWorkspaceProvider extends WorkspaceViewProvider {
+                constructor() {
+                    super();
+                    this._root = document.createElement('div');
+                }
+                get root() {
+                    return this._root;
+                }
+                get outputViewRoot() {
+                    return this.root;
+                }
+            }
 
             const DrawToolbox = {
                 type: 'module',
@@ -58,6 +71,9 @@
                 }
                 get outputProfile() {
                     return new DrawOutputProfile();
+                }
+                get workspaceViewProvider() {
+                    return new DrawWorkspaceProvider();
                 }
             }
 

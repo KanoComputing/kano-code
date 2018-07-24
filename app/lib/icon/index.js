@@ -15,8 +15,13 @@ function litteral(strings, ...values) {
 
 export const svg = (strings, ...values) => toTemplate(litteral(strings, ...values));
 
+export const base64 = (strings, ...values) => {
+    const svgString = litteral(strings, ...values);
+    return toSrc(svgString);
+};
+
 export const img = (strings, ...values) => {
     const svgString = litteral(strings, ...values);
     const src = toSrc(svgString);
-    return toTemplate(`<img src="${src}">`);
+    return toTemplate(`<img src="${src}"/>`);
 };

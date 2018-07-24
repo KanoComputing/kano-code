@@ -7,6 +7,9 @@ import '@kano/kwc-style/input.js';
 import { I18nMixin } from '../../i18n/index.js';
 import { BlockAnimation } from '../../../scripts/splash.js';
 
+import { img } from '../../icon/index.js';
+import { success } from '../assets/index.js';
+
 class KCCreationForm extends I18nMixin(PolymerElement) {
     static get is() { return 'kc-creation-form'; }
     static get properties() {
@@ -166,7 +169,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
 
             form textarea {
                 @apply --layout-flex;
-                margin-bottom: 8px;
+                margin-bottom: 32px;
                 resize: none;
             }
 
@@ -177,6 +180,11 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 background: var(--color-chateau);
                 box-shadow: none;
                 width: 100%;
+                font-family: var(--font-body);
+            }
+
+            form textarea:focus {
+                text-transform: none;
             }
 
             form input[type="text"]::-webkit-input-placeholder { text-transform: none; }
@@ -343,10 +351,6 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             .success {
                 @apply --layout-around-justified;
             }
-            .success iron-icon {
-                --iron-icon-width: 62px;
-                --iron-icon-height: 62px;
-            }
             .success .title, .fail .title {
                 font-size: 20px;
                 margin-bottom: 4px;
@@ -385,6 +389,10 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
             .success .instructions {
                 margin: 0px;
+            }
+            .success img {
+                width: 62px;
+                height: 62px;
             }
             label {
                 font-size: 20px;
@@ -458,25 +466,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
         <section class="options">
             <iron-pages id="options-pager" selected="[[_page]]" attr-for-selected="name">
                 <form class="form" name="sharing-form">
-                    <input type="text" id="title_input" value="{{title::change}}" placeholder="Title" autofocus>
-                    <textarea rows="4" cols="40" value="{{description::change}}" placeholder="Description"></textarea>
-                    <hr>
-                    <div class="composed-button" hidden\$="[[!link]]">
-                        <input type="text" id="shareurl" value="[[link]]">
-                        <button on-tap="copyToClipboard" type="button">[[localize('COPY', 'copy')]]</button>
-                    </div>
-                    <hr>
+                    <input type="text" name="title" id="title_input" value="{{title::change}}" placeholder="Title" autofocus>
+                    <textarea name="description" rows="4" cols="40" value="{{description::change}}" placeholder="Description"></textarea>
                     <button type="button" name="button" class="save-button round" on-tap="_shareOnKW" disabled\$="[[recording]]">[[_computeSaveButtonLabel(recording)]]</button>
-                    <div class="generate-url">
-                        <div class="social-share-container" hidden>
-                            <button type="button" class="social" on-tap="_socialShareFacebook">
-                                <iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image>
-                            </button>
-                            <button type="button" class="social" on-tap="_socialShareTwitter">
-                                <iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image>
-                            </button>
-                        </div>
-                    </div>
                 </form>
                 <div id="saving-process" class="saving" name="saving">
                     <div class="blocks" id="gif-creation-blocks"></div>
@@ -490,7 +482,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                     <button on-tap="dismiss" type="button">[[localize('UNFORTUNATE', 'This is unfortunate')]]</button>
                 </div>
                 <div name="success" class="success">
-                    <iron-icon src="/assets/icons/success.svg"></iron-icon>
+                    ${img`${success}`}
                     <div class="instructions">
                         <h2>[[localize('SAVED', 'Saved')]]</h2>
                         <span>[[localize('APP_IS_STORED', 'Your app is safely stored in \\'My Creations\\'.')]]</span>
@@ -502,14 +494,6 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                     </div>
                     <div class="actions">
                         <button class="close round" type="button" on-tap="dismiss">[[localize('CLOSE', 'Close')]]</button>
-                        <div class="social-share-container" hidden="">
-                            <button type="button" class="social" on-tap="_socialShareFacebook">
-                                <iron-image src="/assets/social-icons/facebook.png" sizing="contain"></iron-image>
-                            </button>
-                            <button type="button" class="social" on-tap="_socialShareTwitter">
-                                <iron-image src="/assets/social-icons/twitter.png" sizing="contain"></iron-image>
-                            </button>
-                        </div>
                     </div>
                 </div>
             </iron-pages>

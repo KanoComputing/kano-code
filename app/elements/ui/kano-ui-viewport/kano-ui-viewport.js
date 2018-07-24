@@ -40,19 +40,13 @@ This mode works exactly the same way as the 'scaled' mode, except it stretches
 the content out of proportions to make it fit inside the available space.
 
 */
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
-*/
-import '@polymer/polymer/polymer-legacy.js';
 
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-/* globals Polymer */
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-Polymer({
-  _template: html`
+class KanoUIViewport extends PolymerElement {
+    static get is() { return 'kano-ui-viewport'; }
+    static get template() {
+        return html`
         <style>
             :host {
                 display: block;
@@ -73,137 +67,136 @@ Polymer({
         <div id="view">
             <slot></slot>
         </div>
-`,
+`;
+    }
+    static get properties() {
+        return {
+            viewWidth: {
+                type: Number,
+                value: 0,
+            },
+            viewHeight: {
+                type: Number,
+                value: 0,
+            },
+            mode: {
+                type: String,
+                value: 'responsive',
+            },
+            aspectRatio: {
+                type: String,
+                value: 'auto',
+            },
+            centered: {
+                type: Boolean,
+                value: false,
+            },
+        };
+    }
+    static get observers() {
+        return [
+            'resizeView(mode, viewWidth, viewHeight, aspectRatio, isAttached)',
+        ];
+    }
+    resizeView() {
+        if (!this.viewWidth || !this.viewHeight) {
+            return;
+        }
+        let scale;
+        window.requestAnimationFrame(() => {
+            switch (this.mode) {
+            case 'responsive':
+                this.resize();
+                break;
+            case 'stretched':
+            case 'scaled':
+            case 'zoomed':
+                scale = this.getScale();
+                this.calculateView(this.viewWidth, this.viewHeight, scale);
+                break;
+            default:
+                console.log(`Mode "${this.mode}" not supported.`);
+            }
+        });
+    }
+    resize() {
+        let scale = this.parseAspectRatio(this.aspectRatio);
+        let width = this.viewWidth;
+        let height = this.viewHeight;
 
-  is: 'kano-ui-viewport',
+        if (scale >= 1) {
+            width = this.offsetWidth;
+            height = this.offsetWidth * (1 / scale);
+        } else {
+            width = this.offsetHeight * scale;
+            height = this.offsetHeight;
+        }
 
-  properties: {
-      viewWidth: {
-          type: Number,
-          value: 0
-      },
-      viewHeight: {
-          type: Number,
-          value: 0
-      },
-      mode: {
-          type: String,
-          value: 'responsive'
-      },
-      aspectRatio: {
-          type: String,
-          value: 'auto'
-      },
-      centered: {
-          type: Boolean,
-          value: false
-      }
-  },
+        const s = this.getScale();
+        scale = Math.min(s.x, s.y);
 
-  observers: [
-      'resizeView(mode, viewWidth, viewHeight, aspectRatio, isAttached)'
-  ],
+        height *= scale;
+        width *= scale;
 
-  resizeView () {
-      if (!this.viewWidth || !this.viewHeight) {
-          return;
-      }
-      window.requestAnimationFrame(() => {
-          switch (this.mode) {
-              case "responsive":
-                  this.resize();
-                  break;
-              case "stretched":
-              case "scaled":
-              case "zoomed":
-                  let scale = this.getScale();
-                  this.calculateView(this.viewWidth, this.viewHeight, scale);
-                  break;
-              default:
-                  console.log('Mode "' + this.mode + '" not supported.');
-          }
-      });
-  },
+        /* Resize the view without scaling it */
+        this.calculateView(width, height);
+    }
+    getScale() {
+        const xScale = this.offsetWidth / this.viewWidth;
+        const yScale = this.offsetHeight / this.viewHeight;
+        let s;
+        switch (this.mode) {
+        case 'responsive':
+        case 'stretched':
+            return { x: xScale, y: yScale };
+        case 'scaled':
+            s = Math.min(xScale, yScale);
+            return { x: s, y: s };
+        case 'zoomed':
+            s = Math.max(xScale, yScale);
+            return { x: s, y: s };
+        default:
+            console.log(`Mode "${this.mode}" not supported.`);
+            return { x: 1, y: 1 };
+        }
+    }
+    calculateView(width, height, scale) {
+        scale = scale || {
+            x: 1,
+            y: 1,
+        };
+        const { style } = this.$.view;
+        const realViewHeight = this.viewHeight * scale.y;
 
-  resize () {
-      let scale = this.parseAspectRatio(this.aspectRatio),
-          width = this.viewWidth,
-          height = this.viewHeight;
+        /* Set the boundaries */
+        style.width = `${width}px`;
+        style.height = `${height}px`;
 
-      if (scale >= 1) {
-          width = this.offsetWidth;
-          height = this.offsetWidth * (1 / scale);
-      } else {
-          width = this.offsetHeight * scale;
-          height = this.offsetHeight;
-      }
+        /* Align the view to top center */
+        style.left = `${(this.offsetWidth - (width * scale.x)) / 2}px`;
 
-      var s = this.getScale();
-      scale = Math.min(s.x, s.y);
+        /* Transform the element to the appropriate scale */
+        style.transform = `scale(${scale.x}, ${scale.y})`;
 
-      height = height * scale;
-      width = width * scale;
+        if (this.centered && this.offsetHeight > realViewHeight) {
+            style.top = `${(this.offsetHeight - realViewHeight) / 2}px`;
+        } else {
+            style.top = null;
+        }
 
-      /* Resize the view without scaling it */
-      this.calculateView(width, height);
-  },
+        this.dispatchEvent(new CustomEvent('viewport-resize', {
+            detail: this.$.view.getBoundingClientRect(),
+            bubbles: true,
+            composed: true,
+        }));
+    }
+    parseAspectRatio(aspect) {
+        if (aspect === 'auto') {
+            return this.viewHeight / this.viewWidth;
+        }
+        const numbers = aspect.split(':');
+        return parseInt(numbers[0], 10) / parseInt(numbers[1], 10);
+    }
+}
 
-  getScale () {
-      var xScale = this.offsetWidth / this.viewWidth,
-          yScale = this.offsetHeight / this.viewHeight,
-          s;
-      switch (this.mode) {
-          case "responsive":
-          case "stretched":
-              return {x: xScale, y: yScale};
-              break;
-          case "scaled":
-              s = Math.min(xScale, yScale);
-              return {x: s, y: s};
-              break;
-          case "zoomed":
-              s = Math.max(xScale, yScale);
-              return {x: s, y: s};
-              break;
-          default:
-              console.log('Mode "' + this.mode + '" not supported.');
-              return {x: 1, y: 1};
-      }
-  },
-
-  calculateView (width, height, scale) {
-      scale = scale || {
-          x: 1,
-          y: 1
-      };
-      let style = this.$.view.style,
-          realViewHeight = this.viewHeight * scale.y;
-
-      /* Set the boundaries */
-      style.width = width + 'px';
-      style.height = height + 'px';
-
-      /* Align the view to top center */
-      style.left = (this.offsetWidth - width * scale.x) / 2 + 'px';
-
-      /* Transform the element to the appropriate scale */
-      style.transform = 'scale(' + scale.x + ', ' + scale.y + ')';
-
-      if (this.centered && this.offsetHeight > realViewHeight) {
-          style.top = `${(this.offsetHeight - realViewHeight) / 2}px`;
-      } else {
-          style.top = null;
-      }
-
-      this.fire('viewport-resize', this.$.view.getBoundingClientRect());
-  },
-
-  parseAspectRatio (aspect) {
-      if (aspect === 'auto') {
-          return this.viewHeight / this.viewWidth;
-      } else {
-          const numbers = aspect.split(':');
-          return parseInt(numbers[0]) / parseInt(numbers[1]);
-      }
-  }
-});
+customElements.define(KanoUIViewport.is, KanoUIViewport);

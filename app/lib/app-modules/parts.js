@@ -37,9 +37,6 @@ class PartsModule extends AppModule {
                 this._parts[deviceName][name]();
             }
         });
-        if (typeof this.output.outputView[name] === 'function') {
-            this.output.outputView[name]();
-        }
     }
 
     _start() {

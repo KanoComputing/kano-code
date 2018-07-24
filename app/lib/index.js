@@ -23,6 +23,8 @@ import {
 } from './creation/creation-preview-provider.js';
 import { CreationStorageProvider } from './creation/creation-storage-provider.js';
 
+import { Subscriptions } from './util/subscription.js';
+
 import * as Icon from './icon/index.js';
 
 export {
@@ -47,4 +49,5 @@ export {
     CreationStorageProvider,
     CreationAnimationPreviewProvider,
     Icon,
+    Subscriptions,
 };
