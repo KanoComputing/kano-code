@@ -218,47 +218,6 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                 return [`'${sample}'`];
             },
         }, {
-        //     block: (part) => {
-        //         let samples = samplesDir,
-        //             id = 'speaker_sample_picker';
-        //         Blockly.Blocks[`${part.id}#${id}`] = {
-        //             init() {
-        //                 const defaultCat = samples.children[0];
-
-        //                 const setDropdown = new FieldAssetPicker(Blockly.Msg.BLOCK_SPEAKER_PICKER_HEADING, 'samples', samples, { path: `${samples.name}/${defaultCat.name}`, item: defaultCat.children[0] }, root);
-
-        //                 this.setColour(part.colour);
-
-        //                 this.appendDummyInput()
-        //                     .appendField(setDropdown, 'SAMPLE');
-
-        //                 this.setOutput('Sample');
-
-        //                 this.setInputsInline(true);
-        //             },
-        //             domToMutation(xmlElement) {
-        //                 const field = this.getField('SAMPLE');
-        //                 field.load(xmlElement);
-        //             },
-        //             mutationToDom() {
-        //                 const container = document.createElement('mutation');
-        //                 const field = this.getField('SAMPLE');
-        //                 field.save(container);
-        //                 return container;
-        //             },
-        //         };
-        //         return {
-        //             id,
-        //             colour: COLOUR,
-        //             doNotRegister: true,
-        //         };
-        //     },
-        //     javascript: () => (block) => {
-        //         const field = block.getField('SAMPLE');
-        //         const value = field.getExtendedValue();
-        //         return [`'${value ? value.item.filename : 'amen'}'`];
-        //     },
-        // }, {
             block: part => ({
                 id: 'speaker_playback_rate',
                 message0: `${part.name}: ${Blockly.Msg.BLOCK_SPEAKER_PLAYBACK_RATE}`,

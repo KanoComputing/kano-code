@@ -74,14 +74,12 @@ class KanoCodeChallenge extends BlocklyChallenge {
         }
     }
     matchTrigger(validation, event) {
-        let {
-            emitter
-        } = validation;
+        let { emitter } = validation;
         if (emitter.part) {
             emitter = this.getFromStore(PARTS_STORE, emitter.part);
         }
         return emitter === event.trigger.emitter &&
-            validation.event === event.trigger.event;
+                validation.event === event.trigger.event;
     }
     matchPartChange(validation, event) {
         return this.matchProperty(validation, event);
@@ -226,9 +224,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
                 text: data.bannerCopy || `Change this value to ${data.value}`,
             },
             beacon: {
-                target: {
-                    block: data.block
-                },
+                target: { block: data.block },
             },
         });
         return step;

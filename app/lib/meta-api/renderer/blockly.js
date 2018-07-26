@@ -64,22 +64,18 @@ class BlocklyMetaRenderer {
     }
     static render(m) {
         switch (m.def.type) {
-            case 'module':
-                {
-                    return BlocklyMetaRenderer.renderModule(m);
-                }
-            case 'variable':
-                {
-                    return BlocklyMetaRenderer.renderVariable(m);
-                }
-            case 'function':
-                {
-                    return BlocklyMetaRenderer.renderFunction(m);
-                }
-            default:
-                {
-                    break;
-                }
+        case 'module': {
+            return BlocklyMetaRenderer.renderModule(m);
+        }
+        case 'variable': {
+            return BlocklyMetaRenderer.renderVariable(m);
+        }
+        case 'function': {
+            return BlocklyMetaRenderer.renderFunction(m);
+        }
+        default: {
+            break;
+        }
         }
         return null;
     }
@@ -107,11 +103,7 @@ class BlocklyMetaRenderer {
             Blockly.JavaScript[json.id] = () => [m.getNameChain('.')];
         };
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
-        return {
-            register,
-            id: json.id,
-            toolbox
-        };
+        return { register, id: json.id, toolbox };
     }
     static renderFunction(m) {
         let json = BlocklyMetaRenderer.renderBaseBlock(m);
@@ -143,9 +135,7 @@ class BlocklyMetaRenderer {
             argsMap[index] = input.name;
             const args = [input];
             if (input.type === 'input_statement') {
-                args.unshift({
-                    type: 'input_dummy'
-                });
+                args.unshift({ type: 'input_dummy' });
             }
             acc[`args${index}`] = args;
             return acc;
@@ -157,10 +147,7 @@ class BlocklyMetaRenderer {
         const defaults = params.filter(p => typeof p.def.default !== 'undefined').reduce((acc, p) => {
             const pName = p.def.name.toUpperCase();
             if (p.def.blockly && p.def.blockly.shadow) {
-                acc[pName] = {
-                    shadow: p.def.blockly.shadow(p.def.default),
-                    default: p.def.default
-                };
+                acc[pName] = { shadow: p.def.blockly.shadow(p.def.default), default: p.def.default };
             } else {
                 acc[pName] = p.def.default;
             }
@@ -202,27 +189,24 @@ class BlocklyMetaRenderer {
                             }
                         } else {
                             switch (input.type) {
-                                case Blockly.INPUT_VALUE:
-                                    {
-                                        value = Blockly.JavaScript.valueToCode(block, argName);
-                                        if (!value) {
-                                            value = typeof params[index].def.default === 'undefined' ? 'null' : params[index].def.default;
-                                        }
-                                        break;
-                                    }
-                                case Blockly.NEXT_STATEMENT:
-                                    {
-                                        let statement = Blockly.JavaScript.statementToCode(block, argName);
-                                        if (!statement) {
-                                            statement = typeof params[index].def.default === 'undefined' ? '' : params[index].def.default;
-                                        }
-                                        value = `function() {\n${statement}\n}`;
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        return 'null';
-                                    }
+                            case Blockly.INPUT_VALUE: {
+                                value = Blockly.JavaScript.valueToCode(block, argName);
+                                if (!value) {
+                                    value = typeof params[index].def.default === 'undefined' ? 'null' : params[index].def.default;
+                                }
+                                break;
+                            }
+                            case Blockly.NEXT_STATEMENT: {
+                                let statement = Blockly.JavaScript.statementToCode(block, argName);
+                                if (!statement) {
+                                    statement = typeof params[index].def.default === 'undefined' ? '' : params[index].def.default;
+                                }
+                                value = `function() {\n${statement}\n}`;
+                                break;
+                            }
+                            default: {
+                                return 'null';
+                            }
                             }
                         }
                         return value;
@@ -238,12 +222,7 @@ class BlocklyMetaRenderer {
             });
         };
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
-        return {
-            register,
-            id: json.id,
-            defaults,
-            toolbox
-        };
+        return { register, id: json.id, defaults, toolbox };
     }
     static renderBaseBlock(m) {
         const id = m.getNameChain();
@@ -261,63 +240,56 @@ class BlocklyMetaRenderer {
             };
         }
         switch (type) {
-            case Function:
-                {
+        case Function: {
+            return {
+                type: 'input_statement',
+            };
+        }
+        case 'Enum': {
+            return {
+                type: 'field_dropdown',
+                options: param.def.enum || [],
+            };
+        }
+        case Number:
+        case String:
+        default: {
+            if (param.def.blockly && param.def.blockly.field) {
+                switch (type) {
+                case Number:
                     return {
-                        type: 'input_statement',
+                        type: 'field_number',
+                        value: param.def.default,
+                    };
+                case String:
+                default:
+                    return {
+                        type: 'field_input',
+                        text: param.def.default,
                     };
                 }
-            case 'Enum':
-                {
-                    return {
-                        type: 'field_dropdown',
-                        options: param.def.enum || [],
-                    };
-                }
-            case Number:
-            case String:
-            default:
-                {
-                    if (param.def.blockly && param.def.blockly.field) {
-                        switch (type) {
-                            case Number:
-                                return {
-                                    type: 'field_number',
-                                    value: param.def.default,
-                                };
-                            case String:
-                            default:
-                                return {
-                                    type: 'field_input',
-                                    text: param.def.default,
-                                };
-                        }
-                    }
-                    return {
-                        type: 'input_value',
-                        check: BlocklyMetaRenderer.parseType(type),
-                    };
-                }
+            }
+            return {
+                type: 'input_value',
+                check: BlocklyMetaRenderer.parseType(type),
+            };
+        }
         }
     }
     static parseType(type) {
         switch (type) {
-            case Number:
-                {
-                    return 'Number';
-                }
-            case String:
-                {
-                    return 'String';
-                }
-            case 'Color':
-                {
-                    return 'Colour';
-                }
-            default:
-                {
-                    return type;
-                }
+        case Number: {
+            return 'Number';
+        }
+        case String: {
+            return 'String';
+        }
+        case 'Color': {
+            return 'Colour';
+        }
+        default: {
+            return type;
+        }
         }
     }
 }

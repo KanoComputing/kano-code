@@ -1,12 +1,6 @@
-import {
-    Plugin
-} from '../../editor/plugin.js';
-import {
-    GeneratorAPIProvider
-} from './api.js';
-import {
-    labelMap
-} from '../../parts/parts/speaker/factory.js'
+import { Plugin } from '../../editor/plugin.js';
+import { GeneratorAPIProvider } from './api.js';
+import { labelMap } from '../../parts/parts/speaker/factory.js'
 
 const GENERATOR_BLOCKS = [
     'generator_banner',
@@ -14,9 +8,7 @@ const GENERATOR_BLOCKS = [
 ];
 
 const DEFAULT_COPY = {
-    openFlyout(label = 'this') {
-        return `Open ${label} tray`;
-    },
+    openFlyout(label = 'this') { return `Open ${label} tray`; },
     grabBlock: 'Drag the block onto your code space',
     connect: 'Connect to this block',
     drop: 'Drop this block anywhere in your code space',
@@ -48,12 +40,8 @@ class Challenge extends Plugin {
     }
     onInstall(editor) {
         this.editor = editor;
-        const {
-            toolbox
-        } = this.editor;
-        const {
-            renderer
-        } = toolbox;
+        const { toolbox } = this.editor;
+        const { renderer } = toolbox;
         this.defaults = renderer.defaults;
     }
     reloadState() {
@@ -74,10 +62,7 @@ class Challenge extends Plugin {
     }
     onInject() {
         this.reloadState();
-        const {
-            workspaceView,
-            plugins
-        } = this.editor;
+        const { workspaceView, plugins } = this.editor;
         // Add middleware declared by the WorkspaceViewProvider
         if (typeof workspaceView.challengeGeneratorMiddleware === 'function') {
             this.addMiddleware(workspaceView.challengeGeneratorMiddleware);
@@ -92,9 +77,7 @@ class Challenge extends Plugin {
         this.setupUI();
     }
     setupUI() {
-        const {
-            workspaceToolbar
-        } = this.editor;
+        const { workspaceToolbar } = this.editor;
         let toolboxItem;
         const GeneratorAPI = GeneratorAPIProvider(this.editor);
         GeneratorAPI.toolbox = this.creator;
@@ -120,12 +103,8 @@ class Challenge extends Plugin {
             this.addGeneratorItem();
         }
         if (this.editor.sourceType === 'blockly') {
-            const {
-                sourceEditor
-            } = this.editor;
-            const {
-                workspace
-            } = sourceEditor;
+            const { sourceEditor } = this.editor;
+            const { workspace } = sourceEditor;
             workspace.addChangeListener((event) => {
                 if (!this.creator) {
                     return;
@@ -135,13 +114,8 @@ class Challenge extends Plugin {
         }
     }
     populateComment(event) {
-        const {
-            sourceEditor
-        } = this.editor;
-        const {
-            workspace,
-            Blockly
-        } = sourceEditor;
+        const { sourceEditor } = this.editor;
+        const { workspace, Blockly } = sourceEditor;
         if (event.type !== Blockly.Events.UI) {
             return;
         }
@@ -149,9 +123,7 @@ class Challenge extends Plugin {
             return;
         }
         const block = workspace.getBlockById(event.blockId);
-        const {
-            comment
-        } = block;
+        const { comment } = block;
         if (!comment) {
             return;
         }
@@ -224,18 +196,10 @@ class Challenge extends Plugin {
         if (this.editor.sourceType !== 'blockly') {
             return {};
         }
-        const {
-            sourceEditor
-        } = this.editor;
-        const {
-            Blockly
-        } = sourceEditor;
+        const { sourceEditor } = this.editor;
+        const { Blockly } = sourceEditor;
         const app = this.editor.save();
-        const {
-            source,
-            parts,
-            mode
-        } = app;
+        const { source, parts, mode } = app;
         const xml = Blockly.Xml.textToDom(source);
         this.data.mode = mode;
         this.fieldDefaults = {};
@@ -374,18 +338,15 @@ class Challenge extends Plugin {
     static generatorBlockToSteps(node) {
         const type = node.getAttribute('type');
         switch (type) {
-            case 'generator_banner':
-                {
-                    return Challenge.generatorBannerToSteps(node);
-                }
-            case 'generator_step':
-                {
-                    return Challenge.generatorStepToSteps(node);
-                }
-            default:
-                {
-                    return [];
-                }
+        case 'generator_banner': {
+            return Challenge.generatorBannerToSteps(node);
+        }
+        case 'generator_step': {
+            return Challenge.generatorStepToSteps(node);
+        }
+        default: {
+            return [];
+        }
         }
     }
     static generatorBannerToSteps(node) {
@@ -421,32 +382,26 @@ class Challenge extends Plugin {
         // FIXME: Hard coded translation for normal mode. This will disapera once modes are not a
         // thing anymore and the block names will be matching in the toolbox entries
         switch (categoryId) {
-            case 'normal':
-                {
-                    return 'Draw';
+        case 'normal': {
+            return 'Draw';
+        }
+        default: {
+            const { entries } = this.editor.toolbox;
+            for (let i = 0; i < entries.length; i += 1) {
+                const id = entries[i].type === 'blockly' ? entries[i].id : entries[i].name;
+                if (id === categoryId) {
+                    const name = entries[i].type === 'blockly' ? entries[i].category.name : entries[i].verbose;
+                    return name;
                 }
-            default:
-                {
-                    const {
-                        entries
-                    } = this.editor.toolbox;
-                    for (let i = 0; i < entries.length; i += 1) {
-                        const id = entries[i].type === 'blockly' ? entries[i].id : entries[i].name;
-                        if (id === categoryId) {
-                            const name = entries[i].type === 'blockly' ? entries[i].category.name : entries[i].verbose;
-                            return name;
-                        }
-                    }
-                    const {
-                        addedParts
-                    } = this.editor;
-                    for (let i = 0; i < addedParts.length; i += 1) {
-                        if (addedParts[i].id === categoryId) {
-                            return addedParts[i].label;
-                        }
-                    }
-                    return categoryId;
+            }
+            const { addedParts } = this.editor;
+            for (let i = 0; i < addedParts.length; i += 1) {
+                if (addedParts[i].id === categoryId) {
+                    return addedParts[i].label;
                 }
+            }
+            return categoryId;
+        }
         }
     }
     /**
@@ -534,9 +489,7 @@ class Challenge extends Plugin {
                 bannerCopy = bannerCopy.replace(/\$fieldPreview/g, fieldPreview);
                 bannerCopy = bannerCopy.replace(/\$currentFieldPreview/g, currentFieldPreview);
                 // Add a `change value` step to get the right value
-                const uiLocation = Object.assign({
-                    inputName: fieldName
-                }, selector);
+                const uiLocation = Object.assign({ inputName: fieldName }, selector);
                 const step = {
                     type: 'change-input',
                     block: uiLocation,
@@ -545,8 +498,8 @@ class Challenge extends Plugin {
                 const ignoreInputs = typeof commentData.ignoreInputs === 'undefined' ? [] : commentData.ignoreInputs;
                 // Ignore Inputs set to true will ignore all inputs.
                 // Otherwise use the array to check which inputs to ignore
-                if ((Array.isArray(ignoreInputs) && ignoreInputs.indexOf(fieldName) === -1) ||
-                    (!Array.isArray(ignoreInputs) && ignoreInputs !== true)) {
+                if ((Array.isArray(ignoreInputs) && ignoreInputs.indexOf(fieldName) === -1)
+                    || (!Array.isArray(ignoreInputs) && ignoreInputs !== true)) {
                     // Matches a hex color value. By default any change of value for a color will be ignored
                     if (!/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(node.firstChild.nodeValue)) {
                         step.value = node.firstChild.nodeValue;
@@ -559,7 +512,7 @@ class Challenge extends Plugin {
     }
     normaliseType(value) {
         value = !isNaN(value) ? parseInt(value) : value;
-        switch (typeof value) {
+        switch(typeof value) {
             case 'string':
                 return value.toLowerCase();
             case 'number':
@@ -718,39 +671,33 @@ class Challenge extends Plugin {
         let i;
 
         switch (node.tagName) {
-            case 'field':
-                {
-                    steps = steps.concat(this.fieldToSteps(node));
-                    break;
-                }
-            case 'next':
-            case 'value':
-                {
-                    steps = steps.concat(this.valueToSteps(node));
-                    break;
-                }
-            case 'statement':
-                {
-                    steps = steps.concat(this.nodeToSteps(node.firstChild));
-                    break;
-                }
-            case 'shadow':
-                {
-                    for (i = 0; i < node.children.length; i += 1) {
-                        child = node.children[i];
-                        steps = steps.concat(this.nodeToSteps(child));
-                    }
-                    break;
-                }
-            case 'block':
-                {
-                    steps = steps.concat(this.blockToSteps(node));
-                    break;
-                }
-            default:
-                {
-                    break;
-                }
+        case 'field': {
+            steps = steps.concat(this.fieldToSteps(node));
+            break;
+        }
+        case 'next':
+        case 'value': {
+            steps = steps.concat(this.valueToSteps(node));
+            break;
+        }
+        case 'statement': {
+            steps = steps.concat(this.nodeToSteps(node.firstChild));
+            break;
+        }
+        case 'shadow': {
+            for (i = 0; i < node.children.length; i += 1) {
+                child = node.children[i];
+                steps = steps.concat(this.nodeToSteps(child));
+            }
+            break;
+        }
+        case 'block': {
+            steps = steps.concat(this.blockToSteps(node));
+            break;
+        }
+        default: {
+            break;
+        }
         }
         return steps;
     }
@@ -777,7 +724,5 @@ class Challenge extends Plugin {
         return challenge;
     }
 }
-export {
-    Challenge
-};
+export { Challenge };
 export default Challenge;
