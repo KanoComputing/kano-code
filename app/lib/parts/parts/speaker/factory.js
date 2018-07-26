@@ -284,9 +284,9 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
 
 export const labelMap = new Map();
 
-const original = Blockly.FieldDropdown;
+const OriginalFieldDropdown = Blockly.FieldDropdown;
 
-Blockly.FieldDropdown = class f extends original {
+Blockly.FieldDropdown = class FieldDropdownLabels extends OriginalFieldDropdown {
     constructor(options, ...args) {
         super(options, ...args);
         options.forEach((opt) => {
