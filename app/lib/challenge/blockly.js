@@ -167,7 +167,7 @@ class BlocklyChallenge extends Challenge {
         };
     }
     getBlockType(validation) {
-        let target = validation.target ? this.getFromStore('blocks', validation.target) : validation.rawTarget,
+        let target = validation.type && validation.type.part ? this.getFromStore('parts', validation.type.part) : validation.rawTarget,
             type;
         // Use the type or the value directly
         // Allows to declare shorthand creation as:
@@ -176,13 +176,16 @@ class BlocklyChallenge extends Challenge {
         // create: {
         //     type: 'text'
         // }
-        if (typeof validation === 'string') {
-            type = validation;
-        } else if (validation.type) {
-            type = validation.type;
-            type = target ? `${target}#${type}` : type;
-        }
+
+        type = this.getTypeString(validation);
+        type = target ? `${target}#${type}` : type;
         return type;
+    }
+    getTypeString(validation) {
+        if (typeof validation === 'string') {
+            return validation;
+        }
+        return this.getTypeString(validation.type);
     }
     getTargetBlock(selector) {
         let block;
@@ -299,7 +302,9 @@ class BlocklyChallenge extends Challenge {
         // We use the double equal to be sure we catch Number/String
         // parsing
         if (validation.value) {
-            let { value } = validation;
+            let {
+                value
+            } = validation;
             if (value.event_from) {
                 value = `${this.stepIds[value.event_from]}.${value.event}`;
             }

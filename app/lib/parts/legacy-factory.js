@@ -5,8 +5,12 @@ export const LegacyFactory = (part) => {
         hardware: 103,
     };
     return class {
-        static get type() { return 'blockly'; }
-        static get id() { return part.id; }
+        static get type() {
+            return 'blockly';
+        }
+        static get id() {
+            return part.id;
+        }
         static register(Blockly) {
             const definitions = [];
             part.blocks.forEach((definition) => {
@@ -59,6 +63,9 @@ export const LegacyFactory = (part) => {
                 blocks: categoryBlocks,
                 order: weight[part.partType],
             };
+        }
+        static get defaults() {
+            return part.defaults;
         }
     };
 };

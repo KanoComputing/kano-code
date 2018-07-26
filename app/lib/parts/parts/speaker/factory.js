@@ -19,6 +19,26 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             assetsRoot: root,
             samples,
         },
+        defaults: {
+            speaker_sample: {
+                SET: 'Wand',
+                SAMPLE: {
+                    id: 'wand/crack.wav',
+                    label: 'Crack',
+                }
+            },
+            say: {
+                TEXT: 'empty',
+                RATE: 100,
+                LANGUAGE: {
+                    id: 'en-GB',
+                    label: 'British English',
+                },
+            },
+            random_from_set: {
+                SET: 'any',
+            },
+        },
         blocks: [{
             block: part => ({
                 id: 'say',
@@ -158,7 +178,6 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                     createInputs_(option) {
                         let options,
                             dropdown;
-
                         /* In case the sample pack doesn't exist, do a case-insensitive match
                             against all keys in the object. We need to do that because old shares
                             and exported apps all have been saved with the ids in lowercase. */
@@ -172,6 +191,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
 
                         options = Object.keys(samples[option]).map(key => [samples[option][key], key]),
                         dropdown = new Blockly.FieldDropdown(options);
+                        const texts = dropdown.getText();
 
                         this.appendDummyInput('SAMPLE')
                             .appendField(dropdown, 'SAMPLE');
@@ -198,47 +218,47 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                 return [`'${sample}'`];
             },
         }, {
-            block: (part) => {
-                let samples = samplesDir,
-                    id = 'speaker_sample_picker';
-                Blockly.Blocks[`${part.id}#${id}`] = {
-                    init() {
-                        const defaultCat = samples.children[0];
+        //     block: (part) => {
+        //         let samples = samplesDir,
+        //             id = 'speaker_sample_picker';
+        //         Blockly.Blocks[`${part.id}#${id}`] = {
+        //             init() {
+        //                 const defaultCat = samples.children[0];
 
-                        const setDropdown = new FieldAssetPicker(Blockly.Msg.BLOCK_SPEAKER_PICKER_HEADING, 'samples', samples, { path: `${samples.name}/${defaultCat.name}`, item: defaultCat.children[0] }, root);
+        //                 const setDropdown = new FieldAssetPicker(Blockly.Msg.BLOCK_SPEAKER_PICKER_HEADING, 'samples', samples, { path: `${samples.name}/${defaultCat.name}`, item: defaultCat.children[0] }, root);
 
-                        this.setColour(part.colour);
+        //                 this.setColour(part.colour);
 
-                        this.appendDummyInput()
-                            .appendField(setDropdown, 'SAMPLE');
+        //                 this.appendDummyInput()
+        //                     .appendField(setDropdown, 'SAMPLE');
 
-                        this.setOutput('Sample');
+        //                 this.setOutput('Sample');
 
-                        this.setInputsInline(true);
-                    },
-                    domToMutation(xmlElement) {
-                        const field = this.getField('SAMPLE');
-                        field.load(xmlElement);
-                    },
-                    mutationToDom() {
-                        const container = document.createElement('mutation');
-                        const field = this.getField('SAMPLE');
-                        field.save(container);
-                        return container;
-                    },
-                };
-                return {
-                    id,
-                    colour: COLOUR,
-                    doNotRegister: true,
-                };
-            },
-            javascript: () => (block) => {
-                const field = block.getField('SAMPLE');
-                const value = field.getExtendedValue();
-                return [`'${value ? value.item.filename : 'amen'}'`];
-            },
-        }, {
+        //                 this.setInputsInline(true);
+        //             },
+        //             domToMutation(xmlElement) {
+        //                 const field = this.getField('SAMPLE');
+        //                 field.load(xmlElement);
+        //             },
+        //             mutationToDom() {
+        //                 const container = document.createElement('mutation');
+        //                 const field = this.getField('SAMPLE');
+        //                 field.save(container);
+        //                 return container;
+        //             },
+        //         };
+        //         return {
+        //             id,
+        //             colour: COLOUR,
+        //             doNotRegister: true,
+        //         };
+        //     },
+        //     javascript: () => (block) => {
+        //         const field = block.getField('SAMPLE');
+        //         const value = field.getExtendedValue();
+        //         return [`'${value ? value.item.filename : 'amen'}'`];
+        //     },
+        // }, {
             block: part => ({
                 id: 'speaker_playback_rate',
                 message0: `${part.name}: ${Blockly.Msg.BLOCK_SPEAKER_PLAYBACK_RATE}`,
@@ -303,4 +323,18 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
     return speaker;
 };
 
+export const labelMap = new Map();
+
+const original = Blockly.FieldDropdown;
+
+Blockly.FieldDropdown = class f extends original {
+    constructor(options, ...args) {
+        super(options, ...args);
+        options.forEach((opt) => {
+            labelMap.set(opt[1], opt[0]);
+        });
+    }
+}
 export default SpeakerFactory;
+
+

@@ -28,7 +28,10 @@ class Part {
         this.label = opts.label;
         this.name = this.name || this.label;
         this.description = opts.description;
-        opts.position = opts.position || { x: 0, y: 0 };
+        opts.position = opts.position || {
+            x: 0,
+            y: 0
+        };
         this.position = {
             x: opts.position.x || 0,
             y: opts.position.y || 0,
@@ -37,6 +40,7 @@ class Part {
         this.image = opts.image;
         this.restrict = opts.restrict;
         this.colour = opts.colour;
+        this.defaults = opts.defaults || {};
         this.blocks = Array.isArray(opts.blocks) ? opts.blocks.slice(0) : [];
         this.legacyBlocks = Array.isArray(opts.legacyBlocks) ? opts.legacyBlocks.slice(0) : [];
         this.events = Array.isArray(opts.events) ? opts.events.slice(0) : [];
@@ -44,8 +48,8 @@ class Part {
         this.codes = {};
         this.userStyle = Object.assign({}, opts.userStyle);
         this.userProperties = Object.assign({}, opts.userProperties);
-        this.nonvolatileProperties = Array.isArray(opts.nonvolatileProperties)
-            ? opts.nonvolatileProperties : [];
+        this.nonvolatileProperties = Array.isArray(opts.nonvolatileProperties) ?
+            opts.nonvolatileProperties : [];
         this.removable = typeof opts.removable === 'undefined' ? true : opts.removable;
         this.supportedHardware = opts.supportedHardware || [];
         this.fullscreenEdit = opts.fullscreenEdit || false;

@@ -70,6 +70,9 @@ const BlocklyLogic = {
         logic_boolean: {
             BOOL: 'TRUE',
         },
+        logic_operation: {
+            OP: 'and'
+        }
     },
 };
 
