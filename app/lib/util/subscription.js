@@ -9,7 +9,7 @@ export const subscribe = (target, name, callback) => {
         if (isDom) {
             target.removeEventListener(name, callback);
         } else {
-            target.removeListsner(name, callback);
+            target.removeListener(name, callback);
         }
     };
     return { dispose };
