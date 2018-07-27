@@ -31,6 +31,7 @@ import { PartsOutputPlugin } from '../../lib/parts/index.js';
 
 import { AllModules } from '../../lib/app-modules/all.js';
 import { BackgroundOutputPlugin } from '../background/index.js';
+import DrawModuleFactory from '../../lib/app-modules/draw.js';
 
 const PartTypes = [UI, Data, Hardware];
 const Parts = [
@@ -56,18 +57,7 @@ const Parts = [
     Weather,
 ];
 
-class DrawModule extends code.AppModule {
-    constructor(...args) {
-        super(...args);
-        this.addLifecycleStep('start', '_start');
-    }
-    _start() {
-        this.methods = this.output.outputView.api;
-    }
-    static get name() {
-        return 'ctx';
-    }
-}
+const DrawModule = DrawModuleFactory(this.provider);
 
 export class DrawOutputProfile extends code.OutputProfile {
     constructor() {

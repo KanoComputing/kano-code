@@ -13,6 +13,7 @@ import PartsModule from './parts.js';
 import TiltModule from './tilt.js';
 import MotionModule from './motion.js';
 import TimeModule from './time.js';
+import DrawModule from './draw.js';
 
 export const AllModules = [
     AssetsModule,
@@ -30,4 +31,5 @@ export const AllModules = [
     TiltModule,
     MotionModule,
     TimeModule,
+    DrawModule,
 ];

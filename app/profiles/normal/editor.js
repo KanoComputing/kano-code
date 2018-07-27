@@ -169,3 +169,5 @@ export class DrawEditorProfile extends code.EditorProfile {
 }
 
 export default DrawEditorProfile;
+
+export { DrawToolbox };
