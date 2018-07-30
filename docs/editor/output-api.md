@@ -57,15 +57,29 @@ class CustomModule extends code.AppModule {
     constructor(...args) {
         super(...args);
 
+        // Add a method from the class itself
         this.addMethod('square', '_square');
+        // Add a function as a method
+        this.addMethod('square', () => {});
+        // Add a module
+        const mod = this.addModule('shape');
+        mod.addMethod('square', '_square');
+        // Add a nested module
+        const subMod = mod.addModule('complex');
+        subMod.addMethod('polygon', '_polygon');
+        // Add lifecycle steps
         this.addLifecycleStep('start', 'onStart');
         this.addLifecycleStep('stop', 'onStop');
+        this.addLifecycleStep('afterRun', 'afterRun');
     }
     onStart() {
         // Called each time the user code starts
     }
     onStop() {
         // Called each time the user code stops
+    }
+    afterRun() {
+        // Called just after the user code did run
     }
     getSymbols() {
         return ['square'];

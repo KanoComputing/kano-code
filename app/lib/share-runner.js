@@ -15,7 +15,6 @@ class ShareRunner {
         this.config.hardwareAPI = this.hardware;
 
         this.appModules = new AppModules(this.config);
-        this.appModules.loadParts(this.parts);
     }
     start() {
         this.appModules.start();

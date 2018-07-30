@@ -14,10 +14,12 @@
         <script type="module">
             import { loadTests } from './run.js';
 
-            loadTests([
-                './editor/editor.test.js',
-                './editor/activity-bar.test.js',
-            ]);
+            loadTests({
+                editor: './editor/editor.test.js',
+                'activity-bar': './editor/activity-bar.test.js',
+                'app-modules': './runner/app-module.test.js',
+                instrumentation: './runner/instrumentation.test.js',
+            });
         </script>
     </body>
 </html>

@@ -4,7 +4,6 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
-import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
 import '../../elements/kano-editor-topbar/kano-editor-topbar.js';
 import '../../elements/kc-file-upload-overlay/kc-file-upload-overlay.js';
 import { ChallengeGeneratorPlugin } from '../../lib/challenge/index.js';
@@ -18,7 +17,6 @@ import { Router } from '../../scripts/kano/util/router.js';
 import { DrawEditorProfile } from '../../profiles/normal/index.js';
 
 const behaviors = [
-    SharingBehavior,
     I18nBehavior,
 ];
 

@@ -6,6 +6,7 @@ export const {
     suiteSetup,
     suiteTeardown,
     teardown,
+    mocha,
 } = window;
 
 export default window.suite;

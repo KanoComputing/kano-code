@@ -55,6 +55,10 @@ export class Runner extends Plugin {
         vm.runInContext(appCode);
         appModules.afterRun();
     }
+    instrumentize(method) {
+        const { appModules } = this.appModulesLoader;
+        return appModules.instrumentize(method);
+    }
 }
 
 export default Runner;

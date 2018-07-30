@@ -9,7 +9,6 @@ import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { SoundPlayerBehavior } from '@kano/web-components/kano-sound-player-behavior/kano-sound-player-behavior.js';
 import '../../elements/kano-app-challenge/kano-app-challenge.js';
 import '../../elements/kano-challenge-completed-modal/kano-challenge-completed-modal.js';
-import { SharingBehavior } from '../../elements/behaviors/kano-sharing-behavior.js';
 import { GABehavior } from '../../elements/behaviors/kano-code-ga-tracking-behavior.js';
 import { I18nBehavior } from '../../elements/behaviors/kano-i18n-behavior.js';
 import '../../scripts/kano/util/router.js';
@@ -26,7 +25,6 @@ import { Challenge } from '../../lib/challenge/index.js';
 
 const behaviors = [
     ViewBehavior,
-    SharingBehavior,
     GABehavior,
     I18nBehavior,
     SoundPlayerBehavior,
@@ -215,7 +213,6 @@ class KanoViewStory extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
         }
         this.injected = true;
         this.challenge.inject(this.root, this.root.firstChild);
-        this.editor.on('share', shareInfo => this.share({ detail: shareInfo }));
         this.editor.on('exit', () => this._exit());
         this.editor.on('save', () => this.saveApp());
 

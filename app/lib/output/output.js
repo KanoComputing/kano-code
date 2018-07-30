@@ -132,6 +132,9 @@ export class Output extends PluginReceiver {
         }
         return null;
     }
+    dispose() {
+        this.plugins.forEach(p => p.onDispose());
+    }
 }
 
 export default Output;
