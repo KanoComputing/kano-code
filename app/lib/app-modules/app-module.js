@@ -46,7 +46,7 @@ class Instrument extends EventEmitter {
     callMethod(originalFunc) {
         return (...args) => {
             this.emit('method-called', { method: this.fullPath, args });
-            originalFunc(...args);
+            return originalFunc(...args);
         };
     }
     dispose() {
