@@ -62,7 +62,7 @@ class KanoWorkspaceNormal extends mixinBehaviors(
         if (this.autoStart) {
             this.start();
         }
-        this.ctx = this.$.canvas;
+        this.ctx = this.$.canvas.getContext('2d');
         this.additionalMethods = {
             setBackgroundColor: this.setBackgroundColor.bind(this),
             setTransparency: this.setTransparency.bind(this),

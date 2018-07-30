@@ -1,7 +1,7 @@
 import AppModule from './app-module.js';
 import { Canvas } from '../kano-canvas-api/kano-canvas-api.js';
 
-const DrawModuleFactory = (provider) => {
+export const DrawModuleFactory = (provider) => {
     return class DrawModule extends AppModule {
         constructor(output) {
             super(output);
@@ -11,7 +11,10 @@ const DrawModuleFactory = (provider) => {
             return 'ctx';
         }
         _start() {
-            const canvas = provider.getCanvas();
+            let canvas = provider.getCanvas();
+            while ('canvas' in canvas) {
+                canvas = canvas.canvas;
+            };
             this.modules = new Canvas({
                 ctx: canvas.getContext('2d'),
                 width: canvas.width,
@@ -35,7 +38,7 @@ const DrawModuleFactory = (provider) => {
                 move: this.modules.space.move.bind(this.modules.space),
             };
 
-            this.methods = Object.assign(provider.getAdditionMethods(), this.methods);
+            this.methods = Object.assign(provider.getAdditionalMethods(), this.methods);
         }
     }
 }

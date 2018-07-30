@@ -57,7 +57,6 @@ const Parts = [
     Weather,
 ];
 
-const DrawModule = DrawModuleFactory(this.provider);
 
 export class DrawOutputProfile extends code.OutputProfile {
     constructor() {
@@ -68,10 +67,11 @@ export class DrawOutputProfile extends code.OutputProfile {
         this.provider.setAttribute('slot', 'workspace');
         this.provider.width = 512;
         this.provider.height = 384;
+        this.drawModule = DrawModuleFactory(this.provider);
     }
     get id() { return 'draw'; }
     get modules() {
-        return AllModules.concat([DrawModule]);
+        return AllModules.concat([this.drawModule]);
     }
     get plugins() {
         return [this.partsPlugin, this.backgroundPlugin];
