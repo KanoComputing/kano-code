@@ -147,7 +147,10 @@ Polymer({
             </div>
         </kano-ui-viewport>
         <div class="controls">
-            <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>
+            <kc-workspace-toolbar
+                id="toolbar"
+                on-fullscreen-clicked="_toggleFullscreen">
+            </kc-workspace-toolbar>
             <slot name="controls"></slot>
         </div>
         <div class="overlay">
@@ -158,7 +161,7 @@ Polymer({
                                     no-part-controls=""
                                     on-save-button-clicked="_toggleFullscreen"
                                     on-pause-run-button-clicked="_runButtonClicked"
-                                    on-fullscreen-button-clicked="_toggleFullscreen"
+                                    on-fullscreen-clicked="_toggleFullscreen"
                                     on-restart-button-clicked="_resetAppState"
                                     fullscreen="[[fullscreen]]"></kc-workspace-toolbar>
         </div>
