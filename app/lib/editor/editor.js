@@ -87,7 +87,15 @@ class Editor extends EditorOrPlayer {
         this.workspaceToolbar = new WorkspaceToolbar();
         this.addPlugin(this.workspaceToolbar);
 
+        this._registeredEvents = [];
+
         window.Kano.Code.mainEditor = this;
+    }
+    registerEvent(name) {
+        this._registeredEvents.push(name);
+    }
+    getEvents() {
+        return this._registeredEvents;
     }
     addPlugin(plugin) {
         super.addPlugin(plugin);
@@ -158,9 +166,11 @@ class Editor extends EditorOrPlayer {
         this.runPluginTask('onInject');
     }
     dispose() {
-        this.store.providerElement.parentNode.removeChild(this.store.providerElement);
-        this.storeObserver.rootEl.parentNode.removeChild(this.storeObserver.rootEl);
-        this.rootEl.parentNode.removeChild(this.rootEl);
+        if (this.injected) {
+            this.store.providerElement.parentNode.removeChild(this.store.providerElement);
+            this.storeObserver.rootEl.parentNode.removeChild(this.storeObserver.rootEl);
+            this.rootEl.parentNode.removeChild(this.rootEl);
+        }
         this.runPluginTask('onDispose');
     }
     load(app) {

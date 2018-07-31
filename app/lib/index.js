@@ -6,7 +6,7 @@ import FileUploadPlugin from './editor/file-upload.js';
 import I18n from './i18n/index.js';
 import { WorkspaceViewProvider, WorkspaceViewProviderMixin } from './editor/workspace/index.js';
 import { OutputViewProvider, OutputViewProviderMixin } from './output/index.js';
-import AppModule from './app-modules/app-module.js';
+import { AppModule } from './app-modules/app-module.js';
 
 import { OutputProfile } from './output/profile.js';
 import { EditorProfile } from './editor/profile.js';

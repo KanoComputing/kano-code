@@ -5,6 +5,7 @@ import ChallengeActions from '../actions/challenge.js';
 import { Challenge as ChallengeGeneratorPlugin } from './generator/index.js';
 
 import '../../elements/kano-app-challenge/kano-app-challenge.js';
+import { Subscriptions, subscribe } from '../util/subscription.js';
 
 const EDITOR_EVENTS = [
     'open-parts',
@@ -35,6 +36,8 @@ class Challenge extends Plugin {
             idle: false,
         });
 
+        this.subscriptions = new Subscriptions();
+
         this.challengeActions = ChallengeActions(this.store);
 
         this._onDone = this._onDone.bind(this);
@@ -59,14 +62,21 @@ class Challenge extends Plugin {
         this.setEditor(editor);
     }
     onInject() {
-        const { sourceEditor } = this.editor;
         const blocklyWorkspace = this.editor.getBlocklyWorkspace();
         this.engine = new KanoCodeChallenge(blocklyWorkspace);
         this.engine.addEventListener('done', this._onDone);
         this.engine.addEventListener('step-changed', this._onStepChanged);
         this.engine.addEventListener('history-back', this._historyBack);
         this.engine.addEventListener('history-forward', this._historyForward);
-        this.editor.on('change', this._editorChanged.bind(this));
+        this.subscriptions.push(subscribe(this.editor, 'change', this._editorChanged.bind(this)));
+        const editorEvents = this.editor.getEvents();
+        editorEvents.forEach((eventName) => {
+            this.subscriptions.push(subscribe(this.editor, eventName, (e) => {
+                const event = e || {};
+                event.type = eventName;
+                this._editorChanged(event);
+            }));
+        });
         this.editorListeners = [];
         // TODO: Remove these listeners when challenge done
         EDITOR_EVENTS.forEach((eventName) => {
@@ -120,6 +130,7 @@ class Challenge extends Plugin {
                 this.engine.setSteps(steps);
                 this.engine.start();
                 this.challengeActions.updateSteps(this.engine.steps);
+                this.emit('started');
             }, config.CHALLENGE_START_DELAY || 500);
         }
     }
@@ -157,6 +168,7 @@ class Challenge extends Plugin {
             this.challengeActions.addHistoryRecord(stepIndex, Object.assign(this.editor.save()));
         }
         this.challengeActions.updateHistoryOptions(this.canGoBack(), this.canGoForward());
+        this.emit('step-changed');
     }
     _onDone() {
         this.challengeActions.completeChallenge();
@@ -270,13 +282,15 @@ class Challenge extends Plugin {
         this.profile = profile;
     }
     load(challenge) {
-        const { toolbox } = this.profile;
         const { flyoutMode, variables, defaultApp } = (challenge.scene || challenge);
-        // Filter Catergories to get the categories view of their features
-        Challenge.enableToolboxWhitelist(challenge, toolbox);
-        this.editor.registerProfile(this.profile);
+        if (this.profile) {
+            const { toolbox } = this.profile;
+            // Filter Catergories to get the categories view of their features
+            Challenge.enableToolboxWhitelist(challenge, toolbox);
+            this.editor.registerProfile(this.profile);
+            this.setSceneVariables(Challenge.getSceneVariables(toolbox));
+        }
         this.editor.editorActions.setFlyoutMode(flyoutMode);
-        this.setSceneVariables(Challenge.getSceneVariables(toolbox));
         this.editor.loadVariables(variables);
         if (defaultApp) {
             this.editor.load(JSON.parse(defaultApp));
@@ -352,6 +366,14 @@ class Challenge extends Plugin {
         }
         this.editor.rootEl.setAttribute('slot', 'editor');
         this.editor.inject(this.rootEl);
+    }
+    dispose() {
+        this.subscriptions.dispose();
+        if (this.injected) {
+            this.store.providerElement.parentNode.removeChild(this.store.providerElement);
+            this.rootEl.parentNode.removeChild(this.rootEl);
+        }
+        this.editor.dispose();
     }
 }
 
