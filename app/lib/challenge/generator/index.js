@@ -486,7 +486,7 @@ class Challenge extends Plugin {
                 const fieldPreviewLabel = labelMap.get(fieldValue);
                 const fieldPreview = Challenge.generateFieldPreview(node, this.translate('field', fieldPreviewLabel || fieldValue));
                 const currentFieldPreview = Challenge.generateFieldPreview(node, defaultLabel || defaults);
-                let bannerCopy = commentData.bannerCopy || 'Change $currentFieldPreview to $fieldPreview';
+                let bannerCopy = commentData.bannerCopy || 'Change \"$currentFieldPreview\" to \"$fieldPreview\"';
                 bannerCopy = bannerCopy.replace(/\$fieldPreview/g, fieldPreview);
                 bannerCopy = bannerCopy.replace(/\$currentFieldPreview/g, currentFieldPreview);
                 // Add a `change value` step to get the right value
@@ -512,7 +512,10 @@ class Challenge extends Plugin {
         return steps;
     }
     normaliseType(value) {
-        value = !isNaN(value) ? parseInt(value) : value;
+        if (value.length === 0) {
+            return "&#160;";
+        }
+        value = value.length > 0 && !isNaN(value) ? parseInt(value) : value;
         switch(typeof value) {
             case 'string':
                 return value.toLowerCase();
