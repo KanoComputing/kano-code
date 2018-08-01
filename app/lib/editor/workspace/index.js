@@ -18,6 +18,7 @@ export const WorkspaceViewProviderMixin = base => class extends base {
         this.editor = editor;
     }
     onInject() {}
+    onDispose() {}
     /* eslint class-methods-use-this: "off" */
     get outputViewRoot() {
         return null;

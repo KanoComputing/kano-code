@@ -17,6 +17,7 @@ export const OutputViewProviderMixin = base => class extends base {
     getRestrictElement() {
         return this;
     }
+    onDispose() {}
 };
 
 export const OutputViewProvider = OutputViewProviderMixin(class {});

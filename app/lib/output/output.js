@@ -127,13 +127,16 @@ export class Output extends PluginReceiver {
         this._mode = mode;
     }
     render(...args) {
-        if (this.outputView) {
-            return this.outputView.render(...args);
+        if (this.outputViewProvider) {
+            return this.outputViewProvider.render(...args);
         }
         return null;
     }
     dispose() {
-        this.plugins.forEach(p => p.onDispose());
+        if (this.outputViewProvider) {
+            this.outputViewProvider.onDispose();
+        }
+        this.runPluginTask('onDispose');
     }
 }
 
