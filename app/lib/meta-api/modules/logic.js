@@ -41,9 +41,10 @@ const BlocklyLogic = {
             },
         };
         Blockly.Blocks.controls_if_else_custom = Object.assign({}, Blockly.Blocks.controls_if);
-        Blockly.Blocks.controls_if_else_custom.init = function() {
+        Blockly.JavaScript.controls_if_else_custom = Blockly.JavaScript.controls_if;
+        Blockly.Blocks.controls_if_else_custom.init = function () {
             Blockly.Blocks.controls_if.init.call(this);
-            this.elseCount_ = 1;
+            this.elseCount_ = true;
             this.updateShape_();
         };
 
