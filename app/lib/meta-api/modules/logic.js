@@ -40,9 +40,17 @@ const BlocklyLogic = {
                 this.setHelpUrl('%{BKY_LOGIC_COMPARE_HELPURL}');
             },
         };
+        Blockly.Blocks.controls_if_else_custom = Object.assign({}, Blockly.Blocks.controls_if);
+        Blockly.Blocks.controls_if_else_custom.init = function() {
+            Blockly.Blocks.controls_if.init.call(this);
+            this.elseCount_ = 1;
+            this.updateShape_();
+        };
+
         // Assign custom color to blockly core blocks
         [
             'controls_if',
+            'controls_if_else_custom',
             'logic_compare',
             'logic_operation',
             'logic_negate',
@@ -57,6 +65,7 @@ const BlocklyLogic = {
         colour: COLOR,
         blocks: [
             'controls_if',
+            'controls_if_else_custom',
             'logic_compare',
             'logic_operation',
             'logic_negate',
