@@ -8,6 +8,10 @@ const values = {
     },
     stroke: {
         SIZE: 1,
+        COLOR: '#000',
+    },
+    color: {
+        COLOR: '#000',
     },
     line_to: {
         X: 5,
