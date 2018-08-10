@@ -38,6 +38,12 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             random_from_set: {
                 SET: 'any',
             },
+            speaker_playback_rate: {
+                RATE: 100,
+            },
+            speaker_set_volume: {
+                VOLUME: 100,
+            },
         },
         blocks: [{
             block: part => ({
