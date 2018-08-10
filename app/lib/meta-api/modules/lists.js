@@ -30,9 +30,11 @@ const BlocklyLists = {
     defaults: {
         lists_getIndex: {
             MODE: 'GET',
+            WHERE: 'FROM_START'
         },
         lists_setIndex: {
             MODE: 'SET',
+            WHERE: 'FROM_START'
         },
     },
 };

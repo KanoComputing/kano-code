@@ -512,6 +512,7 @@ class Challenge extends Plugin {
         return steps;
     }
     normaliseType(value) {
+
         if (value.length === 0) {
             return "&#160;";
         }
