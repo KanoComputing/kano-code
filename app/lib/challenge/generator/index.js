@@ -396,7 +396,7 @@ class Challenge extends Plugin {
                 }
             }
             const { addedParts } = this.editor;
-            if (addedParts !== undefined) {
+            if (typeof addedParts !== 'undefined') {
                 for (let i = 0; i < addedParts.length; i += 1) {
                     if (addedParts[i].id === categoryId) {
                         return addedParts[i].label;
