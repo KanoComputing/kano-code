@@ -462,6 +462,8 @@ class Challenge extends Plugin {
                     if (typeof defaults === 'object' && 'id' in defaults) {
                         defaultLabel = defaults.label || defaults.id;
                         defaults = defaults.id;
+                    } else if (this.fieldDefaults[parentBlockType.block][fieldName]) {
+                        defaultLabel = this.fieldDefaults[parentBlockType.block][fieldName];
                     } else if (this.fieldDefaults[parentBlockType.block].label) {
                         defaultLabel = this.fieldDefaults[parentBlockType.block].label;
                     }
