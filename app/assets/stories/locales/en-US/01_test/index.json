@@ -1,0 +1,39 @@
+{
+    "id": "01_test",
+    "name": "Expand test",
+    "progress": {
+        "group": "fake_group"
+    },
+    "description": "TEST",
+    "scenes": [{
+        "id": "_0",
+        "component": "common/editor",
+        "data": {
+            "flyoutMode": true,
+            "mode": "normal",
+            "modules": [],
+            "filterBlocks": {
+                "normal": [
+                    "set_background_color",
+                    "stroke",
+                    "move_to",
+                    "color",
+                    "circle"
+                ]
+            },
+            "steps": [{
+                "type": "create-block",
+                "openFlyoutCopy": "Open the <b>Wand</b> tray, this is where code blocks to read the motions of your Wand are kept.",
+                "grabBlockCopy": "Grab the <b>on Up</b> block, this will run all the code inside that block when you flick the wand upwards.",
+                "dropCopy": "Drop it anywhere in the coding space.",
+                "alias": "block_1",
+                "category": "normal",
+                "blockType": "normal#stroke"
+            }, {
+                "banner": {
+                    "text": "Well done mate"
+                }
+            }]
+        }
+    }]
+}

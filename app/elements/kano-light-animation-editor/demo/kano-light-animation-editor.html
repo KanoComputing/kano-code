@@ -7,7 +7,7 @@
 
         <title>kano-light-animation-editor demo</title>
 
-        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
         <script>
             window.Polymer = {
@@ -15,15 +15,34 @@
             };
         </script>
 
-        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../../../scripts/kano/make-apps/parts-api/index.html">
-        <link rel="import" href="../../kano-style/themes/dark.html">
-        <link rel="import" href="../kano-light-animation-editor.html">
+        <script type="module" src="@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../../../scripts/kano/make-apps/parts-api/index.js"></script>
+        <script type="module" src="../../kano-style/themes/dark.js"></script>
+        <script type="module" src="../kano-light-animation-editor.js"></script>
 
-        <style is="custom-style" include="demo-pages-shared-styles">
-        </style>
-        <style>
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
+        </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style>
             html, body {
                 min-height: 100vh;
             }
@@ -38,26 +57,34 @@
             kano-light-animation-editor {
                 width: 880px;
             }
-        </style>
+        </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
     </head>
     <body unresolved>
-        <div class="vertical-section-container">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container">
         <h1>kano-light-animation-editor</h1>
             <demo-snippet>
                 <template is="dom-bind" id="bind">
-                    <kano-light-animation-editor id="editor"
-                                                 label="Animation_1"
-                                                 width="16"
-                                                 height="8"
-                                                 bitmaps="[[bitmaps]]"
-                                                 speed="10"></kano-light-animation-editor>
+                    <kano-light-animation-editor id="editor" label="Animation_1" width="16" height="8" bitmaps="[[bitmaps]]" speed="10"></kano-light-animation-editor>
                 </template>
                 <script>
                     document.addEventListener('WebComponentsReady', () => {
                         const bind = document.getElementById('bind');
                         bind.bitmaps = [Array.apply(null, Array(128)).map(String.prototype.valueOf,"#000000")];
                     });
-                </script>
+                &lt;/script>
+            </demo-snippet>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>d('bind');
+bind.bitmaps = [Array.apply(null, Array(128)).map(String.prototype.valueOf,"#000000")];
+</script>
             </demo-snippet>
         </div>
     </body>

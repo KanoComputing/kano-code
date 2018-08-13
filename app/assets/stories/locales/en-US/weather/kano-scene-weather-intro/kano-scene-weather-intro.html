@@ -39,16 +39,17 @@
         </div>
     </template>
 </dom-module>
-<script type="text/javascript">
-    class KanoSceneWeatherIntro {
+<script type="module">
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+class KanoSceneWeatherIntro {
 
-        get behaviors () {
-            return [KanoBehaviors.SceneComponentBehavior];
-        }
-
-        beforeRegister () {
-            this.is = 'kano-scene-weather-intro';
-        }
+    get behaviors () {
+        return [KanoBehaviors.SceneComponentBehavior];
     }
-    Polymer(KanoSceneWeatherIntro);
+
+    beforeRegister () {
+        this.is = 'kano-scene-weather-intro';
+    }
+}
+Polymer(KanoSceneWeatherIntro);
 </script>

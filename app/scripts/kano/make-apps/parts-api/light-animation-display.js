@@ -1,0 +1,88 @@
+import { LightShape } from './light-shape.js';
+
+const LightAnimationDisplayImpl = {
+    _updateFrame () {
+        let bitmaps = this.animation.bitmaps;
+        this.frame = bitmaps[this.frameIndex];
+        this.frameIndex++;
+        if (this.frameIndex > bitmaps.length - 1) {
+            this.frameIndex = 0;
+        }
+        this.timeoutId = setTimeout(this._updateFrame.bind(this), 1000 / this.model.userProperties.speed);
+        this._updateLightboard();
+    },
+    _updateLightboard (force) {
+        if (!this.frame) {
+            return;
+        }
+        this.debounce('_updateLightboard', () => {
+            if (this.isRunning) {
+                let shape = {
+                    id: this.model.id,
+                    x: this.getX(),
+                    y: this.getY(),
+                    width: parseInt(this.model.userProperties.width),
+                    height: parseInt(this.model.userProperties.height),
+                    visible: this.model.visible,
+                    bitmap: this.frame,
+                    type: 'frame',
+                    force
+                };
+                this.fire('update-shape', shape);
+            }
+        });
+    },
+    play () {
+        this.pause();
+        this._updateFrame();
+    },
+    pause () {
+        if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+            this.timeoutId = null;
+        }
+    },
+    setSpeed (s) {
+        let speed = Math.min(30, Math.max(1, s));
+        this.set('model.userProperties.speed', speed);
+    },
+    setAnimation (animation) {
+        this.set('model.userProperties.animation', animation);
+        this._updateAnimation();
+    },
+    _updateAnimation () {
+        if (!this.model.userProperties.animation) {
+            return;
+        }
+        if (typeof this.model.userProperties.animations === 'string') {
+            this.model.userProperties.animations = JSON.parse(this.model.userProperties.animations);
+        }
+        this.animation = this.model.userProperties.animations[this.model.userProperties.animation];
+        this.set('model.userProperties.width', this.animation.width);
+        this.set('model.userProperties.height', this.animation.height);
+        this.bitmap = this.animation.bitmaps[0];
+    },
+    stop () {
+        this.pause();
+        Kano.MakeApps.PartsAPI['light-shape'].stop.call(this);
+    },
+    start () {
+        this._updateAnimation();
+        this.goToFrame(0);
+        Kano.MakeApps.PartsAPI['light-shape'].start.call(this);
+    },
+    goToFrame (frameNo) {
+        let bitmaps = this.animation.bitmaps;
+        this.frameIndex = Math.min(this.animation.bitmaps.length - 1, Math.max(0, frameNo));
+        this.frame = bitmaps[this.frameIndex];
+        this._updateLightboard();
+    },
+    getWidth () {
+        return parseInt(this.get('model.userProperties.width'));
+    },
+    getHeight () {
+        return parseInt(this.get('model.userProperties.height'));
+    }
+};
+
+export const LightAnimationDisplay = Object.assign({}, LightShape, LightAnimationDisplayImpl);

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Pong Kano Code</title>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            kano-app-editor {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import './pong.js';
+            import * as code from '../../app/lib/index.js';
+            import '../../node_modules/@kano/kwc-blockly/blockly_built/msg/js/en.js';
+            import { PongOutputProfile } from './profile.js';
+
+            // Define what the workpsace will be, in this case, it only contains the output
+            // and an output code element to display the generated code in real time
+            class PongWorkspaceViewProvider extends code.WorkspaceViewProvider {
+                constructor(...args) {
+                    super(...args);
+                    this.root = document.createElement('div');
+                    this.root.innerHTML = `
+                        <style>
+                            #tools {
+                                color: white;
+                                padding: 32px;
+                                font-family: Arial;
+                            }    
+                        </style>
+                        <div id="output"></div>
+                        <div id="tools">
+                            <pre>
+                                <code id="code-output"></code>    
+                            </pre>
+                        </div>
+                    `;
+                    this.root.style.width = '100%';
+                    // Listen to the running state change
+                    this.editor.output.on('running-state-changed', () => {
+                        this.updateCodeOutput();
+                    });
+                }
+                get outputViewRoot() {
+                    return this.root.querySelector('#output');
+                }
+                updateCodeOutput() {
+                    // Put the current code from the editor in the code element
+                    this.root.querySelector('#code-output').innerHTML = `\n${this.editor.output.getCode() || ''}`;
+                }
+            }
+
+            // CReate the editor
+            const editor = new code.Editor();
+
+            // Create the toolbox defining three methods in the pong module
+            const PongToolbox = {
+                type: 'module',
+                name: 'pong',
+                color: '#00796b',
+                symbols: [{
+                    type: 'function',
+                    name: 'setBackgroundColor',
+                    verbose: 'Background color',
+                    parameters: [{
+                        name: 's',
+                        verbose: '',
+                        returnType: 'Color',
+                        default: '#000000',
+                    }],
+                }, {
+                    type: 'function',
+                    name: 'setBallSize',
+                    verbose: 'Ball size',
+                    parameters: [{
+                        name: 's',
+                        verbose: '',
+                        returnType: Number,
+                        default: 20,
+                    }],
+                }, {
+                    type: 'function',
+                    name: 'setBallColor',
+                    verbose: 'Ball color',
+                    parameters: [{
+                        name: 'c',
+                        verbose: '',
+                        returnType: 'Color',
+                        default: '#ffffff',
+                    }],
+                }],
+            };
+
+            // Add the toolbox entry and runner module
+            editor.toolbox.addEntry(PongToolbox);
+
+            // Create the workpsaceViewProvider
+            const pongView = new PongWorkspaceViewProvider(editor);
+
+            editor.registerWorkspaceViewProvider(pongView);
+
+            editor.output.registerProfile(new PongOutputProfile());
+
+            editor.inject();
+
+            editor.output.setRunningState(true);
+        </script>
+    </body>
+</html>
