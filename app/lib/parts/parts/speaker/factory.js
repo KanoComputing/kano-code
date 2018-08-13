@@ -1,6 +1,7 @@
 import { FieldAssetPicker } from '../../../../scripts/kano/make-apps/blockly/inputs/asset-picker.js';
 import { localize } from '../../../i18n/index.js';
 import { AudioPlayer } from '../../../../scripts/kano/music/player.js';
+import FieldSoundsFactory from '../../components/blockly/sounds-field.js';
 import './kano-part-speaker.js';
 
 const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
@@ -156,14 +157,19 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                     id = 'speaker_sample';
                 Blockly.Blocks[`${part.id}#${id}`] = {
                     init() {
-                        const setDropdown = new Blockly.FieldDropdown(sampleSet.map(name => [name, name]), function (option) {
+                        const samplesArr = [];
+                        Object.keys(samples).forEach((name) => {
+                            samplesArr.push({ value: name });
+                        });
+                        const FieldSounds = FieldSoundsFactory(Blockly);
+                        const field = new FieldSounds('Wand', samplesArr, function (option) {
                             this.sourceBlock_.updateShape_(option);
                         });
 
                         this.setColour(part.colour);
 
                         this.appendDummyInput()
-                            .appendField(setDropdown, 'SET');
+                            .appendField(field, 'SET');
 
                         this.setOutput('Sample');
 
@@ -177,7 +183,9 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                     },
                     createInputs_(option) {
                         let options,
-                            dropdown;
+                            samplesArr = [],
+                            fieldDrop,
+                            FieldSounds;
                         /* In case the sample pack doesn't exist, do a case-insensitive match
                             against all keys in the object. We need to do that because old shares
                             and exported apps all have been saved with the ids in lowercase. */
@@ -188,13 +196,16 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                                 }
                             });
                         }
+                        options = Object.keys(samples[option]).map(key => [samples[option][key], key]);
 
-                        options = Object.keys(samples[option]).map(key => [samples[option][key], key]),
-                        dropdown = new Blockly.FieldDropdown(options);
-                        const texts = dropdown.getText();
+                        Object.keys(samples[option]).forEach((key) => {
+                            samplesArr.push({ label: samples[option][key], value: key });
+                        });
+                        FieldSounds = FieldSoundsFactory(Blockly);
+                        fieldDrop = new FieldSounds(samplesArr[0].label, samplesArr);
 
                         this.appendDummyInput('SAMPLE')
-                            .appendField(dropdown, 'SAMPLE');
+                            .appendField(fieldDrop, 'SAMPLE');
                     },
                     domToMutation(xmlElement) {
                         const type = xmlElement.getAttribute('set');
@@ -214,7 +225,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                 };
             },
             javascript: () => (block) => {
-                const sample = block.getFieldValue('SAMPLE') || 'amen';
+                const sample = block.getField('SAMPLE').value_ || 'amen';
                 return [`'${sample}'`];
             },
         }, {
