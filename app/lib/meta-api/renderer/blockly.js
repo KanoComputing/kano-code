@@ -22,7 +22,7 @@ class BlocklyMetaRenderer {
         }
         return this.defaults.createCategory(mod.def.category);
     }
-    renderToolboxEntry(mod) {
+    renderToolboxEntry(mod, whitelist) {
         // Legacy module signature
         if (mod.def.type && mod.def.type === 'blockly') {
             return this.renderLegacyToolboxEntry(mod);
@@ -35,8 +35,9 @@ class BlocklyMetaRenderer {
 
         let filteredBlocks = blocks.filter(block => block.toolbox);
 
-        if (mod.def.whitelist) {
-            filteredBlocks = blocks.filter(block => mod.def.whitelist.indexOf(block.id) !== -1);
+        const blockWhitelist = whitelist[mod.def.name];
+        if (blockWhitelist) {
+            filteredBlocks = blocks.filter(block => whitelist[mod.def.name].indexOf(block.id) !== -1);
         }
 
         const category = {
