@@ -4,7 +4,7 @@ class BlocklyMetaRenderer {
     constructor() {
         this.defaults = new Defaults();
     }
-    renderLegacyToolboxEntry(mod) {
+    renderLegacyToolboxEntry(mod, whitelist) {
         mod.def.register(window.Blockly);
         if (mod.def.defaults) {
             Object.keys(mod.def.defaults).forEach((blockId) => {
@@ -14,18 +14,23 @@ class BlocklyMetaRenderer {
         if (!mod.def.category) {
             return null;
         }
-        if (mod.def.whitelist) {
-            mod.def.category.blocks = mod.def.category.blocks.filter((block) => {
-                const id = block.id || block;
-                return mod.def.whitelist.indexOf(id) !== -1;
-            });
+        let category = Object.assign({}, mod.def.category);
+        if (typeof whitelist !== 'undefined') {
+            if (mod.def.id in whitelist) {
+                category.blocks = category.blocks.filter((block) => {
+                    const id = block.id || block;
+                    return whitelist[mod.def.id].indexOf(id) !== -1;
+                });
+            } else {
+                category.blocks = [];
+            }
         }
-        return this.defaults.createCategory(mod.def.category);
+        return this.defaults.createCategory(category);
     }
-    renderToolboxEntry(mod) {
+    renderToolboxEntry(mod, whitelist) {
         // Legacy module signature
         if (mod.def.type && mod.def.type === 'blockly') {
-            return this.renderLegacyToolboxEntry(mod);
+            return this.renderLegacyToolboxEntry(mod, whitelist);
         }
         const blocks = BlocklyMetaRenderer.render(mod);
 
@@ -34,9 +39,15 @@ class BlocklyMetaRenderer {
         };
 
         let filteredBlocks = blocks.filter(block => block.toolbox);
-
-        if (mod.def.whitelist) {
-            filteredBlocks = blocks.filter(block => mod.def.whitelist.indexOf(block.id) !== -1);
+        if (typeof whitelist !== 'undefined') {
+            const blockWhitelist = whitelist[mod.def.name];
+            if (blockWhitelist) {
+                filteredBlocks = blocks.filter(block => whitelist[mod.def.name].indexOf(block.id) !== -1);
+            } else {
+                filteredBlocks = [];
+            }
+        } else {
+            filteredBlocks = blocks;
         }
 
         const category = {

@@ -340,9 +340,11 @@ const BlocklyMath = {
             }, {
                 id: 'math_lerp',
                 defaults: ['FROM', 'TO', 'PERCENT'],
+            }, {
+                id: 'math_trig',
+                defaults: ['SIN'],
             },
             'math_single',
-            'math_trig',
             'math_constant',
             'math_number_property',
             'math_round',
@@ -373,6 +375,21 @@ const BlocklyMath = {
             FROM: 0,
             TO: 200,
             PERCENT: 50,
+        },
+        math_trig: {
+            OP: 'SIN',
+        },
+        math_constant: {
+            CONSTANT: "PI"
+        },
+        math_number_property: {
+            PROPERTY: "ODD"
+        },
+        math_single: {
+            OP: "ROOT"
+        },
+        math_round: {
+            OP: "ROUND"
         },
     },
 };

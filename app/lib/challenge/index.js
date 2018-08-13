@@ -281,12 +281,16 @@ class Challenge extends Plugin {
     registerProfile(profile) {
         this.profile = profile;
     }
+    setWhitelist(whitelist) {
+        this.editor.toolbox.setWhitelist(whitelist);
+    }
     load(challenge) {
-        const { flyoutMode, variables, defaultApp } = (challenge.scene || challenge);
+        const { flyoutMode, variables, defaultApp, filterBlocks } = (challenge.scene || challenge);
         if (this.profile) {
             const { toolbox } = this.profile;
             // Filter Catergories to get the categories view of their features
             Challenge.enableToolboxWhitelist(challenge, toolbox);
+            this.setWhitelist(filterBlocks);
             this.editor.registerProfile(this.profile);
             this.setSceneVariables(Challenge.getSceneVariables(toolbox));
         }

@@ -20,11 +20,12 @@ export class CreationImagePreviewProvider extends CreationCustomPreviewProvider 
         super();
         this.size = size;
     }
-    createFile(output) {
+    createFile() {
         const canvas = document.createElement('canvas');
         canvas.width = this.size.width;
         canvas.height = this.size.height;
-        const res = output.render(canvas.getContext('2d'));
+        // Use the output from the editor, not the player
+        const res = this.editor.output.render(canvas.getContext('2d'));
         let p = res;
         if (!(res instanceof Promise)) {
             p = Promise.resolve(res);

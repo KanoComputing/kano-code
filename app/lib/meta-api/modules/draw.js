@@ -21,26 +21,7 @@ blocks.push({
     },
 });
 
-blocks.push({
-    block: part => ({
-        id: 'set_transparency',
-        message0: `${part.name}: set transparency to %1`,
-        args0: [{
-            type: 'input_value',
-            name: 'ALPHA',
-            check: 'Number',
-        }],
-        previousStatement: null,
-        nextStatement: null,
-        shadow: {
-            ALPHA: '<shadow type="math_number"><field name="NUM">100</field></shadow>',
-        },
-    }),
-    javascript: () => function (block) {
-        const alpha = Blockly.JavaScript.valueToCode(block, 'ALPHA');
-        return `ctx.setTransparency(${alpha});\n`;
-    },
-});
+
 
 blocks = blocks.concat(setters);
 blocks = blocks.concat(space);

@@ -36,6 +36,7 @@ export const DrawModuleFactory = (provider) => {
                 moveTo: this.modules.space.moveTo.bind(this.modules.space),
                 moveToRandom: this.modules.space.moveToRandom.bind(this.modules.space),
                 move: this.modules.space.move.bind(this.modules.space),
+                reset: this.modules.general.reset.bind(this.modules.general),
             };
 
             this.methods = Object.assign(provider.getAdditionalMethods(), this.methods);
