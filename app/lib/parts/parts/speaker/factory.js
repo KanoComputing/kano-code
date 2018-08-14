@@ -1,7 +1,7 @@
 import { FieldAssetPicker } from '../../../../scripts/kano/make-apps/blockly/inputs/asset-picker.js';
 import { localize } from '../../../i18n/index.js';
 import { AudioPlayer } from '../../../../scripts/kano/music/player.js';
-import FieldSoundsFactory from '../../components/blockly/sounds-field.js';
+import FieldSoundsFactory from './custom-blockly/sounds-field.js';
 import './kano-part-speaker.js';
 
 const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
