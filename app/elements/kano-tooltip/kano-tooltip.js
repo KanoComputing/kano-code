@@ -273,9 +273,11 @@ class KanoTooltip extends PolymerElement {
                 return;
             }
 
-            this.$.tooltip.addEventListener('animationend', () => {
+            const onAnimationEnd = () => {
                 this.$.tooltip.classList.remove('pop-in');
-            }, { once: true });
+                this.$.tooltip.removeEventListener('animationend', onAnimationEnd);
+            };
+            this.$.tooltip.addEventListener('animationend', onAnimationEnd);
             this.$.tooltip.classList.add('pop-in');
 
             this.opened = true;
@@ -285,11 +287,13 @@ class KanoTooltip extends PolymerElement {
     close() {
         this.opened = false;
 
-        this.$.tooltip.addEventListener('animationend', () => {
+        const onAnimationEnd = () => {
             this.$.tooltip.classList.remove('pop-out');
             this.alreadyAnimated = false;
             this.style.visibility = 'hidden';
-        }, { once: true });
+            this.$.tooltip.removeEventListener('animationend', onAnimationEnd);
+        };
+        this.$.tooltip.addEventListener('animationend', onAnimationEnd);
         this.$.tooltip.classList.add('pop-out');
     }
     setupTargetTracking() {
