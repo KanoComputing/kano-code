@@ -352,6 +352,9 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
         const tooltip = this.$['settings-tooltip'];
         tooltip.target = target.getBoundingClientRect();
         tooltip.open();
+
+        e.preventDefault();
+        e.stopPropagation();
     }
     _reset() {
         this.dispatchEvent(new CustomEvent('reset-clicked'));
