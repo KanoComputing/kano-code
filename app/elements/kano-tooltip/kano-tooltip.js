@@ -96,6 +96,31 @@ class KanoTooltip extends PolymerElement {
                 margin-top: calc(var(--kano-tooltip-caret-width) / -2);
                 margin-left: calc(var(--kano-tooltip-caret-width) / -2);
             }
+
+            @keyframes pop {
+                0% {
+                    opacity: 0;
+                    transform: scale(0.5);
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+            .pop-in, .pop-out {
+                animation-name: pop;
+                animation-duration: 150ms;
+                animation-iteration-count: 1;
+                animation-timing-function: cubic-bezier(0.2, 0, 0.13, 1.5);
+                animation-delay: 0;
+            }
+            .pop-in {
+                animation-direction: normal;
+                animation-fill-mode: forwards;
+            }
+            .pop-out {
+                animation-direction: reverse;
+            }
         </style>
         <div class\$="tooltip [[position]]" id="tooltip">
             <div class="caret-shadow" hidden\$="{{caretHidden(position)}}"></div>
@@ -247,17 +272,12 @@ class KanoTooltip extends PolymerElement {
             if (this.alreadyAnimated) {
                 return;
             }
-            this.animate([{
-                opacity: 0,
-                transform: 'scale(0.5)',
-            }, {
-                opacity: 1,
-                transform: 'scale(1)',
-            }], {
-                easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
-                duration: 150,
-                fill: 'forwards',
-            });
+
+            this.$.tooltip.classList.add('pop-in');
+            setTimeout(() => {
+                this.$.tooltip.classList.remove('pop-in');
+            }, 150);
+
             this.opened = true;
             this.alreadyAnimated = true;
         });
@@ -265,16 +285,12 @@ class KanoTooltip extends PolymerElement {
     close() {
         this.opened = false;
 
-        this.animate([{
-            opacity: 1,
-            transform: 'scale(1)',
-        }, {
-            opacity: 0,
-            transform: 'scale(0.5)',
-        }], {
-            easing: 'cubic-bezier(0.2, 0, 0.13, 1.5)',
-            duration: 150,
-        }).onfinish = this.onCloseAnimationEnd.bind(this);
+        this.$.tooltip.classList.add('pop-out');
+        setTimeout(() => {
+            this.$.tooltip.classList.remove('pop-out');
+            this.onCloseAnimationEnd();
+        }, 150);
+
     }
     onCloseAnimationEnd() {
         this.alreadyAnimated = false;
