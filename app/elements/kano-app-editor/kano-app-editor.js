@@ -167,7 +167,7 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             :host iron-pages.workspace-pages {
                 @apply --layout-vertical;
                 @apply --layout-flex;
-                overflow-y: auto;
+                overflow: visible;
             }
             :host #workspace-panel kano-workspace {
                 @apply --layout-flex;
