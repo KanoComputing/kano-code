@@ -17,16 +17,17 @@
         <h1>Well done, you now know how to get data from the web</h1>
     </template>
 </dom-module>
-<script type="text/javascript">
-    class KanoSceneWeatherOutro {
+<script type="module">
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+class KanoSceneWeatherOutro {
 
-        get behaviors () {
-            return [KanoBehaviors.SceneComponentBehavior];
-        }
-
-        beforeRegister () {
-            this.is = 'kano-scene-weather-outro';
-        }
+    get behaviors () {
+        return [KanoBehaviors.SceneComponentBehavior];
     }
-    Polymer(KanoSceneWeatherOutro);
+
+    beforeRegister () {
+        this.is = 'kano-scene-weather-outro';
+    }
+}
+Polymer(KanoSceneWeatherOutro);
 </script>

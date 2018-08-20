@@ -48,20 +48,21 @@
         </div>
     </template>
 </dom-module>
-<script type="text/javascript">
-    class KanoSceneSpaceTrackerIntro1 {
+<script type="module">
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+class KanoSceneSpaceTrackerIntro1 {
 
-        get behaviors () {
-            return [KanoBehaviors.SceneComponentBehavior];
-        }
-
-        beforeRegister () {
-            this.is = 'kano-scene-test-transition-intro';
-        }
-
-        nextScene () {
-            this.finish();
-        }
+    get behaviors () {
+        return [KanoBehaviors.SceneComponentBehavior];
     }
-    Polymer(KanoSceneSpaceTrackerIntro1);
+
+    beforeRegister () {
+        this.is = 'kano-scene-test-transition-intro';
+    }
+
+    nextScene () {
+        this.finish();
+    }
+}
+Polymer(KanoSceneSpaceTrackerIntro1);
 </script>

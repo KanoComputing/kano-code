@@ -7,25 +7,42 @@
 
         <title>kc-dialog-topbar demo</title>
 
-        <script src="../../../bower_components//webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../kc-dialog-topbar.html">
-        <link rel="import" href="../../../../bower_components/web-components/kano-style/color.html">
-        <link rel="import" href="../../../../bower_components/web-components/kano-icons/kano-icons.html">
+        <script type="module" src="@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="../kc-dialog-topbar.js"></script>
+        <link rel="import" href="../../../../../../kwc-style/color.html">
+        <link rel="import" href="../../../../../../kwc-icons/kwc-icons.html">
 
-        <custom-style>
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
             <style is="custom-style" include="demo-pages-shared-styles">
                 kc-dialog-topbar {
                     background: var(--color-black);
                 }
             </style>
-        </custom-style>
+        </custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
     </head>
 
     <body>
-        <div class="vertical-section-container centered">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
             <h3>Basic kc-dialog-topbar demo</h3>
             <demo-snippet>
                 <template>
@@ -57,7 +74,10 @@
                     </kc-dialog-topbar>
                 </template>
             </demo-snippet>
-        </div>
+        </div>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
     </body>
 
 </html>

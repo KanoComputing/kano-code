@@ -1,0 +1,116 @@
+import '../kano-light-shape-behavior.js';
+import '../../../scripts/kano/make-apps/parts-api/light-circle.js';
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<dom-module id="kano-part-light-circle">
+    <style is="custom-style" include="part-style"></style>
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        .container {
+            position: relative;
+            border: 1px solid blue;
+        }
+        .pixel {
+            width: 21px;
+            height: 21px;
+            margin: 3px;
+        }
+        .canvas {
+            @apply(--layout-horizontal);
+            @apply(--layout-wrap);
+            padding: 2px;
+        }
+        .container[running] {
+            display: none;
+        }
+        </style>
+        <div id="container" class="container" style\$="[[_computeContainerStyle(model.userProperties.*)]]" running\$="[[isRunning]]">
+            <div id="pixel-array" class="canvas"></div>
+        </div>
+    </template>
+    
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);
+/* globals Polymer, Kano */
+
+Polymer({
+    is: 'kano-part-light-circle',
+    behaviors: [Kano.MakeApps.PartsAPI['light-circle'], Kano.Behaviors.LightShapeBehavior],
+    _divPool: [],
+    _createDiv () {
+        if (this._divPool.length) {
+            return this._divPool.pop();
+        }
+        return document.createElement('div');
+    },
+    _recycleDiv (div) {
+        this._divPool.push(div);
+    },
+    start () {
+        Kano.MakeApps.PartsAPI['light-circle'].start.apply(this);
+    },
+    stop () {
+        Kano.MakeApps.PartsAPI['light-circle'].stop.apply(this);
+        this.$.container.style = this._computeContainerStyle();
+    },
+    _computeContainerStyle () {
+        let radius = Math.round(this.model.userProperties.radius || 0),
+            size = ((radius * 2) + 1) * this.PIXEL_SIZE + 4,
+            container = this.$['pixel-array'],
+            bitmap = new Array(Math.pow(radius, 2)),
+            i = 0,
+            distance,
+            div;
+        if (this.isRunning) {
+            return;
+        }
+        while (container.firstChild) {
+            this._recycleDiv(container.firstChild);
+            container.removeChild(container.firstChild);
+        }
+        for (let y = -radius; y <= radius; y++) {
+            for (let x = -radius; x <= radius; x++) {
+                distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+                if (radius >= distance) {
+                    bitmap[i] = this.model.userProperties.color;
+                } else {
+                    bitmap[i] = null;
+                }
+                i++;
+            }
+        }
+        bitmap.forEach((color) => {
+            div = this._createDiv();
+            div.className = 'pixel';
+            div.style.backgroundColor = color;
+            container.appendChild(div);
+        });
+        return `width: ${size}px; height: ${size}px;`;
+    },
+    applyTransform () {
+        if (!this.model || this.isRunning) {
+            return;
+        }
+        let radius = parseInt(this.model.userProperties.radius),
+            x = this.OFFSET_X + this.PIXEL_SIZE * (this.getX() - radius),
+            y = this.OFFSET_Y + this.PIXEL_SIZE * (this.getY() - radius);
+
+        this.transform(`translate(${x}px, ${y}px)`);
+    },
+    detached () {
+        // Firing a regular event won't do much as this is detached and the workspace will not receive it.
+        document.dispatchEvent(new CustomEvent('iron-signal', {
+            bubbles: false,
+            detail: {
+                name: 'remove-shape',
+                data: this.model.id
+            }
+        }));
+    }
+});

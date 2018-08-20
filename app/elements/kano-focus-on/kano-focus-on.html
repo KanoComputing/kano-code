@@ -44,109 +44,110 @@
     </template>
 </dom-module>
 
-<script type="text/javascript">
-    /* globals Polymer, DOMUtil */
-    const ANIMATION_DELAY = 400;
+<script type="module">
+import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
+/* globals Polymer, DOMUtil */
+const ANIMATION_DELAY = 400;
 
-    Polymer({
-        is: 'kano-focus-on',
-        properties: {
-            padding: {
-                type: Number,
-                value: 3
-            },
-            borders: {
-                type: Array,
-                value: () => {
-                    return [];
-                }
+Polymer({
+    is: 'kano-focus-on',
+    properties: {
+        padding: {
+            type: Number,
+            value: 3
+        },
+        borders: {
+            type: Array,
+            value: () => {
+                return [];
             }
-        },
-        observers: [
-            'bordersChanged(border.*)'
-        ],
-        ready () {
-            let canvas = this.$.canvas,
-                ctx = canvas.getContext('2d');
-
-            this.ctx = ctx;
-            this.targets = [];
-            this.animating = false;
-
-            DOMUtil.addVendorProperty(this, 'transition', `transform ${ANIMATION_DELAY}ms`);
-            DOMUtil.addVendorProperty(this.$.canvas, 'transition', `opacity ${ANIMATION_DELAY}ms`);
-        },
-        show (elements) {
-            let rect,
-                origin;
-            if (this.animating) {
-                let defer = (() => {
-                    this.show(elements);
-                    this.removeEventListener('animation-finish', defer);
-                }).bind(this);
-                return this.addEventListener('animation-finish', defer);
-            }
-            this.targets = Array.isArray(elements) ? elements : [elements];
-
-            window.addEventListener('resize', this.drawCanvas.bind(this));
-            this.drawCanvas(elements);
-
-            if (!elements || elements.length !== 1) {
-                DOMUtil.removeVendorProperty(this, 'transform-origin');
-            } else {
-                rect = elements[0].getBoundingClientRect();
-                origin = `${rect.left + (rect.width / 2)}px ${rect.top + (rect.height / 2)}px`;
-                DOMUtil.addVendorProperty(this, 'transform-origin', origin);
-            }
-
-            this.style.visibility = 'visible';
-            this.toggleClass('show', true);
-        },
-        computeBorderStyle (border) {
-            let padding = this.padding + 4;
-            return `transition: opacity ${ANIMATION_DELAY};
-                    left: ${border.left - padding}px;
-                    top: ${border.top - padding}px;
-                    width: ${border.width + padding * 2}px;
-                    height: ${border.height + padding * 2}px;`;
-        },
-        drawCanvas () {
-            let padding = this.padding,
-                ctx = this.ctx,
-                canvas = this.$.canvas,
-                rect;
-
-            canvas.width = ctx.width = window.innerWidth;
-            canvas.height = ctx.height = window.innerHeight;
-
-            canvas.style.width = canvas.width + 'px';
-            canvas.style.height = canvas.height + 'px';
-
-            ctx.fillStyle = '#000';
-            ctx.fillRect(0, 0, ctx.width, ctx.height);
-
-            this.set('borders', []);
-            this.targets.forEach((el) => {
-                rect = el.getBoundingClientRect();
-                ctx.clearRect(
-                    rect.left - padding,
-                    rect.top - padding,
-                    rect.width + (padding * 2),
-                    rect.height + (padding * 2)
-                );
-                this.push('borders', rect);
-            });
-        },
-        hide () {
-            window.removeEventListener('resize', this.drawCanvas.bind(this));
-            this.toggleClass('show', false);
-            this.animating = true;
-            setTimeout(() => {
-                this.set('borders', []);
-                this.style.visibility = 'hidden';
-                this.animating = false;
-                this.fire('animation-finish');
-            }, ANIMATION_DELAY);
         }
-    });
+    },
+    observers: [
+        'bordersChanged(border.*)'
+    ],
+    ready () {
+        let canvas = this.$.canvas,
+            ctx = canvas.getContext('2d');
+
+        this.ctx = ctx;
+        this.targets = [];
+        this.animating = false;
+
+        DOMUtil.addVendorProperty(this, 'transition', `transform ${ANIMATION_DELAY}ms`);
+        DOMUtil.addVendorProperty(this.$.canvas, 'transition', `opacity ${ANIMATION_DELAY}ms`);
+    },
+    show (elements) {
+        let rect,
+            origin;
+        if (this.animating) {
+            let defer = (() => {
+                this.show(elements);
+                this.removeEventListener('animation-finish', defer);
+            }).bind(this);
+            return this.addEventListener('animation-finish', defer);
+        }
+        this.targets = Array.isArray(elements) ? elements : [elements];
+
+        window.addEventListener('resize', this.drawCanvas.bind(this));
+        this.drawCanvas(elements);
+
+        if (!elements || elements.length !== 1) {
+            DOMUtil.removeVendorProperty(this, 'transform-origin');
+        } else {
+            rect = elements[0].getBoundingClientRect();
+            origin = `${rect.left + (rect.width / 2)}px ${rect.top + (rect.height / 2)}px`;
+            DOMUtil.addVendorProperty(this, 'transform-origin', origin);
+        }
+
+        this.style.visibility = 'visible';
+        this.toggleClass('show', true);
+    },
+    computeBorderStyle (border) {
+        let padding = this.padding + 4;
+        return `transition: opacity ${ANIMATION_DELAY};
+                left: ${border.left - padding}px;
+                top: ${border.top - padding}px;
+                width: ${border.width + padding * 2}px;
+                height: ${border.height + padding * 2}px;`;
+    },
+    drawCanvas () {
+        let padding = this.padding,
+            ctx = this.ctx,
+            canvas = this.$.canvas,
+            rect;
+
+        canvas.width = ctx.width = window.innerWidth;
+        canvas.height = ctx.height = window.innerHeight;
+
+        canvas.style.width = canvas.width + 'px';
+        canvas.style.height = canvas.height + 'px';
+
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, ctx.width, ctx.height);
+
+        this.set('borders', []);
+        this.targets.forEach((el) => {
+            rect = el.getBoundingClientRect();
+            ctx.clearRect(
+                rect.left - padding,
+                rect.top - padding,
+                rect.width + (padding * 2),
+                rect.height + (padding * 2)
+            );
+            this.push('borders', rect);
+        });
+    },
+    hide () {
+        window.removeEventListener('resize', this.drawCanvas.bind(this));
+        this.toggleClass('show', false);
+        this.animating = true;
+        setTimeout(() => {
+            this.set('borders', []);
+            this.style.visibility = 'hidden';
+            this.animating = false;
+            this.fire('animation-finish');
+        }, ANIMATION_DELAY);
+    }
+});
 </script>

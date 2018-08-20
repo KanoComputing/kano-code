@@ -7,7 +7,7 @@
 
         <title>kano-light-animation-editor full-screen demo</title>
 
-        <script src="../../../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+        <script src="@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
         <script>
             window.Polymer = {
@@ -15,17 +15,29 @@
             };
         </script>
 
-        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-pages-shared-styles.html">
-        <link rel="import" href="../../../bower_components/iron-demo-helpers/demo-snippet.html">
-        <link rel="import" href="../../../bower_components/iron-flex-layout/iron-flex-layout.html">
-        <link rel="import" href="../../../bower_components/iron-icon/iron-icon.html">
-        <link rel="import" href="../../../scripts/kano/make-apps/parts-api/index.html">
-        <link rel="import" href="../../kano-animated-svg/kano-animated-svg.html">
-        <link rel="import" href="../../kano-icons/kc-ui.html">
-        <link rel="import" href="../../kano-style/themes/dark.html">
-        <link rel="import" href="../kano-light-animation-editor.html">
+        <script type="module" src="@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+        <script type="module" src="@polymer/iron-demo-helpers/demo-snippet.js"></script>
+        <script type="module" src="@polymer/iron-flex-layout/iron-flex-layout.js"></script>
+        <script type="module" src="@polymer/iron-icon/iron-icon.js"></script>
+        <script type="module" src="../../../scripts/kano/make-apps/parts-api/index.js"></script>
+        <script type="module" src="../../kano-animated-svg/kano-animated-svg.js"></script>
+        <script type="module" src="../../kano-icons/kc-ui.js"></script>
+        <script type="module" src="../../kano-style/themes/dark.js"></script>
+        <script type="module" src="../kano-light-animation-editor.js"></script>
 
-        <style is="custom-style" include="demo-pages-shared-styles">
+        <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
             body {
                 padding: 0;
             }
@@ -91,10 +103,16 @@
             .action-control button:hover kano-animated-svg {
                 fill: #fff;
             }
-        </style>
+        </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
     </head>
     <body>
-        <template is="dom-bind" id="bind">
+        <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<template is="dom-bind" id="bind">
             <div class="topbar">
                 <iron-icon id="part-icon" icon="parts:light-animation"></iron-icon>
                 <div class="title">Animation</div>
@@ -104,32 +122,32 @@
                         <iron-icon icon="kc-ui:restart"></iron-icon>
                     </button>
                     <button id="preview-button" type="button" on-tap="_togglePreviewState">
-                        <kano-animated-svg width="64"
-                                           height="64"
-                                           paths="[[previewButtonIconPaths]]"
-                                           selected="stopped"></kano-animated-svg>
+                        <kano-animated-svg width="64" height="64" paths="[[previewButtonIconPaths]]" selected="stopped"></kano-animated-svg>
                     </button>
                 </div>
             </div>
-            <kano-light-animation-editor id="editor"
-                                         label="Animation_1"
-                                         width="16"
-                                         height="8"
-                                         bitmaps="[[bitmaps]]"
-                                         speed="10"
-                                         with-device-outline></kano-light-animation-editor>
-        </template>
-        <script>
-            document.addEventListener('WebComponentsReady', () => {
-                const bind = document.getElementById('bind');
-                bind.bitmaps = [Array.apply(null, Array(128)).map(String.prototype.valueOf,"#000000")];
+            <kano-light-animation-editor id="editor" label="Animation_1" width="16" height="8" bitmaps="[[bitmaps]]" speed="10" with-device-outline=""></kano-light-animation-editor>
+        </template>`;
 
-                bind.previewButtonIconPaths = {
-                    stopped: 'M45.69,32.1a2.24,2.24,0,0,1-1.16,2L21.77,47.41a1.4,1.4,0,0,1-1.51,0,1.34,1.34,0,0,1-.74-1.33v-28a1.34,1.34,0,0,1,.74-1.33,1.4,1.4,0,0,1,1.51,0L44.54,30.06A2.24,2.24,0,0,1,45.69,32.1Z',
-                    running: 'M23.34,46a2.43,2.43,0,0,1-1.9-.78,2.69,2.69,0,0,1-.78-1.93V20.71a2.69,2.69,0,0,1,.78-1.93,2.44,2.44,0,0,1,1.9-.78h3.74a2.44,2.44,0,0,1,1.9.78,2.69,2.69,0,0,1,.78,1.93V43.24A2.69,2.69,0,0,1,29,45.17a2.43,2.43,0,0,1-1.9.78Zm13.51,0a2.49,2.49,0,0,1-1.9-.78,2.63,2.63,0,0,1-.81-1.93V20.71a2.63,2.63,0,0,1,.81-1.93,2.49,2.49,0,0,1,1.9-.78h3.74a2.43,2.43,0,0,1,1.9.78,2.69,2.69,0,0,1,.78,1.93V43.24a2.69,2.69,0,0,1-.78,1.93,2.43,2.43,0,0,1-1.9.78Z'
-                };
+document.body.appendChild($_documentContainer.content);
+</script>
+        <script type="module">
+import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+import '@polymer/iron-demo-helpers/demo-snippet.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import '@polymer/iron-icon/iron-icon.js';
+import '../../../scripts/kano/make-apps/parts-api/index.js';
+import '../../kano-animated-svg/kano-animated-svg.js';
+import '../../kano-icons/kc-ui.js';
+import '../../kano-style/themes/dark.js';
+import '../kano-light-animation-editor.js';
+const bind = document.getElementById('bind');
+bind.bitmaps = [Array.apply(null, Array(128)).map(String.prototype.valueOf,"#000000")];
 
-            });
-        </script>
+bind.previewButtonIconPaths = {
+    stopped: 'M45.69,32.1a2.24,2.24,0,0,1-1.16,2L21.77,47.41a1.4,1.4,0,0,1-1.51,0,1.34,1.34,0,0,1-.74-1.33v-28a1.34,1.34,0,0,1,.74-1.33,1.4,1.4,0,0,1,1.51,0L44.54,30.06A2.24,2.24,0,0,1,45.69,32.1Z',
+    running: 'M23.34,46a2.43,2.43,0,0,1-1.9-.78,2.69,2.69,0,0,1-.78-1.93V20.71a2.69,2.69,0,0,1,.78-1.93,2.44,2.44,0,0,1,1.9-.78h3.74a2.44,2.44,0,0,1,1.9.78,2.69,2.69,0,0,1,.78,1.93V43.24A2.69,2.69,0,0,1,29,45.17a2.43,2.43,0,0,1-1.9.78Zm13.51,0a2.49,2.49,0,0,1-1.9-.78,2.63,2.63,0,0,1-.81-1.93V20.71a2.63,2.63,0,0,1,.81-1.93,2.49,2.49,0,0,1,1.9-.78h3.74a2.43,2.43,0,0,1,1.9.78,2.69,2.69,0,0,1,.78,1.93V43.24a2.69,2.69,0,0,1-.78,1.93,2.43,2.43,0,0,1-1.9.78Z'
+};
+</script>
     </body>
 </html>

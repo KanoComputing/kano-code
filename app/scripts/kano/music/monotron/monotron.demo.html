@@ -4,22 +4,24 @@
         <title></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="import" href="./monotron.html">
-        <link rel="import" href="../note.html">
+        <script type="module" src="./monotron.js"></script>
+        <script type="module" src="../note.js"></script>
     </head>
     <body>
-        <script>
-            let context = new AudioContext(),
-                monotron = new Kano.Music.Monotron(context);
+        <script type="module">
+import { Monotron } from './monotron.js';
+import { Note } from '../note.js';
+let context = new AudioContext(),
+    monotron = new Monotron(context);
 
-            monotron.connect(context.destination);
+monotron.connect(context.destination);
 
-            monotron.lfo.frequency.value = 30;
-            monotron.lfoGain.gain.value = 100;
-            monotron.vcf.frequency.value = 2500;
-            monotron.vcf.Q.value = 0;
+monotron.lfo.frequency.value = 30;
+monotron.lfoGain.gain.value = 100;
+monotron.vcf.frequency.value = 2500;
+monotron.vcf.Q.value = 0;
 
-            monotron.noteOn((new Kano.Music.Note('C', 4)).frequency);
-        </script>
+monotron.noteOn((new Note('C', 4)).frequency);
+</script>
     </body>
 </html>
