@@ -57,6 +57,9 @@ class Toolbox extends Plugin {
         this.entries.splice(index, 1, entry);
         this.update();
     }
+    setWhitelist(whitelist) {
+        this.whitelist = whitelist;
+    }
     update() {
         // Not injected yet, let the inject callback generate the toolbox
         if (!this.editor.injected) {
@@ -66,7 +69,7 @@ class Toolbox extends Plugin {
     }
     onInject() {
         const toolbox = this.entries
-            .map(entry => this.renderer.renderToolboxEntry(new MetaModule(entry)))
+            .map(entry => this.renderer.renderToolboxEntry(new MetaModule(entry), this.whitelist))
             .filter(entry => entry);
         this.editor.editorActions.setToolbox(toolbox);
     }

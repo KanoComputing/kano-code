@@ -1,7 +1,7 @@
 import { FieldAssetPicker } from '../../../../scripts/kano/make-apps/blockly/inputs/asset-picker.js';
 import { localize } from '../../../i18n/index.js';
 import { AudioPlayer } from '../../../../scripts/kano/music/player.js';
-import FieldSoundsFactory from '../../components/blockly/sounds-field.js';
+import FieldSoundsFactory from './custom-blockly/sounds-field.js';
 import './kano-part-speaker.js';
 
 const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
@@ -38,6 +38,12 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             },
             random_from_set: {
                 SET: 'any',
+            },
+            speaker_playback_rate: {
+                RATE: 100,
+            },
+            speaker_set_volume: {
+                VOLUME: 100,
             },
         },
         blocks: [{

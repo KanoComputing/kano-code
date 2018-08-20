@@ -485,15 +485,14 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                     ${img`${success}`}
                     <div class="instructions">
                         <h2>[[localize('SAVED', 'Saved')]]</h2>
-                        <span>[[localize('APP_IS_STORED', 'Your app is safely stored in \\'My Creations\\'.')]]</span>
-                        <span>[[localize('WANT_TO_SHARE', 'Want to share it with your friends?')]]</span>
+                        <span>[[localize('APP_IS_STORED', 'Safely stored in your profile')]]</span>
                     </div>
                     <div class="composed-button" hidden\$="[[!link]]">
                         <input type="text" id="shareurl" value="[[link]]">
                         <button on-tap="copyToClipboard" type="button">[[localize('COPY', 'copy')]]</button>
                     </div>
                     <div class="actions">
-                        <button class="close round" type="button" on-tap="dismiss">[[localize('CLOSE', 'Close')]]</button>
+                        <button class="close round" type="button" on-tap="dismiss">[[localize('OK', 'Ok')]]</button>
                     </div>
                 </div>
             </iron-pages>

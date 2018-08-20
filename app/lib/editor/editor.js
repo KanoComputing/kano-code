@@ -171,6 +171,10 @@ class Editor extends EditorOrPlayer {
             this.storeObserver.rootEl.parentNode.removeChild(this.storeObserver.rootEl);
             this.rootEl.parentNode.removeChild(this.rootEl);
         }
+        this.output.dispose();
+        if (this.workspaceView) {
+            this.workspaceView.onDispose();
+        }
         this.runPluginTask('onDispose');
     }
     load(app) {

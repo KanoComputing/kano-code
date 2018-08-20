@@ -8,6 +8,7 @@ import { DrawOutputProfile } from './output.js';
 
 import { AllApis, EventsModuleFactory } from '../../scripts/meta-api/all.js';
 import { BackgroundEditorPlugin } from '../background/index.js';
+import { customDrawBlocks } from '../common/custom-draw-blocks.js';
 
 const COLOR = '#82C23D';
 
@@ -37,13 +38,39 @@ class DefaultSourcePlugin extends code.Plugin {
     }
 }
 
+const CustomDrawToolbox = Object.assign({}, DrawToolbox, {
+    register(Blockly) {
+        customDrawBlocks.forEach((block) => {
+            Blockly.Blocks[block.block.id] = {
+                init() {
+                    this.jsonInit(block.block);
+                }
+            };
+            Blockly.JavaScript[block.block.id] = block.javascript;
+        });
+        DrawToolbox.register(Blockly);
+    },
+});
+
+CustomDrawToolbox.category.blocks = [...CustomDrawToolbox.category.blocks];
+customDrawBlocks.reverse().forEach((block) => {
+    const { id, color, shadow} = block.block;
+    const customColor = color || COLOR;
+    const categoryBlock = {
+        id,
+        colour: customColor,
+        shadow
+    };
+    CustomDrawToolbox.category.blocks.unshift(categoryBlock);
+})
+
 export class DrawEditorProfile extends code.EditorProfile {
     constructor(editor) {
         super();
         this.editor = editor;
         this._outputProfile = new DrawOutputProfile();
         this.eventsToolbox = EventsModuleFactory(this.editor);
-        this._toolbox = AllApis.concat(DrawToolbox);
+        this._toolbox = AllApis.concat(CustomDrawToolbox);
         this._toolbox.unshift(this.eventsToolbox);
     }
     get id() {
@@ -70,4 +97,3 @@ export class DrawEditorProfile extends code.EditorProfile {
 }
 
 export default DrawEditorProfile;
-

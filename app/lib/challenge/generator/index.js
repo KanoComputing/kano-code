@@ -396,9 +396,11 @@ class Challenge extends Plugin {
                 }
             }
             const { addedParts } = this.editor;
-            for (let i = 0; i < addedParts.length; i += 1) {
-                if (addedParts[i].id === categoryId) {
-                    return addedParts[i].label;
+            if (typeof addedParts !== 'undefined') {
+                for (let i = 0; i < addedParts.length; i += 1) {
+                    if (addedParts[i].id === categoryId) {
+                        return addedParts[i].label;
+                    }
                 }
             }
             return categoryId;
@@ -462,6 +464,8 @@ class Challenge extends Plugin {
                     if (typeof defaults === 'object' && 'id' in defaults) {
                         defaultLabel = defaults.label || defaults.id;
                         defaults = defaults.id;
+                    } else if (this.fieldDefaults[parentBlockType.block][fieldName]) {
+                        defaultLabel = this.fieldDefaults[parentBlockType.block][fieldName];
                     } else if (this.fieldDefaults[parentBlockType.block].label) {
                         defaultLabel = this.fieldDefaults[parentBlockType.block].label;
                     }
@@ -486,7 +490,7 @@ class Challenge extends Plugin {
                 const fieldPreviewLabel = labelMap.get(fieldValue);
                 const fieldPreview = Challenge.generateFieldPreview(node, this.translate('field', fieldPreviewLabel || fieldValue));
                 const currentFieldPreview = Challenge.generateFieldPreview(node, defaultLabel || defaults);
-                let bannerCopy = commentData.bannerCopy || 'Change $currentFieldPreview to $fieldPreview';
+                let bannerCopy = commentData.bannerCopy || 'Change \"$currentFieldPreview\" to \"$fieldPreview\"';
                 bannerCopy = bannerCopy.replace(/\$fieldPreview/g, fieldPreview);
                 bannerCopy = bannerCopy.replace(/\$currentFieldPreview/g, currentFieldPreview);
                 // Add a `change value` step to get the right value
@@ -512,7 +516,11 @@ class Challenge extends Plugin {
         return steps;
     }
     normaliseType(value) {
-        value = !isNaN(value) ? parseInt(value) : value;
+
+        if (value.length === 0) {
+            return "&#160;";
+        }
+        value = value.length > 0 && !isNaN(value) ? parseInt(value) : value;
         switch(typeof value) {
             case 'string':
                 return value.toLowerCase();
