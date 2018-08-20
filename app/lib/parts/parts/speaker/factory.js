@@ -183,15 +183,16 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
 
                         this.updateShape_(defaultCategory);
                     },
-                    updateShape_(option) {
+                    updateShape_(option, sample) {
                         this.removeInput('SAMPLE');
-                        this.createInputs_(option);
+                        this.createInputs_(option, sample);
                     },
-                    createInputs_(option) {
+                    createInputs_(option, sample) {
                         let options,
                             samplesArr = [],
                             fieldDrop,
-                            FieldSounds;
+                            FieldSounds,
+                            sampleLabel;
                         /* In case the sample pack doesn't exist, do a case-insensitive match
                             against all keys in the object. We need to do that because old shares
                             and exported apps all have been saved with the ids in lowercase. */
@@ -202,25 +203,30 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                                 }
                             });
                         }
-                        options = Object.keys(samples[option]).map(key => [samples[option][key], key]);
 
+
+                        options = Object.keys(samples[option]).map(key => [samples[option][key], key]);
                         Object.keys(samples[option]).forEach((key) => {
                             samplesArr.push({ label: samples[option][key], value: key });
                         });
+                        sample ? sampleLabel = sample : sampleLabel = samplesArr[0].label;
                         FieldSounds = FieldSoundsFactory(Blockly);
-                        fieldDrop = new FieldSounds(samplesArr[0].label, samplesArr);
+                        fieldDrop = new FieldSounds(sampleLabel, samplesArr);
 
                         this.appendDummyInput('SAMPLE')
                             .appendField(fieldDrop, 'SAMPLE');
                     },
                     domToMutation(xmlElement) {
-                        const type = xmlElement.getAttribute('set');
-                        this.updateShape_(type);
+                        const typeSet = xmlElement.getAttribute('set');
+                        const typeSample = xmlElement.getAttribute('sample');
+                        this.updateShape_(typeSet, typeSample);
                     },
                     mutationToDom() {
                         let container = document.createElement('mutation'),
-                            type = this.getFieldValue('SET');
-                        container.setAttribute('set', type);
+                            typeSet = this.getFieldValue('SET'),
+                            typeSample = this.getFieldValue('SAMPLE');
+                        container.setAttribute('set', typeSet);
+                        container.setAttribute('sample', typeSample);
                         return container;
                     },
                 };
