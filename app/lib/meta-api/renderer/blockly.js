@@ -18,7 +18,8 @@ class BlocklyMetaRenderer {
         if (typeof whitelist !== 'undefined') {
             if (mod.def.id in whitelist) {
                 category.blocks = category.blocks.filter((block) => {
-                    const id = block.id || block;
+                    let id = block.id || block;
+                    id = id.replace(/^[^#]+(#)/g, "");
                     return whitelist[mod.def.id].indexOf(id) !== -1;
                 });
             } else {
