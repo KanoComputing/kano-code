@@ -209,7 +209,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                         Object.keys(samples[option]).forEach((key) => {
                             samplesArr.push({ label: samples[option][key], value: key });
                         });
-                        sample ? sampleLabel = sample : sampleLabel = samplesArr[0].label;
+                        sampleLabel = sample || samplesArr[0].label;
                         FieldSounds = FieldSoundsFactory(Blockly);
                         fieldDrop = new FieldSounds(sampleLabel, samplesArr);
 
