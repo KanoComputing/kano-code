@@ -454,6 +454,23 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 display: block !important;
                 visibility: hidden;
             }
+
+            @keyframes fade {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            .fade-in, .fade-out {
+                animation-name: fade;
+                animation-duration: 300ms;
+                animation-iteration-count: 1;
+                animation-direction: normal;
+                animation-timing-function: 'ease-out';
+            }
+
+            .fade-out {
+                animation-direction: reverse;
+            }
         </style>
         <button class="dismiss" on-tap="dismiss">
             <span>[[localize('CLOSE', 'Close')]]</span>
@@ -517,23 +534,23 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
         return this.localize('SAVE', 'Save');
     }
     _pageChanged(page, prevPage) {
-        let oldPageEl = this.$['options-pager'].querySelector('.iron-selected'),
-            animationPromise;
+        const oldPageEl = this.$['options-pager'].querySelector('.iron-selected');
+        let animationPromise;
         if (oldPageEl) {
             animationPromise = new Promise((resolve, reject) => {
-                oldPageEl.animate({
-                    opacity: [1, 0],
-                }, {
-                    duration: 300,
-                    easing: 'ease-out',
-                }).onfinish = resolve;
+                const onFadeOut = () => {
+                    resolve();
+                    oldPageEl.classList.remove('fade-out');
+                    oldPageEl.removeEventListener('animationend', onFadeOut);
+                };
+                oldPageEl.addEventListener('animationend', onFadeOut);
+                oldPageEl.classList.add('fade-out');
             });
         } else {
             this._page = page;
             return;
         }
         animationPromise.then(() => {
-            let newPageEl;
             this._page = page;
             if (this.splash) {
                 this.splash.cancel();
@@ -543,15 +560,16 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 this.splash = new BlockAnimation(container);
                 this.splash.init();
             }
-            newPageEl = this.$['options-pager'].querySelector('.iron-selected');
+            const newPageEl = this.$['options-pager'].querySelector('.iron-selected');
             if (newPageEl) {
                 animationPromise = new Promise((resolve, reject) => {
-                    newPageEl.animate({
-                        opacity: [0, 1],
-                    }, {
-                        duration: 300,
-                        easing: 'ease-out',
-                    }).onfinish = resolve;
+                    const onFadeIn = () => {
+                        resolve();
+                        newPageEl.classList.remove('fade-in');
+                        newPageEl.removeEventListener('animationend', onFadeIn);
+                    };
+                    newPageEl.addEventListener('animationend', onFadeIn);
+                    newPageEl.classList.add('fade-in');
                 });
             } else {
                 animationPromise = Promise.resolve();
