@@ -1,4 +1,4 @@
-class Parts {
+export class Parts {
     constructor() {
         this.partTypes = {};
         this.list = [];
@@ -11,7 +11,8 @@ class Parts {
         this.partTypes[id] = PartClass;
     }
     create(model, size) {
-        return new this.partTypes[model.partType](model, this, size);
+        const defaultModel = this.list.find(p => p.type === model.type);
+        return new this.partTypes[model.partType](Object.assign({}, model, defaultModel), this, size);
     }
     clear() {
         this.nameRegistry = {};

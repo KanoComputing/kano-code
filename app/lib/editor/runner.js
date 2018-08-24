@@ -59,6 +59,10 @@ export class Runner extends Plugin {
         const { appModules } = this.appModulesLoader;
         return appModules.instrumentize(method);
     }
+    dispose() {
+        const { appModules } = this.appModulesLoader;
+        appModules.stop();
+    }
 }
 
 export default Runner;

@@ -1,11 +1,19 @@
-import * as code from '../index.js';
+import { Plugin } from '../editor/plugin.js';
+import { Parts } from './parts.js';
 
-export class PartsOutputPlugin extends code.Plugin {
+export class PartsOutputPlugin extends Plugin {
     constructor(partTypes, parts) {
         super();
         this.partTypes = partTypes;
         this.partList = parts;
         this._parts = [];
+        this._partsModelManager = new Parts();
+        partTypes.forEach((PartClass) => {
+            this._partsModelManager.defineType(PartClass.id, PartClass);
+        });
+        parts.forEach((partDefinition) => {
+            this._partsModelManager.define(partDefinition);
+        });
     }
     onInstall(output) {
         this.output = output;
@@ -31,7 +39,7 @@ export class PartsOutputPlugin extends code.Plugin {
         }
         const partEl = document.createElement(part.tagName);
         partEl.className = part.partType;
-        partEl.model = part;
+        partEl.model = this._partsModelManager.create(part, {});
         partEl.setAttribute('id', part.id);
         partEl.setAttribute('slot', 'part');
         partsRoot.appendChild(partEl);

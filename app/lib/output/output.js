@@ -133,6 +133,7 @@ export class Output extends PluginReceiver {
         return null;
     }
     dispose() {
+        this.runner.dispose();
         if (this.outputViewProvider) {
             this.outputViewProvider.onDispose();
         }

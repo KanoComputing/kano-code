@@ -57,7 +57,7 @@ export class Player extends EditorOrPlayer {
         this.output.setRunningState(...args);
     }
     getRunningState() {
-        return this.output.setRunningState();
+        return this.output.getRunningState();
     }
     toggleRunningState() {
         this.output.toggleRunningState();
@@ -89,6 +89,12 @@ export class Player extends EditorOrPlayer {
             this.outputRoot.style.width = '';
             this.outputRoot.style.height = '';
         }
+    }
+    dispose() {
+        if (this.element) {
+            this.element.removeChild(this.outputRoot);
+        }
+        this.output.dispose();
     }
 }
 
