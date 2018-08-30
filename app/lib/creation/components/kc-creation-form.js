@@ -67,12 +67,17 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 position: absolute;
                 @apply --layout-horizontal;
                 @apply --layout-center;
-                top: 28px;
-                right: 28px;
+                top: 47px;
+                right: 31px;
                 background: transparent;
                 color: var(--color-chateau);
                 font-size: 14px;
                 z-index: 1;
+                padding: 0;
+                transition: all 300ms ease-in-out;
+            }
+            .dismiss:hover {
+                opacity: 0.8;
             }
             .dismiss iron-icon {
                 background: var(--color-chateau);
@@ -472,10 +477,6 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 animation-direction: reverse;
             }
         </style>
-        <button class="dismiss" on-tap="dismiss">
-            <span>[[localize('CLOSE', 'Close')]]</span>
-            <iron-icon icon="clear"></iron-icon>
-        </button>
         <div class="header" hidden\$="[[_isHeaderHidden(_page)]]">
             <iron-icon icon="reply"></iron-icon>
             <span>[[localize('SAVING', 'Saving')]]</span>
@@ -515,6 +516,10 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             </iron-pages>
         </section>
         <section class="preview">
+            <button class="dismiss" on-tap="dismiss">
+                <span>[[localize('CLOSE', 'Close')]]</span>
+                <iron-icon icon="clear"></iron-icon>
+            </button>
             <slot name="preview"></slot>
         </section>
 `;
