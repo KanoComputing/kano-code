@@ -13,7 +13,7 @@ class PartsModule extends AppModule {
         };
     }
 
-    static get name() { return 'parts'; }
+    static get id() { return 'parts'; }
 
     static get aliases() { return ['devices']; }
 
@@ -68,7 +68,7 @@ class PartsModule extends AppModule {
     }
 
     _whenCollision(part1, part2, callback) {
-        let part1Id, 
+        let part1Id,
             part2Id;
         if (!part1 || !part2) {
             return;
@@ -91,7 +91,7 @@ class PartsModule extends AppModule {
     }
 
     _collides(part1, part2) {
-        let collides, 
+        let collides,
 part1Rect;
         if (!part1 || !part2) {
             return;

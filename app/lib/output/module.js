@@ -6,6 +6,11 @@ export class OutputModule extends AppModule {
         this.addLifecycleStep('start', '_start');
         this.addLifecycleStep('stop', '_stop');
     }
+
+    static get id() {
+        return 'output';
+    }
+
     _start() {
         if (!this.output.outputView) {
             return;

@@ -1,7 +1,7 @@
 import LoopModule from './loop.js';
 
 class LoopsModule extends LoopModule {
-    static get name() { return 'loops'; }
+    static get id() { return 'loops'; }
 }
 
 export default LoopsModule;

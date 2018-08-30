@@ -1,7 +1,7 @@
 import DongleModule from './dongle.js';
 
 class TiltModule extends DongleModule {
-    static get name() { return 'gyroAccelerometer'; }
+    static get id() { return 'gyroAccelerometer'; }
 }
 
 export default TiltModule;

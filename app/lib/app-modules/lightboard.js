@@ -31,7 +31,7 @@ class LightboardModule extends AppModule {
         this.addMethod('clear', '_clear');
     }
 
-    static get name() { return 'lightboard'; }
+    static get id() { return 'lightboard'; }
 
     config(opts) {
         this.api = opts.hardwareAPI;
@@ -95,9 +95,9 @@ class LightboardModule extends AppModule {
             return this.api.getAllDevices().filter((dev) => {
                 return dev.product === 'lightboard' || dev.product === 'RPK';
             });
-        } 
+        }
             return [];
-        
+
     }
 
     paint() {

@@ -10,7 +10,7 @@ class LoopModule extends AppModule {
         this.addLifecycleStep('stop', '_stop');
     }
 
-    static get name() { return 'loop'; }
+    static get id() { return 'loop'; }
 
     _forever(callback) {
         // push the next tick to the end of the events queue

@@ -11,7 +11,7 @@ class GlobalModule extends AppModule {
         this._reset();
     }
 
-    static get name() { return 'global'; }
+    static get id() { return 'global'; }
 
     _when(name, callback) {
         this._listeners[name] = this._listeners[name] || [];

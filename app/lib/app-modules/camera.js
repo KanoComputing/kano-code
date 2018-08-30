@@ -14,7 +14,7 @@ class CameraModule extends AppModule {
         this.addMethod('connect', '_connect');
     }
 
-    static get name() { return 'camera'; }
+    static get id() { return 'camera'; }
 
     _flash(color, length) {
         if (this.api) {

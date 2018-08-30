@@ -9,7 +9,7 @@ class ColourModule extends AppModule {
         this.addMethod('lerp', '_lerp');
     }
 
-    static get name() { return 'colour'; }
+    static get id() { return 'colour'; }
 
     HSVtoRGB(h, s, v) {
         let r;

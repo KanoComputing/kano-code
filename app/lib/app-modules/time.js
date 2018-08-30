@@ -15,7 +15,7 @@ class TimeModule extends AppModule {
         this.addLifecycleStep('stop', '_stop');
     }
 
-    static get name() { return 'time'; }
+    static get id() { return 'time'; }
 
     getId() {
         return this.incr++;
@@ -25,8 +25,8 @@ class TimeModule extends AppModule {
         if (unit === 'frames') {
             let loopId = this.getId(),
                 startTimestamp,
-                func, 
-                dt, 
+                func,
+                dt,
                 diff;
             // Round and min to 1
             interval = Math.max(1, Math.round(interval));

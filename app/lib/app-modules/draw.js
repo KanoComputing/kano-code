@@ -7,7 +7,7 @@ export const DrawModuleFactory = (provider) => {
             super(output);
             this.addLifecycleStep('start', '_start');
         }
-        static get name() {
+        static get id() {
             return 'ctx';
         }
         _start() {

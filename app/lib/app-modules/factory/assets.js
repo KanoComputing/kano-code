@@ -8,7 +8,7 @@ export const AssetsModuleFactory = (assetsRoot, stickers) => class AssetsModule 
         this.addMethod('randomSticker', '_randomSticker');
     }
 
-    static get name() {
+    static get id() {
         return 'assets';
     }
 

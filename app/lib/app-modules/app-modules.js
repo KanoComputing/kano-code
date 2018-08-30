@@ -4,18 +4,18 @@ class AppModules {
         this.output = output;
         this.modules = {};
     }
-    define(name, ModuleClass) {
-        this.modules[name] = new ModuleClass(this.output);
+    define(id, ModuleClass) {
+        this.modules[id] = new ModuleClass(this.output);
         if (ModuleClass.aliases) {
             ModuleClass.aliases.forEach((alias) => {
-                this.modules[alias] = this.modules[name];
+                this.modules[alias] = this.modules[id];
             });
         }
     }
     config(config) {
-        Object.keys(this.modules).forEach((name) => {
-            if (this.modules[name] && this.modules[name].config && typeof this.modules[name].config === 'function') {
-                this.modules[name].config(config);
+        Object.keys(this.modules).forEach((id) => {
+            if (this.modules[id] && this.modules[id].config && typeof this.modules[id].config === 'function') {
+                this.modules[id].config(config);
             }
         });
     }
@@ -25,25 +25,25 @@ class AppModules {
     init(...args) {
         this.config(...args);
     }
-    getModule(name) {
-        if (this.modules[name]) {
-            return this.modules[name].methods;
+    getModule(id) {
+        if (this.modules[id]) {
+            return this.modules[id].methods;
         }
         return {};
     }
     createAppCode(prefix, code) {
-        const moduleImports = Object.keys(this.modules).reduce((acc, name) => {
-            const symbols = this.modules[name].getSymbols();
-            acc += `var ${name} = ${prefix}.getModule('${name}');\n`;
-            acc += symbols.map(s => `var ${s} = ${prefix}.getModule('${name}').${s};\n`).join('');
+        const moduleImports = Object.keys(this.modules).reduce((acc, id) => {
+            const symbols = this.modules[id].getSymbols();
+            acc += `var ${id} = ${prefix}.getModule('${id}');\n`;
+            acc += symbols.map(s => `var ${s} = ${prefix}.getModule('${id}').${s};\n`).join('');
             return acc;
         }, '');
         return `(function () {\n${moduleImports}\n${code}\n})();\n`;
     }
     _runModuleLifecycleStep(name) {
-        Object.keys(this.modules).forEach((key) => {
-            if (typeof this.modules[key].executeLifecycleStep === 'function') {
-                this.modules[key].executeLifecycleStep(name);
+        Object.keys(this.modules).forEach((id) => {
+            if (typeof this.modules[id].executeLifecycleStep === 'function') {
+                this.modules[id].executeLifecycleStep(name);
             }
         });
     }

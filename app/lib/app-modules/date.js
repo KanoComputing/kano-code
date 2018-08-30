@@ -9,7 +9,7 @@ class DateModule extends AppModule {
         this.addMethod('getFormattedTime', '_getFormattedTime');
     }
 
-    static get name() { return 'date'; }
+    static get id() { return 'date'; }
 
     _getCurrent() {
         let current = {},

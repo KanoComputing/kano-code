@@ -120,7 +120,7 @@ class DataModule extends AppModule {
         this.addMethod('clock', '_clock');
     }
 
-    static get name() { return 'data'; }
+    static get id() { return 'data'; }
 
     config(c) {
         super.config(c);
@@ -214,12 +214,12 @@ class DataModule extends AppModule {
             if (this.cache[url].response) {
                 // Returns a cloned version of the response
                 return Promise.resolve(this.cache[url].response.clone());
-            } 
+            }
                 // Wait for the request to finish before returning the response
                 return this.cache[url].finished.then(() => {
                     return this.cache[url].response.clone()
                 }).catch(e => {});
-            
+
         }
     }
 

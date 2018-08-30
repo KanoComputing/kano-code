@@ -9,7 +9,7 @@ class AppModulesLoader {
     start() {
         this.appModules.init(this.output.config);
         this.modules.forEach((Mod) => {
-            this.appModules.define(Mod.name, Mod);
+            this.appModules.define(Mod.id, Mod);
         });
     }
 }

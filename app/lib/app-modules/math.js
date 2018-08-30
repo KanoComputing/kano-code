@@ -8,7 +8,7 @@ class MathModule extends AppModule {
         this.addMethod('sign', '_sign');
         this.addMethod('lerp', '_lerp');
     }
-    static get name() { return 'math'; }
+    static get id() { return 'math'; }
     _sign(x) {
         x = +x; // convert to a number
         if (x === 0 || isNaN(x)) {

@@ -13,7 +13,7 @@ class MicModule extends AppModule {
         this.addMethod('getPitch', '_getPitch');
     }
 
-    static get name() { return 'mic'; }
+    static get id() { return 'mic'; }
 
     _getAudioStream() {
         if (this.api) {
