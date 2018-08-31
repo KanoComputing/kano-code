@@ -7,6 +7,8 @@ export class CreationPlugin extends Plugin {
     constructor() {
         super();
         this.subscriptions = new Subscriptions();
+
+        this.enabled = true;
     }
     onInstall(editor) {
         this.editor = editor;
@@ -55,6 +57,13 @@ export class CreationPlugin extends Plugin {
         this.creationPreviewBlob = null;
     }
     init() {
+        if (!this.enabled) {
+            if (this.alertDialog) {
+                this.alertDialog.open();
+            }
+            return;
+        }
+
         this.creation = this.editor.exportCreation();
         this.creationDialog.open();
         const player = new Player();
@@ -85,6 +94,22 @@ export class CreationPlugin extends Plugin {
         // Dispose of the subscriptions
         this.subscriptions.dispose();
         this.creationDialog.dispose();
+    }
+
+    enable() {
+        this.enabled = true;
+
+        if (this.alertDialog) {
+            this.alertDialog.dispose();
+        }
+    }
+    disable(heading, text) {
+        this.enabled = false;
+
+        if (this.alertDialog) {
+            this.alertDialog.dispose();
+        }
+        this.alertDialog = this.editor.dialogs.registerAlert({ heading, text, buttonLabel: 'Dismiss' });
     }
 }
 
