@@ -93,6 +93,10 @@ Polymer({
       'updatePosition(bounce)'
   ],
 
+  attached() {
+      this.animationSupported = 'animate' in HTMLElement.prototype;
+  },
+
   ready() {
       this.arrowImage = dom(this.$.content).getDistributedNodes()[0];
       window.addEventListener('resize', this.updatePosition.bind(this));
@@ -155,7 +159,7 @@ Polymer({
       DOMUtil.addVendorProperty(this.arrowImage, 'transform-origin', `50% 50%`);
       this.style.visibility = 'visible';
 
-      if (this.noAnimations || this.alreadyAnimated) {
+      if (this.noAnimations || this.alreadyAnimated || !this.animationSupported) {
           return;
       }
       this.arrowImage.animate([{

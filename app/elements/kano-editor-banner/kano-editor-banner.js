@@ -279,8 +279,9 @@ Polymer({
             type: Boolean,
         },
     },
-
+    
     attached() {
+        this.animationSupported = 'animate' in HTMLElement.prototype;
         this._registerElement('banner-button', this.$['banner-button']);
     },
 
@@ -288,21 +289,26 @@ Polymer({
         this.$['banner-button'].setAttribute('data-animate', (duration + 150));
         // register element with updated 'data-animate' attribute
         this._registerElement(id, this.$[id]);
-
-        this.$[id].animate([{
-            transform: 'scale(0)',
-            opacity: '0',
-        }, {
-            transform: 'scale(1)',
-            opacity: '1',
-        },
-        ], {
-            duration,
-            fill: 'forwards',
-        }).onfinish = () => {
-            this.$['banner-button'].removeAttribute('data-animate');
+        if (this.animationSupported) {
+            this.$[id].animate([{
+                transform: 'scale(0)',
+                opacity: '0',
+            }, {
+                transform: 'scale(1)',
+                opacity: '1',
+            },
+            ], {
+                duration,
+                fill: 'forwards',
+            }).onfinish = () => {
+                this.$['banner-button'].removeAttribute('data-animate');
+                this._registerElement(id, this.$[id]);
+            };
+        } else {
+            this.$[id].style.opacity = 1;
+            this.$[id].removeAttribute('data-animate');
             this._registerElement(id, this.$[id]);
-        };
+        }
     },
 
     shakeButton() {

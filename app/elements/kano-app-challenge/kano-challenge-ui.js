@@ -431,6 +431,7 @@ Polymer({
         Object.keys(this.eventsCausingRefit).forEach((eventName) => {
             this.addEventListener(eventName, this._onRefit);
         });
+        this.animationSupported = 'animate' in HTMLElement.prototype;
     },
 
     detached() {
@@ -615,12 +616,16 @@ Polymer({
 
     computeBeacon() {
         const { beacon } = this;
-        this.$.beacon.animate({
-            opacity: [1, 0],
-        }, {
-            duration: 200,
-            fill: 'forwards',
-        });
+        if (this.animationSupported) {
+            this.$.beacon.animate({
+                opacity: [1, 0],
+            }, {
+                duration: 200,
+                fill: 'forwards',
+            });
+        } else {
+            this.$.beacon.style.opacity = 1;
+        }
 
         clearTimeout(this._ringSoundTimeout);
         this._ringAnimationCount = 0;
@@ -685,13 +690,17 @@ Polymer({
             angle,
             offset,
         });
-        this.$.beacon.animate({
-            opacity: [0, 1],
-        }, {
-            duration: 200,
-            delay: 10,
-            fill: 'forwards',
-        });
+        if (this.animationSupported) {
+            this.$.beacon.animate({
+                opacity: [0, 1],
+            }, {
+                duration: 200,
+                delay: 10,
+                fill: 'forwards',
+            });
+        } else {
+            this.$.beacon.style.opacity = 1;
+        }
         this.toggleClass('animate', true, this.$.beacon);
         this.toggleClass('animate', true, this.$.ring);
         this.toggleClass('animate', true, this.$.ripple);

@@ -197,17 +197,22 @@ class KCPartsControls extends Store.StateReceiver(mixinBehaviors([
             if (!partEl) {
                 return;
             }
-            partEl.querySelector('kano-part-list-item').animate({
-                opacity: [0, 1],
-            }, {
-                duration: 300,
-                fill: 'forwards',
-            });
+            if (this.animationSupported) {
+                partEl.querySelector('kano-part-list-item').animate({
+                    opacity: [0, 1],
+                }, {
+                    duration: 300,
+                    fill: 'forwards',
+                });
+            } else {
+                partEl.querySelector('kano-part-list-item').style.opacity = 1;
+            }   
         });
         this._partsToAnimateIn = [];
     }
     constructor() {
         super();
+        this.animationSupported = 'animate' in HTMLElement.prototype;
         this._partsToAnimateIn = [];
     }
     connectedCallback() {

@@ -44,6 +44,10 @@ Polymer({
       '_update(x, y, width, height)'
   ],
 
+  attached() {
+      this.animationSupported = 'animate' in HTMLElement.prototype;
+  },
+
   ready () {
       this.hidden = true;
   },
@@ -56,17 +60,22 @@ Polymer({
   show () {
       this.style.visibility = 'visible';
       this._pause();
-      this.animation = this.animate([{
-          transform: `translate(${this.x - 7}px, ${this.y - 7}px) scale(4)`,
-          opacity: 0
-      },{
-          transform: `translate(${this.x - 7}px, ${this.y - 7}px)`,
-          opacity: 1
-      }], {
-          duration: 200,
-          fill: 'forwards',
-          easing: 'ease-in-out'
-      });
+      if (this.animationSupported) {
+          this.animation = this.animate([{
+              transform: `translate(${this.x - 7}px, ${this.y - 7}px) scale(4)`,
+              opacity: 0
+            },{
+                transform: `translate(${this.x - 7}px, ${this.y - 7}px)`,
+                opacity: 1
+            }], {
+                duration: 200,
+                fill: 'forwards',
+                easing: 'ease-in-out'
+            });
+        } else {
+            this.style.opacity = 1;
+            this.style.transform = `translate(${this.x - 7}px, ${this.y - 7}px)`;
+        }
       this.hidden = false;
   },
 
@@ -74,22 +83,28 @@ Polymer({
       if (this.hidden) {
           return;
       }
+      if (this.animationSupported) {
       this._pause();
-      this.animation = this.animate([{
-          transform: `translate(${(this.x - 5) || 0}px, ${(this.y - 5) || 0}px)`,
-          opacity: 1
-      },{
-          transform: `translate(${(this.x - 5) || 0}px, ${(this.y - 5) || 0}px) scale(4)`,
-          opacity: 0
-      }], {
-          duration: 200,
-          fill: 'forwards',
-          easing: 'ease-in-out'
-      });
+        this.animation = this.animate([{
+            transform: `translate(${(this.x - 5) || 0}px, ${(this.y - 5) || 0}px)`,
+            opacity: 1
+        },{
+            transform: `translate(${(this.x - 5) || 0}px, ${(this.y - 5) || 0}px) scale(4)`,
+            opacity: 0
+        }], {
+            duration: 200,
+            fill: 'forwards',
+            easing: 'ease-in-out'
+        });
 
-      this.animation.finished.then(() => {
-          this.style.visibility = 'hidden';
-      });
+        this.animation.finished.then(() => {
+            this.style.visibility = 'hidden';
+        });
+    } else {
+        this.style.opacity = 0;
+        this.style.transform = `translate(${(this.x - 5) || 0}px, ${(this.y - 5) || 0}px) scale(4)`;
+        this.style.visibility = 'hidden';
+      }
       this.hidden = true;
   },
 
