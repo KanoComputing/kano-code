@@ -261,6 +261,9 @@ class Challenge extends Plugin {
         this.challengeActions.disableLockdown();
     }
     _displayBeacon(beacon) {
+        if (this.flyoutMode && beacon.target && beacon.target.flyout_block) {
+            beacon.leftAlign = true;
+        }
         this.challengeActions.updateBeacon(beacon);
     }
     _hideBeacon() {
@@ -294,6 +297,7 @@ class Challenge extends Plugin {
             this.editor.registerProfile(this.profile);
             this.setSceneVariables(Challenge.getSceneVariables(toolbox));
         }
+        this.flyoutMode = flyoutMode;
         this.editor.editorActions.setFlyoutMode(flyoutMode);
         this.editor.loadVariables(variables);
         if (defaultApp) {

@@ -67,22 +67,25 @@ Polymer({
 
   properties: {
       source: {
-          type: Object
+          type: Object,
       },
       target: {
-          type: Object
+          type: Object,
       },
       angle: {
           type: Number,
-          value: 0
+          value: 0,
       },
       offset: {
           type: Number,
-          value: 0
+          value: 0,
+      },
+      leftAlign: {
+          type: Boolean,
       },
       bounce: {
           type: Number,
-          value: 40
+          value: 40,
       }
   },
 
@@ -190,20 +193,24 @@ Polymer({
           vy = Math.sin(a) * r,
           x, y, offsetX, offsetY;
 
-      x = Math.min(vx * r, w / 2);
-      y = Math.min(vy * r, h / 2);
-
-
-      x += l;
-      y += t;
-
-      x += w / 2;
-      y += h / 2;
-
-      y -= this.arrowImage.offsetHeight / 2;
-
-      y = Math.max(y, t - arrowRect.height / 2);
-      x = Math.max(x, l - arrowRect.width / 2);
+          
+        if (this.leftAlign) {
+            x = target.left - arrowRect.width / 2;
+            y = target.top - arrowRect.height / 2;
+        } else {
+            x = Math.min(vx * r, w / 2);
+            y = Math.min(vy * r, h / 2);
+        
+            x += l;
+            y += t;
+        
+            x += w / 2;
+            y += h / 2;
+        
+            y -= this.arrowImage.offsetHeight / 2;
+            y = Math.max(y, t - arrowRect.height / 2);
+            x = Math.max(x, l - arrowRect.width / 2);
+        }
 
       offsetX = Math.cos(a) * this.bounce;
       offsetY = Math.sin(a) * this.bounce;

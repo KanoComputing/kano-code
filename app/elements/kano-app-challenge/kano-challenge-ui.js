@@ -308,7 +308,7 @@ Polymer({
         <kano-arrow source="[[arrow.source]]" target="[[arrow.target]]" angle="[[arrow.angle]]" id="arrow" hidden\$="[[idle]]">
             <iron-image slot="arrow-image" src="/assets/icons/white_arrow.svg" width="[[arrow.size]]" height="[[arrow.size]]" sizing="contain"></iron-image>
         </kano-arrow>
-        <kano-arrow target="[[_beacon.target]]" bounce="0" angle="[[_beacon.angle]]" offset="[[_beacon.offset]]" hidden\$="[[idle]]">
+        <kano-arrow target="[[_beacon.target]]" bounce="0" angle="[[_beacon.angle]]" offset="[[_beacon.offset]]" left-align="[[_beacon.leftAlign]]" hidden\$="[[idle]]">
             <div class="beacon-wrapper" slot="arrow-image">
                 <div class="ripple" id="ripple" on-animationiteration="_ringAnimationIterated" on-animationstart="_ringAnimationIterated"></div>
                 <div class="ring" id="ring"></div>
@@ -666,6 +666,7 @@ Polymer({
         let target = this._getTargetElement(beacon.target),
             angle = beacon.angle || 0,
             offset = beacon.offset || 10,
+            leftAlign = beacon.leftAlign || false,
             viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
             viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
@@ -689,6 +690,7 @@ Polymer({
             target,
             angle,
             offset,
+            leftAlign,
         });
         if (this.animationSupported) {
             this.$.beacon.animate({
