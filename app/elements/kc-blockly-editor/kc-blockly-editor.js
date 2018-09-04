@@ -47,7 +47,7 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
                     background: var(--kc-secondary-color);
                 };
             }
-        
+
             .shell {
                 background-color: var(--kc-primary-color, white);
             }
@@ -350,10 +350,11 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
             this.set('flyout', flyout);
             this.set('toolbox', null);
             this.set('noToolbox', true);
-            // FIXME: kwc-vlockly sets the background of the flyout to the same color as the
+            // FIXME: kwc-blockly sets the background of the flyout to the same color as the
             // background of the workspace. This is a trick to change it
             const flyoutEl = this.$['code-editor'].getFlyout();
             flyoutEl.style.background = '#292f35';
+            flyoutEl.classList.add('flyout-mode');
         } else {
             this.set('flyout', null);
             this.set('toolbox', toolbox);
