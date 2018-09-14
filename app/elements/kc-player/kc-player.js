@@ -63,8 +63,12 @@ class KCPlayer extends PolymerElement {
                 width: 100%;
                 height: 100%;
             }
-            h1.error {
-                color: var(--color-red, red);
+            .error-message {
+                color: var(--color-porcelain);
+                font-size: 21px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             *[hidden] {
                 display: none !important;
@@ -75,8 +79,7 @@ class KCPlayer extends PolymerElement {
         </style>
         <div id="container">
             <template is="dom-if" if="[[failed]]">
-                <h1 class="error">Something went wrong :(</h1>
-                <div>The app just won't run, will it?</div>
+                <div class="error-message">This share doesn't work right now.</div>
             </template>
         </div>
         <template is="dom-if" if="[[showToolbar]]">
@@ -133,6 +136,7 @@ class KCPlayer extends PolymerElement {
             })
             .catch((e) => {
                 this.failed = true;
+                this.player.dispose();
                 throw e;
             });
     }
