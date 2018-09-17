@@ -50,10 +50,13 @@ class Challenge extends Plugin {
         this._hideBeacon = this._hideBeacon.bind(this);
         this._displayTooltips = this._displayTooltips.bind(this);
         this._hideTooltips = this._hideTooltips.bind(this);
+        this._pushState = this._pushState.bind(this);
 
         this._onFlyoutStateChanged = this.rootEl._onFlyoutStateChanged.bind(this.rootEl);
 
         this.rootEl.storeId = this.store.id;
+
+        this._state = {};
     }
     setParts(parts) {
         this.partsList = parts;
@@ -91,6 +94,7 @@ class Challenge extends Plugin {
         blocklyWorkspace.addChangeListener(this._onFlyoutStateChanged);
         this.rootEl._fitBanner();
 
+        this.engine.defineBehavior('set-state', this._pushState, this._popState);
         this.engine.defineBehavior('banner', this._displayBanner, this._hideBanner);
         this.engine.defineBehavior('beacon', this._displayBeacon, this._hideBeacon);
         this.engine.defineBehavior('tooltips', this._displayTooltips, this._hideTooltips);
@@ -134,6 +138,11 @@ class Challenge extends Plugin {
             }, config.CHALLENGE_START_DELAY || 500);
         }
     }
+    _pushState(data) {
+        this._state = Object.assign(this._state, data);
+        this._nextStep();
+    }
+    _popState() {}
     _nextStep() {
         if (!this.engine) {
             return;
@@ -216,8 +225,8 @@ class Challenge extends Plugin {
     _displayBanner(data) {
         clearTimeout(this.showButtonTimeout);
         let banner;
-        const { hints } = this.store.getState();
-        if (hints.enabled) {
+        const { hints } = this._state;
+        if (!hints || hints.enabled) {
             banner = Object.assign({}, data);
             banner.buttonLabel = data.buttonLabel || this.localize('NEXT', 'Next');
         } else {
@@ -225,8 +234,8 @@ class Challenge extends Plugin {
             const bannerProps = hints['disabled-banner'];
             if (bannerProps) {
                 banner.head = bannerProps.head;
-                banner.text = this.localize('HINTS', 'Hints');
-                banner.buttonLabel = bannerProps.text;
+                banner.text = this.localize('HINTS', bannerProps.text);
+                banner.buttonLabel = 'Help';
                 // Show hint button with delay
                 banner.buttonState = 'hidden';
                 this.showButtonTimeout = setTimeout(() => {
@@ -288,13 +297,17 @@ class Challenge extends Plugin {
         this.editor.toolbox.setWhitelist(whitelist);
     }
     load(challenge) {
-        const { flyoutMode, variables, defaultApp, filterBlocks } = (challenge.scene || challenge);
+        const {
+            flyoutMode,
+            variables,
+            defaultApp,
+        } = (challenge.scene || challenge);
         if (this.profile) {
+            this.editor.registerProfile(this.profile);
             const { toolbox } = this.profile;
             // Filter Catergories to get the categories view of their features
-            Challenge.enableToolboxWhitelist(challenge, toolbox);
-            this.setWhitelist(filterBlocks);
-            this.editor.registerProfile(this.profile);
+            const whitelist = Challenge.getToolboxWhitelist(challenge, toolbox);
+            this.setWhitelist(whitelist);
             this.setSceneVariables(Challenge.getSceneVariables(toolbox));
         }
         this.flyoutMode = flyoutMode;
@@ -319,7 +332,7 @@ class Challenge extends Plugin {
             return acc.concat(filter[key].map(block => `${key}.${block}`));
         }, []);
     }
-    static enableToolboxWhitelist(challenge, entries) {
+    static getToolboxWhitelist(challenge) {
         const {
             blocks,
             modules,
@@ -328,10 +341,10 @@ class Challenge extends Plugin {
             toolbox,
         } = (challenge.scene || challenge);
         if (blocks) {
-            return;
+            return null;
         }
         if (!modules) {
-            return;
+            return null;
         }
         const filter = filterBlocks || filterToolbox;
         let toolboxWhitelist;
@@ -349,14 +362,11 @@ class Challenge extends Plugin {
             acc[root].push(parts.join('.'));
             return acc;
         }, {});
-        entries.forEach((entry) => {
-            const id = entry.id || entry.name;
-            if (whitelistMap[id]) {
-                entry.whitelist = whitelistMap[id];
-            } else {
-                entry.whitelist = [];
-            }
-        });
+        return Object.keys(whitelistMap).reduce((acc, key) => {
+            return acc.concat(whitelistMap[key].map((item) => {
+                return item.startsWith(key) ? item : `${key}_${item}`;
+            }));
+        }, []);
     }
     setSceneVariables(variables) {
         this.challengeActions.loadVariables(variables);

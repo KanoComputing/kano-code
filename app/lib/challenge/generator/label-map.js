@@ -6,9 +6,11 @@ export const setupFieldProxy = (Blockly) => {
     Blockly.FieldDropdown = class FieldDropdownLabels extends OriginalFieldDropdown {
         constructor(options, ...args) {
             super(options, ...args);
-            options.forEach((opt) => {
-                labelMap.set(opt[1], opt[0]);
-            });
+            if (typeof options !== 'function') {
+                options.forEach((opt) => {
+                    labelMap.set(opt[1], opt[0]);
+                });
+            }
         }
     };
 };

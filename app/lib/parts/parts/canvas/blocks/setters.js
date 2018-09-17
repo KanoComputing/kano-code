@@ -5,23 +5,23 @@ const setters = [{
             lookup: 'fillColor(color)',
             message0: `${part.name}: ${Blockly.Msg.BLOCK_CANVAS_FILL_COLOR}`,
             args0: [{
-                type: "input_value",
-                name: "COLOR",
-                check: 'Colour'
+                type: 'input_value',
+                name: 'COLOR',
+                check: 'Colour',
             }],
             previousStatement: null,
             nextStatement: null,
             shadow: {
-                'COLOR': `<shadow type="colour_picker"><field name="COLOUR">#000</field></shadow>`
-            }
+                COLOR: '<shadow type="colour_picker"><field name="COLOUR">#000</field></shadow>',
+            },
         };
     },
     javascript: (part) => {
-        return function (block) {
-            let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || 'null';
+        return function javascript(block) {
+            const color = Blockly.JavaScript.valueToCode(block, 'COLOR') || 'null';
             return `ctx.color(${color});\n`;
         };
-    }
+    },
 }, {
     block: (part) => {
         return {

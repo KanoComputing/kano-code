@@ -764,12 +764,6 @@ Polymer({
                 this.modal.open();
             }
 
-            if (step['set-state']) {
-                this.set('state', Object.assign(this.state, step['set-state']));
-                this._nextStep();
-                return;
-            }
-
             this.computeTooltips(step);
             this.computeArrow(step);
             this.computeHighlight(step);

@@ -24,6 +24,7 @@ export class Output extends PluginReceiver {
         if (!outputProfile) {
             return;
         }
+        outputProfile.onInstall(this);
         if (!outputProfile.id) {
             throw new Error('Could not register OutputProfile: missing id');
         }

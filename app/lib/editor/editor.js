@@ -304,6 +304,8 @@ class Editor extends EditorOrPlayer {
         }
     }
     registerProfile(profile) {
+        profile.onInstall(this);
+        this.output.registerProfile(profile.outputProfile);
         if (profile && !Array.isArray(profile.toolbox)) {
             throw new Error('Could not register EditorProfile: toolbox is not an array');
         }
@@ -311,7 +313,6 @@ class Editor extends EditorOrPlayer {
             throw new Error('Could not register EditorProfile: plugins is not an array');
         }
         this.profile = profile;
-        this.output.registerProfile(this.profile.outputProfile);
         this.registerWorkspaceViewProvider(this.profile.workspaceViewProvider);
         if (this.profile.plugins) {
             this.profile.plugins.forEach(p => this.addPlugin(p));

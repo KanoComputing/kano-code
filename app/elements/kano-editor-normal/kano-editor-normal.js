@@ -1,13 +1,10 @@
-import '@polymer/polymer/polymer-legacy.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '../kc-workspace-frame/kc-workspace-frame.js';
 import '../kc-workspace-frame/kc-parts-controls.js';
-import '../kano-workspace-normal/kano-workspace-normal.js';
-import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
 
-Polymer({
-    _template: html`
+class KcWorkspaceDraw extends PolymerElement {
+    static get template() {
+        return html`
         <style>
             :host {
                 @apply --layout-vertical;
@@ -58,68 +55,72 @@ Polymer({
             <kc-parts-controls id="parts-controls" slot="controls" parts="[[parts]]" store-id="[[storeId]]">
             </kc-parts-controls>
         </kc-workspace-frame>
-`,
-
-    is: 'kano-editor-normal',
-    behaviors: [WorkspaceBehavior],
-    properties: {
-        autoStart: Boolean,
-        mousePositionX: {
-            type: Number,
-            value: 250,
-            notify: true,
-        },
-        mousePositionY: {
-            type: Number,
-            value: 250,
-            notify: true,
-        },
-        running: {
-            type: Boolean,
-        },
-        parts: {
-            type: Array,
-        },
-    },
-    ready() {
+`;
+    }
+    static get properties() {
+        return {
+            autoStart: Boolean,
+            mousePositionX: {
+                type: Number,
+                value: 250,
+                notify: true,
+            },
+            mousePositionY: {
+                type: Number,
+                value: 250,
+                notify: true,
+            },
+            running: {
+                type: Boolean,
+            },
+            parts: {
+                type: Array,
+            },
+        };
+    }
+    constructor() {
+        super();
         this.mousePositionX = 250;
         this.mousePositionY = 250;
-    },
-    attached() {
+    }
+    connectedCallback() {
+        super.connectedCallback();
         // this.$.workspace.addEventListener('mouseover', this._onMouseOver.bind(this));
         // this.$.workspace.addEventListener('mouseout', this._onMouseOut.bind(this));
         // this.$.workspace.addEventListener('mousemove', this._onMouseMove.bind(this));
-    },
+    }
     getWorkspace() {
         return this.$.workspace;
-    },
-    _onMouseOver(e) {
+    }
+    _onMouseOver() {
         this._isMouseOver = true;
-    },
-    _onMouseOut(e) {
+    }
+    _onMouseOut() {
         this._isMouseOver = false;
         this.mousePositionX = 250;
         this.mousePositionY = 250;
-    },
+    }
     _onMouseMove(e) {
         if (this._isMouseOver) {
             this.rectangle = this.$.workspace.getBoundingClientRect();
             const scalingFactor = this.rectangle.width / this.width;
 
-            this.mousePositionX = parseInt(parseInt(e.x - this.rectangle.left) / scalingFactor);
-            this.mousePositionY = parseInt(parseInt(e.y - this.rectangle.top) / scalingFactor);
+            this.mousePositionX = parseInt((e.x - this.rectangle.left) / scalingFactor, 10);
+            this.mousePositionY = parseInt((e.y - this.rectangle.top) / scalingFactor, 10);
         }
-    },
+    }
     getRestrictElement() {
         return this.$.workspace;
-    },
+    }
     getViewport() {
         return this.$.workspace;
-    },
+    }
     getViewportScale() {
         return this.$.wrapper.getViewportScale();
-    },
+    }
     setBackground(value) {
         this.$.workspace.setBackground(value);
-    },
-});
+    }
+}
+
+customElements.define('kc-workspace-draw', KcWorkspaceDraw);

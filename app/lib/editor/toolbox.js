@@ -1,4 +1,4 @@
-import Plugin from './plugin.js';
+import { Plugin } from './plugin.js';
 import MetaModule from '../meta-api/module.js';
 // TODO: Only load the required renderer for the source type
 import BlocklyMetaRenderer from '../meta-api/renderer/blockly.js';

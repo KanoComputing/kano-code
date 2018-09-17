@@ -1,13 +1,16 @@
-import { FieldAssetPicker } from '../../../../scripts/kano/make-apps/blockly/inputs/asset-picker.js';
 import { localize } from '../../../i18n/index.js';
 import { AudioPlayer } from '../../../../scripts/kano/music/player.js';
-import FieldSoundsFactory from './custom-blockly/sounds-field.js';
+import { FieldSoundsFactory } from './custom-blockly/sounds-field.js';
 import './kano-part-speaker.js';
 
 const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
     const COLOUR = '#FFB347';
 
     const root = `${appRoot}/assets/audio/samples/`;
+
+    const defaultSet = samples[defaultCategory];
+    const defaultValue = Object.keys(defaultSet)[0];
+    const defaultLabel = defaultSet[defaultValue];
 
     const speaker = {
         partType: 'hardware',
@@ -22,11 +25,11 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
         },
         defaults: {
             speaker_sample: {
-                SET: 'Wand',
+                SET: defaultCategory,
                 SAMPLE: {
-                    id: 'wand/crack.wav',
-                    label: 'Crack',
-                }
+                    id: defaultValue,
+                    label: defaultLabel,
+                },
             },
             say: {
                 TEXT: 'empty',
@@ -101,7 +104,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                     rate = Blockly.JavaScript.valueToCode(block, 'RATE') || 100,
                     adjustedRate = rate / 100,
                     lang = block.getFieldValue('LANGUAGE'),
-                    code = `parts.get('${part.id}').say(${text}, ${adjustedRate}, "${lang}");\n`;
+                    code = `${part.id}.say(${text}, ${adjustedRate}, "${lang}");\n`;
                 return code;
             },
         }],
@@ -126,7 +129,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             }),
             javascript: part => (block) => {
                 let sample = Blockly.JavaScript.valueToCode(block, 'SAMPLE') || 'null',
-                    code = `parts.get('${part.id}').play(${sample});\n`;
+                    code = `${part.id}.play(${sample});\n`;
                 return code;
             },
         }, {
@@ -143,7 +146,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             }),
             javascript: part => (block) => {
                 let sample = Blockly.JavaScript.valueToCode(block, 'SAMPLE') || 'null',
-                    code = `parts.get('${part.id}').loop(${sample});\n`;
+                    code = `${part.id}.loop(${sample});\n`;
                 return code;
             },
         }, {
@@ -154,7 +157,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                 nextStatement: null,
             }),
             javascript: part => (block) => {
-                const code = `parts.get('${part.id}').stop();\n`;
+                const code = `${part.id}.stop();\n`;
                 return code;
             },
         }, {
@@ -168,7 +171,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
                             samplesArr.push({ value: name });
                         });
                         const FieldSounds = FieldSoundsFactory(Blockly);
-                        const field = new FieldSounds('Wand', samplesArr, function (option) {
+                        const field = new FieldSounds(defaultCategory, samplesArr, function onUpdate(option) {
                             this.sourceBlock_.updateShape_(option);
                         });
 
@@ -257,7 +260,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             }),
             javascript: part => (block) => {
                 let rate = Blockly.JavaScript.valueToCode(block, 'RATE') || 100,
-                    code = `parts.get('${part.id}').setPlaybackRate(${rate});\n`;
+                    code = `${part.id}.setPlaybackRate(${rate});\n`;
                 return code;
             },
         }, {
@@ -277,7 +280,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             }),
             javascript: part => (block) => {
                 let volume = Blockly.JavaScript.valueToCode(block, 'VOLUME') || 100,
-                    code = `parts.get('${part.id}').setVolume(${volume});\n`;
+                    code = `${part.id}.setVolume(${volume});\n`;
                 return code;
             },
         }, {
@@ -296,7 +299,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             },
             javascript: ui => function (block) {
                 let set = block.getFieldValue('SET') || 'drum machine',
-                    code = [`parts.get('${ui.id}').randomSound('${set}')`];
+                    code = [`${ui.id}')andomSound('${set}')`];
                 return code;
             },
         }]);

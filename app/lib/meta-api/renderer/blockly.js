@@ -14,17 +14,13 @@ class BlocklyMetaRenderer {
         if (!mod.def.category) {
             return null;
         }
-        let category = Object.assign({}, mod.def.category);
-        if (typeof whitelist !== 'undefined') {
-            if (mod.def.id in whitelist) {
-                category.blocks = category.blocks.filter((block) => {
-                    let id = block.id || block;
-                    id = id.replace(/^[^#]+(#)/g, "");
-                    return whitelist[mod.def.id].indexOf(id) !== -1;
-                });
-            } else {
-                category.blocks = [];
-            }
+        const category = Object.assign({}, mod.def.category);
+        if (whitelist) {
+            category.blocks = category.blocks.filter((block) => {
+                let id = block.id || block;
+                id = id.replace(/^[^#]+(#)/g, '');
+                return whitelist.indexOf(id) !== -1;
+            });
         }
         return this.defaults.createCategory(category);
     }
@@ -40,13 +36,8 @@ class BlocklyMetaRenderer {
         };
 
         let filteredBlocks = blocks.filter(block => block.toolbox);
-        if (typeof whitelist !== 'undefined') {
-            const blockWhitelist = whitelist[mod.def.name];
-            if (blockWhitelist) {
-                filteredBlocks = blocks.filter(block => whitelist[mod.def.name].indexOf(block.id) !== -1);
-            } else {
-                filteredBlocks = [];
-            }
+        if (whitelist) {
+            filteredBlocks = blocks.filter(block => whitelist.indexOf(block.id) !== -1);
         } else {
             filteredBlocks = blocks;
         }

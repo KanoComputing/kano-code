@@ -1,13 +1,7 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { WorkspaceBehavior } from '../behaviors/kano-workspace-behavior.js';
-import { Canvas } from '../../lib/kano-canvas-api/kano-canvas-api.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { WorkspaceMixin } from '../behaviors/kano-workspace-behavior.js';
 
-class KanoWorkspaceNormal extends mixinBehaviors(
-    [WorkspaceBehavior],
-    PolymerElement,
-) {
+class KcWorkspaceDraw extends WorkspaceMixin(PolymerElement) {
     static get template() {
         return html`
         <style>
@@ -23,14 +17,12 @@ class KanoWorkspaceNormal extends mixinBehaviors(
                 left: 0px
             }
         </style>
-        <canvas id="canvas" width\$="[[width]]" height\$="[[height]]"></canvas>
+        <canvas id="canvas" width$="[[width]]" height$="[[height]]"></canvas>
         <div class="content">
             <slot name="part"></slot>
         </div>
 `;
     }
-
-    static get is() { return 'kano-workspace-normal'; }
     static get properties() {
         return {
             autoStart: Boolean,
@@ -67,7 +59,7 @@ class KanoWorkspaceNormal extends mixinBehaviors(
             setBackgroundColor: this.setBackgroundColor.bind(this),
             setTransparency: this.setTransparency.bind(this),
             reset: this.reset.bind(this),
-        }
+        };
     }
     onInstall() {}
     onCreationImport() {}
@@ -80,14 +72,14 @@ class KanoWorkspaceNormal extends mixinBehaviors(
     setBackground(bg) {
         this.backgroundCache = bg;
         this.style.background = bg;
-        let bg_url = /^url\((['"]?)(.*)\1\)$/.exec(bg),
-            ctx,
-            img;
-        bg_url = bg_url ? bg_url[2] : '';
-        if (bg_url && bg_url !== '') {
+        let bgUrl = /^url\((['"]?)(.*)\1\)$/.exec(bg);
+        let ctx;
+        let img;
+        bgUrl = bgUrl ? bgUrl[2] : '';
+        if (bgUrl && bgUrl !== '') {
             ctx = this.$.canvas.getContext('2d');
             img = new Image();
-            img.src = bg_url;
+            img.src = bgUrl;
             img.onload = () => {
                 ctx.drawImage(img, 0, 0, this.$.canvas.width, this.$.canvas.height);
             };
@@ -142,7 +134,6 @@ class KanoWorkspaceNormal extends mixinBehaviors(
         ctx.drawImage(this.$.canvas, 0, 0);
         return Promise.resolve();
     }
-    onInstall() {}
 }
 
-customElements.define(KanoWorkspaceNormal.is, KanoWorkspaceNormal);
+customElements.define('kc-workspace-draw', KcWorkspaceDraw);

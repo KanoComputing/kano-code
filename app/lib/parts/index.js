@@ -51,6 +51,8 @@ export class PartsPlugin extends Plugin {
             }
             this.clearSelection();
         });
+
+        this.onImport(this._app);
     }
     setupDialogs() {
         this.editPartDialogProvider = new EditPartDialogProvider(this.editor);
@@ -259,6 +261,10 @@ export class PartsPlugin extends Plugin {
     onImport(app) {
         this.parts.clear();
         if (!app) {
+            return;
+        }
+        if (!this.editor.injected) {
+            this._app = app;
             return;
         }
         const { partsMap, addedParts } = this.editor.store.getState();

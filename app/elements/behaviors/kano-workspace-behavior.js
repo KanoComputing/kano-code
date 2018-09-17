@@ -3,24 +3,24 @@ export const WorkspaceBehavior = {
     properties: {
         width: Number,
         height: Number,
-        autoStart: Boolean
+        autoStart: Boolean,
     },
-    attached () {
+    attached() {
         if (this.autoStart) {
             this.start();
         }
     },
-    start () {},
-    stop () {},
-    clear () {},
-    renderOnCanvas () {
+    start() {},
+    stop() {},
+    clear() {},
+    renderOnCanvas() {
         return Promise.resolve();
     },
-    setBackgroundColor () {},
-    getBackgroundColor () {
+    setBackgroundColor() {},
+    getBackgroundColor() {
         return 'transparent';
     },
-    getRestrictElement () {
+    getRestrictElement() {
         return this;
-    }
+    },
 };

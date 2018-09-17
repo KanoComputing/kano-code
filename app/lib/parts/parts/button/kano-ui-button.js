@@ -1,7 +1,6 @@
 import '@kano/kwc-style/button.js';
 import '@kano/kwc-style/typography.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { UIMixin } from '../../../../elements/part/kano-ui-behavior.js';
 import { WebCollidableMixin } from '../../../../scripts/kano/make-apps/parts-api/web-collidable.js';
 
