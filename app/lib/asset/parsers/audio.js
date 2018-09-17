@@ -4,8 +4,6 @@ export default {
     test: /\.wav|\.m4a|\.mp3$/,
     parser: (r) => {
         return r.arrayBuffer()
-            .then(data => new Promise((resolve, reject) => {
-                AudioPlayer.context.decodeAudioData(data, buffer => resolve(buffer));
-            }));
+            .then(data => AudioPlayer.context.decodeAudioData(data));
     },
 };
