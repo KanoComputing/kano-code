@@ -5,7 +5,13 @@ export default {
     parser: (r) => {
         return r.arrayBuffer()
             .then(data => new Promise((resolve, reject) => {
-                AudioPlayer.context.decodeAudioData(data, buffer => resolve(buffer));
+                if ('webkitAudioContext' in window) {
+                    const source = AudioPlayer.context.createBufferSource();
+                    source.buffer = AudioPlayer.context.createBuffer(data, false);
+                    resolve(source.buffer);
+                } else {
+                    AudioPlayer.context.decodeAudioData(data, buffer => resolve(buffer));
+                }
             }));
     },
 };
