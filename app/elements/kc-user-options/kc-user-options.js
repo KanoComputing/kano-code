@@ -7,7 +7,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 /* globals Polymer, Kano, Blockly */
 
 Polymer({
-  _template: html`
+    _template: html`
         <style>
             :host {
                 display: block;
@@ -133,48 +133,48 @@ Polymer({
         </ul>
 `,
 
-  is: 'kc-user-options',
+    is: 'kc-user-options',
 
-  behaviors: [
-      I18nBehavior,
-      Store.ReceiverBehavior
-      ],
+    behaviors: [
+        I18nBehavior,
+        Store.ReceiverBehavior,
+    ],
 
-  properties: {
-      user: {
-          type: Object,
-          linkState: 'user'
-      },
-      logoutEnabled: {
-          type: Boolean,
-          linkState: 'editor.logoutEnabled'
-      }
-  },
+    properties: {
+        user: {
+            type: Object,
+            linkState: 'user',
+        },
+        logoutEnabled: {
+            type: Boolean,
+            linkState: 'editor.logoutEnabled',
+        },
+    },
 
-  _logoutTapped () {
-      this.fire('logout');
-  },
+    _logoutTapped() {
+        this.fire('logout');
+    },
 
-  _loginTapped () {
-      this.fire('login');
-  },
+    _loginTapped() {
+        this.fire('login');
+    },
 
-  _isLogoutHidden (logoutEnabled, user) {
-      return !logoutEnabled || !user;
-  },
+    _isLogoutHidden(logoutEnabled, user) {
+        return !logoutEnabled || !user;
+    },
 
-  _isProfileHidden (user) {
-      return !user;
-  },
+    _isProfileHidden(user) {
+        return !user;
+    },
 
-  _isAuthenticated (user) {
-      return !!user;
-  },
+    _isAuthenticated(user) {
+        return !!user;
+    },
 
-  _computeAvatar (user) {
-      if (!user || !user.avatar || !user.avatar.urls || !user.avatar.urls.circle) {
-          return '/assets/avatar/judoka-face.svg';
-      }
-      return user.avatar.urls.circle;
-  }
+    _computeAvatar(user) {
+        if (!user || !user.avatar || !user.avatar.urls || !user.avatar.urls.circle) {
+            return '/assets/avatar/judoka-face.svg';
+        }
+        return user.avatar.urls.circle;
+    },
 });

@@ -1,6 +1,6 @@
 import { html } from '@polymer/polymer/polymer-element.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
-import Parts from './parts.js';
+import { Parts } from './parts.js';
 import PartsActions from '../actions/parts.js';
 import { Plugin } from '../editor/plugin.js';
 import { LegacyFactory } from './legacy-factory.js';

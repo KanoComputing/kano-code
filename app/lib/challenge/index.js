@@ -363,9 +363,10 @@ class Challenge extends Plugin {
             return acc;
         }, {});
         return Object.keys(whitelistMap).reduce((acc, key) => {
-            return acc.concat(whitelistMap[key].map((item) => {
+            acc = acc.concat(whitelistMap[key].map((item) => {
                 return item.startsWith(key) ? item : `${key}_${item}`;
             }));
+            return acc.concat(whitelistMap[key]);
         }, []);
     }
     setSceneVariables(variables) {

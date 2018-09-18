@@ -16,11 +16,10 @@ blocks.push({
         previousStatement: null,
         nextStatement: null,
     }),
-    javascript: () => function (block) {
-        return `ctx.reset();\n`;
+    javascript: () => function javascript() {
+        return 'ctx.reset();\n';
     },
 });
-
 
 
 blocks = blocks.concat(setters);
@@ -31,16 +30,16 @@ blocks = blocks.concat(shapes);
 const categoryBlocks = blocks.map((definition) => {
     if (typeof definition === 'string') {
         return {
-            id: definition,
+            id: `draw_${definition}`,
             colour: COLOR,
         };
     }
     const block = definition.block({
-        id: 'draw'
+        id: 'draw',
     });
     block.colour = COLOR;
     return {
-        id: block.id,
+        id: `draw_${block.id}`,
         colour: block.colour,
         shadow: block.shadow,
     };
@@ -68,17 +67,20 @@ export const DrawToolbox = {
         definitions.forEach((definition) => {
             const block = definition.block(DrawToolbox.category);
             block.colour = COLOR;
+            const id = `draw_${block.id}`;
             if (!block.doNotRegister) {
-                Blockly.Blocks[block.id] = {
+                Blockly.Blocks[id] = {
                     init() {
                         this.jsonInit(block);
                     },
                 };
-                Blockly.Blocks[block.id].customColor = block.colour;
+                Blockly.Blocks[id].customColor = block.colour;
             }
-            Blockly.JavaScript[block.id] = definition.javascript(DrawToolbox.category);
+            Blockly.JavaScript[id] = definition.javascript(DrawToolbox.category);
         });
     },
     category,
     defaults: {},
 };
+
+export default DrawToolbox;

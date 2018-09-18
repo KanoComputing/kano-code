@@ -1,4 +1,4 @@
-import AppModule from './app-module.js';
+import { AppModule } from './app-module.js';
 import { Canvas } from '../kano-canvas-api/kano-canvas-api.js';
 
 export const DrawModuleFactory = (provider) => {
@@ -41,7 +41,7 @@ export const DrawModuleFactory = (provider) => {
 
             this.methods = Object.assign(provider.getAdditionalMethods(), this.methods);
         }
-    }
-}
+    };
+};
 
 export default DrawModuleFactory;

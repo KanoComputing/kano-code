@@ -177,7 +177,7 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
                     media="[[media]]">
             <div id="toolbox-enhancer-above" class="toolbox-enhancer above" slot="above-toolbox">
                 <button type="button" class="logo icon" on-tap="_exitButtonTapped" hidden\$="[[noUser]]">
-                    <iron-icon class="block-logo" src\$="/assets/kano-logo-simple.svg"></iron-icon>
+                    <iron-icon class="block-logo" src$="/assets/kano-logo-simple.svg"></iron-icon>
                 </button>
                 <button type="button" class="menu icon" on-tap="_menuButtonTapped" hidden\$="[[noUser]]">
                     <iron-icon id="menu-icon" class="block-logo" icon="kc-ui:hamburger"></iron-icon>
@@ -192,7 +192,7 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
                 </div>
             </div>
         </kwc-blockly>
-        <kano-tooltip id="tooltip" position="bottom" offset="8" auto-close="">
+        <kano-tooltip id="tooltip" position="bottom" offset="8" auto-close>
             <kc-user-options on-logout="_closeTooltip"></kc-user-options>
         </kano-tooltip>
 `;
@@ -280,12 +280,6 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
     }
     _isAuthenticated(user) {
         return !!user;
-    }
-    _computeAvatar(user) {
-        if (!user || !user.avatar || !user.avatar.urls || !user.avatar.urls.circle) {
-            return '/assets/avatar/judoka-face.svg';
-        }
-        return user.avatar.urls.circle;
     }
     _menuButtonTapped(e) {
         this.$.tooltip.target = this.$['menu-icon'].getBoundingClientRect();

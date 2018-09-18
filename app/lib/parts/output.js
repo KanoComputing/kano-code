@@ -31,6 +31,7 @@ export class PartsOutputPlugin extends Plugin {
         parts.forEach((part) => {
             this.insertPart(part);
         });
+        this.setParts(parts);
     }
     insertPart(part) {
         const { partsRoot } = this.output.outputView;
