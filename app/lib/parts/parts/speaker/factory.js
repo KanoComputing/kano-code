@@ -299,7 +299,7 @@ const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
             },
             javascript: ui => function (block) {
                 let set = block.getFieldValue('SET') || 'drum machine',
-                    code = [`${ui.id}')andomSound('${set}')`];
+                    code = [`${ui.id}.randomSound('${set}')`];
                 return code;
             },
         }]);
