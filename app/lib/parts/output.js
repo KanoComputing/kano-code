@@ -1,9 +1,11 @@
+import { EventEmitter } from '@kano/common/index.js';
 import { Plugin } from '../editor/plugin.js';
 import { Parts } from './parts.js';
 
 export class PartsOutputPlugin extends Plugin {
     constructor(partTypes, parts) {
         super();
+        this._onDidChangeParts = new EventEmitter();
         this.partTypes = partTypes;
         this.partList = parts;
         this._parts = [];
@@ -14,6 +16,9 @@ export class PartsOutputPlugin extends Plugin {
         parts.forEach((partDefinition) => {
             this._partsModelManager.define(partDefinition);
         });
+    }
+    get onDidChangeParts() {
+        return this._onDidChangeParts.event;
     }
     onInstall(output) {
         this.output = output;
@@ -47,6 +52,7 @@ export class PartsOutputPlugin extends Plugin {
     }
     setParts(parts) {
         this._parts = parts;
+        this._onDidChangeParts.fire();
     }
     get parts() {
         return this._parts;

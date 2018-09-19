@@ -329,15 +329,22 @@ export class PartsPlugin extends Plugin {
         this.editor.emit('add-part', { part });
     }
     addToolboxEntry(part) {
-        const { blocks } = part;
+        const { blocks, symbols } = part;
         const { addedParts } = this.editor.store.getState();
         part.color = getPartColor(part, addedParts);
         let entry;
-        if (blocks) {
+        if (symbols) {
+            const mod = {
+                type: 'module',
+                name: part.type,
+                verbose: part.name,
+                color: part.colour,
+                symbols,
+            };
+            entry = this.editor.toolbox.addEntry(mod);
+        } else if (blocks) {
             const Module = LegacyFactory(part);
             entry = this.editor.toolbox.addEntry(Module);
-        } else {
-            entry = this.editor.toolbox.addEntry(part.api);
         }
         this.toolbox.set(part.id, entry);
     }

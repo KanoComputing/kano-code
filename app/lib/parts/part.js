@@ -39,6 +39,7 @@ class Part {
         this.colour = opts.colour;
         this.defaults = opts.defaults || {};
         this.blocks = Array.isArray(opts.blocks) ? opts.blocks.slice(0) : [];
+        this.symbols = Array.isArray(opts.symbols) ? opts.symbols.slice(0) : null;
         this.legacyBlocks = Array.isArray(opts.legacyBlocks) ? opts.legacyBlocks.slice(0) : [];
         this.events = Array.isArray(opts.events) ? opts.events.slice(0) : [];
         this.listeners = Array.isArray(opts.listeners) ? opts.listeners.slice(0) : [];
