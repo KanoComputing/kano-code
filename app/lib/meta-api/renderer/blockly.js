@@ -37,9 +37,7 @@ class BlocklyMetaRenderer {
 
         let filteredBlocks = blocks.filter(block => block.toolbox);
         if (whitelist) {
-            filteredBlocks = blocks.filter(block => whitelist.indexOf(block.id) !== -1);
-        } else {
-            filteredBlocks = blocks;
+            filteredBlocks = filteredBlocks.filter(block => whitelist.indexOf(block.id) !== -1);
         }
 
         const category = {
