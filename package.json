@@ -17,7 +17,8 @@
     "install:all": "npm install && bower install",
     "install:all:build": "npm install && bower install && gulp build",
     "build-engine": "gulp build-engine",
-    "serve": "node ./tasks/serve"
+    "serve": "node ./tasks/serve",
+    "docs": "esdoc"
   },
   "author": "Paul Varache <perso@paulvarache.ninja>",
   "license": "ISC",
@@ -36,6 +37,8 @@
     "connect-history-api-fallback": "^1.5.0",
     "connect-livereload": "^0.6.0",
     "cucumber": "^3.0.0",
+    "esdoc": "^1.1.0",
+    "esdoc-standard-plugin": "^1.0.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-babel": "^6.1.2",
@@ -93,9 +96,7 @@
     "inherits": "2.0.3",
     "samsam": "1.1.3",
     "supports-color": "3.1.2",
-    "type-detect": "1.0.0",
-    "@kano/kwc-color-picker": "3.0.0-beta.4",
-    "@kano/kwc-style": "3.0.0-beta.2"
+    "type-detect": "1.0.0"
   },
   "dependencies": {
     "@kano/common": "^1.0.2",

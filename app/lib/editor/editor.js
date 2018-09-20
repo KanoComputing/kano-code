@@ -66,6 +66,12 @@ class Editor extends EditorOrPlayer {
 
         this.output = new Output();
 
+        this.telemetry = new TelemetryClient({ scope: 'kc-editor' });
+
+        /** @type {WorkspaceToolbar} */
+        this.workspaceToolbar = new WorkspaceToolbar();
+        this.addPlugin(this.workspaceToolbar);
+
         this.dialogs = new Dialogs();
         this.addPlugin(this.dialogs);
 
@@ -78,17 +84,12 @@ class Editor extends EditorOrPlayer {
         this.creation = new CreationPlugin();
         this.addPlugin(this.creation);
 
-        this.telemetry = new TelemetryClient({ scope: 'kc-editor' });
-
         this.on('import', (event) => {
             this.load(event.app);
         });
 
         this.activityBar = new ActivityBar();
         this.addPlugin(this.activityBar);
-
-        this.workspaceToolbar = new WorkspaceToolbar();
-        this.addPlugin(this.workspaceToolbar);
 
         this._registeredEvents = [];
 

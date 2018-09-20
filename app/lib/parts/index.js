@@ -327,6 +327,7 @@ export class PartsPlugin extends Plugin {
         this.addToolboxEntry(part);
         this.outputPlugin.setParts(addedParts);
         this.editor.emit('add-part', { part });
+        this.editor.output.restart();
     }
     addToolboxEntry(part) {
         const { blocks, symbols } = part;

@@ -235,12 +235,6 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             ironIcon: 'kc-ui:import',
         }).on('activate', () => this._load());
         this.addEntry({
-            id: 'save',
-            position: ToolbarEntryPosition.LEFT,
-            title: 'Save',
-            ironIcon: 'kc-ui:save',
-        }).on('activate', () => this._save());
-        this.addEntry({
             id: 'restart',
             position: ToolbarEntryPosition.RIGHT,
             title: 'Restart',

@@ -1,77 +1,55 @@
 import { localize } from '../../../i18n/index.js';
 import './kano-part-mouse.js';
 
+export const event = {
+    type: 'function',
+    name: 'on',
+    verbose: 'Mouse: on',
+    parameters: [{
+        name: 'type',
+        returnType: 'Enum',
+        verbose: '',
+        enum: [
+            [Blockly.Msg.BLOCK_MOUSE_DOWN, 'down'],
+            [Blockly.Msg.BLOCK_MOUSE_UP, 'up'],
+            [Blockly.Msg.BLOCK_MOUSE_MOVE, 'move'],
+        ],
+    }, {
+        name: 'callback',
+        verbose: '',
+        returnType: Function,
+    }],
+};
+
+export const x = {
+    type: 'variable',
+    name: 'x',
+    verbose: 'Mouse: x',
+    returnType: Number,
+};
+
+export const y = {
+    type: 'variable',
+    name: 'y',
+    verbose: 'Mouse: y',
+    returnType: Number,
+};
+
+export const speedX = {
+    type: 'variable',
+    name: 'xSpeed',
+    verbose: 'Mouse: x speed',
+    returnType: Number,
+};
+
+export const speedY = {
+    type: 'variable',
+    name: 'ySpeed',
+    verbose: 'Mouse: y speed',
+    returnType: Number,
+};
+
 const blocks = {
-    onEvent: {
-        block: ui => ({
-            id: 'mouse_event',
-            message0: `${ui.name}: ${Blockly.Msg.BLOCK_MOUSE_EVENT}`,
-            args0: [{
-                type: 'field_dropdown',
-                name: 'TYPE',
-                options: [
-                    [Blockly.Msg.BLOCK_MOUSE_DOWN, 'down'],
-                    [Blockly.Msg.BLOCK_MOUSE_UP, 'up'],
-                    [Blockly.Msg.BLOCK_MOUSE_MOVE, 'move'],
-                ],
-            }],
-            message1: '%1',
-            args1: [{
-                type: 'input_statement',
-                name: 'DO',
-            }],
-        }),
-        javascript: part => (block) => {
-            let type = block.getFieldValue('TYPE'),
-                statement = Blockly.JavaScript.statementToCode(block, 'DO'),
-                code = `devices.get('${part.id}').on('${type}', function (){\n${statement}});\n`;
-            return code;
-        },
-    },
-    mouseX: {
-        block: ui => ({
-            id: 'mouse_x',
-            message0: `${ui.name}: ${Blockly.Msg.BLOCK_MOUSE_X}`,
-            output: 'Number',
-        }),
-        javascript: part => (block) => {
-            const code = `devices.get('${part.id}').getX()`;
-            return [code];
-        },
-    },
-    mouseY: {
-        block: ui => ({
-            id: 'mouse_y',
-            message0: `${ui.name}: ${Blockly.Msg.BLOCK_MOUSE_Y}`,
-            output: 'Number',
-        }),
-        javascript: part => (block) => {
-            const code = `devices.get('${part.id}').getY()`;
-            return [code];
-        },
-    },
-    speedX: {
-        block: ui => ({
-            id: 'mouse_speed_x',
-            message0: `${ui.name}: ${Blockly.Msg.BLOCK_MOUSE_SPEED_X}`,
-            output: 'Number',
-        }),
-        javascript: part => (block) => {
-            const code = `devices.get('${part.id}').getXSpeed()`;
-            return [code];
-        },
-    },
-    speedY: {
-        block: ui => ({
-            id: 'mouse_speed_y',
-            message0: `${ui.name}: ${Blockly.Msg.BLOCK_MOUSE_SPEED_Y}`,
-            output: 'Number',
-        }),
-        javascript: part => (block) => {
-            const code = `devices.get('${part.id}').getYSpeed()`;
-            return [code];
-        },
-    },
     setCursor: {
         block: ui => ({
             id: 'mouse_set_cursor',
@@ -88,8 +66,8 @@ const blocks = {
             },
         }),
         javascript: part => (block) => {
-            let cursor = Blockly.JavaScript.valueToCode(block, 'CURSOR'),
-                code = `devices.get('${part.id}').setCursor(${cursor});\n`;
+            const cursor = Blockly.JavaScript.valueToCode(block, 'CURSOR');
+            const code = `devices.get('${part.id}').setCursor(${cursor});\n`;
             return code;
         },
     },
@@ -103,12 +81,14 @@ const mouse = {
     image: '/assets/part/mouse.svg',
     colour: '#FFB347',
     singleton: true,
+    symbols: [
+        event,
+        x,
+        y,
+        speedX,
+        speedY,
+    ],
     blocks: [
-        blocks.onEvent,
-        blocks.mouseX,
-        blocks.mouseY,
-        blocks.speedX,
-        blocks.speedY,
         blocks.setCursor,
         'assets_get_sticker',
         'assets_random_sticker',

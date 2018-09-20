@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">lib/challenge/generator/index.js | kano-code</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/KanoComputing/kano-code"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/share-runner.js~ShareRunner.html">ShareRunner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/user.js~UserPlugin.html">UserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/vm.js~VM.html">VM</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Config">Config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT">DEFAULT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Store">Store</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Store">Store</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#actions">actions</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ChallengeActions">ChallengeActions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EditorActions">EditorActions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ModeActions">ModeActions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-PartsActions">PartsActions</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app-modules">app-modules</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/app-module.js~AppModule.html">AppModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/app-modules.js~AppModules.html">AppModules</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/camera.js~CameraModule.html">CameraModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/colour.js~ColourModule.html">ColourModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/data.js~DataModule.html">DataModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/date.js~DateModule.html">DateModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/dongle.js~DongleModule.html">DongleModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/global.js~GlobalModule.html">GlobalModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/index.js~AppModulesLoader.html">AppModulesLoader</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/lightboard.js~LightboardModule.html">LightboardModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/loop.js~LoopModule.html">LoopModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/loops.js~LoopsModule.html">LoopsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/math.js~MathModule.html">MathModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/mic.js~MicModule.html">MicModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/motion.js~MotionModule.html">MotionModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/parts.js~PartsModule.html">PartsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/tilt.js~TiltModule.html">TiltModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/time.js~TimeModule.html">TimeModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-DrawModuleFactory">DrawModuleFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AllModules">AllModules</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AssetsModule">AssetsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PixelFont">PixelFont</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app-modules-factory">app-modules/factory</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-AssetsModuleFactory">AssetsModuleFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#asset">asset</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/asset/loader.js~AssetLoader.html">AssetLoader</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#blockly">blockly</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/blockly/defaults.js~Defaults.html">Defaults</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/blockly/index.js~Blockly.html">Blockly</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#challenge">challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/blockly.js~BlocklyChallenge.html">BlocklyChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/index.js~Challenge.html">Challenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/kano-code.js~KanoCodeChallenge.html">KanoCodeChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#challenge-generator">challenge/generator</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/generator/index.js~Challenge.html">Challenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-GeneratorAPIProvider">GeneratorAPIProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setupFieldProxy">setupFieldProxy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-labelMap">labelMap</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#creation">creation</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-dialog.js~CreationDialogProvider.html">CreationDialogProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-preview-provider.js~CreationAnimationPreviewProvider.html">CreationAnimationPreviewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-preview-provider.js~CreationCustomPreviewProvider.html">CreationCustomPreviewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-preview-provider.js~CreationImagePreviewProvider.html">CreationImagePreviewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-storage-provider.js~CreationStorageProvider.html">CreationStorageProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/index.js~CreationPlugin.html">CreationPlugin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#creation-assets">creation/assets</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-success">success</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor">editor</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/activity-bar.js~ActivityBar.html">ActivityBar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/editor-or-player.js~EditorOrPlayer.html">EditorOrPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/editor.js~Editor.html">Editor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/file-upload.js~FileUpload.html">FileUpload</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/plugin.js~Plugin.html">Plugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/profile.js~EditorProfile.html">EditorProfile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/runner.js~Runner.html">Runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/store-observer.js~StoreObserver.html">StoreObserver</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/toolbox.js~Toolbox.html">Toolbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Store">Store</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-dialogs">editor/dialogs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/alert.js~Alert.html">Alert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/base.js~Base.html">Base</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/confirm.js~Confirm.html">Confirm</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/dialog-provider.js~DialogProvider.html">DialogProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/dialog.js~Dialog.html">Dialog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/index.js~Dialogs.html">Dialogs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-keybindings">editor/keybindings</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/keybindings/binding.js~Binding.html">Binding</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/keybindings/index.js~Keybindings.html">Keybindings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-plugin">editor/plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/plugin/receiver.js~PluginReceiver.html">PluginReceiver</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-workspace">editor/workspace</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/workspace/default.js~DefaultWorkspaceViewProvider.html">DefaultWorkspaceViewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/workspace/toolbar.js~WorkspaceToolbar.html">WorkspaceToolbar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-WorkspaceViewProviderMixin">WorkspaceViewProviderMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WorkspaceViewProvider">WorkspaceViewProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#gif-encoder">gif-encoder</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/gif-encoder/encoder.js~GifEncoder.html">GifEncoder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#gif-encoder-omggif">gif-encoder/omggif</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GifWriter">GifWriter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#hardware">hardware</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/camera.js~Camera.html">Camera</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/device.js~Device.html">Device</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/hardware-api.js~HardwareAPI.html">HardwareAPI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/index.js~Hardware.html">Hardware</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/kit-device.js~KitDevice.html">KitDevice</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/lightboard.js~Lightboard.html">Lightboard</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/mock.js~HardwareAPIMock.html">HardwareAPIMock</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/motion-sensor.js~MotionSensor.html">MotionSensor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/native-web-socket.js~NativeWebSocket.html">NativeWebSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/power-up-device.js~PowerUpDevice.html">PowerUpDevice</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/tilt-sensor.js~TiltSensor.html">TiltSensor</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#i18n">i18n</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-I18nMixin">I18nMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addMessage">addMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLang">getLang</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getMessages">getMessages</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-load">load</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-localize">localize</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#icon">icon</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-base64">base64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-img">img</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-svg">svg</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#kano-canvas-api">kano-canvas-api</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/kano-canvas-api/kano-canvas-api.js~Canvas.html">Canvas</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Utils">Utils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#kano-canvas-api-modules">kano-canvas-api/modules</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-General">General</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Paths">Paths</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Setters">Setters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Shapes">Shapes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Space">Space</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Text">Text</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Palette">Palette</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#log">log</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/log/index.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LEVEL">LEVEL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LEVEL_NAMES">LEVEL_NAMES</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LEVEL_STYLES">LEVEL_STYLES</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api">meta-api</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/module.js~Meta.html">Meta</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/module.js~MetaModule.html">MetaModule</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api-modules">meta-api/modules</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AllApis">AllApis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AssetsModule">AssetsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyColor">BlocklyColor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyControl">BlocklyControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DrawToolbox">DrawToolbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyLists">BlocklyLists</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyLogic">BlocklyLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyMath">BlocklyMath</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyVariables">BlocklyVariables</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api-modules-factory">meta-api/modules/factory</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-AssetsModuleFactory">AssetsModuleFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EventsModuleFactory">EventsModuleFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api-renderer">meta-api/renderer</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/renderer/blockly.js~BlocklyMetaRenderer.html">BlocklyMetaRenderer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/renderer/typescript.js~TypeScriptMetaRenderer.html">TypeScriptMetaRenderer</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mode">mode</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Mode">Mode</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#output">output</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/default.js~DefaultOutputViewProvider.html">DefaultOutputViewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/module.js~OutputModule.html">OutputModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/output.js~Output.html">Output</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/profile.js~OutputProfile.html">OutputProfile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-OutputElementMixin">OutputElementMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-OutputViewProviderMixin">OutputViewProviderMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OutputViewProvider">OutputViewProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts">parts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/index.js~PartsPlugin.html">PartsPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/output.js~PartsOutputPlugin.html">PartsOutputPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/part.js~Part.html">Part</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/parts.js~Parts.html">Parts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-LegacyFactory">LegacyFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PartTypes">PartTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Parts">Parts</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-components-blockly">parts/components/blockly</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-FieldSoundsFactory">FieldSoundsFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-data">parts/data</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/data/index.js~Data.html">Data</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-DataMixin">DataMixin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-dialogs">parts/dialogs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/dialogs/add-part.js~AddPartDialogProvider.html">AddPartDialogProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/dialogs/edit-part.js~EditPartDialogProvider.html">EditPartDialogProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-hardware">parts/hardware</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/hardware/index.js~Hardware.html">Hardware</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-box">parts/parts/box</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-box">box</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-button">parts/parts/button</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-button">button</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-canvas-blocks">parts/parts/canvas/blocks</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-general">general</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-paths">paths</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-setters">setters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapes">shapes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-space">space</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-clock">parts/parts/clock</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-clock">clock</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data">parts/parts/data</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rss">rss</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-sports">sports</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data-kano">parts/parts/data/kano</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-share">share</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data-space">parts/parts/data/space</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-iss">iss</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data-weather">parts/parts/data/weather</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-weather">weather</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-lightboard">parts/parts/lightboard</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animations">animations</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightAnimationDisplay">lightAnimationDisplay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightAnimation">lightAnimation</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightCircle">lightCircle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightFrame">lightFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightRectangle">lightRectangle</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-map">parts/parts/map</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-map">map</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-microphone">parts/parts/microphone</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-MicrophoneMixin">MicrophoneMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-microphone">microphone</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-mouse">parts/parts/mouse</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mouse">mouse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-oscillator">parts/parts/oscillator</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-OscillatorMixin">OscillatorMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-oscillator">oscillator</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-picture-list">parts/parts/picture-list</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pictureList">pictureList</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-powerups">parts/parts/powerups</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-gyroAccelerometer">gyroAccelerometer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-motionSensor">motionSensor</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-scrolling-text">parts/parts/scrolling-text</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-scrollingText">scrollingText</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-slider">parts/parts/slider</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-slider">slider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-speaker">parts/parts/speaker</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/parts/speaker/text-to-speech.js~TextToSpeech.html">TextToSpeech</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SpeakerFactory">SpeakerFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SamplesDirGenerator">SamplesDirGenerator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SamplesGenerator">SamplesGenerator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SpeakerMixin">SpeakerMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-speaker">speaker</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-speaker-custom-blockly">parts/parts/speaker/custom-blockly</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-FieldSoundsFactory">FieldSoundsFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-sticker">parts/parts/sticker</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/parts/sticker/resolver.js~StickerResolver.html">StickerResolver</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-StickerFactory">StickerFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-StickerMixin">StickerMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-sticker">sticker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-stickers">stickers</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-synth">parts/parts/synth</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-synth">synth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-terminal">parts/parts/terminal</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TerminalMixin">TerminalMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-terminal">terminal</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-text">parts/parts/text</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-text">text</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-text-input">parts/parts/text-input</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-input">input</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-ui">parts/ui</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/ui/index.js~UI.html">UI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAPI">getAPI</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-util">parts/util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getColorForPart">getColorForPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPartColor">getPartColor</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#player">player</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/player/index.js~Player.html">Player</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#storage">storage</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/storage/local-storage.js~LocalStoragePlugin.html">LocalStoragePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/storage/storage.js~StoragePlugin.html">StoragePlugin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/util/subscription.js~Subscriptions.html">Subscriptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debounce">debounce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EventEmitter">EventEmitter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-htmlImport">htmlImport</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-subscribe">subscribe</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#vendor">vendor</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSlug">getSlug</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/challenge/generator/index.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import { Plugin } from &apos;../../editor/plugin.js&apos;;
+import { GeneratorAPIProvider } from &apos;./api.js&apos;;
+import { labelMap, setupFieldProxy } from &apos;./label-map.js&apos;;
+
+const GENERATOR_BLOCKS = [
+    &apos;generator_banner&apos;,
+    &apos;generator_step&apos;,
+];
+
+const DEFAULT_COPY = {
+    openFlyout(label = &apos;this&apos;) { return `Open ${label} tray`; },
+    grabBlock: &apos;Drag the block onto your code space&apos;,
+    connect: &apos;Connect to this block&apos;,
+    drop: &apos;Drop this block anywhere in your code space&apos;,
+};
+
+class Challenge extends Plugin {
+    constructor() {
+        super();
+        this.reset();
+        this.middlewares = [];
+        this.blockCount = {};
+        setupFieldProxy(window.Blockly);
+    }
+    addMiddleware(middleware) {
+        this.middlewares.push(middleware);
+    }
+    reset() {
+        // Namespaces for the unique ids
+        this.uidNss = {};
+
+        this.data = {};
+        this.data.steps = [];
+        this.data.parts = [];
+        this.data.modules = [];
+        this.data.variables = [];
+        this.data.filterBlocks = {};
+
+        this.appParts = {};
+        this.partsIds = {};
+    }
+    onInstall(editor) {
+        this.editor = editor;
+        const { toolbox } = this.editor;
+        const { renderer } = toolbox;
+        this.defaults = renderer.defaults;
+    }
+    reloadState() {
+        const stateString = localStorage.getItem(&apos;generator-state&apos;);
+        if (!stateString) {
+            return;
+        }
+        try {
+            const state = JSON.parse(stateString);
+            this.creator = state.creator || false;
+        } catch (e) {}
+    }
+    saveState() {
+        const state = {
+            creator: this.creator,
+        };
+        localStorage.setItem(&apos;generator-state&apos;, JSON.stringify(state));
+    }
+    onInject() {
+        this.reloadState();
+        const { workspaceView, plugins } = this.editor;
+        // Add middleware declared by the WorkspaceViewProvider
+        if (typeof workspaceView.challengeGeneratorMiddleware === &apos;function&apos;) {
+            this.addMiddleware(workspaceView.challengeGeneratorMiddleware);
+        }
+        // Add all the middlewares declared by the plugins
+        plugins.forEach((plugin) =&gt; {
+            if (typeof plugin.challengeGeneratorMiddleware !== &apos;function&apos;) {
+                return;
+            }
+            this.addMiddleware(plugin.challengeGeneratorMiddleware);
+        });
+        this.setupUI();
+    }
+    setupUI() {
+        const { workspaceToolbar } = this.editor;
+        let toolboxItem;
+        const GeneratorAPI = GeneratorAPIProvider(this.editor);
+        GeneratorAPI.toolbox = this.creator;
+        this.creatorEntry = this.editor.toolbox.addEntry(GeneratorAPI, 0);
+        const toolboxItemClickCallback = () =&gt; {
+            this.creator = !this.creator;
+            GeneratorAPI.toolbox = this.creator;
+            this.creatorEntry.update(GeneratorAPI);
+            toolboxItem.updateTitle(`${this.creator ? &apos;Disable&apos; : &apos;Enable&apos;} creator mode`);
+            toolboxItem.updateIronIcon(&apos;kwc-ui-icons:new-creation&apos;);
+            if (this.creator) {
+                this.addGeneratorItem();
+            } else if (this.generatorItem) {
+                this.removeGeneratorItem();
+            }
+            this.saveState();
+        };
+        toolboxItem = workspaceToolbar.addSettingsEntry({
+            title: `${this.creator ? &apos;Disable&apos; : &apos;Enable&apos;} creator mode`,
+            ironIcon: &apos;kwc-ui-icons:new-creation&apos;,
+        }).on(&apos;activate&apos;, () =&gt; toolboxItemClickCallback());
+        if (this.creator) {
+            this.addGeneratorItem();
+        }
+        if (this.editor.sourceType === &apos;blockly&apos;) {
+            const { sourceEditor } = this.editor;
+            const { workspace } = sourceEditor;
+            workspace.addChangeListener((event) =&gt; {
+                if (!this.creator) {
+                    return;
+                }
+                this.populateComment(event);
+            });
+        }
+    }
+    populateComment(event) {
+        const { sourceEditor } = this.editor;
+        const { workspace, Blockly } = sourceEditor;
+        if (event.type !== Blockly.Events.UI) {
+            return;
+        }
+        if (event.element !== &apos;commentOpen&apos;) {
+            return;
+        }
+        const block = workspace.getBlockById(event.blockId);
+        const { comment } = block;
+        if (!comment) {
+            return;
+        }
+        const text = comment.getText();
+        if (text === &apos;&apos;) {
+            comment.setText(JSON.stringify(Challenge.getDefaultCommentData(), null, &apos;    &apos;));
+        }
+    }
+    static getDefaultCommentData() {
+        const data = {
+            openFlyoutCopy: DEFAULT_COPY.openFlyout(),
+            grabBlockCopy: DEFAULT_COPY.grabBlock,
+            connectCopy: DEFAULT_COPY.connect,
+        };
+        return data;
+    }
+    static cleanTree(node) {
+        const comments = [...node.querySelectorAll(&apos;comment&apos;)];
+        comments.forEach((comment) =&gt; {
+            comment.parentNode.removeChild(comment);
+        });
+        return node;
+    }
+    addGeneratorItem() {
+        this.generatorItem = this.editor.workspaceToolbar.addSettingsEntry({
+            title: &apos;Generate Challenge&apos;,
+            ironIcon: &apos;kc-ui:export&apos;,
+        }).on(&apos;activate&apos;, () =&gt; this.download());
+    }
+    removeGeneratorItem() {
+        if (!this.generatorItem) {
+            return;
+        }
+        this.generatorItem.dispose();
+    }
+    download() {
+        const data = this.generate();
+        const link = document.createElement(&apos;a&apos;);
+        link.href = `data:application/json,${encodeURIComponent(JSON.stringify(data, null, &apos;    &apos;))}`;
+        link.download = &apos;challenge.json&apos;;
+        link.click();
+    }
+    translate(type, key) {
+        let result = this._translate(type, key);
+        if (result === key) {
+            if (type === &apos;category&apos;) {
+                result = this.appParts[key] &amp;&amp; this.appParts[key].name ?
+                    this.appParts[key].name : result;
+            }
+        }
+        return result;
+    }
+    uid(ns) {
+        if (typeof this.uidNss[ns] === &apos;undefined&apos;) {
+            this.uidNss[ns] = 0;
+            return this.uidNss[ns];
+        }
+        this.uidNss[ns] += 1;
+        return this.uidNss[ns];
+    }
+    addSteps(steps) {
+        this.data.steps = this.data.steps.concat(steps);
+    }
+    runMiddlewares(data) {
+        return this.middlewares.reduce((acc, middleware) =&gt; middleware(acc, this), data);
+    }
+    generate() {
+        this.reset();
+        // TODO: Support more than one sourceType
+        if (this.editor.sourceType !== &apos;blockly&apos;) {
+            return {};
+        }
+        const { sourceEditor } = this.editor;
+        const { Blockly } = sourceEditor;
+        const app = this.editor.save();
+        const { source, parts, mode } = app;
+        const xml = Blockly.Xml.textToDom(source);
+        this.data.mode = mode;
+        this.fieldDefaults = {};
+        Object.keys(this.defaults.values).forEach((blockId) =&gt; {
+            this.fieldDefaults[blockId] = {};
+            const block = this.defaults.values[blockId];
+            if (!block) {
+                return;
+            }
+            Object.keys(block).forEach((fieldId) =&gt; {
+                if (block[fieldId].default) {
+                    this.fieldDefaults[blockId][fieldId] = block[fieldId].default;
+                } else {
+                    this.fieldDefaults[blockId][fieldId] = block[fieldId];
+                }
+            });
+        });
+        /* TODO: This uses the properties inside the generator that still refers to parts
+         * Think of a better way to generate block steps while being aware of their
+         * parts context
+         * Possible way would be to make the generator ignore composed block ids from parts
+         * and scan here all the steps and all their locations to translate them to their
+         * part + block equivalents
+         * box#set_stroke_size =&gt; { &quot;part&quot;: &quot;part_0&quot;, &quot;block&quot;: &quot;set_stroke_size&quot; }
+         * Other option is to not transform them at all and update the challenge parser to
+         * Support hashtag part syntax
+         * Last option is to leave it as it is but allow the generator plugin to support two
+         * types of middlewares, pre and post. We could use pre to generate the parts steps and
+         * populate the id map before the generator tries to read it
+         */
+        if (parts) {
+            parts.forEach((part) =&gt; {
+                this.partsIds[part.id] = `part_${this.uid(&apos;part&apos;)}`;
+                this.appParts[part.id] = part;
+            });
+        }
+        this.data.id = Challenge.findId(xml);
+        const metadata = Challenge.findMetadata(xml);
+        const startOptions = Challenge.findStartNodes(xml);
+        startOptions.forEach((startOption) =&gt; {
+            if (!startOption.start || startOption.start.tagName === &apos;variables&apos;) {
+                return;
+            }
+            this.addSteps(this.blockToSteps(startOption.start));
+        });
+        const rootNode = startOptions.reduce((acc, options) =&gt; {
+            if (options.preloaded) {
+                acc.appendChild(Challenge.cleanTree(options.preloaded));
+            }
+            return acc;
+        }, xml.cloneNode(false));
+        this.data.defaultApp = JSON.stringify({
+            source: Blockly.Xml.domToText(rootNode),
+        });
+        this.data = this.runMiddlewares(this.data);
+        // Add the metadata to the challenge
+        Object.assign(this.data, metadata);
+        return this.data;
+    }
+    static findId(xml) {
+        // Find generator id block
+        const idNode = xml.querySelector(&apos;block[type=&quot;generator_id&quot;]&apos;);
+        if (!idNode) {
+            // Return default id if not defined
+            return &apos;missingno&apos;;
+        }
+        // Extract Text field containing the id
+        const textField = idNode.querySelector(&apos;field[name=&quot;ID&quot;]&apos;);
+        // Get all the id blocks and remove them from the XML tree
+        const idNodes = [...xml.querySelectorAll(&apos;block[type=&quot;generator_id&quot;]&apos;)];
+        idNodes.forEach(node =&gt; node.parentNode.removeChild(node));
+        // Return the contents of the text field
+        return textField.innerText;
+    }
+    static findMetadata(xml) {
+        // Find generator metadata block
+        const metadataNode = xml.querySelector(&apos;block[type=&quot;generator_metadata&quot;]&apos;);
+        if (!metadataNode) {
+            // Return empty object if no metadata
+            return {};
+        }
+        // Extract Text field containing the JSON data
+        const textField = metadataNode.querySelector(&apos;field[name=&quot;JSON&quot;]&apos;);
+        // Get all the id blocks and remove them from the XML tree
+        const metadataNodes = [...xml.querySelectorAll(&apos;block[type=&quot;generator_metadata&quot;]&apos;)];
+        metadataNodes.forEach(node =&gt; node.parentNode.removeChild(node));
+        let data;
+        // Safely parse the text field contents
+        try {
+            data = JSON.parse(textField.innerText) || {};
+        } catch (e) {
+            data = {};
+        }
+        return data;
+    }
+    static findStartNodes(root) {
+        const clone = root.cloneNode(true);
+        const entryNodes = [...clone.children];
+        return entryNodes.map((entryNode) =&gt; {
+            const startNode = entryNode.querySelector(&apos;block[type=&quot;generator_start&quot;]&apos;);
+            if (!startNode) {
+                return {
+                    preloaded: null,
+                    start: entryNode,
+                    root: entryNode,
+                };
+            }
+            const nextNode = startNode.querySelector(&apos;next&gt;block&apos;);
+            if (!nextNode) {
+                startNode.parentNode.removeChild(startNode);
+                return {
+                    preloaded: entryNode,
+                    start: null,
+                    root: null,
+                };
+            }
+            // Replace the generator block with the real first block
+            startNode.parentNode.insertBefore(nextNode, startNode);
+            startNode.parentNode.removeChild(startNode);
+            // Tag the start of the challenge
+            nextNode.setAttribute(&apos;challenge-start-node&apos;, &apos;&apos;);
+            // Create a new tree for the generator to parse
+            const cleanRoot = entryNode.cloneNode(true);
+            // Grab the entry point of the challenge
+            const cleanStartNode = cleanRoot.querySelector(&apos;[challenge-start-node]&apos;);
+            // Remove the start node from the original clone, this leaves the default blocks on
+            // the workspace
+            nextNode.parentNode.removeChild(nextNode);
+            return {
+                preloaded: entryNode,
+                start: cleanStartNode,
+                root: cleanRoot,
+            };
+        });
+    }
+    static generatorBlockToSteps(node) {
+        const type = node.getAttribute(&apos;type&apos;);
+        switch (type) {
+        case &apos;generator_banner&apos;: {
+            return Challenge.generatorBannerToSteps(node);
+        }
+        case &apos;generator_step&apos;: {
+            return Challenge.generatorStepToSteps(node);
+        }
+        default: {
+            return [];
+        }
+        }
+    }
+    static generatorBannerToSteps(node) {
+        const textField = node.querySelector(&apos;field[name=&quot;TEXT&quot;]&apos;);
+        const text = textField.innerText;
+        return [{
+            banner: {
+                text,
+                next_button: true,
+            },
+        }];
+    }
+    static generatorStepToSteps(node) {
+        const textField = node.querySelector(&apos;field[name=&quot;JSON&quot;]&apos;);
+        const jsonString = textField.innerText;
+        return [JSON.parse(jsonString)];
+    }
+    parseComment(node) {
+        let data = {};
+        const commentNode = node.querySelector(&apos;comment&apos;);
+        // No comment found or comment node is not direct child of node
+        if (!commentNode || commentNode.parentNode !== node) {
+            return data;
+        }
+        try {
+            data = JSON.parse(commentNode.innerText);
+        } catch (e) {
+            this.editor.logger.warn(`Could not parse comment &apos;${commentNode.innerText}&apos;`);
+        }
+        return data;
+    }
+    getCategoryLabel(categoryId) {
+        // FIXME: Hard coded translation for normal mode. This will disapera once modes are not a
+        // thing anymore and the block names will be matching in the toolbox entries
+        switch (categoryId) {
+        case &apos;normal&apos;: {
+            return &apos;Draw&apos;;
+        }
+        default: {
+            const { entries } = this.editor.toolbox;
+            for (let i = 0; i &lt; entries.length; i += 1) {
+                const id = entries[i].type === &apos;blockly&apos; ? entries[i].id : entries[i].name;
+                if (id === categoryId) {
+                    const name = entries[i].type === &apos;blockly&apos; ? entries[i].category.name : entries[i].verbose;
+                    return name;
+                }
+            }
+            const { addedParts } = this.editor;
+            if (typeof addedParts !== &apos;undefined&apos;) {
+                for (let i = 0; i &lt; addedParts.length; i += 1) {
+                    if (addedParts[i].id === categoryId) {
+                        return addedParts[i].label;
+                    }
+                }
+            }
+            return categoryId;
+        }
+        }
+    }
+    /**
+     * Generate the steps matching a `field` node in a Blockly XML tree
+     */
+    fieldToSteps(node) {
+        let parent = node.parentNode;
+        let parentBlockType = Challenge.parseBlockType(parent.getAttribute(&apos;type&apos;));
+        const parentTagName = parent.tagName;
+        const steps = [];
+        let inputName;
+        let fieldName;
+        let shadowSelector;
+
+        let ptag = parentTagName;
+        let absParent = parent;
+        // Lookup the absolute parent. We can have a chain of nested shadow block
+        // and need to build the shadow selector
+        // from the parent block
+        while (ptag !== &apos;block&apos;) {
+            absParent = absParent.parentNode;
+            ptag = absParent.tagName;
+            if (ptag === &apos;value&apos;) {
+                if (!shadowSelector) {
+                    shadowSelector = absParent.getAttribute(&apos;name&apos;);
+                } else {
+                    shadowSelector = {
+                        name: absParent.getAttribute(&apos;name&apos;),
+                        shadow: shadowSelector.shadow || shadowSelector,
+                    };
+                }
+            }
+        }
+
+        if (parentBlockType.block === &apos;variables_set&apos; &amp;&amp; this.data.variables.indexOf(node.firstChild.nodeValue) === -1) {
+            this.data.variables.push(node.firstChild.nodeValue);
+        }
+        if (!!node.firstChild &amp;&amp; node.firstChild.nodeValue !== null) {
+            if (parentTagName === &apos;shadow&apos;) {
+                inputName = parent.parentNode.getAttribute(&apos;name&apos;);
+                fieldName = inputName;
+                parent = parent.parentNode.parentNode;
+                parentBlockType = Challenge.parseBlockType(parent.getAttribute(&apos;type&apos;));
+            } else {
+                fieldName = node.getAttribute(&apos;name&apos;);
+            }
+            let defaults;
+            let defaultLabel;
+            if (fieldName) {
+                if (!this.fieldDefaults[parentBlockType.block]) {
+                    this.editor.logger.warn(&apos;missing default field: &apos;, parentBlockType.block, fieldName);
+                } else {
+                    defaults = this.fieldDefaults[parentBlockType.block][fieldName];
+                    while (typeof defaults === &apos;object&apos; &amp;&amp; &apos;shadow&apos; in defaults &amp;&amp; &apos;default&apos; in defaults) {
+                        defaults = defaults.default;
+                    }
+                    if (typeof defaults === &apos;object&apos; &amp;&amp; &apos;id&apos; in defaults) {
+                        defaultLabel = defaults.label || defaults.id;
+                        defaults = defaults.id;
+                    } else if (this.fieldDefaults[parentBlockType.block][fieldName]) {
+                        defaultLabel = this.fieldDefaults[parentBlockType.block][fieldName];
+                    } else if (this.fieldDefaults[parentBlockType.block].label) {
+                        defaultLabel = this.fieldDefaults[parentBlockType.block].label;
+                    }
+                }
+            }
+            const commentData = this.parseComment(parent);
+            const fieldValue = this.normaliseType(node.firstChild.nodeValue);
+            defaults = this.normaliseType(defaults);
+            // Loose check of the value
+            /* eslint eqeqeq: &quot;off&quot; */
+            if (fieldValue != defaults) {
+                const challengeId = absParent.getAttribute(&apos;challengeId&apos;);
+                const rawId = absParent.getAttribute(&apos;id&apos;);
+                const selector = {
+                    shadow: shadowSelector,
+                };
+                if (challengeId) {
+                    selector.id = challengeId;
+                } else {
+                    selector.rawId = rawId;
+                }
+                const fieldPreviewLabel = labelMap.get(fieldValue);
+                const fieldPreview = Challenge.generateFieldPreview(node, this.translate(&apos;field&apos;, fieldPreviewLabel || fieldValue));
+                const currentFieldPreview = Challenge.generateFieldPreview(node, defaultLabel || defaults);
+                let bannerCopy = commentData.bannerCopy || &apos;Change \&quot;$currentFieldPreview\&quot; to \&quot;$fieldPreview\&quot;&apos;;
+                bannerCopy = bannerCopy.replace(/\$fieldPreview/g, fieldPreview);
+                bannerCopy = bannerCopy.replace(/\$currentFieldPreview/g, currentFieldPreview);
+                // Add a `change value` step to get the right value
+                const uiLocation = Object.assign({ inputName: fieldName }, selector);
+                const step = {
+                    type: &apos;change-input&apos;,
+                    block: uiLocation,
+                    bannerCopy,
+                };
+                const ignoreInputs = typeof commentData.ignoreInputs === &apos;undefined&apos; ? [] : commentData.ignoreInputs;
+                // Ignore Inputs set to true will ignore all inputs.
+                // Otherwise use the array to check which inputs to ignore
+                if ((Array.isArray(ignoreInputs) &amp;&amp; ignoreInputs.indexOf(fieldName) === -1)
+                    || (!Array.isArray(ignoreInputs) &amp;&amp; ignoreInputs !== true)) {
+                    // Matches a hex color value. By default any change of value for a color will be ignored
+                    if (!/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(node.firstChild.nodeValue)) {
+                        step.value = node.firstChild.nodeValue;
+                    }
+                }
+                steps.push(step);
+            }
+        }
+        return steps;
+    }
+    normaliseType(value) {
+
+        if (value.length === 0) {
+            return &quot;&amp;#160;&quot;;
+        }
+        value = value.length &gt; 0 &amp;&amp; !isNaN(value) ? parseInt(value) : value;
+        switch(typeof value) {
+            case &apos;string&apos;:
+                return value.toLowerCase();
+            case &apos;number&apos;:
+                return parseInt(value);
+            default:
+                return value;
+        }
+    }
+    /**
+     * Generate the steps matching a `block` node in a Blockly XML tree
+     */
+    blockToSteps(node) {
+        // Defines the location of the toolbox category.
+        // Can be the category itself or from a previously added part
+        const blockChallengeId = `block_${this.uid(&apos;block&apos;)}`;
+        const type = node.getAttribute(&apos;type&apos;);
+        const blockType = Challenge.parseBlockType(type);
+        let steps = [];
+        let parent = node.parentNode;
+        let categoryLocation;
+        let blockLocation;
+        let categoryLabel;
+        let inputName;
+
+        if (GENERATOR_BLOCKS.indexOf(type) !== -1) {
+            steps = steps.concat(Challenge.generatorBlockToSteps(node));
+            const nextNode = node.querySelector(&apos;next&gt;block&apos;);
+            // Nothing connected to block, stop here
+            if (!nextNode) {
+                return steps;
+            }
+            // Move the next node in place of the current generator node
+            node.parentNode.insertBefore(nextNode, node);
+            node.parentNode.removeChild(node);
+            // Continue genratin the challenge from next block
+            return steps.concat(this.blockToSteps(nextNode));
+        }
+
+        node.setAttribute(&apos;challengeId&apos;, blockChallengeId);
+
+        const parentTagName = parent.tagName;
+
+        // The block from the original app isn&apos;t from a created part,
+        // thus doens&apos;t contain a category field
+        if (!blockType.category) {
+            blockType.category = this.defaults.categoryMap.get(blockType.block);
+            categoryLocation = blockType.category;
+            blockLocation = blockType.block;
+            if (this.data.modules.indexOf(blockType.category) === -1) {
+                this.data.modules.push(blockType.category);
+            }
+        } else if (this.partsIds[blockType.category]) {
+            blockLocation = {
+                part: this.partsIds[blockType.category],
+                type: blockType.block,
+            };
+            categoryLocation = {
+                part: blockLocation.part,
+            };
+        } else {
+            blockLocation = type;
+            categoryLocation = blockType.category;
+        }
+
+        // Adds the block to the whitelist
+        this.data.filterBlocks[blockType.category] =
+            this.data.filterBlocks[blockType.category] || [];
+        if (this.data.filterBlocks[blockType.category].indexOf(blockType.block) === -1) {
+            this.data.filterBlocks[blockType.category].push(blockType.block);
+        }
+
+        categoryLabel = this.getCategoryLabel(blockType.category);
+        if (categoryLabel !== blockType.category) {
+            categoryLabel = `the ${categoryLabel}`;
+        } else {
+            categoryLabel = &apos;this&apos;;
+        }
+
+        const commentData = this.parseComment(node);
+
+        const step = {
+            type: &apos;create-block&apos;,
+            openFlyoutCopy: commentData.openFlyoutCopy || DEFAULT_COPY.openFlyout(categoryLabel),
+            grabBlockCopy: commentData.grabBlockCopy || DEFAULT_COPY.grabBlock,
+            category: categoryLocation,
+            blockType: blockLocation,
+            alias: blockChallengeId,
+        };
+
+        if (parentTagName === &apos;next&apos;) {
+            parent = parent.parentNode;
+        } else if (parentTagName === &apos;statement&apos; || parentTagName === &apos;value&apos;) {
+            inputName = parent.getAttribute(&apos;name&apos;);
+            parent = parent.parentNode;
+        } else {
+            parent = null;
+        }
+
+        if (parent) {
+            let shadow;
+            let connectionTargetNode = parent;
+            if (parent.tagName === &apos;shadow&apos;) {
+                const valueNode = parent.parentNode;
+                if (valueNode.tagName === &apos;value&apos;) {
+                    shadow = valueNode.getAttribute(&apos;name&apos;);
+                    connectionTargetNode = valueNode.parentNode;
+                }
+            }
+            step.connectCopy = commentData.connectCopy || DEFAULT_COPY.connect;
+            const connectTo = {
+                shadow,
+                inputName,
+            };
+            const challengeId = connectionTargetNode.getAttribute(&apos;challengeId&apos;);
+            if (challengeId) {
+                connectTo.id = challengeId;
+            } else {
+                connectTo.rawId = connectionTargetNode.getAttribute(&apos;id&apos;);
+            }
+            step.connectTo = connectTo;
+        } else {
+            step.dropCopy = commentData.dropCopy || DEFAULT_COPY.drop;
+        }
+
+        steps.push(step);
+
+        for (let i = 0; i &lt; node.children.length; i += 1) {
+            steps = steps.concat(this.nodeToSteps(node.children[i]));
+        }
+
+        return steps;
+    }
+    /**
+     * Generate the steps matching a `value` node in a Blockly XML tree
+     */
+    valueToSteps(node) {
+        let steps = [];
+        let child;
+        for (let i = 0; i &lt; node.children.length; i += 1) {
+            if (node.children[i].tagName === &apos;block&apos;) {
+                child = node.children[i];
+                break;
+            }
+        }
+        if (!child) {
+            child = node.firstChild;
+        }
+        steps = steps.concat(this.nodeToSteps(child));
+
+        return steps;
+    }
+
+    nodeToSteps(node) {
+        let steps = [];
+        let child;
+        let i;
+
+        switch (node.tagName) {
+        case &apos;field&apos;: {
+            steps = steps.concat(this.fieldToSteps(node));
+            break;
+        }
+        case &apos;next&apos;:
+        case &apos;value&apos;: {
+            steps = steps.concat(this.valueToSteps(node));
+            break;
+        }
+        case &apos;statement&apos;: {
+            steps = steps.concat(this.nodeToSteps(node.firstChild));
+            break;
+        }
+        case &apos;shadow&apos;: {
+            for (i = 0; i &lt; node.children.length; i += 1) {
+                child = node.children[i];
+                steps = steps.concat(this.nodeToSteps(child));
+            }
+            break;
+        }
+        case &apos;block&apos;: {
+            steps = steps.concat(this.blockToSteps(node));
+            break;
+        }
+        default: {
+            break;
+        }
+        }
+        return steps;
+    }
+    static generateFieldPreview(node, fieldValue) {
+        return `&lt;kano-value-preview&gt;&lt;span&gt;${fieldValue}&lt;/span&gt;&lt;/kano-value-preview&gt;`;
+    }
+    static parseBlockType(type) {
+        const pieces = type.split(&apos;#&apos;);
+        const result = {};
+        if (pieces.length &gt; 1) {
+            [result.category, result.block] = pieces;
+        } else {
+            [result.block] = pieces;
+        }
+        return result;
+    }
+    _translate(type, key) {
+        return this.defaults.labels[type] &amp;&amp; this.defaults.labels[type][key] ?
+            this.defaults.labels[type][key] : key;
+    }
+    static createFromApp(app) {
+        const challenge = new Challenge();
+        challenge.loadFromApp(app);
+        return challenge;
+    }
+}
+export { Challenge };
+export default Challenge;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

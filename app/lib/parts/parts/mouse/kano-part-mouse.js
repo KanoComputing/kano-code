@@ -10,10 +10,10 @@ class KanoPartMouse extends StickerMixin(UIMixin(PolymerElement)) {
         super.connectedCallback();
         const parent = this.parentNode;
         // The parent if a workspace, use it
-        if (parent.tagName.toLowerCase().indexOf('kano-workspace') === 0) {
-            this.workspace = this.parentNode;
+        if ('getWorkspace' in parent) {
+            this.workspace = parent.getWorkspace();
         } else {
-            this.workspace = this.parentNode.getWorkspace();
+            this.workspace = parent;
         }
         this._onMouseMove = this._onMouseMove.bind(this);
         this._onMouseDown = this._onMouseDown.bind(this);
@@ -33,6 +33,18 @@ class KanoPartMouse extends StickerMixin(UIMixin(PolymerElement)) {
         super.disconnectedCallback();
         window.removeEventListener('resize', this._onResize);
         this._removeMouseListeners();
+    }
+    get x() {
+        return this.mouseX;
+    }
+    get y() {
+        return this.mouseY;
+    }
+    get xSpeed() {
+        return this.mouseDeltaX;
+    }
+    get ySpeed() {
+        return this.mouseDeltaY;
     }
     _removeMouseListeners() {
         this.listeners.forEach((listener) => {
@@ -65,14 +77,12 @@ class KanoPartMouse extends StickerMixin(UIMixin(PolymerElement)) {
         this.listeners.push({ eventName, cb });
     }
     _onMouseMove(e) {
-        let rect = this.workspaceRect,
-            scalingFactor = rect.width / this.workspace.width,
-            x, 
-y,
-            now = Date.now();
+        const rect = this.workspaceRect;
+        const scalingFactor = rect.width / this.workspace.width;
+        const now = Date.now();
 
-        x = Math.max(0, Math.min(this.workspace.width, parseInt(e.x - rect.left) / scalingFactor));
-        y = Math.max(0, Math.min(this.workspace.height, parseInt(e.y - rect.top) / scalingFactor));
+        const x = Math.max(0, Math.min(this.workspace.width, parseInt(e.x - rect.left, 10) / scalingFactor));
+        const y = Math.max(0, Math.min(this.workspace.height, parseInt(e.y - rect.top, 10) / scalingFactor));
 
         /* Reset mouse speed when off the canvas for more than 100ms */
         if (now - this._lastRefresh > 100) {
@@ -124,18 +134,6 @@ y,
             img.onerror = reject;
             img.src = url;
         });
-    }
-    getX() {
-        return this.mouseX;
-    }
-    getY() {
-        return this.mouseY;
-    }
-    getXSpeed() {
-        return this.mouseDeltaX;
-    }
-    getYSpeed() {
-        return this.mouseDeltaY;
     }
 }
 

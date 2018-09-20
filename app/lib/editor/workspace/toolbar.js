@@ -2,14 +2,20 @@ import { TelemetryClient } from '@kano/telemetry/index.js';
 import { Plugin } from '../plugin.js';
 import { Subscriptions, subscribe } from '../../util/subscription.js';
 
+/**
+ * Manages the actions in the toolbar avilable in the workspace
+ */
 export class WorkspaceToolbar extends Plugin {
     constructor() {
         super();
         this.subscriptions = new Subscriptions();
-
         this._telemetry = new TelemetryClient({ scope: 'workspace_toolbar' });
     }
+    /**
+     * @param {Editor} editor The editor this plugin is attached to
+     */
     onInstall(editor) {
+        /** @type {Editor} */
         this.editor = editor;
         this.editor.telemetry.mount(this._telemetry);
     }
@@ -29,7 +35,6 @@ export class WorkspaceToolbar extends Plugin {
             subscribe(this.toolbar, 'reset-clicked', this.reset.bind(this)),
             subscribe(this.toolbar, 'export-clicked', this.export.bind(this)),
             subscribe(this.toolbar, 'import-clicked', this.import.bind(this)),
-            subscribe(this.toolbar, 'save-clicked', this.save.bind(this)),
         );
     }
     updateRunningState() {
@@ -61,10 +66,6 @@ export class WorkspaceToolbar extends Plugin {
     import() {
         this.editor.importFromDisk();
         this._telemetry.trackEvent({ name: 'import_clicked' });
-    }
-    save() {
-        this.editor.creation.init();
-        this._telemetry.trackEvent({ name: 'save_clicked' });
     }
     addEntry(...args) {
         if (!this.toolbar) {

@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/vendor/speakingurl.js | kano-code</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/KanoComputing/kano-code"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/share-runner.js~ShareRunner.html">ShareRunner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/user.js~UserPlugin.html">UserPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/vm.js~VM.html">VM</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Config">Config</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DEFAULT">DEFAULT</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Store">Store</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Store">Store</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#actions">actions</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ChallengeActions">ChallengeActions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EditorActions">EditorActions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ModeActions">ModeActions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-PartsActions">PartsActions</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app-modules">app-modules</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/app-module.js~AppModule.html">AppModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/app-modules.js~AppModules.html">AppModules</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/camera.js~CameraModule.html">CameraModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/colour.js~ColourModule.html">ColourModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/data.js~DataModule.html">DataModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/date.js~DateModule.html">DateModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/dongle.js~DongleModule.html">DongleModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/global.js~GlobalModule.html">GlobalModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/index.js~AppModulesLoader.html">AppModulesLoader</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/lightboard.js~LightboardModule.html">LightboardModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/loop.js~LoopModule.html">LoopModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/loops.js~LoopsModule.html">LoopsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/math.js~MathModule.html">MathModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/mic.js~MicModule.html">MicModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/motion.js~MotionModule.html">MotionModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/parts.js~PartsModule.html">PartsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/tilt.js~TiltModule.html">TiltModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/app-modules/time.js~TimeModule.html">TimeModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-DrawModuleFactory">DrawModuleFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AllModules">AllModules</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AssetsModule">AssetsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PixelFont">PixelFont</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#app-modules-factory">app-modules/factory</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-AssetsModuleFactory">AssetsModuleFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#asset">asset</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/asset/loader.js~AssetLoader.html">AssetLoader</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#blockly">blockly</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/blockly/defaults.js~Defaults.html">Defaults</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/blockly/index.js~Blockly.html">Blockly</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#challenge">challenge</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/blockly.js~BlocklyChallenge.html">BlocklyChallenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/index.js~Challenge.html">Challenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/kano-code.js~KanoCodeChallenge.html">KanoCodeChallenge</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#challenge-generator">challenge/generator</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/challenge/generator/index.js~Challenge.html">Challenge</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-GeneratorAPIProvider">GeneratorAPIProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setupFieldProxy">setupFieldProxy</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-labelMap">labelMap</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#creation">creation</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-dialog.js~CreationDialogProvider.html">CreationDialogProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-preview-provider.js~CreationAnimationPreviewProvider.html">CreationAnimationPreviewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-preview-provider.js~CreationCustomPreviewProvider.html">CreationCustomPreviewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-preview-provider.js~CreationImagePreviewProvider.html">CreationImagePreviewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/creation-storage-provider.js~CreationStorageProvider.html">CreationStorageProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/creation/index.js~CreationPlugin.html">CreationPlugin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#creation-assets">creation/assets</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-success">success</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor">editor</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/activity-bar.js~ActivityBar.html">ActivityBar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/editor-or-player.js~EditorOrPlayer.html">EditorOrPlayer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/editor.js~Editor.html">Editor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/file-upload.js~FileUpload.html">FileUpload</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/plugin.js~Plugin.html">Plugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/profile.js~EditorProfile.html">EditorProfile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/runner.js~Runner.html">Runner</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/store-observer.js~StoreObserver.html">StoreObserver</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/toolbox.js~Toolbox.html">Toolbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Store">Store</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-dialogs">editor/dialogs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/alert.js~Alert.html">Alert</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/base.js~Base.html">Base</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/confirm.js~Confirm.html">Confirm</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/dialog-provider.js~DialogProvider.html">DialogProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/dialog.js~Dialog.html">Dialog</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/dialogs/index.js~Dialogs.html">Dialogs</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-keybindings">editor/keybindings</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/keybindings/binding.js~Binding.html">Binding</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/keybindings/index.js~Keybindings.html">Keybindings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-plugin">editor/plugin</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/plugin/receiver.js~PluginReceiver.html">PluginReceiver</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#editor-workspace">editor/workspace</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/workspace/default.js~DefaultWorkspaceViewProvider.html">DefaultWorkspaceViewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/editor/workspace/toolbar.js~WorkspaceToolbar.html">WorkspaceToolbar</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-WorkspaceViewProviderMixin">WorkspaceViewProviderMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-WorkspaceViewProvider">WorkspaceViewProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#gif-encoder">gif-encoder</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/gif-encoder/encoder.js~GifEncoder.html">GifEncoder</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#gif-encoder-omggif">gif-encoder/omggif</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-GifWriter">GifWriter</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#hardware">hardware</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/camera.js~Camera.html">Camera</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/device.js~Device.html">Device</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/hardware-api.js~HardwareAPI.html">HardwareAPI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/index.js~Hardware.html">Hardware</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/kit-device.js~KitDevice.html">KitDevice</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/lightboard.js~Lightboard.html">Lightboard</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/mock.js~HardwareAPIMock.html">HardwareAPIMock</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/motion-sensor.js~MotionSensor.html">MotionSensor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/native-web-socket.js~NativeWebSocket.html">NativeWebSocket</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/power-up-device.js~PowerUpDevice.html">PowerUpDevice</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/hardware/tilt-sensor.js~TiltSensor.html">TiltSensor</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#i18n">i18n</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-I18nMixin">I18nMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-addMessage">addMessage</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getLang">getLang</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getMessages">getMessages</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-load">load</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-localize">localize</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#icon">icon</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-base64">base64</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-img">img</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-svg">svg</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#kano-canvas-api">kano-canvas-api</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/kano-canvas-api/kano-canvas-api.js~Canvas.html">Canvas</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Utils">Utils</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#kano-canvas-api-modules">kano-canvas-api/modules</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-General">General</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Paths">Paths</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Setters">Setters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Shapes">Shapes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Space">Space</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-Text">Text</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Palette">Palette</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#log">log</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/log/index.js~Logger.html">Logger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LEVEL">LEVEL</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LEVEL_NAMES">LEVEL_NAMES</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-LEVEL_STYLES">LEVEL_STYLES</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api">meta-api</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/module.js~Meta.html">Meta</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/module.js~MetaModule.html">MetaModule</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api-modules">meta-api/modules</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AllApis">AllApis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-AssetsModule">AssetsModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyColor">BlocklyColor</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyControl">BlocklyControl</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-DrawToolbox">DrawToolbox</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyLists">BlocklyLists</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyLogic">BlocklyLogic</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyMath">BlocklyMath</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-BlocklyVariables">BlocklyVariables</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api-modules-factory">meta-api/modules/factory</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-AssetsModuleFactory">AssetsModuleFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EventsModuleFactory">EventsModuleFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#meta-api-renderer">meta-api/renderer</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/renderer/blockly.js~BlocklyMetaRenderer.html">BlocklyMetaRenderer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/meta-api/renderer/typescript.js~TypeScriptMetaRenderer.html">TypeScriptMetaRenderer</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mode">mode</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Mode">Mode</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#output">output</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/default.js~DefaultOutputViewProvider.html">DefaultOutputViewProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/module.js~OutputModule.html">OutputModule</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/output.js~Output.html">Output</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/output/profile.js~OutputProfile.html">OutputProfile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-OutputElementMixin">OutputElementMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-OutputViewProviderMixin">OutputViewProviderMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OutputViewProvider">OutputViewProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts">parts</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/index.js~PartsPlugin.html">PartsPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/output.js~PartsOutputPlugin.html">PartsOutputPlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/part.js~Part.html">Part</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/parts.js~Parts.html">Parts</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-LegacyFactory">LegacyFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-PartTypes">PartTypes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Parts">Parts</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-components-blockly">parts/components/blockly</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-FieldSoundsFactory">FieldSoundsFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-data">parts/data</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/data/index.js~Data.html">Data</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-DataMixin">DataMixin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-dialogs">parts/dialogs</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/dialogs/add-part.js~AddPartDialogProvider.html">AddPartDialogProvider</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/dialogs/edit-part.js~EditPartDialogProvider.html">EditPartDialogProvider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-hardware">parts/hardware</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/hardware/index.js~Hardware.html">Hardware</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-box">parts/parts/box</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-box">box</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-button">parts/parts/button</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-button">button</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-canvas-blocks">parts/parts/canvas/blocks</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-general">general</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-paths">paths</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-setters">setters</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-shapes">shapes</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-space">space</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-clock">parts/parts/clock</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-clock">clock</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data">parts/parts/data</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-rss">rss</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-sports">sports</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data-kano">parts/parts/data/kano</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-share">share</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data-space">parts/parts/data/space</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-iss">iss</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-data-weather">parts/parts/data/weather</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-weather">weather</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-lightboard">parts/parts/lightboard</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-animations">animations</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightAnimationDisplay">lightAnimationDisplay</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightAnimation">lightAnimation</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightCircle">lightCircle</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightFrame">lightFrame</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-lightRectangle">lightRectangle</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-map">parts/parts/map</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-map">map</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-microphone">parts/parts/microphone</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-MicrophoneMixin">MicrophoneMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-microphone">microphone</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-mouse">parts/parts/mouse</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mouse">mouse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-oscillator">parts/parts/oscillator</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-OscillatorMixin">OscillatorMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-oscillator">oscillator</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-picture-list">parts/parts/picture-list</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pictureList">pictureList</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-powerups">parts/parts/powerups</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-gyroAccelerometer">gyroAccelerometer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-motionSensor">motionSensor</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-scrolling-text">parts/parts/scrolling-text</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-scrollingText">scrollingText</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-slider">parts/parts/slider</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-slider">slider</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-speaker">parts/parts/speaker</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/parts/speaker/text-to-speech.js~TextToSpeech.html">TextToSpeech</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SpeakerFactory">SpeakerFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SamplesDirGenerator">SamplesDirGenerator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SamplesGenerator">SamplesGenerator</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-SpeakerMixin">SpeakerMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-speaker">speaker</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-speaker-custom-blockly">parts/parts/speaker/custom-blockly</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-FieldSoundsFactory">FieldSoundsFactory</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-sticker">parts/parts/sticker</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/parts/sticker/resolver.js~StickerResolver.html">StickerResolver</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-StickerFactory">StickerFactory</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-StickerMixin">StickerMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-sticker">sticker</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-stickers">stickers</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-synth">parts/parts/synth</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-synth">synth</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-terminal">parts/parts/terminal</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-TerminalMixin">TerminalMixin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-terminal">terminal</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-text">parts/parts/text</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-text">text</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-text-input">parts/parts/text-input</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-input">input</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-ui">parts/ui</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/parts/ui/index.js~UI.html">UI</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAPI">getAPI</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-util">parts/util</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getColorForPart">getColorForPart</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getPartColor">getPartColor</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#player">player</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/player/index.js~Player.html">Player</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#storage">storage</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/storage/local-storage.js~LocalStoragePlugin.html">LocalStoragePlugin</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/storage/storage.js~StoragePlugin.html">StoragePlugin</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#util">util</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/util/subscription.js~Subscriptions.html">Subscriptions</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-debounce">debounce</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-EventEmitter">EventEmitter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-htmlImport">htmlImport</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-subscribe">subscribe</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#vendor">vendor</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getSlug">getSlug</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/vendor/speakingurl.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">
+/**
+ * charMap
+ * @type {Object}
+ */
+var charMap = {
+
+    // latin
+    &apos;&#xC0;&apos;: &apos;A&apos;,
+    &apos;&#xC1;&apos;: &apos;A&apos;,
+    &apos;&#xC2;&apos;: &apos;A&apos;,
+    &apos;&#xC3;&apos;: &apos;A&apos;,
+    &apos;&#xC4;&apos;: &apos;Ae&apos;,
+    &apos;&#xC5;&apos;: &apos;A&apos;,
+    &apos;&#xC6;&apos;: &apos;AE&apos;,
+    &apos;&#xC7;&apos;: &apos;C&apos;,
+    &apos;&#xC8;&apos;: &apos;E&apos;,
+    &apos;&#xC9;&apos;: &apos;E&apos;,
+    &apos;&#xCA;&apos;: &apos;E&apos;,
+    &apos;&#xCB;&apos;: &apos;E&apos;,
+    &apos;&#xCC;&apos;: &apos;I&apos;,
+    &apos;&#xCD;&apos;: &apos;I&apos;,
+    &apos;&#xCE;&apos;: &apos;I&apos;,
+    &apos;&#xCF;&apos;: &apos;I&apos;,
+    &apos;&#xD0;&apos;: &apos;D&apos;,
+    &apos;&#xD1;&apos;: &apos;N&apos;,
+    &apos;&#xD2;&apos;: &apos;O&apos;,
+    &apos;&#xD3;&apos;: &apos;O&apos;,
+    &apos;&#xD4;&apos;: &apos;O&apos;,
+    &apos;&#xD5;&apos;: &apos;O&apos;,
+    &apos;&#xD6;&apos;: &apos;Oe&apos;,
+    &apos;&#x150;&apos;: &apos;O&apos;,
+    &apos;&#xD8;&apos;: &apos;O&apos;,
+    &apos;&#xD9;&apos;: &apos;U&apos;,
+    &apos;&#xDA;&apos;: &apos;U&apos;,
+    &apos;&#xDB;&apos;: &apos;U&apos;,
+    &apos;&#xDC;&apos;: &apos;Ue&apos;,
+    &apos;&#x170;&apos;: &apos;U&apos;,
+    &apos;&#xDD;&apos;: &apos;Y&apos;,
+    &apos;&#xDE;&apos;: &apos;TH&apos;,
+    &apos;&#xDF;&apos;: &apos;ss&apos;,
+    &apos;&#xE0;&apos;: &apos;a&apos;,
+    &apos;&#xE1;&apos;: &apos;a&apos;,
+    &apos;&#xE2;&apos;: &apos;a&apos;,
+    &apos;&#xE3;&apos;: &apos;a&apos;,
+    &apos;&#xE4;&apos;: &apos;ae&apos;,
+    &apos;&#xE5;&apos;: &apos;a&apos;,
+    &apos;&#xE6;&apos;: &apos;ae&apos;,
+    &apos;&#xE7;&apos;: &apos;c&apos;,
+    &apos;&#xE8;&apos;: &apos;e&apos;,
+    &apos;&#xE9;&apos;: &apos;e&apos;,
+    &apos;&#xEA;&apos;: &apos;e&apos;,
+    &apos;&#xEB;&apos;: &apos;e&apos;,
+    &apos;&#xEC;&apos;: &apos;i&apos;,
+    &apos;&#xED;&apos;: &apos;i&apos;,
+    &apos;&#xEE;&apos;: &apos;i&apos;,
+    &apos;&#xEF;&apos;: &apos;i&apos;,
+    &apos;&#xF0;&apos;: &apos;d&apos;,
+    &apos;&#xF1;&apos;: &apos;n&apos;,
+    &apos;&#xF2;&apos;: &apos;o&apos;,
+    &apos;&#xF3;&apos;: &apos;o&apos;,
+    &apos;&#xF4;&apos;: &apos;o&apos;,
+    &apos;&#xF5;&apos;: &apos;o&apos;,
+    &apos;&#xF6;&apos;: &apos;oe&apos;,
+    &apos;&#x151;&apos;: &apos;o&apos;,
+    &apos;&#xF8;&apos;: &apos;o&apos;,
+    &apos;&#xF9;&apos;: &apos;u&apos;,
+    &apos;&#xFA;&apos;: &apos;u&apos;,
+    &apos;&#xFB;&apos;: &apos;u&apos;,
+    &apos;&#xFC;&apos;: &apos;ue&apos;,
+    &apos;&#x171;&apos;: &apos;u&apos;,
+    &apos;&#xFD;&apos;: &apos;y&apos;,
+    &apos;&#xFE;&apos;: &apos;th&apos;,
+    &apos;&#xFF;&apos;: &apos;y&apos;,
+    &apos;&#x1E9E;&apos;: &apos;SS&apos;,
+
+    // language specific
+
+    // Arabic
+    &apos;&#x627;&apos;: &apos;a&apos;,
+    &apos;&#x623;&apos;: &apos;a&apos;,
+    &apos;&#x625;&apos;: &apos;i&apos;,
+    &apos;&#x622;&apos;: &apos;aa&apos;,
+    &apos;&#x624;&apos;: &apos;u&apos;,
+    &apos;&#x626;&apos;: &apos;e&apos;,
+    &apos;&#x621;&apos;: &apos;a&apos;,
+    &apos;&#x628;&apos;: &apos;b&apos;,
+    &apos;&#x62A;&apos;: &apos;t&apos;,
+    &apos;&#x62B;&apos;: &apos;th&apos;,
+    &apos;&#x62C;&apos;: &apos;j&apos;,
+    &apos;&#x62D;&apos;: &apos;h&apos;,
+    &apos;&#x62E;&apos;: &apos;kh&apos;,
+    &apos;&#x62F;&apos;: &apos;d&apos;,
+    &apos;&#x630;&apos;: &apos;th&apos;,
+    &apos;&#x631;&apos;: &apos;r&apos;,
+    &apos;&#x632;&apos;: &apos;z&apos;,
+    &apos;&#x633;&apos;: &apos;s&apos;,
+    &apos;&#x634;&apos;: &apos;sh&apos;,
+    &apos;&#x635;&apos;: &apos;s&apos;,
+    &apos;&#x636;&apos;: &apos;dh&apos;,
+    &apos;&#x637;&apos;: &apos;t&apos;,
+    &apos;&#x638;&apos;: &apos;z&apos;,
+    &apos;&#x639;&apos;: &apos;a&apos;,
+    &apos;&#x63A;&apos;: &apos;gh&apos;,
+    &apos;&#x641;&apos;: &apos;f&apos;,
+    &apos;&#x642;&apos;: &apos;q&apos;,
+    &apos;&#x643;&apos;: &apos;k&apos;,
+    &apos;&#x644;&apos;: &apos;l&apos;,
+    &apos;&#x645;&apos;: &apos;m&apos;,
+    &apos;&#x646;&apos;: &apos;n&apos;,
+    &apos;&#x647;&apos;: &apos;h&apos;,
+    &apos;&#x648;&apos;: &apos;w&apos;,
+    &apos;&#x64A;&apos;: &apos;y&apos;,
+    &apos;&#x649;&apos;: &apos;a&apos;,
+    &apos;&#x629;&apos;: &apos;h&apos;,
+    &apos;&#xFEFB;&apos;: &apos;la&apos;,
+    &apos;&#xFEF7;&apos;: &apos;laa&apos;,
+    &apos;&#xFEF9;&apos;: &apos;lai&apos;,
+    &apos;&#xFEF5;&apos;: &apos;laa&apos;,
+
+    // Persian additional characters than Arabic
+    &apos;&#x6AF;&apos;: &apos;g&apos;,
+    &apos;&#x686;&apos;: &apos;ch&apos;,
+    &apos;&#x67E;&apos;: &apos;p&apos;,
+    &apos;&#x698;&apos;: &apos;zh&apos;,
+    &apos;&#x6A9;&apos;: &apos;k&apos;,
+    &apos;&#x6CC;&apos;: &apos;y&apos;,
+
+    // Arabic diactrics
+    &apos;&#x64E;&apos;: &apos;a&apos;,
+    &apos;&#x64B;&apos;: &apos;an&apos;,
+    &apos;&#x650;&apos;: &apos;e&apos;,
+    &apos;&#x64D;&apos;: &apos;en&apos;,
+    &apos;&#x64F;&apos;: &apos;u&apos;,
+    &apos;&#x64C;&apos;: &apos;on&apos;,
+    &apos;&#x652;&apos;: &apos;&apos;,
+
+    // Arabic numbers
+    &apos;&#x660;&apos;: &apos;0&apos;,
+    &apos;&#x661;&apos;: &apos;1&apos;,
+    &apos;&#x662;&apos;: &apos;2&apos;,
+    &apos;&#x663;&apos;: &apos;3&apos;,
+    &apos;&#x664;&apos;: &apos;4&apos;,
+    &apos;&#x665;&apos;: &apos;5&apos;,
+    &apos;&#x666;&apos;: &apos;6&apos;,
+    &apos;&#x667;&apos;: &apos;7&apos;,
+    &apos;&#x668;&apos;: &apos;8&apos;,
+    &apos;&#x669;&apos;: &apos;9&apos;,
+
+    // Persian numbers
+    &apos;&#x6F0;&apos;: &apos;0&apos;,
+    &apos;&#x6F1;&apos;: &apos;1&apos;,
+    &apos;&#x6F2;&apos;: &apos;2&apos;,
+    &apos;&#x6F3;&apos;: &apos;3&apos;,
+    &apos;&#x6F4;&apos;: &apos;4&apos;,
+    &apos;&#x6F5;&apos;: &apos;5&apos;,
+    &apos;&#x6F6;&apos;: &apos;6&apos;,
+    &apos;&#x6F7;&apos;: &apos;7&apos;,
+    &apos;&#x6F8;&apos;: &apos;8&apos;,
+    &apos;&#x6F9;&apos;: &apos;9&apos;,
+
+    // Burmese consonants
+    &apos;&#x1000;&apos;: &apos;k&apos;,
+    &apos;&#x1001;&apos;: &apos;kh&apos;,
+    &apos;&#x1002;&apos;: &apos;g&apos;,
+    &apos;&#x1003;&apos;: &apos;ga&apos;,
+    &apos;&#x1004;&apos;: &apos;ng&apos;,
+    &apos;&#x1005;&apos;: &apos;s&apos;,
+    &apos;&#x1006;&apos;: &apos;sa&apos;,
+    &apos;&#x1007;&apos;: &apos;z&apos;,
+    &apos;&#x1005;&#x103B;&apos;: &apos;za&apos;,
+    &apos;&#x100A;&apos;: &apos;ny&apos;,
+    &apos;&#x100B;&apos;: &apos;t&apos;,
+    &apos;&#x100C;&apos;: &apos;ta&apos;,
+    &apos;&#x100D;&apos;: &apos;d&apos;,
+    &apos;&#x100E;&apos;: &apos;da&apos;,
+    &apos;&#x100F;&apos;: &apos;na&apos;,
+    &apos;&#x1010;&apos;: &apos;t&apos;,
+    &apos;&#x1011;&apos;: &apos;ta&apos;,
+    &apos;&#x1012;&apos;: &apos;d&apos;,
+    &apos;&#x1013;&apos;: &apos;da&apos;,
+    &apos;&#x1014;&apos;: &apos;n&apos;,
+    &apos;&#x1015;&apos;: &apos;p&apos;,
+    &apos;&#x1016;&apos;: &apos;pa&apos;,
+    &apos;&#x1017;&apos;: &apos;b&apos;,
+    &apos;&#x1018;&apos;: &apos;ba&apos;,
+    &apos;&#x1019;&apos;: &apos;m&apos;,
+    &apos;&#x101A;&apos;: &apos;y&apos;,
+    &apos;&#x101B;&apos;: &apos;ya&apos;,
+    &apos;&#x101C;&apos;: &apos;l&apos;,
+    &apos;&#x101D;&apos;: &apos;w&apos;,
+    &apos;&#x101E;&apos;: &apos;th&apos;,
+    &apos;&#x101F;&apos;: &apos;h&apos;,
+    &apos;&#x1020;&apos;: &apos;la&apos;,
+    &apos;&#x1021;&apos;: &apos;a&apos;,
+    // consonant character combos
+    &apos;&#x103C;&apos;: &apos;y&apos;,
+    &apos;&#x103B;&apos;: &apos;ya&apos;,
+    &apos;&#x103D;&apos;: &apos;w&apos;,
+    &apos;&#x103C;&#x103D;&apos;: &apos;yw&apos;,
+    &apos;&#x103B;&#x103D;&apos;: &apos;ywa&apos;,
+    &apos;&#x103E;&apos;: &apos;h&apos;,
+    // independent vowels
+    &apos;&#x1027;&apos;: &apos;e&apos;,
+    &apos;&#x104F;&apos;: &apos;-e&apos;,
+    &apos;&#x1023;&apos;: &apos;i&apos;,
+    &apos;&#x1024;&apos;: &apos;-i&apos;,
+    &apos;&#x1009;&apos;: &apos;u&apos;,
+    &apos;&#x1026;&apos;: &apos;-u&apos;,
+    &apos;&#x1029;&apos;: &apos;aw&apos;,
+    &apos;&#x101E;&#x103C;&#x1031;&#x102C;&apos;: &apos;aw&apos;,
+    &apos;&#x102A;&apos;: &apos;aw&apos;,
+    // numbers
+    &apos;&#x1040;&apos;: &apos;0&apos;,
+    &apos;&#x1041;&apos;: &apos;1&apos;,
+    &apos;&#x1042;&apos;: &apos;2&apos;,
+    &apos;&#x1043;&apos;: &apos;3&apos;,
+    &apos;&#x1044;&apos;: &apos;4&apos;,
+    &apos;&#x1045;&apos;: &apos;5&apos;,
+    &apos;&#x1046;&apos;: &apos;6&apos;,
+    &apos;&#x1047;&apos;: &apos;7&apos;,
+    &apos;&#x1048;&apos;: &apos;8&apos;,
+    &apos;&#x1049;&apos;: &apos;9&apos;,
+    // virama and tone marks which are silent in transliteration
+    &apos;&#x1039;&apos;: &apos;&apos;,
+    &apos;&#x1037;&apos;: &apos;&apos;,
+    &apos;&#x1038;&apos;: &apos;&apos;,
+
+    // Czech
+    &apos;&#x10D;&apos;: &apos;c&apos;,
+    &apos;&#x10F;&apos;: &apos;d&apos;,
+    &apos;&#x11B;&apos;: &apos;e&apos;,
+    &apos;&#x148;&apos;: &apos;n&apos;,
+    &apos;&#x159;&apos;: &apos;r&apos;,
+    &apos;&#x161;&apos;: &apos;s&apos;,
+    &apos;&#x165;&apos;: &apos;t&apos;,
+    &apos;&#x16F;&apos;: &apos;u&apos;,
+    &apos;&#x17E;&apos;: &apos;z&apos;,
+    &apos;&#x10C;&apos;: &apos;C&apos;,
+    &apos;&#x10E;&apos;: &apos;D&apos;,
+    &apos;&#x11A;&apos;: &apos;E&apos;,
+    &apos;&#x147;&apos;: &apos;N&apos;,
+    &apos;&#x158;&apos;: &apos;R&apos;,
+    &apos;&#x160;&apos;: &apos;S&apos;,
+    &apos;&#x164;&apos;: &apos;T&apos;,
+    &apos;&#x16E;&apos;: &apos;U&apos;,
+    &apos;&#x17D;&apos;: &apos;Z&apos;,
+
+    // Dhivehi
+    &apos;&#x780;&apos;: &apos;h&apos;,
+    &apos;&#x781;&apos;: &apos;sh&apos;,
+    &apos;&#x782;&apos;: &apos;n&apos;,
+    &apos;&#x783;&apos;: &apos;r&apos;,
+    &apos;&#x784;&apos;: &apos;b&apos;,
+    &apos;&#x785;&apos;: &apos;lh&apos;,
+    &apos;&#x786;&apos;: &apos;k&apos;,
+    &apos;&#x787;&apos;: &apos;a&apos;,
+    &apos;&#x788;&apos;: &apos;v&apos;,
+    &apos;&#x789;&apos;: &apos;m&apos;,
+    &apos;&#x78A;&apos;: &apos;f&apos;,
+    &apos;&#x78B;&apos;: &apos;dh&apos;,
+    &apos;&#x78C;&apos;: &apos;th&apos;,
+    &apos;&#x78D;&apos;: &apos;l&apos;,
+    &apos;&#x78E;&apos;: &apos;g&apos;,
+    &apos;&#x78F;&apos;: &apos;gn&apos;,
+    &apos;&#x790;&apos;: &apos;s&apos;,
+    &apos;&#x791;&apos;: &apos;d&apos;,
+    &apos;&#x792;&apos;: &apos;z&apos;,
+    &apos;&#x793;&apos;: &apos;t&apos;,
+    &apos;&#x794;&apos;: &apos;y&apos;,
+    &apos;&#x795;&apos;: &apos;p&apos;,
+    &apos;&#x796;&apos;: &apos;j&apos;,
+    &apos;&#x797;&apos;: &apos;ch&apos;,
+    &apos;&#x798;&apos;: &apos;tt&apos;,
+    &apos;&#x799;&apos;: &apos;hh&apos;,
+    &apos;&#x79A;&apos;: &apos;kh&apos;,
+    &apos;&#x79B;&apos;: &apos;th&apos;,
+    &apos;&#x79C;&apos;: &apos;z&apos;,
+    &apos;&#x79D;&apos;: &apos;sh&apos;,
+    &apos;&#x79E;&apos;: &apos;s&apos;,
+    &apos;&#x79F;&apos;: &apos;d&apos;,
+    &apos;&#x7A0;&apos;: &apos;t&apos;,
+    &apos;&#x7A1;&apos;: &apos;z&apos;,
+    &apos;&#x7A2;&apos;: &apos;a&apos;,
+    &apos;&#x7A3;&apos;: &apos;gh&apos;,
+    &apos;&#x7A4;&apos;: &apos;q&apos;,
+    &apos;&#x7A5;&apos;: &apos;w&apos;,
+    &apos;&#x7A6;&apos;: &apos;a&apos;,
+    &apos;&#x7A7;&apos;: &apos;aa&apos;,
+    &apos;&#x7A8;&apos;: &apos;i&apos;,
+    &apos;&#x7A9;&apos;: &apos;ee&apos;,
+    &apos;&#x7AA;&apos;: &apos;u&apos;,
+    &apos;&#x7AB;&apos;: &apos;oo&apos;,
+    &apos;&#x7AC;&apos;: &apos;e&apos;,
+    &apos;&#x7AD;&apos;: &apos;ey&apos;,
+    &apos;&#x7AE;&apos;: &apos;o&apos;,
+    &apos;&#x7AF;&apos;: &apos;oa&apos;,
+    &apos;&#x7B0;&apos;: &apos;&apos;,
+
+    // Georgian https://en.wikipedia.org/wiki/Romanization_of_Georgian
+    // National system (2002)
+    &apos;&#x10D0;&apos;: &apos;a&apos;,
+    &apos;&#x10D1;&apos;: &apos;b&apos;,
+    &apos;&#x10D2;&apos;: &apos;g&apos;,
+    &apos;&#x10D3;&apos;: &apos;d&apos;,
+    &apos;&#x10D4;&apos;: &apos;e&apos;,
+    &apos;&#x10D5;&apos;: &apos;v&apos;,
+    &apos;&#x10D6;&apos;: &apos;z&apos;,
+    &apos;&#x10D7;&apos;: &apos;t&apos;,
+    &apos;&#x10D8;&apos;: &apos;i&apos;,
+    &apos;&#x10D9;&apos;: &apos;k&apos;,
+    &apos;&#x10DA;&apos;: &apos;l&apos;,
+    &apos;&#x10DB;&apos;: &apos;m&apos;,
+    &apos;&#x10DC;&apos;: &apos;n&apos;,
+    &apos;&#x10DD;&apos;: &apos;o&apos;,
+    &apos;&#x10DE;&apos;: &apos;p&apos;,
+    &apos;&#x10DF;&apos;: &apos;zh&apos;,
+    &apos;&#x10E0;&apos;: &apos;r&apos;,
+    &apos;&#x10E1;&apos;: &apos;s&apos;,
+    &apos;&#x10E2;&apos;: &apos;t&apos;,
+    &apos;&#x10E3;&apos;: &apos;u&apos;,
+    &apos;&#x10E4;&apos;: &apos;p&apos;,
+    &apos;&#x10E5;&apos;: &apos;k&apos;,
+    &apos;&#x10E6;&apos;: &apos;gh&apos;,
+    &apos;&#x10E7;&apos;: &apos;q&apos;,
+    &apos;&#x10E8;&apos;: &apos;sh&apos;,
+    &apos;&#x10E9;&apos;: &apos;ch&apos;,
+    &apos;&#x10EA;&apos;: &apos;ts&apos;,
+    &apos;&#x10EB;&apos;: &apos;dz&apos;,
+    &apos;&#x10EC;&apos;: &apos;ts&apos;,
+    &apos;&#x10ED;&apos;: &apos;ch&apos;,
+    &apos;&#x10EE;&apos;: &apos;kh&apos;,
+    &apos;&#x10EF;&apos;: &apos;j&apos;,
+    &apos;&#x10F0;&apos;: &apos;h&apos;,
+
+    // Greek
+    &apos;&#x3B1;&apos;: &apos;a&apos;,
+    &apos;&#x3B2;&apos;: &apos;v&apos;,
+    &apos;&#x3B3;&apos;: &apos;g&apos;,
+    &apos;&#x3B4;&apos;: &apos;d&apos;,
+    &apos;&#x3B5;&apos;: &apos;e&apos;,
+    &apos;&#x3B6;&apos;: &apos;z&apos;,
+    &apos;&#x3B7;&apos;: &apos;i&apos;,
+    &apos;&#x3B8;&apos;: &apos;th&apos;,
+    &apos;&#x3B9;&apos;: &apos;i&apos;,
+    &apos;&#x3BA;&apos;: &apos;k&apos;,
+    &apos;&#x3BB;&apos;: &apos;l&apos;,
+    &apos;&#x3BC;&apos;: &apos;m&apos;,
+    &apos;&#x3BD;&apos;: &apos;n&apos;,
+    &apos;&#x3BE;&apos;: &apos;ks&apos;,
+    &apos;&#x3BF;&apos;: &apos;o&apos;,
+    &apos;&#x3C0;&apos;: &apos;p&apos;,
+    &apos;&#x3C1;&apos;: &apos;r&apos;,
+    &apos;&#x3C3;&apos;: &apos;s&apos;,
+    &apos;&#x3C4;&apos;: &apos;t&apos;,
+    &apos;&#x3C5;&apos;: &apos;y&apos;,
+    &apos;&#x3C6;&apos;: &apos;f&apos;,
+    &apos;&#x3C7;&apos;: &apos;x&apos;,
+    &apos;&#x3C8;&apos;: &apos;ps&apos;,
+    &apos;&#x3C9;&apos;: &apos;o&apos;,
+    &apos;&#x3AC;&apos;: &apos;a&apos;,
+    &apos;&#x3AD;&apos;: &apos;e&apos;,
+    &apos;&#x3AF;&apos;: &apos;i&apos;,
+    &apos;&#x3CC;&apos;: &apos;o&apos;,
+    &apos;&#x3CD;&apos;: &apos;y&apos;,
+    &apos;&#x3AE;&apos;: &apos;i&apos;,
+    &apos;&#x3CE;&apos;: &apos;o&apos;,
+    &apos;&#x3C2;&apos;: &apos;s&apos;,
+    &apos;&#x3CA;&apos;: &apos;i&apos;,
+    &apos;&#x3B0;&apos;: &apos;y&apos;,
+    &apos;&#x3CB;&apos;: &apos;y&apos;,
+    &apos;&#x390;&apos;: &apos;i&apos;,
+    &apos;&#x391;&apos;: &apos;A&apos;,
+    &apos;&#x392;&apos;: &apos;B&apos;,
+    &apos;&#x393;&apos;: &apos;G&apos;,
+    &apos;&#x394;&apos;: &apos;D&apos;,
+    &apos;&#x395;&apos;: &apos;E&apos;,
+    &apos;&#x396;&apos;: &apos;Z&apos;,
+    &apos;&#x397;&apos;: &apos;I&apos;,
+    &apos;&#x398;&apos;: &apos;TH&apos;,
+    &apos;&#x399;&apos;: &apos;I&apos;,
+    &apos;&#x39A;&apos;: &apos;K&apos;,
+    &apos;&#x39B;&apos;: &apos;L&apos;,
+    &apos;&#x39C;&apos;: &apos;M&apos;,
+    &apos;&#x39D;&apos;: &apos;N&apos;,
+    &apos;&#x39E;&apos;: &apos;KS&apos;,
+    &apos;&#x39F;&apos;: &apos;O&apos;,
+    &apos;&#x3A0;&apos;: &apos;P&apos;,
+    &apos;&#x3A1;&apos;: &apos;R&apos;,
+    &apos;&#x3A3;&apos;: &apos;S&apos;,
+    &apos;&#x3A4;&apos;: &apos;T&apos;,
+    &apos;&#x3A5;&apos;: &apos;Y&apos;,
+    &apos;&#x3A6;&apos;: &apos;F&apos;,
+    &apos;&#x3A7;&apos;: &apos;X&apos;,
+    &apos;&#x3A8;&apos;: &apos;PS&apos;,
+    &apos;&#x3A9;&apos;: &apos;O&apos;,
+    &apos;&#x386;&apos;: &apos;A&apos;,
+    &apos;&#x388;&apos;: &apos;E&apos;,
+    &apos;&#x38A;&apos;: &apos;I&apos;,
+    &apos;&#x38C;&apos;: &apos;O&apos;,
+    &apos;&#x38E;&apos;: &apos;Y&apos;,
+    &apos;&#x389;&apos;: &apos;I&apos;,
+    &apos;&#x38F;&apos;: &apos;O&apos;,
+    &apos;&#x3AA;&apos;: &apos;I&apos;,
+    &apos;&#x3AB;&apos;: &apos;Y&apos;,
+
+    // Latvian
+    &apos;&#x101;&apos;: &apos;a&apos;,
+    // &apos;&#x10D;&apos;: &apos;c&apos;, // duplicate
+    &apos;&#x113;&apos;: &apos;e&apos;,
+    &apos;&#x123;&apos;: &apos;g&apos;,
+    &apos;&#x12B;&apos;: &apos;i&apos;,
+    &apos;&#x137;&apos;: &apos;k&apos;,
+    &apos;&#x13C;&apos;: &apos;l&apos;,
+    &apos;&#x146;&apos;: &apos;n&apos;,
+    // &apos;&#x161;&apos;: &apos;s&apos;, // duplicate
+    &apos;&#x16B;&apos;: &apos;u&apos;,
+    // &apos;&#x17E;&apos;: &apos;z&apos;, // duplicate
+    &apos;&#x100;&apos;: &apos;A&apos;,
+    // &apos;&#x10C;&apos;: &apos;C&apos;, // duplicate
+    &apos;&#x112;&apos;: &apos;E&apos;,
+    &apos;&#x122;&apos;: &apos;G&apos;,
+    &apos;&#x12A;&apos;: &apos;I&apos;,
+    &apos;&#x136;&apos;: &apos;k&apos;,
+    &apos;&#x13B;&apos;: &apos;L&apos;,
+    &apos;&#x145;&apos;: &apos;N&apos;,
+    // &apos;&#x160;&apos;: &apos;S&apos;, // duplicate
+    &apos;&#x16A;&apos;: &apos;U&apos;,
+    // &apos;&#x17D;&apos;: &apos;Z&apos;, // duplicate
+
+    // Macedonian
+    &apos;&#x40C;&apos;: &apos;Kj&apos;,
+    &apos;&#x45C;&apos;: &apos;kj&apos;,
+    &apos;&#x409;&apos;: &apos;Lj&apos;,
+    &apos;&#x459;&apos;: &apos;lj&apos;,
+    &apos;&#x40A;&apos;: &apos;Nj&apos;,
+    &apos;&#x45A;&apos;: &apos;nj&apos;,
+    &apos;&#x422;&#x441;&apos;: &apos;Ts&apos;,
+    &apos;&#x442;&#x441;&apos;: &apos;ts&apos;,
+
+    // Polish
+    &apos;&#x105;&apos;: &apos;a&apos;,
+    &apos;&#x107;&apos;: &apos;c&apos;,
+    &apos;&#x119;&apos;: &apos;e&apos;,
+    &apos;&#x142;&apos;: &apos;l&apos;,
+    &apos;&#x144;&apos;: &apos;n&apos;,
+    // &apos;&#xF3;&apos;: &apos;o&apos;, // duplicate
+    &apos;&#x15B;&apos;: &apos;s&apos;,
+    &apos;&#x17A;&apos;: &apos;z&apos;,
+    &apos;&#x17C;&apos;: &apos;z&apos;,
+    &apos;&#x104;&apos;: &apos;A&apos;,
+    &apos;&#x106;&apos;: &apos;C&apos;,
+    &apos;&#x118;&apos;: &apos;E&apos;,
+    &apos;&#x141;&apos;: &apos;L&apos;,
+    &apos;&#x143;&apos;: &apos;N&apos;,
+    &apos;&#x15A;&apos;: &apos;S&apos;,
+    &apos;&#x179;&apos;: &apos;Z&apos;,
+    &apos;&#x17B;&apos;: &apos;Z&apos;,
+
+    // Ukranian
+    &apos;&#x404;&apos;: &apos;Ye&apos;,
+    &apos;&#x406;&apos;: &apos;I&apos;,
+    &apos;&#x407;&apos;: &apos;Yi&apos;,
+    &apos;&#x490;&apos;: &apos;G&apos;,
+    &apos;&#x454;&apos;: &apos;ye&apos;,
+    &apos;&#x456;&apos;: &apos;i&apos;,
+    &apos;&#x457;&apos;: &apos;yi&apos;,
+    &apos;&#x491;&apos;: &apos;g&apos;,
+
+    // Romanian
+    &apos;&#x103;&apos;: &apos;a&apos;,
+    &apos;&#x102;&apos;: &apos;A&apos;,
+    &apos;&#x219;&apos;: &apos;s&apos;,
+    &apos;&#x218;&apos;: &apos;S&apos;,
+    // &apos;&#x15F;&apos;: &apos;s&apos;, // duplicate
+    // &apos;&#x15E;&apos;: &apos;S&apos;, // duplicate
+    &apos;&#x21B;&apos;: &apos;t&apos;,
+    &apos;&#x21A;&apos;: &apos;T&apos;,
+    &apos;&#x163;&apos;: &apos;t&apos;,
+    &apos;&#x162;&apos;: &apos;T&apos;,
+
+    // Russian https://en.wikipedia.org/wiki/Romanization_of_Russian
+    // ICAO
+
+    &apos;&#x430;&apos;: &apos;a&apos;,
+    &apos;&#x431;&apos;: &apos;b&apos;,
+    &apos;&#x432;&apos;: &apos;v&apos;,
+    &apos;&#x433;&apos;: &apos;g&apos;,
+    &apos;&#x434;&apos;: &apos;d&apos;,
+    &apos;&#x435;&apos;: &apos;e&apos;,
+    &apos;&#x451;&apos;: &apos;yo&apos;,
+    &apos;&#x436;&apos;: &apos;zh&apos;,
+    &apos;&#x437;&apos;: &apos;z&apos;,
+    &apos;&#x438;&apos;: &apos;i&apos;,
+    &apos;&#x439;&apos;: &apos;i&apos;,
+    &apos;&#x43A;&apos;: &apos;k&apos;,
+    &apos;&#x43B;&apos;: &apos;l&apos;,
+    &apos;&#x43C;&apos;: &apos;m&apos;,
+    &apos;&#x43D;&apos;: &apos;n&apos;,
+    &apos;&#x43E;&apos;: &apos;o&apos;,
+    &apos;&#x43F;&apos;: &apos;p&apos;,
+    &apos;&#x440;&apos;: &apos;r&apos;,
+    &apos;&#x441;&apos;: &apos;s&apos;,
+    &apos;&#x442;&apos;: &apos;t&apos;,
+    &apos;&#x443;&apos;: &apos;u&apos;,
+    &apos;&#x444;&apos;: &apos;f&apos;,
+    &apos;&#x445;&apos;: &apos;kh&apos;,
+    &apos;&#x446;&apos;: &apos;c&apos;,
+    &apos;&#x447;&apos;: &apos;ch&apos;,
+    &apos;&#x448;&apos;: &apos;sh&apos;,
+    &apos;&#x449;&apos;: &apos;sh&apos;,
+    &apos;&#x44A;&apos;: &apos;&apos;,
+    &apos;&#x44B;&apos;: &apos;y&apos;,
+    &apos;&#x44C;&apos;: &apos;&apos;,
+    &apos;&#x44D;&apos;: &apos;e&apos;,
+    &apos;&#x44E;&apos;: &apos;yu&apos;,
+    &apos;&#x44F;&apos;: &apos;ya&apos;,
+    &apos;&#x410;&apos;: &apos;A&apos;,
+    &apos;&#x411;&apos;: &apos;B&apos;,
+    &apos;&#x412;&apos;: &apos;V&apos;,
+    &apos;&#x413;&apos;: &apos;G&apos;,
+    &apos;&#x414;&apos;: &apos;D&apos;,
+    &apos;&#x415;&apos;: &apos;E&apos;,
+    &apos;&#x401;&apos;: &apos;Yo&apos;,
+    &apos;&#x416;&apos;: &apos;Zh&apos;,
+    &apos;&#x417;&apos;: &apos;Z&apos;,
+    &apos;&#x418;&apos;: &apos;I&apos;,
+    &apos;&#x419;&apos;: &apos;I&apos;,
+    &apos;&#x41A;&apos;: &apos;K&apos;,
+    &apos;&#x41B;&apos;: &apos;L&apos;,
+    &apos;&#x41C;&apos;: &apos;M&apos;,
+    &apos;&#x41D;&apos;: &apos;N&apos;,
+    &apos;&#x41E;&apos;: &apos;O&apos;,
+    &apos;&#x41F;&apos;: &apos;P&apos;,
+    &apos;&#x420;&apos;: &apos;R&apos;,
+    &apos;&#x421;&apos;: &apos;S&apos;,
+    &apos;&#x422;&apos;: &apos;T&apos;,
+    &apos;&#x423;&apos;: &apos;U&apos;,
+    &apos;&#x424;&apos;: &apos;F&apos;,
+    &apos;&#x425;&apos;: &apos;Kh&apos;,
+    &apos;&#x426;&apos;: &apos;C&apos;,
+    &apos;&#x427;&apos;: &apos;Ch&apos;,
+    &apos;&#x428;&apos;: &apos;Sh&apos;,
+    &apos;&#x429;&apos;: &apos;Sh&apos;,
+    &apos;&#x42A;&apos;: &apos;&apos;,
+    &apos;&#x42B;&apos;: &apos;Y&apos;,
+    &apos;&#x42C;&apos;: &apos;&apos;,
+    &apos;&#x42D;&apos;: &apos;E&apos;,
+    &apos;&#x42E;&apos;: &apos;Yu&apos;,
+    &apos;&#x42F;&apos;: &apos;Ya&apos;,
+
+    // Serbian
+    &apos;&#x452;&apos;: &apos;dj&apos;,
+    &apos;&#x458;&apos;: &apos;j&apos;,
+    // &apos;&#x459;&apos;: &apos;lj&apos;,  // duplicate
+    // &apos;&#x45A;&apos;: &apos;nj&apos;, // duplicate
+    &apos;&#x45B;&apos;: &apos;c&apos;,
+    &apos;&#x45F;&apos;: &apos;dz&apos;,
+    &apos;&#x402;&apos;: &apos;Dj&apos;,
+    &apos;&#x408;&apos;: &apos;j&apos;,
+    // &apos;&#x409;&apos;: &apos;Lj&apos;, // duplicate
+    // &apos;&#x40A;&apos;: &apos;Nj&apos;, // duplicate
+    &apos;&#x40B;&apos;: &apos;C&apos;,
+    &apos;&#x40F;&apos;: &apos;Dz&apos;,
+
+    // Slovak
+    &apos;&#x13E;&apos;: &apos;l&apos;,
+    &apos;&#x13A;&apos;: &apos;l&apos;,
+    &apos;&#x155;&apos;: &apos;r&apos;,
+    &apos;&#x13D;&apos;: &apos;L&apos;,
+    &apos;&#x139;&apos;: &apos;L&apos;,
+    &apos;&#x154;&apos;: &apos;R&apos;,
+
+    // Turkish
+    &apos;&#x15F;&apos;: &apos;s&apos;,
+    &apos;&#x15E;&apos;: &apos;S&apos;,
+    &apos;&#x131;&apos;: &apos;i&apos;,
+    &apos;&#x130;&apos;: &apos;I&apos;,
+    // &apos;&#xE7;&apos;: &apos;c&apos;, // duplicate
+    // &apos;&#xC7;&apos;: &apos;C&apos;, // duplicate
+    // &apos;&#xFC;&apos;: &apos;u&apos;, // duplicate, see langCharMap
+    // &apos;&#xDC;&apos;: &apos;U&apos;, // duplicate, see langCharMap
+    // &apos;&#xF6;&apos;: &apos;o&apos;, // duplicate, see langCharMap
+    // &apos;&#xD6;&apos;: &apos;O&apos;, // duplicate, see langCharMap
+    &apos;&#x11F;&apos;: &apos;g&apos;,
+    &apos;&#x11E;&apos;: &apos;G&apos;,
+
+    // Vietnamese
+    &apos;&#x1EA3;&apos;: &apos;a&apos;,
+    &apos;&#x1EA2;&apos;: &apos;A&apos;,
+    &apos;&#x1EB3;&apos;: &apos;a&apos;,
+    &apos;&#x1EB2;&apos;: &apos;A&apos;,
+    &apos;&#x1EA9;&apos;: &apos;a&apos;,
+    &apos;&#x1EA8;&apos;: &apos;A&apos;,
+    &apos;&#x111;&apos;: &apos;d&apos;,
+    &apos;&#x110;&apos;: &apos;D&apos;,
+    &apos;&#x1EB9;&apos;: &apos;e&apos;,
+    &apos;&#x1EB8;&apos;: &apos;E&apos;,
+    &apos;&#x1EBD;&apos;: &apos;e&apos;,
+    &apos;&#x1EBC;&apos;: &apos;E&apos;,
+    &apos;&#x1EBB;&apos;: &apos;e&apos;,
+    &apos;&#x1EBA;&apos;: &apos;E&apos;,
+    &apos;&#x1EBF;&apos;: &apos;e&apos;,
+    &apos;&#x1EBE;&apos;: &apos;E&apos;,
+    &apos;&#x1EC1;&apos;: &apos;e&apos;,
+    &apos;&#x1EC0;&apos;: &apos;E&apos;,
+    &apos;&#x1EC7;&apos;: &apos;e&apos;,
+    &apos;&#x1EC6;&apos;: &apos;E&apos;,
+    &apos;&#x1EC5;&apos;: &apos;e&apos;,
+    &apos;&#x1EC4;&apos;: &apos;E&apos;,
+    &apos;&#x1EC3;&apos;: &apos;e&apos;,
+    &apos;&#x1EC2;&apos;: &apos;E&apos;,
+    &apos;&#x1ECF;&apos;: &apos;o&apos;,
+    &apos;&#x1ECD;&apos;: &apos;o&apos;,
+    &apos;&#x1ECC;&apos;: &apos;o&apos;,
+    &apos;&#x1ED1;&apos;: &apos;o&apos;,
+    &apos;&#x1ED0;&apos;: &apos;O&apos;,
+    &apos;&#x1ED3;&apos;: &apos;o&apos;,
+    &apos;&#x1ED2;&apos;: &apos;O&apos;,
+    &apos;&#x1ED5;&apos;: &apos;o&apos;,
+    &apos;&#x1ED4;&apos;: &apos;O&apos;,
+    &apos;&#x1ED9;&apos;: &apos;o&apos;,
+    &apos;&#x1ED8;&apos;: &apos;O&apos;,
+    &apos;&#x1ED7;&apos;: &apos;o&apos;,
+    &apos;&#x1ED6;&apos;: &apos;O&apos;,
+    &apos;&#x1A1;&apos;: &apos;o&apos;,
+    &apos;&#x1A0;&apos;: &apos;O&apos;,
+    &apos;&#x1EDB;&apos;: &apos;o&apos;,
+    &apos;&#x1EDA;&apos;: &apos;O&apos;,
+    &apos;&#x1EDD;&apos;: &apos;o&apos;,
+    &apos;&#x1EDC;&apos;: &apos;O&apos;,
+    &apos;&#x1EE3;&apos;: &apos;o&apos;,
+    &apos;&#x1EE2;&apos;: &apos;O&apos;,
+    &apos;&#x1EE1;&apos;: &apos;o&apos;,
+    &apos;&#x1EE0;&apos;: &apos;O&apos;,
+    &apos;&#x1EDE;&apos;: &apos;o&apos;,
+    &apos;&#x1EDF;&apos;: &apos;o&apos;,
+    &apos;&#x1ECB;&apos;: &apos;i&apos;,
+    &apos;&#x1ECA;&apos;: &apos;I&apos;,
+    &apos;&#x129;&apos;: &apos;i&apos;,
+    &apos;&#x128;&apos;: &apos;I&apos;,
+    &apos;&#x1EC9;&apos;: &apos;i&apos;,
+    &apos;&#x1EC8;&apos;: &apos;i&apos;,
+    &apos;&#x1EE7;&apos;: &apos;u&apos;,
+    &apos;&#x1EE6;&apos;: &apos;U&apos;,
+    &apos;&#x1EE5;&apos;: &apos;u&apos;,
+    &apos;&#x1EE4;&apos;: &apos;U&apos;,
+    &apos;&#x169;&apos;: &apos;u&apos;,
+    &apos;&#x168;&apos;: &apos;U&apos;,
+    &apos;&#x1B0;&apos;: &apos;u&apos;,
+    &apos;&#x1AF;&apos;: &apos;U&apos;,
+    &apos;&#x1EE9;&apos;: &apos;u&apos;,
+    &apos;&#x1EE8;&apos;: &apos;U&apos;,
+    &apos;&#x1EEB;&apos;: &apos;u&apos;,
+    &apos;&#x1EEA;&apos;: &apos;U&apos;,
+    &apos;&#x1EF1;&apos;: &apos;u&apos;,
+    &apos;&#x1EF0;&apos;: &apos;U&apos;,
+    &apos;&#x1EEF;&apos;: &apos;u&apos;,
+    &apos;&#x1EEE;&apos;: &apos;U&apos;,
+    &apos;&#x1EED;&apos;: &apos;u&apos;,
+    &apos;&#x1EEC;&apos;: &apos;&#x1B0;&apos;,
+    &apos;&#x1EF7;&apos;: &apos;y&apos;,
+    &apos;&#x1EF6;&apos;: &apos;y&apos;,
+    &apos;&#x1EF3;&apos;: &apos;y&apos;,
+    &apos;&#x1EF2;&apos;: &apos;Y&apos;,
+    &apos;&#x1EF5;&apos;: &apos;y&apos;,
+    &apos;&#x1EF4;&apos;: &apos;Y&apos;,
+    &apos;&#x1EF9;&apos;: &apos;y&apos;,
+    &apos;&#x1EF8;&apos;: &apos;Y&apos;,
+    &apos;&#x1EA1;&apos;: &apos;a&apos;,
+    &apos;&#x1EA0;&apos;: &apos;A&apos;,
+    &apos;&#x1EA5;&apos;: &apos;a&apos;,
+    &apos;&#x1EA4;&apos;: &apos;A&apos;,
+    &apos;&#x1EA7;&apos;: &apos;a&apos;,
+    &apos;&#x1EA6;&apos;: &apos;A&apos;,
+    &apos;&#x1EAD;&apos;: &apos;a&apos;,
+    &apos;&#x1EAC;&apos;: &apos;A&apos;,
+    &apos;&#x1EAB;&apos;: &apos;a&apos;,
+    &apos;&#x1EAA;&apos;: &apos;A&apos;,
+    // &apos;&#x103;&apos;: &apos;a&apos;, // duplicate
+    // &apos;&#x102;&apos;: &apos;A&apos;, // duplicate
+    &apos;&#x1EAF;&apos;: &apos;a&apos;,
+    &apos;&#x1EAE;&apos;: &apos;A&apos;,
+    &apos;&#x1EB1;&apos;: &apos;a&apos;,
+    &apos;&#x1EB0;&apos;: &apos;A&apos;,
+    &apos;&#x1EB7;&apos;: &apos;a&apos;,
+    &apos;&#x1EB6;&apos;: &apos;A&apos;,
+    &apos;&#x1EB5;&apos;: &apos;a&apos;,
+    &apos;&#x1EB4;&apos;: &apos;A&apos;,
+    &quot;&#x24EA;&quot;: &quot;0&quot;,
+    &quot;&#x2460;&quot;: &quot;1&quot;,
+    &quot;&#x2461;&quot;: &quot;2&quot;,
+    &quot;&#x2462;&quot;: &quot;3&quot;,
+    &quot;&#x2463;&quot;: &quot;4&quot;,
+    &quot;&#x2464;&quot;: &quot;5&quot;,
+    &quot;&#x2465;&quot;: &quot;6&quot;,
+    &quot;&#x2466;&quot;: &quot;7&quot;,
+    &quot;&#x2467;&quot;: &quot;8&quot;,
+    &quot;&#x2468;&quot;: &quot;9&quot;,
+    &quot;&#x2469;&quot;: &quot;10&quot;,
+    &quot;&#x246A;&quot;: &quot;11&quot;,
+    &quot;&#x246B;&quot;: &quot;12&quot;,
+    &quot;&#x246C;&quot;: &quot;13&quot;,
+    &quot;&#x246D;&quot;: &quot;14&quot;,
+    &quot;&#x246E;&quot;: &quot;15&quot;,
+    &quot;&#x246F;&quot;: &quot;16&quot;,
+    &quot;&#x2470;&quot;: &quot;17&quot;,
+    &quot;&#x2471;&quot;: &quot;18&quot;,
+    &quot;&#x2472;&quot;: &quot;18&quot;,
+    &quot;&#x2473;&quot;: &quot;18&quot;,
+
+    &quot;&#x24F5;&quot;: &quot;1&quot;,
+    &quot;&#x24F6;&quot;: &quot;2&quot;,
+    &quot;&#x24F7;&quot;: &quot;3&quot;,
+    &quot;&#x24F8;&quot;: &quot;4&quot;,
+    &quot;&#x24F9;&quot;: &quot;5&quot;,
+    &quot;&#x24FA;&quot;: &quot;6&quot;,
+    &quot;&#x24FB;&quot;: &quot;7&quot;,
+    &quot;&#x24FC;&quot;: &quot;8&quot;,
+    &quot;&#x24FD;&quot;: &quot;9&quot;,
+    &quot;&#x24FE;&quot;: &quot;10&quot;,
+
+    &quot;&#x24FF;&quot;: &quot;0&quot;,
+    &quot;&#x24EB;&quot;: &quot;11&quot;,
+    &quot;&#x24EC;&quot;: &quot;12&quot;,
+    &quot;&#x24ED;&quot;: &quot;13&quot;,
+    &quot;&#x24EE;&quot;: &quot;14&quot;,
+    &quot;&#x24EF;&quot;: &quot;15&quot;,
+    &quot;&#x24F0;&quot;: &quot;16&quot;,
+    &quot;&#x24F1;&quot;: &quot;17&quot;,
+    &quot;&#x24F2;&quot;: &quot;18&quot;,
+    &quot;&#x24F3;&quot;: &quot;19&quot;,
+    &quot;&#x24F4;&quot;: &quot;20&quot;,
+
+    &quot;&#x24B6;&quot;: &quot;A&quot;,
+    &quot;&#x24B7;&quot;: &quot;B&quot;,
+    &quot;&#x24B8;&quot;: &quot;C&quot;,
+    &quot;&#x24B9;&quot;: &quot;D&quot;,
+    &quot;&#x24BA;&quot;: &quot;E&quot;,
+    &quot;&#x24BB;&quot;: &quot;F&quot;,
+    &quot;&#x24BC;&quot;: &quot;G&quot;,
+    &quot;&#x24BD;&quot;: &quot;H&quot;,
+    &quot;&#x24BE;&quot;: &quot;I&quot;,
+    &quot;&#x24BF;&quot;: &quot;J&quot;,
+    &quot;&#x24C0;&quot;: &quot;K&quot;,
+    &quot;&#x24C1;&quot;: &quot;L&quot;,
+    &quot;&#x24C2;&quot;: &quot;M&quot;,
+    &quot;&#x24C3;&quot;: &quot;N&quot;,
+    &quot;&#x24C4;&quot;: &quot;O&quot;,
+    &quot;&#x24C5;&quot;: &quot;P&quot;,
+    &quot;&#x24C6;&quot;: &quot;Q&quot;,
+    &quot;&#x24C7;&quot;: &quot;R&quot;,
+    &quot;&#x24C8;&quot;: &quot;S&quot;,
+    &quot;&#x24C9;&quot;: &quot;T&quot;,
+    &quot;&#x24CA;&quot;: &quot;U&quot;,
+    &quot;&#x24CB;&quot;: &quot;V&quot;,
+    &quot;&#x24CC;&quot;: &quot;W&quot;,
+    &quot;&#x24CD;&quot;: &quot;X&quot;,
+    &quot;&#x24CE;&quot;: &quot;Y&quot;,
+    &quot;&#x24CF;&quot;: &quot;Z&quot;,
+
+    &quot;&#x24D0;&quot;: &quot;a&quot;,
+    &quot;&#x24D1;&quot;: &quot;b&quot;,
+    &quot;&#x24D2;&quot;: &quot;c&quot;,
+    &quot;&#x24D3;&quot;: &quot;d&quot;,
+    &quot;&#x24D4;&quot;: &quot;e&quot;,
+    &quot;&#x24D5;&quot;: &quot;f&quot;,
+    &quot;&#x24D6;&quot;: &quot;g&quot;,
+    &quot;&#x24D7;&quot;: &quot;h&quot;,
+    &quot;&#x24D8;&quot;: &quot;i&quot;,
+    &quot;&#x24D9;&quot;: &quot;j&quot;,
+    &quot;&#x24DA;&quot;: &quot;k&quot;,
+    &quot;&#x24DB;&quot;: &quot;l&quot;,
+    &quot;&#x24DC;&quot;: &quot;m&quot;,
+    &quot;&#x24DD;&quot;: &quot;n&quot;,
+    &quot;&#x24DE;&quot;: &quot;o&quot;,
+    &quot;&#x24DF;&quot;: &quot;p&quot;,
+    &quot;&#x24E0;&quot;: &quot;q&quot;,
+    &quot;&#x24E1;&quot;: &quot;r&quot;,
+    &quot;&#x24E2;&quot;: &quot;s&quot;,
+    &quot;&#x24E3;&quot;: &quot;t&quot;,
+    &quot;&#x24E4;&quot;: &quot;u&quot;,
+    &quot;&#x24E6;&quot;: &quot;v&quot;,
+    &quot;&#x24E5;&quot;: &quot;w&quot;,
+    &quot;&#x24E7;&quot;: &quot;x&quot;,
+    &quot;&#x24E8;&quot;: &quot;y&quot;,
+    &quot;&#x24E9;&quot;: &quot;z&quot;,
+
+    // symbols
+    &apos;&#x201C;&apos;: &apos;&quot;&apos;,
+    &apos;&#x201D;&apos;: &apos;&quot;&apos;,
+    &apos;&#x2018;&apos;: &quot;&apos;&quot;,
+    &apos;&#x2019;&apos;: &quot;&apos;&quot;,
+    &apos;&#x2202;&apos;: &apos;d&apos;,
+    &apos;&#x192;&apos;: &apos;f&apos;,
+    &apos;&#x2122;&apos;: &apos;(TM)&apos;,
+    &apos;&#xA9;&apos;: &apos;(C)&apos;,
+    &apos;&#x153;&apos;: &apos;oe&apos;,
+    &apos;&#x152;&apos;: &apos;OE&apos;,
+    &apos;&#xAE;&apos;: &apos;(R)&apos;,
+    &apos;&#x2020;&apos;: &apos;+&apos;,
+    &apos;&#x2120;&apos;: &apos;(SM)&apos;,
+    &apos;&#x2026;&apos;: &apos;...&apos;,
+    &apos;&#x2DA;&apos;: &apos;o&apos;,
+    &apos;&#xBA;&apos;: &apos;o&apos;,
+    &apos;&#xAA;&apos;: &apos;a&apos;,
+    &apos;&#x2022;&apos;: &apos;*&apos;,
+    &apos;&#x104A;&apos;: &apos;,&apos;,
+    &apos;&#x104B;&apos;: &apos;.&apos;,
+
+    // currency
+    &apos;$&apos;: &apos;USD&apos;,
+    &apos;&#x20AC;&apos;: &apos;EUR&apos;,
+    &apos;&#x20A2;&apos;: &apos;BRN&apos;,
+    &apos;&#x20A3;&apos;: &apos;FRF&apos;,
+    &apos;&#xA3;&apos;: &apos;GBP&apos;,
+    &apos;&#x20A4;&apos;: &apos;ITL&apos;,
+    &apos;&#x20A6;&apos;: &apos;NGN&apos;,
+    &apos;&#x20A7;&apos;: &apos;ESP&apos;,
+    &apos;&#x20A9;&apos;: &apos;KRW&apos;,
+    &apos;&#x20AA;&apos;: &apos;ILS&apos;,
+    &apos;&#x20AB;&apos;: &apos;VND&apos;,
+    &apos;&#x20AD;&apos;: &apos;LAK&apos;,
+    &apos;&#x20AE;&apos;: &apos;MNT&apos;,
+    &apos;&#x20AF;&apos;: &apos;GRD&apos;,
+    &apos;&#x20B1;&apos;: &apos;ARS&apos;,
+    &apos;&#x20B2;&apos;: &apos;PYG&apos;,
+    &apos;&#x20B3;&apos;: &apos;ARA&apos;,
+    &apos;&#x20B4;&apos;: &apos;UAH&apos;,
+    &apos;&#x20B5;&apos;: &apos;GHS&apos;,
+    &apos;&#xA2;&apos;: &apos;cent&apos;,
+    &apos;&#xA5;&apos;: &apos;CNY&apos;,
+    &apos;&#x5143;&apos;: &apos;CNY&apos;,
+    &apos;&#x5186;&apos;: &apos;YEN&apos;,
+    &apos;&#xFDFC;&apos;: &apos;IRR&apos;,
+    &apos;&#x20A0;&apos;: &apos;EWE&apos;,
+    &apos;&#xE3F;&apos;: &apos;THB&apos;,
+    &apos;&#x20A8;&apos;: &apos;INR&apos;,
+    &apos;&#x20B9;&apos;: &apos;INR&apos;,
+    &apos;&#x20B0;&apos;: &apos;PF&apos;,
+    &apos;&#x20BA;&apos;: &apos;TRY&apos;,
+    &apos;&#x60B;&apos;: &apos;AFN&apos;,
+    &apos;&#x20BC;&apos;: &apos;AZN&apos;,
+    &apos;&#x43B;&#x432;&apos;: &apos;BGN&apos;,
+    &apos;&#x17DB;&apos;: &apos;KHR&apos;,
+    &apos;&#x20A1;&apos;: &apos;CRC&apos;,
+    &apos;&#x20B8;&apos;: &apos;KZT&apos;,
+    &apos;&#x434;&#x435;&#x43D;&apos;: &apos;MKD&apos;,
+    &apos;z&#x142;&apos;: &apos;PLN&apos;,
+    &apos;&#x20BD;&apos;: &apos;RUB&apos;,
+    &apos;&#x20BE;&apos;: &apos;GEL&apos;
+
+};
+
+/**
+ * special look ahead character array
+ * These characters form with consonants to become &apos;single&apos;/consonant combo
+ * @type [Array]
+ */
+var lookAheadCharArray = [
+    // burmese
+    &apos;&#x103A;&apos;,
+
+    // Dhivehi
+    &apos;&#x7B0;&apos;
+];
+
+/**
+ * diatricMap for languages where transliteration changes entirely as more diatrics are added
+ * @type {Object}
+ */
+var diatricMap = {
+    // Burmese
+    // dependent vowels
+    &apos;&#x102C;&apos;: &apos;a&apos;,
+    &apos;&#x102B;&apos;: &apos;a&apos;,
+    &apos;&#x1031;&apos;: &apos;e&apos;,
+    &apos;&#x1032;&apos;: &apos;e&apos;,
+    &apos;&#x102D;&apos;: &apos;i&apos;,
+    &apos;&#x102E;&apos;: &apos;i&apos;,
+    &apos;&#x102D;&#x102F;&apos;: &apos;o&apos;,
+    &apos;&#x102F;&apos;: &apos;u&apos;,
+    &apos;&#x1030;&apos;: &apos;u&apos;,
+    &apos;&#x1031;&#x102B;&#x1004;&#x103A;&apos;: &apos;aung&apos;,
+    &apos;&#x1031;&#x102C;&apos;: &apos;aw&apos;,
+    &apos;&#x1031;&#x102C;&#x103A;&apos;: &apos;aw&apos;,
+    &apos;&#x1031;&#x102B;&apos;: &apos;aw&apos;,
+    &apos;&#x1031;&#x102B;&#x103A;&apos;: &apos;aw&apos;,
+    &apos;&#x103A;&apos;: &apos;&#x103A;&apos;, // this is special case but the character will be converted to latin in the code
+    &apos;&#x1000;&#x103A;&apos;: &apos;et&apos;,
+    &apos;&#x102D;&#x102F;&#x1000;&#x103A;&apos;: &apos;aik&apos;,
+    &apos;&#x1031;&#x102C;&#x1000;&#x103A;&apos;: &apos;auk&apos;,
+    &apos;&#x1004;&#x103A;&apos;: &apos;in&apos;,
+    &apos;&#x102D;&#x102F;&#x1004;&#x103A;&apos;: &apos;aing&apos;,
+    &apos;&#x1031;&#x102C;&#x1004;&#x103A;&apos;: &apos;aung&apos;,
+    &apos;&#x1005;&#x103A;&apos;: &apos;it&apos;,
+    &apos;&#x100A;&#x103A;&apos;: &apos;i&apos;,
+    &apos;&#x1010;&#x103A;&apos;: &apos;at&apos;,
+    &apos;&#x102D;&#x1010;&#x103A;&apos;: &apos;eik&apos;,
+    &apos;&#x102F;&#x1010;&#x103A;&apos;: &apos;ok&apos;,
+    &apos;&#x103D;&#x1010;&#x103A;&apos;: &apos;ut&apos;,
+    &apos;&#x1031;&#x1010;&#x103A;&apos;: &apos;it&apos;,
+    &apos;&#x1012;&#x103A;&apos;: &apos;d&apos;,
+    &apos;&#x102D;&#x102F;&#x1012;&#x103A;&apos;: &apos;ok&apos;,
+    &apos;&#x102F;&#x1012;&#x103A;&apos;: &apos;ait&apos;,
+    &apos;&#x1014;&#x103A;&apos;: &apos;an&apos;,
+    &apos;&#x102C;&#x1014;&#x103A;&apos;: &apos;an&apos;,
+    &apos;&#x102D;&#x1014;&#x103A;&apos;: &apos;ein&apos;,
+    &apos;&#x102F;&#x1014;&#x103A;&apos;: &apos;on&apos;,
+    &apos;&#x103D;&#x1014;&#x103A;&apos;: &apos;un&apos;,
+    &apos;&#x1015;&#x103A;&apos;: &apos;at&apos;,
+    &apos;&#x102D;&#x1015;&#x103A;&apos;: &apos;eik&apos;,
+    &apos;&#x102F;&#x1015;&#x103A;&apos;: &apos;ok&apos;,
+    &apos;&#x103D;&#x1015;&#x103A;&apos;: &apos;ut&apos;,
+    &apos;&#x1014;&#x103A;&#x102F;&#x1015;&#x103A;&apos;: &apos;nub&apos;,
+    &apos;&#x1019;&#x103A;&apos;: &apos;an&apos;,
+    &apos;&#x102D;&#x1019;&#x103A;&apos;: &apos;ein&apos;,
+    &apos;&#x102F;&#x1019;&#x103A;&apos;: &apos;on&apos;,
+    &apos;&#x103D;&#x1019;&#x103A;&apos;: &apos;un&apos;,
+    &apos;&#x101A;&#x103A;&apos;: &apos;e&apos;,
+    &apos;&#x102D;&#x102F;&#x101C;&#x103A;&apos;: &apos;ol&apos;,
+    &apos;&#x1009;&#x103A;&apos;: &apos;in&apos;,
+    &apos;&#x1036;&apos;: &apos;an&apos;,
+    &apos;&#x102D;&#x1036;&apos;: &apos;ein&apos;,
+    &apos;&#x102F;&#x1036;&apos;: &apos;on&apos;,
+
+    // Dhivehi
+    &apos;&#x7A6;&#x787;&#x7B0;&apos;: &apos;ah&apos;,
+    &apos;&#x7A6;&#x781;&#x7B0;&apos;: &apos;ah&apos;
+};
+
+/**
+ * langCharMap language specific characters translations
+ * @type   {Object}
+ */
+var langCharMap = {
+    &apos;en&apos;: {}, // default language
+
+    &apos;az&apos;: { // Azerbaijani
+        &apos;&#xE7;&apos;: &apos;c&apos;,
+        &apos;&#x259;&apos;: &apos;e&apos;,
+        &apos;&#x11F;&apos;: &apos;g&apos;,
+        &apos;&#x131;&apos;: &apos;i&apos;,
+        &apos;&#xF6;&apos;: &apos;o&apos;,
+        &apos;&#x15F;&apos;: &apos;s&apos;,
+        &apos;&#xFC;&apos;: &apos;u&apos;,
+        &apos;&#xC7;&apos;: &apos;C&apos;,
+        &apos;&#x18F;&apos;: &apos;E&apos;,
+        &apos;&#x11E;&apos;: &apos;G&apos;,
+        &apos;&#x130;&apos;: &apos;I&apos;,
+        &apos;&#xD6;&apos;: &apos;O&apos;,
+        &apos;&#x15E;&apos;: &apos;S&apos;,
+        &apos;&#xDC;&apos;: &apos;U&apos;
+    },
+
+    &apos;cs&apos;: { // Czech
+        &apos;&#x10D;&apos;: &apos;c&apos;,
+        &apos;&#x10F;&apos;: &apos;d&apos;,
+        &apos;&#x11B;&apos;: &apos;e&apos;,
+        &apos;&#x148;&apos;: &apos;n&apos;,
+        &apos;&#x159;&apos;: &apos;r&apos;,
+        &apos;&#x161;&apos;: &apos;s&apos;,
+        &apos;&#x165;&apos;: &apos;t&apos;,
+        &apos;&#x16F;&apos;: &apos;u&apos;,
+        &apos;&#x17E;&apos;: &apos;z&apos;,
+        &apos;&#x10C;&apos;: &apos;C&apos;,
+        &apos;&#x10E;&apos;: &apos;D&apos;,
+        &apos;&#x11A;&apos;: &apos;E&apos;,
+        &apos;&#x147;&apos;: &apos;N&apos;,
+        &apos;&#x158;&apos;: &apos;R&apos;,
+        &apos;&#x160;&apos;: &apos;S&apos;,
+        &apos;&#x164;&apos;: &apos;T&apos;,
+        &apos;&#x16E;&apos;: &apos;U&apos;,
+        &apos;&#x17D;&apos;: &apos;Z&apos;
+    },
+
+    &apos;fi&apos;: { // Finnish
+        // &apos;&#xE5;&apos;: &apos;a&apos;, duplicate see charMap/latin
+        // &apos;&#xC5;&apos;: &apos;A&apos;, duplicate see charMap/latin
+        &apos;&#xE4;&apos;: &apos;a&apos;, // ok
+        &apos;&#xC4;&apos;: &apos;A&apos;, // ok
+        &apos;&#xF6;&apos;: &apos;o&apos;, // ok
+        &apos;&#xD6;&apos;: &apos;O&apos; // ok
+    },
+
+    &apos;hu&apos;: { // Hungarian
+        &apos;&#xE4;&apos;: &apos;a&apos;, // ok
+        &apos;&#xC4;&apos;: &apos;A&apos;, // ok
+        // &apos;&#xE1;&apos;: &apos;a&apos;, duplicate see charMap/latin
+        // &apos;&#xC1;&apos;: &apos;A&apos;, duplicate see charMap/latin
+        &apos;&#xF6;&apos;: &apos;o&apos;, // ok
+        &apos;&#xD6;&apos;: &apos;O&apos;, // ok
+        // &apos;&#x151;&apos;: &apos;o&apos;, duplicate see charMap/latin
+        // &apos;&#x150;&apos;: &apos;O&apos;, duplicate see charMap/latin
+        &apos;&#xFC;&apos;: &apos;u&apos;,
+        &apos;&#xDC;&apos;: &apos;U&apos;,
+        &apos;&#x171;&apos;: &apos;u&apos;,
+        &apos;&#x170;&apos;: &apos;U&apos;
+    },
+
+    &apos;lt&apos;: { // Lithuanian
+        &apos;&#x105;&apos;: &apos;a&apos;,
+        &apos;&#x10D;&apos;: &apos;c&apos;,
+        &apos;&#x119;&apos;: &apos;e&apos;,
+        &apos;&#x117;&apos;: &apos;e&apos;,
+        &apos;&#x12F;&apos;: &apos;i&apos;,
+        &apos;&#x161;&apos;: &apos;s&apos;,
+        &apos;&#x173;&apos;: &apos;u&apos;,
+        &apos;&#x16B;&apos;: &apos;u&apos;,
+        &apos;&#x17E;&apos;: &apos;z&apos;,
+        &apos;&#x104;&apos;: &apos;A&apos;,
+        &apos;&#x10C;&apos;: &apos;C&apos;,
+        &apos;&#x118;&apos;: &apos;E&apos;,
+        &apos;&#x116;&apos;: &apos;E&apos;,
+        &apos;&#x12E;&apos;: &apos;I&apos;,
+        &apos;&#x160;&apos;: &apos;S&apos;,
+        &apos;&#x172;&apos;: &apos;U&apos;,
+        &apos;&#x16A;&apos;: &apos;U&apos;
+    },
+
+    &apos;lv&apos;: { // Latvian
+        &apos;&#x101;&apos;: &apos;a&apos;,
+        &apos;&#x10D;&apos;: &apos;c&apos;,
+        &apos;&#x113;&apos;: &apos;e&apos;,
+        &apos;&#x123;&apos;: &apos;g&apos;,
+        &apos;&#x12B;&apos;: &apos;i&apos;,
+        &apos;&#x137;&apos;: &apos;k&apos;,
+        &apos;&#x13C;&apos;: &apos;l&apos;,
+        &apos;&#x146;&apos;: &apos;n&apos;,
+        &apos;&#x161;&apos;: &apos;s&apos;,
+        &apos;&#x16B;&apos;: &apos;u&apos;,
+        &apos;&#x17E;&apos;: &apos;z&apos;,
+        &apos;&#x100;&apos;: &apos;A&apos;,
+        &apos;&#x10C;&apos;: &apos;C&apos;,
+        &apos;&#x112;&apos;: &apos;E&apos;,
+        &apos;&#x122;&apos;: &apos;G&apos;,
+        &apos;&#x12A;&apos;: &apos;i&apos;,
+        &apos;&#x136;&apos;: &apos;k&apos;,
+        &apos;&#x13B;&apos;: &apos;L&apos;,
+        &apos;&#x145;&apos;: &apos;N&apos;,
+        &apos;&#x160;&apos;: &apos;S&apos;,
+        &apos;&#x16A;&apos;: &apos;u&apos;,
+        &apos;&#x17D;&apos;: &apos;Z&apos;
+    },
+
+    &apos;pl&apos;: { // Polish
+        &apos;&#x105;&apos;: &apos;a&apos;,
+        &apos;&#x107;&apos;: &apos;c&apos;,
+        &apos;&#x119;&apos;: &apos;e&apos;,
+        &apos;&#x142;&apos;: &apos;l&apos;,
+        &apos;&#x144;&apos;: &apos;n&apos;,
+        &apos;&#xF3;&apos;: &apos;o&apos;,
+        &apos;&#x15B;&apos;: &apos;s&apos;,
+        &apos;&#x17A;&apos;: &apos;z&apos;,
+        &apos;&#x17C;&apos;: &apos;z&apos;,
+        &apos;&#x104;&apos;: &apos;A&apos;,
+        &apos;&#x106;&apos;: &apos;C&apos;,
+        &apos;&#x118;&apos;: &apos;e&apos;,
+        &apos;&#x141;&apos;: &apos;L&apos;,
+        &apos;&#x143;&apos;: &apos;N&apos;,
+        &apos;&#xD3;&apos;: &apos;O&apos;,
+        &apos;&#x15A;&apos;: &apos;S&apos;,
+        &apos;&#x179;&apos;: &apos;Z&apos;,
+        &apos;&#x17B;&apos;: &apos;Z&apos;
+    },
+
+    &apos;sv&apos;: { // Swedish
+        // &apos;&#xE5;&apos;: &apos;a&apos;, duplicate see charMap/latin
+        // &apos;&#xC5;&apos;: &apos;A&apos;, duplicate see charMap/latin
+        &apos;&#xE4;&apos;: &apos;a&apos;, // ok
+        &apos;&#xC4;&apos;: &apos;A&apos;, // ok
+        &apos;&#xF6;&apos;: &apos;o&apos;, // ok
+        &apos;&#xD6;&apos;: &apos;O&apos; // ok
+    },
+
+    &apos;sk&apos;: { // Slovak
+        &apos;&#xE4;&apos;: &apos;a&apos;,
+        &apos;&#xC4;&apos;: &apos;A&apos;
+    },
+
+    &apos;sr&apos;: { // Serbian
+        &apos;&#x459;&apos;: &apos;lj&apos;,
+        &apos;&#x45A;&apos;: &apos;nj&apos;,
+        &apos;&#x409;&apos;: &apos;Lj&apos;,
+        &apos;&#x40A;&apos;: &apos;Nj&apos;,
+        &apos;&#x111;&apos;: &apos;dj&apos;,
+        &apos;&#x110;&apos;: &apos;Dj&apos;
+    },
+
+    &apos;tr&apos;: { // Turkish
+        &apos;&#xDC;&apos;: &apos;U&apos;,
+        &apos;&#xD6;&apos;: &apos;O&apos;,
+        &apos;&#xFC;&apos;: &apos;u&apos;,
+        &apos;&#xF6;&apos;: &apos;o&apos;
+    }
+};
+
+/**
+ * symbolMap language specific symbol translations
+ * translations must be transliterated already
+ * @type   {Object}
+ */
+var symbolMap = {
+    &apos;ar&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;la-nihaya&apos;,
+        &apos;&#x2665;&apos;: &apos;hob&apos;,
+        &apos;&amp;&apos;: &apos;wa&apos;,
+        &apos;|&apos;: &apos;aw&apos;,
+        &apos;&lt;&apos;: &apos;aqal-men&apos;,
+        &apos;&gt;&apos;: &apos;akbar-men&apos;,
+        &apos;&#x2211;&apos;: &apos;majmou&apos;,
+        &apos;&#xA4;&apos;: &apos;omla&apos;
+    },
+
+    &apos;az&apos;: {},
+
+    &apos;ca&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;infinit&apos;,
+        &apos;&#x2665;&apos;: &apos;amor&apos;,
+        &apos;&amp;&apos;: &apos;i&apos;,
+        &apos;|&apos;: &apos;o&apos;,
+        &apos;&lt;&apos;: &apos;menys que&apos;,
+        &apos;&gt;&apos;: &apos;mes que&apos;,
+        &apos;&#x2211;&apos;: &apos;suma dels&apos;,
+        &apos;&#xA4;&apos;: &apos;moneda&apos;
+    },
+
+    &apos;cs&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;nekonecno&apos;,
+        &apos;&#x2665;&apos;: &apos;laska&apos;,
+        &apos;&amp;&apos;: &apos;a&apos;,
+        &apos;|&apos;: &apos;nebo&apos;,
+        &apos;&lt;&apos;: &apos;mensi nez&apos;,
+        &apos;&gt;&apos;: &apos;vetsi nez&apos;,
+        &apos;&#x2211;&apos;: &apos;soucet&apos;,
+        &apos;&#xA4;&apos;: &apos;mena&apos;
+    },
+
+    &apos;de&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;unendlich&apos;,
+        &apos;&#x2665;&apos;: &apos;Liebe&apos;,
+        &apos;&amp;&apos;: &apos;und&apos;,
+        &apos;|&apos;: &apos;oder&apos;,
+        &apos;&lt;&apos;: &apos;kleiner als&apos;,
+        &apos;&gt;&apos;: &apos;groesser als&apos;,
+        &apos;&#x2211;&apos;: &apos;Summe von&apos;,
+        &apos;&#xA4;&apos;: &apos;Waehrung&apos;
+    },
+
+    &apos;dv&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;kolunulaa&apos;,
+        &apos;&#x2665;&apos;: &apos;loabi&apos;,
+        &apos;&amp;&apos;: &apos;aai&apos;,
+        &apos;|&apos;: &apos;noonee&apos;,
+        &apos;&lt;&apos;: &apos;ah vure kuda&apos;,
+        &apos;&gt;&apos;: &apos;ah vure bodu&apos;,
+        &apos;&#x2211;&apos;: &apos;jumula&apos;,
+        &apos;&#xA4;&apos;: &apos;faisaa&apos;
+    },
+
+    &apos;en&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;infinity&apos;,
+        &apos;&#x2665;&apos;: &apos;love&apos;,
+        &apos;&amp;&apos;: &apos;and&apos;,
+        &apos;|&apos;: &apos;or&apos;,
+        &apos;&lt;&apos;: &apos;less than&apos;,
+        &apos;&gt;&apos;: &apos;greater than&apos;,
+        &apos;&#x2211;&apos;: &apos;sum&apos;,
+        &apos;&#xA4;&apos;: &apos;currency&apos;
+    },
+
+    &apos;es&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;infinito&apos;,
+        &apos;&#x2665;&apos;: &apos;amor&apos;,
+        &apos;&amp;&apos;: &apos;y&apos;,
+        &apos;|&apos;: &apos;u&apos;,
+        &apos;&lt;&apos;: &apos;menos que&apos;,
+        &apos;&gt;&apos;: &apos;mas que&apos;,
+        &apos;&#x2211;&apos;: &apos;suma de los&apos;,
+        &apos;&#xA4;&apos;: &apos;moneda&apos;
+    },
+
+    &apos;fa&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;bi-nahayat&apos;,
+        &apos;&#x2665;&apos;: &apos;eshgh&apos;,
+        &apos;&amp;&apos;: &apos;va&apos;,
+        &apos;|&apos;: &apos;ya&apos;,
+        &apos;&lt;&apos;: &apos;kamtar-az&apos;,
+        &apos;&gt;&apos;: &apos;bishtar-az&apos;,
+        &apos;&#x2211;&apos;: &apos;majmooe&apos;,
+        &apos;&#xA4;&apos;: &apos;vahed&apos;
+    },
+
+    &apos;fi&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;aarettomyys&apos;,
+        &apos;&#x2665;&apos;: &apos;rakkaus&apos;,
+        &apos;&amp;&apos;: &apos;ja&apos;,
+        &apos;|&apos;: &apos;tai&apos;,
+        &apos;&lt;&apos;: &apos;pienempi kuin&apos;,
+        &apos;&gt;&apos;: &apos;suurempi kuin&apos;,
+        &apos;&#x2211;&apos;: &apos;summa&apos;,
+        &apos;&#xA4;&apos;: &apos;valuutta&apos;
+    },
+
+    &apos;fr&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;infiniment&apos;,
+        &apos;&#x2665;&apos;: &apos;Amour&apos;,
+        &apos;&amp;&apos;: &apos;et&apos;,
+        &apos;|&apos;: &apos;ou&apos;,
+        &apos;&lt;&apos;: &apos;moins que&apos;,
+        &apos;&gt;&apos;: &apos;superieure a&apos;,
+        &apos;&#x2211;&apos;: &apos;somme des&apos;,
+        &apos;&#xA4;&apos;: &apos;monnaie&apos;
+    },
+
+    &apos;ge&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;usasruloba&apos;,
+        &apos;&#x2665;&apos;: &apos;siqvaruli&apos;,
+        &apos;&amp;&apos;: &apos;da&apos;,
+        &apos;|&apos;: &apos;an&apos;,
+        &apos;&lt;&apos;: &apos;naklebi&apos;,
+        &apos;&gt;&apos;: &apos;meti&apos;,
+        &apos;&#x2211;&apos;: &apos;jami&apos;,
+        &apos;&#xA4;&apos;: &apos;valuta&apos;
+    },
+
+    &apos;gr&apos;: {},
+
+    &apos;hu&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;vegtelen&apos;,
+        &apos;&#x2665;&apos;: &apos;szerelem&apos;,
+        &apos;&amp;&apos;: &apos;es&apos;,
+        &apos;|&apos;: &apos;vagy&apos;,
+        &apos;&lt;&apos;: &apos;kisebb mint&apos;,
+        &apos;&gt;&apos;: &apos;nagyobb mint&apos;,
+        &apos;&#x2211;&apos;: &apos;szumma&apos;,
+        &apos;&#xA4;&apos;: &apos;penznem&apos;
+    },
+
+    &apos;it&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;infinito&apos;,
+        &apos;&#x2665;&apos;: &apos;amore&apos;,
+        &apos;&amp;&apos;: &apos;e&apos;,
+        &apos;|&apos;: &apos;o&apos;,
+        &apos;&lt;&apos;: &apos;minore di&apos;,
+        &apos;&gt;&apos;: &apos;maggiore di&apos;,
+        &apos;&#x2211;&apos;: &apos;somma&apos;,
+        &apos;&#xA4;&apos;: &apos;moneta&apos;
+    },
+
+    &apos;lt&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;begalybe&apos;,
+        &apos;&#x2665;&apos;: &apos;meile&apos;,
+        &apos;&amp;&apos;: &apos;ir&apos;,
+        &apos;|&apos;: &apos;ar&apos;,
+        &apos;&lt;&apos;: &apos;maziau nei&apos;,
+        &apos;&gt;&apos;: &apos;daugiau nei&apos;,
+        &apos;&#x2211;&apos;: &apos;suma&apos;,
+        &apos;&#xA4;&apos;: &apos;valiuta&apos;
+    },
+
+    &apos;lv&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;bezgaliba&apos;,
+        &apos;&#x2665;&apos;: &apos;milestiba&apos;,
+        &apos;&amp;&apos;: &apos;un&apos;,
+        &apos;|&apos;: &apos;vai&apos;,
+        &apos;&lt;&apos;: &apos;mazak neka&apos;,
+        &apos;&gt;&apos;: &apos;lielaks neka&apos;,
+        &apos;&#x2211;&apos;: &apos;summa&apos;,
+        &apos;&#xA4;&apos;: &apos;valuta&apos;
+    },
+
+    &apos;my&apos;: {
+        &apos;&#x2206;&apos;: &apos;kwahkhyaet&apos;,
+        &apos;&#x221E;&apos;: &apos;asaonasme&apos;,
+        &apos;&#x2665;&apos;: &apos;akhyait&apos;,
+        &apos;&amp;&apos;: &apos;nhin&apos;,
+        &apos;|&apos;: &apos;tho&apos;,
+        &apos;&lt;&apos;: &apos;ngethaw&apos;,
+        &apos;&gt;&apos;: &apos;kyithaw&apos;,
+        &apos;&#x2211;&apos;: &apos;paungld&apos;,
+        &apos;&#xA4;&apos;: &apos;ngwekye&apos;
+    },
+
+    &apos;mk&apos;: {},
+
+    &apos;nl&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;oneindig&apos;,
+        &apos;&#x2665;&apos;: &apos;liefde&apos;,
+        &apos;&amp;&apos;: &apos;en&apos;,
+        &apos;|&apos;: &apos;of&apos;,
+        &apos;&lt;&apos;: &apos;kleiner dan&apos;,
+        &apos;&gt;&apos;: &apos;groter dan&apos;,
+        &apos;&#x2211;&apos;: &apos;som&apos;,
+        &apos;&#xA4;&apos;: &apos;valuta&apos;
+    },
+
+    &apos;pl&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;nieskonczonosc&apos;,
+        &apos;&#x2665;&apos;: &apos;milosc&apos;,
+        &apos;&amp;&apos;: &apos;i&apos;,
+        &apos;|&apos;: &apos;lub&apos;,
+        &apos;&lt;&apos;: &apos;mniejsze niz&apos;,
+        &apos;&gt;&apos;: &apos;wieksze niz&apos;,
+        &apos;&#x2211;&apos;: &apos;suma&apos;,
+        &apos;&#xA4;&apos;: &apos;waluta&apos;
+    },
+
+    &apos;pt&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;infinito&apos;,
+        &apos;&#x2665;&apos;: &apos;amor&apos;,
+        &apos;&amp;&apos;: &apos;e&apos;,
+        &apos;|&apos;: &apos;ou&apos;,
+        &apos;&lt;&apos;: &apos;menor que&apos;,
+        &apos;&gt;&apos;: &apos;maior que&apos;,
+        &apos;&#x2211;&apos;: &apos;soma&apos;,
+        &apos;&#xA4;&apos;: &apos;moeda&apos;
+    },
+
+    &apos;ro&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;infinit&apos;,
+        &apos;&#x2665;&apos;: &apos;dragoste&apos;,
+        &apos;&amp;&apos;: &apos;si&apos;,
+        &apos;|&apos;: &apos;sau&apos;,
+        &apos;&lt;&apos;: &apos;mai mic ca&apos;,
+        &apos;&gt;&apos;: &apos;mai mare ca&apos;,
+        &apos;&#x2211;&apos;: &apos;suma&apos;,
+        &apos;&#xA4;&apos;: &apos;valuta&apos;
+    },
+
+    &apos;ru&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;beskonechno&apos;,
+        &apos;&#x2665;&apos;: &apos;lubov&apos;,
+        &apos;&amp;&apos;: &apos;i&apos;,
+        &apos;|&apos;: &apos;ili&apos;,
+        &apos;&lt;&apos;: &apos;menshe&apos;,
+        &apos;&gt;&apos;: &apos;bolshe&apos;,
+        &apos;&#x2211;&apos;: &apos;summa&apos;,
+        &apos;&#xA4;&apos;: &apos;valjuta&apos;
+    },
+
+    &apos;sk&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;nekonecno&apos;,
+        &apos;&#x2665;&apos;: &apos;laska&apos;,
+        &apos;&amp;&apos;: &apos;a&apos;,
+        &apos;|&apos;: &apos;alebo&apos;,
+        &apos;&lt;&apos;: &apos;menej ako&apos;,
+        &apos;&gt;&apos;: &apos;viac ako&apos;,
+        &apos;&#x2211;&apos;: &apos;sucet&apos;,
+        &apos;&#xA4;&apos;: &apos;mena&apos;
+    },
+
+    &apos;sr&apos;: {},
+
+    &apos;tr&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;sonsuzluk&apos;,
+        &apos;&#x2665;&apos;: &apos;ask&apos;,
+        &apos;&amp;&apos;: &apos;ve&apos;,
+        &apos;|&apos;: &apos;veya&apos;,
+        &apos;&lt;&apos;: &apos;kucuktur&apos;,
+        &apos;&gt;&apos;: &apos;buyuktur&apos;,
+        &apos;&#x2211;&apos;: &apos;toplam&apos;,
+        &apos;&#xA4;&apos;: &apos;para birimi&apos;
+    },
+
+    &apos;uk&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;bezkinechnist&apos;,
+        &apos;&#x2665;&apos;: &apos;lubov&apos;,
+        &apos;&amp;&apos;: &apos;i&apos;,
+        &apos;|&apos;: &apos;abo&apos;,
+        &apos;&lt;&apos;: &apos;menshe&apos;,
+        &apos;&gt;&apos;: &apos;bilshe&apos;,
+        &apos;&#x2211;&apos;: &apos;suma&apos;,
+        &apos;&#xA4;&apos;: &apos;valjuta&apos;
+    },
+
+    &apos;vn&apos;: {
+        &apos;&#x2206;&apos;: &apos;delta&apos;,
+        &apos;&#x221E;&apos;: &apos;vo cuc&apos;,
+        &apos;&#x2665;&apos;: &apos;yeu&apos;,
+        &apos;&amp;&apos;: &apos;va&apos;,
+        &apos;|&apos;: &apos;hoac&apos;,
+        &apos;&lt;&apos;: &apos;nho hon&apos;,
+        &apos;&gt;&apos;: &apos;lon hon&apos;,
+        &apos;&#x2211;&apos;: &apos;tong&apos;,
+        &apos;&#xA4;&apos;: &apos;tien te&apos;
+    }
+};
+
+var uricChars = [&apos;;&apos;, &apos;?&apos;, &apos;:&apos;, &apos;@&apos;, &apos;&amp;&apos;, &apos;=&apos;, &apos;+&apos;, &apos;$&apos;, &apos;,&apos;, &apos;/&apos;].join(&apos;&apos;);
+
+var uricNoSlashChars = [&apos;;&apos;, &apos;?&apos;, &apos;:&apos;, &apos;@&apos;, &apos;&amp;&apos;, &apos;=&apos;, &apos;+&apos;, &apos;$&apos;, &apos;,&apos;].join(&apos;&apos;);
+
+var markChars = [&apos;.&apos;, &apos;!&apos;, &apos;~&apos;, &apos;*&apos;, &quot;&apos;&quot;, &apos;(&apos;, &apos;)&apos;].join(&apos;&apos;);
+
+/**
+ * getSlug
+ * @param  {string} input input string
+ * @param  {object|string} opts config object or separator string/char
+ * @api    public
+ * @return {string}  sluggified string
+ */
+var getSlug = function getSlug(input, opts) {
+    var separator = &apos;-&apos;;
+    var result = &apos;&apos;;
+    var diatricString = &apos;&apos;;
+    var convertSymbols = true;
+    var customReplacements = {};
+    var maintainCase;
+    var titleCase;
+    var truncate;
+    var uricFlag;
+    var uricNoSlashFlag;
+    var markFlag;
+    var symbol;
+    var langChar;
+    var lucky;
+    var i;
+    var ch;
+    var l;
+    var lastCharWasSymbol;
+    var lastCharWasDiatric;
+    var allowedChars = &apos;&apos;;
+
+    if (typeof input !== &apos;string&apos;) {
+        return &apos;&apos;;
+    }
+
+    if (typeof opts === &apos;string&apos;) {
+        separator = opts;
+    }
+
+    symbol = symbolMap.en;
+    langChar = langCharMap.en;
+
+    if (typeof opts === &apos;object&apos;) {
+        maintainCase = opts.maintainCase || false;
+        customReplacements = (opts.custom &amp;&amp; typeof opts.custom === &apos;object&apos;) ? opts.custom : customReplacements;
+        truncate = (+opts.truncate &gt; 1 &amp;&amp; opts.truncate) || false;
+        uricFlag = opts.uric || false;
+        uricNoSlashFlag = opts.uricNoSlash || false;
+        markFlag = opts.mark || false;
+        convertSymbols = (opts.symbols === false || opts.lang === false) ? false : true;
+        separator = opts.separator || separator;
+
+        if (uricFlag) {
+            allowedChars += uricChars;
+        }
+
+        if (uricNoSlashFlag) {
+            allowedChars += uricNoSlashChars;
+        }
+
+        if (markFlag) {
+            allowedChars += markChars;
+        }
+
+        symbol = (opts.lang &amp;&amp; symbolMap[opts.lang] &amp;&amp; convertSymbols) ?
+            symbolMap[opts.lang] : (convertSymbols ? symbolMap.en : {});
+
+        langChar = (opts.lang &amp;&amp; langCharMap[opts.lang]) ?
+            langCharMap[opts.lang] :
+            opts.lang === false || opts.lang === true ? {} : langCharMap.en;
+
+        // if titleCase config is an Array, rewrite to object format
+        if (opts.titleCase &amp;&amp; typeof opts.titleCase.length === &apos;number&apos; &amp;&amp; Array.prototype.toString.call(opts.titleCase)) {
+            opts.titleCase.forEach(function (v) {
+                customReplacements[v + &apos;&apos;] = v + &apos;&apos;;
+            });
+
+            titleCase = true;
+        } else {
+            titleCase = !!opts.titleCase;
+        }
+
+        // if custom config is an Array, rewrite to object format
+        if (opts.custom &amp;&amp; typeof opts.custom.length === &apos;number&apos; &amp;&amp; Array.prototype.toString.call(opts.custom)) {
+            opts.custom.forEach(function (v) {
+                customReplacements[v + &apos;&apos;] = v + &apos;&apos;;
+            });
+        }
+
+        // custom replacements
+        Object.keys(customReplacements).forEach(function (v) {
+            var r;
+
+            if (v.length &gt; 1) {
+                r = new RegExp(&apos;\\b&apos; + escapeChars(v) + &apos;\\b&apos;, &apos;gi&apos;);
+            } else {
+                r = new RegExp(escapeChars(v), &apos;gi&apos;);
+            }
+
+            input = input.replace(r, customReplacements[v]);
+        });
+
+        // add all custom replacement to allowed charlist
+        for (ch in customReplacements) {
+            allowedChars += ch;
+        }
+    }
+
+    allowedChars += separator;
+
+    // escape all necessary chars
+    allowedChars = escapeChars(allowedChars);
+
+    // trim whitespaces
+    input = input.replace(/(^\s+|\s+$)/g, &apos;&apos;);
+
+    lastCharWasSymbol = false;
+    lastCharWasDiatric = false;
+
+    for (i = 0, l = input.length; i &lt; l; i++) {
+        ch = input[i];
+
+        if (isReplacedCustomChar(ch, customReplacements)) {
+            // don&apos;t convert a already converted char
+            lastCharWasSymbol = false;
+        } else if (langChar[ch]) {
+            // process language specific diactrics chars conversion
+            ch = lastCharWasSymbol &amp;&amp; langChar[ch].match(/[A-Za-z0-9]/) ? &apos; &apos; + langChar[ch] : langChar[ch];
+
+            lastCharWasSymbol = false;
+        } else if (ch in charMap) {
+            // the transliteration changes entirely when some special characters are added
+            if (i + 1 &lt; l &amp;&amp; lookAheadCharArray.indexOf(input[i + 1]) &gt;= 0) {
+                diatricString += ch;
+                ch = &apos;&apos;;
+            } else if (lastCharWasDiatric === true) {
+                ch = diatricMap[diatricString] + charMap[ch];
+                diatricString = &apos;&apos;;
+            } else {
+                // process diactrics chars
+                ch = lastCharWasSymbol &amp;&amp; charMap[ch].match(/[A-Za-z0-9]/) ? &apos; &apos; + charMap[ch] : charMap[ch];
+            }
+
+            lastCharWasSymbol = false;
+            lastCharWasDiatric = false;
+        } else if (ch in diatricMap) {
+            diatricString += ch;
+            ch = &apos;&apos;;
+            // end of string, put the whole meaningful word
+            if (i === l - 1) {
+                ch = diatricMap[diatricString];
+            }
+            lastCharWasDiatric = true;
+        } else if (
+            // process symbol chars
+            symbol[ch] &amp;&amp; !(uricFlag &amp;&amp; uricChars
+                .indexOf(ch) !== -1) &amp;&amp; !(uricNoSlashFlag &amp;&amp; uricNoSlashChars
+                // .indexOf(ch) !== -1) &amp;&amp; !(markFlag &amp;&amp; markChars
+                .indexOf(ch) !== -1)) {
+            ch = lastCharWasSymbol || result.substr(-1).match(/[A-Za-z0-9]/) ? separator + symbol[ch] : symbol[ch];
+            ch += input[i + 1] !== void 0 &amp;&amp; input[i + 1].match(/[A-Za-z0-9]/) ? separator : &apos;&apos;;
+
+            lastCharWasSymbol = true;
+        } else {
+            if (lastCharWasDiatric === true) {
+                ch = diatricMap[diatricString] + ch;
+                diatricString = &apos;&apos;;
+                lastCharWasDiatric = false;
+            } else if (lastCharWasSymbol &amp;&amp; (/[A-Za-z0-9]/.test(ch) || result.substr(-1).match(/A-Za-z0-9]/))) {
+                // process latin chars
+                ch = &apos; &apos; + ch;
+            }
+            lastCharWasSymbol = false;
+        }
+
+        // add allowed chars
+        result += ch.replace(new RegExp(&apos;[^\\w\\s&apos; + allowedChars + &apos;_-]&apos;, &apos;g&apos;), separator);
+    }
+
+    if (titleCase) {
+        result = result.replace(/(\w)(\S*)/g, function (_, i, r) {
+            var j = i.toUpperCase() + (r !== null ? r : &apos;&apos;);
+            return (Object.keys(customReplacements).indexOf(j.toLowerCase()) &lt; 0) ? j : j.toLowerCase();
+        });
+    }
+
+    // eliminate duplicate separators
+    // add separator
+    // trim separators from start and end
+    result = result.replace(/\s+/g, separator)
+        .replace(new RegExp(&apos;\\&apos; + separator + &apos;+&apos;, &apos;g&apos;), separator)
+        .replace(new RegExp(&apos;(^\\&apos; + separator + &apos;+|\\&apos; + separator + &apos;+$)&apos;, &apos;g&apos;), &apos;&apos;);
+
+    if (truncate &amp;&amp; result.length &gt; truncate) {
+        lucky = result.charAt(truncate) === separator;
+        result = result.slice(0, truncate);
+
+        if (!lucky) {
+            result = result.slice(0, result.lastIndexOf(separator));
+        }
+    }
+
+    if (!maintainCase &amp;&amp; !titleCase) {
+        result = result.toLowerCase();
+    }
+
+    return result;
+};
+
+/**
+ * createSlug curried(opts)(input)
+ * @param   {object|string} opts config object or input string
+ * @return  {Function} function getSlugWithConfig()
+ **/
+var createSlug = function createSlug(opts) {
+
+    /**
+     * getSlugWithConfig
+     * @param   {string} input string
+     * @return  {string} slug string
+     */
+    return function getSlugWithConfig(input) {
+        return getSlug(input, opts);
+    };
+};
+
+/**
+ * escape Chars
+ * @param   {string} input string
+ */
+var escapeChars = function escapeChars(input) {
+    return input.replace(/[-\\^$*+?.()|[\]{}\/]/g, &apos;\\$&amp;&apos;);
+};
+
+/**
+ * check if the char is an already converted char from custom list
+ * @param   {char} ch character to check
+ * @param   {object} customReplacements custom translation map
+ */
+var isReplacedCustomChar = function (ch, customReplacements) {
+    for (var c in customReplacements) {
+        if (customReplacements[c] === ch) {
+            return true;
+        }
+    }
+};
+
+export default getSlug;
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

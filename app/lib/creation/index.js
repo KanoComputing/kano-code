@@ -1,17 +1,20 @@
+import { TelemetryClient } from '@kano/telemetry/index.js';
 import { Plugin } from '../editor/plugin.js';
 import { CreationDialogProvider } from './creation-dialog.js';
 import { Player } from '../player/index.js';
 import { Subscriptions, subscribe } from '../util/subscription.js';
+import { ToolbarEntryPosition } from '../../elements/kc-workspace-toolbar/entry.js';
 
 export class CreationPlugin extends Plugin {
     constructor() {
         super();
         this.subscriptions = new Subscriptions();
-
+        this._telemetry = new TelemetryClient({ scope: 'creations' });
         this.enabled = true;
     }
     onInstall(editor) {
         this.editor = editor;
+        this.editor.telemetry.mount(this._telemetry);
     }
     onInject() {
         this.creationDialogProvider = new CreationDialogProvider();
@@ -25,6 +28,26 @@ export class CreationPlugin extends Plugin {
             subscribe(this.creationDialogProvider, 'dismiss', this._onDismiss.bind(this)),
             subscribe(this.creationDialog, 'close', () => this._onClose()),
         );
+        this._updateSaveButton();
+    }
+    _setupSaveButton() {
+        if (this._saveEntry) {
+            return;
+        }
+        this._saveEntry = this.editor.workspaceToolbar.addEntry({
+            id: 'save',
+            position: ToolbarEntryPosition.LEFT,
+            title: 'Save',
+            ironIcon: 'kc-ui:save',
+        });
+        this._saveEntry.on('activate', () => this.init());
+    }
+    _removeSaveButton() {
+        if (!this._saveEntry) {
+            return;
+        }
+        this._saveEntry.dispose();
+        this._saveEntry = null;
     }
     _onClose() {
         if (this.player) {
@@ -63,6 +86,7 @@ export class CreationPlugin extends Plugin {
             }
             return;
         }
+        this._telemetry.trackEvent({ name: 'save_clicked' });
 
         this.creation = this.editor.exportCreation();
         this.creationDialog.open();
@@ -95,21 +119,36 @@ export class CreationPlugin extends Plugin {
         this.subscriptions.dispose();
         this.creationDialog.dispose();
     }
-
     enable() {
         this.enabled = true;
+
+        this._setupSaveButton();
 
         if (this.alertDialog) {
             this.alertDialog.dispose();
         }
     }
-    disable(heading, text) {
+    disable() {
         this.enabled = false;
-
+        this._updateSaveButton();
+    }
+    disableWithReason(heading, text) {
+        this.enabled = false;
         if (this.alertDialog) {
             this.alertDialog.dispose();
         }
         this.alertDialog = this.editor.dialogs.registerAlert({ heading, text, buttonLabel: 'Dismiss' });
+        this._updateSaveButton();
+    }
+    _updateSaveButton() {
+        if (!this.editor.injected) {
+            return;
+        }
+        if (this.enabled || this.alertDialog) {
+            this._setupSaveButton();
+        } else {
+            this._removeSaveButton();
+        }
     }
 }
 
