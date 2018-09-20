@@ -196,7 +196,12 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-map">parts/parts/map</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-map">map</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-microphone">parts/parts/microphone</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-MicrophoneMixin">MicrophoneMixin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-microphone">microphone</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-mouse">parts/parts/mouse</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mouse">mouse</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-mouse">parts/parts/mouse</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-event">event</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-mouse">mouse</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-speedX">speedX</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-speedY">speedY</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-x">x</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-y">y</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-oscillator">parts/parts/oscillator</a><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-OscillatorMixin">OscillatorMixin</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-oscillator">oscillator</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#parts-parts-picture-list">parts/parts/picture-list</a><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-pictureList">pictureList</a></span></span></li>
@@ -271,6 +276,17 @@ const PROXY_EVENTS = [
 window.Kano = window.Kano || {};
 window.Kano.Code = window.Kano.Code || {};
 
+/**
+ * A full Kano Code Editor with customizable Workspace and Output
+ * Example:
+ * ```js
+ * import * as code from &apos;@kano/code/app/lib/index.js&apos;
+ *
+ * const editor = new code.Editor();
+ *
+ * editor.inject(document.body);
+ * ```
+ */
 class Editor extends EditorOrPlayer {
     constructor(opts = {}) {
         super();
@@ -305,8 +321,10 @@ class Editor extends EditorOrPlayer {
 
         this.eventRemovers = PROXY_EVENTS.map(name =&gt; Editor.proxyEvent(this.rootEl, this, name));
 
+        /** @type {Output} */
         this.output = new Output();
 
+        /** @type {TelemetryClient} */
         this.telemetry = new TelemetryClient({ scope: &apos;kc-editor&apos; });
 
         /** @type {WorkspaceToolbar} */
@@ -342,6 +360,19 @@ class Editor extends EditorOrPlayer {
     getEvents() {
         return this._registeredEvents;
     }
+    /**
+     * Adds a plugin to this editor, plugins have access to lifecycle steps and
+     * customization APIs to tailor the coding experience to your needs
+     * Example:
+     *
+     * const MyPlugin extends code.Plugin {
+     *     onInstall(editor) {
+     *         // Do something with the editor
+     *     }
+     *     onInject() {}
+     * }
+     * @param {Plugin} plugin The plugin to add
+     */
     addPlugin(plugin) {
         super.addPlugin(plugin);
         plugin.onInstall(this);

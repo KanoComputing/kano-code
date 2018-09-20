@@ -30,6 +30,17 @@ const PROXY_EVENTS = [
 window.Kano = window.Kano || {};
 window.Kano.Code = window.Kano.Code || {};
 
+/**
+ * A full Kano Code Editor with customizable Workspace and Output
+ * Example:
+ * ```js
+ * import * as code from '@kano/code/app/lib/index.js'
+ *
+ * const editor = new code.Editor();
+ *
+ * editor.inject(document.body);
+ * ```
+ */
 class Editor extends EditorOrPlayer {
     constructor(opts = {}) {
         super();
@@ -64,8 +75,10 @@ class Editor extends EditorOrPlayer {
 
         this.eventRemovers = PROXY_EVENTS.map(name => Editor.proxyEvent(this.rootEl, this, name));
 
+        /** @type {Output} */
         this.output = new Output();
 
+        /** @type {TelemetryClient} */
         this.telemetry = new TelemetryClient({ scope: 'kc-editor' });
 
         /** @type {WorkspaceToolbar} */
@@ -101,6 +114,19 @@ class Editor extends EditorOrPlayer {
     getEvents() {
         return this._registeredEvents;
     }
+    /**
+     * Adds a plugin to this editor, plugins have access to lifecycle steps and
+     * customization APIs to tailor the coding experience to your needs
+     * Example:
+     *
+     * const MyPlugin extends code.Plugin {
+     *     onInstall(editor) {
+     *         // Do something with the editor
+     *     }
+     *     onInject() {}
+     * }
+     * @param {Plugin} plugin The plugin to add
+     */
     addPlugin(plugin) {
         super.addPlugin(plugin);
         plugin.onInstall(this);

@@ -954,6 +954,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "@kano/code/lib/parts/parts/mouse/index.js~event",
+    "variable/index.html#static-variable-event",
+    "<span>event</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/mouse/index.js</span>",
+    "variable"
+  ],
+  [
     "@kano/code/lib/parts/parts/canvas/blocks/general.js~general",
     "variable/index.html#static-variable-general",
     "<span>general</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/canvas/blocks/general.js</span>",
@@ -1170,6 +1176,18 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "@kano/code/lib/parts/parts/mouse/index.js~speedx",
+    "variable/index.html#static-variable-speedX",
+    "<span>speedX</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/mouse/index.js</span>",
+    "variable"
+  ],
+  [
+    "@kano/code/lib/parts/parts/mouse/index.js~speedy",
+    "variable/index.html#static-variable-speedY",
+    "<span>speedY</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/mouse/index.js</span>",
+    "variable"
+  ],
+  [
     "@kano/code/lib/parts/parts/data/sports.js~sports",
     "variable/index.html#static-variable-sports",
     "<span>sports</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/data/sports.js</span>",
@@ -1227,6 +1245,18 @@ window.esdocSearchIndex = [
     "@kano/code/lib/parts/parts/data/weather/weather.js~weather",
     "variable/index.html#static-variable-weather",
     "<span>weather</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/data/weather/weather.js</span>",
+    "variable"
+  ],
+  [
+    "@kano/code/lib/parts/parts/mouse/index.js~x",
+    "variable/index.html#static-variable-x",
+    "<span>x</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/mouse/index.js</span>",
+    "variable"
+  ],
+  [
+    "@kano/code/lib/parts/parts/mouse/index.js~y",
+    "variable/index.html#static-variable-y",
+    "<span>y</span> <span class=\"search-result-import-path\">@kano/code/lib/parts/parts/mouse/index.js</span>",
     "variable"
   ],
   [
