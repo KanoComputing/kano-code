@@ -5,6 +5,9 @@ class AppModules {
         this.modules = {};
     }
     define(id, ModuleClass) {
+        if (id in this.modules) {
+            throw new Error(`Could not add module '${id}': Module was already added`);
+        }
         this.modules[id] = new ModuleClass(this.output);
         if (ModuleClass.aliases) {
             ModuleClass.aliases.forEach((alias) => {
@@ -41,9 +44,11 @@ class AppModules {
         return `(function () {\n${moduleImports}\n${code}\n})();\n`;
     }
     _runModuleLifecycleStep(name) {
-        Object.keys(this.modules).forEach((id) => {
-            if (typeof this.modules[id].executeLifecycleStep === 'function') {
-                this.modules[id].executeLifecycleStep(name);
+        // Get a unique array as aliases add the modules in the map twice under different names
+        const modulesArray = [...new Set(Object.values(this.modules))];
+        modulesArray.forEach((mod) => {
+            if (typeof mod.executeLifecycleStep === 'function') {
+                mod.executeLifecycleStep(name);
             }
         });
     }

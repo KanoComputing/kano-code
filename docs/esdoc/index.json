@@ -1605,7 +1605,7 @@
     "__docId__": 101,
     "kind": "file",
     "name": "lib/app-modules/app-modules.js",
-    "content": "\nclass AppModules {\n    constructor(output) {\n        this.output = output;\n        this.modules = {};\n    }\n    define(id, ModuleClass) {\n        this.modules[id] = new ModuleClass(this.output);\n        if (ModuleClass.aliases) {\n            ModuleClass.aliases.forEach((alias) => {\n                this.modules[alias] = this.modules[id];\n            });\n        }\n    }\n    config(config) {\n        Object.keys(this.modules).forEach((id) => {\n            if (this.modules[id] && this.modules[id].config && typeof this.modules[id].config === 'function') {\n                this.modules[id].config(config);\n            }\n        });\n    }\n    /**\n     * Support legacy API\n     */\n    init(...args) {\n        this.config(...args);\n    }\n    getModule(id) {\n        if (this.modules[id]) {\n            return this.modules[id].methods;\n        }\n        return {};\n    }\n    createAppCode(prefix, code) {\n        const moduleImports = Object.keys(this.modules).reduce((acc, id) => {\n            const symbols = this.modules[id].getSymbols();\n            acc += `var ${id} = ${prefix}.getModule('${id}');\\n`;\n            acc += symbols.map(s => `var ${s} = ${prefix}.getModule('${id}').${s};\\n`).join('');\n            return acc;\n        }, '');\n        return `(function () {\\n${moduleImports}\\n${code}\\n})();\\n`;\n    }\n    _runModuleLifecycleStep(name) {\n        Object.keys(this.modules).forEach((id) => {\n            if (typeof this.modules[id].executeLifecycleStep === 'function') {\n                this.modules[id].executeLifecycleStep(name);\n            }\n        });\n    }\n    start() {\n        if (this.state === 'running') {\n            return;\n        }\n        this._runModuleLifecycleStep('start');\n        this.state = 'running';\n    }\n    stop() {\n        if (this.state === 'running') {\n            this._runModuleLifecycleStep('stop');\n            this.state = 'stopped';\n        }\n    }\n    afterRun() {\n        this._runModuleLifecycleStep('afterRun');\n    }\n    addModule(id, m) {\n        this.modules[id] = m;\n    }\n    instrumentize(method) {\n        const parts = method.split('.');\n        const rootName = parts.shift();\n\n        if (!this.modules[rootName]) {\n            throw new Error(`Could not instrumentize '${method}': No such method in '${rootName}'`);\n        }\n        return this.modules[rootName].instrumentize(method, parts.join('.'));\n    }\n}\n\nAppModules.default = new AppModules();\n\nexport default AppModules;\n",
+    "content": "\nclass AppModules {\n    constructor(output) {\n        this.output = output;\n        this.modules = {};\n    }\n    define(id, ModuleClass) {\n        if (id in this.modules) {\n            throw new Error(`Could not add module '${id}': Module was already added`);\n        }\n        this.modules[id] = new ModuleClass(this.output);\n        if (ModuleClass.aliases) {\n            ModuleClass.aliases.forEach((alias) => {\n                this.modules[alias] = this.modules[id];\n            });\n        }\n    }\n    config(config) {\n        Object.keys(this.modules).forEach((id) => {\n            if (this.modules[id] && this.modules[id].config && typeof this.modules[id].config === 'function') {\n                this.modules[id].config(config);\n            }\n        });\n    }\n    /**\n     * Support legacy API\n     */\n    init(...args) {\n        this.config(...args);\n    }\n    getModule(id) {\n        if (this.modules[id]) {\n            return this.modules[id].methods;\n        }\n        return {};\n    }\n    createAppCode(prefix, code) {\n        const moduleImports = Object.keys(this.modules).reduce((acc, id) => {\n            const symbols = this.modules[id].getSymbols();\n            acc += `var ${id} = ${prefix}.getModule('${id}');\\n`;\n            acc += symbols.map(s => `var ${s} = ${prefix}.getModule('${id}').${s};\\n`).join('');\n            return acc;\n        }, '');\n        return `(function () {\\n${moduleImports}\\n${code}\\n})();\\n`;\n    }\n    _runModuleLifecycleStep(name) {\n        // Get a unique array as aliases add the modules in the map twice under different names\n        const modulesArray = [...new Set(Object.values(this.modules))];\n        modulesArray.forEach((mod) => {\n            if (typeof mod.executeLifecycleStep === 'function') {\n                mod.executeLifecycleStep(name);\n            }\n        });\n    }\n    start() {\n        if (this.state === 'running') {\n            return;\n        }\n        this._runModuleLifecycleStep('start');\n        this.state = 'running';\n    }\n    stop() {\n        if (this.state === 'running') {\n            this._runModuleLifecycleStep('stop');\n            this.state = 'stopped';\n        }\n    }\n    afterRun() {\n        this._runModuleLifecycleStep('afterRun');\n    }\n    addModule(id, m) {\n        this.modules[id] = m;\n    }\n    instrumentize(method) {\n        const parts = method.split('.');\n        const rootName = parts.shift();\n\n        if (!this.modules[rootName]) {\n            throw new Error(`Could not instrumentize '${method}': No such method in '${rootName}'`);\n        }\n        return this.modules[rootName].instrumentize(method, parts.join('.'));\n    }\n}\n\nAppModules.default = new AppModules();\n\nexport default AppModules;\n",
     "static": true,
     "longname": "C:/Users/Paul/Documents/workspace/kano-code/app/lib/app-modules/app-modules.js",
     "access": "public",
@@ -1716,7 +1716,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#config",
     "access": "public",
     "description": null,
-    "lineNumber": 15,
+    "lineNumber": 18,
     "undocument": true,
     "params": [
       {
@@ -1739,7 +1739,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#init",
     "access": "public",
     "description": "Support legacy API",
-    "lineNumber": 25,
+    "lineNumber": 28,
     "params": [
       {
         "name": "args",
@@ -1762,7 +1762,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#getModule",
     "access": "public",
     "description": null,
-    "lineNumber": 28,
+    "lineNumber": 31,
     "undocument": true,
     "params": [
       {
@@ -1789,7 +1789,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#createAppCode",
     "access": "public",
     "description": null,
-    "lineNumber": 34,
+    "lineNumber": 37,
     "undocument": true,
     "params": [
       {
@@ -1822,7 +1822,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#_runModuleLifecycleStep",
     "access": "private",
     "description": null,
-    "lineNumber": 43,
+    "lineNumber": 46,
     "undocument": true,
     "ignore": true,
     "params": [
@@ -1846,7 +1846,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#start",
     "access": "public",
     "description": null,
-    "lineNumber": 50,
+    "lineNumber": 55,
     "undocument": true,
     "params": [],
     "return": null
@@ -1860,7 +1860,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#state",
     "access": "public",
     "description": null,
-    "lineNumber": 55,
+    "lineNumber": 60,
     "undocument": true,
     "type": {
       "types": [
@@ -1879,7 +1879,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#stop",
     "access": "public",
     "description": null,
-    "lineNumber": 57,
+    "lineNumber": 62,
     "undocument": true,
     "params": [],
     "return": null
@@ -1895,7 +1895,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#afterRun",
     "access": "public",
     "description": null,
-    "lineNumber": 63,
+    "lineNumber": 68,
     "undocument": true,
     "params": [],
     "return": null
@@ -1911,7 +1911,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#addModule",
     "access": "public",
     "description": null,
-    "lineNumber": 66,
+    "lineNumber": 71,
     "undocument": true,
     "params": [
       {
@@ -1940,7 +1940,7 @@
     "longname": "lib/app-modules/app-modules.js~AppModules#instrumentize",
     "access": "public",
     "description": null,
-    "lineNumber": 69,
+    "lineNumber": 74,
     "undocument": true,
     "params": [
       {
