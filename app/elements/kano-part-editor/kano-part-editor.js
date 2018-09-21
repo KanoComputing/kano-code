@@ -80,6 +80,14 @@ class KanoPartEditor extends mixinBehaviors(behaviors, PolymerElement) {
             '_updateName(selected)',
         ];
     }
+    connectedCallback() {
+        this._onScroll = this._onScroll.bind(this);
+    }
+    disconnectedCallback() {
+        if (this.scrollTarget) {
+            this.scrollTarget.removeEventListener('scroll', this._onScroll);
+        }
+    }
     _configPanelChanged(panel, oldValue) {
         const tagName = panel || 'div';
         const container = dom(this.$['config-panel-container']);
@@ -96,7 +104,7 @@ class KanoPartEditor extends mixinBehaviors(behaviors, PolymerElement) {
         this.scrollTarget = this.instance.firstChild;
 
         // Listen to scroll events on the part-editor to append the top/bottom divider
-        this.scrollTarget.addEventListener('scroll', this._onScroll.bind(this));
+        this.scrollTarget.addEventListener('scroll', this._onScroll);
 
         this._cleanContainer();
 
@@ -148,9 +156,6 @@ class KanoPartEditor extends mixinBehaviors(behaviors, PolymerElement) {
     _onSelectedChanged(e) {
         const { path, value } = e.detail;
         this.dispatchEvent(new CustomEvent('update', { detail: { property: path.replace('element.', ''), value }, bubbles: true }));
-    }
-    disconnectedCallback() {
-        this.scrollTarget.removeEventListener('scroll', this._onScroll.bind(this));
     }
 }
 customElements.define(KanoPartEditor.is, KanoPartEditor);
