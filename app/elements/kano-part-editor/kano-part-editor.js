@@ -149,5 +149,8 @@ class KanoPartEditor extends mixinBehaviors(behaviors, PolymerElement) {
         const { path, value } = e.detail;
         this.dispatchEvent(new CustomEvent('update', { detail: { property: path.replace('element.', ''), value }, bubbles: true }));
     }
+    disconnectedCallback() {
+        this.scrollTarget.removeEventListener('scroll', this._onScroll.bind(this));
+    }
 }
 customElements.define(KanoPartEditor.is, KanoPartEditor);
