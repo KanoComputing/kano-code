@@ -52,8 +52,8 @@ export class CreationPlugin extends Plugin {
     _onClose() {
         if (this.player) {
             this.player.dispose();
-            this.creationDialogProvider.resetPreviewSlot();
         }
+        this.creationDialogProvider.resetPreviewSlot();
     }
     _onSubmit(data) {
         const creationBundle = {
@@ -90,12 +90,12 @@ export class CreationPlugin extends Plugin {
 
         this.creation = this.editor.exportCreation();
         this.creationDialog.open();
-        const player = new Player();
-        player.inject(this.creationDialogProvider.getPreviewSlot());
-        player.load(this.creation)
+        this.player = new Player();
+        this.player.inject(this.creationDialogProvider.getPreviewSlot());
+        this.player.load(this.creation)
             .then(() => {
-                player.output.setRunningState(true);
-                return this.editor.createCreationPreview(player.output);
+                this.player.output.setRunningState(true);
+                return this.editor.createCreationPreview(this.player.output);
             })
             .then((blob) => {
                 this.creationPreviewBlob = blob;

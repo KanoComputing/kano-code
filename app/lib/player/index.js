@@ -98,7 +98,7 @@ export class Player extends EditorOrPlayer {
         }
     }
     dispose() {
-        if (this.element) {
+        if (this.element && this.outputRoot.parentNode === this.element) {
             this.element.removeChild(this.outputRoot);
         }
         this.output.dispose();
