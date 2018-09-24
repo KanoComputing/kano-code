@@ -7,6 +7,8 @@ import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/marked-element/marked-element.js';
 import '@kano/web-components/kano-glint-animation/kano-glint-animation.js';
 import '@kano/web-components/kano-circle-progress/kano-circle-progress.js';
+import '@kano/kwc-icons/kwc-ui-icons.js';
+import '@kano/kwc-button/kwc-button.js';
 import '@kano/kwc-style/color.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import '../kano-icons/kc-ui.js';
@@ -60,7 +62,7 @@ Polymer({
             }
             .buttons {
                 display: block;
-                margin - bottom: 10 px;
+                margin-left: 56px;
             }
             kano-glint-animation {
                 margin: 0 20px 0 0;
@@ -140,10 +142,10 @@ Polymer({
                 display: block;
                 margin: 0px 7px;
             }
-            .button.active paper-spinner-lite {
+            kwc-button.active paper-spinner-lite {
                 display: none;
             }
-            .button.hidden {
+            kwc-button.hidden {
                 display: none;
             }
             .button.inactive {
@@ -208,19 +210,14 @@ Polymer({
                     </div>
                 </div>
             </div>
+        </div>
             <div class="buttons">
-                <button id="banner-save-button" type="button" class="button" hidden\$="[[!showSaveButton]]" on-tap="_saveTapped">
-                    <iron-icon class="save-icon" icon="kc-ui:save"></iron-icon>
-                    <div>[[localize('SAVE', 'Save')]]</div>
-                </button>
-                <kano-glint-animation id="banner-button-container" running="[[_computeGlint(buttonLabel, buttonState)]]">
-                    <button id="banner-button" class\$="button [[_computeButtonClass(buttonState)]]" type="button" on-tap="_buttonTapped" data-animate="300">
-                        <paper-spinner-lite active="[[_buttonInactive(buttonState)]]"></paper-spinner-lite>
-                        <span hidden\$="[[!_buttonActive(buttonState)]]">
+            <kwc-button ghost="" variant="tertiary" icon-id="kwc-ui-icons:save" on-tap="_saveTapped" hidden\$="[[!showSaveButton]]">
+                [[localize('SAVE', 'Save')]]
+            </kwc-button>
+            <kwc-button class\$="[[_computeButtonClass(buttonState)]]" on-tap="_buttonTapped" variant="primary">
                             [[buttonLabel]]
-                        </span>
-                    </button>
-                </kano-glint-animation>
+            </kwc-button>
                 <div class="undo-redo" hidden\$="[[_undoRedoHidden(buttonState, showSaveButton)]]">
                     <button id="undo-button" type="button" on-tap="_undoTapped" class\$="[[_computeUndoRedoClass(canGoBack)]]">
                         <iron-icon icon="kc-ui:undo"></iron-icon>
@@ -230,7 +227,6 @@ Polymer({
                     </button>
                 </div>
             </div>
-        </div>
 `,
 
     is: 'kano-editor-banner',
