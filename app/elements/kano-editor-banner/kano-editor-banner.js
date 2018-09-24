@@ -218,14 +218,6 @@ Polymer({
             <kwc-button class\$="[[_computeButtonClass(buttonState)]]" on-tap="_buttonTapped" variant="primary">
                             [[buttonLabel]]
             </kwc-button>
-                <div class="undo-redo" hidden\$="[[_undoRedoHidden(buttonState, showSaveButton)]]">
-                    <button id="undo-button" type="button" on-tap="_undoTapped" class\$="[[_computeUndoRedoClass(canGoBack)]]">
-                        <iron-icon icon="kc-ui:undo"></iron-icon>
-                    </button>
-                    <button id="redo-button" type="button" on-tap="_redoTapped" class\$="[[_computeUndoRedoClass(canGoForward)]]">
-                        <iron-icon icon="kc-ui:redo"></iron-icon>
-                    </button>
-                </div>
             </div>
 `,
 
