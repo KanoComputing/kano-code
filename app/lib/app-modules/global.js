@@ -37,7 +37,7 @@ class GlobalModule extends AppModule {
     }
 
     _restartCode() {
-        this.output.restartApp();
+        this.output.restart();
     }
 
     _afterRun() {
