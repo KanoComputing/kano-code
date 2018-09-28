@@ -72,11 +72,10 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
                 pointer-events: all;
             }
             #overlay {
-                display: none;
                 position: absolute;
                 top: 0;
-                left: 0;
-                width: 100%;
+                right: 0;
+                width: calc(100% - 50px);
                 height: 100%;
             }
             :host([lockdown]) #overlay {
@@ -89,7 +88,7 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
         <kano-challenge-ui id="ui" beacon="[[beacon]]" tooltips="[[tooltips]]" on-next-step="nextStep" idle="[[idle]]">
             <slot name="editor" slot="editor" id="content"></slot>
         </kano-challenge-ui>
-        <div id="overlay" on-tap="_onLockdownClick"></div>
+        <div id="overlay" hidden\$="[[!lockedUi]]"></div>
         <div class="banner-container" id="banner-container">
             <kano-editor-banner id="banner" head="[[banner.head]]" text="[[banner.text]]" img-src="[[banner.icon]]" img-page="[[banner.imgPage]]" button-label="[[banner.buttonLabel]]" button-state="[[banner.buttonState]]" show-save-button="[[banner.showSaveButton]]" progress="[[progress]]" on-button-tapped="_bannerButtonTapped" on-save-button-clicked="_transmitRequestShare" hidden\$="[[_isBannerHidden(banner)]]" can-go-back="[[history.canGoBack]]" can-go-forward="[[history.canGoForward]]"></kano-editor-banner>
         </div>
@@ -247,6 +246,7 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
         if (!workspace) {
             return;
         }
+        this.lockedUi = (typeof this.beacon !== 'undefined') && this.beacon !== null && this.beacon.target === 'banner-button';
         const metrics = workspace.getMetrics();
         const flyout = workspace.getFlyout_();
         const width = workspace.toolbox_ && !workspace.toolbox_.opened ?
