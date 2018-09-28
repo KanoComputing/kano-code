@@ -483,8 +483,8 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
         </div>
         <section class="options">
             <iron-pages id="options-pager" selected="[[_page]]" attr-for-selected="name">
-                <form class="form" name="sharing-form">
-                    <input type="text" name="title" id="title_input" value="{{title::change}}" placeholder="Title" autofocus>
+                <form class="form" name="sharing-form" id="sharing-form">
+                    <input type="text" name="title" id="title_input" value="{{title::change}}" placeholder="Title" autofocus on-keydown="_dialogKeydown">
                     <textarea name="description" rows="4" cols="40" value="{{description::change}}" placeholder="Description"></textarea>
                     <button type="button" name="button" class="save-button round" on-tap="_shareOnKW" disabled\$="[[recording]]">[[_computeSaveButtonLabel(recording)]]</button>
                 </form>
@@ -601,6 +601,15 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                     description: this.description,
                 },
             }));
+        }
+    }
+    _dialogKeydown(e) {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            e.stopPropagation();
+            this._shareOnKW();
+        } else if (e.keyCode === 8) {
+            e.stopPropagation();
         }
     }
     copyToClipboard(e) {
