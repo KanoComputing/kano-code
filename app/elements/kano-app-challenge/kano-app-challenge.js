@@ -88,7 +88,7 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
         <kano-challenge-ui id="ui" beacon="[[beacon]]" tooltips="[[tooltips]]" on-next-step="nextStep" idle="[[idle]]">
             <slot name="editor" slot="editor" id="content"></slot>
         </kano-challenge-ui>
-        <div id="overlay" hidden\$="[[!lockedUi]]"></div>
+        <div id="overlay" hidden\$="[[!lockedUi]]" on-tap="_onLockdownClick"></div>
         <div class="banner-container" id="banner-container">
             <kano-editor-banner id="banner" head="[[banner.head]]" text="[[banner.text]]" img-src="[[banner.icon]]" img-page="[[banner.imgPage]]" button-label="[[banner.buttonLabel]]" button-state="[[banner.buttonState]]" show-save-button="[[banner.showSaveButton]]" progress="[[progress]]" on-button-tapped="_bannerButtonTapped" on-save-button-clicked="_transmitRequestShare" hidden\$="[[_isBannerHidden(banner)]]" can-go-back="[[history.canGoBack]]" can-go-forward="[[history.canGoForward]]"></kano-editor-banner>
         </div>

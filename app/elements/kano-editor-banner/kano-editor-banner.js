@@ -180,6 +180,9 @@ Polymer({
             #banner-button {
                 height: 38px;
             }
+            #banner-button-container {
+                display: inline-block;
+            }
         </style>
         <div class="container">
             <div class="avatar">
@@ -201,13 +204,15 @@ Polymer({
             </div>
         </div>
             <div class="buttons">
-            <kwc-button ghost="" variant="tertiary" icon-id="kwc-ui-icons:save" on-tap="_saveTapped" hidden\$="[[!showSaveButton]]">
+            <kwc-button ghost="" variant="tertiary" icon-id="kwc-ui-icons:save" on-click="_saveTapped" hidden\$="[[!showSaveButton]]">
                 [[localize('SAVE', 'Save')]]
             </kwc-button>
-            <kwc-button id="banner-button" class\$="[[_computeButtonClass(buttonState)]]" on-tap="_buttonTapped" variant="primary">
-                            [[buttonLabel]]
-            </kwc-button>
+            <div id="banner-button-container">
+                <kwc-button id="banner-button" class\$="[[_computeButtonClass(buttonState)]]" on-tap="_buttonTapped" variant="primary">
+                    [[buttonLabel]]
+                </kwc-button>
             </div>
+        </div>
 `,
 
     is: 'kano-editor-banner',
@@ -322,8 +327,7 @@ Polymer({
         }, {
             offset: 1,
             transform: 'translate3d(0, 0, 0)',
-        },
-        ], {
+        }, ], {
             duration: 1200,
             easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
             fill: 'both',
