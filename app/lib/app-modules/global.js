@@ -1,4 +1,4 @@
-import AppModule from './app-module.js';
+import { AppModule } from './app-module.js';
 
 class GlobalModule extends AppModule {
     constructor(output) {
@@ -37,7 +37,14 @@ class GlobalModule extends AppModule {
     }
 
     _restartCode() {
+        if (this._restarted) {
+            return;
+        }
+        this._restarted = true;
         this.output.restart();
+        setTimeout(() => {
+            this._restarted = false;
+        });
     }
 
     _afterRun() {
