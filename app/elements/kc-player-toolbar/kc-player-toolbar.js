@@ -16,14 +16,19 @@ class KCPlayerToolbar extends PolymerElement {
                 padding: 4px 4px;
                 color: white;
             }
+            :host *:focus {
+                outline: none;
+            }
             .icon iron-icon,
             kano-animated-svg {
                 color: var(--color-porcelain);
-                height: 20px;
+                height: 16px;
+                width: 16px;
                 margin: 10px 10px;
-                width: 20px;
             }
             .icon kano-animated-svg {
+                width: 18px;
+                height: 18px;
                 --kano-animated-path: {
                     fill: var(--color-porcelain);
                     stroke: var(--color-porcelain);
@@ -41,8 +46,8 @@ class KCPlayerToolbar extends PolymerElement {
                 background-color: var(--color-abbey);
                 border-radius: 3px;
                 cursor: pointer;
-                height: 40px;
-                width: 40px;
+                height: 32px;
+                width: 32px;
                 border-radius: 50%;
                 transition: 0.2s background ease-in-out;
                 padding: 0;
@@ -53,8 +58,8 @@ class KCPlayerToolbar extends PolymerElement {
                 justify-content: center;
             }
             .icon.pause {
-                width: 58px;
-                height: 58px;
+                width: 40px;
+                height: 40px;
             }
             .icon:nth-child(n+3) {
                 margin-left: 16px;
@@ -70,7 +75,7 @@ class KCPlayerToolbar extends PolymerElement {
             <iron-icon icon="kc-ui:maximize"></iron-icon>
         </button>
         <button class="pause icon" on-click="pauseClicked">
-            <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="[[_getRunningStatus(running)]]">
+            <kano-animated-svg width="17" height="20" paths="[[makeButtonIconPaths]]" selected="[[_getRunningStatus(running)]]">
             </kano-animated-svg>
         </button>
         <button class="reset icon" on-tap="resetClicked">
