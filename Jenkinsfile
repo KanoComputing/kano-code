@@ -2,21 +2,30 @@
 @Library('kanolib') _
 
 pipeline {
-    agent any
-
+    agent {
+        label 'ubuntu_18.04'
+    }
     stages {
+        stage('tools') {
+            steps {
+                script {
+                    def NODE_PATH = tool name: 'Node 8.11.2', type: 'nodejs'
+                    env.PATH = "${env.PATH}:${NODE_PATH}/bin"
+                    def YARN_PATH = tool name: 'yarn', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+                    env.PATH = "${env.PATH}:${YARN_PATH}/bin"
+                }
+            }
+        }
         stage('check environment') {
             steps {
                 prepare_env()
             }
         }
-
         stage('checkout') {
             steps {
                 checkout scm
             }
         }
-
         stage('install dependencies') {
             steps {
                 install_dep()
@@ -28,7 +37,6 @@ pipeline {
             notify_failure_to_committers()
         }
     }
-
     options {
         buildDiscarder(logRotator(numToKeepStr: '20'))
         timeout(time: 60, unit: 'MINUTES')
