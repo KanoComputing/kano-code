@@ -246,7 +246,10 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
         if (!workspace) {
             return;
         }
-        this.lockedUi = this.banner.lockUi || false;
+        this.lockedUi = (this.banner
+            && this.banner.buttonLabel
+            && this.banner.buttonLabel.length > 0
+            && this.banner.lockUi) || false;
         const metrics = workspace.getMetrics();
         const flyout = workspace.getFlyout_();
         const width = workspace.toolbox_ && !workspace.toolbox_.opened ?
