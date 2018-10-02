@@ -131,17 +131,17 @@ class KCPartsControls extends Store.StateReceiver(mixinBehaviors([
         </div>
         <div class="part-list">
             <slot name="extra-parts"></slot>
-            <sortable-js handle=".handle" animation="150">
+            <!-- <sortable-js handle=".handle" animation="150"> -->
                 <template is="dom-repeat" items="[[parts]]" as="part" on-dom-change="_partsElementsRepeaterChanged">
                     <div class="part" id\$="part-[[part.id]]">
                         <kano-part-list-item model="{{part}}" on-tap="_partItemTapped"></kano-part-list-item>
                         <button type="button" class="remove">
                             <iron-icon icon="kc-ui:close" on-tap="_removePart"></iron-icon>
                         </button>
-                        <iron-icon class="handle" icon="kc-ui:handle"></iron-icon>
+                        <!-- <iron-icon class="handle" icon="kc-ui:handle"></iron-icon> -->
                     </div>
                 </template>
-            </sortable-js>
+            <!-- </sortable-js> -->
         </div>
 `;
     }
