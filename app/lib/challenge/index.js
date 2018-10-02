@@ -247,12 +247,15 @@ class Challenge extends Plugin {
         }
         const isLastStep = this.isLastStep();
         banner.showSaveButton = isLastStep;
-
         if (isLastStep) {
             banner.icon = null;
             banner.imgPage = 'star';
             const challenge = this.store.getState();
             banner.buttonLabel = challenge.next ? this.localize('NEXT_CHALLENGE', 'Next Challenge') : this.localize('BACK_TO_CHALLENGES', 'Back to Challenges');
+        }
+        const stepIndex = this.engine.stepIndex;
+        if (stepIndex === 0) {
+            banner.lockUi = true;
         }
         this.challengeActions.updateBannerState(Object.assign({}, banner));
         if (data.lockdown) {
