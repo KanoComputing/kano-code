@@ -747,7 +747,6 @@ Polymer({
                     }
                 }
             }
-            // this.computeArrow(this.step);
             this.$$('kano-arrow').updatePosition();
         }, 100);
     },
@@ -825,7 +824,6 @@ Polymer({
     _setupWithDelay() {
         /* Toggle idle state to show elements with a little delay when the step loads in.
       This also allows to read the current data-animate values of target elements */
-        // this._computeElements();
         this.idle = true;
         this.async(this._turnOnVisibility, 250);
     },
