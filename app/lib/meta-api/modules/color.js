@@ -62,7 +62,7 @@ const BlocklyColor = {
                 this.setColour(COLOR);
 
                 this.appendDummyInput()
-                    .appendField('new color with')
+                    .appendField('new colour with')
                     .appendField(dropdown, 'TYPE');
 
                 this.setOutput('Colour');
