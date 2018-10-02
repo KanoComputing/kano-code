@@ -44,8 +44,10 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 background: var(--color-black);
                 color: white;
                 --section-padding: 32px;
-                width: 1000px;
+                width: 100%;
+                max-width: 1000px;
                 height: 500px;
+                max-height: 90vh;
             }
             .header {
                 position: absolute;
