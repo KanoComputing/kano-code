@@ -110,6 +110,7 @@ class Challenge extends Plugin {
             'beacon.target.flyout_block',
             'tooltips.*.location.category',
             'validation.blockly.open-flyout',
+            'validation.blockly.close-flyout',
             'validation.blockly.create',
         ], this.engine._processPart.bind(this.engine));
         this.engine.definePropertyProcessor([

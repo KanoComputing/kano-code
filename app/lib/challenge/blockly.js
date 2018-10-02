@@ -15,12 +15,18 @@ class BlocklyChallenge extends Challenge {
         this.addValidation('value', this._matchBlocklyValue);
         this.addValidation('delete', this._matchDelete);
         this.addValidation('open-flyout', this._matchCategory);
+        this.addValidation('close-flyout', this._matchCategory);
         this.addValidation('drop', this._matchDrop);
 
         this.addOppositeAction('create', 'close-flyout', this._flyoutClosed.bind(this));
+        this.addOppositeAction('create', 'open-flyout', this._flyoutClosed.bind(this));
+        this.addOppositeAction('open-flyout', 'create', this._wrongCategory.bind(this));
+        this.addOppositeAction('open-flyout', 'close-flyout', this._wrongCategory.bind(this));
         this.addOppositeAction('connect', 'delete', this._deleteNotExpected.bind(this));
 
         this.addMatchFallback('open-flyout', this._wrongCategory.bind(this));
+        this.addMatchFallback('close-flyout', this._wrongCategory.bind(this));
+        this.addMatchFallback('create', this._wrongBlock.bind(this));
 
         this.defineShorthand('create-block', this._createBlockShorthand.bind(this));
         this.defineShorthand('change-input', this._changeInputShorthand.bind(this));
@@ -44,6 +50,10 @@ class BlocklyChallenge extends Challenge {
     _wrongCategory(validation) {
         this._updateStep();
     }
+    _wrongBlock(validation) {
+        this.stepIndex -= 1;
+        this._updateStep();
+    }
     _deleteNotExpected(validation, detail) {
         // Ignore delete events from shadow blocks
         if (detail.oldXml.tagName.toLowerCase() === 'shadow') {
@@ -53,6 +63,10 @@ class BlocklyChallenge extends Challenge {
     }
     _flyoutClosed(validation) {
         this.stepIndex -= 1;
+    }
+    _otherFlyoutOpened(validation) {
+        this.stepIndex -= 1;
+        this._updateStep();
     }
     _onPhantomBlockEnter(phantom_block) {
         let connection,
@@ -95,6 +109,15 @@ class BlocklyChallenge extends Challenge {
             validation: {
                 blockly: {
                     'open-flyout': data.category,
+                },
+            },
+        };
+    }
+    _getCloseFlyoutStep(data) {
+        return {
+            validation: {
+                blockly: {
+                    'close-flyout': data.category,
                 },
             },
         };

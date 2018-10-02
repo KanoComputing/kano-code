@@ -355,9 +355,6 @@ Polymer({
         tooltips: {
             type: Array,
         },
-        step: {
-            type: Object,
-        },
         arrow: {
             type: Object,
         },
@@ -394,19 +391,14 @@ Polymer({
 
     _editorChanged(e) {
         // Store current step object
-        let step = this.selectedStep,
-            detail = e.detail;
+        let detail = e.detail;
 
-        if (!step || this.done) {
+        if (this.done) {
             return;
         }
         if (this.tooltips && detail.type === 'blockly' && detail.event.type === 'move') {
             this.updateTooltips();
         }
-    },
-
-    computeSelectedStep() {
-        return this.steps[this.step];
     },
 
     /**
@@ -452,18 +444,14 @@ Polymer({
     },
 
     _onResize() {
-        const step = this.step;
-        if (!step) {
-            return;
-        }
-
         if (this.beacon) {
             this._fitBeacon(this.beacon);
         }
 
-        if (step.arrow) {
-            this._fitArrow(step);
-        }
+        // TODO: add arrows back in
+        // if (step.arrow) {
+        //     this._fitArrow(step);
+        // }
 
         this._fitTooltips(this.tooltips);
     },
@@ -474,19 +462,13 @@ Polymer({
     },
 
     _refitUiElements(targetConcerned) {
-        const step = this.step;
-
-        if (!step) {
-            return;
-        }
-
         if (this.beacon && this._targetIsConcerned(this.beacon.target, targetConcerned)) {
             this._fitBeacon(this.beacon);
         }
-
-        if (step.arrow && this._targetIsConcerned(step.arrow.target, targetConcerned)) {
-            this._fitArrow(step);
-        }
+        // TODO: add arrows back in
+        // if (step.arrow && this._targetIsConcerned(step.arrow.target, targetConcerned)) {
+        //     this._fitArrow(step);
+        // }
         this._fitTooltips(this.tooltips);
     },
 
@@ -572,43 +554,6 @@ Polymer({
                 iterations: Infinity,
             });
         }
-    },
-
-    computeArrow(step) {
-        if (!step || !step.arrow || (!this.state.hints.enabled && !step.injected)) {
-            this.$.arrow.hide();
-            this.arrow = {};
-            return;
-        }
-        this.async(() => {
-            this._fitArrow(step, true);
-        }, 300);
-    },
-
-    _fitArrow(step, scroll) {
-        let source,
-            target;
-
-        if (step.arrow.source) {
-            source = this._getTargetElement(step.arrow.source);
-            if ('getBoundingClientRect' in source) {
-                source = source.getBoundingClientRect();
-            }
-        }
-        target = this._getTargetElement(step.arrow.target);
-
-        if ('getBoundingClientRect' in target) {
-            target = target.getBoundingClientRect();
-        }
-        if (scroll) {
-            this._scrollWorkspaceOnTargetIfNeeded(target, step.arrow.target);
-        }
-        this.set('arrow', {
-            source,
-            target,
-            size: (step.arrow.size || 70) * 0.6,
-            angle: step.arrow.angle || 0,
-        });
     },
 
     _updateBeacon() {
@@ -727,108 +672,6 @@ Polymer({
         }
     },
 
-    _computeElements() {
-        if (!this.modeReady) {
-            return;
-        }
-
-        const step = this.step;
-
-        this.debounce('stepChanged', () => {
-            if (!step) {
-                this.tooltips = [];
-                this.arrow = {};
-                this.modal.close();
-                this.$.highlight.hide();
-                return;
-            }
-
-            if (step.load_app) {
-                this.fire('load', step.load_app);
-            }
-
-            if (step.save_app) {
-                this.fire('save', {
-                    id: step.save_app,
-                    stepIds: this.stepIds,
-                    blockIds: this.blockIds,
-                });
-            }
-
-            if (step.save_to_storage) {
-                this.fire('save-to-storage');
-            }
-            this.modal.close();
-
-            if (step.modal) {
-                step.modal.text = step.modal.text;
-                this.modal.open();
-            }
-
-            this.computeTooltips(step);
-            this.computeArrow(step);
-            this.computeHighlight(step);
-            this.computePhantomBlock(step);
-            this.computeSounds(step);
-        }, 10);
-    },
-
-    computeSounds(step) {
-        if (this.step.play_on_end) {
-            this.loadSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
-        }
-    },
-
-    computePhantomBlock(step) {
-        let phantom_block = step.phantom_block,
-            connection,
-            target,
-            host;
-
-        if (!phantom_block ||
-          !phantom_block.location ||
-          !Blockly.selected) {
-            Blockly.removePhantomBlock();
-            return;
-        }
-        host = this.getTargetBlock(phantom_block.location.block);
-
-        if (!phantom_block.target) {
-            connection = host.nextConnection;
-        } else {
-            for (let i = 0; i < host.inputList.length; i++) {
-                if (host.inputList[i].name === phantom_block.target) {
-                    connection = host.inputList[i].connection;
-                    break;
-                }
-            }
-        }
-        target = Blockly.selected;
-
-        if (!connection) {
-            return;
-        }
-        this.async(() => {
-            Blockly.setPhantomBlock(connection, target);
-        });
-    },
-
-    computeHighlight(step) {
-        if (step.highlight) {
-            const highlightString = JSON.stringify(step.highlight);
-            if (highlightString !== this.previousHighlight) {
-                this.$.highlight.hide();
-                this.debounce('highlight', () => {
-                    this.focusOn(step.highlight);
-                    this.$.highlight.show();
-                }, 200);
-                this.previousHighlight = JSON.stringify(step.highlight);
-            }
-        } else {
-            this.$.highlight.hide();
-        }
-    },
-
     focusOn(selector) {
         let target = this._getTargetElement(selector);
         target = target.getBoundingClientRect();
@@ -904,7 +747,7 @@ Polymer({
                     }
                 }
             }
-            this.computeArrow(this.step);
+            // this.computeArrow(this.step);
             this.$$('kano-arrow').updatePosition();
         }, 100);
     },
@@ -979,49 +822,10 @@ Polymer({
         return pos;
     },
 
-    finishStep() {
-        if (this.step.play_on_end) {
-            this.playSound(`/assets/audio/sounds/${this.step.play_on_end}.wav`);
-        }
-    },
-
-    _getLongestDelay() {
-        let step = this.step,
-            delayingElements = [],
-            currentDelay,
-            longestDelay;
-
-        if (!step) {
-            return 0;
-        }
-
-        if (step.tooltips) {
-            step.tooltips.forEach(tooltip => delayingElements.push(this._getTargetElement(tooltip.location)));
-        }
-
-        if (this.beacon) {
-            delayingElements.push(this._getTargetElement(this.beacon.target));
-        }
-
-        if (step.arrow) {
-            delayingElements.push(this._getTargetElement(step.arrow.source));
-        }
-
-        delayingElements.forEach((el) => {
-            if (el instanceof HTMLElement) {
-                currentDelay = parseInt(el.getAttribute('data-animate'));
-            }
-            if (currentDelay > (longestDelay || 0)) {
-                longestDelay = currentDelay;
-            }
-        });
-        return (longestDelay || 0);
-    },
-
     _setupWithDelay() {
         /* Toggle idle state to show elements with a little delay when the step loads in.
       This also allows to read the current data-animate values of target elements */
-        this._computeElements();
+        // this._computeElements();
         this.idle = true;
         this.async(this._turnOnVisibility, 250);
     },
