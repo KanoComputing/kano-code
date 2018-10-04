@@ -157,7 +157,7 @@ const shapes = [{
 },{
     block: (part) => {
         let id = 'shapes_polygon';
-        Blockly.Blocks[id] = {
+        Blockly.Blocks[`${part.id}_${id}`] = {
             init: function () {
                 this.points = 1;
                 this.workspace.addChangeListener((e) => {
