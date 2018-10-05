@@ -175,7 +175,7 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
                     on-code-changed="_onCodeChanged"
                     on-blockly-ready="_onBlocklyReady"
                     media="[[media]]">
-            <div id="toolbox-enhancer-above" class="toolbox-enhancer above" slot="above-toolbox">
+            <div hidden$\="[[flyoutMode]]" id="toolbox-enhancer-above" class="toolbox-enhancer above" slot="above-toolbox">
                 <button type="button" class="logo icon" on-tap="_exitButtonTapped" hidden\$="[[noUser]]">
                     <iron-icon class="block-logo" src$="/assets/kano-logo-simple.svg"></iron-icon>
                 </button>
