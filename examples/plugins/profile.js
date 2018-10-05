@@ -184,6 +184,7 @@ export class SpiralWorkspaceViewProvider extends code.WorkspaceViewProvider {
             <div id="tools">
                 <button id="alert">Display Alert</button>
                 <button id="activity-bar">Add ActivityBar entry</button>
+                <button id="activity-bar-tooltip">Add ActivityBar tooltip entry</button>
                 <button id="creation">Show creation</button>
             </div>
         `;
@@ -221,8 +222,20 @@ export class SpiralWorkspaceViewProvider extends code.WorkspaceViewProvider {
                 icon: './assets/code.png',
             });
             // Remove the entry when it is clicked
-            entry.on('activate', () => {
+            entry.onDidActivate(() => {
                 entry.dispose();
+            });
+        });
+        const activityBarTooltipEntryButton = this._root.querySelector('#activity-bar-tooltip');
+        activityBarTooltipEntryButton.addEventListener('click', () => {
+            const root = document.createElement('div');
+            root.style.padding = '16px';
+            root.innerText = 'Tooltip';
+            this.editor.activityBar.registerTooltipEntry({
+                title: 'Custom Entry',
+                icon: './assets/code.png',
+                root,
+                offset: Math.random() * 20,
             });
         });
     }

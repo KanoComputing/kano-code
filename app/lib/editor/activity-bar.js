@@ -1,16 +1,20 @@
+import { EventEmitter } from '@kano/common/index.js';
 import { Plugin } from './plugin.js';
-import EventEmitter from '../util/event-emitter.js';
+import '../../elements/kano-tooltip/kano-tooltip.js';
 
 const DEFAULTS = {
     disabled: false,
 };
 
-class ActivityBarEntry extends EventEmitter {
+class ActivityBarEntry {
     constructor(opts = {}) {
-        super();
         this._onButtonClick = this._onButtonClick.bind(this);
         this.opts = Object.assign({}, opts, DEFAULTS);
         this.root = this.createDom();
+        this._onDidActivate = new EventEmitter();
+    }
+    get onDidActivate() {
+        return this._onDidActivate.event;
     }
     createDom() {
         const dom = document.createElement('button');
@@ -21,8 +25,9 @@ class ActivityBarEntry extends EventEmitter {
         dom.addEventListener('click', this._onButtonClick);
         return dom;
     }
+    onWillInject() {}
     _onButtonClick() {
-        this.emit('activate');
+        this._onDidActivate.fire();
     }
     dispose() {
         this.root.removeEventListener('click', this._onButtonClick);
@@ -47,6 +52,37 @@ class ActivityBarEntry extends EventEmitter {
     }
 }
 
+export class ActivityBarTooltipEntry extends ActivityBarEntry {
+    constructor(opts) {
+        super(opts);
+        this._contents = opts.root;
+        this._offset = opts.offset || 0;
+        if (!(this._contents instanceof HTMLElement)) {
+            throw new Error('Could not create activity bar tooltip entry: Provided root is not a HTMLElement');
+        }
+    }
+    onWillInject(container) {
+        this._tooltip = document.createElement('kano-tooltip');
+        this._tooltip.position = 'right';
+        this._tooltip.offset = this._offset;
+        this._tooltip.autoClose = true;
+        this._tooltip.appendChild(this._contents);
+        container.appendChild(this._tooltip);
+    }
+    _onButtonClick(e) {
+        this._tooltip.target = this.root;
+        this._tooltip.updatePosition();
+        this._tooltip.open(e);
+    }
+    dispose() {
+        super.dispose();
+        if (this._tooltip) {
+            this._tooltip.parentNode.removeChild(this._tooltip);
+            this._tooltip = null;
+        }
+    }
+}
+
 export class ActivityBar extends Plugin {
     constructor() {
         super();
@@ -62,14 +98,25 @@ export class ActivityBar extends Plugin {
         this.injectEntry(entry);
         return entry;
     }
+    registerTooltipEntry(opts) {
+        const entry = new ActivityBarTooltipEntry(opts);
+        // Queue up entries added before injection
+        if (!this.editor || !this.editor.injected) {
+            this.entries.push(entry);
+            return entry;
+        }
+        this.injectEntry(entry);
+        return entry;
+    }
     injectEntry(entry) {
-        const root = this.editor.root.querySelector('#activity-bar');
-        root.appendChild(entry.root);
+        entry.onWillInject(this._barContainer);
+        this._barContainer.appendChild(entry.root);
     }
     onInstall(editor) {
         this.editor = editor;
     }
     onInject() {
+        this._barContainer = this.editor.root.querySelector('#activity-bar');
         this.entries.forEach(entry => this.injectEntry(entry));
         this.entries = [];
     }

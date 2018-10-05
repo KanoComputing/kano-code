@@ -32,7 +32,7 @@ suite('Editor', () => {
                 title,
                 icon,
             });
-            entry.on('activate', () => {
+            entry.onDidActivate(() => {
                 done();
             });
             click(entry.root);
@@ -47,6 +47,19 @@ suite('Editor', () => {
             assert(barDom.firstChild === entry.root);
             entry.dispose();
             assert(barDom.firstChild !== entry.root);
+        });
+        test('adds a tooltip entry when registered', () => {
+            const title = 'test-title';
+            const icon = '/icons/test-icon.svg';
+            const root = document.createElement('div');
+            editor.activityBar.registerTooltipEntry({
+                title,
+                icon,
+                root,
+            });
+            const tooltip = barDom.firstChild;
+            assert(tooltip.tagName.toLowerCase() === 'kano-tooltip', 'tooltip was not added to the bar');
+            assert(tooltip.firstChild === root, 'Root was not added to the tooltip');
         });
         teardown(() => {
             editor.dispose();

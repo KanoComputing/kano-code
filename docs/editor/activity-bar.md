@@ -16,7 +16,7 @@ const activityBarEntry = editor.activityBar.registerEntry({
 });
 
 // Triggered on click/touch
-activityBarEntry.on('activate', () => {});
+activityBarEntry.onDidActivate(() => {});
 
 // Update the disabled status of the entry
 activityBarEntry.disable();
@@ -24,4 +24,16 @@ activityBarEntry.enable();
 
 // Remove the entry
 activityBarEntry.dispose();
+```
+
+You can also add an entry that will display a tooltip on click/tap:
+
+```js
+editor.activityBar.registerTooltipEntry({
+    title: 'Hello',
+    icon: '/assets/icons/info.svg',
+    disabled: false,
+    root: document.createElement('button'),
+    offset: 20,
+});
 ```
