@@ -34,22 +34,54 @@ class KCPlayer extends PolymerElement {
                 margin-top: 64px;
             }
             :host([fullscreen]) .close {
-                display: block;
+                display: flex;
             }
             .close {
-                display: none;
-                cursor: pointer;
-                position: absolute;
-                top: 0px;
-                right: 0px;
-                padding: 16px;
+                font-family: var(--font-body);
                 background: transparent;
-                border: 0;
+                border: none;
+                padding: 8px 2px;
+                flex-direction: row;
+                align-items: center;
+                position: absolute;
+                top: 8px;
+                right: 0;
+                display: none;
+            }
+            .close:focus {
+                outline: none;
+            }
+            .close span {
+                font-size: 16px;
+                font-family: inherit;
+                font-weight: bold;
+                color: #FFF;
             }
             .close .icon {
-                color: var(--color-porcelain);
-                height: 16px;
-                width: 16px;
+                width: 24px;
+                height: 24px;
+                margin-left: 13px;
+                margin-right: 9px;
+                border-radius: 3px;
+                background: rgba(255, 255, 255, .25);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.1s ease-in-out;
+            }
+            .close .icon iron-icon {
+                width: 12px;
+                color: rgba(255, 255, 255, .75);
+                transition: all 0.1s ease-in-out;
+            }
+            .close:hover {
+                cursor: pointer;
+            }
+            .close:hover .icon {
+                background: #FF6900;
+            }
+            .close:hover iron-icon {
+                color: #FFF;
             }
             #container {
                 position: relative;
@@ -84,7 +116,10 @@ class KCPlayer extends PolymerElement {
         </div>
         <template is="dom-if" if="[[showToolbar]]">
             <button class="close" on-click="_toggleFullscreen">
-                <iron-icon class="icon" icon="kano-icons:close"></iron-icon>
+                <span>Close</span>
+                <div class="icon">
+                    <iron-icon icon="kano-icons:close"></iron-icon>
+                </div>
             </button>
             <kc-player-toolbar running="[[running]]" on-run-button-clicked="_toggleRunning" on-reset-button-clicked="_reset" on-fullscreen-button-clicked="_toggleFullscreen"></kc-player-toolbar>
         </template>
