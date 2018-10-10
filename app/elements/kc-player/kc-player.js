@@ -28,7 +28,7 @@ class KCPlayer extends PolymerElement {
                 width: 100%;
                 height: 100%;
                 z-index: 100;
-                background-color: var(--color-chateau);
+                background-color: #292F35;
             }
             :host([fullscreen]) kc-player-toolbar {
                 margin-top: 64px;
