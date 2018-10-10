@@ -61,6 +61,11 @@ suite('Editor', () => {
             assert(tooltip.tagName.toLowerCase() === 'kano-tooltip', 'tooltip was not added to the bar');
             assert(tooltip.firstChild === root, 'Root was not added to the tooltip');
         });
+        test('errors when wrong size is provided', () => {
+            const title = 'test-title';
+            const icon = '/icons/test-icon.svg';
+            assert.throws(() => editor.activityBar.registerTooltipEntry({ title, icon, size: 'unknown' }));
+        });
         teardown(() => {
             editor.dispose();
         });

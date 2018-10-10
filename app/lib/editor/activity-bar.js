@@ -2,14 +2,26 @@ import { EventEmitter } from '@kano/common/index.js';
 import { Plugin } from './plugin.js';
 import '../../elements/kano-tooltip/kano-tooltip.js';
 
+const SIZES = Object.freeze({
+    BIG: 'big',
+    DEFAULT: 'default',
+});
+
 const DEFAULTS = {
     disabled: false,
+    important: false,
+    size: SIZES.DEFAULT,
 };
+
+const SIZES_ARRAY = Object.values(SIZES);
 
 class ActivityBarEntry {
     constructor(opts = {}) {
         this._onButtonClick = this._onButtonClick.bind(this);
-        this.opts = Object.assign({}, opts, DEFAULTS);
+        this.opts = Object.assign({}, DEFAULTS, opts);
+        if (SIZES_ARRAY.indexOf(this.opts.size) === -1) {
+            throw new Error(`Could not create ActivityBarEntry: '${this.opts.size}' is not a valid size`);
+        }
         this.root = this.createDom();
         this._onDidActivate = new EventEmitter();
     }
@@ -20,6 +32,10 @@ class ActivityBarEntry {
         const dom = document.createElement('button');
         const icon = document.createElement('img');
         icon.src = this.opts.icon;
+        icon.classList.add(this.opts.size);
+        if (this.opts.important) {
+            icon.classList.add('important');
+        }
         dom.title = this.opts.title;
         dom.appendChild(icon);
         dom.addEventListener('click', this._onButtonClick);
@@ -119,6 +135,9 @@ export class ActivityBar extends Plugin {
         this._barContainer = this.editor.root.querySelector('#activity-bar');
         this.entries.forEach(entry => this.injectEntry(entry));
         this.entries = [];
+    }
+    get size() {
+        return SIZES;
     }
 }
 

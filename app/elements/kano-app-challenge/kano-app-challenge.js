@@ -244,7 +244,6 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
         this.dispatchEvent(new CustomEvent('next-step'));
     }
     _transmitRequestShare() {
-        this.dispatchEvent(new CustomEvent('save'));
         if (this.editor && this.editor.creation) {
             this.editor.creation.init();
         }

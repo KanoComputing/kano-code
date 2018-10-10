@@ -249,21 +249,15 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 align-items: center;
                 margin: 0;
                 width: 48px;
-                height: 40px;
+                height: 48px;
                 background: transparent;
                 border: none;
-                padding: 0px;
-            }
-            .activity-bar > button:first-of-type {
-                height: 44px;
+                padding: 8px;
+                box-sizing: border-box;
+                margin-bottom: 8px;
             }
             .activity-bar > button:not([disabled]) {
                 cursor: pointer;
-            }
-            .activity-bar button {
-                background: transparent;
-                border: none;
-                padding: 0px;
             }
             .activity-bar button:focus img {
                 opacity: 1;
@@ -271,17 +265,17 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             .activity-bar button:focus {
                 outline: none;
             }
-            .activity-bar button img {
-                margin: 4px 8px 4px 8px;
+            .activity-bar button img.default {
+                width: 24px;
+                height: 24px;
+            }
+            .activity-bar button img.big {
                 width: 32px;
                 height: 32px;
             }
-            .activity-bar button:first-of-type img {
-                margin-top: 8px
-            }
-            .activity-bar button img {
+            .activity-bar button img:not(.important) {
                 transition: opacity 0.15s ease;
-                opacity: 0.6;
+                opacity: 0.5;
             }
             .activity-bar button:not([disabled]):hover img {
                 opacity: 1;
