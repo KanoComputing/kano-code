@@ -11,8 +11,6 @@ import Mouse from './parts/mouse/index.js';
 import Oscillator from './parts/oscillator/index.js';
 import ScrollingText from './parts/scrolling-text/index.js';
 import Slider from './parts/slider/index.js';
-import Speaker from './parts/speaker/index.js';
-import Sticker from './parts/sticker/index.js';
 import Synth from './parts/synth/index.js';
 import Terminal from './parts/terminal/index.js';
 import TextInput from './parts/text-input/index.js';
@@ -34,8 +32,6 @@ const Parts = [
     Oscillator,
     ScrollingText,
     Slider,
-    Speaker,
-    Sticker,
     Synth,
     Terminal,
     TextInput,

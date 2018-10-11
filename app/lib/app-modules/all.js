@@ -1,4 +1,3 @@
-import AssetsModule from './assets.js';
 import CameraModule from './camera.js';
 import GlobalModule from './global.js';
 import ColourModule from './colour.js';
@@ -15,7 +14,6 @@ import MotionModule from './motion.js';
 import TimeModule from './time.js';
 
 export const AllModules = [
-    AssetsModule,
     CameraModule,
     GlobalModule,
     ColourModule,
@@ -31,3 +29,5 @@ export const AllModules = [
     MotionModule,
     TimeModule,
 ];
+
+export default AllModules;

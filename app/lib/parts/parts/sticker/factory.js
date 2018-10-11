@@ -1,7 +1,7 @@
 import { localize } from '../../../i18n/index.js';
 import { StickerResolver } from './resolver.js';
 
-const StickerFactory = (appRoot, stickers) => {
+export const StickerFactory = (appRoot, stickers) => {
     const COLOR = '#E73544';
 
     const root = `${appRoot}/assets/part/stickers/`;
@@ -175,6 +175,5 @@ const StickerFactory = (appRoot, stickers) => {
     return sticker;
 };
 
-export { StickerFactory };
 export default StickerFactory;
 

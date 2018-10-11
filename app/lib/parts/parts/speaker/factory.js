@@ -3,7 +3,7 @@ import { AudioPlayer } from '../../../../scripts/kano/music/player.js';
 import { FieldSoundsFactory } from './custom-blockly/sounds-field.js';
 import './kano-part-speaker.js';
 
-const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
+export const SpeakerFactory = (appRoot, samples, samplesDir, defaultCategory) => {
     const COLOUR = '#FFB347';
 
     const root = `${appRoot}/assets/audio/samples/`;

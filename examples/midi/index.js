@@ -6,9 +6,14 @@ import TimeModule from '../../app/lib/app-modules/time.js';
 import ControlsToolbox from '../../app/lib/meta-api/modules/control.js';
 import Hardware from '../../app/lib/parts/hardware/index.js';
 
-import Speaker from '../../app/lib/parts/parts/speaker/index.js';
+import SpeakerFactory from '../../app/lib/parts/parts/speaker/factory.js';
 
-import '../../app/elements/kc-workspace-frame/kc-parts-controls.js';
+import { SamplesGenerator, SamplesDirGenerator } from '../../app/lib/parts/parts/speaker/samples.js';
+
+const samples = SamplesGenerator('/');
+const samplesDir = SamplesDirGenerator('/');
+
+const Speaker = SpeakerFactory(root, samples, samplesDir, 'Drum Machine');
 
 class MIDIController {
     constructor() {

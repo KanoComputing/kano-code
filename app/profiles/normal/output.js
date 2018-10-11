@@ -15,8 +15,6 @@ import Mouse from '../../lib/parts/parts/mouse/index.js';
 import Oscillator from '../../lib/parts/parts/oscillator/index.js';
 import ScrollingText from '../../lib/parts/parts/scrolling-text/index.js';
 import Slider from '../../lib/parts/parts/slider/index.js';
-import Speaker from '../../lib/parts/parts/speaker/index.js';
-import Sticker from '../../lib/parts/parts/sticker/index.js';
 import Synth from '../../lib/parts/parts/synth/index.js';
 import Terminal from '../../lib/parts/parts/terminal/index.js';
 import TextInput from '../../lib/parts/parts/text-input/index.js';
@@ -31,7 +29,7 @@ import { PartsOutputPlugin } from '../../lib/parts/index.js';
 
 import { AllModules } from '../../lib/app-modules/all.js';
 import { BackgroundOutputPlugin } from '../background/index.js';
-import DrawModuleFactory from '../../lib/app-modules/draw.js';
+import { DrawModuleFactory } from '../../lib/app-modules/draw.js';
 
 const PartTypes = [UI, Data, Hardware];
 const Parts = [
@@ -44,8 +42,6 @@ const Parts = [
     Oscillator,
     ScrollingText,
     Slider,
-    Speaker,
-    Sticker,
     Synth,
     Terminal,
     TextInput,
