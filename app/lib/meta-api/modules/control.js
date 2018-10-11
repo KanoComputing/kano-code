@@ -163,7 +163,7 @@ const BlocklyControl = {
             let branch = Blockly.JavaScript.statementToCode(block, 'DO');
             const loopVar = Blockly.JavaScript.variableDB_.getDistinctName('i', Blockly.Variables.NAME_TYPE);
             branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
-            n = n < 1000 ? n : 1000;
+            n = typeof n === 'string' || n < 1000 ? n : 1000;
             return `for (var ${loopVar} = 0; ${loopVar} < ${n}; ${loopVar}++) {\n${branch}}\n`;
         };
 
