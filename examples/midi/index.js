@@ -1,19 +1,20 @@
 import { EventEmitter } from '@kano/common/index.js';
 import * as code from '../../app/lib/index.js';
 import { PartsOutputPlugin, PartsPlugin } from '../../app/lib/parts/index.js';
+import '../../app/elements/kc-workspace-frame/kc-parts-controls.js';
 import PartsModule from '../../app/lib/app-modules/parts.js';
 import TimeModule from '../../app/lib/app-modules/time.js';
 import ControlsToolbox from '../../app/lib/meta-api/modules/control.js';
 import Hardware from '../../app/lib/parts/hardware/index.js';
 
-import SpeakerFactory from '../../app/lib/parts/parts/speaker/factory.js';
+import { SpeakerFactory } from '../../app/lib/parts/parts/speaker/factory.js';
 
 import { SamplesGenerator, SamplesDirGenerator } from '../../app/lib/parts/parts/speaker/samples.js';
 
 const samples = SamplesGenerator('/');
 const samplesDir = SamplesDirGenerator('/');
 
-const Speaker = SpeakerFactory(root, samples, samplesDir, 'Drum Machine');
+const Speaker = SpeakerFactory('http://localhost:4000', samples, samplesDir, 'Drum Machine');
 
 class MIDIController {
     constructor() {
@@ -163,7 +164,7 @@ const workspaceProfile = {
 
 // Create editor
 const editor = new code.Editor({
-    BLOCKLY_MEDIA: '/node_modules/@kano/kwc-blockly/blockly_built/media',
+    BLOCKLY_MEDIA: '/node_modules/@kano/kwc-blockly/blockly_built/media/',
 });
 
 // Load profile
