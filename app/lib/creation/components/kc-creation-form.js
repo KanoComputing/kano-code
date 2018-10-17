@@ -600,7 +600,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
     }
     _shareOnKW() {
         if (this._checkTitleInput() && !this._saving) {
-	    this._saving = true;
+            this._saving = true;
             this.dispatchEvent(new CustomEvent('submit', {
                 detail: {
                     title: this.title,
