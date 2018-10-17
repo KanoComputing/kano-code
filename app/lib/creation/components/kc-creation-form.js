@@ -535,7 +535,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
         return page === 'success';
     }
     _computeSaveButtonLabel(recording, saving) {
-	if (this._saving) {
+	if (saving) {
             return `${this.localize('SAVING', 'Saving')}...`;
         } else if (recording) {
             return `${this.localize('RECORDING', 'Recording')}...`;
