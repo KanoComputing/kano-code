@@ -488,7 +488,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 <form class="form" name="sharing-form" id="sharing-form">
                     <input type="text" name="title" id="title_input" value="{{title::change}}" placeholder="Title" autofocus on-keydown="_dialogKeydown">
                     <textarea name="description" rows="4" cols="40" value="{{description::change}}" placeholder="Description"></textarea>
-                    <button type="button" name="button" class="save-button round" on-tap="_shareOnKW" disabled\$="[[recording]]">[[_computeSaveButtonLabel(recording)]]</button>
+                    <button type="button" name="button" class="save-button round" on-tap="_shareOnKW" disabled\$="[[_saving]]" disabled\$="[[recording]]">[[_computeSaveButtonLabel(recording,_saving)]]</button>
                 </form>
                 <div id="saving-process" class="saving" name="saving">
                     <div class="blocks" id="gif-creation-blocks"></div>
@@ -534,8 +534,10 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
     _isHeaderHidden(page) {
         return page === 'success';
     }
-    _computeSaveButtonLabel(recording) {
-        if (recording) {
+    _computeSaveButtonLabel(recording,saving) {
+	if (this._saving) {
+            return `${this.localize('SAVING', 'Saving')}...`;
+        } else if (recording) {
             return `${this.localize('RECORDING', 'Recording')}...`;
         }
         return this.localize('SAVE', 'Save');
@@ -566,6 +568,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 const container = this.$['options-pager'].querySelector('.iron-selected #gif-creation-blocks');
                 this.splash = new BlockAnimation(container);
                 this.splash.init();
+                this._saving = false;
             }
             const newPageEl = this.$['options-pager'].querySelector('.iron-selected');
             if (newPageEl) {
@@ -596,7 +599,8 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
         this.dispatchEvent(new CustomEvent('dismiss'));
     }
     _shareOnKW() {
-        if (this._checkTitleInput()) {
+        if (this._checkTitleInput() && !this._saving) {
+	    this._saving = true;
             this.dispatchEvent(new CustomEvent('submit', {
                 detail: {
                     title: this.title,
