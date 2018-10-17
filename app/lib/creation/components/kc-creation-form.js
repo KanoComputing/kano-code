@@ -488,7 +488,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 <form class="form" name="sharing-form" id="sharing-form">
                     <input type="text" name="title" id="title_input" value="{{title::change}}" placeholder="Title" autofocus on-keydown="_dialogKeydown">
                     <textarea name="description" rows="4" cols="40" value="{{description::change}}" placeholder="Description"></textarea>
-                    <button type="button" name="button" class="save-button round" on-tap="_shareOnKW" disabled\$="[[_saving]]" disabled\$="[[recording]]">[[_computeSaveButtonLabel(recording, _saving)]]</button>
+                    <button type="button" name="button" class="save-button round" on-tap="_shareOnKW" disabled\$="[[_computeSaveButtonDisabled(_saving, recording)]]">[[_computeSaveButtonLabel(recording, _saving)]]</button>
                 </form>
                 <div id="saving-process" class="saving" name="saving">
                     <div class="blocks" id="gif-creation-blocks"></div>
@@ -533,6 +533,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
     }
     _isHeaderHidden(page) {
         return page === 'success';
+    }
+    _computeSaveButtonDisabled(recording, saving) {
+        return recording || saving;
     }
     _computeSaveButtonLabel(recording, saving) {
 	if (saving) {
