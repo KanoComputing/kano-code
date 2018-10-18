@@ -10,6 +10,8 @@ export class WorkspaceToolbar extends Plugin {
         super();
         this.subscriptions = new Subscriptions();
         this._telemetry = new TelemetryClient({ scope: 'workspace_toolbar' });
+
+        this.enableImportExport = true;
     }
     /**
      * @param {Editor} editor The editor this plugin is attached to
@@ -26,6 +28,18 @@ export class WorkspaceToolbar extends Plugin {
             return;
         }
 
+        if (this.enableImportExport) {
+            this.exportButton = this.toolbar.addSettingsEntry({
+                title: this.toolbar.localize('EXPORT', 'Export'),
+                ironIcon: 'kc-ui:export',
+            }).on('activate', () => this.export());
+
+            this.importButton = this.addSettingsEntry({
+                title: this.toolbar.localize('IMPORT', 'Import'),
+                ironIcon: 'kc-ui:import',
+            }).on('activate', () => this.import());
+        }
+
         this.subscriptions.push(
             subscribe(this.editor.output, 'running-state-changed', this.updateRunningState.bind(this)),
             subscribe(this.editor.output, 'fullscreen-changed', this.updateFullscreen.bind(this)),
@@ -33,8 +47,6 @@ export class WorkspaceToolbar extends Plugin {
             subscribe(this.toolbar, 'run-clicked', this.toggleRun.bind(this)),
             subscribe(this.toolbar, 'fullscreen-clicked', this.toggleFullscreen.bind(this)),
             subscribe(this.toolbar, 'reset-clicked', this.reset.bind(this)),
-            subscribe(this.toolbar, 'export-clicked', this.export.bind(this)),
-            subscribe(this.toolbar, 'import-clicked', this.import.bind(this)),
         );
     }
     updateRunningState() {

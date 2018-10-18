@@ -226,14 +226,6 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             title: this.localize('RESET_WORKSPACE', 'Reset Workspace'),
             ironIcon: 'kc-ui:reset',
         }).on('activate', () => this._reset());
-        this.addSettingsEntry({
-            title: this.localize('EXPORT', 'Export'),
-            ironIcon: 'kc-ui:export',
-        }).on('activate', () => this._export());
-        this.addSettingsEntry({
-            title: this.localize('IMPORT', 'Import'),
-            ironIcon: 'kc-ui:import',
-        }).on('activate', () => this._load());
         this.addEntry({
             id: 'restart',
             position: ToolbarEntryPosition.RIGHT,
@@ -352,12 +344,6 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
     }
     _reset() {
         this.dispatchEvent(new CustomEvent('reset-clicked'));
-    }
-    _export() {
-        this.dispatchEvent(new CustomEvent('export-clicked'));
-    }
-    _load() {
-        this.dispatchEvent(new CustomEvent('import-clicked'));
     }
     _save() {
         this.dispatchEvent(new CustomEvent('save-clicked'));
