@@ -6,50 +6,50 @@ const values = {
     text: {
         TEXT: '',
     },
-    stroke: {
+    draw_stroke: {
         SIZE: 1,
         COLOR: '#000',
     },
-    color: {
+    draw_color: {
         COLOR: '#000',
     },
-    line_to: {
+    draw_line_to: {
         X: 5,
         Y: 5,
     },
-    line: {
+    draw_line: {
         X: 5,
         Y: 5,
     },
-    move_to: {
+    draw_move_to: {
         X: 5,
         Y: 5,
     },
-    move: {
+    draw_move: {
         X: 5,
         Y: 5,
     },
-    circle: {
+    draw_circle: {
         RADIUS: 5,
     },
-    ellipse: {
+    draw_ellipse: {
         RADIUSX: 5,
         RADIUSY: 5,
     },
-    square: {
+    draw_square: {
         SIZE: 5,
     },
-    rectangle: {
+    draw_rectangle: {
         WIDTH: 5,
         HEIGHT: 5,
     },
-    arc: {
+    draw_arc: {
         RADIUS: 5,
         START: 0,
         END: 1,
         CLOSE: 'TRUE',
     },
-    polygon: {
+    draw_polygon: {
         CLOSE: 'TRUE',
     },
     threshold: {
