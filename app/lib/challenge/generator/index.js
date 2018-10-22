@@ -442,30 +442,33 @@ class Challenge extends Plugin {
         if (parentBlockType.block === 'variables_set' && this.data.variables.indexOf(node.firstChild.nodeValue) === -1) {
             this.data.variables.push(node.firstChild.nodeValue);
         }
+        // Input name: Name of the first non shadow field
+        // Field name: Name of the current field
         if (!!node.firstChild && node.firstChild.nodeValue !== null) {
+            fieldName = node.getAttribute('name');
             if (parentTagName === 'shadow') {
                 inputName = parent.parentNode.getAttribute('name');
-                fieldName = inputName;
                 parent = parent.parentNode.parentNode;
                 parentBlockType = Challenge.parseBlockType(parent.getAttribute('type'));
             } else {
-                fieldName = node.getAttribute('name');
+                inputName = fieldName;
             }
             let defaults;
             let defaultLabel;
-            if (fieldName) {
+            if (inputName) {
                 if (!this.fieldDefaults[parentBlockType.block]) {
-                    this.editor.logger.warn('missing default field: ', parentBlockType.block, fieldName);
+                    this.editor.logger.warn('[CHALLENGE] Missing default field: ', parentBlockType.block, inputName);
                 } else {
-                    defaults = this.fieldDefaults[parentBlockType.block][fieldName];
+                    defaults = this.fieldDefaults[parentBlockType.block][inputName];
                     while (typeof defaults === 'object' && 'shadow' in defaults && 'default' in defaults) {
                         defaults = defaults.default;
                     }
                     if (typeof defaults === 'object' && 'id' in defaults) {
                         defaultLabel = defaults.label || defaults.id;
                         defaults = defaults.id;
-                    } else if (this.fieldDefaults[parentBlockType.block][fieldName]) {
-                        defaultLabel = this.fieldDefaults[parentBlockType.block][fieldName];
+                    } else if (defaults[fieldName]) {
+                        defaults = defaults[fieldName];
+                        defaultLabel = defaults[fieldName];
                     } else if (this.fieldDefaults[parentBlockType.block].label) {
                         defaultLabel = this.fieldDefaults[parentBlockType.block].label;
                     }

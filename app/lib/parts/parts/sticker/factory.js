@@ -1,6 +1,8 @@
 import { localize } from '../../../i18n/index.js';
 import { StickerResolver } from './resolver.js';
 
+import './kano-ui-sticker.js';
+
 export const StickerFactory = (appRoot, stickers) => {
     const COLOR = '#E73544';
 
@@ -19,6 +21,9 @@ export const StickerFactory = (appRoot, stickers) => {
         }));
         return acc.concat(groupFiles);
     }, []);
+
+    const defaultSetKey = Object.keys(stickers)[0];
+    const defaultSet = stickers[defaultSetKey];
 
     const sticker = {
         partType: 'ui',
@@ -59,6 +64,17 @@ export const StickerFactory = (appRoot, stickers) => {
             label: localize('IS_CLICKED'),
             id: 'clicked',
         }],
+        defaults: {
+            set_sticker: {
+                PICTURE: {
+                    shadow: true,
+                    default: {
+                        SET: defaultSetKey,
+                        STICKER: Object.keys(defaultSet)[0],
+                    },
+                },
+            },
+        },
         blocks: [{
             block: part => ({
                 id: 'set_sticker',
@@ -76,7 +92,7 @@ export const StickerFactory = (appRoot, stickers) => {
             }),
             javascript: part => function javascript(block) {
                 const pic = Blockly.JavaScript.valueToCode(block, 'PICTURE');
-                const code = `devices.get('${part.id}').setSticker(${pic});\n`;
+                const code = `${part.id}.setSticker(${pic});\n`;
                 return code;
             },
         },

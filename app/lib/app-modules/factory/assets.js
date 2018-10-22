@@ -1,4 +1,4 @@
-import AppModule from '../app-module.js';
+import { AppModule } from '../app-module.js';
 
 export const AssetsModuleFactory = (assetsRoot, stickers) => class AssetsModule extends AppModule {
     constructor() {
