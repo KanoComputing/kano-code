@@ -10,6 +10,7 @@
   "scripts": {
     "serve": "node ./tasks/serve",
     "docs": "esdoc",
+    "serve-test": "web-tester serve ./tests/unit",
     "test": "web-tester run ./tests/unit",
     "test-ci": "yarn run --silent test > test-results.xml",
     "checkstyle": "eslint ./app/lib ./app/elements",

@@ -66,6 +66,17 @@ suite('Editor', () => {
             const icon = '/icons/test-icon.svg';
             assert.throws(() => editor.activityBar.registerTooltipEntry({ title, icon, size: 'unknown' }));
         });
+        test('Does not add entry if removed before injected', () => {
+            const headlessEditor = new code.Editor();
+            const title = 'test-title';
+            const icon = '/icons/test-icon.svg';
+            const entry = headlessEditor.activityBar.registerEntry({ title, icon });
+            entry.dispose();
+            headlessEditor.inject();
+            const headlessBarDom = headlessEditor.root.querySelector('#activity-bar');
+            assert.isNull(headlessBarDom.firstChild, 'Entry was injected event after being disposed');
+            headlessEditor.dispose();
+        });
         teardown(() => {
             editor.dispose();
         });

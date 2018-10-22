@@ -16,7 +16,8 @@ const DEFAULTS = {
 const SIZES_ARRAY = Object.values(SIZES);
 
 class ActivityBarEntry {
-    constructor(opts = {}) {
+    constructor(bar, opts = {}) {
+        this._bar = bar;
         this._onButtonClick = this._onButtonClick.bind(this);
         this.opts = Object.assign({}, DEFAULTS, opts);
         if (SIZES_ARRAY.indexOf(this.opts.size) === -1) {
@@ -50,6 +51,8 @@ class ActivityBarEntry {
         if (this.root.parentNode) {
             this.root.parentNode.removeChild(this.root);
         }
+        const index = this._bar.entries.indexOf(this);
+        this._bar.entries.splice(index, 1);
     }
     disable() {
         this.opts.disabled = true;
@@ -69,8 +72,8 @@ class ActivityBarEntry {
 }
 
 export class ActivityBarTooltipEntry extends ActivityBarEntry {
-    constructor(opts) {
-        super(opts);
+    constructor(bar, opts) {
+        super(bar, opts);
         this._contents = opts.root;
         this._offset = opts.offset || 0;
         if (!(this._contents instanceof HTMLElement)) {
@@ -105,7 +108,7 @@ export class ActivityBar extends Plugin {
         this.entries = [];
     }
     registerEntry(opts) {
-        const entry = new ActivityBarEntry(opts);
+        const entry = new ActivityBarEntry(this, opts);
         // Queue up entries added before injection
         if (!this.editor || !this.editor.injected) {
             this.entries.push(entry);
@@ -115,7 +118,7 @@ export class ActivityBar extends Plugin {
         return entry;
     }
     registerTooltipEntry(opts) {
-        const entry = new ActivityBarTooltipEntry(opts);
+        const entry = new ActivityBarTooltipEntry(this, opts);
         // Queue up entries added before injection
         if (!this.editor || !this.editor.injected) {
             this.entries.push(entry);
