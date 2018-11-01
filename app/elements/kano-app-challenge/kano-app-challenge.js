@@ -80,6 +80,7 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
             progress: {
                 type: Number,
                 linkState: 'userProgress',
+                observer: '_challengeCompleted',
             },
             banner: {
                 type: Object,
@@ -139,6 +140,13 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
                 this._fitBanner();
             },
         );
+    }
+    _challengeCompleted() {
+        if (this.progress === 1) {
+            this.dispatchEvent(new CustomEvent('challenge-completed', {
+                detail: this.challengeId,
+            }));
+        }
     }
     _challengeChanged() {
         this.initializeChallenge();
