@@ -23,7 +23,7 @@ class KanoPartSticker extends WebCollidableMixin(StickerMixin(UIMixin(PolymerEle
         return `width: ${size}px; height: ${size}px;`;
     }
     tapped() {
-        this.fire('clicked');
+        this.dispatchEvent(new CustomEvent('clicked', { composed: true, bubbles: true }));
     }
     connectedCallback() {
         super.connectedCallback();

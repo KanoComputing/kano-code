@@ -47,6 +47,12 @@ class Meta {
         }
         return this.def.verbose;
     }
+    getRoot() {
+        if (!this.parent) {
+            return this;
+        }
+        return this.parent.getRoot();
+    }
 }
 
 class MetaParameter extends Meta {

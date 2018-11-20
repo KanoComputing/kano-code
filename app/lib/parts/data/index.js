@@ -15,7 +15,7 @@ function checkAncestor(block, type) {
     return checkAncestor(parent, type);
 }
 
-class Data extends Part {
+export class Data extends Part {
     static get id() { return 'data'; }
     constructor(opts, ...args) {
         super(opts, ...args);

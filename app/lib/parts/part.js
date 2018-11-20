@@ -1,6 +1,6 @@
 import getSlug from '../vendor/speakingurl.js';
 
-class Part {
+export class Part {
     set name(value) {
         const oldName = this.name;
         if (!value) {

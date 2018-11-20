@@ -37,7 +37,10 @@ class BlocklyMetaRenderer {
 
         let filteredBlocks = blocks.filter(block => block.toolbox);
         if (whitelist) {
-            filteredBlocks = filteredBlocks.filter(block => whitelist.indexOf(block.id) !== -1);
+            const prefix = mod.def.blockly
+                && mod.def.blockly.idPrefix ? mod.def.blockly.idPrefix : '';
+            const expandedWhitelist = whitelist.map(item => `${prefix}${item}`);
+            filteredBlocks = filteredBlocks.filter(block => expandedWhitelist.indexOf(block.id) !== -1);
         }
 
         const category = {
@@ -226,7 +229,12 @@ class BlocklyMetaRenderer {
         return { register, id: json.id, defaults, toolbox };
     }
     static renderBaseBlock(m) {
-        const id = m.getNameChain();
+        let id = m.getNameChain();
+        const root = m.getRoot();
+        const blocklyConf = root.def.blockly;
+        if (blocklyConf && blocklyConf.idPrefix) {
+            id = `${blocklyConf.idPrefix}${id}`;
+        }
         return {
             id,
             colour: m.getColor(),

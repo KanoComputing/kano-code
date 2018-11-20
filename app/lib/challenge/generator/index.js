@@ -254,6 +254,7 @@ class Challenge extends Plugin {
         }, xml.cloneNode(false));
         this.data.defaultApp = JSON.stringify({
             source: Blockly.Xml.domToText(rootNode),
+            parts,
         });
         this.data = this.runMiddlewares(this.data);
         // Add the metadata to the challenge

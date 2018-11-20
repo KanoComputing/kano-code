@@ -81,9 +81,11 @@ class KanoPartEditor extends mixinBehaviors(behaviors, PolymerElement) {
         ];
     }
     connectedCallback() {
+        super.connectedCallback();
         this._onScroll = this._onScroll.bind(this);
     }
     disconnectedCallback() {
+        super.disconnectedCallback();
         if (this.scrollTarget) {
             this.scrollTarget.removeEventListener('scroll', this._onScroll);
         }

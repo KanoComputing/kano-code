@@ -44,6 +44,10 @@ export const getPartColor = (part, parts) => {
     const group = parts.filter(p => part.partType === p.partType);
     const index = group.indexOf(part);
 
+    if (!colorMapHS[part.partType]) {
+        return part.color;
+    }
+
     return getColorForPart(colorMapHS[part.partType], index);
 };
 

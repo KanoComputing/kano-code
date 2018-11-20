@@ -111,7 +111,7 @@ class Challenge extends Plugin {
             'tooltips.*.location.category',
             'validation.blockly.open-flyout',
             'validation.blockly.close-flyout',
-            'validation.blockly.create',
+            'validation.blockly.create.type',
         ], this.engine._processPart.bind(this.engine));
         this.engine.definePropertyProcessor([
             'banner.head',

@@ -140,6 +140,9 @@ class KanoCodeChallenge extends BlocklyChallenge {
         } else if (part.part) {
             return this.getFromStore(PARTS_STORE, part.part) || part;
         } else if (part.rawPart) {
+            if (part.type) {
+                return `${part.rawPart}#${part.type}`;
+            }
             return part.rawPart;
         }
         return part;

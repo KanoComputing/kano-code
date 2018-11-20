@@ -64,7 +64,7 @@ const STYLE_CONF = {
     },
 };
 
-class UI extends Part {
+export class UI extends Part {
     static get id() { return 'ui'; }
     get api() {
         const api = super.api;

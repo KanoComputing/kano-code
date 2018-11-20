@@ -1,6 +1,6 @@
 import Part from '../part.js';
 
-class Hardware extends Part {
+export class Hardware extends Part {
     static get id() { return 'hardware'; }
     constructor(opts, ...args) {
         super(opts, ...args);

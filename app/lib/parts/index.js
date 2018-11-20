@@ -11,6 +11,11 @@ import { PartsOutputPlugin } from './output.js';
 
 export { PartsOutputPlugin };
 
+export * from './ui/index.js';
+export * from './data/index.js';
+export * from './hardware/index.js';
+export * from './part.js';
+
 export class PartsPlugin extends Plugin {
     constructor(outputPlugin) {
         super();
@@ -341,6 +346,9 @@ export class PartsPlugin extends Plugin {
                 verbose: part.name,
                 color: part.colour,
                 symbols,
+                blockly: {
+                    idPrefix: `${part.id}#`,
+                },
             };
             entry = this.editor.toolbox.addEntry(mod);
         } else if (blocks) {
@@ -404,6 +412,10 @@ export class PartsPlugin extends Plugin {
         workspace.playSound('/assets/audio/sounds/pop.wav');
         this.editor.elementsRegistry.set(`workspace-part-${part.id}`, element);
     }
+    _getPartsRoot() {
+        const configured = this.editor.output.outputView.partsRoot;
+        return configured || this.editor.workspaceView.root;
+    }
     /*
      * Insert the element to the dropzone by reverse-sorting it
      * into the DOM so z-indexes match the order in the parts
@@ -415,7 +427,7 @@ export class PartsPlugin extends Plugin {
         const { addedParts } = this.editor.store.getState();
         const reverseParts = addedParts.slice().reverse();
         const index = reverseParts.indexOf(model);
-        const { partsRoot } = this.editor.output.outputView;
+        const partsRoot = this._getPartsRoot();
 
         if (partsRoot.lastChild && index < reverseParts.indexOf(partsRoot.lastChild.model)) {
             /* If the element doesn't belong at the end,

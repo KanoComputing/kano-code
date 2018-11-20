@@ -200,6 +200,10 @@ export class Editor extends EditorOrPlayer {
         }
         this.runPluginTask('onInject');
         this.telemetry.trackEvent({ name: 'ide_opened' });
+        if (this._queuedApp) {
+            this.load(this._queuedApp);
+            this._queuedApp = null;
+        }
     }
     dispose() {
         if (this.injected) {
@@ -218,6 +222,10 @@ export class Editor extends EditorOrPlayer {
         this.telemetry.trackEvent({ name: 'ide_exited' });
     }
     load(app) {
+        if (!this.injected) {
+            this._queuedApp = app;
+            return;
+        }
         this.runPluginTask('onImport', app);
         this.output.runPluginTask('onImport', app);
         this.editorActions.loadSource(app.source);
