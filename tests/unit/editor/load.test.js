@@ -18,8 +18,6 @@ const TestPart = {
     }],
 };
 
-mocha.timeout(3000000);
-
 suite('Editor', () => {
     suite('#load', () => {
         let editor;
@@ -31,7 +29,7 @@ suite('Editor', () => {
             plugin = new parts.PartsPlugin(outputPlugin);
             editor.addPlugin(plugin);
         });
-        test('loads app with parts', (done) => {
+        test('loads app with parts', () => {
             const partId = 'load_with_parts';
             const method = 'test_variable';
             const blockType = `${partId}#${method}`;
@@ -44,7 +42,7 @@ suite('Editor', () => {
             const ws = editor.sourceEditor.getBlocklyWorkspace();
             const block = ws.getBlockById(blockId);
             assert.equal(block.type, blockType);
-            // assert.equal(block.inputList.length, 1);
+            assert.equal(block.inputList.length, 1);
         });
         teardown(() => {
             editor.dispose();

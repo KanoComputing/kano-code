@@ -1,5 +1,8 @@
 
 const values = {
+    ui_rotate: {
+        DIR: '',
+    },
     get_time: {
         FIELD: 'year',
     },

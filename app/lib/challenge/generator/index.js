@@ -579,11 +579,11 @@ class Challenge extends Plugin {
             }
         } else if (this.partsIds[blockType.category]) {
             blockLocation = {
-                part: this.partsIds[blockType.category],
+                rawPart: blockType.category,
                 type: blockType.block,
             };
             categoryLocation = {
-                part: blockLocation.part,
+                rawPart: blockLocation.rawPart,
             };
         } else {
             blockLocation = type;

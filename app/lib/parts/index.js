@@ -456,30 +456,6 @@ export class PartsPlugin extends Plugin {
         partsRoot.removeChild(element);
         delete this.elements[index];
     }
-    get challengeGeneratorMiddleware() {
-        return (challenge, generator) => {
-            if (this.editor.sourceType !== 'blockly') {
-                return challenge;
-            }
-            // Get all the parts
-            const { addedParts } = this.editor.store.getState();
-            const steps = addedParts.map((part) => {
-                if (challenge.parts.indexOf(part.type) === -1) {
-                    challenge.parts.push(part.type);
-                }
-
-                return {
-                    type: 'create-part',
-                    part: part.type,
-                    alias: generator.partsIds[part.id],
-                    openPartsCopy: `Add a **${part.label}** part, use the Add Parts button`,
-                    addPartCopy: `Select the **${part.label}** part to add it to your app`,
-                };
-            });
-            challenge.steps = steps.concat(challenge.steps);
-            return challenge;
-        };
-    }
 }
 
 export default PartsPlugin;
