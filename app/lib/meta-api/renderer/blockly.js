@@ -36,9 +36,9 @@ class BlocklyMetaRenderer {
         };
 
         let filteredBlocks = blocks.filter(block => block.toolbox);
+        const prefix = mod.def.blockly
+            && mod.def.blockly.idPrefix ? mod.def.blockly.idPrefix : '';
         if (whitelist) {
-            const prefix = mod.def.blockly
-                && mod.def.blockly.idPrefix ? mod.def.blockly.idPrefix : '';
             const expandedWhitelist = whitelist.map(item => `${prefix}${item}`);
             filteredBlocks = filteredBlocks.filter(block => expandedWhitelist.indexOf(block.id) !== -1);
         }
@@ -56,7 +56,7 @@ class BlocklyMetaRenderer {
         };
 
         blocks.forEach((block) => {
-            this.defaults.define(block.id, block.defaults);
+            this.defaults.define(block.id.replace(prefix, ''), block.defaults);
         }, {});
 
         register(window.Blockly);
