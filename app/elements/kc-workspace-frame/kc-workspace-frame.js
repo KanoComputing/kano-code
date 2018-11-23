@@ -67,9 +67,6 @@ Polymer({
                 @apply --layout-flex-auto;
                 box-sizing: border-box;
             }
-            :host(:not(.fullscreen)) .overlay {
-                display: none;
-            }
             .overlay {
                 position: fixed;
                 top: 0;
@@ -153,7 +150,7 @@ Polymer({
             </kc-workspace-toolbar>
             <slot name="controls"></slot>
         </div>
-        <div class="overlay">
+        <div class="overlay" hidden$="[[!fullscreen]]">
             <button id="fullscreen-close" on-tap="_toggleFullscreen">
                 <iron-icon icon="kc-ui:close"></iron-icon>
             </button>
