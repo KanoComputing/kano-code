@@ -55,6 +55,9 @@ const values = {
     draw_polygon: {
         CLOSE: 'TRUE',
     },
+    draw_set_background_color: {
+        COLOUR: '#FFFFFF',
+    },
     threshold: {
         OVER: 'true',
         VALUE: 70,
