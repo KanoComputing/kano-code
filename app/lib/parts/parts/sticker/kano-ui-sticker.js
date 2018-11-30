@@ -14,6 +14,7 @@ class KanoPartSticker extends WebCollidableMixin(StickerMixin(UIMixin(PolymerEle
             <style>
             :host {
                 display: inline-block;
+                z-index: 1;
             }
             </style>
             <iron-image id="image" src="[[model.userProperties.src]]" style\$="[[computeImageStyle(model.userProperties.size)]]" sizing="contain" on-tap="tapped" loaded="{{loaded}}"></iron-image>
