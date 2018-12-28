@@ -163,6 +163,9 @@ Polymer({
                                     on-run-clicked="_runButtonClicked"
                                     on-fullscreen-clicked="_toggleFullscreen"
                                     on-restart-clicked="_restartClicked"
+                                    on-export-clicked="_exportClicked"
+                                    on-import-clicked="_importClicked"
+                                    on-reset-clicked="_resetClicked"
                                     fullscreen="[[fullscreen]]"></kc-workspace-toolbar>
         </div>
         <iron-a11y-keys keys="meta+enter" on-keys-pressed="_goFullscreen" target="[[target]]"></iron-a11y-keys>
@@ -287,6 +290,18 @@ Polymer({
 
     _restartClicked() {
         this.fire('restart-clicked');
+    },
+
+    _exportClicked() {
+        this.fire('export-clicked');
+    },
+
+    _importClicked() {
+        this.fire('import-clicked');
+    },
+
+    _resetClicked() {
+        this.fire('reset-clicked');
     },
 
     _runButtonClicked() {

@@ -159,7 +159,7 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
         <button id="entry-play" class="tool" type="button" on-click="_playClicked" on-mouseenter="_startPlayTimer" on-mouseleave="_stopPlayTimer">
             <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="[[_getRunningStatus(running)]]" hidden\$="[[noPlayerBar]]"></kano-animated-svg>
         </button>
-        <kano-tooltip id="settings-tooltip" position="bottom" offset="16" auto-close>
+        <kano-tooltip id="settings-tooltip" position="[[_settingsPostion(fullscreen)]]" offset="16" auto-close>
             <ul id="settings-list">
                 <template is="dom-repeat" items="[[settingsEntries]]">
                     <li>
@@ -330,6 +330,9 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
     }
     _getRunningStatus(running) {
         return running ? 'running' : 'stopped';
+    }
+    _settingsPostion(fullscreen) {
+        return fullscreen ? 'rightTop' : 'bottom';
     }
     _openTooltip(id) {
         const tooltip = this.shadowRoot.querySelector(`#tooltip-${id}`);

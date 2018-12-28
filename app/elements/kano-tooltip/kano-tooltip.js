@@ -80,6 +80,14 @@ class KanoTooltip extends PolymerElement {
                 margin-top: calc(var(--kano-tooltip-caret-width) / -2);
                 margin-right: calc(var(--kano-tooltip-caret-width) / -2);
             }
+            :host([position="rightTop"]) .tooltip .caret-shadow {
+                top: 75%;
+                right: 99%;
+                border-bottom-left-radius: 2px;
+                box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-right: calc(var(--kano-tooltip-caret-width) / -2);
+            }
             :host([position="bottom"]) .tooltip .caret-shadow {
                 bottom: 99%;
                 left: 50%;
@@ -248,6 +256,9 @@ class KanoTooltip extends PolymerElement {
             style.top = `${tRect.bottom - this.contextOffset.top + this.offset}px`;
         } else if (this.position === 'right') {
             style.left = `${tRect.right - this.contextOffset.left + this.offset}px`;
+        } else if (this.position === 'rightTop') {
+            style.left = `${tRect.right - this.contextOffset.left + this.offset}px`;
+            style.top = `${tRect.top - (rect.height / 2) - this.contextOffset.top - this.offset}px`;
         } else if (this.position === 'left') {
             style.left = `${tRect.left - this.contextOffset.left - rect.width - this.offset}px`;
         }
