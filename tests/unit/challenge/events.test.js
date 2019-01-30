@@ -1,5 +1,5 @@
-import * as code from '../../../app/lib/index.js';
-import { Challenge } from '../../../app/lib/challenge/index.js';
+import * as code from '../../../dist/app/lib/index.js';
+import { Challenge } from '../../../dist/app/lib/challenge/index.js';
 
 suite('Editor', () => {
     suite('#events', () => {

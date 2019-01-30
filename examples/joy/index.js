@@ -1,4 +1,4 @@
-import * as code from '../../index.js';
+import * as code from '../../dist/index.js';
 import { Joy } from './joy.js';
 
 // Output: Creates the canvas, render on refresh

@@ -1,5 +1,5 @@
-import { AppModule } from '../../../app/lib/app-modules/app-module.js';
-import { Output } from '../../../app/lib/output/output.js';
+import { AppModule } from '../../../dist/app/lib/app-modules/app-module.js';
+import { Output } from '../../../dist/app/lib/output/output.js';
 
 suite('AppModule', () => {
     suite('#addMethod', () => {

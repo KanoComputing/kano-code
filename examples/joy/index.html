@@ -20,13 +20,13 @@
 </head>
 <body>
     <script type="module">
-        import * as i18n from '../../i18n.js';
+        import * as i18n from '../../dist/i18n.js';
         const lang = i18n.getLang();
 
         // Load Kano Code locales and elements
         Promise.all([
-            i18n.load(`/app/locale/editor/${lang}.json`),
-            i18n.loadBlocklyMsg(`/app/locale/blockly/${lang}.json`),
+            i18n.load(`/locale/editor/${lang}.json`),
+            i18n.loadBlocklyMsg(`/locale/blockly/${lang}.json`),
             i18n.loadBlocklyMsg(`/node_modules/@kano/kwc-blockly/blockly_built/msg/json/en.json`),
             i18n.loadBlocklyMsg(`/node_modules/@kano/kwc-blockly/blockly_built/msg/json/constants.json`),
         ]).then(() => import('./index.js'));

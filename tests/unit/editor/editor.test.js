@@ -1,4 +1,4 @@
-import * as code from '../../../app/lib/index.js';
+import * as code from '../../../dist/app/lib/index.js';
 
 suite('Editor', () => {
     suite('#inject', () => {

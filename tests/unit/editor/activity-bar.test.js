@@ -1,4 +1,4 @@
-import * as code from '../../../app/lib/index.js';
+import * as code from '../../../dist/app/lib/index.js';
 import { click } from '../ui-tools.js';
 
 suite('Editor', () => {

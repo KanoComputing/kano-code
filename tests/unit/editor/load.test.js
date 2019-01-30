@@ -1,5 +1,5 @@
-import * as code from '../../../app/lib/index.js';
-import * as parts from '../../../app/lib/parts/index.js';
+import * as code from '../../../dist/app/lib/index.js';
+import * as parts from '../../../dist/app/lib/parts/index.js';
 import { setupStyle } from '../ui-tools.js';
 
 class TestPartType extends parts.Part {
