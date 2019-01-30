@@ -1,8 +1,8 @@
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import GlobalStore from './global-store.js';
+import { GlobalStore } from './global-store.js';
 
 const Store = {
-    create(initState) {
+    create(initState : object) {
         const store = GlobalStore.create(initState);
 
         class StoreElement extends store.StateProvider(PolymerElement) {
@@ -17,8 +17,8 @@ const Store = {
 
         return store;
     },
-    types(constants) {
-        return Object.freeze(constants.reduce((acc, constant) => {
+    types(constants : string[]) {
+        return Object.freeze(constants.reduce<{ [K : string] : string }>((acc, constant) => {
             acc[constant] = constant;
             return acc;
         }, {}));

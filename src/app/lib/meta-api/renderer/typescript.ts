@@ -1,17 +1,7 @@
+import { Meta, MetaModule, MetaVariable, MetaParameter, MetaFunction } from '../module.js';
+
 class TypeScriptMetaRenderer {
-    renderLegacyToolboxEntry(mod) {
-        mod.def.register(window.Blockly);
-        if (mod.def.defaults) {
-            Object.keys(mod.def.defaults).forEach((blockId) => {
-                this.defaults.define(blockId, mod.def.defaults[blockId]);
-            });
-        }
-        if (!mod.def.category) {
-            return null;
-        }
-        return this.defaults.createCategory(mod.def.category);
-    }
-    renderToolboxEntry(mod) {
+    renderToolboxEntry(mod : MetaModule) {
         let definitionFile;
         // Legacy module signature
         if (mod.def.type && mod.def.type === 'blockly') {
@@ -29,16 +19,16 @@ class TypeScriptMetaRenderer {
 
         return category;
     }
-    static render(m) {
+    static render(m : Meta) : string|null {
         switch (m.def.type) {
         case 'module': {
-            return TypeScriptMetaRenderer.renderModule(m);
+            return TypeScriptMetaRenderer.renderModule(m as MetaModule);
         }
         case 'variable': {
-            return TypeScriptMetaRenderer.renderVariable(m);
+            return TypeScriptMetaRenderer.renderVariable(m as MetaVariable);
         }
         case 'function': {
-            return TypeScriptMetaRenderer.renderFunction(m);
+            return TypeScriptMetaRenderer.renderFunction(m as MetaFunction);
         }
         default: {
             break;
@@ -46,23 +36,26 @@ class TypeScriptMetaRenderer {
         }
         return null;
     }
-    static renderModule(m) {
+    static renderModule(m : MetaModule) : string {
+        if (!m.symbols) {
+            return '';
+        }
         return `
         declare namespace ${m.def.name} {
             ${m.symbols.map(sym => TypeScriptMetaRenderer.render(sym)).join('\n')}
         }
         `;
     }
-    static renderVariable(m) {
+    static renderVariable(m : MetaVariable) : string {
         return `declare var ${m.def.name}: ${TypeScriptMetaRenderer.parseType(m.getReturnType())};`;
     }
-    static renderParam(param) {
+    static renderParam(param : MetaParameter) : string {
         return `${param.def.name}: ${TypeScriptMetaRenderer.parseType(param.getReturnType())}`;
     }
-    static renderFunction(m) {
+    static renderFunction(m : MetaFunction) {
         return `declare function ${m.def.name}(${m.getParameters().map(param => TypeScriptMetaRenderer.renderParam(param)).join(', ')}): ${m.getReturnType()};`;
     }
-    static parseType(type) {
+    static parseType(type : any) {
         switch (type) {
         case Number: {
             return 'number';

@@ -1,5 +1,18 @@
-class Meta {
-    constructor(def, parent) {
+interface IDefinition {
+    symbols? : IDefinition[];
+    name : string;
+    type : string;
+    color? : string;
+    verbose? : string;
+    returnType? : any;
+    typeScriptDefinition? : string;
+}
+
+export class Meta {
+    public def : IDefinition;
+    public parent? : Meta;
+    public symbols? : Meta[];
+    constructor(def : IDefinition, parent? : Meta) {
         this.parent = parent;
         this.def = def;
         this.build();
@@ -17,22 +30,22 @@ class Meta {
                 return new MetaModule(sym, this);
             }
             case 'function': {
-                return new MetaFunction(sym, this);
+                return new MetaFunction(sym as IFunctionDefinition, this);
             }
             default: {
                 break;
             }
             }
             return null;
-        }).filter(v => v);
+        }).filter(v => v !== null) as Meta[];
     }
-    getNameChain(sep = '_', prev = '') {
+    getNameChain(sep = '_', prev = '') : string {
         if (!this.parent) {
             return this.def.name;
         }
         return `${this.parent.getNameChain(sep, prev)}${sep}${this.def.name}`;
     }
-    getColor() {
+    getColor() : string {
         if (this.def.color) {
             return this.def.color;
         }
@@ -47,7 +60,7 @@ class Meta {
         }
         return this.def.verbose;
     }
-    getRoot() {
+    getRoot() : Meta {
         if (!this.parent) {
             return this;
         }
@@ -55,25 +68,34 @@ class Meta {
     }
 }
 
-class MetaParameter extends Meta {
+export class MetaParameter extends Meta {
     getReturnType() {
         return this.def.returnType;
     }
 }
 
-class MetaVariable extends Meta {
+export class MetaVariable extends Meta {
     getReturnType() {
         return this.def.returnType;
     }
 }
 
-class MetaModule extends Meta {
+export class MetaModule extends Meta {}
+
+interface IParameters extends IDefinition {
 
 }
 
-class MetaFunction extends Meta {
-    constructor(...args) {
-        super(...args);
+interface IFunctionDefinition extends IDefinition {
+    parameters : IParameters[];
+}
+
+export class MetaFunction extends Meta {
+    public parameters : MetaParameter[];
+    public def : IFunctionDefinition;
+    constructor(def : IFunctionDefinition, parent? : Meta) {
+        super(def, parent);
+        this.def = def;
         this.parameters = (this.def.parameters || []).map(p => new MetaParameter(p, this));
     }
     getReturnType() {

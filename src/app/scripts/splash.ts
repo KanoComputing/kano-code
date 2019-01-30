@@ -17,8 +17,26 @@ let MARGIN = 10,
         '#f34335', '#4bad50', '#8ac349', '#444444'
     ];
 
-class BlockAnimation {
-    constructor (targetEl) {
+
+interface IPosition {
+    line : number;
+    block : number;
+}
+
+interface IBlockConfig {
+    colour? : string;
+    width : string;
+}
+
+export class BlockAnimation {
+    private targetEl : HTMLElement;
+    private current : IPosition = { line: 0, block: 0 };
+    private colour : number;
+    private blockCache : HTMLElement[][];
+    private state : IBlockConfig[][];
+    private space : number;
+    private timeoutId? : number;
+    constructor (targetEl : HTMLElement) {
         this.targetEl = targetEl;
         this.current = {
             line: 0,
@@ -37,7 +55,7 @@ class BlockAnimation {
         }
     }
 
-    setBlockStyle (block, conf) {
+    setBlockStyle (block : HTMLElement, conf : IBlockConfig) {
         if (conf.width) {
             block.style.width = conf.width;
         }
@@ -99,7 +117,7 @@ class BlockAnimation {
         let to = Math.random() * (DELAY_MAX - DELAY_MIN) + DELAY_MIN;
 
         this.animationStep();
-        this.timeoutId = setTimeout(this.loop.bind(this), to);
+        this.timeoutId = window.setTimeout(this.loop.bind(this), to);
     }
 
     init () {
@@ -151,4 +169,4 @@ class BlockAnimation {
     }
 }
 
-export { BlockAnimation };
+export default BlockAnimation;
