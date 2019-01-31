@@ -45,5 +45,5 @@ yarn serve
 
 While serving, visit any of those:
 
-http://localhost:4000/demo/intro/
-http://localhost:4000/demo/pong/
+http://localhost:4000/examples/intro/
+http://localhost:4000/examples/pong/
