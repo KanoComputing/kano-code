@@ -21,11 +21,21 @@ editor.inject(document.body);
 
 ### Setup
 
+Install dependencies
+
 ```bash
 yarn
 ```
 
+### watch
+
+```bash
+yarn tsc --watch
+```
+
 ### Serve
+
+In a separate terminal
 
 ```bash
 yarn serve
@@ -35,5 +45,5 @@ yarn serve
 
 While serving, visit any of those:
 
-http://localhost:4000/demo/simple/index.html
-http://localhost:4000/demo/pong/index.html
+http://localhost:4000/demo/intro/
+http://localhost:4000/demo/pong/
