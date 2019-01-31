@@ -19,6 +19,9 @@ editor.inject(document.body);
 
 ## Development
 
+This project is going under a transition to TypeScript. The TypeScript compiler is setup to allow JavaScript files.
+If you are about to create a new file, create a TypeScript file instead of a JavaScript file. If you are about to make a lot of changes to a file, if possible, move it to TypeScript.
+
 ### Setup
 
 Install dependencies
