@@ -26,7 +26,36 @@ const Shapes = {
     }],
 };
 
-class OutputProfile extends code.OutputProfile {}
+class ShapesModule extends code.AppModule {
+    static get id() {
+        return 'shapes';
+    }
+    constructor(output) {
+        super(output);
+        // The root element form the default output is a canvas.
+        const canvas = output.outputView.root;
+        const ctx = canvas.getContext('2d');
+
+        this.addMethod('heart', (color) => {
+            ctx.fillStyle = color;
+            // from https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes
+            ctx.beginPath();
+            ctx.bezierCurveTo(75, 37, 70, 25, 50, 25);
+            ctx.bezierCurveTo(20, 25, 20, 62.5, 20, 62.5);
+            ctx.bezierCurveTo(20, 80, 40, 102, 75, 120);
+            ctx.bezierCurveTo(110, 102, 130, 80, 130, 62.5);
+            ctx.bezierCurveTo(130, 62.5, 130, 25, 100, 25);
+            ctx.bezierCurveTo(85, 25, 75, 37, 75, 40);
+            ctx.fill();
+        });
+    }
+}
+
+class OutputProfile extends code.OutputProfile {
+    get modules() {
+        return Object.values(Modules).concat([ShapesModule]);
+    }
+}
 
 class EditorProfile extends code.EditorProfile {
     get toolbox() {

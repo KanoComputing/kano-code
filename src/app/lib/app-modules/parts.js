@@ -19,6 +19,9 @@ export class PartsModule extends AppModule {
 
     getSymbols() {
         const { partsPlugin } = this.output;
+        if (!partsPlugin) {
+            return [];
+        }
         return partsPlugin.parts.map(p => p.id);
     }
 
@@ -41,6 +44,9 @@ export class PartsModule extends AppModule {
 
     _start() {
         const { outputView } = this.output;
+        if (!outputView.partsRoot) {
+            return;
+        }
         const elements = [...outputView.partsRoot.querySelectorAll('[id]')];
         this._parts = elements.reduce((acc, element) => {
             acc[element.getAttribute('id')] = element;
