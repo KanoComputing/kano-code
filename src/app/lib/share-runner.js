@@ -1,4 +1,3 @@
-import HardwareAPI from './hardware/hardware-api.js';
 import AppModules from './app-modules/index.js';
 
 class ShareRunner {
@@ -9,11 +8,6 @@ class ShareRunner {
         this.parts = parts;
     }
     init() {
-        this.hardware = new HardwareAPI(this.config);
-        this.hardware.setParts(Object.keys(this.parts).map(id => this.parts[id]));
-
-        this.config.hardwareAPI = this.hardware;
-
         this.appModules = new AppModules(this.config);
     }
     start() {

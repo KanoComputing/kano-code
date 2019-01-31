@@ -37,7 +37,7 @@ class AppModules {
     init(arg : any) {
         this.config(arg);
     }
-    getModule(id : string) {
+    getModule(id : string) : any {
         if (this.modules[id]) {
             return this.modules[id].methods;
         }
@@ -80,7 +80,7 @@ class AppModules {
     addModule(id : string, m : AppModule) {
         this.modules[id] = m;
     }
-    instrumentize(method : string) {
+    instrumentize(method : string) : any {
         const parts = method.split('.');
         const rootName = parts.shift();
 

@@ -48,10 +48,6 @@ export class MicModule extends AppModule {
             this.api.microphone.stopRecording();
         }
     }
-
-    config(opts) {
-        this.api = opts.hardwareAPI;
-    }
 }
 
 export default MicModule;

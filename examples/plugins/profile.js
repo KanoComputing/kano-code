@@ -1,6 +1,6 @@
-import * as code from '../../app/lib/index.js';
+import * as code from '../../index.js';
 import { Spiral } from './spiral.js';
-import '../../app/elements/kc-workspace-toolbar/kc-workspace-toolbar.js';
+import '../../dist/app/elements/kc-workspace-toolbar/kc-workspace-toolbar.js';
 
 // OUTPUT CONFIGURATION
 
