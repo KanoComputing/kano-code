@@ -103,7 +103,7 @@ But if your try to plug the random color block in the heart block, you'll be wel
 
 ```js
 // Import this at the top
-import * as Modules from '../../modules.js';
+import * as Modules from '@kano/code/modules.js';
 // ...
 
 class OutputProfile extends code.OutputProfile {

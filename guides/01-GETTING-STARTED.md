@@ -81,8 +81,8 @@ const lang = i18n.getLang();
 
 // Load Kano Code locales and elements
 Promise.all([
-    i18n.load(`/node_modules/locale/editor/${lang}.json`),
-    i18n.loadBlocklyMsg(`/node_modules/locale/blockly/${lang}.json`),
+    i18n.load(`/node_modules/@kano/code/locale/editor/${lang}.json`),
+    i18n.loadBlocklyMsg(`/node_modules/@kano/code/locale/blockly/${lang}.json`),
     i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/en.json'),
     i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/constants.json'),
 ]).then(() => {
