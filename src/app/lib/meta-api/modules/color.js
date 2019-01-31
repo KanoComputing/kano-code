@@ -145,7 +145,9 @@ export const ColorAPI = {
         Blockly.Blocks.colour_picker.customColor = COLOR;
     },
     category: {
-        name: localize('CATEGORY_COLOR', 'Color'),
+        get name() {
+            return localize('CATEGORY_COLOR', 'Color');
+        },
         id: ID,
         colour: COLOR,
         blocks: [

@@ -65,7 +65,7 @@ export const DrawAPI = {
             }
         });
         definitions.forEach((definition) => {
-            const block = definition.block(DrawToolbox.category);
+            const block = definition.block(DrawAPI.category);
             block.colour = COLOR;
             const id = `draw_${block.id}`;
             if (!block.doNotRegister) {
@@ -76,14 +76,11 @@ export const DrawAPI = {
                 };
                 Blockly.Blocks[id].customColor = block.colour;
             }
-            Blockly.JavaScript[id] = definition.javascript(DrawToolbox.category);
+            Blockly.JavaScript[id] = definition.javascript(DrawAPI.category);
         });
     },
     category,
     defaults: {},
 };
-
-// Alias
-export const DrawToolbox = DrawAPI;
 
 export default DrawAPI;

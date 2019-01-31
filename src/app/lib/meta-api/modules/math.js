@@ -325,7 +325,9 @@ export const MathAPI = {
         });
     },
     category: {
-        name: Blockly.Msg.CATEGORY_MATH,
+        get name() {
+            return Blockly.Msg.CATEGORY_MATH;
+        },
         id: ID,
         colour: COLOR,
         blocks: [

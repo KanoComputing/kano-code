@@ -61,7 +61,9 @@ export const LogicAPI = {
         });
     },
     category: {
-        name: Blockly.Msg.CATEGORY_LOGIC,
+        get name() {
+            return Blockly.Msg.CATEGORY_LOGIC;
+        },
         id: ID,
         colour: COLOR,
         blocks: [

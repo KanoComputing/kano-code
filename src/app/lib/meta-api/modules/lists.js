@@ -22,7 +22,9 @@ export const ListsAPI = {
         });
     },
     category: {
-        name: Blockly.Msg.CATEGORY_LISTS,
+        get name() {
+            return Blockly.Msg.CATEGORY_LISTS;
+        },
         id: ID,
         colour: COLOR,
         blocks: CORE_BLOCKS,
@@ -30,11 +32,11 @@ export const ListsAPI = {
     defaults: {
         lists_getIndex: {
             MODE: 'GET',
-            WHERE: 'FROM_START'
+            WHERE: 'FROM_START',
         },
         lists_setIndex: {
             MODE: 'SET',
-            WHERE: 'FROM_START'
+            WHERE: 'FROM_START',
         },
     },
 };

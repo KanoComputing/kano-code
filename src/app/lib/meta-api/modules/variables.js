@@ -17,7 +17,9 @@ export const VariablesAPI = {
         });
     },
     category: {
-        name: Blockly.Msg.CATEGORY_VARIABLES,
+        get name() {
+            return Blockly.Msg.CATEGORY_VARIABLES;
+        },
         id: ID,
         colour: COLOR,
         blocks: [

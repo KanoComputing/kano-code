@@ -183,7 +183,9 @@ export const ControlAPI = {
         Blockly.JavaScript.restart_code = () => 'global.restartCode();';
     },
     category: {
-        name: Blockly.Msg.CATEGORY_CONTROL,
+        get name() {
+            return Blockly.Msg.CATEGORY_CONTROL;
+        },
         id: ID,
         colour: COLOR,
         blocks: [

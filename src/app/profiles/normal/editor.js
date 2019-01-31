@@ -1,5 +1,5 @@
 import * as code from '../../lib/index.js';
-import { DrawToolbox } from '../../lib/meta-api/modules/draw.js';
+import { DrawAPI } from '../../lib/meta-api/modules/draw.js';
 import { KanoCodeWorkspaceViewProvider } from '../../scripts/workspace/index.js';
 
 import { PartsPlugin } from '../../lib/parts/index.js';
@@ -38,7 +38,7 @@ class DefaultSourcePlugin extends code.Plugin {
     }
 }
 
-const CustomDrawToolbox = Object.assign({}, DrawToolbox, {
+const CustomDrawToolbox = Object.assign({}, DrawAPI, {
     register(Blockly) {
         customDrawBlocks.forEach((block) => {
             Blockly.Blocks[block.block.id] = {
@@ -48,7 +48,7 @@ const CustomDrawToolbox = Object.assign({}, DrawToolbox, {
             };
             Blockly.JavaScript[block.block.id] = block.javascript;
         });
-        DrawToolbox.register(Blockly);
+        DrawAPI.register(Blockly);
     },
 });
 

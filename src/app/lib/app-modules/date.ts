@@ -1,8 +1,17 @@
 import { AppModule } from './app-module.js';
 
+interface IDate {
+    year? : number;
+    month? : number;
+    day? : number;
+    hour? : number;
+    minute? : number;
+    seconds? : number;
+}
+
 export class DateModule extends AppModule {
-    constructor() {
-        super();
+    constructor(output : any) {
+        super(output);
 
         this.addMethod('getCurrent', '_getCurrent');
         this.addMethod('getFormattedDate', '_getFormattedDate');
@@ -12,7 +21,7 @@ export class DateModule extends AppModule {
     static get id() { return 'date'; }
 
     _getCurrent() {
-        const current = {};
+        const current : IDate = {};
         const date = new Date();
         current.year = date.getFullYear();
         current.month = date.getMonth() + 1;

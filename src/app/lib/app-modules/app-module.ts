@@ -56,7 +56,6 @@ class Instrument extends EventEmitter {
     }
     callMethod(originalFunc? : Function) {
         return (...args : any[]) => {
-            // @ts-ignore
             this.emit('method-called', { method: this.fullPath, args });
             if (originalFunc) {
                 return originalFunc(...args);
@@ -74,7 +73,7 @@ class Instrument extends EventEmitter {
 export class AppModule {
     [K : string] : any;
     private rootModule : SubModule;
-    private methods : IMethodTree;
+    public methods : IMethodTree;
     private lifecycle : { [K : string] : Function };
     private symbols : string[];
     private static nextCall : { [K : string] : number|null };
@@ -89,7 +88,7 @@ export class AppModule {
     getSymbols() {
         return this.symbols;
     }
-    config() {}
+    config(_ : any) {}
     addMethod(name : string, cbName : Function|string) {
         if (typeof cbName === 'function') {
             this.rootModule.addMethod(name, cbName);

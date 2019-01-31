@@ -1,8 +1,8 @@
 import { AppModule } from './app-module.js';
 
 export class ColourModule extends AppModule {
-    constructor() {
-        super();
+    constructor(output : any) {
+        super(output);
 
         this.addMethod('random', '_random');
         this.addMethod('create', '_create');
@@ -11,7 +11,7 @@ export class ColourModule extends AppModule {
 
     static get id() { return 'colour'; }
 
-    HSVtoRGB(h, s, v) {
+    HSVtoRGB(h : number, s : number, v : number) {
         let r;
         let g;
         let b;
@@ -32,6 +32,7 @@ export class ColourModule extends AppModule {
         case 3: r = p, g = q, b = v; break;
         case 4: r = t, g = p, b = v; break;
         case 5: r = v, g = p, b = q; break;
+        default: r = 0, g = 0, b = 0;
         }
         return {
             r: Math.round(r * 255),
@@ -40,13 +41,16 @@ export class ColourModule extends AppModule {
         };
     }
 
-    RGBtoHEX(r, g, b) {
+    RGBtoHEX(r : number, g : number, b : number) {
         const hexColor = ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).substr(1);
         return `#${hexColor}`;
     }
 
-    HEXtoRGBComponents(hex) {
+    HEXtoRGBComponents(hex : string) {
         const match = hex.replace(/#/, '').match(/.{1,2}/g);
+        if (!match) {
+            return { r: 0, g: 0, b: 0 };
+        }
         return {
             r: parseInt(match[0], 16),
             g: parseInt(match[1], 16),
@@ -59,7 +63,7 @@ export class ColourModule extends AppModule {
         return `#${(`00000${num.toString(16)}`).substr(-6)}`;
     }
 
-    _luminance(hex, lum) {
+    _luminance(hex : string, lum : number = 0) {
         let rgb = '#',
             c,
             i;
@@ -68,7 +72,6 @@ export class ColourModule extends AppModule {
         if (hex.length < 6) {
             hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
         }
-        lum = lum || 0;
 
         // convert to decimal and change luminosity
         for (i = 0; i < 3; i++) {
@@ -80,7 +83,7 @@ export class ColourModule extends AppModule {
         return rgb;
     }
 
-    _create(type, one, two, three) {
+    _create(type : 'rgb'|'hsv', one : number, two : number, three : number) {
         if (type === 'rgb') {
             let red,
                 green,
@@ -108,16 +111,14 @@ export class ColourModule extends AppModule {
         }
     }
 
-    _lerp(from, to, percentage) {
-        from = this.HEXtoRGBComponents(from);
-        to = this.HEXtoRGBComponents(to);
+    _lerp(from : string, to : string, percentage : number) {
+        const fromRGB = this.HEXtoRGBComponents(from);
+        const toRGB = this.HEXtoRGBComponents(to);
         percentage = Math.min(Math.max(percentage, 0), 100);
-        const components = ['r', 'g', 'b'],
-            newColor = {};
-        for (let i = 0; i < components.length; i++) {
-            const c = components[i];
-            newColor[c] = Math.round(from[c] + (to[c] - from[c]) * percentage / 100);
-        }
+        const newColor : { r? : number, g? : number, b? : number } = {};
+        newColor.r = Math.round(fromRGB.r + (toRGB.r - fromRGB.r) * percentage / 100);
+        newColor.g = Math.round(fromRGB.g + (toRGB.g - fromRGB.g) * percentage / 100);
+        newColor.b = Math.round(fromRGB.b + (toRGB.b - fromRGB.b) * percentage / 100);
         return this.RGBtoHEX(newColor.r, newColor.g, newColor.b);
     }
 }
