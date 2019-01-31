@@ -3,19 +3,9 @@
 
 pipeline {
     agent {
-        label 'ubuntu_18.04'
+        label 'ubuntu_18.04_with_docker'
     }
     stages {
-        stage('tools') {
-            steps {
-                script {
-                    def NODE_PATH = tool name: 'Node 8.11.2', type: 'nodejs'
-                    env.PATH = "${env.PATH}:${NODE_PATH}/bin"
-                    def YARN_PATH = tool name: 'yarn', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-                    env.PATH = "${env.PATH}:${YARN_PATH}/bin"
-                }
-            }
-        }
         stage('check environment') {
             steps {
                 prepare_env()
@@ -28,27 +18,33 @@ pipeline {
         }
         stage('install dependencies') {
             steps {
-                sshagent(['read-only-github']) {
-                    install_dep()
+                docker.image('node:8-alpine').inside('-u root') {
+                    withCredentials([string(credentialsId: 'npm-read-only', variable: 'NPM_TOKEN')]) {
+                        sh "apk update && apk upgrade && apk add --no-cache bash git openssh"
+                        sh "mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts"
+                        sh "echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\" > ~/.npmrc"
+                        sshagent(['read-only-github']) {
+                            sh "yarn"
+                        }
+                    }
                 }
-            }
-        }
-        stage('checkstyle') {
-            steps {
-                sh "yarn checkstyle-ci || exit 0"
             }
         }
         stage('test') {
             steps {
-                install_chrome_dependencies()
-                sh "yarn test-ci"
+                script {
+                    // Use puppeteer enabled docker image
+                    docker.image('kanocomputing/puppeteer').inside('--cap-add=SYS_ADMIN') {
+                        // Run the Unit test
+                        sh "yarn test-ci"
+                    }
+                }
             }
         }
     }
     post {
         always {
             junit allowEmptyResults: true, testResults: 'test-results.xml'
-            step([$class: 'CheckStylePublisher', pattern: 'eslint.xml'])
         }
         regression {
             notify_culprits currentBuild.result
@@ -58,19 +54,4 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20'))
         timeout(time: 60, unit: 'MINUTES')
     }
-}
-
-def prepare_env () {
-    if (env.BRANCH_NAME=="master" || env.BRANCH_NAME=="jenkins") {
-        env.DEV_ENV = "staging"
-    } else if (env.BRANCH_NAME=="rc") {
-        env.DEV_ENV = "rc"
-    } else if (env.BRANCH_NAME=="prod") {
-        env.DEV_ENV = "production"
-    }
-    env.NODE_ENV = "${env.DEV_ENV}"
-}
-
-def install_dep () {
-    sh "yarn --production=false"
 }
