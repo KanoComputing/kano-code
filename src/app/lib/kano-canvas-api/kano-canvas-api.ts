@@ -24,16 +24,17 @@ export class Canvas {
     public space : Space;
     public text : Text;
     constructor(settings : ICanvasAPISettings) {
-        this.session = this.reset(settings);
+        this.session = this.createSession(settings);
         this.general = new General(this.session);
         this.paths = new Paths(this.session);
         this.setters = new Setters(this.session);
         this.shapes = new Shapes(this.session);
         this.space = new Space(this.session);
         this.text = new Text(this.session);
+        this.reset(settings);
     }
-    reset(settings : ICanvasAPISettings) {
-        this.session = {
+    createSession(settings : ICanvasAPISettings) : ISession {
+        return {
             ctx: settings.ctx,
             width: settings.width,
             height: settings.height,
@@ -59,6 +60,16 @@ export class Canvas {
                     width: 1,
                 },
             },
+        };
+    }
+    reset(settings : ICanvasAPISettings) {
+        this.session.ctx = settings.ctx;
+        this.session.width = settings.width;
+        this.session.height = settings.height;
+        this.session.ratio = settings.ratio || 1;
+        this.session.pos = {
+            x: settings.width / 2,
+            y: settings.height / 2,
         };
         this.general.reset();
         this.space.moveTo(this.session.pos.x, this.session.pos.y);
