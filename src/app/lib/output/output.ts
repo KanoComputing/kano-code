@@ -2,29 +2,80 @@ import { PluginReceiver } from '../editor/plugin/receiver.js';
 import { Runner } from '../editor/runner.js';
 import { OutputModule } from './module.js';
 import { DefaultOutputViewProvider } from './default.js';
+import { Plugin } from '../editor/plugin.js';
+import { AppModule } from '../app-modules/app-module.js';
+import { OutputViewProvider, IOutputProvider } from './index.js';
+
+export interface IOutputProfile {
+    id : string;
+    onInstall?(output : Output) : void;
+    modules? : Type<AppModule>[];
+    plugins? : Plugin[];
+    outputViewProvider? : OutputViewProvider;
+}
+
+export interface IVisualsContext {
+    canvas : HTMLCanvasElement;
+    width : number;
+    height : number;
+}
+
+export interface IAudioContext {
+    context : AudioContext;
+    destination : AudioDestinationNode;
+}
+
+export interface IDOMContext {
+    root : HTMLElement;
+}
 
 export class Output extends PluginReceiver {
+    public runner : Runner;
+    private _running : boolean = false;
+    private _fullscreen : boolean = false;
+    private _code : string = '';
+    public outputViewProvider? : IOutputProvider;
+    public outputProfile? : IOutputProfile;
+    public get visuals() : IVisualsContext {
+        if (!this.outputViewProvider) {
+            throw new Error('Could not get visuals: Output view was not registered');
+        }
+        return this.outputViewProvider.getVisuals();
+    }
+    public get audio() : IAudioContext {
+        if (!this.outputViewProvider) {
+            throw new Error('Could not get audio: Output view was not registered');
+        }
+        return this.outputViewProvider.getAudio();
+    }
+    public get dom() : IDOMContext {
+        if (!this.outputViewProvider) {
+            throw new Error('Could not get DOM: Output view was not registered');
+        }
+        return this.outputViewProvider.getDOM();
+    }
     constructor() {
         super();
         this.runner = new Runner();
         this.runner.addModule(OutputModule);
         this.addPlugin(this.runner);
-        this._running = false;
     }
-    addPlugin(plugin) {
+    addPlugin(plugin : Plugin) {
         super.addPlugin(plugin);
         plugin.onInstall(this);
     }
-    registerOutputViewProvider(provider) {
+    registerOutputViewProvider(provider : OutputViewProvider) {
         this.outputViewProvider = provider;
         this.outputViewProvider.onInstall(this);
     }
-    registerProfile(outputProfile) {
+    registerProfile(outputProfile : IOutputProfile) {
         // No outputProfile was provider, fallback to default
         if (!outputProfile) {
             return;
         }
-        outputProfile.onInstall(this);
+        if (outputProfile.onInstall) {
+            outputProfile.onInstall(this);
+        }
         if (!outputProfile.id) {
             throw new Error('Could not register OutputProfile: missing id');
         }
@@ -37,17 +88,17 @@ export class Output extends PluginReceiver {
         this.outputProfile = outputProfile;
         // Missing outputViewProvider, using default one
         if (!this.outputProfile.outputViewProvider) {
-            this.registerOutputViewProvider(new DefaultOutputViewProvider(this));
+            this.registerOutputViewProvider(new DefaultOutputViewProvider());
         } else {
             this.registerOutputViewProvider(this.outputProfile.outputViewProvider);
         }
         // Add defined plugins
         if (this.outputProfile.plugins) {
-            this.outputProfile.plugins.forEach(p => this.addPlugin(p));
+            this.outputProfile.plugins.forEach((p : Plugin) => this.addPlugin(p));
         }
         // Add defined modules to the runner
         if (this.outputProfile.modules) {
-            this.outputProfile.modules.forEach(m => this.runner.addModule(m));
+            this.outputProfile.modules.forEach((m : Type<AppModule>) => this.runner.addModule(m));
         }
     }
     checkOutputView() {
@@ -55,7 +106,7 @@ export class Output extends PluginReceiver {
             this.outputViewProvider = new DefaultOutputViewProvider();
         }
     }
-    setRunningState(running) {
+    setRunningState(running : boolean) {
         this._running = running;
         this.emit('running-state-changed');
     }
@@ -65,7 +116,7 @@ export class Output extends PluginReceiver {
     toggleRunningState() {
         this.setRunningState(!this.getRunningState());
     }
-    setFullscreen(state) {
+    setFullscreen(state : boolean) {
         this._fullscreen = state;
         this.emit('fullscreen-changed');
     }
@@ -79,13 +130,16 @@ export class Output extends PluginReceiver {
         this.setRunningState(false);
         this.setRunningState(true);
     }
-    setCode(code) {
+    setCode(code : string) {
         this._code = code;
     }
     getCode() {
         return this._code;
     }
     get id() {
+        if (!this.outputProfile) {
+            throw new Error('Could not get profile id: An output pforile was not registered');
+        }
         return this.outputProfile.id;
     }
     get outputView() {
@@ -97,37 +151,33 @@ export class Output extends PluginReceiver {
         }
         this.runPluginTask('onInject');
     }
-    onExport(data) {
+    onExport(data : any) {
         return this.plugins.reduce((d, plugin) => plugin.onExport(d), data);
     }
-    onImport(data) {
+    onImport(data : any) {
         this.runPluginTask('onImport', data);
     }
-    onCreationExport(data) {
+    onCreationExport(data : any) {
         data.code = this.getCode();
-        data.profile = this.outputProfile.id;
+        data.profile = this.id;
         return data;
     }
-    onCreationImport(data) {
+    onCreationImport(data : any) {
         return this.runPluginChainTask('onCreationImport', data)
             .then(() => {
-                const res = this.outputView.onCreationImport(data);
-                if (res instanceof Promise) {
-                    return res.then(() => {
-                        this.setCode(data.code);
-                    });
+                if (this.outputView) {
+                    const res = this.outputView.onCreationImport(data);
+                    if (res instanceof Promise) {
+                        return res.then(() => {
+                            this.setCode(data.code);
+                        });
+                    }
+                } else {
+                    this.setCode(data.code);
                 }
-                this.setCode(data.code);
-                return null;
             });
     }
-    getMode() {
-        return this._mode;
-    }
-    setMode(mode) {
-        this._mode = mode;
-    }
-    render(...args) {
+    render(...args : any[]) {
         if (this.outputViewProvider) {
             return this.outputViewProvider.render(...args);
         }

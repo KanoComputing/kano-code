@@ -1,20 +1,24 @@
-import '@polymer/polymer/polymer-legacy.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import '@polymer/iron-icon/iron-icon.js';
 import '@kano/polymer-sortablejs/polymer-sortablejs.js';
+import { close } from '@kano/icons/ui.js';
 import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
-import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import '../ui/kano-ui-viewport/kano-ui-viewport.js';
-import '../kano-icons/kc-ui.js';
 import '../kc-workspace-toolbar/kc-workspace-toolbar.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
 
-Polymer({
-    _template: html`
+class KcWorkspaceFrame extends mixinBehaviors([
+    I18nBehavior,
+    AppEditorBehavior,
+    AppElementRegistryBehavior,
+    IronResizableBehavior,
+], PolymerElement) {
+    static get template() {
+        return html`
         <style>
             :host {
                 display: block;
@@ -43,9 +47,10 @@ Polymer({
                 left: 0px;
                 width: 100%;
                 height: 100%;
-                @apply(--layout-vertical);
-                @apply(--layout-center);
-                @apply(--layout-center-justified);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
             }
             .pause-overlay iron-image {
                 width: 40%;
@@ -54,9 +59,6 @@ Polymer({
             }
             #workspace-placeholder {
                 height: 100%;
-            }
-            #workspace-placeholder>* {
-                animation: fade-in 200ms linear;
             }
             kc-workspace-toolbar {
                 padding: 20px 0;
@@ -95,10 +97,7 @@ Polymer({
                 position: fixed;
                 top: 16px;
                 right: 16px;
-                padding: 6px;
-            }
-            button>* {
-                margin: 0 auto;
+                padding: 0px;
             }
             button#fullscreen-close:hover {
                 background: rgba(255, 255, 255, 0.5);
@@ -106,36 +105,22 @@ Polymer({
             paper-dialog {
                 background: transparent;
             }
-            iron-icon {
-                --iron-icon-width: 27px;
-                --iron-icon-height: 27px;
-                --iron-icon-fill-color: #8F9195;
+            button .icon {
+                fill: #8F9195;
+                width: 8px;
             }
-            button#fullscreen-close iron-icon {
+            button#fullscreen-close {
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 fill: rgba(255, 255, 255, 0.75);
             }
-            button#fullscreen-close:hover iron-icon {
+            button#fullscreen-close:hover .icon {
                 fill: rgba(255, 255, 255, 1);
             }
-            button#fullscreen-close iron-icon {
-                --iron-icon-width: 20px;
-                --iron-icon-height: 20px;
-            }
-            .handle {
-                cursor: move;
-            }
-            button.remove {
-                background: inherit;
-                cursor: pointer;
-                line-height: 0;
-                border: 0;
-                padding: 0;
-            }
-            .remove:hover iron-icon {
-                fill: var(--color-rhubarb);
-            }
-            iron-icon.handle:hover {
-                fill: #fff;
+            button#fullscreen-close {
+                width: 20px;
+                height: 20px;
             }
             [hidden] {
                 display: none !important;
@@ -155,10 +140,10 @@ Polymer({
         </div>
         <div class="overlay">
             <button id="fullscreen-close" on-tap="_toggleFullscreen">
-                <iron-icon icon="kc-ui:close"></iron-icon>
+                <div class="icon">${close}</div>
             </button>
             <kc-workspace-toolbar running="[[running]]"
-                                    no-part-controls=""
+                                    no-part-controls
                                     on-save-button-clicked="_toggleFullscreen"
                                     on-run-clicked="_runButtonClicked"
                                     on-fullscreen-clicked="_toggleFullscreen"
@@ -170,62 +155,51 @@ Polymer({
         </div>
         <iron-a11y-keys keys="meta+enter" on-keys-pressed="_goFullscreen" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="esc" on-keys-pressed="_cancelFullscreen" target="[[target]]"></iron-a11y-keys>
-`,
-
-    is: 'kc-workspace-frame',
-
-    behaviors: [
-        I18nBehavior,
-        AppEditorBehavior,
-        AppElementRegistryBehavior,
-        IronResizableBehavior,
-    ],
-
-    properties: {
-        running: {
-            type: Boolean,
-            value: false,
-            notify: true,
-        },
-        width: {
-            type: Number,
-        },
-        height: {
-            type: Number,
-        },
-        mouseX: {
-            type: Number,
-            value: 0,
-        },
-        mouseY: {
-            type: Number,
-            value: 0,
-        },
-        showMousePosition: {
-            type: Boolean,
-            value: false,
-        },
-        noPlayerBar: {
-            type: Boolean,
-        },
-        fullscreen: {
-            type: Boolean,
-            value: false,
-        },
-    },
-
-    listeners: {
-        'iron-resize': '_setViewportHeight',
-    },
-
+`;
+    }
+    static get properties() {
+        return {
+            running: {
+                type: Boolean,
+                value: false,
+                notify: true,
+            },
+            width: {
+                type: Number,
+            },
+            height: {
+                type: Number,
+            },
+            fullscreen: {
+                type: Boolean,
+                value: false,
+            },
+        };
+    }
+    constructor() {
+        super();
+        this._onIronResize = this._onIronResize.bind(this);
+    }
+    connectedCallback() {
+        super.connectedCallback();
+        this.target = document.body;
+        this.addEventListener('iron-resize', this._onIronResize);
+        this._setViewportHeight();
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener('iron-resize', this._onIronResize);
+    }
+    _onIronResize() {
+        this._setViewportHeight();
+    }
     addMenuOption(label, icon, callback) {
         return this.$.toolbar.addMenuItem(label, icon, callback);
-    },
-
+    }
     _setViewportHeight() {
         window.requestAnimationFrame(() => {
-            let aspectRatio = this.height / this.width,
-                style = this.$.content.style;
+            let aspectRatio = this.height / this.width;
+            const { style } = this.$.content;
             if (this.fullscreen) {
                 // Portrait
                 if (window.innerHeight > window.innerWidth * aspectRatio) {
@@ -251,64 +225,45 @@ Polymer({
             }
         });
         this.$.content.resizeView();
-    },
-
-    attached() {
-        this.target = document.body;
-        this._registerElement('parts-controls', this);
-    },
-
+    }
     _goFullscreen() {
         if (!this.fullscreen) {
             this._toggleFullscreen();
         }
-    },
-
+    }
     _cancelFullscreen() {
         if (this.fullscreen) {
             this._toggleFullscreen();
         }
-    },
-
+    }
     _toggleFullscreen() {
         this.toggleClass('fullscreen');
-        this.fire('tracking-event', {
-            name: 'app_size_toggled',
-            data: {
-                size: this.fullscreen ? 'normal' : 'fullscreen',
-            },
-        });
         this.fullscreen = !this.fullscreen;
         this._setViewportHeight();
 
         Utils.triggerResize();
-    },
-
+    }
     _resetAppState() {
-        this.fire('reset-app-state');
-    },
-
+        this.dispatchEvent(new CustomEvent('reset-app-state'));
+    }
     _restartClicked() {
-        this.fire('restart-clicked');
-    },
-
+        this.dispatchEvent(new CustomEvent('restart-clicked'));
+    }
     _exportClicked() {
-        this.fire('export-clicked');
-    },
-
+        this.dispatchEvent(new CustomEvent('export-clicked'));
+    }
     _importClicked() {
-        this.fire('import-clicked');
-    },
-
+        this.dispatchEvent(new CustomEvent('import-clicked'));
+    }
     _resetClicked() {
-        this.fire('reset-clicked');
-    },
-
+        this.dispatchEvent(new CustomEvent('reset-clicked'));
+    }
     _runButtonClicked() {
-        this.fire('run-button-clicked');
-    },
-
+        this.dispatchEvent(new CustomEvent('run-button-clicked'));
+    }
     getViewportScale() {
         return this.$.content.getScale();
-    },
-});
+    }
+}
+
+customElements.define('kc-workspace-frame', KcWorkspaceFrame);

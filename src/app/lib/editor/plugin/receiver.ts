@@ -2,7 +2,7 @@ import EventEmitter from '../../util/event-emitter.js';
 import Plugin, { PluginLifecycleStep } from '../plugin.js';
 
 export class PluginReceiver extends EventEmitter {
-    private plugins : Plugin[] = [];
+    protected plugins : Plugin[] = [];
     addPlugin(plugin : Plugin) {
         this.plugins.push(plugin);
     }

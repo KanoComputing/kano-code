@@ -8,3 +8,4 @@ export * from './math.js';
 export * from './mic.js';
 export * from './parts.js';
 export * from './time.js';
+export * from './draw.js';

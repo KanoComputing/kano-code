@@ -11,6 +11,7 @@ export const WorkspaceViewProviderMixin = base => class extends base {
             if (!root) {
                 throw new Error('Could not create WorkspaceView: OutputView provided does not have a root');
             }
+            root.setAttribute('slot', 'workspace');
             this.outputViewRoot.appendChild(root);
         }
     }

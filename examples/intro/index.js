@@ -32,8 +32,8 @@ class ShapesModule extends code.AppModule {
     }
     constructor(output) {
         super(output);
-        // The root element form the default output is a canvas.
-        const canvas = output.outputView.root;
+        // Grab the canvas from the output
+        const { canvas } = output.visuals;
         const ctx = canvas.getContext('2d');
 
         this.addMethod('heart', (color) => {
@@ -68,17 +68,11 @@ class EditorProfile extends code.EditorProfile {
 
 const lang = i18n.getLang();
 
-// Load Kano Code locales and elements
-Promise.all([
-    i18n.load(`/locale/editor/${lang}.json`),
-    i18n.loadBlocklyMsg(`/locale/blockly/${lang}.json`),
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/en.json'),
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/constants.json'),
-]).then(() => {
-    const editor = new code.Editor();
+i18n.load(lang, { blockly: true, kanoCodePath: '/' })
+    .then(() => {
+        const editor = new code.Editor();
 
-    editor.registerProfile(new EditorProfile());
+        editor.registerProfile(new EditorProfile());
 
-    editor.inject(document.body);
-});
-
+        editor.inject(document.body);
+    });

@@ -1,20 +1,24 @@
+import { Disposables, subscribe, subscribeDOM } from '@kano/common/index.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { Plugin } from '../plugin.js';
-import { Subscriptions, subscribe } from '../../util/subscription.js';
 
 /**
  * Manages the actions in the toolbar avilable in the workspace
  */
 export class WorkspaceToolbar extends Plugin {
+    private subscriptions : Disposables;
+    private _telemetry : TelemetryClient;
+    private editor : any;
+    private toolbar? : any;
     constructor() {
         super();
-        this.subscriptions = new Subscriptions();
+        this.subscriptions = new Disposables();
         this._telemetry = new TelemetryClient({ scope: 'workspace_toolbar' });
     }
     /**
      * @param {Editor} editor The editor this plugin is attached to
      */
-    onInstall(editor) {
+    onInstall(editor : any) {
         /** @type {Editor} */
         this.editor = editor;
         this.editor.telemetry.mount(this._telemetry);
@@ -29,18 +33,24 @@ export class WorkspaceToolbar extends Plugin {
         this.subscriptions.push(
             subscribe(this.editor.output, 'running-state-changed', this.updateRunningState.bind(this)),
             subscribe(this.editor.output, 'fullscreen-changed', this.updateFullscreen.bind(this)),
-            subscribe(this.toolbar, 'restart-clicked', this.restart.bind(this)),
-            subscribe(this.toolbar, 'run-clicked', this.toggleRun.bind(this)),
-            subscribe(this.toolbar, 'fullscreen-clicked', this.toggleFullscreen.bind(this)),
-            subscribe(this.toolbar, 'reset-clicked', this.reset.bind(this)),
-            subscribe(this.toolbar, 'export-clicked', this.export.bind(this)),
-            subscribe(this.toolbar, 'import-clicked', this.import.bind(this)),
+            subscribeDOM(this.toolbar, 'restart-clicked', this.restart.bind(this)),
+            subscribeDOM(this.toolbar, 'run-clicked', this.toggleRun.bind(this)),
+            subscribeDOM(this.toolbar, 'fullscreen-clicked', this.toggleFullscreen.bind(this)),
+            subscribeDOM(this.toolbar, 'reset-clicked', this.reset.bind(this)),
+            subscribeDOM(this.toolbar, 'export-clicked', this.export.bind(this)),
+            subscribeDOM(this.toolbar, 'import-clicked', this.import.bind(this)),
         );
     }
     updateRunningState() {
+        if (!this.toolbar) {
+            return;
+        }
         this.toolbar.running = this.editor.output.getRunningState();
     }
     updateFullscreen() {
+        if (!this.toolbar) {
+            return;
+        }
         this.toolbar.fullscreen = this.editor.output.getFullscreen();
     }
     restart() {
@@ -67,13 +77,13 @@ export class WorkspaceToolbar extends Plugin {
         this.editor.importFromDisk();
         this._telemetry.trackEvent({ name: 'import_clicked' });
     }
-    addEntry(...args) {
+    addEntry(...args : any[]) {
         if (!this.toolbar) {
             return WorkspaceToolbar.createDisposableNoop();
         }
         return this.toolbar.addEntry(...args);
     }
-    addSettingsEntry(...args) {
+    addSettingsEntry(...args : any[]) {
         if (!this.toolbar) {
             return WorkspaceToolbar.createDisposableNoop();
         }

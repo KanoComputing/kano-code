@@ -48,10 +48,6 @@ class KCCodeEditor extends Store.StateReceiver(PolymerElement) {
                 type: Object,
                 linkState: 'user',
             },
-            logoutEnabled: {
-                type: Boolean,
-                linkState: 'editor.logoutEnabled',
-            },
         };
     }
     _sourceChanged() {

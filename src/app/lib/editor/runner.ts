@@ -12,7 +12,7 @@ export class Runner extends Plugin {
         super();
         this._onRunningStateChange = this._onRunningStateChange.bind(this);
     }
-    addModule(mod : AppModule) {
+    addModule(mod : Type<AppModule>) {
         const mods = Array.isArray(mod) ? mod : [mod];
         mods.forEach(m => this.modules.push(m));
         this._updateModules();

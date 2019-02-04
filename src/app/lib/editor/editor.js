@@ -365,9 +365,9 @@ export class Editor extends EditorOrPlayer {
             throw new Error('Could not register EditorProfile: plugins is not an array');
         }
         this.profile = profile;
-        if (this.profile.workspaceViewProvider) {
-            this.registerWorkspaceViewProvider(this.profile.workspaceViewProvider);
-        }
+        const workspaceViewProvider = this.profile.workspaceViewProvider
+            || new DefaultWorkspaceViewProvider(this);
+        this.registerWorkspaceViewProvider(workspaceViewProvider);
         if (this.profile.plugins) {
             this.profile.plugins.forEach(p => this.addPlugin(p));
         }
@@ -388,9 +388,6 @@ export class Editor extends EditorOrPlayer {
         this.workspaceProvider.onInstall(this);
     }
     appendWorkspaceView() {
-        if (!this.workspaceProvider) {
-            this.workspaceProvider = new DefaultWorkspaceViewProvider(this);
-        }
         this.rootEl.$.workspace.appendView(this.workspaceProvider);
         this.output.checkOutputView();
         this.workspaceProvider.setOutputView(this.output.outputView);

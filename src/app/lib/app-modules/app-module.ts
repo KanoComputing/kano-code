@@ -1,4 +1,5 @@
 import EventEmitter from '../util/event-emitter.js';
+import Output from '../output/output.js';
 
 interface IMethodTree {
     [K : string] : Function|string|IMethodTree;
@@ -78,7 +79,7 @@ export class AppModule {
     private symbols : string[];
     private static nextCall : { [K : string] : number|null };
     private static waiting : { [K : string] : Function|null };
-    constructor(output : any) {
+    constructor(output : Output) {
         this.output = output;
         this.lifecycle = {};
         this.methods = {};

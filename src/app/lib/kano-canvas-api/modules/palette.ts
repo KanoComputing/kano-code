@@ -1,4 +1,4 @@
-export const Palette = {
+export const Palette : { [K : string] : string } = {
     "aliceblue"            : "#F0F8FF",
     "antiquewhite"         : "#FAEBD7",
     "aqua"                 : "#29c4eb",

@@ -59,16 +59,15 @@ Refresh the web page, open the devTools (Cmd+Shift+I or Ctrl+Shift+I) and you sh
 Now it's time to load all the language files:
 
 ```js
-Promise.all([
-    // Load the locale files for the editor
-    i18n.load(`/node_modules/@kano/code/locale/editor/${lang}.json`),
-    i18n.loadBlocklyMsg(`/node_modules/@kano/code/locale/blockly/${lang}.json`),
-    // Load the locale files for blockly. Skip this if using a different source editor
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/en.json'),
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/constants.json'),
-]).then(() => {
-    console.log('loaded');
-});
+import * as i18n from '@kano/code/i18n.js';
+
+const lang = i18n.getLang();
+
+// Load the languages packs. Including the blockly languages packs
+i18n.load(lang, { blockly: true })
+    .then(() => {
+        console.log('loaded');
+    });
 ```
 
 After refresh, you should be able to see the locale files being loaded in the network tab of the devTools. Now it's time to create the editor:
@@ -79,17 +78,13 @@ import * as i18n from '@kano/code/i18n.js';
 
 const lang = i18n.getLang();
 
-// Load Kano Code locales and elements
-Promise.all([
-    i18n.load(`/node_modules/@kano/code/locale/editor/${lang}.json`),
-    i18n.loadBlocklyMsg(`/node_modules/@kano/code/locale/blockly/${lang}.json`),
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/en.json'),
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/constants.json'),
-]).then(() => {
-    const editor = new code.Editor();
+// Load the languages packs. Including the blockly languages packs
+i18n.load(lang, { blockly: true })
+    .then(() => {
+        const editor = new code.Editor();
 
-    editor.inject(document.body);
-});
+        editor.inject(document.body);
+    });
 ```
 
 This will now display a completely empty editor in the page. Let's add some block in the toolbox, import the toolbox APIs at the top of the file:

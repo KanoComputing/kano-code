@@ -133,31 +133,31 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
                 display: none !important;
             }
         </style>
-        <button id="settings" type="button" class="tool settings" hidden\$="[[!showSettings]]" on-tap="_openSettings">
+        <button id="settings" type="button" class="tool settings" hidden$="[[!showSettings]]" on-tap="_openSettings">
             <iron-icon icon="kc-ui:settings"></iron-icon>
         </button>
         <template is="dom-repeat" items="[[entries]]" filter="_isLeft">
-            <kano-tooltip id\$="tooltip-{{item.id}}" class="fly" position="top" offset="16"><div class="text">[[item.title]]</div></kano-tooltip>
-            <button id\$="entry-{{item.id}}" type="button" class="tool" on-click="_entryClicked" on-mouseenter="_startEntryTimer" on-mouseleave="_stopEntryTimer">
+            <kano-tooltip id$="tooltip-[[item.id]]" class="fly" position="top" offset="16"><div class="text">[[item.title]]</div></kano-tooltip>
+            <button id$="entry-[[item.id]]" type="button" class="tool" on-click="_entryClicked" on-mouseenter="_startEntryTimer" on-mouseleave="_stopEntryTimer">
                 <iron-icon icon="[[item.ironIcon]]" src="[[item.icon]]"></iron-icon>
             </button>
         </template>
-        <div class="spacer" hidden\$="[[!showSettings]]"></div>
-        <div class="mouse-position" hidden\$="[[mousePositionHidden(showMousePosition)]]">
+        <div class="spacer" hidden$="[[!showSettings]]"></div>
+        <div class="mouse-position" hidden$="[[mousePositionHidden(showMousePosition)]]">
             <span>x:</span>
-            <kano-value-rendering font="bold 24px Bariol" width="32" height="16" value="{{mouseX}}" text-align="end" offset-x="25"></kano-value-rendering>
+            <kano-value-rendering font="bold 24px Bariol" width="32" height="16" value="[[mouseX]]" text-align="end" offset-x="25"></kano-value-rendering>
             <span>, y:</span>
-            <kano-value-rendering font="bold 24px Bariol" width="32" height="16" value="{{mouseY}}" text-align="end" offset-x="25"></kano-value-rendering>
+            <kano-value-rendering font="bold 24px Bariol" width="32" height="16" value="[[mouseY]]" text-align="end" offset-x="25"></kano-value-rendering>
         </div>
         <template is="dom-repeat" items="[[entries]]" filter="_isRight">
-            <kano-tooltip id\$="tooltip-{{item.id}}" class="fly" position="top" offset="16"><div class="text">[[item.title]]</div></kano-tooltip>
-            <button id\$="entry-{{item.id}}" type="button" class="tool" on-click="_entryClicked" on-mouseenter="_startEntryTimer" on-mouseleave="_stopEntryTimer">
+            <kano-tooltip id$="tooltip-[[item.id]]" class="fly" position="top" offset="16"><div class="text">[[item.title]]</div></kano-tooltip>
+            <button id$="entry-[[item.id]]" type="button" class="tool" on-click="_entryClicked" on-mouseenter="_startEntryTimer" on-mouseleave="_stopEntryTimer">
                 <iron-icon icon="[[item.ironIcon]]" src="[[item.icon]]"></iron-icon>
             </button>
         </template>
         <kano-tooltip id="tooltip-play" class="fly" position="top" offset="16"><div class="text">[[_computePlayTitle(running)]]</div></kano-tooltip>
         <button id="entry-play" class="tool" type="button" on-click="_playClicked" on-mouseenter="_startPlayTimer" on-mouseleave="_stopPlayTimer">
-            <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="[[_getRunningStatus(running)]]" hidden\$="[[noPlayerBar]]"></kano-animated-svg>
+            <kano-animated-svg width="19" height="21" paths="[[makeButtonIconPaths]]" selected="[[_getRunningStatus(running)]]" hidden$="[[noPlayerBar]]"></kano-animated-svg>
         </button>
         <kano-tooltip id="settings-tooltip" position="[[_settingsPostion(fullscreen)]]" offset="16" auto-close>
             <ul id="settings-list">

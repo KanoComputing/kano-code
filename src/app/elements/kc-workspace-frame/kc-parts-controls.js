@@ -134,7 +134,7 @@ class KCPartsControls extends Store.StateReceiver(mixinBehaviors([
             <!-- TODO: add sortable back in when needed and deal with crashing bug -->
             <!-- <sortable-js handle=".handle" animation="150"> -->
                 <template is="dom-repeat" items="[[parts]]" as="part" on-dom-change="_partsElementsRepeaterChanged">
-                    <div class="part" id\$="part-[[part.id]]">
+                    <div class="part" id$="part-[[part.id]]">
                         <kano-part-list-item model="{{part}}" on-tap="_partItemTapped"></kano-part-list-item>
                         <button type="button" class="remove">
                             <iron-icon icon="kc-ui:close" on-tap="_removePart"></iron-icon>
