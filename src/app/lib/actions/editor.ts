@@ -1,4 +1,5 @@
 import Store from '../store.js';
+import FlowDown from 'flow-down/flow-down.js';
 
 const CONSTANTS = [
     'SET_TOOLBOX',
@@ -9,7 +10,7 @@ const CONSTANTS = [
 ];
 const EDITOR_TYPES = Store.types(CONSTANTS);
 
-const EditorActions = (store) => {
+const EditorActions = (store : FlowDown.Store) => {
     store.addMutator(function modeActions(action) {
         switch (action.type) {
         case EDITOR_TYPES.LOAD_SOURCE: {
@@ -43,16 +44,16 @@ const EditorActions = (store) => {
     });
 
     return {
-        loadSource(source) {
+        loadSource(source : string) {
             store.dispatch({ type: EDITOR_TYPES.LOAD_SOURCE, source });
         },
-        setToolbox(toolbox) {
+        setToolbox(toolbox : any) {
             store.dispatch({ type: EDITOR_TYPES.SET_TOOLBOX, toolbox });
         },
-        setFlyoutMode(isFlyoutMode) {
+        setFlyoutMode(isFlyoutMode : boolean) {
             store.dispatch({ type: EDITOR_TYPES.SET_FLYOUT_MODE, isFlyoutMode });
         },
-        editBackground(state) {
+        editBackground(state : boolean) {
             store.dispatch({ type: EDITOR_TYPES.EDIT_BACKGROUND, state });
         },
     };

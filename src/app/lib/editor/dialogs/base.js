@@ -3,7 +3,7 @@ import EventEmitter from '../../util/event-emitter.js';
 export class Base extends EventEmitter {
     constructor(opts = {}) {
         super();
-        this.fitInto = opts.fitInto || window;
+        this.fitInto = opts.fitInto || document.body;
         this.overlayInto = opts.overlayInto;
         this.root = this.createDom(opts);
     }
@@ -26,6 +26,9 @@ export class Base extends EventEmitter {
         if (!backdropElement) {
             return;
         }
+        if (!this.overlayInto) {
+            return;
+        }
         const rect = this.overlayInto.getBoundingClientRect();
         backdropElement.style.top = `${rect.top}px`;
         backdropElement.style.left = `${rect.left}px`;
@@ -42,7 +45,9 @@ export class Base extends EventEmitter {
         backdropElement.style.width = '';
         backdropElement.style.height = '';
     }
-    createDom(opts) { return null; }
+    createDom() {
+        return document.createElement('div');
+    }
     createButton(label) {
         const button = document.createElement('button');
         button.innerText = label;
@@ -50,7 +55,9 @@ export class Base extends EventEmitter {
         return button;
     }
     dispose() {
-        this.root.parentNode.removeChild(this.root);
+        if (this.root.parentNode) {
+            this.root.parentNode.removeChild(this.root);
+        }
     }
 }
 

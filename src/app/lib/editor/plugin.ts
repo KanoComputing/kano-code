@@ -1,8 +1,10 @@
 /* eslint class-methods-use-this: "off" */
 import EventEmitter from '../util/event-emitter.js';
 
+export type PluginLifecycleStep = 'onInstall'|'onInject'|'onDispose'|'onImport'|'onCreationImport'|'onExport'|'onCreationExport';
+
 export class Plugin extends EventEmitter {
-    onInstall() {}
+    onInstall(editorOrOutput : any) {}
     onInject() {}
     onDispose() {}
     onImport() {}

@@ -1,7 +1,8 @@
 import { AppModule } from './app-module.js';
 
 export class GlobalModule extends AppModule {
-    constructor(output) {
+    private _listeners : { [K : string] : Function[] } = {};
+    constructor(output : any) {
         super(output);
         this.addMethod('when', '_when');
         this.addMethod('emit', '_emit');
@@ -13,12 +14,12 @@ export class GlobalModule extends AppModule {
 
     static get id() { return 'global'; }
 
-    _when(name, callback) {
+    _when(name : string, callback : Function) {
         this._listeners[name] = this._listeners[name] || [];
         this._listeners[name].push(callback);
     }
 
-    _emit(name, data) {
+    _emit(name : string, data? : any) {
         const listeners = this._listeners[name];
         if (!listeners || !Array.isArray(listeners)) {
             return;

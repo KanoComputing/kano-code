@@ -1,19 +1,23 @@
 import VM from '../vm.js';
 import AppModulesLoader from '../app-modules/index.js';
 import { Plugin } from './plugin.js';
+import AppModule from '../app-modules/app-module.js';
 
 export class Runner extends Plugin {
+    private modules : Type<AppModule>[] = [];
+    private output? : any;
+    private appModulesLoader : AppModulesLoader|null = null;
+    private vm : VM|null = null;
     constructor() {
         super();
-        this.modules = [];
         this._onRunningStateChange = this._onRunningStateChange.bind(this);
     }
-    addModule(mod) {
+    addModule(mod : AppModule) {
         const mods = Array.isArray(mod) ? mod : [mod];
         mods.forEach(m => this.modules.push(m));
         this._updateModules();
     }
-    onInstall(output) {
+    onInstall(output : any) {
         this.output = output;
         this._updateModules();
         this.output.on('running-state-changed', this._onRunningStateChange);
@@ -39,6 +43,9 @@ export class Runner extends Plugin {
     }
     _onRunningStateChange() {
         const running = this.output.getRunningState();
+        if (!this.appModulesLoader) {
+            return;
+        }
         const { appModules } = this.appModulesLoader;
         if (!running) {
             appModules.stop();
@@ -55,17 +62,22 @@ export class Runner extends Plugin {
         this.vm.runInContext(appCode);
         appModules.afterRun();
     }
-    instrumentize(method) {
+    instrumentize(method : string) {
+        if (!this.appModulesLoader) {
+            return;
+        }
         const { appModules } = this.appModulesLoader;
         return appModules.instrumentize(method);
     }
     dispose() {
-        this.appModulesLoader.dispose();
+        if (this.appModulesLoader) {
+            this.appModulesLoader.dispose();
+        }
         if (this.vm) {
             this.vm.dispose();
             this.vm = null;
         }
-        this.modules = null;
+        this.modules.length = 0;
         this.appModulesLoader = null;
     }
 }

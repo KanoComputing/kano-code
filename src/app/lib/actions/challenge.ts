@@ -1,4 +1,5 @@
 import Store from '../store.js';
+import FlowDown from 'flow-down/flow-down.js';
 
 const CONSTANTS = [
     'LOAD_CHALLENGE',
@@ -21,10 +22,10 @@ const CONSTANTS = [
 ];
 const CHALLENGE_TYPES = Store.types(CONSTANTS);
 
-const BANNER_ICONS = {
+const BANNER_ICONS : any= {
     default: '/assets/avatar/judoka-face.svg',
 };
-const ChallengeActions = (store) => {
+const ChallengeActions = (store : FlowDown.Store) => {
     function getProgress() {
         const state = store.getState();
         if (!state.steps) {
@@ -169,16 +170,16 @@ const ChallengeActions = (store) => {
     });
 
     return {
-        load(challenge) {
+        load(challenge : any) {
             store.dispatch({ type: CHALLENGE_TYPES.LOAD_CHALLENGE, challenge });
         },
-        loadVariables(variables) {
+        loadVariables(variables : any[]) {
             store.dispatch({ type: CHALLENGE_TYPES.LOAD_VARIABLES, variables });
         },
-        updateStepIndex(index) {
+        updateStepIndex(index : number) {
             store.dispatch({ type: CHALLENGE_TYPES.UPDATE_STEP_INDEX, index });
         },
-        updateSteps(steps) {
+        updateSteps(steps : any[]) {
             store.dispatch({ type: CHALLENGE_TYPES.UPDATE_STEPS, steps });
         },
         disableBannerButton() {
@@ -187,7 +188,7 @@ const ChallengeActions = (store) => {
         enableBannerButton() {
             store.dispatch({ type: CHALLENGE_TYPES.ENABLE_BANNER_BUTTON });
         },
-        updateBannerState(banner = {}) {
+        updateBannerState(banner : any = {}) {
             store.dispatch({ type: CHALLENGE_TYPES.UPDATE_BANNER_STATE, state: banner });
         },
         enableLockdown() {
@@ -196,19 +197,19 @@ const ChallengeActions = (store) => {
         disableLockdown() {
             store.dispatch({ type: CHALLENGE_TYPES.DISABLE_LOCKDOWN });
         },
-        updateHistoryOptions(canGoBack, canGoForward) {
+        updateHistoryOptions(canGoBack : boolean, canGoForward : boolean) {
             store.dispatch({ type: CHALLENGE_TYPES.UPDATE_HISTORY_OPTIONS, canGoBack, canGoForward });
         },
-        addHistoryRecord(stepIndex, editorState) {
+        addHistoryRecord(stepIndex : number, editorState : any) {
             store.dispatch({ type: CHALLENGE_TYPES.ADD_HISTORY_RECORD, stepIndex, editorState });
         },
         completeChallenge() {
             store.dispatch({ type: CHALLENGE_TYPES.COMPLETE_CHALLENGE });
         },
-        updateBeacon(beacon) {
+        updateBeacon(beacon : any) {
             store.dispatch({ type: CHALLENGE_TYPES.UPDATE_BEACON, beacon });
         },
-        updateTooltips(tooltips) {
+        updateTooltips(tooltips : any[]) {
             store.dispatch({ type: CHALLENGE_TYPES.UPDATE_TOOLTIPS, tooltips });
         },
         historyBack() {

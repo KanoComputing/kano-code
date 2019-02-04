@@ -1,8 +1,9 @@
 import { AppModule } from './app-module.js';
 
 export class LoopModule extends AppModule {
-    constructor() {
-        super();
+    private intervals : number[];
+    constructor(output : any) {
+        super(output);
         this.intervals = [];
 
         this.addMethod('forever', '_forever');
@@ -12,7 +13,7 @@ export class LoopModule extends AppModule {
 
     static get id() { return 'loop'; }
 
-    _forever(callback) {
+    _forever(callback : Function) {
         // push the next tick to the end of the events queue
         const id = setInterval(callback, 10);
         this.intervals.push(id);

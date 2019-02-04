@@ -31,7 +31,7 @@ declare global {
 }
 
 export interface IVMContext {
-    [K : string] : string;
+    [K : string] : any;
 }
 
 class VM {
