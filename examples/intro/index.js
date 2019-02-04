@@ -2,6 +2,7 @@ import * as code from '../../index.js';
 import * as APIs from '../../toolbox.js';
 import * as i18n from '../../i18n.js';
 import * as Modules from '../../modules.js';
+import { ButtonPart } from '../../dist/app/lib/part/parts/button.js';
 
 const Shapes = {
     type: 'module',
@@ -54,6 +55,9 @@ class ShapesModule extends code.AppModule {
 class OutputProfile extends code.OutputProfile {
     get modules() {
         return Object.values(Modules).concat([ShapesModule]);
+    }
+    get parts() {
+        return [ButtonPart];
     }
 }
 

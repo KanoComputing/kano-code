@@ -5,12 +5,15 @@ import { DefaultOutputViewProvider } from './default.js';
 import { Plugin } from '../editor/plugin.js';
 import { AppModule } from '../app-modules/app-module.js';
 import { OutputViewProvider, IOutputProvider } from './index.js';
+import { PartsManager, PartContructor } from '../part/manager.js';
+import { Part } from '../part/part.js';
 
 export interface IOutputProfile {
     id : string;
     onInstall?(output : Output) : void;
     modules? : Type<AppModule>[];
     plugins? : Plugin[];
+    parts? : PartContructor[];
     outputViewProvider? : OutputViewProvider;
 }
 
@@ -34,6 +37,7 @@ export class Output extends PluginReceiver {
     private _running : boolean = false;
     private _fullscreen : boolean = false;
     private _code : string = '';
+    private _partsManager : PartsManager;
     public outputViewProvider? : IOutputProvider;
     public outputProfile? : IOutputProfile;
     public get visuals() : IVisualsContext {
@@ -58,7 +62,11 @@ export class Output extends PluginReceiver {
         super();
         this.runner = new Runner();
         this.runner.addModule(OutputModule);
+        this._partsManager = new PartsManager(this);
         this.addPlugin(this.runner);
+    }
+    addPart(partClass : Type<Part>) {
+        this._partsManager.addPart(partClass);
     }
     addPlugin(plugin : Plugin) {
         super.addPlugin(plugin);
@@ -99,6 +107,9 @@ export class Output extends PluginReceiver {
         // Add defined modules to the runner
         if (this.outputProfile.modules) {
             this.outputProfile.modules.forEach((m : Type<AppModule>) => this.runner.addModule(m));
+        }
+        if (this.outputProfile.parts) {
+            this.outputProfile.parts.forEach(p => this._partsManager.registerPart(p));
         }
     }
     checkOutputView() {
@@ -149,12 +160,17 @@ export class Output extends PluginReceiver {
         if (this.outputViewProvider) {
             this.outputViewProvider.onInject();
         }
+        this._partsManager.onInject();
         this.runPluginTask('onInject');
     }
     onExport(data : any) {
-        return this.plugins.reduce((d, plugin) => plugin.onExport(d), data);
+        const parts = this._partsManager.save();
+        const exp = this.plugins.reduce((d, plugin) => plugin.onExport(d), data);
+        exp.parts = parts;
+        return exp;
     }
     onImport(data : any) {
+        this._partsManager.load(data.parts || []);
         this.runPluginTask('onImport', data);
     }
     onCreationExport(data : any) {

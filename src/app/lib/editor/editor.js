@@ -151,7 +151,6 @@ export class Editor extends EditorOrPlayer {
         this.elementsRegistry.set('add-parts-form', addPartForm);
         this.elementsRegistry.set('add-parts-dialog', addPartDialog);
         this.elementsRegistry.set('source-view', sourceView);
-        this.elementsRegistry.set('toolbox-enhancer-above', sourceView.$['toolbox-enhancer-above']);
 
         this.sourceEditor.addEventListener('code-changed', (e) => {
             this.setCode(e.detail.value);

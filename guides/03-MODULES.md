@@ -72,8 +72,11 @@ class ShapesModule extends code.AppModule {
     }
     constructor(output) {
         super(output);
-        // The root element form the default output is a canvas.
-        const canvas = output.outputView.root;
+        // Grab the canvas from the output
+        // The output exposes 3 APIs: visuals, to render on a canvas,
+        // audio using the WebAudio API and dom, allowing a more advanced
+        // configuration.
+        const { canvas } = output.visuals;
         const ctx = canvas.getContext('2d');
 
         this.addMethod('heart', (color) => {
