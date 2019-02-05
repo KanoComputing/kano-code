@@ -9,7 +9,8 @@ Polymer({
         <style>
             :host {
                 display: block;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-end-justified;
                 color: white;
             }

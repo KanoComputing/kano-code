@@ -18,18 +18,20 @@ Polymer({
                 background: var(--color-black);
                 font-family: var(--font-body);
                 font-weight: bold;
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 width: 552px;
                 min-width: 340px;
                 border-radius: 6px;
                 border: 1px solid #202428;
             }
             #container {
-                @apply --layout-vertical;
-                @apply --layout-flex-auto;
+                display: flex;
+flex-direction: column;
+                flex: 1 1 auto;
             }
             kc-dialog-topbar {
-                @apply --layout-flex-none;
+                flex: none;
                 --kc-dialog-topbar-icon-color: var(--kc-asset-picker-highlight-color, var(--color-grassland));
             }
         </style>

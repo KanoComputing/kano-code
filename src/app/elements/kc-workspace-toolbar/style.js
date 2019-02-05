@@ -3,8 +3,9 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 export const button = html`
     <style>
         button.tool {
-            @apply --layout-horizontal;
-            @apply --layout-center;
+            display: flex;
+flex-direction: row;
+            align-items: center;
             @apply --layout-center-justified;
             @apply --kano-button;
             background-color: rgba(255, 255, 255, 0.25);

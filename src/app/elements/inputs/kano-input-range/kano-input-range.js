@@ -26,7 +26,8 @@ Polymer({
   _template: html`
         <style include="kano-code-shared-styles">
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 font-family: var(--font-body);
             }
             label {

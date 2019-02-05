@@ -1,31 +1,26 @@
 import { subscribeDOM, EventEmitter } from '@kano/common/index.js';
 import { button } from '@kano/styles/button.js';
 import * as parts from '../index.js';
-import { IPartContext, Part } from '../part.js';
-import { Color } from '../types/color.js';
-import { PartComponent } from '../component.js';
-import { part, component } from '../decorators.js';
+import { IPartContext } from '../../part.js';
+import { Color } from '../../types/color.js';
+import { PartComponent } from '../../component.js';
+import { part, component, property } from '../../decorators.js';
 
 class ButtonComponent extends PartComponent {
-    static get properties() {
-        return {
-            text: {
-                type: String,
-                value: 'Click Me!',
-            },
-            backgroundColor: {
-                type: Color,
-                value: 'red',
-            },
-            click: {
-                type: EventEmitter,
-                value: () => new EventEmitter(),
-            }
-        }
-    }
+    @property({ type: String, value: 'Click Me!' })
+    public label : string = 'Click Me!';
+    
+    @property({ type: Color, value: '#FF8F00' })
+    public backgroundColor : string = '#FF8F00';
+
+    @property({ type: Color, value: '#FFFFFF' })
+    public textColor : string = '#FFFFFF';
+
+    @property({ type: EventEmitter, value: () => new EventEmitter() })
+    public click : EventEmitter = new EventEmitter();
 }
 
-@part('button', 'Button')
+@part('button')
 export class ButtonPart extends parts.DOMPart {
     private static stylesAdded : boolean = false;
     /**
@@ -62,28 +57,37 @@ export class ButtonPart extends parts.DOMPart {
         el.classList.add('btn');
         return el;
     }
-    onClick(callback : () => void) {
-        if (!this.core) {
-            return;
-        }
-        this.core.click.event(callback);
-    }
-    setBackgroundColor(c : string) {
-        if (!this.core) {
-            return;
-        }
-        this.core.backgroundColor = c;
-        this.core.invalidate();
-    }
     render() {
         super.render();
         if (this.core && this.core.invalidated) {
-            this._el.textContent = this.core.text;
+            this._el.textContent = this.core.label;
             this._el.style.backgroundColor = this.core.backgroundColor;
+            this._el.style.color = this.core.textColor;
         }
     }
     dispose() {
         super.dispose();
         this.subscriptions.dispose();
+    }
+    getLabel() {
+        return this.core.label;
+    }
+    setLabel(label : string) {
+        this.core.label = label;
+        this.core.invalidate();
+    }
+    setTextColor(color : string) {
+        this.core.textColor = color;
+        this.core.invalidate();
+    }
+    setBackgroundColor(c : string) {
+        this.core.backgroundColor = c;
+        this.core.invalidate();
+    }
+    onClick(callback : () => void) {
+        if (!this.core) {
+            return;
+        }
+        this.core.click.event(callback);
     }
 }

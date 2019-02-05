@@ -39,7 +39,8 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
         <style include="input-text">
             :host {
                 position: relative;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 font-family: var(--font-body);
                 background: var(--color-black);
                 color: white;
@@ -51,8 +52,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
             .header {
                 position: absolute;
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 color: white;
                 top: 32px;
                 left: 32px;
@@ -67,8 +69,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
             .dismiss {
                 position: absolute;
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 top: 47px;
                 right: 31px;
                 background: transparent;
@@ -91,22 +94,28 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 padding: 10px;
             }
             .options {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 background: var(--color-abbey);
                 padding: var(--section-padding);
                 width: 40%;
             }
             .options>iron-pages {
-                @apply --layout-flex;
-                @apply --layout-vertical;
+                flex: 1;
+flex-basis: 0.000000001px;
+                display: flex;
+flex-direction: column;
             }
             .options>iron-pages>* {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             .gif-creation-header {
-                @apply --layout-flex;
-                @apply --layout-vertical;
-                @apply --layout-center;
+                flex: 1;
+flex-basis: 0.000000001px;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
             }
             .gif-creation-header span,
@@ -127,8 +136,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             .preview iron-pages,
             .preview iron-pages>* {
                 height: 100%;
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
             }
             .preview iron-pages>* {
@@ -165,7 +175,8 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
 
             form {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-center-justified;
                 padding-top: 64px;
             }
@@ -175,7 +186,8 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
 
             form textarea {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
                 margin-bottom: 32px;
                 resize: none;
             }
@@ -234,7 +246,8 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
 
             .composed-button {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
             }
 
             .composed-button button {
@@ -248,7 +261,8 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
 
             .composed-button input[type="text"] {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
                 border: 0px;
                 border-radius: 4px;
                 border-top-right-radius: 0px;
@@ -261,8 +275,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
 
             .saving {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
             }
 
@@ -326,8 +341,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 margin-bottom: 12px;
             }
             .social-share-container {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 @apply --layout-center-justified;
                 margin-right: 8px;
             }
@@ -352,8 +368,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             }
             .success,
             .success .actions {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
             }
             .success {
                 @apply --layout-around-justified;
@@ -371,8 +388,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 @apply --layout-self-stretch;
             }
             .fail {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
             }
             .fail .title {
@@ -389,8 +407,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 background: var(--color-flamingo);
             }
             .instructions {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 font-size: 14px;
                 margin-bottom: 24px;
             }
@@ -408,8 +427,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 color: #6e6e6e;
             }
             .gif-creation {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 position: relative;
             }
             *[hidden] {
@@ -427,8 +447,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 right: 0px;
                 width: 100%;
                 height: 100%;
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
             }
             paper-spinner-lite {
@@ -440,8 +461,9 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 left: 0px;
                 width: 100%;
                 height: 100%;
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
                 opacity: 0;
                 transition: opacity ease-in-out 70ms;

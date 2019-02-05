@@ -33,12 +33,14 @@ Polymer({
                 @apply --kano-pixel-canvas-pixel;
             }
             .canvas {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-wrap;
                 box-sizing: border-box;
             }
             .canvas-wrapper {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-center-justified;
                 background-color: var(--kano-pixel-editor-background, #444);
             }
@@ -56,8 +58,9 @@ Polymer({
                 display: none;
             }
             .picker {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 margin-top: 16px;
             }
         </style>

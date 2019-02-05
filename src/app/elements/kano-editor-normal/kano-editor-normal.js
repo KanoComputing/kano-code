@@ -7,21 +7,25 @@ class KcWorkspaceDraw extends PolymerElement {
         return html`
         <style>
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 width: 100%;
                 height: 100%;
                 padding-top: 12px;
             }
             kc-workspace-frame {
-                @apply --layout-vertical;
-                @apply --layout-flex;
+                display: flex;
+flex-direction: column;
+                flex: 1;
+flex-basis: 0.000000001px;
                 margin: 0 40px;
             }
             kc-parts-controls {
                 flex: 1;
             }
             kano-workspace-normal {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             #workspace ::slotted(.data),
             #workspace ::slotted(.hardware),
@@ -29,9 +33,10 @@ class KcWorkspaceDraw extends PolymerElement {
                 display: none;
             }
             .part {
-                @apply --layout-flex-none;
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                flex: none;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 height: 40px;
                 font-size: 14px;
                 color: #fff;

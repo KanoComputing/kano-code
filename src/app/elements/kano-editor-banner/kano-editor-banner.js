@@ -19,7 +19,8 @@ Polymer({
         <style>
             :host {
                 position: relative;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-start;
                 padding: 16px;
                 display: block;
@@ -32,8 +33,10 @@ Polymer({
                 margin-bottom: 10px;
             }
             .content {
-                @apply --layout-flex;
-                @apply --layout-horizontal;
+                flex: 1;
+flex-basis: 0.000000001px;
+                display: flex;
+flex-direction: row;
                 height: 100%;
                 box-sizing: border-box;
                 font-family: var(--font-body);
@@ -49,7 +52,8 @@ Polymer({
                 margin-bottom: 5px;
             }
             .content .body {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             :host([show-save-button]) .animations-pager {
                 height: 50px;
@@ -57,8 +61,10 @@ Polymer({
                 margin: 0 25px;
             }
             .text {
-                @apply --layout-vertical;
-                @apply --layout-flex;
+                display: flex;
+flex-direction: column;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             .buttons {
                 display: block;
@@ -93,8 +99,9 @@ Polymer({
                 background-color: #5B646B;
             }
             #banner-save-button {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 margin: 0 10px 10px 0;
             }
             #banner-save-button iron-icon {

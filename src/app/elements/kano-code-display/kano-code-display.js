@@ -24,7 +24,8 @@ Polymer({
             :host {
                 box-sizing: border-box;
                 padding: 8px 8px 0 0;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
             }
             :host pre {
                 width: 100%;
@@ -40,7 +41,8 @@ Polymer({
                 color: #fff;
                 opacity: 0.1;
                 margin-right: 8px;
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
             }
             :host .line-number {
                 height: 20px;

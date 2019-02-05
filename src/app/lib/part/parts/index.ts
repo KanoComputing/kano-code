@@ -1,2 +1,2 @@
 export * from './dom.js';
-export * from './button.js';
+export * from './button/api.js';

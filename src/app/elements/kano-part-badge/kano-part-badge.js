@@ -13,8 +13,9 @@ Polymer({
                 background: #41464C;
                 color: white;
                 padding: 6px 8px;
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
             }
             .value {
                 padding: 1px 4px;

@@ -10,7 +10,8 @@ Polymer({
     _template: html`
         <style>
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 cursor: pointer;
                 color: white;
                 overflow: hidden;
@@ -23,8 +24,9 @@ Polymer({
                 color: white;
             }
             button.body {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 background: inherit;
                 color: inherit;
                 padding: 0;
@@ -41,13 +43,16 @@ Polymer({
                 width: 20px;
             }
             #content {
-                @apply --layout-horizontal;
-                @apply --layout-center;
-                @apply --layout-flex;
+                display: flex;
+flex-direction: row;
+                align-items: center;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             .bin {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 padding: 4px;
             }
             .bin img {

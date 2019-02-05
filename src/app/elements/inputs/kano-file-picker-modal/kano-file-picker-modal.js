@@ -14,10 +14,12 @@ Polymer({
                 background: #292f35;
                 color: #fff;
                 padding: 12px 0px;
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
             }
             :host #modal paper-dialog-scrollable {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
                 --paper-dialog-scrollable: {
                     max-height: 50vh;
                     padding: 0px 60px;
@@ -36,9 +38,10 @@ Polymer({
             }
             :host #modal header {
                 padding: 0px 60px;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-justified;
-                @apply --layout-center;
+                align-items: center;
             }
             :host #modal header h2 {
                 font-size: 16px;

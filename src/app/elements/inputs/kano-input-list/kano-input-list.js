@@ -14,13 +14,15 @@ Polymer({
   _template: html`
         <style include="kano-code-shared-styles">
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
             }
             label {
                 @apply --kano-part-editor-label;
             }
             paper-dropdown-menu {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 border-radius: 3px;
 
                 --paper-dropdown-menu-ripple: {

@@ -8,7 +8,8 @@ Polymer({
   _template: html`
         <style>
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-center-justified;
                 position: relative;
                 text-align: left;
@@ -22,7 +23,8 @@ Polymer({
                 padding: 0 36px;
             }
             :host .modal-content {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
             }
             :host .line {
                 padding-left: 20px;

@@ -24,11 +24,12 @@ Polymer({
                 overflow: auto;
             }
             :host .input-line {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
             }
             :host kano-input-range {
-                @apply --layout-flex-auto;
+                flex: 1 1 auto;
             }
             .spacer {
                 width: 32px;

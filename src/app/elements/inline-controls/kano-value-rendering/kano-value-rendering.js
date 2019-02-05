@@ -7,8 +7,9 @@ Polymer({
   _template: html`
         <style>
             :host {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
             }
         </style>
         <canvas id="canvas" style\$="width: [[width]]px; height: [[height]]px" width\$="[[_canvasWidth]]" height\$="[[_canvasHeight]]"></canvas>

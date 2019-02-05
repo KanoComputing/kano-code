@@ -38,27 +38,31 @@ Polymer({
                 position: relative;
             }
             .action-container {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --kano-bitmaplist-action-container;
             }
             #delete-slot {
-                @apply --layout-flex-auto;
+                flex: 1 1 auto;
             }
             #frames {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 height: 110px;
                 position: relative;
                 box-sizing: border-box;
                 padding: 0;
             }
             .carousel-content {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
             }
             .sortable-item {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 @apply --layout-center-justified;
                 position: relative;
                 width: 116px;
@@ -107,8 +111,9 @@ Polymer({
             x-carousel {
                 position: relative;
                 height: 112px;
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
             }
             .disabled {
                 opacity: 0.6;

@@ -1,10 +1,10 @@
 import '@polymer/polymer/polymer-legacy.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-icon/iron-icon.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { Templatizer } from '@polymer/polymer/lib/legacy/templatizer-behavior.js';
-import '@kano/kwc-style/color.js';
+import '@kano/styles/color.js';
+import '@kano/styles/typography.js';
 import '../kano-icons/parts.js';
 import '../inline-controls/kano-inline-controls.js';
 
@@ -17,11 +17,13 @@ Polymer({
     _template: html`
         <style>
             :host {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 color: #fff;
                 font-size: 14px;
                 white-space: nowrap;
+                font-family: var(--font-body);
             }
             iron-icon {
                 --iron-icon-fill-color: #8F9195;
@@ -34,15 +36,15 @@ Polymer({
                 min-width: 60px;
             }
             .controls {
-                @apply --layout-flex-auto;
+                flex: 1 1 auto;
                 margin-left: 8px;
             }
             .disconnected {
-                color: var(--color-rhubarb);
+                color: var(--color-carnation);
             }
         </style>
         <iron-icon id="icon" icon="parts:[[model.type]]" class="icon"></iron-icon>
-        <div class\$="label {{_computeLabelClass(model.connected)}}">[[model.name]] {{_computeLabel(model.connected)}}</div>
+        <div class$="label {{_computeLabelClass(model.connected)}}">[[model.name]] {{_computeLabel(model.connected)}}</div>
         <div class="controls" id="controls"></div>
         <template id="oscillator">
             <kano-ic-oscillator id="inline-controls" model="[[model]]"></kano-ic-oscillator>

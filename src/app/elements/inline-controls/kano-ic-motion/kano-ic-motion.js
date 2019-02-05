@@ -9,7 +9,8 @@ Polymer({
   _template: html`
         <style>
             :host {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-end-justified;
                 color: #fff;
             }
@@ -17,8 +18,9 @@ Polymer({
                 width: 32px;
             }
             .gesture-icons {
-                @apply --layout-flex-auto;
-                @apply --layout-horizontal;
+                flex: 1 1 auto;
+                display: flex;
+flex-direction: row;
                 @apply --layout-around-justified;
                 max-width: 196px;
                 margin-right: 8px;

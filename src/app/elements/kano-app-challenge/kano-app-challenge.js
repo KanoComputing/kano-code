@@ -29,7 +29,8 @@ class KanoAppChallenge extends Store.StateReceiver(mixinBehaviors([
                 flex: 1;
             }
             .banner-container {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-stretch;
                 @apply --layout-center-justified;
                 position: absolute;

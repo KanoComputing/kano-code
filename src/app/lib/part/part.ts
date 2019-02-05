@@ -35,6 +35,8 @@ export class Part implements IPart {
     protected subscriptions : Disposables = new Disposables();
     protected _components : Map<string, PartComponent> = new Map();
     public static components? : string[];
+    public id? : string;
+    public name? : string;
     static get type() : string {
         throw new Error('Could not create part, type is not defined');
     }
@@ -60,6 +62,8 @@ export class Part implements IPart {
     serialize() {
         const data : { [K : string] : any } = {
             type: (this.constructor as typeof Part).type,
+            id: this.id,
+            name: this.name,
         };
         this._components.forEach((component, key) => {
             data[key] = component.serialize();
@@ -67,7 +71,12 @@ export class Part implements IPart {
         return data;
     }
     load(data : any) {
+        this.id = data.id;
+        this.name = data.name;
         this._components.forEach((component, key) => {
+            if (!data[key]) {
+                return;
+            }
             component.load(data[key]);
         });
     }

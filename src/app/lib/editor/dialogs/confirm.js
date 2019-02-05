@@ -22,7 +22,7 @@ export class Confirm extends Alert {
         confirm.className = 'btn kano-alert-primary';
         confirm.setAttribute('dialog-confirm', '');
         const dismiss = this.createButton(options.dismissLabel);
-        dismiss.className = 'btn tertiary kano-alert-secondary';
+        dismiss.className = 'btn secondary kano-alert-secondary';
         dismiss.setAttribute('dialog-dismiss', '');
         root.appendChild(confirm);
         root.appendChild(dismiss);

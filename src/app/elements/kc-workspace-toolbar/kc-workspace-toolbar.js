@@ -91,12 +91,14 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
                 color: black;
             }
             li {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-stretch;
             }
             .inline {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 @apply --layout-start-justified;
                 cursor: pointer;
                 opacity: 0.9;

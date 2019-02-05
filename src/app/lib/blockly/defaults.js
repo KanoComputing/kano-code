@@ -142,6 +142,8 @@ class Defaults {
                 // Check if it is a color
                 if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(blockValues[input])) {
                     shadow[input] = `<shadow type="colour_picker"><field name="COLOUR">${blockValues[input]}</field></shadow>`;
+                } else {
+                    shadow[input] = `<shadow type="text"><field name="TEXT">${blockValues[input]}</field></shadow>`;
                 }
                 break;
             }

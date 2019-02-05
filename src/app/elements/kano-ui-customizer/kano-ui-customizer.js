@@ -10,7 +10,8 @@ Polymer({
   _template: html`
         <style include="kano-code-shared-styles">
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 --kwc-color-picker-size: 29px;
                 --kano-color-input-field: {
                     margin: 14px auto 0;

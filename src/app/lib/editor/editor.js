@@ -377,6 +377,9 @@ export class Editor extends EditorOrPlayer {
         if (this.profile.toolbox) {
             this.profile.toolbox.forEach(t => this.toolbox.addEntry(t));
         }
+        if (this.profile.parts) {
+            this.profile.parts.forEach(p => this.parts.registerAPI(p));
+        }
         if (this.profile.creationPreviewProvider) {
             this.creationPreviewProvider = this.profile.creationPreviewProvider;
             this.addPlugin(this.creationPreviewProvider);

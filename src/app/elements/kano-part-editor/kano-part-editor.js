@@ -32,20 +32,23 @@ class KanoPartEditor extends mixinBehaviors(behaviors, PolymerElement) {
         return html`
         <style include="kano-code-shared-styles">
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 border: 1px solid #202428;
                 border-radius: 6px;
                 background: #292f35;
             }
             :host #config-panel-container {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 flex: 1 0 auto;
                 position: relative;
                 overflow: hidden;
                 box-sizing: border-box;
             }
             #config-panel-container > * {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 flex: 1 1 auto;
             }
         </style>

@@ -2,12 +2,14 @@ import VM from '../vm.js';
 import AppModulesLoader from '../app-modules/index.js';
 import { Plugin } from './plugin.js';
 import AppModule from '../app-modules/app-module.js';
+import { VariableStore } from './variables.js';
 
 export class Runner extends Plugin {
     private modules : Type<AppModule>[] = [];
     private output? : any;
     private appModulesLoader : AppModulesLoader|null = null;
     private vm : VM|null = null;
+    public variables : VariableStore = new VariableStore();
     constructor() {
         super();
         this._onRunningStateChange = this._onRunningStateChange.bind(this);

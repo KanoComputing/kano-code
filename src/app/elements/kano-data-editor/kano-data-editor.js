@@ -30,11 +30,13 @@ Polymer({
                 overflow: auto;
             }
             :host .config {
-                @apply --layout-vertical;
-                @apply --layout-flex-auto;
+                display: flex;
+flex-direction: column;
+                flex: 1 1 auto;
             }
             :host .line {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 margin-bottom: var(--kano-part-editor-input-margin);
                 text-align: left;
             }
@@ -46,8 +48,9 @@ Polymer({
                 --paper-toggle-button-label-color: #fff;
             }
             :host .refresh-button {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
                 @apply --kano-icon-button;
                 margin: 16px 8px 16px 0px;
@@ -71,7 +74,8 @@ Polymer({
                 --paper-spinner-color: #fff;
             }
             #refresh-frequency paper-dropdown-menu {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 border-radius: 3px;
                 background: var(--color-abbey);
 
@@ -178,7 +182,8 @@ Polymer({
                 };
             }
             :host .data-header {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-justified;
                 padding: 0 8px;
             }
@@ -194,7 +199,8 @@ Polymer({
                 background-color: rgba(255, 255, 255, 0.4);
             }
             :host .data-browser {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 position: relative;
                 border-radius: 6px;
                 margin: 16px 0 24px;
@@ -205,7 +211,7 @@ Polymer({
                 margin-top: 8px;
                 width: 85%;
                 color: rgba(255, 255, 255, 0.5);
-                @apply --layout-self-end;
+                align-self: flex-end;
             }
             :host kano-what-is-json {
                 position: absolute;

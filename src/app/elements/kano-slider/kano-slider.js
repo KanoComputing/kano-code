@@ -24,8 +24,9 @@ Polymer({
   _template: html`
         <style>
             :host {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
             }
             input[type=range] {
                 -webkit-appearance: none;

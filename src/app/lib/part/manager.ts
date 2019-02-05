@@ -3,7 +3,12 @@ import { Output } from '../output/output.js';
 
 export type PartContructor = Type<Part> & {
     type : string;
-    partName : string;
+}
+
+export interface ISerializedPart {
+    id? : string;
+    name? : string;
+    [K : string] : any;
 }
 
 export class PartsManager {
@@ -16,13 +21,16 @@ export class PartsManager {
     getRegisteredParts() {
         return this._registeredParts;
     }
+    getParts() {
+        return this._parts;
+    }
     onInject() {
         this.output.dom.root.style.position = 'relative';
     }
     registerPart(partClass : PartContructor) {
         this._registeredParts.set(partClass.type, partClass);
     }
-    addPart(partClass : Type<Part>, data? : any) {
+    addPart(partClass : Type<Part>, data? : ISerializedPart) : Part {
         const part = new partClass();
         if (data) {
             part.load(data);
@@ -33,6 +41,11 @@ export class PartsManager {
             dom: this.output.dom,
         });
         this._parts.add(part);
+        return part;
+    }
+    removePart(part : Part) {
+        part.dispose();
+        this._parts.delete(part);
     }
     save() {
         const state : { [K : string] : any }[] = []
@@ -49,7 +62,7 @@ export class PartsManager {
                 console.warn(`Could not load part '${data.type}': This part was not registered`);
                 return;
             }
-            this.addPart(partClass, data);
+            this.addPart(partClass, data as ISerializedPart);
         });
     }
     reset() {

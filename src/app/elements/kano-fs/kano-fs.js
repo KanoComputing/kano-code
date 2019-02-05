@@ -11,7 +11,8 @@ Polymer({
             display: block;
         }
         :host .explorer {
-            @apply --layout-horizontal;
+            display: flex;
+flex-direction: row;
             @apply --layout-center-justified;
             @apply --layout-wrap;
             max-width: calc(144px * 5);
@@ -25,8 +26,9 @@ Polymer({
             cursor: pointer;
         }
         :host .icon {
-            @apply --layout-vertical;
-            @apply --layout-center;
+            display: flex;
+flex-direction: column;
+            align-items: center;
             @apply --layout-center-justified;
             width: 120px;
             height: 120px;
@@ -38,11 +40,13 @@ Polymer({
             height: 100px;
         }
         :host header {
-            @apply --layout-horizontal;
-            @apply --layout-center;
+            display: flex;
+flex-direction: row;
+            align-items: center;
         }
         :host header div {
-            @apply --layout-flex;
+            flex: 1;
+flex-basis: 0.000000001px;
         }
         :host .left {
             @apply --layout-start;

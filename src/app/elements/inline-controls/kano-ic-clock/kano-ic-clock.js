@@ -6,18 +6,21 @@ Polymer({
   _template: html`
         <style>
             :host {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-end-justified;
                 color: #fff;
             }
             .visuals {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 margin-right: 8px;
                 font-size: 12px;
             }
             .data {
                 width: 18px;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-center-justified;
             }
             span {

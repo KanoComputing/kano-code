@@ -2,7 +2,7 @@ import EventEmitter from '../util/event-emitter.js';
 import Output from '../output/output.js';
 
 interface IMethodTree {
-    [K : string] : Function|string|IMethodTree;
+    [K : string] : Function|string|IMethodTree|any;
 }
 
 class SubModule {
@@ -79,6 +79,7 @@ export class AppModule {
     private symbols : string[];
     private static nextCall : { [K : string] : number|null };
     private static waiting : { [K : string] : Function|null };
+    protected output : Output;
     constructor(output : Output) {
         this.output = output;
         this.lifecycle = {};

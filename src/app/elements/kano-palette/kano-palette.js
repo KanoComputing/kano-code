@@ -31,7 +31,7 @@ Polymer({
                 display: block;
             }
             .pen-control {
-                @apply --layout-flex-auto;
+                flex: 1 1 auto;
                 margin-right: 16px;
                 @apply --kano-pen-control;
             }
@@ -39,18 +39,21 @@ Polymer({
                 margin-right: 8px;
             }
             .palette {
-                @apply --layout-flex-auto;
-                @apply --layout-vertical;
+                flex: 1 1 auto;
+                display: flex;
+flex-direction: column;
                 @apply --layout-start;
             }
             .palette-content {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-wrap;
                 height: 150px;
             }
             :host([medium-screen]) .palette-content,
             :host([small-screen]) .palette-content {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 width: 216px;
                 height: auto;
             }
@@ -100,8 +103,9 @@ Polymer({
                 background-image: url(/assets/icons/pencil.svg);
             }
             .add-color {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
                 background: transparent;
                 color: grey;
@@ -114,7 +118,8 @@ Polymer({
             }
             .pen-control button {
                 @apply --kano-button;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-center-justified;
                 width: 36px;
                 height: 36px;
@@ -131,11 +136,13 @@ Polymer({
                 fill: #999;
             }
             .pen-control iron-selector {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
             }
             :host([medium-screen]) .pen-control iron-selector,
             :host([small-screen]) .pen-control iron-selector {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
             }
             .pen-control button:focus {
                 outline: none;

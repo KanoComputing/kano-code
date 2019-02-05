@@ -69,6 +69,11 @@ export class PartComponent {
             if (!serializers.has(property.type)) {
                 throw new Error(`Could not create component: type for '${key}' does not have a registered serializer. Use 'registerTypeSerializer' to allow the property to be saved and loaded`);
             }
+        });
+        this.reset();
+    }
+    reset() {
+        this._properties.forEach((property, key) => {
             if (typeof property.value === 'function') {
                 this[key] = property.value();
             } else {

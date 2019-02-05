@@ -110,24 +110,28 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         return html`
         <style>
             :host {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 position: relative;
                 max-width: 100vw;
             }
             :host section {
                 @apply --layout-horizontal-reverse;
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             :host section #source-panel {
-                @apply --layout-flex-auto;
-                @apply --layout-vertical;
+                flex: 1 1 auto;
+                display: flex;
+flex-direction: column;
                 @apply --kano-inset-box-shadow;
                 position: relative;
                 min-width: 50%;
                 max-width: 70%;
             }
             :host section #workspace-panel {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 position: relative;
                 min-width: 33%;
                 max-width: 50%;
@@ -165,20 +169,25 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 --paper-tab-ink: var(--color-dark);
             }
             :host iron-pages.workspace-pages {
-                @apply --layout-vertical;
-                @apply --layout-flex;
+                display: flex;
+flex-direction: column;
+                flex: 1;
+flex-basis: 0.000000001px;
                 overflow: visible;
             }
             :host #workspace-panel kano-workspace {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             :host kano-code-display {
                 @apply --flex-layout;
                 margin: 16px;
             }
             :host [main] {
-                @apply --layout-vertical;
-                @apply --layout-flex;
+                display: flex;
+flex-direction: column;
+                flex: 1;
+flex-basis: 0.000000001px;
                 position: relative;
             }
             #source-container {
@@ -206,8 +215,9 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 position: relative;
             }
             #edit-part-dialog {
-                @apply --layout-vertical;
-                @apply --layout-flex-auto;
+                display: flex;
+flex-direction: column;
+                flex: 1 1 auto;
                 flex-shrink: 0;
                 overflow: hidden;
                 font-weight: bold;

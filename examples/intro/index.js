@@ -2,7 +2,8 @@ import * as code from '../../index.js';
 import * as APIs from '../../toolbox.js';
 import * as i18n from '../../i18n.js';
 import * as Modules from '../../modules.js';
-import { ButtonPart } from '../../dist/app/lib/part/parts/button.js';
+import { ButtonAPI } from '../../dist/app/lib/part/parts/button/api.js';
+import { ButtonPart } from '../../dist/app/lib/part/parts/button/button.js';
 
 const Shapes = {
     type: 'module',
@@ -62,6 +63,9 @@ class OutputProfile extends code.OutputProfile {
 }
 
 class EditorProfile extends code.EditorProfile {
+    get parts() {
+        return [ButtonAPI];
+    }
     get toolbox() {
         return Object.values(APIs).concat([Shapes]);
     }

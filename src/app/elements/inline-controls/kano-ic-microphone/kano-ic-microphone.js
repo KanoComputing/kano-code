@@ -10,18 +10,21 @@ Polymer({
     _template: html`
         <style>
             :host {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-end-justified;
                 color: white;
             }
             .visuals {
-                @apply --layout-horizontal;
-                @apply --layout-flex-auto;
+                display: flex;
+flex-direction: row;
+                flex: 1 1 auto;
                 margin: 0 12px;
             }
             .data {
                 width: 32px;
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-center-justified;
                 flex-shrink: 0;
             }

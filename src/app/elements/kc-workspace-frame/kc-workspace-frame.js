@@ -64,9 +64,10 @@ class KcWorkspaceFrame extends mixinBehaviors([
                 padding: 20px 0;
             }
             .controls {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-justified;
-                @apply --layout-flex-auto;
+                flex: 1 1 auto;
                 box-sizing: border-box;
             }
             :host(:not(.fullscreen)) .overlay {
@@ -87,7 +88,7 @@ class KcWorkspaceFrame extends mixinBehaviors([
                 width: 100%;
             }
             button#fullscreen-close {
-                @apply --layout-self-end;
+                align-self: flex-end;
                 @apply --kano-button;
                 background: rgba(255, 255, 255, 0.25);
                 color: rgba(255, 255, 255, 0.75);

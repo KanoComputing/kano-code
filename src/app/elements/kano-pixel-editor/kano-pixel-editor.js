@@ -41,7 +41,8 @@ Polymer({
   _template: html`
         <style include="kano-code-shared-styles">
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 background-color: #292f35;
                 --part-theme: #00d9c7;
             }
@@ -62,11 +63,13 @@ Polymer({
                 transition: fill 300ms;
             }
             .center-panel {
-                @apply --layout-horizontal;
-                @apply --layout-flex-auto;
+                display: flex;
+flex-direction: row;
+                flex: 1 1 auto;
             }
             .side-menu {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 border-right: 1px solid var(--kano-app-part-editor-border);
             }
             .side-menu button {
@@ -92,26 +95,30 @@ Polymer({
                 fill: #fff;
             }
             #palette {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-justified;
                 width: 148px;
                 text-align: left;
             }
             .bitmap-container {
-                @apply --layout-flex-auto;
-                @apply --layout-vertical;
+                flex: 1 1 auto;
+                display: flex;
+flex-direction: column;
                 @apply --layout-center-justified;
-                @apply --layout-center;
+                align-items: center;
                 @apply --kano-pixel-editor-bitmap-container;
             }
             .bitmap-container iron-pages {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-center-justified;
                 margin-top: -1px;
                 margin-left: -1px;
             }
             .control-container {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 width: 268px;
                 border-left: 1px solid var(--kano-app-part-editor-border);
             }
@@ -119,25 +126,29 @@ Polymer({
                 margin: 34px 0 20px 1px;
             }
             .control-content {
-                @apply --layout-flex-auto;
-                @apply --layout-horizontal;
+                flex: 1 1 auto;
+                display: flex;
+flex-direction: row;
                 height: 344px;
                 padding: 0 28px;
             }
             .control-content>* {
-                @apply --layout-flex-auto;
-                @apply --layout-vertical;
+                flex: 1 1 auto;
+                display: flex;
+flex-direction: column;
             }
             .control-content .custom-colour-header {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 @apply --layout-justified;
                 margin: 0 14px 20px 0;
             }
             .control-content .custom-colour-header button {
                 @apply --kano-button;
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 font-size: 14px;
                 line-height: 18px;
                 font-weight: bold;
@@ -191,8 +202,9 @@ Polymer({
                 margin-bottom: 0;
             }
             .settings {
-                @apply --layout-vertical;
-                @apply --layout-flex-auto;
+                display: flex;
+flex-direction: column;
+                flex: 1 1 auto;
             }
             button.add-frame iron-icon {
                 --iron-icon-height: 18px;

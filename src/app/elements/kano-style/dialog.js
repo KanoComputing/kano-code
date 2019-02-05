@@ -5,7 +5,8 @@ $_documentContainer.innerHTML = `<dom-module id="kano-style-dialog">
     <template>
         <style>
             paper-dialog {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 z-index: 10;
                 background-color: #fff;
                 border-radius: 3px;
@@ -18,7 +19,8 @@ $_documentContainer.innerHTML = `<dom-module id="kano-style-dialog">
                 padding: 18px 24px 12px;
             }
             paper-dialog #dialog-content {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             paper-dialog #badge {
                 padding: 12px;

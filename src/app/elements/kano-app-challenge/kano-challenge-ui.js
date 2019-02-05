@@ -135,13 +135,15 @@ Polymer({
                 }
             }
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 flex: 1;
                 --tooltip-color: white;
             }
             :host .instruction-overlay {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 @apply --layout-center-justified;
                 padding: 5px;
             }
@@ -161,8 +163,9 @@ Polymer({
                 border-radius: 4px;
             }
             :host .modal-content {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
                 font-family: var(--font-body, Arial);
                 font-size: 16px;
@@ -174,8 +177,9 @@ Polymer({
                 color: #435055;
             }
             :host .tooltip-content {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
             }
             :host .tooltip-content button {
                 margin: 12px 0 0 0;
@@ -211,16 +215,18 @@ Polymer({
             .beacon-wrapper {
                 position: relative;
                 max-width: 30px;
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
             }
             .beacon {
                 width: 30px;
                 height: 30px;
                 border-radius: 50%;
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
             }
             .beacon.animate {

@@ -1,18 +1,20 @@
-interface IDefinition {
-    symbols? : IDefinition[];
+export interface IMetaDefinition {
+    symbols? : IMetaDefinition[];
     name : string;
     type : string;
     color? : string;
     verbose? : string;
     returnType? : any;
     typeScriptDefinition? : string;
+    parameters? : IMetaDefinition[];
+    default? : any;
 }
 
 export class Meta {
-    public def : IDefinition;
+    public def : IMetaDefinition;
     public parent? : Meta;
     public symbols? : Meta[];
-    constructor(def : IDefinition, parent? : Meta) {
+    constructor(def : IMetaDefinition, parent? : Meta) {
         this.parent = parent;
         this.def = def;
         this.build();
@@ -82,11 +84,11 @@ export class MetaVariable extends Meta {
 
 export class MetaModule extends Meta {}
 
-interface IParameters extends IDefinition {
+interface IParameters extends IMetaDefinition {
 
 }
 
-interface IFunctionDefinition extends IDefinition {
+interface IFunctionDefinition extends IMetaDefinition {
     parameters : IParameters[];
 }
 

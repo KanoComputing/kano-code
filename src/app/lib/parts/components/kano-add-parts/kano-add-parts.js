@@ -14,7 +14,8 @@ class KanoAddParts extends PolymerElement {
         return html`
         <style>
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 max-height: inherit;
                 color: white;
                 background-color: var(--kano-app-editor-workspace-background);
@@ -37,13 +38,16 @@ class KanoAddParts extends PolymerElement {
                 margin: 24px 0;
             }
             .categories {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
             }
             .category-box .categories>* {
                 width: 238px;
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-start-justified;
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             .category-box .categories>*:not(:first-of-type) {
                 margin-left: 32px;
@@ -58,15 +62,17 @@ class KanoAddParts extends PolymerElement {
                 background-color: #ef5285;
             }
             header {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 flex-shrink: 0;
                 height: 58px;
                 padding: 0 16px;
                 border-bottom: 2px solid #252A30;
             }
             header .label {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
                 font-size: 16px;
                 font-weight: bold;
             }
@@ -94,8 +100,9 @@ class KanoAddParts extends PolymerElement {
                 background-color: #5b646b;
             }
             .no-part {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 background-color: #22272d;
                 width: 802px;
                 border-radius: 6px;
@@ -115,7 +122,7 @@ class KanoAddParts extends PolymerElement {
                 --iron-icon-height: 24px;
             }
             .no-part-text {
-                @apply --layout-flex-auto;
+                flex: 1 1 auto;
                 display: block;
                 margin-right: 40px;
             }

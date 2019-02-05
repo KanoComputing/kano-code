@@ -10,14 +10,16 @@ class KanoPartTerminal extends TerminalMixin(UIMixin(PolymerElement)) {
         return html`
             <style>
                 :host {
-                    @apply --layout-vertical;
+                    display: flex;
+flex-direction: column;
                     width: calc(100% + 2px);
                     height: calc(100% + 2px);
                     overflow: hidden;
                     transform: translate(-1px, -1px);
                 }
                 #container {
-                    @apply --layout-flex;
+                    flex: 1;
+flex-basis: 0.000000001px;
                     background: rgba(0, 0, 0, 0.9);
                     color: green;
                     font-family: monospace;

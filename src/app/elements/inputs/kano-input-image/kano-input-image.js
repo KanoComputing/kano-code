@@ -9,9 +9,10 @@ Polymer({
     _template: html`
         <style>
             :host {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 @apply --layout-center-justified;
-                @apply --layout-center;
+                align-items: center;
             }
             :host button {
                 @apply --kano-button;

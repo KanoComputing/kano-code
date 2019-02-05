@@ -9,9 +9,10 @@ Polymer({
   _template: html`
         <style>
             :host {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
                 @apply --layout-justified;
-                @apply --layout-center;
+                align-items: center;
                 color: #fff;
                 height: 59px;
                 padding: 0 16px;
@@ -30,8 +31,9 @@ Polymer({
                 color: inherit;
             }
             .action {
-                @apply --layout-flex-auto;
-                @apply --layout-horizontal;
+                flex: 1 1 auto;
+                display: flex;
+flex-direction: row;
                 @apply --layout-end-justified;
             }
             .action ::slotted(button) {

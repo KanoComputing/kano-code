@@ -13,12 +13,14 @@ $_documentContainer.innerHTML = `<dom-module id="kc-asset-picker-style">
                 --iron-icon-fill-color: rgba(116, 39, 39, 0.4);
             }
             .files {
-                @apply --layout-vertical;
+                display: flex;
+flex-direction: column;
                 padding: 16px 40px;
                 overflow-y: auto;
             }
             .files iron-pages {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             .bread-item {
                 display: inline-block;
@@ -31,8 +33,9 @@ $_documentContainer.innerHTML = `<dom-module id="kc-asset-picker-style">
             kwc-file-breadcrumbs {
                 font-weight: bold;
                 --kwc-file-breadcrumbs: {
-                    @apply --layout-horizontal;
-                    @apply --layout-center;
+                    display: flex;
+flex-direction: row;
+                    align-items: center;
                 };
             }
             .header button,
@@ -51,8 +54,9 @@ $_documentContainer.innerHTML = `<dom-module id="kc-asset-picker-style">
                 outline: none;
             }
             .files .dir {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 flex: 1 0 auto;
                 font-size: 16px;
                 padding: 0px 16px 0px 8px;
@@ -78,11 +82,13 @@ $_documentContainer.innerHTML = `<dom-module id="kc-asset-picker-style">
                 border-color: var(--kc-asset-picker-highlight-color, var(--color-grassland));
             }
             .files .dir.file .label {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             .files .dir.file .add {
-                @apply --layout-vertical;
-                @apply --layout-center;
+                display: flex;
+flex-direction: column;
+                align-items: center;
                 @apply --layout-center-justified;
                 font-family: var(--font-body);
                 font-size: 18px;
@@ -98,11 +104,13 @@ $_documentContainer.innerHTML = `<dom-module id="kc-asset-picker-style">
                 fill: white;
             }
             .files .dir .name {
-                @apply --layout-flex;
+                flex: 1;
+flex-basis: 0.000000001px;
             }
             .files .dir .number {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 @apply --layout-center-justified;
                 margin: 0px 12px;
                 background: rgba(255, 255, 255, 0.5);
@@ -122,8 +130,9 @@ $_documentContainer.innerHTML = `<dom-module id="kc-asset-picker-style">
                 min-height: 40px;
                 border-top: 1px solid var(--kc-asset-picker-separator-color, #202428);
                 border-bottom: 1px solid var(--kc-asset-picker-separator-color, #202428);
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 background: rgba(0, 0, 0, 0.1);
             }
             .icon-button {
@@ -139,11 +148,13 @@ $_documentContainer.innerHTML = `<dom-module id="kc-asset-picker-style">
                 opacity: 1;
             }
             [name="samples"] {
-                @apply --layout-horizontal;
+                display: flex;
+flex-direction: row;
             }
             .files button.play {
-                @apply --layout-horizontal;
-                @apply --layout-center;
+                display: flex;
+flex-direction: row;
+                align-items: center;
                 @apply --layout-center-justified;
                 width: 40px;
                 height: 40px;

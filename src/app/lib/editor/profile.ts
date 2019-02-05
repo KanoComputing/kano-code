@@ -1,10 +1,13 @@
 import { OutputProfile } from '../output/profile.js';
+import { IEditor } from '../part/editor.js';
 
 export class EditorProfile {
-    constructor(editor) {
+    private editor : IEditor;
+    constructor(editor : IEditor) {
         this.editor = editor;
     }
     onInstall() {}
+    get parts() { return []; }
     get plugins() { return []; }
     get toolbox() { return []; }
     get outputProfile() { return new OutputProfile(); }

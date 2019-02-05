@@ -15,6 +15,7 @@ export class DOMPart extends Part {
         super();
         this.transform = this._components.get('transform') as components.Transform;
         this._el = this.getElement();
+        this._el.style.transformOrigin = 'center center';
         this._el.style.position = 'absolute';
         this._el.style.top = '0';
         this._el.style.left = '0';
@@ -33,6 +34,15 @@ export class DOMPart extends Part {
     }
     getElement() : HTMLElement {
         return document.createElement('div');
+    }
+    moveTo(x : number, y : number) {
+        this.transform.x = x;
+        this.transform.y = y;
+        this.transform.invalidate();
+    }
+    setScale(scale : number) {
+        this.transform.scale = scale / 100;
+        this.transform.invalidate();
     }
     dispose() {
         super.dispose();

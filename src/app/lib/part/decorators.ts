@@ -5,25 +5,18 @@ import { PartComponent } from './component.js';
  * Automatically registers the type and name for a given part
  * Example:
  * ```ts
- * @part('my-part', 'My Part')
+ * @part('my-part')
  * class MyPart extends Part{}
  * ```
  * @param type Type of the part
  * @param name Label for the part
  */
-export function part(type : string, name : string) {
+export function part(type : string) {
     return function (contructor : Type<Part>) {
         Object.defineProperty(contructor, 'type', {
             writable: false,
             configurable: false,
             value: type,
-            enumerable: false,
-        });
-        // We use partname as name would class with the class name on safari
-        Object.defineProperty(contructor, 'partName', {
-            writable: false,
-            configurable: false,
-            value: name,
             enumerable: false,
         });
     };
@@ -54,6 +47,42 @@ export function component(comp : typeof PartComponent) {
         if (!target.constructor.hasOwnProperty('components')) {
             Object.defineProperty(target.constructor, 'components', {
                 get: () => componentsCache.get(target),
+                enumerable: true,
+            });
+        }
+    }
+}
+
+const propertiesCache : Map<any, { [K : string] : { type : any, value: any } }> = new Map();
+
+interface IPropertiesOptions {
+    type : any;
+    value : any;
+}
+
+/**
+ * Automatically register the component and bind them to the Part property
+ * Example:
+ * ```ts
+ * class MyComponent extends Component {
+ *     @property(Number)
+ *     public x : number;
+ * }
+ * ```
+ * @param comp Component class for a given property
+ */
+export function property(propOptions : IPropertiesOptions) {
+    return function (this : any, target : any, key : string) {
+        if (!propertiesCache.has(target)) {
+            propertiesCache.set(target, {});
+        }
+        const cachedProps = propertiesCache.get(target);
+        if (cachedProps) {
+            cachedProps[key] = propOptions;
+        }
+        if (!target.constructor.hasOwnProperty('properties')) {
+            Object.defineProperty(target.constructor, 'properties', {
+                get: () => propertiesCache.get(target),
                 enumerable: true,
             });
         }
