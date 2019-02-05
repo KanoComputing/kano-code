@@ -3,6 +3,7 @@ import { Output } from '../output/output.js';
 
 export type PartContructor = Type<Part> & {
     type : string;
+    partName : string;
 }
 
 export class PartsManager {
@@ -11,6 +12,9 @@ export class PartsManager {
     private output : Output;
     constructor(output : Output) {
         this.output = output;
+    }
+    getRegisteredParts() {
+        return this._registeredParts;
     }
     onInject() {
         this.output.dom.root.style.position = 'relative';

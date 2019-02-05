@@ -50,3 +50,9 @@ While serving, visit any of those:
 
 http://localhost:4000/examples/intro/
 http://localhost:4000/examples/pong/
+
+
+##
+
+ - Use decorators for parts and components? Stage 2 Ecmascript, experimental TypeScript
+ - memoize utils, memoize decorator?

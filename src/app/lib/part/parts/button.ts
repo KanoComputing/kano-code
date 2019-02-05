@@ -1,9 +1,10 @@
 import { subscribeDOM, EventEmitter } from '@kano/common/index.js';
 import { button } from '@kano/styles/button.js';
 import * as parts from '../index.js';
-import { IPartContext } from '../part.js';
+import { IPartContext, Part } from '../part.js';
 import { Color } from '../types/color.js';
 import { PartComponent } from '../component.js';
+import { part, component } from '../decorators.js';
 
 class ButtonComponent extends PartComponent {
     static get properties() {
@@ -24,16 +25,33 @@ class ButtonComponent extends PartComponent {
     }
 }
 
+@part('button', 'Button')
 export class ButtonPart extends parts.DOMPart {
-    static get type() {
-        return 'button';
-    }
     private static stylesAdded : boolean = false;
+    /**
+     * Adds the button styles to a given DOM element
+     * @param root Target DOM element for the styles to be added to
+     */
     private static addStyles(root : HTMLElement) {
+        // Only add once
         if (ButtonPart.stylesAdded) {
             return;
         }
         root.appendChild(button.content.cloneNode(true));
+    }
+    @component(ButtonComponent)
+    public core : ButtonComponent;
+    constructor() {
+        super();
+        this.core = this._components.get('core') as ButtonComponent;
+        subscribeDOM(this._el, 'click', () => {
+            if (!this.core) {
+                return;
+            }
+            this.core.click.fire();
+        }, this, this.subscriptions);
+
+        this.core.invalidate();
     }
     onInstall(context : IPartContext) {
         super.onInstall(context);
@@ -44,25 +62,22 @@ export class ButtonPart extends parts.DOMPart {
         el.classList.add('btn');
         return el;
     }
-    constructor() {
-        super();
-        subscribeDOM(this._el, 'click', () => this.core.click.fire(), null, this.subscriptions);
-    }
-    static get components() {
-        return {
-            core: ButtonComponent,
-        }
-    }
     onClick(callback : () => void) {
+        if (!this.core) {
+            return;
+        }
         this.core.click.event(callback);
     }
     setBackgroundColor(c : string) {
+        if (!this.core) {
+            return;
+        }
         this.core.backgroundColor = c;
         this.core.invalidate();
     }
     render() {
         super.render();
-        if (this.core.invalidated) {
+        if (this.core && this.core.invalidated) {
             this._el.textContent = this.core.text;
             this._el.style.backgroundColor = this.core.backgroundColor;
         }

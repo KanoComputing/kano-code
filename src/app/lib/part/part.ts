@@ -2,6 +2,10 @@ import { Disposables } from '@kano/common/index.js';
 import { collectPrototype } from './util.js';
 import { PartComponent } from './component.js';
 
+/**
+ * Declares the APIs available for the part to use.
+ * This usually give access to the output's APIs.
+ */
 export interface IPartContext {
     visuals : {
         canvas : HTMLCanvasElement;
@@ -17,6 +21,10 @@ export interface IPartContext {
     };
 }
 
+/**
+ * Base interface every part must implement.
+ * It ensures the lifecycle steps are dealt with
+ */
 export interface IPart {
     onInstall(context : IPartContext) : void;
     onStart() : void;
@@ -25,9 +33,8 @@ export interface IPart {
 
 export class Part implements IPart {
     protected subscriptions : Disposables = new Disposables();
-    protected _components : PartComponent[] = [];
-    protected _componentKeys : string[] = [];
-    [K : string] : PartComponent|any;
+    protected _components : Map<string, PartComponent> = new Map();
+    public static components? : string[];
     static get type() : string {
         throw new Error('Could not create part, type is not defined');
     }
@@ -35,9 +42,7 @@ export class Part implements IPart {
         const components = collectPrototype<Type<PartComponent>>('components', this.constructor, Part);
         components.forEach((componentClass, key) => {
             const component = new componentClass();
-            this[key] = component;
-            this._components.push(component);
-            this._componentKeys.push(key);
+            this._components.set(key, component);
         });
     }
     onInstall(context: IPartContext): void {
@@ -56,14 +61,14 @@ export class Part implements IPart {
         const data : { [K : string] : any } = {
             type: (this.constructor as typeof Part).type,
         };
-        return this._componentKeys.reduce((acc, key) => {
-            acc[key] = this[key].serialize();
-            return acc;
-        }, data);
+        this._components.forEach((component, key) => {
+            data[key] = component.serialize();
+        });
+        return data;
     }
     load(data : any) {
-        this._componentKeys.forEach((key) => {
-            (this[key] as PartComponent).load(data[key]);
+        this._components.forEach((component, key) => {
+            component.load(data[key]);
         });
     }
 }

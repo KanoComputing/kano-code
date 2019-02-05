@@ -15,6 +15,7 @@ import { EditorOrPlayer } from './editor-or-player.js';
 import { Output } from '../output/output.js';
 import { ActivityBar } from './activity-bar.js';
 import { WorkspaceToolbar } from './workspace/toolbar.js';
+import { EditorPartsManager } from '../part/editor.js';
 
 const PROXY_EVENTS = [
     'share',
@@ -97,6 +98,8 @@ export class Editor extends EditorOrPlayer {
 
         this.creation = new CreationPlugin();
         this.addPlugin(this.creation);
+
+        this.parts = new EditorPartsManager(this);
 
         this.on('import', (event) => {
             this.load(event.app);
@@ -193,6 +196,7 @@ export class Editor extends EditorOrPlayer {
         if (this.workspaceProvider) {
             this.workspaceProvider.onInject();
         }
+        this.parts.onInject();
         if (this._queuedVariables) {
             this.loadVariables(this._queuedVariables);
             this._queuedVariables = null;

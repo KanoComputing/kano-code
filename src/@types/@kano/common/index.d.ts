@@ -6,10 +6,11 @@ declare module '@kano/common/index.js' {
         push(...args : IDisposable[]) : void;
         dispose() : void;
     }
-    type IEvent<T> = (callback : (data? : T) => void, thisArg? : any, subs? : Disposables) => IDisposable;
+    type IEvent<T> = (callback : (data : T) => void, thisArg? : any, subs? : Disposables) => IDisposable;
     class EventEmitter<T = void> {
         event : IEvent<T>;
         fire(data : T) : void;
+        dispose() : void;
     }
     function subscribe(target : any, name : string, callback : Function, thisArg? : any, subs? : Disposables) : IDisposable;
     function subscribeDOM(target : HTMLElement, name : string, callback : Function, thisArg? : any, subs? : Disposables) : IDisposable;

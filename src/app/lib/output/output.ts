@@ -37,7 +37,7 @@ export class Output extends PluginReceiver {
     private _running : boolean = false;
     private _fullscreen : boolean = false;
     private _code : string = '';
-    private _partsManager : PartsManager;
+    public parts : PartsManager;
     public outputViewProvider? : IOutputProvider;
     public outputProfile? : IOutputProfile;
     public get visuals() : IVisualsContext {
@@ -62,11 +62,11 @@ export class Output extends PluginReceiver {
         super();
         this.runner = new Runner();
         this.runner.addModule(OutputModule);
-        this._partsManager = new PartsManager(this);
+        this.parts = new PartsManager(this);
         this.addPlugin(this.runner);
     }
     addPart(partClass : Type<Part>) {
-        this._partsManager.addPart(partClass);
+        this.parts.addPart(partClass);
     }
     addPlugin(plugin : Plugin) {
         super.addPlugin(plugin);
@@ -109,7 +109,7 @@ export class Output extends PluginReceiver {
             this.outputProfile.modules.forEach((m : Type<AppModule>) => this.runner.addModule(m));
         }
         if (this.outputProfile.parts) {
-            this.outputProfile.parts.forEach(p => this._partsManager.registerPart(p));
+            this.outputProfile.parts.forEach(p => this.parts.registerPart(p));
         }
     }
     checkOutputView() {
@@ -160,17 +160,17 @@ export class Output extends PluginReceiver {
         if (this.outputViewProvider) {
             this.outputViewProvider.onInject();
         }
-        this._partsManager.onInject();
+        this.parts.onInject();
         this.runPluginTask('onInject');
     }
     onExport(data : any) {
-        const parts = this._partsManager.save();
+        const parts = this.parts.save();
         const exp = this.plugins.reduce((d, plugin) => plugin.onExport(d), data);
         exp.parts = parts;
         return exp;
     }
     onImport(data : any) {
-        this._partsManager.load(data.parts || []);
+        this.parts.load(data.parts || []);
         this.runPluginTask('onImport', data);
     }
     onCreationExport(data : any) {

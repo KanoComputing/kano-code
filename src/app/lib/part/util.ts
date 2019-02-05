@@ -6,7 +6,9 @@ export function collectPrototype<T>(key : string, base : any, limit : any) : Map
     let c = base;
     const components : Map<string, T> = new Map();
     while (c !== limit) {
-        Object.keys(c[key]).forEach((k) => components.set(k, c[key][k]));
+        if (c[key]) {
+            Object.keys(c[key]).forEach((k) => components.set(k, c[key][k]));
+        }
         c = Object.getPrototypeOf(c);
     }
     return components;
