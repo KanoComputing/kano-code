@@ -51,7 +51,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
                 @apply --kano-icon-button;
                 margin: 16px 8px 16px 0px;
                 padding: 0;
@@ -184,7 +184,7 @@ flex-direction: column;
             :host .data-header {
                 display: flex;
 flex-direction: row;
-                @apply --layout-justified;
+                justify-content: space-between;
                 padding: 0 8px;
             }
             :host .loading-overlay {

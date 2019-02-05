@@ -116,7 +116,7 @@ flex-basis: 0.000000001px;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             .gif-creation-header span,
             .saving span {
@@ -139,7 +139,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             .preview iron-pages>* {
                 height: 100%;
@@ -177,7 +177,7 @@ flex-direction: column;
             form {
                 display: flex;
 flex-direction: column;
-                @apply --layout-center-justified;
+                justify-content: center;
                 padding-top: 64px;
             }
 
@@ -228,7 +228,7 @@ flex-basis: 0.000000001px;
             .save-button,
             .close {
                 background: var(--color-grassland);
-                @apply --layout-self-center;
+                align-self: center;
                 transition: background 150ms;
             }
 
@@ -278,7 +278,7 @@ flex-basis: 0.000000001px;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
 
             .blocks {
@@ -344,7 +344,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: row;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
                 margin-right: 8px;
             }
             .social-share-container a,
@@ -373,7 +373,7 @@ flex-direction: column;
                 align-items: center;
             }
             .success {
-                @apply --layout-around-justified;
+                justify-content: space-around;
             }
             .success .title, .fail .title {
                 font-size: 20px;
@@ -385,13 +385,13 @@ flex-direction: column;
                 line-height: 21px;
             }
             .success .composed-button {
-                @apply --layout-self-stretch;
+                align-self: stretch;
             }
             .fail {
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             .fail .title {
                 text-transform: uppercase;
@@ -450,7 +450,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             paper-spinner-lite {
                 --paper-spinner-color: white;
@@ -464,7 +464,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
                 opacity: 0;
                 transition: opacity ease-in-out 70ms;
                 cursor: pointer;

@@ -66,7 +66,7 @@ class KcWorkspaceFrame extends mixinBehaviors([
             .controls {
                 display: flex;
 flex-direction: column;
-                @apply --layout-justified;
+                justify-content: space-between;
                 flex: 1 1 auto;
                 box-sizing: border-box;
             }

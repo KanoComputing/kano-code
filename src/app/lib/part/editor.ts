@@ -10,7 +10,9 @@ import { KCPartsControls } from '../../elements/kc-workspace-frame/kc-parts-cont
 import { TelemetryClient } from '@kano/telemetry/index.js';
 
 export interface IEditor {
+    injected : boolean;
     output : Output;
+    config : any;
     workspaceView : {
         partsControls : KCPartsControls;
     };
@@ -25,6 +27,7 @@ export interface IEditor {
     sourceEditor: {
         getSource() : string;
     };
+    rootEl : HTMLElement;
 }
 
 export interface IPartDefinition {

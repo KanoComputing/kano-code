@@ -25,7 +25,7 @@ class KanoICOscillator extends OscillatorMixin(mixinBehaviors([IronResizableBeha
                 :host {
                     display: flex;
 flex-direction: row;
-                    @apply --layout-end-justified;
+                    justify-content: flex-end;
                     color: white;
                 }
                 .visuals {
@@ -38,7 +38,7 @@ flex-direction: row;
                     width: 32px;
                     display: flex;
 flex-direction: row;
-                    @apply --layout-center-justified;
+                    justify-content: center;
                     flex-shrink: 0;
                 }
             </style>

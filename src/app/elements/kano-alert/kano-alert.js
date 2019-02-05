@@ -55,7 +55,7 @@ class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElement) {
             :host {
                 display: flex;
 flex-direction: row;
-                @apply --layout-start;
+                align-items: flex-start;
                 @apply --shadow-elevation-16dp;
                 font-family: var(--font-body);
                 background-color: #fff;
@@ -94,7 +94,7 @@ flex-direction: row;
             .actions {
                 display: flex;
 flex-direction: row;
-                @apply --layout-start-justified;
+                justify-content: flex-start;
                 @apply --kano-alert-action-container;
             }
             .actions button,

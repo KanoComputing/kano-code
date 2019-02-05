@@ -11,7 +11,7 @@ Polymer({
             :host {
                 display: flex;
 flex-direction: row;
-                @apply --layout-end-justified;
+                justify-content: flex-end;
                 color: #fff;
             }
             .data {
@@ -21,7 +21,7 @@ flex-direction: row;
                 flex: 1 1 auto;
                 display: flex;
 flex-direction: row;
-                @apply --layout-around-justified;
+                justify-content: space-around;
                 max-width: 196px;
                 margin-right: 8px;
             }

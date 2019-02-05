@@ -43,7 +43,7 @@ flex-basis: 0.000000001px;
             }
             paper-dialog div#buttons {
                 padding: 18px 0px 0px;
-                @apply --layout-start-justified;
+                justify-content: flex-start;
             }
             paper-dialog .buttons button {
                 @apply --kano-button;

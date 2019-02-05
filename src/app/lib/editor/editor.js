@@ -1,7 +1,6 @@
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import Config from '../config.js';
 import Store from './store.js';
-import EditorActions from '../actions/editor.js';
 import StoreObserver from './store-observer.js';
 import Toolbox from './toolbox.js';
 import { Logger } from '../log/index.js';
@@ -16,6 +15,8 @@ import { Output } from '../output/output.js';
 import { ActivityBar } from './activity-bar.js';
 import { WorkspaceToolbar } from './workspace/toolbar.js';
 import { EditorPartsManager } from '../part/editor.js';
+import { BlocklySourceEditor } from './source-editor/blockly.js';
+import EventEmitter from '../util/event-emitter.js';
 
 const PROXY_EVENTS = [
     'share',
@@ -66,7 +67,6 @@ export class Editor extends EditorOrPlayer {
             editingBackground: false,
         });
         this.storeObserver = new StoreObserver(this.store, this);
-        this.editorActions = EditorActions(this.store);
 
         this.rootEl.storeId = this.store.id;
         this.storeObserver.rootEl.storeId = this.store.id;
@@ -155,8 +155,8 @@ export class Editor extends EditorOrPlayer {
         this.elementsRegistry.set('add-parts-dialog', addPartDialog);
         this.elementsRegistry.set('source-view', sourceView);
 
-        this.sourceEditor.addEventListener('code-changed', (e) => {
-            this.setCode(e.detail.value);
+        this.sourceEditor.onDidCodeChange((code) => {
+            this.setCode(code);
         });
     }
     /**
@@ -178,6 +178,13 @@ export class Editor extends EditorOrPlayer {
             el.removeEventListener(name, onEvent);
         };
     }
+    appendSourceEditor() {
+        if (this.sourceType === 'blockly') {
+            this.sourceEditor = new BlocklySourceEditor(this);
+        }
+        this.rootEl.sourceContainer.appendChild(this.sourceEditor.domNode);
+        this.rootEl.$['root-view'] = this.sourceEditor.domNode;
+    }
     inject(element = document.body, before = null) {
         if (this.injected) {
             return;
@@ -190,6 +197,7 @@ export class Editor extends EditorOrPlayer {
         } else {
             element.appendChild(this.rootEl);
         }
+        this.appendSourceEditor();
         this.appendWorkspaceView();
         this.setupElements();
         this.output.onInject();
@@ -231,7 +239,7 @@ export class Editor extends EditorOrPlayer {
         }
         this.runPluginTask('onImport', app);
         this.output.runPluginTask('onImport', app);
-        this.editorActions.loadSource(app.source);
+        this.sourceEditor.setSource(app.source);
         this.emit('loaded');
         this.telemetry.trackEvent({ name: 'app_imported' });
     }
@@ -397,9 +405,6 @@ export class Editor extends EditorOrPlayer {
         this.rootEl.$.workspace.appendView(this.workspaceProvider);
         this.output.checkOutputView();
         this.workspaceProvider.setOutputView(this.output.outputView);
-    }
-    get sourceEditor() {
-        return this.getElement('source-view');
     }
     get workspaceView() {
         return this.workspaceProvider;

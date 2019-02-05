@@ -8,6 +8,7 @@ export interface IMetaDefinition {
     typeScriptDefinition? : string;
     parameters? : IMetaDefinition[];
     default? : any;
+    enum? : [string, string][];
 }
 
 export class Meta {

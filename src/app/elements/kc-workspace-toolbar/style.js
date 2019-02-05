@@ -4,9 +4,9 @@ export const button = html`
     <style>
         button.tool {
             display: flex;
-flex-direction: row;
+            flex-direction: row;
             align-items: center;
-            @apply --layout-center-justified;
+            justify-content: center;
             @apply --kano-button;
             background-color: rgba(255, 255, 255, 0.25);
             border-radius: 3px;

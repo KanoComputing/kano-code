@@ -63,7 +63,7 @@ flex-direction: row;
                 display: flex;
 flex-direction: row;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
                 position: relative;
                 width: 116px;
                 height: 68px;

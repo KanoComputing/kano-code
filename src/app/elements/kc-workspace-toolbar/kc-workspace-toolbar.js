@@ -24,7 +24,7 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
                 align-items: center;
             }
             :host([show-settings]) {
-                @apply --layout-end-justified;
+                justify-content: flex-end;
             }
             :host>div {
                 display: flex;
@@ -37,7 +37,7 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             .mouse-position {
                 display: flex;
                 flex-direction: row;
-                @apply --layout-end-justified;
+                justify-content: flex-end;
                 width: 100px;
                 font-family: var(--font-body);
                 font-size: 14px;
@@ -92,14 +92,13 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             }
             li {
                 display: flex;
-flex-direction: column;
-                @apply --layout-stretch;
+                flex-direction: column;
             }
             .inline {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: center;
-                @apply --layout-start-justified;
+                justify-content: flex-start;
                 cursor: pointer;
                 opacity: 0.9;
                 background: transparent;

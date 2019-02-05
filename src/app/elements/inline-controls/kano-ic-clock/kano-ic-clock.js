@@ -8,7 +8,7 @@ Polymer({
             :host {
                 display: flex;
 flex-direction: row;
-                @apply --layout-end-justified;
+                justify-content: flex-end;
                 color: #fff;
             }
             .visuals {
@@ -21,7 +21,7 @@ flex-direction: row;
                 width: 18px;
                 display: flex;
 flex-direction: row;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             span {
                 width: 10px;

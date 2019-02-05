@@ -8,14 +8,13 @@ import '@kano/kwc-blockly/javascript.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import '../kano-style/themes/dark.js';
-import { Store } from '../../scripts/legacy/store.js';
 
 const behaviors = [
     AppEditorBehavior,
     AppElementRegistryBehavior,
 ];
 
-class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], PolymerElement)) {
+class KCBlocklyEditor extends mixinBehaviors([behaviors], PolymerElement) {
     static get template() {
         return html`
         <style>
@@ -65,20 +64,15 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
                 type: Array,
             },
             defaultCategories: {
-                linkState: 'toolbox',
+                type: Object,
                 value: null,
             },
-            code: {
-                type: Object,
-                linkState: 'code',
-            },
             blocks: {
-                type: Object,
+                type: String,
                 observer: 'blocksChanged',
-                linkState: 'source',
             },
             flyoutMode: {
-                linkState: 'blockly.flyoutMode',
+                type: Boolean,
             },
             media: {
                 type: String,
@@ -93,8 +87,6 @@ class KCBlocklyEditor extends Store.StateReceiver(mixinBehaviors([behaviors], Po
     }
     connectedCallback() {
         super.connectedCallback();
-        const { config } = this.getState();
-        this.media = config.BLOCKLY_MEDIA;
         this.toolboxReady = false;
     }
     _onBlocklyReady() {

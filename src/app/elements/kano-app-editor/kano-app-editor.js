@@ -26,7 +26,6 @@ import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-regist
 import '../kano-media-query/kano-media-query.js';
 import '../kano-workspace/kano-workspace.js';
 import '../kano-part-editor/kano-part-editor.js';
-import '../kc-blockly-editor/kc-blockly-editor.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import '../kano-code-display/kano-code-display.js';
 import '../kano-alert/kano-alert.js';
@@ -111,19 +110,20 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
         <style>
             :host {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 position: relative;
                 max-width: 100vw;
             }
             :host section {
-                @apply --layout-horizontal-reverse;
+                display: flex;
+                flex-direction: row-reverse;
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
             }
             :host section #source-panel {
                 flex: 1 1 auto;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 @apply --kano-inset-box-shadow;
                 position: relative;
                 min-width: 50%;
@@ -301,7 +301,7 @@ flex-direction: column;
                     <paper-tab id="code-display" class="tab">JavaScript</paper-tab>
                 </paper-tabs>
                 <iron-pages class="workspace-pages" attr-for-selected="id" selected="[[workspaceTab]]">
-                    <kano-workspace id="workspace" store-id="[[storeId]]" class="visible-when-running" selected="{{selected}}" editable-layout="{{editableLayout}}" parts-menu-open="[[partsMenuOpen]]" on-ui-ready="workspaceUiReady" on-change="_proxyChange"></kano-workspace>
+                    <kano-workspace id="workspace" store-id="[[storeId]]" class="visible-when-running" selected="{{selected}}" editable-layout="{{editableLayout}}" parts-menu-open="[[partsMenuOpen]]" on-ui-ready="workspaceUiReady"></kano-workspace>
                     <kano-code-display id="code-display" code="[[_setCodeDisplay(code, workspaceTab)]]" lang="javascript"></kano-code-display>
                 </iron-pages>
             </div>
@@ -379,12 +379,6 @@ flex-direction: column;
     }
     _isPauseOverlayHidden(running, editableLayout) {
         return running || editableLayout;
-    }
-    _proxyChange(e) {
-        // Bug on chrome 49 on the kit, the event from kano-blockly stops here
-        e.preventDefault();
-        e.stopPropagation();
-        this.fire('change', e.detail);
     }
     _modalClosed(e) {
         if (e.detail.confirmed) {
@@ -610,32 +604,9 @@ flex-direction: column;
         // this._registerElement('parts-panel', this.$['parts-modal']);
         // Legacy
         this._registerElement('blocks-panel', this.$['source-panel']);
-
-        const tpl = document.createElement('template');
-
-        const elMap = {
-            blockly: 'kc-blockly-editor',
-            code: 'kc-code-editor',
-        };
-
-        const { sourceType } = this.getState();
-
-        tpl.innerHTML = `
-              <${elMap[sourceType]}
-              store-id="[[storeId]]"
-              id="root-view"
-              on-change="_proxyChange"
-              on-exit-tapped="_exitTapped"
-              default-categories="[[defaultCategories]]"
-              loading$="[[!mode]]"></${elMap[sourceType]}>`;
-
-        const template = html`${tpl}`;
-
-        const instance = this._stampTemplate(template);
-
-        this.$['source-container'].appendChild(instance);
-
-        this.$['root-view'] = this.shadowRoot.querySelector('#root-view');
+    }
+    get sourceContainer() {
+        return this.$['source-container']
     }
     disconnectedCallback() {
         super.disconnectedCallback();

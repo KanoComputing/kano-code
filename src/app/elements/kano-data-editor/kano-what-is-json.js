@@ -23,7 +23,7 @@ Polymer({
                 font-weight: bold;
             }
             :host paper-dialog .buttons {
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             :host .info-button:hover {
                 cursor: pointer;

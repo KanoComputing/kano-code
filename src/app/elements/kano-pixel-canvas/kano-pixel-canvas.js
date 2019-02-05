@@ -35,13 +35,13 @@ Polymer({
             .canvas {
                 display: flex;
 flex-direction: row;
-                @apply --layout-wrap;
+                flex-wrap: wrap;
                 box-sizing: border-box;
             }
             .canvas-wrapper {
                 display: flex;
 flex-direction: row;
-                @apply --layout-center-justified;
+                justify-content: center;
                 background-color: var(--kano-pixel-editor-background, #444);
             }
             .pen {

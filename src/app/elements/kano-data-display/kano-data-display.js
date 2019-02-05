@@ -10,7 +10,7 @@ Polymer({
             :host {
                 display: flex;
 flex-direction: column;
-                @apply --layout-center-justified;
+                justify-content: center;
                 position: relative;
                 text-align: left;
             }

@@ -42,12 +42,12 @@ Polymer({
                 flex: 1 1 auto;
                 display: flex;
 flex-direction: column;
-                @apply --layout-start;
+                align-items: flex-start;
             }
             .palette-content {
                 display: flex;
 flex-direction: column;
-                @apply --layout-wrap;
+                flex-wrap: wrap;
                 height: 150px;
             }
             :host([medium-screen]) .palette-content,
@@ -106,7 +106,7 @@ flex-direction: row;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
                 background: transparent;
                 color: grey;
                 font-size: 22px;
@@ -120,7 +120,7 @@ flex-direction: column;
                 @apply --kano-button;
                 display: flex;
 flex-direction: row;
-                @apply --layout-center-justified;
+                justify-content: center;
                 width: 36px;
                 height: 36px;
                 border-radius: 3px;

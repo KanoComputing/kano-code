@@ -47,7 +47,7 @@ flex-direction: column;
                 --part-theme: #00d9c7;
             }
             :host label {
-                @apply --layout-self-start;
+                align-self: flex-start;
                 display: inline-block;
                 font-family: var(--font-body);
                 font-size: 14px;
@@ -97,7 +97,7 @@ flex-direction: column;
             #palette {
                 display: flex;
 flex-direction: row;
-                @apply --layout-justified;
+                justify-content: space-between;
                 width: 148px;
                 text-align: left;
             }
@@ -105,14 +105,14 @@ flex-direction: row;
                 flex: 1 1 auto;
                 display: flex;
 flex-direction: column;
-                @apply --layout-center-justified;
+                justify-content: center;
                 align-items: center;
                 @apply --kano-pixel-editor-bitmap-container;
             }
             .bitmap-container iron-pages {
                 display: flex;
 flex-direction: row;
-                @apply --layout-center-justified;
+                justify-content: center;
                 margin-top: -1px;
                 margin-left: -1px;
             }
@@ -141,7 +141,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: row;
                 align-items: center;
-                @apply --layout-justified;
+                justify-content: space-between;
                 margin: 0 14px 20px 0;
             }
             .control-content .custom-colour-header button {

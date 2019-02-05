@@ -1,6 +1,7 @@
 import { EventEmitter } from '@kano/common/index.js';
 import { Plugin } from './plugin.js';
 import '../../elements/kano-tooltip/kano-tooltip.js';
+import { IEditor } from '../part/editor.js';
 
 const SIZES = Object.freeze({
     BIG: 'big',
@@ -15,8 +16,20 @@ const DEFAULTS = {
 
 const SIZES_ARRAY = Object.values(SIZES);
 
+export interface IActivityBarEntryOptions {
+    size : string;
+    icon? : string;
+    important? : boolean;
+    title? : string;
+    disabled? : boolean;
+}
+
 class ActivityBarEntry {
-    constructor(bar, opts = {}) {
+    private _bar : ActivityBar;
+    private opts : IActivityBarEntryOptions;
+    public root : HTMLElement;
+    private _onDidActivate : EventEmitter;
+    constructor(bar : ActivityBar, opts : Partial<IActivityBarEntryOptions> = {}) {
         this._bar = bar;
         this._onButtonClick = this._onButtonClick.bind(this);
         this.opts = Object.assign({}, DEFAULTS, opts);
@@ -32,18 +45,22 @@ class ActivityBarEntry {
     createDom() {
         const dom = document.createElement('button');
         const icon = document.createElement('img');
-        icon.src = this.opts.icon;
+        if (this.opts.icon) {
+            icon.src = this.opts.icon;
+        }
         icon.classList.add(this.opts.size);
         if (this.opts.important) {
             icon.classList.add('important');
         }
-        dom.title = this.opts.title;
+        if (this.opts.title) {
+            dom.title = this.opts.title;
+        }
         dom.appendChild(icon);
         dom.addEventListener('click', this._onButtonClick);
         return dom;
     }
-    onWillInject() {}
-    _onButtonClick() {
+    onWillInject(_ : HTMLElement) {}
+    _onButtonClick(e : any) {
         this._onDidActivate.fire();
     }
     dispose() {
@@ -71,8 +88,25 @@ class ActivityBarEntry {
     }
 }
 
+export interface IActivityBarTooltipEntryOptions extends IActivityBarEntryOptions {
+    root : HTMLElement;
+    offset? : number;
+}
+
+interface ITooltipElement extends HTMLElement {
+    position? : string;
+    offset? : number;
+    autoClose? : boolean;
+    target? : HTMLElement;
+    updatePosition() : void;
+    open(e : any) : void;
+}
+
 export class ActivityBarTooltipEntry extends ActivityBarEntry {
-    constructor(bar, opts) {
+    private _contents : HTMLElement;
+    private _offset : number;
+    private _tooltip? : ITooltipElement;
+    constructor(bar : ActivityBar, opts : IActivityBarTooltipEntryOptions) {
         super(bar, opts);
         this._contents = opts.root;
         this._offset = opts.offset || 0;
@@ -80,34 +114,35 @@ export class ActivityBarTooltipEntry extends ActivityBarEntry {
             throw new Error('Could not create activity bar tooltip entry: Provided root is not a HTMLElement');
         }
     }
-    onWillInject(container) {
-        this._tooltip = document.createElement('kano-tooltip');
+    onWillInject(container : HTMLElement) {
+        this._tooltip = document.createElement('kano-tooltip') as ITooltipElement;
         this._tooltip.position = 'right';
         this._tooltip.offset = this._offset;
         this._tooltip.autoClose = true;
         this._tooltip.appendChild(this._contents);
         container.appendChild(this._tooltip);
     }
-    _onButtonClick(e) {
+    _onButtonClick(e : any) {
+        if (!this._tooltip) {
+            return;
+        }
         this._tooltip.target = this.root;
         this._tooltip.updatePosition();
         this._tooltip.open(e);
     }
     dispose() {
         super.dispose();
-        if (this._tooltip) {
+        if (this._tooltip && this._tooltip.parentNode) {
             this._tooltip.parentNode.removeChild(this._tooltip);
-            this._tooltip = null;
         }
     }
 }
 
 export class ActivityBar extends Plugin {
-    constructor() {
-        super();
-        this.entries = [];
-    }
-    registerEntry(opts) {
+    private editor? : IEditor;
+    public entries : ActivityBarEntry[] = [];
+    private _barContainer? : HTMLElement;
+    registerEntry(opts : IActivityBarEntryOptions) {
         const entry = new ActivityBarEntry(this, opts);
         // Queue up entries added before injection
         if (!this.editor || !this.editor.injected) {
@@ -117,7 +152,7 @@ export class ActivityBar extends Plugin {
         this.injectEntry(entry);
         return entry;
     }
-    registerTooltipEntry(opts) {
+    registerTooltipEntry(opts : IActivityBarTooltipEntryOptions) {
         const entry = new ActivityBarTooltipEntry(this, opts);
         // Queue up entries added before injection
         if (!this.editor || !this.editor.injected) {
@@ -127,15 +162,27 @@ export class ActivityBar extends Plugin {
         this.injectEntry(entry);
         return entry;
     }
-    injectEntry(entry) {
+    injectEntry(entry : ActivityBarEntry) {
+        if (!this._barContainer) {
+            return;
+        }
         entry.onWillInject(this._barContainer);
-        this._barContainer.appendChild(entry.root);
+        if (this._barContainer) {
+            this._barContainer.appendChild(entry.root);
+        }
     }
-    onInstall(editor) {
+    onInstall(editor : IEditor) {
         this.editor = editor;
     }
     onInject() {
-        this._barContainer = this.editor.root.querySelector('#activity-bar');
+        if (!this.editor) {
+            return;
+        }
+        const container = this.editor.rootEl.querySelector('#activity-bar') as HTMLElement;
+        if (!container) {
+            return;
+        }
+        this._barContainer = container;
         this.entries.forEach(entry => this.injectEntry(entry));
         this.entries = [];
     }

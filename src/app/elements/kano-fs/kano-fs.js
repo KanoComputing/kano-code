@@ -13,8 +13,8 @@ Polymer({
         :host .explorer {
             display: flex;
 flex-direction: row;
-            @apply --layout-center-justified;
-            @apply --layout-wrap;
+            justify-content: center;
+            flex-wrap: wrap;
             max-width: calc(144px * 5);
         }
         :host .item {
@@ -29,7 +29,7 @@ flex-direction: row;
             display: flex;
 flex-direction: column;
             align-items: center;
-            @apply --layout-center-justified;
+            justify-content: center;
             width: 120px;
             height: 120px;
             background: #fff;
@@ -49,10 +49,10 @@ flex-direction: row;
 flex-basis: 0.000000001px;
         }
         :host .left {
-            @apply --layout-start;
+            align-items: flex-start;
         }
         :host .right {
-            @apply --layout-end;
+            align-items: flex-end;
         }
         :host .center {
             text-align: center;

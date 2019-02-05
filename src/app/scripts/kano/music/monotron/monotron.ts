@@ -1,5 +1,15 @@
+export interface IMonotronOptions {
+    ctx : AudioContext;
+    waveType : OscillatorType;
+}
+
 class Monotron {
-    constructor (opts) {
+    private ctx : AudioContext;
+    public vco : OscillatorNode;
+    private output : GainNode;
+    public vcf : BiquadFilterNode;
+    private filterOn? : boolean;
+    constructor (opts : IMonotronOptions) {
         this.ctx = opts.ctx;
         this.vco = this.ctx.createOscillator();
         this.output = this.ctx.createGain();
@@ -16,7 +26,7 @@ class Monotron {
         this.vco.start(this.ctx.currentTime);
     }
 
-    setWaveType (wave) {
+    setWaveType(wave : OscillatorType) {
         // Connect the vcf filter depending on the wave type
         if (this.filterOn && (wave === 'sine' || wave === 'triangle')) {
             this.vco.disconnect(this.vcf);
@@ -29,22 +39,22 @@ class Monotron {
         this.vco.type = wave;
     }
 
-    noteOn (freq, time) {
+    noteOn(freq : number, time? : number) {
         time = (typeof time === 'undefined') ? this.ctx.currentTime : time;
         this.vco.frequency.setValueAtTime(freq, time);
         this.output.gain.linearRampToValueAtTime(1.0, time + 0.1);
     }
 
-    noteOff (time) {
+    noteOff(time? : number) {
         time = (typeof time === 'undefined') ? this.ctx.currentTime : time;
         this.output.gain.linearRampToValueAtTime(0.0, time + 0.1);
     }
 
-    stop () {
+    stop() {
         this.noteOff();
     }
 
-    connect (target) {
+    connect(target : AudioNode) {
         this.output.connect(target);
     }
 

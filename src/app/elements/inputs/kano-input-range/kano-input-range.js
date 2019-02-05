@@ -39,8 +39,9 @@ flex-direction: column;
                 padding: 8px 6px 5px;
             }
             :host .display {
-                @apply --layout-horiztonal;
-                @apply --layout-center-justified;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
                 position: relative;
                 color: #fff;
                 font-size: 14px;

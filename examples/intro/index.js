@@ -4,6 +4,8 @@ import * as i18n from '../../i18n.js';
 import * as Modules from '../../modules.js';
 import { ButtonAPI } from '../../dist/app/lib/part/parts/button/api.js';
 import { ButtonPart } from '../../dist/app/lib/part/parts/button/button.js';
+import { SynthAPI } from '../../dist/app/lib/part/parts/synth/api.js';
+import { SynthPart } from '../../dist/app/lib/part/parts/synth/synth.js';
 
 const Shapes = {
     type: 'module',
@@ -58,13 +60,13 @@ class OutputProfile extends code.OutputProfile {
         return Object.values(Modules).concat([ShapesModule]);
     }
     get parts() {
-        return [ButtonPart];
+        return [ButtonPart, SynthPart];
     }
 }
 
 class EditorProfile extends code.EditorProfile {
     get parts() {
-        return [ButtonAPI];
+        return [ButtonAPI, SynthAPI];
     }
     get toolbox() {
         return Object.values(APIs).concat([Shapes]);

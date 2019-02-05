@@ -31,10 +31,11 @@ export class PartsModule extends AppModule {
             }
             this.methods[part.id] = part;
         });
-        // TODO: run onStart on parts
+        parts.forEach(part => part.onStart());
     }
     _stop() {
-        // TODO: run onStop
+        const parts = this.output.parts.getParts();
+        parts.forEach(part => part.onStart());
     }
 }
 

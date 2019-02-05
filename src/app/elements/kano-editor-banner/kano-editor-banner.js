@@ -21,7 +21,7 @@ Polymer({
                 position: relative;
                 display: flex;
 flex-direction: row;
-                @apply --layout-start;
+                align-items: flex-start;
                 padding: 16px;
                 display: block;
             }
@@ -160,7 +160,7 @@ flex-direction: row;
                 };
             }
             button, kano-glint-animation {
-                @apply --layout-self-center;
+                align-self: center;
             }
             .undo-redo button {
                 border: none;

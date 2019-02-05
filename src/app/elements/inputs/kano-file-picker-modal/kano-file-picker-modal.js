@@ -40,7 +40,7 @@ flex-basis: 0.000000001px;
                 padding: 0px 60px;
                 display: flex;
 flex-direction: row;
-                @apply --layout-justified;
+                justify-content: space-between;
                 align-items: center;
             }
             :host #modal header h2 {

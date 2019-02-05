@@ -71,7 +71,7 @@ class Toolbox extends Plugin {
         const toolbox = this.entries
             .map(entry => this.renderer.renderToolboxEntry(new MetaModule(entry), this.whitelist))
             .filter(entry => entry);
-        this.editor.editorActions.setToolbox(toolbox);
+        this.editor.sourceEditor.setToolbox(toolbox);
     }
 }
 

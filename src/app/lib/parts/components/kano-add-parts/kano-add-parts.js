@@ -32,7 +32,7 @@ flex-direction: column;
                 margin: 0;
             }
             .underline {
-                @apply --layout-self-stretch;
+                align-self: stretch;
                 height: 4px;
                 border-radius: 6px;
                 margin: 24px 0;
@@ -45,7 +45,7 @@ flex-direction: row;
                 width: 238px;
                 display: flex;
 flex-direction: column;
-                @apply --layout-start-justified;
+                justify-content: flex-start;
                 flex: 1;
 flex-basis: 0.000000001px;
             }
@@ -89,7 +89,7 @@ flex-basis: 0.000000001px;
                 background-color: #5b646b;
             }
             kano-add-parts-item {
-                @apply --layout-center-justified;
+                justify-content: center;
                 width: 100%;
                 height: 40px;
                 background-color: var(--color-chateau);

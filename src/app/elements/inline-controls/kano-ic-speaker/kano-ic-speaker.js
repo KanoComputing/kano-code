@@ -11,7 +11,7 @@ Polymer({
                 display: block;
                 display: flex;
 flex-direction: row;
-                @apply --layout-end-justified;
+                justify-content: flex-end;
                 color: white;
             }
             button {

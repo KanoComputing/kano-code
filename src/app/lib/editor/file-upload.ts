@@ -1,7 +1,17 @@
-import Plugin from './plugin.js';
+import { Plugin } from './plugin.js';
+import { IEditor } from '../part/editor.js';
+
+export interface IFileDropTarget extends HTMLElement {
+    animateDragEnter() : void;
+    animateDragLeave() : void;
+    animateDrop() : void;
+}
 
 class FileUpload extends Plugin {
-    constructor(targetEl, overlay) {
+    private targetEl : HTMLElement;
+    private overlay : IFileDropTarget;
+    private editor? : IEditor;
+    constructor(targetEl : HTMLElement, overlay : IFileDropTarget) {
         super();
         this.targetEl = targetEl;
         this.overlay = overlay;
@@ -10,7 +20,7 @@ class FileUpload extends Plugin {
         this._onDragenter = this._onDragenter.bind(this);
         this._onDragleave = this._onDragleave.bind(this);
     }
-    onInstall(editor) {
+    onInstall(editor : IEditor) {
         this.editor = editor;
     }
     onInject() {
@@ -31,15 +41,17 @@ class FileUpload extends Plugin {
         this.targetEl.removeEventListener('dragenter', this._onDragenter);
         this.targetEl.removeEventListener('dragleave', this._onDragleave);
     }
-    static _onDragover(e) {
+    static _onDragover(e : any) {
         e.preventDefault();
         e.stopPropagation();
         e.dataTransfer.dropEffect = 'copy';
     }
-    _onDrop(e) {
+    _onDrop(e : any) {
         e.preventDefault();
         e.stopPropagation();
-        this.editor.rootEl.style.pointerEvents = 'initial';
+        if (this.editor) {
+            this.editor.rootEl.style.pointerEvents = 'initial';
+        }
         this._animateDrop();
         const { files } = e.dataTransfer;
         if (!files.length) {
@@ -54,15 +66,15 @@ class FileUpload extends Plugin {
                 console.error(err);
             });
     }
-    _onFileDropped(content) {
+    _onFileDropped(content : any) {
         this.emit('upload', content);
     }
-    static _readFile(f) {
+    static _readFile(f : Blob) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
 
             reader.onload = () => {
-                resolve(reader.result);
+                resolve(reader.result as string);
             };
 
             reader.onerror = reject;
@@ -70,15 +82,19 @@ class FileUpload extends Plugin {
             reader.readAsText(f);
         });
     }
-    _onDragenter(e) {
+    _onDragenter(e : any) {
         if (e.dataTransfer.effectAllowed === 'move') {
             return;
         }
-        this.editor.rootEl.style.pointerEvents = 'none';
+        if (this.editor) {
+            this.editor.rootEl.style.pointerEvents = 'none';
+        }
         this._animateDragEnter();
     }
     _onDragleave() {
-        this.editor.rootEl.style.pointerEvents = 'initial';
+        if (this.editor) {
+            this.editor.rootEl.style.pointerEvents = 'initial';
+        }
         this._animateDragLeave();
     }
     _animateDragEnter() {

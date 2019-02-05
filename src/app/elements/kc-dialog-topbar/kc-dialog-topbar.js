@@ -11,7 +11,7 @@ Polymer({
             :host {
                 display: flex;
 flex-direction: row;
-                @apply --layout-justified;
+                justify-content: space-between;
                 align-items: center;
                 color: #fff;
                 height: 59px;
@@ -34,7 +34,7 @@ flex-direction: row;
                 flex: 1 1 auto;
                 display: flex;
 flex-direction: row;
-                @apply --layout-end-justified;
+                justify-content: flex-end;
             }
             .action ::slotted(button) {
                 @apply --kano-button;

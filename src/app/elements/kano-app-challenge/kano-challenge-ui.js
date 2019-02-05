@@ -144,7 +144,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: row;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
                 padding: 5px;
             }
             :host button {
@@ -166,7 +166,7 @@ flex-direction: row;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
                 font-family: var(--font-body, Arial);
                 font-size: 16px;
                 color: black;
@@ -218,7 +218,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             .beacon {
                 width: 30px;
@@ -227,7 +227,7 @@ flex-direction: column;
                 display: flex;
 flex-direction: column;
                 align-items: center;
-                @apply --layout-center-justified;
+                justify-content: center;
             }
             .beacon.animate {
                 animation: 150ms ease-in pop-in;
