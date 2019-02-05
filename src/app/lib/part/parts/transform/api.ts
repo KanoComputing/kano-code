@@ -3,16 +3,22 @@ import { IMetaDefinition } from '../../../meta-api/module.js';
 export const TransformAPI : IMetaDefinition[] = [
     {
         type: 'function',
-        name: 'moveTo',
-        verbose: 'move to',
+        name: 'moveAlong',
+        verbose: 'move',
         parameters: [{
-            type: 'parameter',
-            name: 'x',
+            type: 'pixels',
+            name: 'distance',
             returnType: Number,
             default: 0,
-        }, {
+        }],
+    },
+    {
+        type: 'function',
+        name: 'setRotation',
+        verbose: 'turn',
+        parameters: [{
             type: 'parameter',
-            name: 'y',
+            name: 'rotation',
             returnType: Number,
             default: 0,
         }],
@@ -26,6 +32,22 @@ export const TransformAPI : IMetaDefinition[] = [
             name: 'scale',
             returnType: Number,
             default: 100,
+        }],
+    },
+    {
+        type: 'function',
+        name: 'moveTo',
+        verbose: 'move to',
+        parameters: [{
+            type: 'parameter',
+            name: 'x',
+            returnType: Number,
+            default: 0,
+        }, {
+            type: 'parameter',
+            name: 'y',
+            returnType: Number,
+            default: 0,
         }],
     },
 ];

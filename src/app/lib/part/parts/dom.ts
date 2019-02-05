@@ -35,6 +35,21 @@ export class DOMPart extends Part {
     getElement() : HTMLElement {
         return document.createElement('div');
     }
+    setRotation(a : number) {
+        this.transform.rotation = a;
+        this.transform.invalidate();
+    }
+    moveAlong(distance : number) {
+        const direction = (this.transform.rotation || 0) * Math.PI / 180;
+        const alongY = Math.round(distance * Math.sin(direction));
+        const alongX = Math.round(distance * Math.cos(direction));
+        this.move(alongX, alongY);
+    }
+    move(x : number, y : number) {
+        this.transform.x += x;
+        this.transform.y += y;
+        this.transform.invalidate();
+    }
     moveTo(x : number, y : number) {
         this.transform.x = x;
         this.transform.y = y;
