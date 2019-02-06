@@ -1,17 +1,17 @@
-import { AppModule } from '../../../dist/app/lib/app-modules/app-module.js';
-import { Output } from '../../../dist/app/lib/output/output.js';
+import { AppModule } from './app-module.js';
+import { Output } from '../output/output.js';
 
 suite('AppModule', () => {
-    suite('#addMethod', () => {
-        let output;
+    suite('#addMethod()', () => {
+        let output : Output;
         setup(() => {
             output = new Output();
         });
         test('should append to methods using string', () => {
             let methodCalled = false;
-            const TestModule = class extends AppModule {
-                constructor() {
-                    super();
+            class TestModule extends AppModule {
+                constructor(output : Output) {
+                    super(output);
                     this.addMethod('testMethod', '_testMethod');
                 }
                 _testMethod() {

@@ -50,11 +50,9 @@ export class Part implements IPart {
     onInstall(context: IPartContext): void {
         throw new Error('Method not implemented.');
     }
-    onStart(): void {
-        throw new Error('Method not implemented.');
-    }
-    onStop(): void {
-        throw new Error('Method not implemented.');
+    onStart() {}
+    onStop() {
+        this.reset();
     }
     dispose() {
         this.subscriptions.dispose();
@@ -79,5 +77,8 @@ export class Part implements IPart {
             }
             component.load(data[key]);
         });
+    }
+    reset() {
+        this._components.forEach(component => component.reset());
     }
 }

@@ -1,10 +1,10 @@
-import * as code from '../../../dist/app/lib/index.js';
+import { Editor } from './editor.js';
 
 suite('Editor', () => {
     suite('#inject', () => {
         let editor;
         setup(() => {
-            editor = new code.Editor();
+            editor = new Editor();
         });
         test('should add itself to the document body by default', () => {
             editor.inject();

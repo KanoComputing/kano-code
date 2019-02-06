@@ -35,7 +35,7 @@ export class PartsModule extends AppModule {
     }
     _stop() {
         const parts = this.output.parts.getParts();
-        parts.forEach(part => part.onStart());
+        parts.forEach(part => part.onStop());
     }
 }
 

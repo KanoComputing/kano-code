@@ -112,7 +112,7 @@ export class Output extends PluginReceiver {
             this.outputProfile.parts.forEach(p => this.parts.registerPart(p));
         }
     }
-    checkOutputView() {
+    ensureOutputView() {
         if (!this.outputViewProvider) {
             this.outputViewProvider = new DefaultOutputViewProvider();
         }
@@ -157,6 +157,7 @@ export class Output extends PluginReceiver {
         return this.outputViewProvider;
     }
     onInject() {
+        this.ensureOutputView();
         if (this.outputViewProvider) {
             this.outputViewProvider.onInject();
         }

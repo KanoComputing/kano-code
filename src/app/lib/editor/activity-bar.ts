@@ -88,7 +88,7 @@ class ActivityBarEntry {
     }
 }
 
-export interface IActivityBarTooltipEntryOptions extends IActivityBarEntryOptions {
+export interface IActivityBarTooltipEntryOptions extends Partial<IActivityBarEntryOptions> {
     root : HTMLElement;
     offset? : number;
 }
@@ -142,7 +142,7 @@ export class ActivityBar extends Plugin {
     private editor? : IEditor;
     public entries : ActivityBarEntry[] = [];
     private _barContainer? : HTMLElement;
-    registerEntry(opts : IActivityBarEntryOptions) {
+    registerEntry(opts : Partial<IActivityBarEntryOptions>) {
         const entry = new ActivityBarEntry(this, opts);
         // Queue up entries added before injection
         if (!this.editor || !this.editor.injected) {

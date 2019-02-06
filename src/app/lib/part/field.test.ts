@@ -7,23 +7,23 @@ suite('Field', () => {
         fields.push(field);
         return field;
     }
-    test('getValue', () => {
+    test('#getValue()', () => {
         const field = basic('test', 2);
         const value = field.getValue();
         assert.equal(value, 2);
     });
-    test('setValue', () => {
+    test('#setValue()', () => {
         const field = basic('test', 2);
         const newValue = Math.random();
         field.setValue(newValue);
         assert.equal((field as any)._component['test'], newValue);
     });
-    test('getFullKeyName', () => {
+    test('#getFullKeyName()', () => {
         const field = basic('testName', 2);
         const fullName = field.getFullKeyName();
         assert.equal(fullName, 'Test Name');
     });
-    test('dispose', () => {
+    test('#dispose()', () => {
         const field = new PartEditorField<number>({ test: 2 }, 'test');
         (field as any)._el = document.createElement('div');
         document.body.appendChild((field as any)._el);

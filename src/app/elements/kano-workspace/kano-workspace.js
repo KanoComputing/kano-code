@@ -16,7 +16,7 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
         <style>
             :host {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 position: relative;
                 border: 0px;
                 overflow: hidden;
@@ -28,7 +28,7 @@ flex-direction: column;
             #workspace-placeholder {
                 flex: 1 1 auto;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
             }
             #workspace-placeholder>* {
                 flex: 1 1 auto;
@@ -38,7 +38,7 @@ flex-direction: column;
                 display: none !important;
             }
             @keyframes fade-in {
-                from { opacity: 0 },
+                from { opacity: 0 }
                 to { opacity: 1 }
             }
         </style>

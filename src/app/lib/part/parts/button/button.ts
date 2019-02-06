@@ -1,6 +1,6 @@
 import { subscribeDOM, EventEmitter } from '@kano/common/index.js';
 import { button } from '@kano/styles/button.js';
-import * as parts from '../index.js';
+import { DOMPart } from '../dom/dom.js';
 import { IPartContext } from '../../part.js';
 import { Color } from '../../types/color.js';
 import { PartComponent } from '../../component.js';
@@ -21,7 +21,7 @@ class ButtonComponent extends PartComponent {
 }
 
 @part('button')
-export class ButtonPart extends parts.DOMPart {
+export class ButtonPart extends DOMPart {
     private static stylesAdded : boolean = false;
     /**
      * Adds the button styles to a given DOM element

@@ -1,5 +1,6 @@
 import { EventEmitter } from '@kano/common/index.js';
 import { PartComponent, registerTypeSerializer, defaultSerializer } from './component.js';
+import { property } from './decorators.js';
 
 class EmptyProp extends PartComponent {
     static get properties() {
@@ -75,6 +76,13 @@ class UnknownType extends PartComponent {
     }
 }
 
+class Reset extends PartComponent {
+    @property({ type: Number, value: 0 })
+    public a : number = 0;
+    @property({ type: String, value: () => 'test' })
+    public b : string = 'test';
+}
+
 suite('PartComponent', () => {
     test('_setupProperties', () => {
         assert.throws(() => new EmptyProp());
@@ -128,5 +136,19 @@ suite('PartComponent', () => {
         ['a', 'b', 'c'].forEach((key) => {
             assert.equal(s[key], loaded[key]);
         });
+    });
+    test('#reset()', () => {
+        const component = new Reset();
+
+        assert.equal(component.a, 0);
+        assert.equal(component.b, 'test');
+        
+        component.a = 47;
+        component.b = 'reset';
+
+        component.reset();
+
+        assert.equal(component.a, 0);
+        assert.equal(component.b, 'test');
     });
 });

@@ -8,7 +8,6 @@ import { DefaultWorkspaceViewProvider } from './workspace/default.js';
 import { Dialogs } from './dialogs/index.js';
 import { Keybindings } from './keybindings/index.js';
 import { CreationPlugin } from '../creation/index.js';
-
 import '../../elements/kano-app-editor/kano-app-editor.js';
 import { EditorOrPlayer } from './editor-or-player.js';
 import { Output } from '../output/output.js';
@@ -16,7 +15,6 @@ import { ActivityBar } from './activity-bar.js';
 import { WorkspaceToolbar } from './workspace/toolbar.js';
 import { EditorPartsManager } from '../part/editor.js';
 import { BlocklySourceEditor } from './source-editor/blockly.js';
-import EventEmitter from '../util/event-emitter.js';
 
 const PROXY_EVENTS = [
     'share',
@@ -185,10 +183,17 @@ export class Editor extends EditorOrPlayer {
         this.rootEl.sourceContainer.appendChild(this.sourceEditor.domNode);
         this.rootEl.$['root-view'] = this.sourceEditor.domNode;
     }
+    ensureProviders() {
+        this.output.ensureOutputView();
+        if (!this.workspaceProvider) {
+            this.registerWorkspaceViewProvider(new DefaultWorkspaceViewProvider(this));
+        }
+    }
     inject(element = document.body, before = null) {
         if (this.injected) {
             return;
         }
+        this.ensureProviders();
         this.injected = true;
         element.appendChild(this.store.providerElement);
         element.appendChild(this.storeObserver.rootEl);
@@ -403,7 +408,6 @@ export class Editor extends EditorOrPlayer {
     }
     appendWorkspaceView() {
         this.rootEl.$.workspace.appendView(this.workspaceProvider);
-        this.output.checkOutputView();
         this.workspaceProvider.setOutputView(this.output.outputView);
     }
     get workspaceView() {

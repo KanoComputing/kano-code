@@ -1,19 +1,14 @@
-import * as components from '../components/index.js';
-import { Part, IPartContext } from '../part.js';
-import { PartComponent } from '../component.js';
-import { component } from '../decorators.js';
-
-interface IPartComponents {
-    [K : string] : Type<PartComponent>;
-}
+import { Part, IPartContext } from '../../part.js';
+import { component } from '../../decorators.js';
+import { Transform } from '../../components/transform.js';
 
 export class DOMPart extends Part {
     protected _el : HTMLElement;
-    @component(components.Transform)
-    public transform : components.Transform;
+    @component(Transform)
+    public transform : Transform;
     constructor() {
         super();
-        this.transform = this._components.get('transform') as components.Transform;
+        this.transform = this._components.get('transform') as Transform;
         this._el = this.getElement();
         this._el.style.transformOrigin = 'center center';
         this._el.style.position = 'absolute';

@@ -1,8 +1,9 @@
 import { AppModule } from './app-module.js';
 import { Canvas } from '../kano-canvas-api/kano-canvas-api.js';
+import Output from '../output/output.js';
 
 export class DrawModule extends AppModule {
-    constructor(output) {
+    constructor(output : Output) {
         super(output);
         this.addLifecycleStep('start', '_start');
     }
@@ -11,6 +12,9 @@ export class DrawModule extends AppModule {
     }
     _start() {
         const ctx = this.output.visuals.canvas.getContext('2d');
+        if (!ctx) {
+            return;
+        }
         this.modules = new Canvas({
             ctx,
             width: this.output.visuals.width,

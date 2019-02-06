@@ -11,7 +11,7 @@ export interface ICanvasAPISettings {
     ctx : CanvasRenderingContext2D;
     width : number;
     height : number;
-    ratio : number;
+    ratio? : number;
 }
 
 export class Canvas {
@@ -38,7 +38,7 @@ export class Canvas {
             ctx: settings.ctx,
             width: settings.width,
             height: settings.height,
-            ratio: settings.ratio,
+            ratio: settings.ratio || 1,
             pos: {
                 x: settings.width / 2,
                 y: settings.height / 2,

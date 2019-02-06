@@ -2,6 +2,7 @@ import { Part, IPartContext } from '../../part.js';
 import { Monotron } from '../../../../scripts/kano/music/monotron/monotron.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
+import { debug } from '../../../decorators.js';
 
 const OSCILLATOR_FREQ_RANGE_LOW = 55; // --> A0 note in pitch standard tuning
 const DEFAULT_FREQ = 220; // --> A2
@@ -17,7 +18,6 @@ class SynthComponent extends PartComponent {
 export class SynthPart extends Part {
     @component(SynthComponent)
     public core : SynthComponent;
-    private volume : number = 100;
     private volumeAttenuation : number = 0.00075;
     private waveType : OscillatorType = 'sine';
     private gainNode? : GainNode;
@@ -36,10 +36,7 @@ export class SynthPart extends Part {
         this.gainNode = this.ctx.createGain();
         this.gainNode.connect(this.dest);
 
-        this.setVolume(this.volume);
-    }
-    onStart() {
-        this.volume = 100;
+        this.setVolume(this.core.volume);
     }
     onStop() {
         this.sources.forEach((source) => {
@@ -55,7 +52,7 @@ export class SynthPart extends Part {
         this.core.volume = Math.min(Math.max(volume, 0), 100);
         // the maximum value is limited to an ear-friendly volume
         this.volumeAttenuation = /sine|triangle/.test(this.waveType) ? 0.00185 : 0.00075;
-        const value = this.core.muted ? 0 : (this.volume * this.volumeAttenuation);
+        const value = this.core.muted ? 0 : (this.core.volume * this.volumeAttenuation);
         if (this.gainNode) {
             this.gainNode.gain.value = value;
         }
@@ -69,7 +66,7 @@ export class SynthPart extends Part {
             ctx: this.ctx,
             waveType: this.waveType,
         };
-        this.setVolume(this.volume);
+        this.setVolume(this.core.volume);
         const monotron = new Monotron(opts);
         if (this.gainNode) {
             monotron.connect(this.gainNode);
@@ -133,6 +130,6 @@ export class SynthPart extends Part {
         this.monotron.setWaveType(wave);
 
         // Set volume as the attenuation depends on the wave type
-        this.setVolume(this.volume);
+        this.setVolume(this.core.volume);
     }
 }
