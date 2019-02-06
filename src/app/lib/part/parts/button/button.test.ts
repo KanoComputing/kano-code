@@ -16,7 +16,15 @@ class PartContextStub {
             get height() {
                 return 0;
             }
-        }
+        };
+        const audioCtx = new AudioContext();
+        this.audio = {
+             context: audioCtx,
+             destination: audioCtx.destination,
+        };
+        this.dom = {
+            root: document.createElement('div'),
+        };
     }
 }
 
@@ -26,5 +34,7 @@ suite('ButtonPart', () => {
         const button = new ButtonPart();
 
         button.onInstall(stub);
+
+        console.log(stub.dom.root);
     }); 
 });

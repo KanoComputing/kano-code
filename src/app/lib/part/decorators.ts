@@ -12,8 +12,8 @@ import { PartComponent } from './component.js';
  * @param name Label for the part
  */
 export function part(type : string) {
-    return function (contructor : Type<Part>) {
-        Object.defineProperty(contructor, 'type', {
+    return function (constructor : Type<Part>) {
+        Object.defineProperty(constructor, 'type', {
             writable: false,
             configurable: false,
             value: type,
