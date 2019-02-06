@@ -20,7 +20,7 @@ export const ButtonAPI : IPartAPI = {
             name: 'label',
             verbose: '',
             returnType: String,
-            default: `'Click Me!'`,
+            default: 'Click Me!',
         }],
     }, {
         type: 'function',
@@ -44,5 +44,20 @@ export const ButtonAPI : IPartAPI = {
             returnType: 'Color',
             default: '#FFFFFF',
         }],
+    }, {
+        type: 'function',
+        name: 'onClick',
+        verbose: 'on',
+        parameters: [{
+            type: 'parameter',
+            name: 'click',
+            returnType: Function,
+        }],
+        blockly: {
+            postProcess(block : any) {
+                block.setPreviousStatement(false);
+                block.setNextStatement(false);
+            },
+        },
     }, ...TransformAPI],
 };

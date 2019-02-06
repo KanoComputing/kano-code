@@ -47,9 +47,7 @@ export class Part implements IPart {
             this._components.set(key, component);
         });
     }
-    onInstall(context: IPartContext): void {
-        throw new Error('Method not implemented.');
-    }
+    onInstall(context: IPartContext): void {}
     onStart() {}
     onStop() {
         this.reset();

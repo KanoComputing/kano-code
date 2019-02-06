@@ -9,6 +9,7 @@ export interface IMetaDefinition {
     parameters? : IMetaDefinition[];
     default? : any;
     enum? : [string, string][];
+    blockly? : any;
 }
 
 export class Meta {

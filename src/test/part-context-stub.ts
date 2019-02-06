@@ -1,4 +1,4 @@
-import { IVisualsContext, IAudioContext, IDOMContext } from '../app/lib/output/output';
+import { IVisualsContext, IAudioContext, IDOMContext } from '../app/lib/output/output.js';
 
 function stub(target : any, key : string, descriptor : any) {
     const originalMethod = descriptor.value;

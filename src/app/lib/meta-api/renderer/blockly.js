@@ -68,18 +68,18 @@ class BlocklyMetaRenderer {
     }
     static render(m) {
         switch (m.def.type) {
-        case 'module': {
-            return BlocklyMetaRenderer.renderModule(m);
-        }
-        case 'variable': {
-            return BlocklyMetaRenderer.renderVariable(m);
-        }
-        case 'function': {
-            return BlocklyMetaRenderer.renderFunction(m);
-        }
-        default: {
-            break;
-        }
+            case 'module': {
+                return BlocklyMetaRenderer.renderModule(m);
+            }
+            case 'variable': {
+                return BlocklyMetaRenderer.renderVariable(m);
+            }
+            case 'function': {
+                return BlocklyMetaRenderer.renderFunction(m);
+            }
+            default: {
+                break;
+            }
         }
         return null;
     }
@@ -96,58 +96,34 @@ class BlocklyMetaRenderer {
             return acc;
         }, []);
     }
+    static getId(m) {
+        let id = m.getNameChain();
+        const root = m.getRoot();
+        const blocklyConf = root.def.blockly;
+        if (blocklyConf && blocklyConf.idPrefix) {
+            id = `${blocklyConf.idPrefix}${id}`;
+        }
+        return id;
+    }
     static renderVariable(m) {
-        const json = BlocklyMetaRenderer.renderBaseBlock(m);
+        const id = BlocklyMetaRenderer.getId(m);
         const register = (Blockly) => {
-            Blockly.Blocks[json.id] = {
+            Blockly.Blocks[id] = {
                 init() {
-                    this.jsonInit(json);
+                    this.appendDummyInput()
+                        .appendField(m.getVerboseDisplay());
+                    this.setColour(m.getColor());
+                    this.setOutput(BlocklyMetaRenderer.parseType(m.getReturnType()));
                 },
             };
-            Blockly.JavaScript[json.id] = () => [m.getNameChain('.')];
+            Blockly.JavaScript[id] = () => [m.getNameChain('.')];
         };
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
-        return { register, id: json.id, toolbox };
+        return { register, id, toolbox };
     }
     static renderFunction(m) {
-        let json = BlocklyMetaRenderer.renderBaseBlock(m);
-        if (typeof json.output === 'undefined') {
-            json.nextStatement = null;
-            json.previousStatement = null;
-        }
+        const id = BlocklyMetaRenderer.getId(m);
         const params = m.getParameters();
-        const argsMap = new Array(params.length);
-        json = params.reduce((acc, p, index) => {
-            // Get the input type and check
-            const input = BlocklyMetaRenderer.parseInputType(p.def.returnType, p);
-            // First Item includes the function name
-            if (index === 0) {
-                // Append the function name
-                acc[`message${index}`] = `${json.message0}`;
-                // If the parameter is a callback, force line break
-                if (input.type === 'input_statement') {
-                    acc[`message${index}`] += ' %1 %2';
-                } else {
-                    acc[`message${index}`] += ` ${p.getVerboseDisplay()} %1`;
-                }
-            } else if (input.type === 'input_statement') {
-                acc[`message${index}`] = ' %1 %2';
-            } else {
-                acc[`message${index}`] = ` ${p.getVerboseDisplay()} %1`;
-            }
-            input.name = p.def.name.toUpperCase();
-            argsMap[index] = input.name;
-            const args = [input];
-            if (input.type === 'input_statement') {
-                args.unshift({ type: 'input_dummy' });
-            }
-            acc[`args${index}`] = args;
-            return acc;
-        }, json);
-        json.inputsInline = params.length <= 2;
-        if (m.def.blockly && typeof m.def.blockly.postProcess === 'function') {
-            json = m.def.blockly.postProcess(json);
-        }
         const defaults = params.filter(p => typeof p.def.default !== 'undefined').reduce((acc, p) => {
             const pName = p.def.name.toUpperCase();
             if (p.def.blockly && p.def.blockly.shadow) {
@@ -161,38 +137,75 @@ class BlocklyMetaRenderer {
             return acc;
         }, {});
         const register = (Blockly) => {
-            const aliases = m.def.blockly && m.def.blockly.aliases ? m.def.blockly.aliases : [];
-            aliases.push(json.id);
-            aliases.forEach((alias) => {
-                Blockly.Blocks[alias] = {
-                    init() {
-                        this.jsonInit(json);
-                        params.forEach((param) => {
-                            if (param.def.blockly && param.def.blockly.customField) {
-                                const input = this.getInput(param.def.name.toUpperCase());
-                                input.appendField(param.def.blockly.customField(Blockly, this), param.def.name.toUpperCase());
-                            }
-                        });
-                    },
-                };
-                Blockly.JavaScript[alias] = (block) => {
-                    if (m.def.blockly && typeof m.def.blockly.javascript === 'function') {
-                        return m.def.blockly.javascript(Blockly, block);
+            Blockly.Blocks[id] = {
+                init() {
+                    this.setColour(m.getColor());
+                    this.setOutput(BlocklyMetaRenderer.parseType(m.getReturnType()));
+                    if (!params.length) {
+                        this.appendDummyInput()
+                            .appendField(m.getVerboseDisplay());
                     }
-                    const values = argsMap.map((argName, index) => {
-                        const input = block.getInput(argName);
-                        const field = block.getField(argName);
-                        let value;
-                        if (field) {
-                            value = block.getFieldValue(argName);
-                            if (!value) {
-                                value = typeof params[index].def.default === 'undefined' ? '' : params[index].def.default;
+                    params.forEach((p, index) => {
+                        const pName = p.def.name.toUpperCase();
+                        const input = BlocklyMetaRenderer.parseInputType(p.def.returnType, p);
+                        const label = index === 0 ? `${m.getVerboseDisplay()} ${p.getVerboseDisplay()}` : p.getVerboseDisplay();
+                        let blocklyInput;
+                        if (input.type === 'input_statement') {
+                            const firstInput = this.appendDummyInput();
+                            if (label.length) {
+                                firstInput.appendField(label);
                             }
-                            if (typeof value === 'string') {
-                                value = `'${value}'`;
-                            }
+                            blocklyInput = this.appendStatementInput(pName);
+                        } else if (input.type === 'field_dropdown') {
+                            blocklyInput = this.appendDummyInput(pName)
+                                .appendField(label)
+                                .appendField(new Blockly.FieldDropdown(p.def.enum), pName);
                         } else {
-                            switch (input.type) {
+                            blocklyInput = this.appendValueInput(pName)
+                                .setCheck(input.check);
+                            if (label.length) {
+                                blocklyInput.appendField(label);
+                            }
+                        }
+                        if (index !== 0) {
+                            blocklyInput.setAlign(Blockly.ALIGN_RIGHT);
+                        }
+                        if (p.def.blockly && p.def.blockly.customField) {
+                            blocklyInput.appendField(p.def.blockly.customField(Blockly, this), pName);
+                        }
+                    });
+                    const output = BlocklyMetaRenderer.parseType(m.getReturnType());
+                    this.setOutput(output);
+                    if (typeof output === 'undefined') {
+                        this.setNextStatement(true);
+                        this.setPreviousStatement(true);
+                    }
+                    this.setInputsInline(params.length === 2);
+                    // Allow the api to customise the block further
+                    if (m.def.blockly && typeof m.def.blockly.postProcess === 'function') {
+                        m.def.blockly.postProcess(this);
+                    }
+                },
+            };
+            Blockly.JavaScript[id] = (block) => {
+                if (m.def.blockly && typeof m.def.blockly.javascript === 'function') {
+                    return m.def.blockly.javascript(Blockly, block);
+                }
+                const values = params.map((p, index) => {
+                    const argName = p.def.name.toUpperCase();
+                    const input = block.getInput(argName);
+                    const field = block.getField(argName);
+                    let value;
+                    if (field) {
+                        value = block.getFieldValue(argName);
+                        if (!value) {
+                            value = typeof params[index].def.default === 'undefined' ? '' : params[index].def.default;
+                        }
+                        if (typeof value === 'string') {
+                            value = `'${value}'`;
+                        }
+                    } else {
+                        switch (input.type) {
                             case Blockly.INPUT_VALUE: {
                                 value = Blockly.JavaScript.valueToCode(block, argName);
                                 if (!value) {
@@ -211,36 +224,26 @@ class BlocklyMetaRenderer {
                             default: {
                                 return 'null';
                             }
-                            }
                         }
-                        return value;
-                    });
-                    let code = `${m.getNameChain('.')}(${values.join(', ')})`;
-                    if (block.outputConnection) {
-                        code = [code];
-                    } else {
-                        code = `${code};\n`;
                     }
-                    return code;
-                };
-            });
+                    return value;
+                });
+                let code = `${m.getNameChain('.')}(${values.join(', ')})`;
+                if (block.outputConnection) {
+                    code = [code];
+                } else {
+                    code = `${code};\n`;
+                }
+                return code;
+            };
         };
+        const aliases = m.def.blockly && m.def.blockly.aliases ? m.def.blockly.aliases : [];
+        aliases.forEach((alias) => {
+            Blockly.Blocks[alias] = Blockly.Blocks[id];
+            Blockly.JavaScript[alias] = Blockly.JavaScript[id];
+        })
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
-        return { register, id: json.id, defaults, toolbox };
-    }
-    static renderBaseBlock(m) {
-        let id = m.getNameChain();
-        const root = m.getRoot();
-        const blocklyConf = root.def.blockly;
-        if (blocklyConf && blocklyConf.idPrefix) {
-            id = `${blocklyConf.idPrefix}${id}`;
-        }
-        return {
-            id,
-            colour: m.getColor(),
-            message0: m.getVerboseDisplay(),
-            output: BlocklyMetaRenderer.parseType(m.getReturnType()),
-        };
+        return { register, id, defaults, toolbox };
     }
     static parseInputType(type, param) {
         if (param.def.blockly && param.def.blockly.customField) {
@@ -249,56 +252,56 @@ class BlocklyMetaRenderer {
             };
         }
         switch (type) {
-        case Function: {
-            return {
-                type: 'input_statement',
-            };
-        }
-        case 'Enum': {
-            return {
-                type: 'field_dropdown',
-                options: param.def.enum || [],
-            };
-        }
-        case Number:
-        case String:
-        default: {
-            if (param.def.blockly && param.def.blockly.field) {
-                switch (type) {
-                case Number:
-                    return {
-                        type: 'field_number',
-                        value: param.def.default,
-                    };
-                case String:
-                default:
-                    return {
-                        type: 'field_input',
-                        text: param.def.default,
-                    };
-                }
+            case Function: {
+                return {
+                    type: 'input_statement',
+                };
             }
-            return {
-                type: 'input_value',
-                check: BlocklyMetaRenderer.parseType(type),
-            };
-        }
+            case 'Enum': {
+                return {
+                    type: 'field_dropdown',
+                    options: param.def.enum || [],
+                };
+            }
+            case Number:
+            case String:
+            default: {
+                if (param.def.blockly && param.def.blockly.field) {
+                    switch (type) {
+                        case Number:
+                            return {
+                                type: 'field_number',
+                                value: param.def.default,
+                            };
+                        case String:
+                        default:
+                            return {
+                                type: 'field_input',
+                                text: param.def.default,
+                            };
+                    }
+                }
+                return {
+                    type: 'input_value',
+                    check: BlocklyMetaRenderer.parseType(type),
+                };
+            }
         }
     }
     static parseType(type) {
         switch (type) {
-        case Number: {
-            return 'Number';
-        }
-        case String: {
-            return 'String';
-        }
-        case 'Color': {
-            return 'Colour';
-        }
-        default: {
-            return type;
-        }
+            case Number: {
+                return 'Number';
+            }
+            case String: {
+                return 'String';
+            }
+            case 'Color': {
+                return 'Colour';
+            }
+            default: {
+                return type;
+            }
         }
     }
 }
