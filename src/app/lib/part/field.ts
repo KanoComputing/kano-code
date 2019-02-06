@@ -2,7 +2,7 @@ export interface IFieldComponent {
     [K : string] : any;
 }
 
-export class PartEditorField<T> {
+export class PartEditorField<T = void> {
     protected _component : IFieldComponent;
     protected _key : string;
     protected _el? : HTMLElement;

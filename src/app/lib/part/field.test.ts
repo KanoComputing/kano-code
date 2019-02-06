@@ -1,9 +1,9 @@
 import { PartEditorField } from './field.js';
 
 suite('Field', () => {
-    const fields = [];
-    function basic(key, value) {
-        const field = new PartEditorField({ [key]: value }, key);
+    const fields : PartEditorField<number>[] = [];
+    function basic(key : string, value : any) {
+        const field = new PartEditorField<number>({ [key]: value }, key);
         fields.push(field);
         return field;
     }
@@ -16,7 +16,7 @@ suite('Field', () => {
         const field = basic('test', 2);
         const newValue = Math.random();
         field.setValue(newValue);
-        assert.equal(field._component['test'], newValue);
+        assert.equal((field as any)._component['test'], newValue);
     });
     test('getFullKeyName', () => {
         const field = basic('testName', 2);
@@ -24,11 +24,11 @@ suite('Field', () => {
         assert.equal(fullName, 'Test Name');
     });
     test('dispose', () => {
-        const field = new PartEditorField({ test: 2 }, 'test');
-        field._el = document.createElement('div');
-        document.body.appendChild(field._el);
+        const field = new PartEditorField<number>({ test: 2 }, 'test');
+        (field as any)._el = document.createElement('div');
+        document.body.appendChild((field as any)._el);
         field.dispose();
-        assert.isNull(field._el.parentNode);
+        assert.isNull((field as any)._el.parentNode);
     });
     teardown(() => {
         fields.forEach((f) => {
