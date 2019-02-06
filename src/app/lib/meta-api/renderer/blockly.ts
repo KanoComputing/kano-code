@@ -1,11 +1,30 @@
 import Defaults from '../../blockly/defaults.js';
+import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaDefinition, MetaParameter } from '../module.js';
+
+interface ILegacyModule {
+    def : {
+        register(Blockly : any) : void;
+        defaults : any;
+        category : {
+            blocks : any[];
+        };
+    };
+}
+
+interface IRenderedBlock {
+    id : string;
+    toolbox : boolean;
+    defaults? : any[];
+    register(Blockly : any) : void;
+}
 
 class BlocklyMetaRenderer {
+    private defaults : Defaults;
     constructor() {
         this.defaults = new Defaults();
     }
-    renderLegacyToolboxEntry(mod, whitelist) {
-        mod.def.register(window.Blockly);
+    renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : any[]) {
+        mod.def.register(Blockly);
         if (mod.def.defaults) {
             Object.keys(mod.def.defaults).forEach((blockId) => {
                 this.defaults.define(blockId, mod.def.defaults[blockId]);
@@ -16,7 +35,7 @@ class BlocklyMetaRenderer {
         }
         const category = Object.assign({}, mod.def.category);
         if (whitelist) {
-            category.blocks = category.blocks.filter((block) => {
+            category.blocks = category.blocks.filter((block : any) => {
                 let id = block.id || block;
                 id = id.replace(/^[^#]+(#)/g, '');
                 return whitelist.indexOf(id) !== -1;
@@ -24,18 +43,18 @@ class BlocklyMetaRenderer {
         }
         return this.defaults.createCategory(category);
     }
-    renderToolboxEntry(mod, whitelist) {
+    renderToolboxEntry(mod : MetaModule, whitelist : any[]) {
         // Legacy module signature
         if (mod.def.type && mod.def.type === 'blockly') {
-            return this.renderLegacyToolboxEntry(mod, whitelist);
+            return this.renderLegacyToolboxEntry(mod as unknown as ILegacyModule, whitelist);
         }
         const blocks = BlocklyMetaRenderer.render(mod);
 
-        const register = (Blockly) => {
-            blocks.forEach(block => block.register(Blockly));
+        const register = (Blockly : any) => {
+            blocks.forEach((block : any) => block.register(Blockly));
         };
 
-        let filteredBlocks = blocks.filter(block => block.toolbox);
+        let filteredBlocks = blocks.filter((block : any) => block.toolbox);
         const prefix = mod.def.blockly
             && mod.def.blockly.idPrefix ? mod.def.blockly.idPrefix : '';
         if (whitelist) {
@@ -55,48 +74,44 @@ class BlocklyMetaRenderer {
             }),
         };
 
-        blocks.forEach((block) => {
+        blocks.forEach((block : any) => {
             this.defaults.define(block.id.replace(prefix, ''), block.defaults);
         }, {});
 
-        register(window.Blockly);
+        register(Blockly);
         if (!filteredBlocks.length || (typeof mod.def.toolbox !== 'undefined' && mod.def.toolbox === false)) {
             return null;
         }
 
         return this.defaults.createCategory(category);
     }
-    static render(m) {
+    static render(m : MetaModule) : IRenderedBlock[] {
         switch (m.def.type) {
             case 'module': {
                 return BlocklyMetaRenderer.renderModule(m);
             }
             case 'variable': {
-                return BlocklyMetaRenderer.renderVariable(m);
+                return BlocklyMetaRenderer.renderVariable(m as MetaVariable);
             }
             case 'function': {
-                return BlocklyMetaRenderer.renderFunction(m);
+                return BlocklyMetaRenderer.renderFunction(m as MetaFunction);
             }
             default: {
                 break;
             }
         }
-        return null;
+        return [];
     }
-    static renderModule(m) {
+    static renderModule(m : MetaModule) {
         if (!m.symbols) {
             return [];
         }
         return m.symbols.reduce((acc, sym) => {
             const rendered = BlocklyMetaRenderer.render(sym);
-            if (Array.isArray(rendered)) {
-                return acc.concat(rendered);
-            }
-            acc.push(rendered);
-            return acc;
-        }, []);
+            return acc.concat(rendered);
+        }, [] as IRenderedBlock[]);
     }
-    static getId(m) {
+    static getId(m : Meta) : string {
         let id = m.getNameChain();
         const root = m.getRoot();
         const blocklyConf = root.def.blockly;
@@ -105,9 +120,9 @@ class BlocklyMetaRenderer {
         }
         return id;
     }
-    static renderVariable(m) {
+    static renderVariable(m : MetaVariable) : IRenderedBlock[] {
         const id = BlocklyMetaRenderer.getId(m);
-        const register = (Blockly) => {
+        const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
                 init() {
                     this.appendDummyInput()
@@ -119,9 +134,9 @@ class BlocklyMetaRenderer {
             Blockly.JavaScript[id] = () => [m.getNameChain('.')];
         };
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
-        return { register, id, toolbox };
+        return [{ register, id, toolbox }];
     }
-    static renderFunction(m) {
+    static renderFunction(m : MetaFunction) {
         const id = BlocklyMetaRenderer.getId(m);
         const params = m.getParameters();
         const defaults = params.filter(p => typeof p.def.default !== 'undefined').reduce((acc, p) => {
@@ -135,8 +150,8 @@ class BlocklyMetaRenderer {
                 acc.label = p.def.enum[0][0]
             }
             return acc;
-        }, {});
-        const register = (Blockly) => {
+        }, {} as any);
+        const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
                 init() {
                     this.setColour(m.getColor());
@@ -187,7 +202,7 @@ class BlocklyMetaRenderer {
                     }
                 },
             };
-            Blockly.JavaScript[id] = (block) => {
+            Blockly.JavaScript[id] = (block : any) => {
                 if (m.def.blockly && typeof m.def.blockly.javascript === 'function') {
                     return m.def.blockly.javascript(Blockly, block);
                 }
@@ -228,7 +243,7 @@ class BlocklyMetaRenderer {
                     }
                     return value;
                 });
-                let code = `${m.getNameChain('.')}(${values.join(', ')})`;
+                let code : string|string[] = `${m.getNameChain('.')}(${values.join(', ')})`;
                 if (block.outputConnection) {
                     code = [code];
                 } else {
@@ -237,15 +252,15 @@ class BlocklyMetaRenderer {
                 return code;
             };
         };
-        const aliases = m.def.blockly && m.def.blockly.aliases ? m.def.blockly.aliases : [];
+        const aliases : string[] = m.def.blockly && m.def.blockly.aliases ? m.def.blockly.aliases : [];
         aliases.forEach((alias) => {
-            Blockly.Blocks[alias] = Blockly.Blocks[id];
-            Blockly.JavaScript[alias] = Blockly.JavaScript[id];
-        })
+            (Blockly as any).Blocks[alias] = (Blockly as any).Blocks[id];
+            (Blockly as any).JavaScript[alias] = (Blockly as any).JavaScript[id];
+        });
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
-        return { register, id, defaults, toolbox };
+        return [{ register, id, defaults, toolbox }];
     }
-    static parseInputType(type, param) {
+    static parseInputType(type : any, param : MetaParameter) {
         if (param.def.blockly && param.def.blockly.customField) {
             return {
                 type: 'input_dummy',
@@ -288,7 +303,7 @@ class BlocklyMetaRenderer {
             }
         }
     }
-    static parseType(type) {
+    static parseType(type : any) {
         switch (type) {
             case Number: {
                 return 'Number';

@@ -6,6 +6,7 @@ import * as Parts from '../../dist/app/lib/part/parts/index.js';
 import { ButtonAPI } from '../../dist/app/lib/part/parts/button/api.js';
 import { SynthAPI } from '../../dist/app/lib/part/parts/synth/api.js';
 import { ClockAPI } from '../../dist/app/lib/part/parts/clock/api.js';
+import { OscillatorAPI } from '../../dist/app/lib/part/parts/oscillator/api.js';
 
 const Shapes = {
     type: 'module',
@@ -66,7 +67,7 @@ class OutputProfile extends code.OutputProfile {
 
 class EditorProfile extends code.EditorProfile {
     get parts() {
-        return [ButtonAPI, SynthAPI, ClockAPI];
+        return [ButtonAPI, SynthAPI, ClockAPI, OscillatorAPI];
     }
     get toolbox() {
         return Object.values(APIs).concat([Shapes]);
