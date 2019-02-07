@@ -1,5 +1,4 @@
 import '@polymer/polymer/polymer-legacy.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@kano/kwc-style/typography.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
@@ -8,11 +7,11 @@ Polymer({
         <style>
             :host {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: center;
             }
         </style>
-        <canvas id="canvas" style\$="width: [[width]]px; height: [[height]]px" width\$="[[_canvasWidth]]" height\$="[[_canvasHeight]]"></canvas>
+        <canvas id="canvas" style$="width: [[width]]px; height: [[height]]px" width$="[[_canvasWidth]]" height$="[[_canvasHeight]]"></canvas>
 `,
 
   is:'kano-value-rendering',
