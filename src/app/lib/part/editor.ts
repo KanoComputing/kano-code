@@ -9,13 +9,17 @@ import { Part } from './part.js';
 import { KCPartsControls } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import EventEmitter from '../util/event-emitter.js';
+import { DefaultInlineDisplay } from './inline-display.js';
 
 export interface IEditor extends EventEmitter {
+    telemetry : TelemetryClient;
     injected : boolean;
+    parts : EditorPartsManager;
     output : Output;
     config : any;
     workspaceView : {
         partsControls : KCPartsControls;
+        toolbar? : HTMLElement;
     };
     dialogs: {
         registerDialog(provider : any) : any;
@@ -31,6 +35,10 @@ export interface IEditor extends EventEmitter {
     rootEl : HTMLElement;
     load(app : any) : void;
     export() : any;
+    exportToDisk() : void;
+    importFromDisk() : void;
+    reset() : void;
+    restart() : void;
 }
 
 export interface IPartDefinition {
@@ -106,6 +114,7 @@ export class EditorPartsManager {
                 throw new Error(`Could not add part: Part '${type}' was not registered`);
             }
             this.addPart(part);
+            this.editor.restart();
 
             this.addDialog.close();
         });
@@ -117,6 +126,9 @@ export class EditorPartsManager {
             verbose: name,
             symbols: api.symbols,
             color: api.color,
+            blockly: {
+                prefix: `${name}:`,
+            },
         };
     }
     reserveName(name : string) {
@@ -190,7 +202,13 @@ export class EditorPartsManager {
         const part = this.editor.output.parts.addPart(partClass, { id, name });
         const toolboxModule = this.createToolboxModule(api, id, name);
         const entry = this.editor.toolbox.addEntry(toolboxModule);
-        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id });
+        let inlineDisplay;
+        if (api.inlineDisplay) {
+            inlineDisplay = new api.inlineDisplay(part);
+        } else {
+            inlineDisplay = new DefaultInlineDisplay(part);
+        }
+        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id, icon: api.icon, inlineDisplay });
         const partRecord : IPartRecord = {
             type: api.type,
             part,
@@ -247,7 +265,7 @@ export class EditorPartsManager {
         // Remove the toolbox entry
         partRecord.toolboxEntry.dispose();
         partRecord.partsControlsEntry.dispose();
-        this.parts.clear();
+        this.parts.delete(id);
     }
     checkBlockDependency(id : string) {
         // Get the blockly xml and parse it

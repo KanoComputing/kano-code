@@ -36,10 +36,8 @@ Custom property | Description | Default
 @hero hero.svg
 @demo ./kano-alert/demo/kano-alert.html
 */
-import '@polymer/polymer/polymer-legacy.js';
 
 import { PaperDialogBehavior } from '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/marked-element/marked-element.js';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
@@ -54,7 +52,7 @@ class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElement) {
         <style>
             :host {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: flex-start;
                 @apply --shadow-elevation-16dp;
                 font-family: var(--font-body);
@@ -93,7 +91,7 @@ flex-direction: row;
             }
             .actions {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 justify-content: flex-start;
                 @apply --kano-alert-action-container;
             }
@@ -144,6 +142,35 @@ flex-direction: row;
             heading: String,
             text: String,
         };
+    }
+    open() {
+        this.backdropElement.style.background = '#414a51';
+        super.open();
+        if ('animate' in HTMLElement.prototype) {
+            this.animate({
+                transform: ['scale(1.5, 1.5)', 'scale(1, 1)'],
+                opacity: [0, 1],
+            }, {
+                duration: 200,
+                easing: 'ease-out',
+                fill: 'both',
+            });
+        }
+    }
+    close() {
+        if ('animate' in HTMLElement.prototype) {
+            this.animate({
+                opacity: [1, 0],
+            }, {
+                duration: 200,
+                easing: 'ease-in',
+                fill: 'both',
+            }).finished.then(() => {
+                super.close();
+            });
+        } else {
+            super.close();
+        }
     }
 }
 

@@ -31,7 +31,7 @@ export abstract class StoragePlugin extends Plugin {
     load() {
         this.read(this.getKey())
             .then((app) => {
-                if (!this.editor) {
+                if (!this.editor || !app) {
                     return;
                 }
                 this.editor.load(app);

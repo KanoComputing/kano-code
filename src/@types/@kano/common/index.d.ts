@@ -15,4 +15,5 @@ declare module '@kano/common/index.js' {
     function subscribe(target : any, name : string, callback : Function, thisArg? : any, subs? : Disposables) : IDisposable;
     function subscribeDOM(target : HTMLElement, name : string, callback : Function, thisArg? : any, subs? : Disposables) : IDisposable;
     function subscribeTimeout(callback : () => void, timeout? : number) : IDisposable;
+    function subscribeInterval(callback : () => void, timeout? : number) : IDisposable;
 }

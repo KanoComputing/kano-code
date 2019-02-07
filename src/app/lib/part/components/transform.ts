@@ -10,4 +10,6 @@ export class Transform extends PartComponent {
     scale : number = 1;
     @property({ type: Number, value: 0 })
     rotation : number = 0;
+    @property({ type: Number, value: 1 })
+    opacity : number = 1;
 }

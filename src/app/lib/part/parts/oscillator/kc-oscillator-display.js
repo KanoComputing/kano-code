@@ -2,10 +2,10 @@ import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-res
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/polymer-legacy.js';
-import '../kano-value-rendering/kano-value-rendering.js';
+import '../../../../elements/inline-controls/kano-value-rendering/kano-value-rendering.js';
 
 class KanoICOscillator extends mixinBehaviors([IronResizableBehavior], PolymerElement) {
-    static get is() { return 'kano-ic-oscillator'; }
+    static get is() { return 'kc-oscillator-display'; }
     static get properties() {
         return {
             value: Number,
@@ -46,20 +46,25 @@ class KanoICOscillator extends mixinBehaviors([IronResizableBehavior], PolymerEl
     connectedCallback() {
         super.connectedCallback();
         this.ctx = this.$.canvas.getContext('2d');
-        this._initCanvas = this._initCanvas.bind(this);
-        this.addEventListener('iron-resize', this._initCanvas);
+        this.resize = this.resize.bind(this);
+        this.addEventListener('iron-resize', this.resize);
+        this._initCanvas();
+        this.cache = document.createElement('canvas');
     }
     disconnectedCallback() {
         super.disconnectedCallback();
         cancelAnimationFrame(this._nextFrameId);
-        this.removeEventListener('iron-resize', this._initCanvas);
+        this.removeEventListener('iron-resize', this.resize);
+    }
+    resize() {
+        this.$.canvas.width = this.$.canvas.offsetWidth;
     }
     _initCanvas() {
         if (this._nextFrameId) {
             cancelAnimationFrame(this._nextFrameId);
         }
         this.$.canvas.style.width = '100%';
-        this.$.canvas.width = this.$.canvas.offsetWidth;
+        this.resize();
         this.async(() => this._render());
     }
     _render(timestamp) {
@@ -100,7 +105,7 @@ class KanoICOscillator extends mixinBehaviors([IronResizableBehavior], PolymerEl
         this.ctx.stroke();
         this.ctx.closePath();
 
-        if (!this.prevTimestamp || timestamp - this.prevTimestamp > 16) {
+        if (!this.prevTimestamp || timestamp - this.prevTimestamp > 64) {
             this.prevTimestamp = timestamp;
             this.set('value', Math.round(this.part.value));
         }

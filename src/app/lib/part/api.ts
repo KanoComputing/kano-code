@@ -1,4 +1,5 @@
 import { IMetaDefinition } from '../meta-api/module.js';
+import { PartInlineDisplay } from './inline-display.js';
 
 export interface IPartAPI {
     type : string;
@@ -6,4 +7,6 @@ export interface IPartAPI {
     // Will be displayed in the list of parts
     label : string;
     symbols : IMetaDefinition[];
+    icon : HTMLTemplateElement;
+    inlineDisplay? : Type<PartInlineDisplay>;
 };

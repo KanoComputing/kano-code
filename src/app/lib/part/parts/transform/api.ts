@@ -14,9 +14,18 @@ export const TransformAPI : IMetaDefinition[] = [
     },
     {
         type: 'function',
-        name: 'setRotation',
+        name: 'turn',
         verbose: 'turn',
         parameters: [{
+            type: 'parameter',
+            name: 'type',
+            returnType: 'Enum',
+            enum: [
+                ['\u21BB', 'clockwise'],
+                ['\u21BA', 'counterclockwise'],
+                ['to', 'to'],
+            ],
+        }, {
             type: 'parameter',
             name: 'rotation',
             returnType: Number,
@@ -49,5 +58,32 @@ export const TransformAPI : IMetaDefinition[] = [
             returnType: Number,
             default: 0,
         }],
+    },
+    {
+        type: 'variable',
+        name: 'opacity',
+        returnType: Number,
+        default: 100,
+        setter: true,
+    },
+    {
+        type: 'variable',
+        name: 'x',
+        returnType: Number,
+    },
+    {
+        type: 'variable',
+        name: 'y',
+        returnType: Number,
+    },
+    {
+        type: 'variable',
+        name: 'scale',
+        returnType: Number,
+    },
+    {
+        type: 'variable',
+        name: 'rotation',
+        returnType: Number,
     },
 ];

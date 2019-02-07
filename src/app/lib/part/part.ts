@@ -40,6 +40,9 @@ export class Part implements IPart {
     static get type() : string {
         throw new Error('Could not create part, type is not defined');
     }
+    static transformLegacy(app : any) {
+        
+    }
     constructor() {
         const components = collectPrototype<Type<PartComponent>>('components', this.constructor, Part);
         components.forEach((componentClass, key) => {

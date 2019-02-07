@@ -314,8 +314,6 @@ flex-direction: column;
                 </div>
             </div>
         </section>
-        <kano-alert id="dialog-reset-warning" heading="[[localize('RESET', 'Reset')]]" text="[[localize('ABOUT_TO_RESET', 'You\\'ll lose any unsaved changes')]]" on-iron-overlay-closed="_modalClosed" with-backdrop>
-        </kano-alert>
         `;
     }
     _hasSelectedPart() {
@@ -379,38 +377,6 @@ flex-direction: column;
     }
     _isPauseOverlayHidden(running, editableLayout) {
         return running || editableLayout;
-    }
-    _modalClosed(e) {
-        if (e.detail.confirmed) {
-            switch (dom(e).rootTarget.id) {
-            case 'dialog-reset-warning': {
-                this._dialogConfirmedReset();
-                break;
-            }
-            default: {
-                break;
-            }
-            }
-        } else {
-            switch (dom(e).rootTarget.id) {
-            case 'dialog-reset-warning': {
-                this.fire('tracking-event', {
-                    name: 'workspace_reset_dialog_closed',
-                });
-                break;
-            }
-            default: {
-                break;
-            }
-            }
-        }
-    }
-    _dialogConfirmedReset() {
-        this.fire('tracking-event', {
-            name: 'workspace_reset_dialog_confirmed',
-        });
-        this.dispatchEvent(new CustomEvent('reset'));
-        this.unsavedChanges = false;
     }
     isPartDeletionDisabled() {
         return this.partEditorOpened || this.running;

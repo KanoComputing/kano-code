@@ -2,8 +2,10 @@ import { Part, IPartContext } from '../../part.js';
 import { component } from '../../decorators.js';
 import { Transform } from '../../components/transform.js';
 
-export class DOMPart extends Part {
-    protected _el : HTMLElement;
+type TurnType = 'clockwise'|'counterclockwise'|'to';
+
+export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part {
+    protected _el : T;
     @component(Transform)
     public transform : Transform;
     constructor() {
@@ -24,14 +26,19 @@ export class DOMPart extends Part {
     render() {
         if (this.transform.invalidated) {
             this._el.style.transform = `translate(${this.transform.x}px, ${this.transform.y}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
+            this._el.style.opacity = this.transform.opacity.toString();
         }
         this.transform.apply();
     }
-    getElement() : HTMLElement {
-        return document.createElement('div');
-    }
-    setRotation(a : number) {
-        this.transform.rotation = a;
+    abstract getElement() : T
+    turn(type : TurnType, a : number) {
+        if (type === 'to') {
+            this.transform.rotation = a;
+        } else if (type === 'clockwise') {
+            this.transform.rotation += a;
+        } else {
+            this.transform.rotation -= a;
+        }
         this.transform.invalidate();
     }
     moveAlong(distance : number) {
@@ -53,6 +60,26 @@ export class DOMPart extends Part {
     setScale(scale : number) {
         this.transform.scale = scale / 100;
         this.transform.invalidate();
+    }
+    set opacity(o : number) {
+        o = Math.max(0, Math.min(100, o)) / 100;
+        this.transform.opacity = o;
+        this.transform.invalidate();
+    }
+    get opacity() {
+        return this.transform.opacity;
+    }
+    get x() {
+        return this.transform.x;
+    }
+    get y() {
+        return this.transform.x;
+    }
+    get scale() {
+        return this.transform.x;
+    }
+    get rotation() {
+        return this.transform.x;
     }
     dispose() {
         super.dispose();

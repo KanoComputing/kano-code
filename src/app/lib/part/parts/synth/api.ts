@@ -1,10 +1,12 @@
 import { SynthPart } from './synth.js';
 import { IPartAPI } from '../../api.js';
+import { synth } from '@kano/icons/parts.js';
 
 export const SynthAPI : IPartAPI = {
     type: SynthPart.type,
     color: '#00c7b6',
     label: 'Synth',
+    icon: synth,
     symbols: [{
         type: 'function',
         name: 'setVolume',

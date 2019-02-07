@@ -1,10 +1,16 @@
 import { DOMPart } from './dom.js';
 import { PartContextStub } from '../../../../../test/part-context-stub.js';
 
+class DOMTest extends DOMPart {
+    getElement() {
+        return document.createElement('div');
+    }
+}
+
 suite('DOMPart', () => {
     test('#onInstall()', () => {
         const stub = new PartContextStub();
-        const part = new DOMPart();
+        const part = new DOMTest();
 
         part.onInstall(stub);
 
@@ -18,7 +24,7 @@ suite('DOMPart', () => {
         const y = 44;
         const scale = 54;
         const rotation = 54;
-        const part = new DOMPart();
+        const part = new DOMTest();
         
         part.transform.x = x;
         part.transform.y = y;
@@ -29,23 +35,23 @@ suite('DOMPart', () => {
 
         assert.equal((part as any)._el.style.transform, `translate(${x}px, ${y}px) scale(${scale}, ${scale}) rotate(${rotation}deg)`);
     });
-    test('#setRotation()', () => {
+    test('#turn()', () => {
         return new Promise((resolve) => {
             const rotation = 12;
-            const part = new DOMPart();
+            const part = new DOMTest();
 
             part.transform.onDidInvalidate(() => {
                 assert.equal(part.transform.rotation, rotation);
                 resolve();
             });
 
-            part.setRotation(rotation);
+            part.turn('to', rotation);
         });
     });
     test('#moveAlong()', () => {
         return new Promise((resolve) => {
             const distance = 13;
-            const part = new DOMPart();
+            const part = new DOMTest();
 
             part.transform.onDidInvalidate(() => {
                 assert.equal(part.transform.x, distance);
@@ -60,7 +66,7 @@ suite('DOMPart', () => {
         return new Promise((resolve) => {
             const x = 14;
             const y = 24;
-            const part = new DOMPart();
+            const part = new DOMTest();
 
             part.transform.onDidInvalidate(() => {
                 assert.equal(part.transform.x, 34 + x);
@@ -78,7 +84,7 @@ suite('DOMPart', () => {
         return new Promise((resolve) => {
             const x = 15;
             const y = 25;
-            const part = new DOMPart();
+            const part = new DOMTest();
 
             part.transform.onDidInvalidate(() => {
                 assert.equal(part.transform.x, x);
@@ -95,7 +101,7 @@ suite('DOMPart', () => {
     test('#setScale()', () => {
         return new Promise((resolve) => {
             const scale = 16;
-            const part = new DOMPart();
+            const part = new DOMTest();
 
             part.transform.onDidInvalidate(() => {
                 assert.equal(part.transform.scale, scale / 100);
@@ -111,7 +117,7 @@ suite('DOMPart', () => {
     test('#dispose()', () => {
         const stub = new PartContextStub();
 
-        const part = new DOMPart();
+        const part = new DOMTest();
 
         part.onInstall(stub);
 

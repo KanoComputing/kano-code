@@ -131,13 +131,20 @@ class BlocklyMetaRenderer {
         }
         return blocks;
     }
+    static verboseWithPrefix(m : Meta) {
+        const root = m.getRoot();
+        if (!root.def.blockly || !root.def.blockly.prefix) {
+            return m.getVerboseDisplay();
+        }
+        return `${root.def.blockly.prefix} ${m.getVerboseDisplay()}`;
+    }
     static renderGetter(m : MetaVariable) : IRenderedBlock {
         const id = `get_${BlocklyMetaRenderer.getId(m)}`;
         const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
                 init() {
                     this.appendDummyInput()
-                        .appendField(m.getVerboseDisplay());
+                        .appendField(BlocklyMetaRenderer.verboseWithPrefix(m));
                     this.setColour(m.getColor());
                     this.setOutput(BlocklyMetaRenderer.parseType(m.getReturnType()));
                 },
@@ -156,11 +163,11 @@ class BlocklyMetaRenderer {
                 init() {
                     if (input.type === 'field_dropdown') {
                         this.appendDummyInput()
-                            .appendField(m.getVerboseDisplay())
+                            .appendField(BlocklyMetaRenderer.verboseWithPrefix(m))
                             .appendField(new Blockly.FieldDropdown(m.def.enum), blocklyName);
                     } else {
                         this.appendValueInput(blocklyName)
-                            .appendField(m.getVerboseDisplay())
+                            .appendField(BlocklyMetaRenderer.verboseWithPrefix(m))
                             .setCheck(input.check);
                     }
                     this.setColour(m.getColor());
@@ -176,7 +183,7 @@ class BlocklyMetaRenderer {
                 } else {
                     value = Blockly.JavaScript.valueToCode(block, blocklyName);
                 }
-                return [`${m.getNameChain('.')} = ${value};\n`];
+                return `${m.getNameChain('.')} = ${value};\n`;
             };
         };
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
@@ -222,12 +229,12 @@ class BlocklyMetaRenderer {
                     this.setOutput(BlocklyMetaRenderer.parseType(m.getReturnType()));
                     if (!params.length) {
                         this.appendDummyInput()
-                            .appendField(m.getVerboseDisplay());
+                            .appendField(BlocklyMetaRenderer.verboseWithPrefix(m));
                     }
                     params.forEach((p, index) => {
                         const pName = p.def.name.toUpperCase();
                         const input = BlocklyMetaRenderer.parseInputType(p.def.returnType, p);
-                        const label = index === 0 ? `${m.getVerboseDisplay()} ${p.getVerboseDisplay()}` : p.getVerboseDisplay();
+                        const label = index === 0 ? `${BlocklyMetaRenderer.verboseWithPrefix(m)} ${p.getVerboseDisplay()}` : p.getVerboseDisplay();
                         let blocklyInput;
                         if (input.type === 'input_statement') {
                             const firstInput = this.appendDummyInput();

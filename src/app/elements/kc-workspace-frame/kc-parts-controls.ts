@@ -1,32 +1,33 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { customElement, property } from '@polymer/decorators/lib/decorators.js';
+import { LitElement, html, customElement, property, css } from 'lit-element/lit-element.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@kano/styles/color.js';
 import { close } from '@kano/icons/ui.js';
-import '../kano-icons/kc-ui.js';
 import '../kano-part-list-item/kano-part-list-item.js';
 import { EventEmitter, IDisposable } from '@kano/common/index.js';
+import { templateContent } from '../../lib/directives/template-content.js';
+import { PartInlineDisplay } from '../../lib/part/inline-display.js';
 
 export interface IStackEntry {
     id : string;
     name : string;
+    icon : HTMLTemplateElement;
+    inlineDisplay : PartInlineDisplay;
 }
 
 @customElement('kc-parts-controls')
-export class KCPartsControls extends  PolymerElement {
-    private _onDidClickAddParts : EventEmitter = new EventEmitter();
-    private _onDidClickRemovePart : EventEmitter<string> = new EventEmitter();
+export class KCPartsControls extends LitElement {
+    private _onDidClickAddParts: EventEmitter = new EventEmitter();
+    private _onDidClickRemovePart: EventEmitter<string> = new EventEmitter();
     @property({ type: Array })
-    public parts : any[] = [];
+    public parts: any[] = [];
     public get onDidClickAddParts() {
         return this._onDidClickAddParts.event;
     }
     public get onDidClickRemovePart() {
         return this._onDidClickRemovePart.event;
     }
-    static get template() {
-        return html`
-        <style>
+    static get styles() {
+        return css`
             :host {
                 display: block;
             }
@@ -136,53 +137,51 @@ export class KCPartsControls extends  PolymerElement {
             [hidden] {
                 display: none !important;
             }
-        </style>
+        `;
+    }
+    render() {
+        return html`
         <div class="add-parts">
-            <button id="add-part-button" type="button" on-click="_addPartClicked">
+            <button id="add-part-button" type="button" @click=${this._addPartClicked}>
                 <label for="add-part-button">Add Parts</label>
-                <iron-icon icon="kc-ui:add"></iron-icon>
             </button>
         </div>
         <div class="part-list">
             <slot name="extra-parts"></slot>
-            <!-- TODO: add sortable back in when needed and deal with crashing bug -->
-            <!-- <sortable-js handle=".handle" animation="150"> -->
-                <template is="dom-repeat" items="[[parts]]" as="part">
-                    <div class="part" id$="part-[[part.id]]">
-                        <kano-part-list-item model="[[part]]" on-click="_partItemTapped"></kano-part-list-item>
-                        <button type="button" class="remove" on-click="_removePartClicked">
-                            ${close}
-                        </button>
-                        <!-- <iron-icon class="handle" icon="kc-ui:handle"></iron-icon> -->
-                    </div>
-                </template>
-            <!-- </sortable-js> -->
+            ${this.parts.map(part => html`
+            <div class="part" id="part-${part.id}">
+                <kano-part-list-item .model=${part} @click=${()=> this._partItemTapped(part)}>
+                    ${part.inlineDisplay.domNode}
+                </kano-part-list-item>
+                <button type="button" class="remove" @click=${()=> this._removePartClicked(part)}>
+                    ${templateContent(close)}
+                </button>
+            </div>
+            `)}
         </div>
 `;
     }
     _addPartClicked() {
         this._onDidClickAddParts.fire();
     }
-    _removePartClicked(e : any) {
-        const part = e.model.get('part');
+    _removePartClicked(part: any) {
         this._onDidClickRemovePart.fire(part.id);
     }
-    _removePart(e : any) {
-        const part = e.model.get('part');
+    _removePart(part: any) {
         this.dispatchEvent(new CustomEvent('remove-part', { detail: part }));
     }
-    _partItemTapped(e : any) {
-        e.preventDefault();
-        const part = e.model.get('part');
+    _partItemTapped(part: any) {
         this.dispatchEvent(new CustomEvent('part-clicked', { detail: part }));
     }
-    addEntry(model : IStackEntry) : IDisposable {
-        const item = { name: model.name, id: model.id };
-        this.push('parts', item);
+    addEntry(model : IStackEntry): IDisposable {
+        const item = { name: model.name, id: model.id, icon: model.icon, inlineDisplay: model.inlineDisplay };
+        this.parts.push(item);
+        this.parts = [...this.parts];
         return {
             dispose: () => {
                 const index = this.parts.indexOf(item);
-                this.splice('parts', index, 1);
+                this.parts.splice(index, 1);
+                this.parts = [...this.parts];
             },
         };
     }

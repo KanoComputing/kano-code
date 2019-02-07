@@ -15,12 +15,12 @@ import { ActivityBar } from './activity-bar.js';
 import { WorkspaceToolbar } from './workspace/toolbar.js';
 import { EditorPartsManager } from '../part/editor.js';
 import { BlocklySourceEditor } from './source-editor/blockly.js';
+import { transformLegacyApp } from '../legacy/loader.js';
 
 const PROXY_EVENTS = [
     'share',
     'exit',
     'change',
-    'reset',
     'add-part-request',
     'remove-part-request',
     'import',
@@ -68,10 +68,6 @@ export class Editor extends EditorOrPlayer {
 
         this.rootEl.storeId = this.store.id;
         this.storeObserver.rootEl.storeId = this.store.id;
-
-        this.rootEl.addEventListener('reset', () => {
-            this.reset();
-        });
 
         this.eventRemovers = PROXY_EVENTS.map(name => Editor.proxyEvent(this.rootEl, this, name));
 
@@ -238,20 +234,23 @@ export class Editor extends EditorOrPlayer {
         this.telemetry.trackEvent({ name: 'ide_exited' });
     }
     load(app) {
+        const safeApp = transformLegacyApp(app, this);
         if (!this.injected) {
-            this._queuedApp = app;
+            this._queuedApp = safeApp;
             return;
         }
-        this.runPluginTask('onImport', app);
-        this.output.runPluginTask('onImport', app);
-        this.parts.onImport(app);
-        this.sourceEditor.setSource(app.source);
+        this.parts.reset();
+        this.runPluginTask('onImport', safeApp);
+        this.output.runPluginTask('onImport', safeApp);
+        this.parts.onImport(safeApp);
+        this.sourceEditor.setSource(safeApp.source);
         this.emit('loaded');
         this.telemetry.trackEvent({ name: 'app_imported' });
     }
     reset() {
         const source = this.profile ? this.profile.source : '';
         this.setCode(null);
+        this.parts.reset();
         this.load({ source });
     }
     setCode(content) {
@@ -260,8 +259,11 @@ export class Editor extends EditorOrPlayer {
         this.unsavedChanges = true;
         this.output.restart();
     }
-    restartApp() {
+    restart() {
         this.output.restart();
+    }
+    restartApp() {
+        this.restart();
     }
     exportCreation() {
         let data = this.export();

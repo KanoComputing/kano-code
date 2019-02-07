@@ -1,11 +1,13 @@
 import { ButtonPart } from './button.js';
 import { IPartAPI } from '../../api.js';
 import { TransformAPI } from '../transform/api.js';
+import { button } from '@kano/icons/parts.js'
 
 export const ButtonAPI : IPartAPI = {
     type: ButtonPart.type,
     color: '#00c7b6',
     label: 'Button',
+    icon: button,
     symbols: [{
         type: 'function',
         name: 'getLabel',

@@ -3,6 +3,7 @@ import { Output } from '../output/output.js';
 
 export type PartContructor = Type<Part> & {
     type : string;
+    transformLegacy : (app : any) => void;
 }
 
 export interface ISerializedPart {

@@ -24,3 +24,17 @@ function logDecoratorFactory(level : string) {
 
 export const trace = logDecoratorFactory('TRACE');
 export const debug = logDecoratorFactory('DEBUG');
+
+export function deprecated(message : string) {
+    return (target : any, key : string, descriptor : any) => {
+        if (!descriptor) {
+            return;
+        }
+        const originalMethod = descriptor.value;
+        descriptor.value = function (...args : any[]) {
+            console.warn(`${key} is deprecated`, message);
+            return originalMethod.apply(this, arguments);
+        };
+        return descriptor;
+    }
+}

@@ -1,4 +1,6 @@
+
 declare module '@kano/telemetry/index.js' {
+    import { IDisposable } from '@kano/common/index.js';
     interface ITelemetryClientOptions {
         scope? : string;
     }
@@ -9,5 +11,6 @@ declare module '@kano/telemetry/index.js' {
     class TelemetryClient {
         constructor(opts : ITelemetryClientOptions);
         trackEvent(opts : ITrackEventOptions) : void;
+        mount(client : TelemetryClient) : IDisposable;
     }
 }

@@ -2,10 +2,11 @@ import { Part, IPartContext } from '../../part.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
 import { IDisposable } from '@kano/common/index.js';
+import { legacyTransform } from './legacy.js';
 
 class TerminalComponent extends PartComponent {
     @property({ type: Boolean, value: false })
-    public visible : boolean=  false;
+    public visible : boolean = false;
 }
 
 @part('terminal')
@@ -17,6 +18,9 @@ export class TerminalPart extends Part {
     private message : string = '';
     private lastLine : HTMLElement|null = null;
     private _renderingInterval? : number;
+    static transformLegacy(app : any) {
+        legacyTransform(app);
+    }
     constructor() {
         super();
         this.core = this._components.get('core') as TerminalComponent;
