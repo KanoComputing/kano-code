@@ -2,8 +2,10 @@ import { Part } from '../../part.js';
 import { PartComponent } from '../../component.js';
 import { component, property, part } from '../../decorators.js';
 import { Wave } from './wave.js';
-import { trace } from '../../../decorators.js';
 
+/**
+ * Set of function that returns a y for a given x
+ */
 const WAVES = {
     sine(x : number) {
         const angle = ((x * 3.6) * Math.PI) / 180;
@@ -56,20 +58,25 @@ export class OscillatorPart extends Part {
     onStop() {
         this._stopOscillating();
     }
-    getX() {
-        return this.core.delay + this.core.x;
-    }
     _updateValue() {
         if (this.timeout) {
             this._stopOscillating();
         }
+        // TODO: Use a requestAnimation frame and apply the delta time to the step
+        // this would make the oscillator behave normally even under pressure
+        // Investigate if it would have an impact on past creations
+        // Start a 60 tick per second timeout recursive loop.
         this.timeout = window.setTimeout(() => {
+            // Increment x by one step
             this.core.x += this._getStep();
             this._checkBounds();
             this.core.invalidate();
             this._updateValue();
         }, 16);
     }
+    /**
+     * Stop the oscillation. This will cancel the resursive timeout loop
+     */
     _stopOscillating() {
         if (this.timeout) {
             clearTimeout(this.timeout);
@@ -79,31 +86,39 @@ export class OscillatorPart extends Part {
     _getStep() {
         return this.core.speed / 20;
     }
-    getSpeed() {
+    get speed() {
         return this.core.speed;
     }
-    setSpeed(s : number) {
+    set speed(s : number) {
         s = Math.min(100, Math.max(0, s));
         this.core.speed = s;
         this.core.invalidate();
     }
-    getDelay() {
+    get delay() {
         return this.core.delay;
     }
-    setDelay(d : number) {
-        const s = Math.min(100, Math.max(0, d));
+    set delay(d : number) {
+        d = Math.min(100, Math.max(0, d));
         this.core.delay = d;
         this.core.invalidate();
     }
+    get value() {
+        return this.getValueAt(this.core.x);
+    }
+    set wave(wave : WaveType) {
+        this.core.wave = wave;
+        this.core.invalidate();
+    }
+    /**
+     * Clamps x between 0 and 100
+     * It mutates core.x but does not invalidate
+     */
     _checkBounds() {
         if (this.core.x > 100) {
             this.core.x = 101 - this.core.x;
         } else if (this.core.x < 0) {
             this.core.x = 101 + this.core.x;
         }
-    }
-    getValue() {
-        return this.getValueAt(this.core.x);
     }
     getValueAt(x : number) {
         const xWithOffset = this.core.delay + x;

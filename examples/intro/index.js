@@ -3,10 +3,8 @@ import * as APIs from '../../toolbox.js';
 import * as i18n from '../../i18n.js';
 import * as Modules from '../../modules.js';
 import * as Parts from '../../dist/app/lib/part/parts/index.js';
-import { ButtonAPI } from '../../dist/app/lib/part/parts/button/api.js';
-import { SynthAPI } from '../../dist/app/lib/part/parts/synth/api.js';
-import { ClockAPI } from '../../dist/app/lib/part/parts/clock/api.js';
-import { OscillatorAPI } from '../../dist/app/lib/part/parts/oscillator/api.js';
+import * as PartAPIs from '../../dist/app/lib/part/parts/api.js';
+import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js'
 
 const Shapes = {
     type: 'module',
@@ -66,8 +64,15 @@ class OutputProfile extends code.OutputProfile {
 }
 
 class EditorProfile extends code.EditorProfile {
+    constructor() {
+        super();
+        this.storage = new LocalStoragePlugin('intro');
+    }
+    get plugins() {
+        return [this.storage];
+    }
     get parts() {
-        return [ButtonAPI, SynthAPI, ClockAPI, OscillatorAPI];
+        return Object.values(PartAPIs);
     }
     get toolbox() {
         return Object.values(APIs).concat([Shapes]);
@@ -86,4 +91,6 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
         editor.registerProfile(new EditorProfile());
 
         editor.inject(document.body);
+
+        editor.profile.storage.load();
     });

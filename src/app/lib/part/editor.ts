@@ -8,8 +8,9 @@ import { IMetaDefinition } from '../meta-api/module.js';
 import { Part } from './part.js';
 import { KCPartsControls } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
+import EventEmitter from '../util/event-emitter.js';
 
-export interface IEditor {
+export interface IEditor extends EventEmitter {
     injected : boolean;
     output : Output;
     config : any;
@@ -28,6 +29,8 @@ export interface IEditor {
         getSource() : string;
     };
     rootEl : HTMLElement;
+    load(app : any) : void;
+    export() : any;
 }
 
 export interface IPartDefinition {
@@ -59,6 +62,7 @@ export class EditorPartsManager {
     private _telemetry : TelemetryClient = new TelemetryClient({ scope: 'parts' });
     constructor(editor : IEditor) {
         this.editor = editor;
+        this.editor.output.parts.managed = true;
         this.addDialogProvider = new AddPartDialogProvider(editor);
     }
     // Assume this will not change during a session.
@@ -137,24 +141,64 @@ export class EditorPartsManager {
     freeName(source : string) {
         this.names.delete(source);
     }
-    addPart(partClass : PartContructor) {
-        const api = this.apiRegistry.get(partClass.type);
-        if (!api) {
+    /**
+     * Called by the editor when the user imports a saved app
+     * @param app Exported app data
+     */
+    onImport(app : any) {
+        // No part in this app, bail out
+        if (!app.parts) {
             return;
         }
-        const name = this.getAvailableName(api.label);
-        const variableName = this.editor.output.runner.variables.getAvailable(name);
-        const part = this.editor.output.parts.addPart(partClass, { id: variableName, name });
-        const toolboxModule = this.createToolboxModule(api, variableName, name);
+        const parts : any[] = app.parts;
+        // Fetch all registered parts
+        const registeredParts = this.getRegisteredParts();
+        parts.forEach((partData : any) => {
+            // Try to match the saved part with a known one
+            const partClass = registeredParts.get(partData.type);
+            // The part is not registered, warn developers and move on
+            if (!partClass) {
+                console.warn(`Could not import part: Part with type '${partData.type}' is not registered`, partData);
+                return;
+            }
+            // Add the part. Provide the saved id and name, preventing them to be generated
+            const record = this.addPart(partClass, partData.id, partData.name);
+            // If creating the part failed, bail out
+            if (!record) {
+                return;
+            }
+            // Hydrate the part with saved data
+            record.part.load(partData);
+        });
+    }
+    addPart(partClass : PartContructor, id? : string, name? : string) {
+        const api = this.apiRegistry.get(partClass.type);
+        if (!api) {
+            console.warn(`Could not add part: Part with type '${partClass.type}' is not registered`);
+            return;
+        }
+        if (!name) {
+            name = this.getAvailableName(api.label);
+        } else {
+            this.reserveName(name);
+        }
+        if (!id) {
+            id = this.editor.output.runner.variables.getAvailable(name);
+        } else {
+            this.editor.output.runner.variables.reserve(name);
+        }
+        const part = this.editor.output.parts.addPart(partClass, { id, name });
+        const toolboxModule = this.createToolboxModule(api, id, name);
         const entry = this.editor.toolbox.addEntry(toolboxModule);
-        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id: variableName });
+        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id });
         const partRecord : IPartRecord = {
             type: api.type,
             part,
             toolboxEntry: entry,
             partsControlsEntry,
         };
-        this.parts.set(variableName, partRecord);
+        this.parts.set(id, partRecord);
+        return partRecord;
     }
     removePartAttempt(id : string) {
         const partRecord = this.parts.get(id);
@@ -203,6 +247,7 @@ export class EditorPartsManager {
         // Remove the toolbox entry
         partRecord.toolboxEntry.dispose();
         partRecord.partsControlsEntry.dispose();
+        this.parts.clear();
     }
     checkBlockDependency(id : string) {
         // Get the blockly xml and parse it
@@ -225,6 +270,11 @@ export class EditorPartsManager {
     }
     registerAPI(partAPI : IPartAPI) {
         this.apiRegistry.set(partAPI.type, partAPI);
+    }
+    reset() {
+        this.parts.forEach((_, id) => {
+            this.removePart(id);
+        });
     }
     dispose() {
         this.apiRegistry.clear();

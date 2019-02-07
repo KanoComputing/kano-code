@@ -121,7 +121,18 @@ class BlocklyMetaRenderer {
         return id;
     }
     static renderVariable(m : MetaVariable) : IRenderedBlock[] {
-        const id = BlocklyMetaRenderer.getId(m);
+        const blocks : IRenderedBlock[] = [];
+        if (m.def.setter) {
+            blocks.push(BlocklyMetaRenderer.renderSetter(m));
+        }
+        // Add a getter by default, but ignore if it is set explicitely to false
+        if (typeof m.def.getter === 'undefined' || m.def.getter) {
+            blocks.push(BlocklyMetaRenderer.renderGetter(m));
+        }
+        return blocks;
+    }
+    static renderGetter(m : MetaVariable) : IRenderedBlock {
+        const id = `get_${BlocklyMetaRenderer.getId(m)}`;
         const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
                 init() {
@@ -134,7 +145,60 @@ class BlocklyMetaRenderer {
             Blockly.JavaScript[id] = () => [m.getNameChain('.')];
         };
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
-        return [{ register, id, toolbox }];
+        return { register, id, toolbox };
+    }
+    static renderSetter(m : MetaVariable) : IRenderedBlock {
+        const id = `set_${BlocklyMetaRenderer.getId(m)}`;
+        const blocklyName = m.def.name.toUpperCase();
+        const input = BlocklyMetaRenderer.parseInputType(m.def.returnType, m);
+        const register = (Blockly : any) => {
+            Blockly.Blocks[id] = {
+                init() {
+                    if (input.type === 'field_dropdown') {
+                        this.appendDummyInput()
+                            .appendField(m.getVerboseDisplay())
+                            .appendField(new Blockly.FieldDropdown(m.def.enum), blocklyName);
+                    } else {
+                        this.appendValueInput(blocklyName)
+                            .appendField(m.getVerboseDisplay())
+                            .setCheck(input.check);
+                    }
+                    this.setColour(m.getColor());
+                    this.setPreviousStatement(true);
+                    this.setNextStatement(true);
+                },
+            };
+            Blockly.JavaScript[id] = (block : any) => {
+                let value;
+                if (block.getField(blocklyName)) {
+                    value = block.getFieldValue(blocklyName);
+                    value = BlocklyMetaRenderer.formatFieldValue(value, m.def.default);
+                } else {
+                    value = Blockly.JavaScript.valueToCode(block, blocklyName);
+                }
+                return [`${m.getNameChain('.')} = ${value};\n`];
+            };
+        };
+        const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
+        const defaults : any = {};
+        if (m.def.blockly && m.def.blockly.shadow) {
+            defaults[blocklyName] = { shadow: m.def.blockly.shadow(m.def.default), default: m.def.default };
+        } else {
+            defaults[blocklyName] = m.def.default;
+        }
+        return { register, id, toolbox, defaults };
+    }
+    static formatFieldValue(value : any, def : any) {
+        if (!value) {
+            value = typeof def === 'undefined' ? '' : def;
+        }
+        if (typeof def === 'boolean') {
+            return value;
+        }
+        if (typeof value === 'string') {
+            value = `'${value}'`;
+        }
+        return value;
     }
     static renderFunction(m : MetaFunction) {
         const id = BlocklyMetaRenderer.getId(m);
@@ -213,12 +277,7 @@ class BlocklyMetaRenderer {
                     let value;
                     if (field) {
                         value = block.getFieldValue(argName);
-                        if (!value) {
-                            value = typeof params[index].def.default === 'undefined' ? '' : params[index].def.default;
-                        }
-                        if (typeof value === 'string') {
-                            value = `'${value}'`;
-                        }
+                        value = BlocklyMetaRenderer.formatFieldValue(value, params[index].def.default);
                     } else {
                         switch (input.type) {
                             case Blockly.INPUT_VALUE: {
@@ -260,7 +319,7 @@ class BlocklyMetaRenderer {
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
         return [{ register, id, defaults, toolbox }];
     }
-    static parseInputType(type : any, param : MetaParameter) {
+    static parseInputType(type : any, param : Meta) {
         if (param.def.blockly && param.def.blockly.customField) {
             return {
                 type: 'input_dummy',

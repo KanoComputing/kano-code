@@ -11,6 +11,8 @@ export interface IMetaDefinition {
     enum? : [string, string][];
     blockly? : any;
     toolbox? : boolean;
+    getter? : boolean;
+    setter? : boolean;
 }
 
 export class Meta {

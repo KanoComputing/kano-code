@@ -9,7 +9,7 @@ export class BlocklySourceEditor implements SourceEditor {
     public domNode : HTMLElement = document.createElement('kc-blockly-editor');
     constructor(editor : IEditor) {
         this.editor = editor;
-        (this.domNode as any).media = this.editor.config.BLOCKLY_MEDIA;
+        (this.domNode as any).media = this.editor.config.BLOCKLY_MEDIA || '/node_modules/@kano/kwc-blockly/blockly_built/media/';
         subscribeDOM(this.domNode, 'code-changed', (e : any) => {
             this._onDidCodeChange.fire(e.detail.value);
         });

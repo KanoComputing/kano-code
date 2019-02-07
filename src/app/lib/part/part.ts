@@ -61,9 +61,11 @@ export class Part implements IPart {
             id: this.id,
             name: this.name,
         };
-        this._components.forEach((component, key) => {
-            data[key] = component.serialize();
-        });
+        // TODO: This is disabled as there is no point in saving the live data from the part
+        // Enable this when users can define default values for component properties
+        // this._components.forEach((component, key) => {
+        //     data[key] = component.serialize();
+        // });
         return data;
     }
     load(data : any) {

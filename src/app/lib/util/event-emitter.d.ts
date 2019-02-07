@@ -1,7 +1,7 @@
 declare class EventEmitter {
-    addListener() : void;
-    removeListener() : void;
-    on() : void;
+    addListener(name : string, callback : Function) : void;
+    removeListener(name : string, callback : Function) : void;
+    on(name : string, callback : Function) : void;
     emit(name : string|number|Symbol, arg? : any) : void;
 }
 

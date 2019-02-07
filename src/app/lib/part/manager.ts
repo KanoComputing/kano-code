@@ -15,6 +15,8 @@ export class PartsManager {
     private _parts : Set<Part> = new Set();
     private _registeredParts : Map<string, PartContructor> = new Map();
     private output : Output;
+    // If it is managed, the loading from an export will be done by the editor
+    public managed : boolean = false;
     constructor(output : Output) {
         this.output = output;
     }
@@ -55,6 +57,10 @@ export class PartsManager {
         return state;
     }
     load(partsData : { [K : string] : any }[]) {
+        // The loading is handled by the editor when managed
+        if (this.managed) {
+            return;
+        }
         this.reset();
         partsData.forEach((data) => {
             const partClass = this._registeredParts.get(data.type);

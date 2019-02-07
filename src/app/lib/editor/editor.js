@@ -110,8 +110,8 @@ export class Editor extends EditorOrPlayer {
 
         window.Kano.Code.mainEditor = this;
     }
-    _setupMediaPath(path = '/') {
-        this._mediaPath = path.endsWith('/') ? path.slice(0, -1) : path;
+    _setupMediaPath(path = '/node_modules/@kano/code') {
+        this._mediaPath = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
     }
     asAbsoluteMediaPath(path = '') {
         const normalized = path.replace(/^(\.\/|\.\.\/|\/)/, '');
@@ -244,6 +244,7 @@ export class Editor extends EditorOrPlayer {
         }
         this.runPluginTask('onImport', app);
         this.output.runPluginTask('onImport', app);
+        this.parts.onImport(app);
         this.sourceEditor.setSource(app.source);
         this.emit('loaded');
         this.telemetry.trackEvent({ name: 'app_imported' });

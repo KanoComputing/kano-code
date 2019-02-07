@@ -1,11 +1,16 @@
 /* eslint class-methods-use-this: "off" */
-import Plugin from '../editor/plugin.js';
-import debounce from '../util/debounce.js';
+import { Plugin } from '../editor/plugin.js';
+import { debounce } from '../util/debounce.js';
+import { IEditor } from '../part/editor.js';
 
-class StoragePlugin extends Plugin {
-    constructor(key, debounceDelay = 3000) {
+export abstract class StoragePlugin extends Plugin {
+    private key : string|(() => string);
+    private enabled : boolean = true;
+    private debounceDelay : number;
+    private _debouncedSave : Function;
+    private editor? : IEditor;
+    constructor(key : string|(() => string), debounceDelay = 3000) {
         super();
-        this.enabled = true;
         this.debounceDelay = debounceDelay;
         this.key = key;
         this._debouncedSave = debounce(() => {
@@ -18,7 +23,7 @@ class StoragePlugin extends Plugin {
     enable() {
         this.enabled = false;
     }
-    onInstall(editor) {
+    onInstall(editor : IEditor) {
         this.editor = editor;
         this.editor.on('change', this._debouncedSave);
         this.editor.on('reset', this.save.bind(this));
@@ -26,20 +31,23 @@ class StoragePlugin extends Plugin {
     load() {
         this.read(this.getKey())
             .then((app) => {
+                if (!this.editor) {
+                    return;
+                }
                 this.editor.load(app);
             });
     }
     save() {
-        if (!this.enabled) {
+        if (!this.enabled || !this.editor) {
             return;
         }
         const savedApp = this.editor.export();
         this.write(this.getKey(), savedApp);
     }
-    write(key, value) {
+    write(key : string, value : any) {
         return Promise.resolve();
     }
-    read(key) {
+    read(key : string) : Promise<any> {
         return Promise.resolve({});
     }
     getKey() {

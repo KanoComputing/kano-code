@@ -177,21 +177,19 @@ export class Output extends PluginReceiver {
     onCreationExport(data : any) {
         data.code = this.getCode();
         data.profile = this.id;
+        data.parts = this.parts.save();
         return data;
     }
     onCreationImport(data : any) {
         return this.runPluginChainTask('onCreationImport', data)
             .then(() => {
                 if (this.outputView) {
-                    const res = this.outputView.onCreationImport(data);
-                    if (res instanceof Promise) {
-                        return res.then(() => {
-                            this.setCode(data.code);
-                        });
-                    }
-                } else {
-                    this.setCode(data.code);
+                    return this.outputView.onCreationImport(data);
                 }
+            })
+            .then(() => {
+                this.parts.load(data.parts || []);
+                this.setCode(data.code);
             });
     }
     render(...args : any[]) {
