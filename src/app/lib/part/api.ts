@@ -1,5 +1,7 @@
 import { IMetaDefinition } from '../meta-api/module.js';
 import { PartInlineDisplay } from './inline-display.js';
+import { Part } from './part.js';
+import { IEditor } from './editor.js';
 
 export interface IPartAPI {
     type : string;
@@ -9,4 +11,5 @@ export interface IPartAPI {
     symbols : IMetaDefinition[];
     icon : HTMLTemplateElement;
     inlineDisplay? : Type<PartInlineDisplay>;
+    onInstall?(editor : IEditor, part : Part) : void;
 };

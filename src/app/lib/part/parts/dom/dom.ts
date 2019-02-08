@@ -73,13 +73,13 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         return this.transform.x;
     }
     get y() {
-        return this.transform.x;
+        return this.transform.y;
     }
     get scale() {
-        return this.transform.x;
+        return this.transform.scale * 100;
     }
     get rotation() {
-        return this.transform.x;
+        return this.transform.rotation;
     }
     dispose() {
         super.dispose();

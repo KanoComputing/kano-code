@@ -1,4 +1,6 @@
 import { IVisualsContext, IAudioContext, IDOMContext } from '../app/lib/output/output.js';
+import { Microphone } from '../app/lib/output/microphone.js';
+import audio from '../app/lib/asset/parsers/audio.js';
 
 function stub(target : any, key : string, descriptor : any) {
     const originalMethod = descriptor.value;
@@ -47,6 +49,7 @@ export class PartContextStub {
         this.audio = {
              context: audioCtx,
              destination: audioCtx.destination,
+             microphone: new Microphone(audioCtx),
         };
         this.dom = {
             root: document.createElement('div'),

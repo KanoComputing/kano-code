@@ -4,3 +4,6 @@ export * from './oscillator/api.js';
 export * from './synth/api.js';
 export * from './terminal/api.js';
 export * from './slider/api.js';
+export * from './text/api.js';
+export * from './text-input/api.js';
+export * from './microphone/api.js';

@@ -2,6 +2,7 @@ import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
 import { SourceEditor } from './source-editor.js';
 import '../../../elements/kc-blockly-editor/kc-blockly-editor.js';
 import { IEditor } from '../../part/editor.js';
+import { Workspace } from '@kano/kwc-blockly/blockly.js';
 
 export class BlocklySourceEditor implements SourceEditor {
     private editor : IEditor;
@@ -25,5 +26,8 @@ export class BlocklySourceEditor implements SourceEditor {
     }
     getSource() {
         return (this.domNode as any).getSource();
+    }
+    getWorkspace() : Workspace {
+        return (this.domNode as any).getBlocklyWorkspace();
     }
 }

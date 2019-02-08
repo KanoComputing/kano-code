@@ -5,7 +5,7 @@ import { ClockInlineDisplay } from './inline.js';
 
 export const ClockAPI : IPartAPI = {
     type: ClockPart.type,
-    color: '#00c7b6',
+    color: '#9b61bd',
     label: 'Clock',
     icon: clock,
     inlineDisplay: ClockInlineDisplay,

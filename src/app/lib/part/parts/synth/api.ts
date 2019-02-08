@@ -4,7 +4,7 @@ import { synth } from '@kano/icons/parts.js';
 
 export const SynthAPI : IPartAPI = {
     type: SynthPart.type,
-    color: '#00c7b6',
+    color: '#ef5284',
     label: 'Synth',
     icon: synth,
     symbols: [{

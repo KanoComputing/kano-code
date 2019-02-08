@@ -12,6 +12,7 @@ import EventEmitter from '../util/event-emitter.js';
 import { DefaultInlineDisplay } from './inline-display.js';
 
 export interface IEditor extends EventEmitter {
+    sourceType : 'blockly'|'code';
     telemetry : TelemetryClient;
     injected : boolean;
     parts : EditorPartsManager;
@@ -216,6 +217,9 @@ export class EditorPartsManager {
             partsControlsEntry,
         };
         this.parts.set(id, partRecord);
+        if (api.onInstall) {
+            api.onInstall(this.editor, part);
+        }
         return partRecord;
     }
     removePartAttempt(id : string) {

@@ -4,4 +4,7 @@ declare module '@kano/icons/parts.js' {
     export const slider : HTMLTemplateElement;
     export const oscillator : HTMLTemplateElement;
     export const clock : HTMLTemplateElement;
+    export const text : HTMLTemplateElement;
+    export const textInput : HTMLTemplateElement;
+    export const microphone : HTMLTemplateElement;
 }

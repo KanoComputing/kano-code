@@ -2,54 +2,56 @@ import { DOMPart } from '../dom/dom.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
-import { legacyTransform } from './legacy.js';
 
-class SliderComponent extends PartComponent {
-    @property({ type: Number, value: 0 })
-    public value : number = 0;
+class TextInputComponent extends PartComponent {
+    @property({ type: String, value: '' })
+    public value : string = '';
+
+    @property({ type: String, value: '' })
+    public placeholder : string = '';
 
     @property({ type: EventEmitter, value: new EventEmitter(), noReset: true })
-    public changed : EventEmitter = new EventEmitter();
+    public change : EventEmitter = new EventEmitter();
 }
 
-@part('slider')
-export class SliderPart extends DOMPart<HTMLInputElement> {
-    @component(SliderComponent)
-    public core : SliderComponent;
-    static transformLegacy(app : any) {
-        legacyTransform(app);
-    }
+@part('test-input')
+export class TextInputPart extends DOMPart<HTMLInputElement> {
+    @component(TextInputComponent)
+    public core : TextInputComponent;
     constructor() {
         super();
-        this.core = this._components.get('core') as SliderComponent;
+        this.core = this._components.get('core') as TextInputComponent;
         subscribeDOM(this._el, 'input', () => {
             if (!this.core) {
                 return;
             }
-            this.core.value = parseInt(this._el.value, 10);
-            this.core.changed.fire();
-            this.core.invalidate();
+            this.core.change.fire();
         }, this, this.subscriptions);
         this.core.invalidate();
     }
     getElement() : HTMLInputElement {
-        const el = document.createElement('input');
-        el.setAttribute('type', 'range');
-        return el;
+        return document.createElement('input');
     }
     render() {
         super.render();
         if (!this.core.invalidated) {
             return;
         }
-        this._el.value = this.core.value.toString();
+        this._el.value = this.core.value;
+        this._el.placeholder = this.core.placeholder;
     }
     get value() {
         return this.core.value;
     }
-    set value(v : number) {
-        v = Math.max(0, Math.min(100, v));
+    set value(v : string) {
         this.core.value = v;
+        this.core.invalidate();
+    }
+    get placeholder() {
+        return this.core.placeholder;
+    }
+    set placeholder(p : string) {
+        this.core.placeholder = p;
         this.core.invalidate();
     }
     onChange(callback : () => void) {

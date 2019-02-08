@@ -7,6 +7,7 @@ import { AppModule } from '../app-modules/app-module.js';
 import { OutputViewProvider, IOutputProvider } from './index.js';
 import { PartsManager, PartContructor } from '../part/manager.js';
 import { Part } from '../part/part.js';
+import { Microphone } from './microphone.js';
 
 export interface IOutputProfile {
     id : string;
@@ -26,6 +27,7 @@ export interface IVisualsContext {
 export interface IAudioContext {
     context : AudioContext;
     destination : AudioDestinationNode;
+    microphone : Microphone;
 }
 
 export interface IDOMContext {

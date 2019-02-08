@@ -1,10 +1,10 @@
-import { subscribeDOM, Disposables } from '@kano/common/index.js';
+import { subscribeDOM, IDisposable } from '@kano/common/index.js';
 import { PartEditorField, IFieldComponent } from '../field.js';
 
 export class StringPartEditorField<T = string> extends PartEditorField<T|string> {
     protected _label : HTMLLabelElement;
     protected _input : HTMLInputElement;
-    protected subscriptions : Disposables = new Disposables();
+    protected subscriptions : IDisposable[] = [];
     static get propertyType() : any {
         return String;
     }
@@ -28,6 +28,7 @@ export class StringPartEditorField<T = string> extends PartEditorField<T|string>
     }
     dispose() {
         super.dispose();
-        this.subscriptions.dispose();
+        this.subscriptions.forEach(d => d.dispose());
+        this.subscriptions.length = 0;
     }
 }

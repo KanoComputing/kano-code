@@ -9,6 +9,7 @@ export interface IComponentSerializer {
 export interface IComponentProperty<T> {
     type : T;
     value : T|(() => T);
+    noReset? : boolean;
 }
 
 export interface IComponentProperties {
@@ -74,12 +75,16 @@ export class PartComponent {
     }
     reset() {
         this._properties.forEach((property, key) => {
+            if (property.noReset) {
+                return;
+            }
             if (typeof property.value === 'function') {
                 this[key] = property.value();
             } else {
                 this[key] = property.value;
             }
         });
+        this.invalidate();
     }
     invalidate() {
         this.invalidated = true;

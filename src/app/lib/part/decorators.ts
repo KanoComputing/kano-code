@@ -58,6 +58,7 @@ const propertiesCache : Map<any, { [K : string] : { type : any, value: any } }> 
 interface IPropertiesOptions {
     type : any;
     value : any;
+    noReset? : boolean;
 }
 
 /**

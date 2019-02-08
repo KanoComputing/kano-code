@@ -6,7 +6,7 @@ export const TransformAPI : IMetaDefinition[] = [
         name: 'moveAlong',
         verbose: 'move',
         parameters: [{
-            type: 'pixels',
+            type: 'parameter',
             name: 'distance',
             returnType: Number,
             default: 0,

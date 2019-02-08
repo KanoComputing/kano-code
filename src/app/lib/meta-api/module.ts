@@ -1,7 +1,7 @@
 export interface IMetaDefinition {
     symbols? : IMetaDefinition[];
     name : string;
-    type : string;
+    type : 'module'|'variable'|'function'|'parameter'|'blockly';
     color? : string;
     verbose? : string;
     returnType? : any;

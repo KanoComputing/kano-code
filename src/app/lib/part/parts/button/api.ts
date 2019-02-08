@@ -2,12 +2,17 @@ import { ButtonPart } from './button.js';
 import { IPartAPI } from '../../api.js';
 import { TransformAPI } from '../transform/api.js';
 import { button } from '@kano/icons/parts.js'
+import { ButtonInlineDisplay } from './inline.js';
+import { addFlashField, setupFlash } from '../../plugins/flash.js';
+import { IEditor } from '../../editor.js';
+import { Block } from '@kano/kwc-blockly/blockly.js';
 
 export const ButtonAPI : IPartAPI = {
     type: ButtonPart.type,
     color: '#00c7b6',
     label: 'Button',
     icon: button,
+    inlineDisplay: ButtonInlineDisplay,
     symbols: [{
         type: 'function',
         name: 'getLabel',
@@ -56,10 +61,14 @@ export const ButtonAPI : IPartAPI = {
             returnType: Function,
         }],
         blockly: {
-            postProcess(block : any) {
+            postProcess(block : Block) {
+                addFlashField(block);
                 block.setPreviousStatement(false);
                 block.setNextStatement(false);
             },
         },
     }, ...TransformAPI],
+    onInstall(editor : IEditor, part : ButtonPart) {
+        setupFlash<ButtonPart>(editor, part, 'onClick');
+    }
 };
