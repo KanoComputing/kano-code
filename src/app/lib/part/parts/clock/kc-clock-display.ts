@@ -1,4 +1,4 @@
-import { LitElement, css, html, customElement, property } from 'lit-element/lit-element.js';
+import { LitElement, css, html, customElement, property, query } from 'lit-element/lit-element.js';
 
 @customElement('kc-clock-display')
 export class KCClockDisplay extends LitElement {

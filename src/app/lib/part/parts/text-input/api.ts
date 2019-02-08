@@ -43,6 +43,6 @@ export const TextInputAPI : IPartAPI = {
         },
     }, ...TransformAPI],
     onInstall(editor : IEditor, part : TextInputPart) {
-        setupFlash<TextInputPart>(editor, part, 'onChange');
+        setupFlash<TextInputPart>(editor, part, part.core.change, 'onChange');
     }
 };

@@ -1,4 +1,4 @@
-import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
+import { subscribeTimeout, IDisposable, EventEmitter } from '@kano/common/index.js';
 import { Field, goog, BlockSvg, utils, Block } from '@kano/kwc-blockly/blockly.js';
 import { flash } from '../icons.js';
 import { IEditor } from '../editor.js';
@@ -8,6 +8,7 @@ import { BlocklySourceEditor } from '../../editor/source-editor/blockly.js';
 export class FlashField extends Field  {
     private fieldGroup_? : SVGElement;
     private path? : SVGElement;
+    private timeoutSub : IDisposable|null = null;
     constructor(text : string) {
         super();
         this.height_ = 16;
@@ -36,13 +37,20 @@ export class FlashField extends Field  {
         if (!this.path) {
             return;
         }
-        this.path.style.opacity = '1';
+        if (this.timeoutSub) {
+            this.timeoutSub.dispose();
+            this.timeoutSub = null;
+        }
+        this.path.style.opacity = '0.3';
         setTimeout(() => {
-            if (!this.path) {
-                return;
-            }
-            this.path.style.opacity = '0.3';
-        }, 500);
+            this.path!.style.opacity = '1';
+            this.timeoutSub = subscribeTimeout(() => {
+                if (!this.path) {
+                    return;
+                }
+                this.path.style.opacity = '0.3';
+            }, 500);
+        }, 50);
     }
 }
 
@@ -64,10 +72,14 @@ export class Flash {
             this.timeoutSub.dispose();
             this.timeoutSub = null;
         }
-        this.domNode.style.fill = 'yellow';
-        this.timeoutSub = subscribeTimeout(() => {
-            this.domNode.style.fill = '#8F9195';
-        }, 500);
+        // Make sure the flash begins with the off state. This will force a flicker on fast triggers
+        this.domNode.style.fill = '#8F9195';
+        setTimeout(() => {
+            this.domNode.style.fill = 'yellow';
+            this.timeoutSub = subscribeTimeout(() => {
+                this.domNode.style.fill = '#8F9195';
+            }, 500);
+        }, 50);
     }
 }
 
@@ -75,15 +87,13 @@ export function addFlashField(block : Block) {
     block.inputList[0].insertFieldAt(0, new FlashField(''), 'FLASH');
 }
 
-export function setupFlash<T extends Part>(editor : IEditor, part : T, method : keyof T) {
+export function setupFlash<T extends Part>(editor : IEditor, part : T, emitter : EventEmitter, method : string) {
     if (editor.sourceType !== 'blockly') {
         return;
     }
     const sourceEditor = editor.sourceEditor as BlocklySourceEditor;
     const workspace = sourceEditor.getWorkspace();
-    // Trust that the key provided is for an event method
-    const fn = part[method] as unknown as (cb : () => void) => void;
-    fn.bind(part)(() => {
+    emitter.event(() => {
         const blocks = workspace.getAllBlocks();
         blocks.filter((block) => block.type === `${part.id}_${method}`)
             .forEach((block) => {

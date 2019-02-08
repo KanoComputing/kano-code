@@ -43,6 +43,7 @@ export class SliderPart extends DOMPart<HTMLInputElement> {
             return;
         }
         this._el.value = this.core.value.toString();
+        this.core.apply();
     }
     get value() {
         return this.core.value;
@@ -53,6 +54,6 @@ export class SliderPart extends DOMPart<HTMLInputElement> {
         this.core.invalidate();
     }
     onChange(callback : () => void) {
-        this.core.click.event(callback, null, this.userSubscriptions);
+        this.core.changed.event(callback, null, this.userSubscriptions);
     }
 }

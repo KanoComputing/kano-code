@@ -39,6 +39,7 @@ export class TextInputPart extends DOMPart<HTMLInputElement> {
         }
         this._el.value = this.core.value;
         this._el.placeholder = this.core.placeholder;
+        this.core.apply();
     }
     get value() {
         return this.core.value;
@@ -55,6 +56,6 @@ export class TextInputPart extends DOMPart<HTMLInputElement> {
         this.core.invalidate();
     }
     onChange(callback : () => void) {
-        this.core.click.event(callback, null, this.userSubscriptions);
+        this.core.change.event(callback, null, this.userSubscriptions);
     }
 }

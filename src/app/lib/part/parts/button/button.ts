@@ -62,6 +62,7 @@ export class ButtonPart extends DOMPart {
             this._el.textContent = this.core.label;
             this._el.style.backgroundColor = this.core.backgroundColor;
             this._el.style.color = this.core.textColor;
+            this.core.apply();
         }
     }
     getLabel() {
@@ -80,6 +81,6 @@ export class ButtonPart extends DOMPart {
         this.core.invalidate();
     }
     onClick(callback : () => void) {
-        const d = this.core.click.event(callback, null, this.userSubscriptions);
+        this.core.click.event(callback, null, this.userSubscriptions);
     }
 }

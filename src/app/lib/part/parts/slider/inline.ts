@@ -1,6 +1,6 @@
 import { PartInlineDisplay } from '../../inline-display.js';
 import { SliderPart } from './slider.js';
-import { Flash } from '../../flash.js';
+import { Flash } from '../../plugins/flash.js';
 
 export class SliderInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
     public domNode: HTMLDivElement;
@@ -9,7 +9,7 @@ export class SliderInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
         super(part);
         this.domNode = this.flash.domNode;
         this.domNode.style.marginRight = '8px';
-        part.onChange(() => {
+        part.core.changed.event(() => {
             this.flash.trigger();
         });
     }

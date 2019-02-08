@@ -69,6 +69,6 @@ export const ButtonAPI : IPartAPI = {
         },
     }, ...TransformAPI],
     onInstall(editor : IEditor, part : ButtonPart) {
-        setupFlash<ButtonPart>(editor, part, 'onClick');
+        setupFlash<ButtonPart>(editor, part, part.core.click, 'onClick');
     }
 };

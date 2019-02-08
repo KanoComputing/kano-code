@@ -30,6 +30,7 @@ export class TextPart extends DOMPart<HTMLDivElement> {
         }
         this._el.textContent = this.core.value;
         this._el.style.color = this.core.color;
+        this.core.apply();
     }
     get value() {
         return this.core.value;

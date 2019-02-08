@@ -3,6 +3,9 @@ import { SliderPart } from './slider.js';
 import { TransformAPI } from '../transform/api.js';
 import { slider } from '@kano/icons/parts.js';
 import { SliderInlineDisplay } from './inline.js';
+import { addFlashField, setupFlash } from '../../plugins/flash.js';
+import { Block } from '@kano/kwc-blockly/blockly.js';
+import { IEditor } from '../../editor.js';
 
 export const SliderAPI : IPartAPI = {
     type: SliderPart.type,
@@ -26,10 +29,14 @@ export const SliderAPI : IPartAPI = {
             returnType: Function,
         }],
         blockly: {
-            postProcess(block : any) {
+            postProcess(block : Block) {
+                addFlashField(block);
                 block.setPreviousStatement(false);
                 block.setNextStatement(false);
             },
         },
     }, ...TransformAPI],
+    onInstall(editor : IEditor, part : SliderPart) {
+        setupFlash<SliderPart>(editor, part, part.core.changed, 'onChange');
+    },
 }
