@@ -3,7 +3,7 @@ import { SliderPart } from './slider.js';
 import { TransformAPI } from '../transform/api.js';
 import { slider } from '@kano/icons/parts.js';
 import { SliderInlineDisplay } from './inline.js';
-import { addFlashField, setupFlash } from '../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { IEditor } from '../../editor.js';
 
@@ -37,6 +37,9 @@ export const SliderAPI : IPartAPI = {
         },
     }, ...TransformAPI],
     onInstall(editor : IEditor, part : SliderPart) {
-        setupFlash<SliderPart>(editor, part, part.core.changed, 'onChange');
+        if (!part.id) {
+            return;
+        }
+        setupFlash(editor, part.id, part.core.changed, 'onChange');
     },
 }

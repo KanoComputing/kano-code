@@ -1,6 +1,8 @@
 import { AppModule } from './app-module.js';
 import { Output } from '../output/output.js';
 
+class TestModule extends AppModule {}
+
 suite('AppModule', () => {
     suite('#addMethod()', () => {
         let output : Output;
@@ -27,7 +29,7 @@ suite('AppModule', () => {
         });
         test('should append to methods using callback', () => {
             let methodCalled = false;
-            const m = new AppModule(output);
+            const m = new TestModule(output);
             m.addMethod('testMethod', () => {
                 methodCalled = true;
             });
@@ -37,14 +39,14 @@ suite('AppModule', () => {
             assert(methodCalled, 'Added methods does not point to callback');
         });
         test('should append module', () => {
-            const m = new AppModule(output);
+            const m = new TestModule(output);
             m.addModule('subModule');
 
             assert.exists(m.methods.subModule, 'Submodule was not added to methods object');
         });
         test('should append method to module', () => {
             let methodCalled = false;
-            const m = new AppModule(output);
+            const m = new TestModule(output);
             const subModule = m.addModule('subModule');
 
             subModule.addMethod('testMethod', () => {
@@ -56,7 +58,7 @@ suite('AppModule', () => {
             assert.exists(methodCalled, 'Submodule does not have method');
         });
         test('should append nested modules', () => {
-            const m = new AppModule(output);
+            const m = new TestModule(output);
             const subModule = m.addModule('subModule');
             subModule.addModule('subSubModule');
 

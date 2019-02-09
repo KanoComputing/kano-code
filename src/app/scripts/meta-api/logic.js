@@ -1,4 +1,4 @@
-import BaseLogic from '../../lib/meta-api/modules/logic.js';
+import BaseLogic from '../../lib/modules/logic/api.js';
 
 // Logic module specific to Kano Code. Adds a collision if statement
 

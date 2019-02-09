@@ -1,1 +1,1 @@
-export * from './dist/app/lib/app-modules/all.js';
+export * from './dist/app/lib/modules/index.js';

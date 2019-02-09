@@ -1,7 +1,7 @@
-import { Meta, MetaModule, MetaVariable, MetaParameter, MetaFunction } from '../module.js';
+import { Meta, MetaModule, MetaVariable, MetaParameter, MetaFunction, IMetaRenderer } from '../module.js';
 
-class TypeScriptMetaRenderer {
-    renderToolboxEntry(mod : MetaModule) {
+class TypeScriptMetaRenderer implements IMetaRenderer {
+    renderToolboxEntry(mod : MetaModule, whitelist : any[]) {
         let definitionFile;
         // Legacy module signature
         if (mod.def.type && mod.def.type === 'blockly') {

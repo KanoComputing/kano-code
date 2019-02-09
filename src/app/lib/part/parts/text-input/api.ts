@@ -4,7 +4,7 @@ import { textInput } from '@kano/icons/parts.js';
 import { TransformAPI } from '../transform/api.js';
 import { TextInputInlineDisplay } from './inline.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import { addFlashField, setupFlash } from '../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash.js';
 import { IEditor } from '../../editor.js';
 
 export const TextInputAPI : IPartAPI = {
@@ -43,6 +43,9 @@ export const TextInputAPI : IPartAPI = {
         },
     }, ...TransformAPI],
     onInstall(editor : IEditor, part : TextInputPart) {
-        setupFlash<TextInputPart>(editor, part, part.core.change, 'onChange');
+        if (!part.id) {
+            return;
+        }
+        setupFlash(editor, part.id, part.core.change, 'onChange');
     }
 };

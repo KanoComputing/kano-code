@@ -9,10 +9,10 @@ export function legacyTransform(app : any) {
     if (root) {
         ids.forEach(id => {
             BlocklyTransformer.transformBlock(root, `block[type="${id}#set_value"]`, (block) => {
-                block.setAttribute('type', block.getAttribute('type')!.replace(/(.+)#(.+)/, 'set_$1_value'));
+                block.setAttribute('type', `set_${id}_value`);
             });
             BlocklyTransformer.transformBlock(root, `block[type="${id}#get_value"]`, (block) => {
-                block.setAttribute('type', block.getAttribute('type')!.replace(/(.+)#(.+)/, 'get_$1_value'));
+                block.setAttribute('type', `get_${id}_value`);
             });
         });
         const serializer = new XMLSerializer();

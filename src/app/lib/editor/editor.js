@@ -21,8 +21,6 @@ const PROXY_EVENTS = [
     'share',
     'exit',
     'change',
-    'add-part-request',
-    'remove-part-request',
     'import',
 ];
 
@@ -55,14 +53,12 @@ export class Editor extends EditorOrPlayer {
         this._setupMediaPath(opts.mediaPath);
         this.store = Store.create({
             config: this.config,
-            addedParts: [],
             workspaceTab: 'workspace',
             sourceType: this.sourceType,
             // When using blockly, can apply specific options
             blockly: {
                 flyoutMode: typeof opts.flyoutMode === 'undefined' ? false : opts.flyoutMode,
             },
-            editingBackground: false,
         });
         this.storeObserver = new StoreObserver(this.store, this);
 
@@ -71,13 +67,14 @@ export class Editor extends EditorOrPlayer {
 
         this.eventRemovers = PROXY_EVENTS.map(name => Editor.proxyEvent(this.rootEl, this, name));
 
-        /** @type {Output} */
         this.output = new Output();
 
-        /** @type {TelemetryClient} */
         this.telemetry = new TelemetryClient({ scope: 'kc-editor' });
 
-        /** @type {WorkspaceToolbar} */
+        if (this.sourceType === 'blockly') {
+            this.sourceEditor = new BlocklySourceEditor(this);
+        }
+
         this.workspaceToolbar = new WorkspaceToolbar();
         this.addPlugin(this.workspaceToolbar);
 
@@ -141,12 +138,8 @@ export class Editor extends EditorOrPlayer {
     }
     setupElements() {
         const workspace = this.rootEl.getWorkspace();
-        const addPartForm = this.rootEl.$['add-parts'];
         const sourceView = this.rootEl.shadowRoot.querySelector('#root-view');
-        const addPartDialog = this.rootEl.$['parts-modal'];
         this.elementsRegistry.set('workspace', workspace);
-        this.elementsRegistry.set('add-parts-form', addPartForm);
-        this.elementsRegistry.set('add-parts-dialog', addPartDialog);
         this.elementsRegistry.set('source-view', sourceView);
 
         this.sourceEditor.onDidCodeChange((code) => {
@@ -173,9 +166,6 @@ export class Editor extends EditorOrPlayer {
         };
     }
     appendSourceEditor() {
-        if (this.sourceType === 'blockly') {
-            this.sourceEditor = new BlocklySourceEditor(this);
-        }
         this.rootEl.sourceContainer.appendChild(this.sourceEditor.domNode);
         this.rootEl.$['root-view'] = this.sourceEditor.domNode;
     }

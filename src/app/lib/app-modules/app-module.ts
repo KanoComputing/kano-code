@@ -21,7 +21,7 @@ class SubModule {
     }
 }
 
-export class AppModule {
+export abstract class AppModule {
     [K : string] : any;
     private rootModule : SubModule;
     public methods : IMethodTree;
@@ -30,6 +30,7 @@ export class AppModule {
     private static nextCall : { [K : string] : number|null };
     private static waiting : { [K : string] : Function|null };
     protected output : Output;
+    public static transformLegacy(app : any) {}
     constructor(output : Output) {
         this.output = output;
         this.lifecycle = {};

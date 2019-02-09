@@ -7,4 +7,5 @@ declare module '@kano/icons/parts.js' {
     export const text : HTMLTemplateElement;
     export const textInput : HTMLTemplateElement;
     export const microphone : HTMLTemplateElement;
+    export const iss : HTMLTemplateElement;
 }

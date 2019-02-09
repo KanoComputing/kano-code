@@ -1,1 +1,1 @@
-export * from './dist/app/lib/meta-api/index.js';
+export * from './dist/app/lib/modules/api.js';

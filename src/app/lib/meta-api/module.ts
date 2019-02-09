@@ -1,3 +1,16 @@
+import AppModule from '../app-modules/app-module.js';
+import { IEditor } from '../part/editor.js';
+
+export interface ICategory {
+    name : string,
+    id : string,
+    colour : string,
+}
+
+export interface IMetaRenderer {
+    renderToolboxEntry(entry : MetaModule, whitelist : any[]|null) : ICategory|null;
+}
+
 export interface IMetaDefinition {
     symbols? : IMetaDefinition[];
     name : string;
@@ -13,6 +26,10 @@ export interface IMetaDefinition {
     toolbox? : boolean;
     getter? : boolean;
     setter? : boolean;
+}
+
+export interface IAPIDefinition extends IMetaDefinition {
+    onInstall(editor : IEditor, mod : AppModule) : void;
 }
 
 export class Meta {

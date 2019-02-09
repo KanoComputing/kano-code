@@ -7,3 +7,4 @@ export * from './slider/slider.js';
 export * from './text/text.js';
 export * from './text-input/text-input.js';
 export * from './microphone/microphone.js';
+export * from './iss/iss.js';

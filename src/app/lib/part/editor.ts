@@ -10,6 +10,7 @@ import { KCPartsControls } from '../../elements/kc-workspace-frame/kc-parts-cont
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import EventEmitter from '../util/event-emitter.js';
 import { DefaultInlineDisplay } from './inline-display.js';
+import { SourceEditor } from '../editor/source-editor/source-editor.js';
 
 export interface IEditor extends EventEmitter {
     sourceType : 'blockly'|'code';
@@ -30,9 +31,7 @@ export interface IEditor extends EventEmitter {
     toolbox: {
         addEntry(d : any) : IDisposable;
     };
-    sourceEditor: {
-        getSource() : string;
-    };
+    sourceEditor: SourceEditor;
     rootEl : HTMLElement;
     load(app : any) : void;
     export() : any;

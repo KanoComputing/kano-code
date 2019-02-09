@@ -1,4 +1,5 @@
 import { IEditor } from '../part/editor';
+import AppModule from '../app-modules/app-module';
 
 export const BlocklyTransformer = {
     getDOM(source : string) {
@@ -21,12 +22,18 @@ export const BlocklyTransformer = {
         field.setAttribute('name', result.name);
         field.textContent = result.content
     },
-    renameValue(block : HTMLElement, name : string, newName : string) {
-        const el = block.querySelector(`value[name="${name}"]`);
+    renameElement(block : HTMLElement, tag : string, name : string, newName : string) {
+        const el = block.querySelector(`${tag}[name="${name}"]`);
         if (!el) {
             return;
         }
         el.setAttribute('name', newName);
+    },
+    renameValue(block : HTMLElement, name : string, newName : string) {
+        return this.renameElement(block, 'value', name, newName);
+    },
+    renameStatement(block : HTMLElement, name : string, newName : string) {
+        return this.renameElement(block, 'statement', name, newName);
     }
 }
 
@@ -41,6 +48,16 @@ function rewriteParts(app : any, editor : IEditor) {
     const registered = editor.parts.getRegisteredParts();
     registered.forEach((partClass) => partClass.transformLegacy(app));
 }
+function rewriteModules(app : any, editor : IEditor) {
+    const modules = editor.output.runner.getRegisteredModules();
+    modules.forEach((mod) => {
+        const moduleClass = (mod.constructor as typeof AppModule);
+        if (!moduleClass.transformLegacy) {
+            return;
+        }
+        moduleClass.transformLegacy(app);
+    });
+}
 
 export function transformLegacyApp(app : any, editor : IEditor) {
     if (!app) {
@@ -48,5 +65,6 @@ export function transformLegacyApp(app : any, editor : IEditor) {
     }
     rewriteSource(app);
     rewriteParts(app, editor);
+    rewriteModules(app, editor);
     return app;
 }

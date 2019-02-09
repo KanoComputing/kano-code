@@ -1,6 +1,7 @@
 import { DOMPart } from '../dom/dom.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
+import { legacyTransform } from './legacy.js';
 
 class TextComponent extends PartComponent {
     @property({ type: String, value: 'Text' })
@@ -14,6 +15,9 @@ class TextComponent extends PartComponent {
 export class TextPart extends DOMPart<HTMLDivElement> {
     @component(TextComponent)
     public core : TextComponent;
+    static transformLegacy(app : any) {
+        legacyTransform(app);
+    }
     constructor() {
         super();
         this.core = this._components.get('core') as TextComponent;

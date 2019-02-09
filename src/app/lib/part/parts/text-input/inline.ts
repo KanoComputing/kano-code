@@ -1,6 +1,6 @@
 import { PartInlineDisplay } from '../../inline-display.js';
 import { TextInputPart } from './text-input.js';
-import { Flash } from '../../plugins/flash.js';
+import { Flash } from '../../../plugins/flash.js';
 
 export class TextInputInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
     public domNode: HTMLDivElement;

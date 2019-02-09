@@ -1,3 +1,5 @@
+import { throttle as th } from './util/throttle.js';
+
 const COLORS : { [K : string] : string } = {
     TRACE: 'grey',
     DEBUG: 'cyan',
@@ -35,6 +37,17 @@ export function deprecated(message : string) {
             console.warn(`${key} is deprecated`, message);
             return originalMethod.apply(this, arguments);
         };
+        return descriptor;
+    }
+}
+
+export function throttle(delay : number) {
+    return (target : any, key : string, descriptor : any) => {
+        if (!descriptor) {
+            return;
+        }
+        const originalMethod = descriptor.value;
+        descriptor.value = th(originalMethod, delay);
         return descriptor;
     }
 }

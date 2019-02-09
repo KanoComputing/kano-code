@@ -3,7 +3,7 @@ import { IPartAPI } from '../../api.js';
 import { TransformAPI } from '../transform/api.js';
 import { button } from '@kano/icons/parts.js'
 import { ButtonInlineDisplay } from './inline.js';
-import { addFlashField, setupFlash } from '../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash.js';
 import { IEditor } from '../../editor.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 
@@ -69,6 +69,9 @@ export const ButtonAPI : IPartAPI = {
         },
     }, ...TransformAPI],
     onInstall(editor : IEditor, part : ButtonPart) {
-        setupFlash<ButtonPart>(editor, part, part.core.click, 'onClick');
+        if (!part.id) {
+            return;
+        }
+        setupFlash(editor, part.id, part.core.click, 'onClick');
     }
 };

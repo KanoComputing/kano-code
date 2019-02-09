@@ -1,5 +1,5 @@
 import Defaults from '../../blockly/defaults.js';
-import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaDefinition, MetaParameter } from '../module.js';
+import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaRenderer, ICategory } from '../module.js';
 
 interface ILegacyModule {
     def : {
@@ -18,7 +18,7 @@ interface IRenderedBlock {
     register(Blockly : any) : void;
 }
 
-class BlocklyMetaRenderer {
+class BlocklyMetaRenderer implements IMetaRenderer {
     private defaults : Defaults;
     constructor() {
         this.defaults = new Defaults();
@@ -83,7 +83,7 @@ class BlocklyMetaRenderer {
             return null;
         }
 
-        return this.defaults.createCategory(category);
+        return this.defaults.createCategory(category) as ICategory;
     }
     static render(m : MetaModule) : IRenderedBlock[] {
         switch (m.def.type) {
