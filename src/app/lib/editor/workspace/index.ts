@@ -3,6 +3,9 @@ import { KCPartsControls } from '../../../elements/kc-workspace-frame/kc-parts-c
 
 export abstract class WorkspaceViewProvider {
     protected editor : Editor;
+    abstract source : string;
+    abstract outputViewRoot : HTMLElement;
+    abstract partsControls : KCPartsControls;
     constructor(editor : Editor) {
         this.editor = editor;
     }
@@ -23,9 +26,6 @@ export abstract class WorkspaceViewProvider {
     }
     onInject() {}
     onDispose() {}
-    /* eslint class-methods-use-this: "off" */
-    abstract get outputViewRoot() : HTMLElement;
-    abstract get partsControls() : KCPartsControls;
     get toolbar() {
         return (this as any).root.querySelector('kc-workspace-toolbar');
     }

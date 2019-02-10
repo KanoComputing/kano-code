@@ -21,6 +21,7 @@ import { CreationCustomPreviewProvider } from '../creation/creation-preview-prov
 import CreationStorageProvider from '../creation/creation-storage-provider.js';
 import { deprecated } from '../decorators.js';
 import { WorkspaceViewProvider } from './workspace/index.js';
+import { EventEmitter } from '@kano/common/index.js';
 
 declare global {
     interface Window {
@@ -80,6 +81,13 @@ export class Editor extends EditorOrPlayer {
     public unsavedChanges : boolean = false;
     public creationPreviewProvider? : CreationCustomPreviewProvider;
     public creationStorageProvider? : CreationStorageProvider;
+
+    // Events
+    private _onDidReset : EventEmitter = new EventEmitter();
+    get onDidReset() { return this._onDidReset.event }
+    private _onDidLoad : EventEmitter = new EventEmitter();
+    get onDidLoad() { return this._onDidLoad.event }
+
     constructor(opts : IEditorOptions = {}) {
         super();
         this.config = Config.merge(opts);
@@ -102,11 +110,6 @@ export class Editor extends EditorOrPlayer {
         this.addPlugin(this.activityBar);
 
         this.parts = new EditorPartsManager(this);
-
-        this.on('import', (event : any) => {
-            this.load(event.app);
-        });
-
         window.Kano.Code.mainEditor = this;
     }
     _setupMediaPath(path = '/node_modules/@kano/code') {
@@ -223,14 +226,15 @@ export class Editor extends EditorOrPlayer {
         this.output.runPluginTask('onImport', safeApp);
         this.parts.onImport(safeApp);
         this.sourceEditor.setSource(safeApp.source);
-        this.emit('loaded');
+        this._onDidLoad.fire();
         this.telemetry.trackEvent({ name: 'app_imported' });
     }
     reset() {
-        const source = this.profile ? this.profile.source : '';
+        const source = this.workspaceProvider ? this.workspaceProvider.source : '';
         this.setCode();
         this.parts.reset();
-        this.load({ source });
+        this.load({ source, parts: [] });
+        this._onDidReset.fire();
     }
     setCode(content? : string) {
         this.output.setCode(content);

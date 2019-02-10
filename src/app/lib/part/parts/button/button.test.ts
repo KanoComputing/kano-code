@@ -14,15 +14,14 @@ suite('ButtonPart', () => {
 
         assert.equal(styles.length, 1);
     });
-    test('#getLabel()', () => {
+    test('#label', () => {
         const testLabel = 'TEST';
         const button = new ButtonPart();
 
         button.core.label = testLabel;
 
-        assert.equal(button.getLabel(), testLabel);
-    });
-    test('#setLabel()', () => {
+        assert.equal(button.label, testLabel);
+
         return new Promise((resolve) => {
             const testLabel = 'TEST';
             const button = new ButtonPart();
@@ -33,11 +32,11 @@ suite('ButtonPart', () => {
                 resolve();
             });
     
-            button.setLabel(testLabel);
+            button.label = testLabel;
 
         });
     });
-    test('#setTextColor()', () => {
+    test('#color', () => {
         return new Promise((resolve) => {
             const testColor = '#ff00ff';
             const button = new ButtonPart();
@@ -48,10 +47,10 @@ suite('ButtonPart', () => {
                 resolve();
             });
     
-            button.setTextColor(testColor);
+            button.color = testColor;
         });
     });
-    test('#setBackgroundColor()', () => {
+    test('#background', () => {
         return new Promise((resolve) => {
             const testColor = '#ff00ff';
             const button = new ButtonPart();
@@ -62,7 +61,7 @@ suite('ButtonPart', () => {
                 resolve();
             });
     
-            button.setBackgroundColor(testColor);
+            button.background = testColor;
         });
     });
     test('#onClick()', () => {

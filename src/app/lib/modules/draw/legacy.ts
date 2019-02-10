@@ -1,15 +1,15 @@
-import { BlocklyTransformer } from '../../legacy/loader.js';
+import { LegacyUtil } from '../../legacy/util.js';
 
 export function transformLegacy(app : any) {
     if (!app.source) {
         return;
     }
-    const root = BlocklyTransformer.getDOM(app.source);
+    const root = LegacyUtil.getDOM(app.source);
     if (!root) {
         return;
     }
 
-    BlocklyTransformer.transformBlock(root, 'block[type^="normal#"]', (block) => {
+    LegacyUtil.transformBlock(root, 'block[type^="normal#"]', (block) => {
         block.setAttribute('type', block.getAttribute('type')!.replace('normal#', 'draw_'));
     });
 

@@ -182,6 +182,9 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     value = BlocklyMetaRenderer.formatFieldValue(value, m.def.default);
                 } else {
                     value = Blockly.JavaScript.valueToCode(block, blocklyName);
+                    if (value === '') {
+                        value = 'null';
+                    }
                 }
                 return `${m.getNameChain('.')} = ${value};\n`;
             };

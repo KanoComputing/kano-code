@@ -1,10 +1,14 @@
 import { Part } from '../../part.js';
 import { part } from '../../decorators.js';
+import { transformLegacy } from './legacy.js';
 
 type IDateKey = 'year'|'month'|'day'|'hour'|'minute'|'seconds'|'milliseconds';
 
 @part('clock')
 export class ClockPart extends Part {
+    static transformLegacy(app : any) {
+        transformLegacy(app);
+    }
     getCurrent(key : IDateKey) : number {
         const date = new Date();
         switch (key) {

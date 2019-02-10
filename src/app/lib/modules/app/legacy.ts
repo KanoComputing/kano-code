@@ -1,15 +1,15 @@
-import { BlocklyTransformer } from '../../legacy/loader.js';
+import { LegacyUtil } from '../../legacy/util.js';
 
 export function transformLegacy(app : any) {
     if (!app.source) {
         return;
     }
-    const root = BlocklyTransformer.getDOM(app.source);
+    const root = LegacyUtil.getDOM(app.source);
     if (!root) {
         return;
     }
     // Transform the event block
-    BlocklyTransformer.transformBlock(root, 'block[type="part_event"]', (block) => {
+    LegacyUtil.transformBlock(root, 'block[type="part_event"]', (block) => {
         const field = block.querySelector('field[name="EVENT"]');
         if (!field) {
             return;
@@ -18,10 +18,10 @@ export function transformLegacy(app : any) {
         if (field.textContent === 'global.start') {
             block.setAttribute('type', 'app_onStart');
             block.removeChild(field);
-            BlocklyTransformer.renameStatement(block, 'DO', 'CALLBACK');
+            LegacyUtil.renameStatement(block, 'DO', 'CALLBACK');
         }
     });
-    BlocklyTransformer.transformBlock(root, 'block[type="restart_code"]', (block) => {
+    LegacyUtil.transformBlock(root, 'block[type="restart_code"]', (block) => {
         block.setAttribute('type', 'app_restart');
     });
     const serializer = new XMLSerializer();

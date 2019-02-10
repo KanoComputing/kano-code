@@ -1,4 +1,5 @@
 import { throttle as th } from './util/throttle.js';
+import { debounce as deb } from './util/debounce.js';
 
 const COLORS : { [K : string] : string } = {
     TRACE: 'grey',
@@ -48,6 +49,18 @@ export function throttle(delay : number) {
         }
         const originalMethod = descriptor.value;
         descriptor.value = th(originalMethod, delay);
+        return descriptor;
+    }
+}
+
+
+export function debounce(delay : number) {
+    return (target : any, key : string, descriptor : any) => {
+        if (!descriptor) {
+            return;
+        }
+        const originalMethod = descriptor.value;
+        descriptor.value = deb(originalMethod, delay);
         return descriptor;
     }
 }

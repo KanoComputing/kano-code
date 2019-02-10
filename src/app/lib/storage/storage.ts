@@ -25,8 +25,12 @@ export abstract class StoragePlugin extends Plugin {
     }
     onInstall(editor : Editor) {
         this.editor = editor;
-        this.editor.on('change', this._debouncedSave);
-        this.editor.on('reset', this.save.bind(this));
+        this.editor.sourceEditor.onDidCodeChange(() => {
+            this._debouncedSave();
+        });
+        this.editor.onDidReset(() => {
+            this.save();
+        });
     }
     load() {
         this.read(this.getKey())
@@ -44,12 +48,8 @@ export abstract class StoragePlugin extends Plugin {
         const savedApp = this.editor.export();
         this.write(this.getKey(), savedApp);
     }
-    write(key : string, value : any) {
-        return Promise.resolve();
-    }
-    read(key : string) : Promise<any> {
-        return Promise.resolve({});
-    }
+    abstract write(key : string, value : any) : Promise<void>;
+    abstract read(key : string) : Promise<any>;
     getKey() {
         let value = 'storage';
         if (typeof this.key === 'function') {

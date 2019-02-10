@@ -1,4 +1,4 @@
-import { Disposables, subscribe, subscribeDOM } from '@kano/common/index.js';
+import { Disposables, subscribe, subscribeDOM, IDisposable } from '@kano/common/index.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { Plugin } from '../plugin.js';
 import Editor from '../editor.js';
@@ -7,14 +7,13 @@ import Editor from '../editor.js';
  * Manages the actions in the toolbar avilable in the workspace
  */
 export class WorkspaceToolbar extends Plugin {
-    private subscriptions : Disposables;
+    private subscriptions : IDisposable[] = [];
     private _telemetry : TelemetryClient;
     private editor? : Editor;
     private toolbar? : any;
     private resetDialog? : any;
     constructor() {
         super();
-        this.subscriptions = new Disposables();
         this._telemetry = new TelemetryClient({ scope: 'workspace_toolbar' });
     }
     /**
@@ -35,9 +34,10 @@ export class WorkspaceToolbar extends Plugin {
             return;
         }
 
+        this.editor.output.onDidRunningStateChange(() => this.updateRunningState(), this, this.subscriptions);
+        this.editor.output.onDidFullscreenChange(() => this.updateFullscreen(), this, this.subscriptions);
+
         this.subscriptions.push(
-            subscribe(this.editor.output, 'running-state-changed', this.updateRunningState.bind(this)),
-            subscribe(this.editor.output, 'fullscreen-changed', this.updateFullscreen.bind(this)),
             subscribeDOM(this.toolbar, 'restart-clicked', this.restart.bind(this)),
             subscribeDOM(this.toolbar, 'run-clicked', this.toggleRun.bind(this)),
             subscribeDOM(this.toolbar, 'fullscreen-clicked', this.toggleFullscreen.bind(this)),
@@ -134,7 +134,8 @@ export class WorkspaceToolbar extends Plugin {
         };
     }
     onDispose() {
-        this.subscriptions.dispose();
+        this.subscriptions.forEach(d => d.dispose());
+        this.subscriptions.length = 0;
     }
 }
 

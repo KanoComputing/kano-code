@@ -1,4 +1,4 @@
-import { BlocklyTransformer } from '../../../legacy/loader.js';
+import { LegacyUtil } from '../../../legacy/util.js';
 import { transformLegacyDataPart } from '../data/legacy.js';
 
 export function transformLegacy(app : any) {
@@ -6,11 +6,10 @@ export function transformLegacy(app : any) {
     if (!app.parts || !app.source) {
         return;
     }
-    const ids : string[] = app.parts.filter((part : any) => part.type === 'iss').map((p : any) => p.id);
-    const root = BlocklyTransformer.getDOM(app.source);
+    const root = LegacyUtil.getDOM(app.source);
     if (root) {
-        ids.forEach(id => {
-            BlocklyTransformer.transformBlock(root, `block[type="${id}#get_value"]`, (block) => {
+        LegacyUtil.forEachPart(app, 'iss', ({ id }) => {
+            LegacyUtil.transformBlock(root, `block[type="${id}#get_value"]`, (block) => {
                 const keyField = block.querySelector('field[name="KEY"]');
                 if (!keyField) {
                     return;

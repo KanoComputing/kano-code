@@ -8,6 +8,7 @@ import { OutputViewProvider, IOutputProvider } from './index.js';
 import { PartsManager, PartContructor } from '../part/manager.js';
 import { Part } from '../part/part.js';
 import { Microphone } from './microphone.js';
+import { EventEmitter } from '@kano/common/index.js';
 
 export interface IOutputProfile {
     id : string;
@@ -60,6 +61,12 @@ export class Output extends PluginReceiver {
         }
         return this.outputViewProvider.getDOM();
     }
+    // Events
+    private _onDidRunningStateChange : EventEmitter<boolean> = new EventEmitter<boolean>();
+    get onDidRunningStateChange() { return this._onDidRunningStateChange.event }
+    private _onDidFullscreenChange : EventEmitter<boolean> = new EventEmitter<boolean>();
+    get onDidFullscreenChange() { return this._onDidFullscreenChange.event }
+
     constructor() {
         super();
         this.runner = new Runner();
@@ -121,7 +128,7 @@ export class Output extends PluginReceiver {
     }
     setRunningState(running : boolean) {
         this._running = running;
-        this.emit('running-state-changed');
+        this._onDidRunningStateChange.fire(this._running);
     }
     getRunningState() {
         return this._running;
@@ -131,7 +138,7 @@ export class Output extends PluginReceiver {
     }
     setFullscreen(state : boolean) {
         this._fullscreen = state;
-        this.emit('fullscreen-changed');
+        this._onDidFullscreenChange.fire(this._fullscreen);
     }
     getFullscreen() {
         return this._fullscreen;

@@ -3,10 +3,11 @@ import AppModulesLoader from '../app-modules/index.js';
 import { Plugin } from './plugin.js';
 import AppModule from '../app-modules/app-module.js';
 import { VariableStore } from './variables.js';
+import Output from '../output/output.js';
 
 export class Runner extends Plugin {
     private modules : Type<AppModule>[] = [];
-    private output? : any;
+    private output? : Output;
     private appModulesLoader : AppModulesLoader|null = null;
     private vm : VM|null = null;
     public variables : VariableStore = new VariableStore();
@@ -25,12 +26,15 @@ export class Runner extends Plugin {
         mods.forEach(m => this.modules.push(m));
         this._updateModules();
     }
-    onInstall(output : any) {
+    onInstall(output : Output) {
         this.output = output;
         this._updateModules();
-        this.output.on('running-state-changed', this._onRunningStateChange);
+        this.output.onDidRunningStateChange(() => this._onRunningStateChange());
     }
     onImport() {
+        if (!this.output) {
+            return;
+        }
         // Force refresh app state if was running
         const running = this.output.getRunningState();
         if (running) {
@@ -50,6 +54,9 @@ export class Runner extends Plugin {
         this.appModulesLoader.start();
     }
     _onRunningStateChange() {
+        if (!this.output) {
+            return;
+        }
         const running = this.output.getRunningState();
         if (!this.appModulesLoader) {
             return;
@@ -66,8 +73,11 @@ export class Runner extends Plugin {
         appModules.start();
         // Prepare a sandbox exposing AppModules
         this.vm = new VM({ AppModules: appModules });
-        // Run the code
-        this.vm.runInContext(appCode);
+        // Prevent invalid code to crach synchronous tasks
+        try {
+            // Run the code
+            this.vm.runInContext(appCode);
+        } catch(e) {}
         appModules.afterRun();
     }
     instrumentize(method : string) {

@@ -5,6 +5,7 @@ import { IPartContext } from '../../part.js';
 import { Color } from '../../types/color.js';
 import { PartComponent } from '../../component.js';
 import { part, component, property } from '../../decorators.js';
+import { transformLegacy } from './legacy.js';
 
 class ButtonComponent extends PartComponent {
     @property({ type: String, value: 'Click Me!' })
@@ -36,6 +37,9 @@ export class ButtonPart extends DOMPart {
     }
     @component(ButtonComponent)
     public core : ButtonComponent;
+    static transformLegacy(app : any) {
+        transformLegacy(app);
+    }
     constructor() {
         super();
         this.core = this._components.get('core') as ButtonComponent;
@@ -65,20 +69,26 @@ export class ButtonPart extends DOMPart {
             this.core.apply();
         }
     }
-    getLabel() {
+    get label() {
         return this.core.label;
     }
-    setLabel(label : string) {
+    set label(label : string) {
         this.core.label = label;
         this.core.invalidate();
     }
-    setTextColor(color : string) {
+    set color(color : string) {
         this.core.textColor = color;
         this.core.invalidate();
     }
-    setBackgroundColor(c : string) {
+    get color() {
+        return this.core.textColor;
+    }
+    set background(c : string) {
         this.core.backgroundColor = c;
         this.core.invalidate();
+    }
+    get background() {
+        return this.core.backgroundColor;
     }
     onClick(callback : () => void) {
         this.core.click.event(callback, null, this.userSubscriptions);

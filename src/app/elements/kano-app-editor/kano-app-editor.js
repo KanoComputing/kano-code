@@ -29,7 +29,6 @@ class KanoAppEditor extends PolymerElement {
             },
             workspaceTab: {
                 type: String,
-                observer: '_workspaceTabChanged',
                 value: 'workspace',
             },
             isResizing: {

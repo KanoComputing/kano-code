@@ -35,6 +35,9 @@ export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
     get outputViewRoot() {
         return this.frame;
     }
+    get source() {
+        return `<xml xmlns="http://www.w3.org/1999/xhtml"><variables></variables><block type="app_onStart" id="default_app_onStart" x="118" y="91"><field name="FLASH"></field></block></xml>`;
+    }
 }
 
 export default DefaultWorkspaceViewProvider;
