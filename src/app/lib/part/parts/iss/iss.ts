@@ -1,6 +1,6 @@
 import { DataPart } from '../data/data.js';
 import { part } from '../../decorators.js';
-import { transformLegacy } from './legacy.js';
+import { transformLegacyISS } from './legacy.js';
 
 interface ISSData {
     altitude : number;
@@ -21,7 +21,7 @@ interface ISSData {
 @part('iss')
 export class ISSPart extends DataPart<ISSData> {
     static transformLegacy(app : any) {
-        transformLegacy(app);
+        transformLegacyISS(app);
     }
     query() : Promise<ISSData> {
         return this.fetch(() => {

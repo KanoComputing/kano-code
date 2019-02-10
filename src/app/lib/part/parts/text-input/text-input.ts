@@ -2,6 +2,7 @@ import { DOMPart } from '../dom/dom.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
+import { transformLegacyTextInput } from './legacy.js';
 
 class TextInputComponent extends PartComponent {
     @property({ type: String, value: '' })
@@ -14,10 +15,13 @@ class TextInputComponent extends PartComponent {
     public change : EventEmitter = new EventEmitter();
 }
 
-@part('test-input')
+@part('text-input')
 export class TextInputPart extends DOMPart<HTMLInputElement> {
     @component(TextInputComponent)
     public core : TextInputComponent;
+    static transformLegacy(app : any) {
+        transformLegacyTextInput(app);
+    }
     constructor() {
         super();
         this.core = this._components.get('core') as TextInputComponent;

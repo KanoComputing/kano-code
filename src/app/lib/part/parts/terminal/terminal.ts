@@ -2,7 +2,7 @@ import { Part, IPartContext } from '../../part.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
 import { IDisposable } from '@kano/common/index.js';
-import { legacyTransform } from './legacy.js';
+import { transformLegacyTerminal } from './legacy.js';
 
 class TerminalComponent extends PartComponent {
     @property({ type: Boolean, value: false })
@@ -19,7 +19,7 @@ export class TerminalPart extends Part {
     private lastLine : HTMLElement|null = null;
     private _renderingInterval? : number;
     static transformLegacy(app : any) {
-        legacyTransform(app);
+        transformLegacyTerminal(app);
     }
     constructor() {
         super();

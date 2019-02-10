@@ -1,7 +1,7 @@
 import { LegacyUtil } from '../../../legacy/util.js';
 import { transformLegacyDOMPart } from '../dom/legacy.js';
 
-export function transformLegacy(app : any) {
+export function transformLegacyButton(app : any) {
     transformLegacyDOMPart('button', app);
     if (!app.parts || !app.source) {
         return;

@@ -8,15 +8,11 @@ export const SynthAPI : IPartAPI = {
     label: 'Synth',
     icon: synth,
     symbols: [{
-        type: 'function',
-        name: 'setVolume',
-        verbose: 'set',
-        parameters: [{
-            type: 'parameter',
-            name: 'volume',
-            returnType: Number,
-            default: 100,
-        }],
+        type: 'variable',
+        name: 'volume',
+        setter: true,
+        returnType: Number,
+        default: 100,
     }, {
         type: 'function',
         name: 'playFrequency',
@@ -39,31 +35,22 @@ export const SynthAPI : IPartAPI = {
         type: 'function',
         name: 'stop'
     }, {
-        type: 'function',
-        name: 'setPitch',
-        verbose: 'set pitch',
-        parameters: [{
-            type: 'parameter',
-            name: 'pitch',
-            verbose: '',
-            returnType: Number,
-            default: 25,
-        }],
+        type: 'variable',
+        name: 'pitch',
+        setter: true,
+        returnType: Number,
+        default: 25,
     }, {
-        type: 'function',
-        name: 'setWave',
-        verbose: 'set wave',
-        parameters: [{
-            type: 'parameter',
-            name: 'wave',
-            verbose: '',
-            returnType: 'Enum',
-            enum: [
-                ['sine', 'sine'],
-                ['square', 'square'],
-                ['triangle', 'triangle'],
-                ['sawtooth', 'sawtooth'],
-            ],
-        }],
+        type: 'variable',
+        name: 'wave',
+        setter: true,
+        getter: false,
+        returnType: 'Enum',
+        enum: [
+            ['sine', 'sine'],
+            ['square', 'square'],
+            ['triangle', 'triangle'],
+            ['sawtooth', 'sawtooth'],
+        ],
     }],
 };

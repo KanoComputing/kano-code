@@ -35,6 +35,7 @@ suite('SliderPart', () => {
         
         slider.core.value = value;
 
+        slider.core.invalidated = true;
         slider.render();
 
         assert.equal((slider as any)._el.value, value.toString());

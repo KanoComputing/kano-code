@@ -1,6 +1,6 @@
 import { LegacyUtil } from '../../../legacy/util.js';
 
-export function transformLegacy(app : any) {
+export function transformLegacyClock(app : any) {
     if (!app.parts || !app.source) {
         return;
     }

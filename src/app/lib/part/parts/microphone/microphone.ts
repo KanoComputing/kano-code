@@ -3,7 +3,7 @@ import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
 import { Microphone } from '../../../output/microphone.js';
 import { subscribeInterval, IDisposable } from '@kano/common/index.js';
-import { transformLegacy } from './legacy.js';
+import { transformLegacyMicrophone } from './legacy.js';
 
 class MicrophoneComponent extends PartComponent {
     @property({ type: Number, value: 0 })
@@ -27,7 +27,7 @@ export class MicrophonePart extends Part {
     private thresholds : IThreshold[] = [];
     private thresholdSub : IDisposable|null = null;
     static transformLegacy(app : any) {
-        transformLegacy(app);
+        transformLegacyMicrophone(app);
     }
     constructor() {
         super();

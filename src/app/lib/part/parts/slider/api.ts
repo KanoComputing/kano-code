@@ -26,6 +26,7 @@ export const SliderAPI : IPartAPI = {
         parameters: [{
             type: 'parameter',
             name: 'callback',
+            verbose: '',
             returnType: Function,
         }],
         blockly: {

@@ -3,6 +3,7 @@ import { Monotron } from '../../../../scripts/kano/music/monotron/monotron.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
 import { debug } from '../../../decorators.js';
+import { transformLegacySynth } from './legacy.js';
 
 const OSCILLATOR_FREQ_RANGE_LOW = 55; // --> A0 note in pitch standard tuning
 const DEFAULT_FREQ = 220; // --> A2
@@ -25,6 +26,9 @@ export class SynthPart extends Part {
     private dest? : AudioNode;
     private sources : Monotron[] = [];
     private monotron : Monotron|null = null;
+    static transformLegacy(app : any) {
+        transformLegacySynth(app);
+    }
     constructor() {
         super();
         this.core = this._components.get('core') as SynthComponent;

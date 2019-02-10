@@ -2,6 +2,7 @@ import { Part } from '../../part.js';
 import { PartComponent } from '../../component.js';
 import { component, property, part } from '../../decorators.js';
 import { Wave } from './wave.js';
+import { transformLegacyOscillator } from './legacy.js';
 
 /**
  * Set of function that returns a y for a given x
@@ -46,6 +47,9 @@ export class OscillatorPart extends Part {
     @component(OscillatorComponent)
     public core : OscillatorComponent;
     private timeout : number|null = null;
+    static transformLegacy(app : any) {
+        transformLegacyOscillator(app);
+    }
     constructor() {
         super();
         this.core = this._components.get('core') as OscillatorComponent;

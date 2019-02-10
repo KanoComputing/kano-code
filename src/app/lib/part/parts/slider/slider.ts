@@ -2,7 +2,7 @@ import { DOMPart } from '../dom/dom.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
-import { legacyTransform } from './legacy.js';
+import { transformLegacySlider } from './legacy.js';
 
 class SliderComponent extends PartComponent {
     @property({ type: Number, value: 0 })
@@ -17,7 +17,7 @@ export class SliderPart extends DOMPart<HTMLInputElement> {
     @component(SliderComponent)
     public core : SliderComponent;
     static transformLegacy(app : any) {
-        legacyTransform(app);
+        transformLegacySlider(app);
     }
     constructor() {
         super();

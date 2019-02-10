@@ -5,7 +5,7 @@ import { IPartContext } from '../../part.js';
 import { Color } from '../../types/color.js';
 import { PartComponent } from '../../component.js';
 import { part, component, property } from '../../decorators.js';
-import { transformLegacy } from './legacy.js';
+import { transformLegacyButton } from './legacy.js';
 
 class ButtonComponent extends PartComponent {
     @property({ type: String, value: 'Click Me!' })
@@ -38,7 +38,7 @@ export class ButtonPart extends DOMPart {
     @component(ButtonComponent)
     public core : ButtonComponent;
     static transformLegacy(app : any) {
-        transformLegacy(app);
+        transformLegacyButton(app);
     }
     constructor() {
         super();

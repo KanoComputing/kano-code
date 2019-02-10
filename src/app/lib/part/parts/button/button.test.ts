@@ -86,6 +86,7 @@ suite('ButtonPart', () => {
         button.core.textColor = text;
         button.core.label = label;
 
+        button.core.invalidated = true;
         button.render();
 
         assert.equal((button as any)._el.textContent, label);

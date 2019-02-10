@@ -1,6 +1,8 @@
 import { LegacyUtil } from '../../../legacy/util.js';
+import { transformLegacyDOMPart } from '../dom/legacy.js';
 
-export function legacyTransform(app : any) {
+export function transformLegacyText(app : any) {
+    transformLegacyDOMPart('text', app);
     if (app.source) {
         const root = LegacyUtil.getDOM(app.source);
         if (!root) {

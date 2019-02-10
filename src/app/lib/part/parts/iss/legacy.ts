@@ -1,7 +1,7 @@
 import { LegacyUtil } from '../../../legacy/util.js';
 import { transformLegacyDataPart } from '../data/legacy.js';
 
-export function transformLegacy(app : any) {
+export function transformLegacyISS(app : any) {
     transformLegacyDataPart('iss', app);
     if (!app.parts || !app.source) {
         return;

@@ -1,6 +1,6 @@
 import { LegacyUtil } from '../../../legacy/util.js';
 
-export function legacyTransform(app : any) {
+export function transformLegacyTerminal(app : any) {
     if (app.source) {
         const root = LegacyUtil.getDOM(app.source);
         if (!root) {

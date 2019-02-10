@@ -31,7 +31,7 @@ export const TextInputAPI : IPartAPI = {
         verbose: 'on',
         parameters: [{
             type: 'parameter',
-            name: 'change',
+            name: 'callback',
             returnType: Function,
         }],
         blockly: {
