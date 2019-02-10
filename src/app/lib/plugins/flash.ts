@@ -1,8 +1,8 @@
 import { subscribeTimeout, IDisposable, EventEmitter } from '@kano/common/index.js';
 import { Field, goog, BlockSvg, utils, Block } from '@kano/kwc-blockly/blockly.js';
 import { flash } from '../part/icons.js';
-import { IEditor } from '../part/editor.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
+import Editor from '../editor/editor.js';
 
 export class FlashField extends Field  {
     private fieldGroup_? : SVGElement;
@@ -101,7 +101,7 @@ export function addFlashField(block : Block) {
  * @param emitter The event emitter triggering the event to flash
  * @param method The name of the method reacting to the event
  */
-export function setupFlash(editor : IEditor, id : string, emitter : EventEmitter, method : string) {
+export function setupFlash(editor : Editor, id : string, emitter : EventEmitter, method : string) {
     if (editor.sourceType !== 'blockly') {
         return;
     }

@@ -1,26 +1,36 @@
 import { Plugin } from '../editor/plugin.js';
 import { GifEncoder } from '../gif-encoder/encoder.js';
+import Editor from '../editor/editor.js';
+import Output from '../output/output.js';
 
-export class CreationCustomPreviewProvider extends Plugin {
-    onInstall(editor) {
+export abstract class CreationCustomPreviewProvider extends Plugin {
+    protected editor? : Editor;
+    onInstall(editor : Editor) {
         this.editor = editor;
     }
-    createFile() {}
-    display() {}
+    abstract createFile(output : Output) : Promise<Blob>|Blob;
+    abstract display(blob : Blob) : void;
 }
 
-const canvasToBlob = (canvas, mimeType, quality) => new Promise((resolve) => {
+const canvasToBlob = (canvas : HTMLCanvasElement, mimeType : string, quality : number) => new Promise((resolve) => {
     canvas.toBlob((blob) => {
+        if (!blob) {
+            throw new Error('Could not generate preview: Canvas did not generate a blob');
+        }
         resolve(blob);
     }, mimeType, quality);
 });
 
 export class CreationImagePreviewProvider extends CreationCustomPreviewProvider {
-    constructor(size) {
+    private size : { width : number, height : number };
+    constructor(size : { width : number, height : number }) {
         super();
         this.size = size;
     }
     createFile() {
+        if (!this.editor) {
+            throw new Error('Could not generate image preview: Editor is not defined. The file creation was called before the editor creation');
+        }
         const canvas = document.createElement('canvas');
         canvas.width = this.size.width;
         canvas.height = this.size.height;
@@ -32,24 +42,28 @@ export class CreationImagePreviewProvider extends CreationCustomPreviewProvider 
         }
         return p.then(() => canvasToBlob(canvas, 'image/png', 1));
     }
-    display(blob) {
+    display(blob : Blob) {
         const root = document.createElement('img');
         root.src = URL.createObjectURL(blob);
         return root;
     }
 }
 
-const wait = delay => new Promise(resolve => setTimeout(resolve, delay));
+const wait = (delay : number) => new Promise(resolve => setTimeout(resolve, delay));
 
 export class CreationAnimationPreviewProvider extends CreationCustomPreviewProvider {
-    constructor(size, length, fps, scale = 1) {
+    private size : { width : number, height : number };
+    private length : number;
+    private fps : number;
+    private scale : number;
+    constructor(size : { width : number, height : number }, length : number, fps : number, scale = 1) {
         super();
         this.size = size;
         this.length = length;
         this.fps = fps;
         this.scale = scale;
     }
-    createFrame(output) {
+    createFrame(output : Output) : Promise<HTMLCanvasElement> {
         const canvas = document.createElement('canvas');
         canvas.width = this.size.width;
         canvas.height = this.size.height;
@@ -60,10 +74,10 @@ export class CreationAnimationPreviewProvider extends CreationCustomPreviewProvi
         }
         return p.then(() => canvas);
     }
-    createFile(output) {
-        this.frameProgress = 0;
-        this.encodingProgress = 0;
-        this.interrupted = false;
+    createFile(output : Output) : Promise<Blob> {
+        let frameProgress = 0;
+        let encodingProgress = 0;
+        let interrupted = false;
         const encoder = new GifEncoder({
             width: this.size.width * this.scale,
             height: this.size.height * this.scale,
@@ -74,28 +88,28 @@ export class CreationAnimationPreviewProvider extends CreationCustomPreviewProvi
 
         const delay = 1000 / this.fps;
 
-        const getFrame = () => {
+        const getFrame = (() => {
             return this.createFrame(output)
                 .then((canvas) => {
                     encoder.addFrame(canvas.getContext('2d'), delay);
-                    this.frameProgress += (100 / this.length);
-                    if (this.interrupted) {
-                        return null;
+                    frameProgress += (100 / this.length);
+                    if (interrupted) {
+                        return {};
                     }
                     return wait(delay);
                 });
-        };
+        });
         for (let i = 0; i < this.length; i += 1) {
             p = p.then(getFrame.bind(this));
         }
         return p.then(() => encoder.end())
             .then((blob) => {
-                this.frameProgress = 0;
-                this.encodingProgress = 0;
+                frameProgress = 0;
+                encodingProgress = 0;
                 return blob;
             });
     }
-    display(blob) {
+    display(blob : Blob) {
         const root = document.createElement('img');
         root.src = URL.createObjectURL(blob);
         return root;

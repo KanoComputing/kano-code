@@ -5,7 +5,7 @@ import { TransformAPI } from '../transform/api.js';
 import { TextInputInlineDisplay } from './inline.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash.js';
-import { IEditor } from '../../editor.js';
+import Editor from '../../../editor/editor.js';
 
 export const TextInputAPI : IPartAPI = {
     type: TextInputPart.type,
@@ -42,7 +42,7 @@ export const TextInputAPI : IPartAPI = {
             },
         },
     }, ...TransformAPI],
-    onInstall(editor : IEditor, part : TextInputPart) {
+    onInstall(editor : Editor, part : TextInputPart) {
         if (!part.id) {
             return;
         }

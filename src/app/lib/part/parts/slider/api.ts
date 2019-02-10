@@ -5,7 +5,7 @@ import { slider } from '@kano/icons/parts.js';
 import { SliderInlineDisplay } from './inline.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import { IEditor } from '../../editor.js';
+import Editor from '../../../editor/editor.js';
 
 export const SliderAPI : IPartAPI = {
     type: SliderPart.type,
@@ -36,7 +36,7 @@ export const SliderAPI : IPartAPI = {
             },
         },
     }, ...TransformAPI],
-    onInstall(editor : IEditor, part : SliderPart) {
+    onInstall(editor : Editor, part : SliderPart) {
         if (!part.id) {
             return;
         }

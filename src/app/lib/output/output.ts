@@ -143,8 +143,8 @@ export class Output extends PluginReceiver {
         this.setRunningState(false);
         this.setRunningState(true);
     }
-    setCode(code : string) {
-        this._code = code;
+    setCode(code? : string) {
+        this._code = code || '';
     }
     getCode() {
         return this._code;

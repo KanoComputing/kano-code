@@ -1,14 +1,14 @@
 /* eslint class-methods-use-this: "off" */
 import { Plugin } from '../editor/plugin.js';
 import { debounce } from '../util/debounce.js';
-import { IEditor } from '../part/editor.js';
+import Editor from '../editor/editor.js';
 
 export abstract class StoragePlugin extends Plugin {
     private key : string|(() => string);
     private enabled : boolean = true;
     private debounceDelay : number;
     private _debouncedSave : Function;
-    private editor? : IEditor;
+    private editor? : Editor;
     constructor(key : string|(() => string), debounceDelay = 3000) {
         super();
         this.debounceDelay = debounceDelay;
@@ -23,7 +23,7 @@ export abstract class StoragePlugin extends Plugin {
     enable() {
         this.enabled = false;
     }
-    onInstall(editor : IEditor) {
+    onInstall(editor : Editor) {
         this.editor = editor;
         this.editor.on('change', this._debouncedSave);
         this.editor.on('reset', this.save.bind(this));

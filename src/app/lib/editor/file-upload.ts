@@ -1,5 +1,5 @@
 import { Plugin } from './plugin.js';
-import { IEditor } from '../part/editor.js';
+import Editor from './editor.js';
 
 export interface IFileDropTarget extends HTMLElement {
     animateDragEnter() : void;
@@ -10,7 +10,7 @@ export interface IFileDropTarget extends HTMLElement {
 class FileUpload extends Plugin {
     private targetEl : HTMLElement;
     private overlay : IFileDropTarget;
-    private editor? : IEditor;
+    private editor? : Editor;
     constructor(targetEl : HTMLElement, overlay : IFileDropTarget) {
         super();
         this.targetEl = targetEl;
@@ -20,7 +20,7 @@ class FileUpload extends Plugin {
         this._onDragenter = this._onDragenter.bind(this);
         this._onDragleave = this._onDragleave.bind(this);
     }
-    onInstall(editor : IEditor) {
+    onInstall(editor : Editor) {
         this.editor = editor;
     }
     onInject() {

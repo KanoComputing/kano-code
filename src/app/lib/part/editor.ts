@@ -1,45 +1,13 @@
-import { Output } from '../output/output.js';
 import { IDisposable } from '@kano/common/index.js';
 import { AddPartDialogProvider } from './dialogs/add.js';
 import { PartContructor } from './manager.js';
 import { memoize } from '../util/decorators.js';
 import { IPartAPI } from './api.js';
-import { IMetaDefinition } from '../meta-api/module.js';
+import { IMetaDefinition, IAPIDefinition } from '../meta-api/module.js';
 import { Part } from './part.js';
-import { KCPartsControls } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
-import EventEmitter from '../util/event-emitter.js';
 import { DefaultInlineDisplay } from './inline-display.js';
-import { SourceEditor } from '../editor/source-editor/source-editor.js';
-
-export interface IEditor extends EventEmitter {
-    sourceType : 'blockly'|'code';
-    telemetry : TelemetryClient;
-    injected : boolean;
-    parts : EditorPartsManager;
-    output : Output;
-    config : any;
-    workspaceView : {
-        partsControls : KCPartsControls;
-        toolbar? : HTMLElement;
-    };
-    dialogs: {
-        registerDialog(provider : any) : any;
-        registerAlert(provider : any) : any;
-        registerConfirm(provider : any) : any;
-    };
-    toolbox: {
-        addEntry(d : any) : IDisposable;
-    };
-    sourceEditor: SourceEditor;
-    rootEl : HTMLElement;
-    load(app : any) : void;
-    export() : any;
-    exportToDisk() : void;
-    importFromDisk() : void;
-    reset() : void;
-    restart() : void;
-}
+import Editor from '../editor/editor.js';
 
 export interface IPartDefinition {
     name : string;
@@ -61,14 +29,14 @@ interface IPartRecord {
 }
 
 export class EditorPartsManager {
-    private editor : IEditor;
+    private editor : Editor;
     private addDialog : any;
     private addDialogProvider : AddPartDialogProvider;
     private apiRegistry : Map<string, IPartAPI> = new Map();
     private parts : Map<string, IPartRecord> = new Map();
     private names : Set<string> = new Set();
     private _telemetry : TelemetryClient = new TelemetryClient({ scope: 'parts' });
-    constructor(editor : IEditor) {
+    constructor(editor : Editor) {
         this.editor = editor;
         this.editor.output.parts.managed = true;
         this.addDialogProvider = new AddPartDialogProvider(editor);
@@ -80,6 +48,9 @@ export class EditorPartsManager {
         return this.editor.output.parts.getRegisteredParts();
     }
     onInject() {
+        if (!this.editor.workspaceView) {
+            return;
+        }
         const { partsControls } = this.editor.workspaceView;
         if (!partsControls) {
             return;
@@ -102,7 +73,7 @@ export class EditorPartsManager {
             this.addDialogProvider.setParts(partInfos);
             this.addDialog.open();
         });
-        partsControls.onDidClickRemovePart((id) => {
+        partsControls.onDidClickRemovePart((id : string) => {
             this.removePartAttempt(id);
         });
         // Listen to the user clicking on an available part
@@ -119,7 +90,7 @@ export class EditorPartsManager {
             this.addDialog.close();
         });
     }
-    createToolboxModule(api : IPartAPI, id : string, name : string) : IMetaDefinition {
+    createToolboxModule(api : IPartAPI, id : string, name : string) : IAPIDefinition {
         return {
             type: 'module',
             name: id,
@@ -184,6 +155,9 @@ export class EditorPartsManager {
         });
     }
     addPart(partClass : PartContructor, id? : string, name? : string) {
+        if (!this.editor || !this.editor.workspaceView) {
+            return;
+        }
         const api = this.apiRegistry.get(partClass.type);
         if (!api) {
             console.warn(`Could not add part: Part with type '${partClass.type}' is not registered`);
@@ -195,7 +169,7 @@ export class EditorPartsManager {
             this.reserveName(name);
         }
         if (!id) {
-            id = this.editor.output.runner.variables.getAvailable(name);
+            id = this.editor.output.runner.variables.getAvailable(name) as string;
         } else {
             this.editor.output.runner.variables.reserve(name);
         }

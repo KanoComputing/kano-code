@@ -1,16 +1,6 @@
-import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { SoundPlayerBehavior } from '../kano-sound-player-behavior/kano-sound-player-behavior.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import { Store } from '../../scripts/legacy/store.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-const behaviors = [
-    SoundPlayerBehavior,
-    AppElementRegistryBehavior,
-];
-class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, PolymerElement)) {
+class KanoWorkspace extends PolymerElement {
     static get template() {
         return html`
         <style>
@@ -48,29 +38,6 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
     }
 
     static get is() { return 'kano-workspace'; }
-    static get properties() {
-        return {
-            parts: {
-                type: Array,
-                linkState: 'addedParts',
-            },
-            running: {
-                type: Boolean,
-                value: false,
-                observer: 'runningChanged',
-                linkState: 'running',
-            },
-            mode: {
-                type: Object,
-                linkState: 'mode',
-            },
-            background: {
-                type: String,
-                linkState: 'background',
-                observer: 'backgroundChanged',
-            },
-        };
-    }
     constructor() {
         super();
         this.elements = {};
@@ -80,23 +47,10 @@ class KanoWorkspace extends Store.StateReceiver(mixinBehaviors(behaviors, Polyme
     get view() {
         return this.dropzone;
     }
-    backgroundChanged(bg) {
-        const dropzone = this.$$('.dropzone');
-        if (dropzone && dropzone.setBackground) {
-            dropzone.setBackground(bg);
-        }
-    }
     appendView(workspaceView) {
         this.workspaceView = workspaceView;
-        const placeholder = this.$$('#workspace-placeholder');
+        const placeholder = this.root.querySelector('#workspace-placeholder');
         placeholder.appendChild(workspaceView.root);
-    }
-    runningChanged() {
-        if (this.running) {
-            this.classList.add('running');
-        } else {
-            this.classList.remove('running');
-        }
     }
     getViewport() {
         return this.$$('.dropzone').getViewport();

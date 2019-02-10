@@ -1,7 +1,7 @@
 import { EventEmitter } from '@kano/common/index.js';
 import { Plugin } from './plugin.js';
 import '../../elements/kano-tooltip/kano-tooltip.js';
-import { IEditor } from '../part/editor.js';
+import Editor from './editor.js';
 
 const SIZES = Object.freeze({
     BIG: 'big',
@@ -139,7 +139,7 @@ export class ActivityBarTooltipEntry extends ActivityBarEntry {
 }
 
 export class ActivityBar extends Plugin {
-    private editor? : IEditor;
+    private editor? : Editor;
     public entries : ActivityBarEntry[] = [];
     private _barContainer? : HTMLElement;
     registerEntry(opts : Partial<IActivityBarEntryOptions>) {
@@ -171,7 +171,7 @@ export class ActivityBar extends Plugin {
             this._barContainer.appendChild(entry.root);
         }
     }
-    onInstall(editor : IEditor) {
+    onInstall(editor : Editor) {
         this.editor = editor;
     }
     onInject() {

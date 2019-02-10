@@ -1,6 +1,6 @@
 import { click } from '@polymer/iron-test-helpers/mock-interactions.js';
 import { ActivityBar } from './activity-bar.js';
-import { IEditor } from '../part/editor.js';
+import Editor from './editor.js';
 
 class EditorStub {
     public rootEl : HTMLElement;
@@ -21,7 +21,7 @@ suite('Editor', () => {
             bar = new ActivityBar();
             const editor = new EditorStub();
             editor.injected = true;
-            bar.onInstall(editor as unknown as IEditor);
+            bar.onInstall(editor as unknown as Editor);
             barDom = editor.barRoot;
             bar.onInject();
         });

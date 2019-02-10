@@ -1,5 +1,5 @@
 import AppModule from '../app-modules/app-module.js';
-import { IEditor } from '../part/editor.js';
+import Editor from '../editor/editor.js';
 
 export interface ICategory {
     name : string,
@@ -29,7 +29,7 @@ export interface IMetaDefinition {
 }
 
 export interface IAPIDefinition extends IMetaDefinition {
-    onInstall(editor : IEditor, mod : AppModule) : void;
+    onInstall?(editor : Editor, mod : AppModule) : void;
 }
 
 export class Meta {

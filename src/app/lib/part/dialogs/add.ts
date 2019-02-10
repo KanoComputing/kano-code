@@ -1,6 +1,7 @@
 import { DialogProvider } from '../../editor/dialogs/dialog-provider.js';
-import { IEditor, IPartDefinition } from '../editor.js';
+import { IPartDefinition } from '../editor.js';
 import { EventEmitter, IDisposable, subscribeDOM } from '@kano/common/index.js';
+import Editor from '../../editor/editor.js';
 
 export class PartItem {
     public domNode : HTMLElement = document.createElement('button');
@@ -27,11 +28,11 @@ export class PartItem {
 }
 
 export class AddPartDialogProvider extends DialogProvider {
-    private editor : IEditor;
+    private editor : Editor;
     private domNode : HTMLElement = document.createElement('div');
     private partEls : PartItem[] = [];
     private _onDidClickPart : EventEmitter<string> = new EventEmitter<string>();
-    constructor(editor : IEditor) {
+    constructor(editor : Editor) {
         super();
         this.editor = editor;
     }

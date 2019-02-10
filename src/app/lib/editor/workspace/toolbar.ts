@@ -1,7 +1,7 @@
 import { Disposables, subscribe, subscribeDOM } from '@kano/common/index.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { Plugin } from '../plugin.js';
-import { IEditor } from '../../part/editor.js';
+import Editor from '../editor.js';
 
 /**
  * Manages the actions in the toolbar avilable in the workspace
@@ -9,7 +9,7 @@ import { IEditor } from '../../part/editor.js';
 export class WorkspaceToolbar extends Plugin {
     private subscriptions : Disposables;
     private _telemetry : TelemetryClient;
-    private editor? : IEditor;
+    private editor? : Editor;
     private toolbar? : any;
     private resetDialog? : any;
     constructor() {
@@ -26,7 +26,7 @@ export class WorkspaceToolbar extends Plugin {
         this.editor!.telemetry.mount(this._telemetry);
     }
     onInject() {
-        if (!this.editor) {
+        if (!this.editor || !this.editor.workspaceView) {
             return;
         }
         const workspaceView = this.editor.workspaceView;

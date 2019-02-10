@@ -2,7 +2,7 @@ import { IPartAPI } from '../../api.js';
 import { ISSPart } from './iss.js';
 import { iss } from '@kano/icons/parts.js';
 import { DataAPI, onInstall } from '../data/api.js';
-import { IEditor } from '../../editor.js';
+import Editor from '../../../editor/editor.js';
 
 export const ISSAPI : IPartAPI = {
     type: ISSPart.type,
@@ -18,7 +18,7 @@ export const ISSAPI : IPartAPI = {
         name: 'longitude',
         returnType: Number,
     }],
-    onInstall(editor : IEditor, part : ISSPart) {
+    onInstall(editor : Editor, part : ISSPart) {
         onInstall(editor, part);
     },
 };

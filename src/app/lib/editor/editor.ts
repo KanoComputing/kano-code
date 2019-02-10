@@ -1,7 +1,5 @@
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import Config from '../config.js';
-import Store from './store.js';
-import StoreObserver from './store-observer.js';
 import Toolbox from './toolbox.js';
 import { Logger } from '../log/index.js';
 import { DefaultWorkspaceViewProvider } from './workspace/default.js';
@@ -16,17 +14,35 @@ import { WorkspaceToolbar } from './workspace/toolbar.js';
 import { EditorPartsManager } from '../part/editor.js';
 import { BlocklySourceEditor } from './source-editor/blockly.js';
 import { transformLegacyApp } from '../legacy/loader.js';
+import { SourceEditor } from './source-editor/source-editor.js';
+import { Plugin } from './plugin.js';
+import EditorProfile from './profile.js';
+import { CreationCustomPreviewProvider } from '../creation/creation-preview-provider.js';
+import CreationStorageProvider from '../creation/creation-storage-provider.js';
+import { deprecated } from '../decorators.js';
+import { WorkspaceViewProvider } from './workspace/index.js';
 
-const PROXY_EVENTS = [
-    'share',
-    'exit',
-    'change',
-    'import',
-];
+declare global {
+    interface Window {
+        Kano : {
+            Code : {
+                mainEditor? : Editor|null,
+            },
+        },
+    }
+}
 
 // window namespaces used for easy access to editors in development
 window.Kano = window.Kano || {};
 window.Kano.Code = window.Kano.Code || {};
+
+export interface IEditorOptions {
+    sourceType? : 'blockly'|'code';
+    mediaPath? : string;
+    blockly? : any;
+}
+
+export interface ICreationBundle {}
 
 /**
  * A full Kano Code Editor with customizable Workspace and Output
@@ -40,66 +56,56 @@ window.Kano.Code = window.Kano.Code || {};
  * ```
  */
 export class Editor extends EditorOrPlayer {
-    constructor(opts = {}) {
+    public config : any;
+    public logger : Logger = new Logger();
+    public elementsRegistry : Map<string, HTMLElement> = new Map();
+    public rootEl : HTMLElement = document.createElement('kano-app-editor');
+    public sourceType : 'blockly'|'code' = 'blockly';
+    public output : Output = new Output();
+    public telemetry : TelemetryClient = new TelemetryClient({ scope: 'kc-editor' });
+    public sourceEditor : SourceEditor;
+    public workspaceToolbar : WorkspaceToolbar = new WorkspaceToolbar();
+    public dialogs : Dialogs = new Dialogs();
+    public keybindings : Keybindings = new Keybindings();
+    public toolbox : Toolbox = new Toolbox();
+    public creation : CreationPlugin = new CreationPlugin();
+    public parts : EditorPartsManager;
+    public activityBar : ActivityBar = new ActivityBar();
+    public injected : boolean = false;
+    private _registeredEvents : string[] = [];
+    private _mediaPath : string = '';
+    private _queuedApp : string|null = null;
+    public workspaceProvider? : WorkspaceViewProvider;
+    public profile? : EditorProfile;
+    public unsavedChanges : boolean = false;
+    public creationPreviewProvider? : CreationCustomPreviewProvider;
+    public creationStorageProvider? : CreationStorageProvider;
+    constructor(opts : IEditorOptions = {}) {
         super();
         this.config = Config.merge(opts);
-        this.logger = new Logger();
         this.logger.setLevel(this.config.LOG_LEVEL);
-        this.elementsRegistry = new Map();
-        this.rootEl = document.createElement('kano-app-editor');
         this.elementsRegistry.set('editor', this.rootEl);
-        this.rootEl.editor = this;
+        (this.rootEl as any).editor = this;
         this.sourceType = opts.sourceType || 'blockly';
         this._setupMediaPath(opts.mediaPath);
-        this.store = Store.create({
-            config: this.config,
-            workspaceTab: 'workspace',
-            sourceType: this.sourceType,
-            // When using blockly, can apply specific options
-            blockly: {
-                flyoutMode: typeof opts.flyoutMode === 'undefined' ? false : opts.flyoutMode,
-            },
-        });
-        this.storeObserver = new StoreObserver(this.store, this);
 
-        this.rootEl.storeId = this.store.id;
-        this.storeObserver.rootEl.storeId = this.store.id;
-
-        this.eventRemovers = PROXY_EVENTS.map(name => Editor.proxyEvent(this.rootEl, this, name));
-
-        this.output = new Output();
-
-        this.telemetry = new TelemetryClient({ scope: 'kc-editor' });
-
+        // No support for dynamic editor yet
         if (this.sourceType === 'blockly') {
-            this.sourceEditor = new BlocklySourceEditor(this);
         }
+        this.sourceEditor = new BlocklySourceEditor(this);
 
-        this.workspaceToolbar = new WorkspaceToolbar();
         this.addPlugin(this.workspaceToolbar);
-
-        this.dialogs = new Dialogs();
         this.addPlugin(this.dialogs);
-
-        this.keybindings = new Keybindings();
         this.addPlugin(this.keybindings);
-
-        this.toolbox = new Toolbox();
         this.addPlugin(this.toolbox);
-
-        this.creation = new CreationPlugin();
         this.addPlugin(this.creation);
+        this.addPlugin(this.activityBar);
 
         this.parts = new EditorPartsManager(this);
 
-        this.on('import', (event) => {
+        this.on('import', (event : any) => {
             this.load(event.app);
         });
-
-        this.activityBar = new ActivityBar();
-        this.addPlugin(this.activityBar);
-
-        this._registeredEvents = [];
 
         window.Kano.Code.mainEditor = this;
     }
@@ -110,7 +116,7 @@ export class Editor extends EditorOrPlayer {
         const normalized = path.replace(/^(\.\/|\.\.\/|\/)/, '');
         return `${this._mediaPath}/${normalized}`;
     }
-    registerEvent(name) {
+    registerEvent(name : string) {
         this._registeredEvents.push(name);
     }
     getEvents() {
@@ -127,9 +133,9 @@ export class Editor extends EditorOrPlayer {
      *     }
      *     onInject() {}
      * }
-     * @param {Plugin} plugin The plugin to add
+     * @param plugin The plugin to add
      */
-    addPlugin(plugin) {
+    addPlugin(plugin : Plugin) {
         super.addPlugin(plugin);
         plugin.onInstall(this);
         if (this.injected) {
@@ -137,8 +143,8 @@ export class Editor extends EditorOrPlayer {
         }
     }
     setupElements() {
-        const workspace = this.rootEl.getWorkspace();
-        const sourceView = this.rootEl.shadowRoot.querySelector('#root-view');
+        const workspace = (this.rootEl as any).getWorkspace();
+        const sourceView = (this.rootEl as any).shadowRoot.querySelector('#root-view');
         this.elementsRegistry.set('workspace', workspace);
         this.elementsRegistry.set('source-view', sourceView);
 
@@ -150,24 +156,15 @@ export class Editor extends EditorOrPlayer {
      * TODO: Remove once the editor moved to a better element registry API
      * Ads an element to the old app-element-registry-behavior
      */
-    registerLegacyElement(id, el) {
-        this.rootEl._registerElement(id, el);
+    registerLegacyElement(id : string, el : HTMLElement) {
+        (this.rootEl as any)._registerElement(id, el);
     }
-    getElement(id) {
+    getElement(id : string) {
         return this.elementsRegistry.get(id);
     }
-    static proxyEvent(el, emitter, name) {
-        const onEvent = (e) => {
-            emitter.emit(name, e.detail);
-        };
-        el.addEventListener(name, onEvent);
-        return () => {
-            el.removeEventListener(name, onEvent);
-        };
-    }
     appendSourceEditor() {
-        this.rootEl.sourceContainer.appendChild(this.sourceEditor.domNode);
-        this.rootEl.$['root-view'] = this.sourceEditor.domNode;
+        (this.rootEl as any).sourceContainer.appendChild(this.sourceEditor.domNode);
+        (this.rootEl as any).$['root-view'] = this.sourceEditor.domNode;
     }
     ensureProviders() {
         this.output.ensureOutputView();
@@ -181,8 +178,6 @@ export class Editor extends EditorOrPlayer {
         }
         this.ensureProviders();
         this.injected = true;
-        element.appendChild(this.store.providerElement);
-        element.appendChild(this.storeObserver.rootEl);
         if (before) {
             element.insertBefore(this.rootEl, before);
         } else {
@@ -196,10 +191,6 @@ export class Editor extends EditorOrPlayer {
             this.workspaceProvider.onInject();
         }
         this.parts.onInject();
-        if (this._queuedVariables) {
-            this.loadVariables(this._queuedVariables);
-            this._queuedVariables = null;
-        }
         this.runPluginTask('onInject');
         this.telemetry.trackEvent({ name: 'ide_opened' });
         if (this._queuedApp) {
@@ -209,9 +200,7 @@ export class Editor extends EditorOrPlayer {
     }
     dispose() {
         if (this.injected) {
-            this.store.providerElement.parentNode.removeChild(this.store.providerElement);
-            this.storeObserver.rootEl.parentNode.removeChild(this.storeObserver.rootEl);
-            this.rootEl.parentNode.removeChild(this.rootEl);
+            (this.rootEl as any).parentNode.removeChild(this.rootEl);
         }
         this.output.dispose();
         if (this.workspaceView) {
@@ -223,7 +212,7 @@ export class Editor extends EditorOrPlayer {
         }
         this.telemetry.trackEvent({ name: 'ide_exited' });
     }
-    load(app) {
+    load(app : any) {
         const safeApp = transformLegacyApp(app, this);
         if (!this.injected) {
             this._queuedApp = safeApp;
@@ -239,13 +228,13 @@ export class Editor extends EditorOrPlayer {
     }
     reset() {
         const source = this.profile ? this.profile.source : '';
-        this.setCode(null);
+        this.setCode();
         this.parts.reset();
         this.load({ source });
     }
-    setCode(content) {
+    setCode(content? : string) {
         this.output.setCode(content);
-        this.rootEl.code = content;
+        (this.rootEl as any).code = content;
         this.unsavedChanges = true;
         this.output.restart();
     }
@@ -264,7 +253,10 @@ export class Editor extends EditorOrPlayer {
         return data;
     }
     export() {
-        let app = this.rootEl.save();
+        let app = {
+            source: this.sourceEditor.getSource(),
+            code: this.getCode(),
+        };
         this.plugins.forEach((plugin) => {
             app = plugin.onExport(app);
         });
@@ -285,38 +277,38 @@ export class Editor extends EditorOrPlayer {
         this.telemetry.trackEvent({ name: 'app_exported' });
     }
     importFromDisk() {
-        this.fileInput = document.createElement('input');
-        this.fileInput.setAttribute('type', 'file');
-        this.fileInput.style.display = 'none';
-        this.fileInput.addEventListener('change', (evt) => {
+        const fileInput = document.createElement('input');
+        fileInput.setAttribute('type', 'file');
+        fileInput.style.display = 'none';
+        fileInput.addEventListener('change', (evt : any) => {
             const f = evt.target.files[0];
             if (f) {
                 const r = new FileReader();
-                r.onload = (e) => {
+                r.onload = (e : any) => {
                     const app = JSON.parse(e.target.result);
                     this.load(app);
                 };
                 r.readAsText(f);
-                document.body.removeChild(this.fileInput);
+                document.body.removeChild(fileInput);
             }
         });
-        document.body.appendChild(this.fileInput);
-        this.fileInput.click();
+        document.body.appendChild(fileInput);
+        fileInput.click();
     }
-    createCreationPreview(externalOutput) {
+    createCreationPreview(externalOutput? : Output) {
         const output = externalOutput || this.output;
         if (!this.creationPreviewProvider) {
             throw new Error('Could not create creation preview: No CreationPreviewProvider was registered');
         }
         return this.creationPreviewProvider.createFile(output);
     }
-    createCreationDisplay(blob) {
+    createCreationDisplay(blob : Blob) {
         if (!this.creationPreviewProvider) {
             throw new Error('Could not create creation display: No CreationPreviewProvider was registered');
         }
         return this.creationPreviewProvider.display(blob);
     }
-    storeCreation(creationBundle) {
+    storeCreation(creationBundle : ICreationBundle) {
         if (!this.creationStorageProvider) {
             return Promise.reject(new Error('Could not store creation: No CreationStorageProvider was registered'));
         }
@@ -330,39 +322,26 @@ export class Editor extends EditorOrPlayer {
         return this.export();
     }
     share() {
-        this.rootEl.share();
+        (this.rootEl as any).share();
     }
+    @deprecated('Use editor.sourceEditor.getSource() instead')
     getSource() {
-        const { source } = this.store.getState();
-        return source;
+        return this.sourceEditor.getSource();
     }
     getCode() {
-        const { code } = this.store.getState();
-        return code;
+        return this.output.getCode();
     }
     getViewport() {
         const ws = this.getWorkspace();
         return ws.getViewport();
     }
     getWorkspace() {
-        return this.rootEl.getWorkspace();
+        return (this.rootEl as any).getWorkspace();
     }
     getBlocklyWorkspace() {
-        return this.rootEl.getBlocklyWorkspace();
+        return (this.rootEl as any).getBlocklyWorkspace();
     }
-    loadVariables(variables) {
-        if (!this.injected) {
-            this._queuedVariables = variables;
-            return;
-        }
-        const workspace = this.getBlocklyWorkspace();
-        if (variables && workspace) {
-            variables.forEach((v) => {
-                Blockly.Variables.addVariable(v, workspace);
-            });
-        }
-    }
-    registerProfile(profile) {
+    registerProfile(profile : EditorProfile) {
         if (profile.onInstall) {
             profile.onInstall(this);
         }
@@ -395,12 +374,15 @@ export class Editor extends EditorOrPlayer {
             this.addPlugin(this.creationStorageProvider);
         }
     }
-    registerWorkspaceViewProvider(provider) {
+    registerWorkspaceViewProvider(provider : WorkspaceViewProvider) {
         this.workspaceProvider = provider;
         this.workspaceProvider.onInstall(this);
     }
     appendWorkspaceView() {
-        this.rootEl.$.workspace.appendView(this.workspaceProvider);
+        if (!this.workspaceProvider) {
+            return;
+        }
+        (this.rootEl as any).$.workspace.appendView(this.workspaceProvider);
         this.workspaceProvider.setOutputView(this.output.outputView);
     }
     get workspaceView() {

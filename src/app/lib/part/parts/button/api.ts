@@ -4,8 +4,8 @@ import { TransformAPI } from '../transform/api.js';
 import { button } from '@kano/icons/parts.js'
 import { ButtonInlineDisplay } from './inline.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash.js';
-import { IEditor } from '../../editor.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
+import Editor from '../../../editor/editor.js';
 
 export const ButtonAPI : IPartAPI = {
     type: ButtonPart.type,
@@ -68,7 +68,7 @@ export const ButtonAPI : IPartAPI = {
             },
         },
     }, ...TransformAPI],
-    onInstall(editor : IEditor, part : ButtonPart) {
+    onInstall(editor : Editor, part : ButtonPart) {
         if (!part.id) {
             return;
         }

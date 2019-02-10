@@ -3,7 +3,7 @@ import MetaModule, { IMetaRenderer, IAPIDefinition } from '../meta-api/module.js
 // TODO: Only load the required renderer for the source type
 import BlocklyMetaRenderer from '../meta-api/renderer/blockly.js';
 import TypeScriptMetaRenderer from '../meta-api/renderer/typescript.js';
-import { IEditor } from '../part/editor.js';
+import Editor from './editor.js';
 
 class Entry {
     private toolbox : Toolbox;
@@ -22,11 +22,11 @@ class Entry {
 }
 
 class Toolbox extends Plugin {
-    private editor? : IEditor;
+    private editor? : Editor;
     private renderer? : IMetaRenderer;
     private entries : IAPIDefinition[] = [];
     private whitelist : any[]|null = null;
-    onInstall(editor : IEditor) {
+    onInstall(editor : Editor) {
         this.editor = editor;
         switch (editor.sourceType) {
         case 'code': {
@@ -43,7 +43,7 @@ class Toolbox extends Plugin {
     setEntries(entries : IAPIDefinition[]) {
         this.entries = entries;
     }
-    addEntry(entry : IAPIDefinition, position : number) {
+    addEntry(entry : IAPIDefinition, position? : number) {
         const mod = this.editor!.output.runner.getModule((entry as any).id || entry.name);
         const injectIndex = typeof position === 'undefined' ? this.entries.length : position;
         const disposableEntry = new Entry(this, entry);

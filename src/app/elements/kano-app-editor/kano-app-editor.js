@@ -9,89 +9,32 @@
 import '@polymer/iron-pages/iron-pages.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import '@polymer/paper-tabs/paper-tabs.js';
-import '@polymer/iron-overlay-behavior/iron-overlay-backdrop.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
-import 'interactjs/dist/interact.js';
 import 'js-beautify/js/lib/beautify.js';
-import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
-import { MediaQueryBehavior } from '../behaviors/kano-media-query-behavior.js';
-import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
-import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import '../kano-media-query/kano-media-query.js';
 import '../kano-workspace/kano-workspace.js';
 import '../kano-part-editor/kano-part-editor.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import '../kano-code-display/kano-code-display.js';
-import '../kano-alert/kano-alert.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
-import { Store } from '../../scripts/legacy/store.js';
 
-class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
-    AppEditorBehavior,
-    AppElementRegistryBehavior,
-    MediaQueryBehavior,
-    I18nBehavior,
-], PolymerElement)) {
+class KanoAppEditor extends PolymerElement {
     static get is() { return 'kano-app-editor'; }
     static get properties() {
         return {
-            storeId: {
-                type: Number,
-            },
-            parts: {
-                type: Array,
-                linkState: 'partsMap',
-            },
-            addedParts: {
-                type: Array,
-                linkState: 'addedParts',
-            },
             code: {
-                type: Object,
-                linkState: 'code',
+                type: String,
             },
             workspaceTab: {
                 type: String,
                 observer: '_workspaceTabChanged',
-                linkState: 'workspaceTab',
-            },
-            remixMode: {
-                type: Boolean,
-                value: false,
-            },
-            selectedPartIndex: {
-                linkState: 'selectedPartIndex',
-            },
-            selected: {
-                linkArray: 'addedParts',
-                linkIndex: 'selectedPartIndex',
-            },
-            running: {
-                type: Boolean,
-                observer: '_runningChanged',
-                linkState: 'running',
-            },
-            editableLayout: {
-                type: Boolean,
-                value: false,
-            },
-            toolbox: {
-                type: Object,
-                linkState: 'toolbox',
+                value: 'workspace',
             },
             isResizing: {
                 type: Boolean,
                 value: false,
-            },
-            mode: {
-                type: Object,
-                linkState: 'mode',
             },
             unsavedChanges: {
                 type: Boolean,
@@ -99,11 +42,6 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
                 notify: true,
             },
         };
-    }
-    static get observers() {
-        return [
-            '_onPartsSet(parts)',
-        ];
     }
     static get template() {
         return html`
@@ -131,7 +69,7 @@ class KanoAppEditor extends Store.StateReceiver(mixinBehaviors([
             }
             :host section #workspace-panel {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 position: relative;
                 min-width: 33%;
                 max-width: 50%;
@@ -170,14 +108,14 @@ flex-direction: column;
             }
             :host iron-pages.workspace-pages {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
                 overflow: visible;
             }
             :host #workspace-panel kano-workspace {
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
             }
             :host kano-code-display {
                 @apply --flex-layout;
@@ -185,9 +123,9 @@ flex-basis: 0.000000001px;
             }
             :host [main] {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
                 position: relative;
             }
             #source-container {
@@ -216,7 +154,7 @@ flex-basis: 0.000000001px;
             }
             #edit-part-dialog {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 flex: 1 1 auto;
                 flex-shrink: 0;
                 overflow: hidden;
@@ -291,17 +229,15 @@ flex-direction: column;
                 opacity: 1;
             }
         </style>
-        <kano-media-query small-screen="{{smallScreen}}" medium-screen="{{mediumScreen}}" large-screen="{{largeScreen}}">
-        </kano-media-query>
         <div class="activity-bar" id="activity-bar"></div>
         <section id="section" on-mousemove="mouseMoved" on-mouseup="completedResizing">
             <div class="ui-edition" id="workspace-panel">
-                <paper-tabs class="tab-selector" attr-for-selected="id" selected="{{workspaceTab}}" autoselect="">
+                <paper-tabs class="tab-selector" attr-for-selected="id" selected="{{workspaceTab}}" autoselect>
                     <paper-tab id="workspace" class="tab">Canvas</paper-tab>
                     <paper-tab id="code-display" class="tab">JavaScript</paper-tab>
                 </paper-tabs>
                 <iron-pages class="workspace-pages" attr-for-selected="id" selected="[[workspaceTab]]">
-                    <kano-workspace id="workspace" store-id="[[storeId]]" class="visible-when-running" selected="{{selected}}" editable-layout="{{editableLayout}}" parts-menu-open="[[partsMenuOpen]]" on-ui-ready="workspaceUiReady"></kano-workspace>
+                    <kano-workspace id="workspace" class="visible-when-running"></kano-workspace>
                     <kano-code-display id="code-display" code="[[_setCodeDisplay(code, workspaceTab)]]" lang="javascript"></kano-code-display>
                 </iron-pages>
             </div>
@@ -315,100 +251,6 @@ flex-direction: column;
             </div>
         </section>
         `;
-    }
-    _hasSelectedPart() {
-        return typeof this.selectedPartIndex !== 'undefined' && this.selectedPartIndex !== null;
-    }
-    _exitTapped() {
-        this.fire('tracking-event', {
-            name: 'ide_exited',
-        });
-        this.fire('exit');
-    }
-    // Make sure that no conflicting modals are opened at the same time
-    _manageModals(e) {
-        const notifier = dom(e).rootTarget.id;
-        const nonConcurringModalIds = [
-            'edit-part-dialog',
-        ];
-
-        // Check if the notifier is on the check list and if it's opened
-        if (nonConcurringModalIds.indexOf(notifier) < 0 || !this.$[notifier].opened) {
-            return;
-        }
-
-        // Close all non-concurring modals except the one that has just been opened
-        nonConcurringModalIds.forEach((modal) => {
-            if (modal !== notifier && this.$[modal].opened) {
-                this.$[modal].close();
-            }
-        });
-    }
-    _newPartRequest(e) {
-        if (!e.detail || !e.detail.data || !e.detail.data.product) {
-            return;
-        }
-        const model = e.detail.data;
-
-        // Too early
-        if (!Array.isArray(this.parts)) {
-            this.queuedHardware = this.queuedHardware || [];
-            this.queuedHardware.push(model);
-            return;
-        }
-
-        if (!this.queuedHardware || this.queuedHardware.indexOf(model) === -1) {
-            this._addHardwarePart(model.product);
-        }
-    }
-    _addHardwarePart(product) {
-        let model;
-        for (let i = 0; i < this.parts.length; i += 1) {
-            model = this.parts[i];
-            if (model.supportedHardware && model.supportedHardware.indexOf(product) >= 0) {
-                this._addPart({ detail: model.type });
-                break;
-            }
-        }
-    }
-    _addPart(e) {
-        const type = e.detail;
-        this.dispatchEvent(new CustomEvent('add-part-request', { detail: type }));
-    }
-    _isPauseOverlayHidden(running, editableLayout) {
-        return running || editableLayout;
-    }
-    isPartDeletionDisabled() {
-        return this.partEditorOpened || this.running;
-    }
-    /**
-   * Save the current work in the local storage
-   */
-    save(snapshot = false) {
-        const state = this.getState();
-        const savedApp = {};
-        savedApp.code = state.code;
-        savedApp.source = this.$['root-view'].getSource();
-        if (state.mode) {
-            savedApp.mode = state.mode.id;
-        }
-        if (snapshot) {
-            savedApp.snapshot = true;
-            savedApp.selectedPart = state.addedParts.indexOf(this.selected);
-        }
-
-        return savedApp;
-    }
-    compileApp() {
-        return {
-            app: this.save(false, false),
-            workspaceInfo: JSON.stringify(this.save()),
-            code: this.code,
-            parts: this.addedParts,
-        };
-    }
-    generateCover() {
-        return this.$.workspace.generateCover();
     }
     /**
    * Load the saved work from the local storage
@@ -427,19 +269,6 @@ flex-direction: column;
     reset() {
         this.$['dialog-reset-warning'].open();
     }
-    onPartSettings(e) {
-        // No part selected, show the background editor
-        if (!this.selected) {
-            this._toggleFullscreenModal(false);
-        } else {
-            this._toggleFullscreenModal(this.selected.fullscreenEdit);
-            this.$['edit-part-dialog'].open();
-            this.notifyChange('open-part-settings', { part: this.selected });
-        }
-    }
-    _closePartSettings() {
-        this.$['edit-part-dialog'].close();
-    }
     _toggleFullscreenModal(isFullScreen) {
         this.$['edit-part-dialog'].fitInto = isFullScreen ? window : this.$['source-panel'];
         this.$['edit-part-dialog'].withBackdrop = isFullScreen;
@@ -449,111 +278,16 @@ flex-direction: column;
         const target = this.$[dom(e).rootTarget.id];
         this.async(() => target.parentElement.refit(), 10);
     }
-    _deletePart(part) {
-        this.dispatchEvent(new CustomEvent('remove-part-request', { detail: part }));
-        this.$.workspace.clearSelection();
-    }
-    _onPartsSet(parts) {
-        if (!this.queuedHardware) {
-            return;
-        }
-
-        this.async(() => {
-            let product,
-                partTypes;
-
-            // Unqueue any parts that have been set already
-            this.addedParts.forEach((p) => {
-                for (let i = 0; i < this.queuedHardware.length; i++) {
-                    if (this.queuedHardware[i].product === p.type) {
-                        this.splice('queuedHardware', i, 1);
-                    }
-                }
-            });
-
-            for (let i = 0; i < this.queuedHardware.length; i++) {
-                product = this.queuedHardware[i].product;
-                partTypes = this.parts.map(p => p.type);
-                if (partTypes.indexOf(product) > -1) {
-                    this._addHardwarePart(product);
-                    this.splice('queuedHardware', i, 1);
-                }
-            }
-        }, 5);
-    }
-    onPartReady(e) {
-        let clone;
-        interact(e.detail).draggable({
-            onmove: (event) => {
-                let target = event.target,
-                    // keep the dragged position in the data-x/data-y attributes
-                    x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-                    y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-                // translate the element
-                target.style.webkitTransform =
-              target.style.transform =
-                  `translate(${  x  }px, ${  y  }px)`;
-
-                // update the posiion attributes
-                target.setAttribute('data-x', x);
-                target.setAttribute('data-y', y);
-            },
-            restrict: {
-                restriction: this.$.section,
-            },
-            onend: () => {
-                this.$.section.removeChild(clone);
-            },
-        }).on('move', (event) => {
-            const interaction = event.interaction;
-
-            // if the pointer was moved while being held down
-            // and an interaction hasn't started yet
-            if (interaction.pointerIsDown && !interaction.interacting()) {
-                let original = event.currentTarget,
-                    rect = original.getBoundingClientRect(),
-                    style;
-
-                // create a clone of the currentTarget element
-                clone = dom(original).cloneNode(true);
-                style = clone.style;
-                clone.model = original.model;
-                clone.colour = original.colour;
-                style.position = 'absolute';
-                style.top = `${rect.top}px`;
-                style.left = `${rect.left}px`;
-                style.zIndex = 11;
-
-                // insert the clone to the page
-                this.$.section.appendChild(clone);
-
-                // start a drag interaction targeting the clone
-                interaction.start(
-                    { name: 'drag' },
-                    event.interactable,
-                    clone,
-                );
-            }
-        });
-    }
     bindEvents() {
-        this.addEventListener('opened-changed', this._manageModals);
         this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
-        this.onIronSignal = this.onIronSignal.bind(this);
-
         this.$.workspace.addEventListener('viewport-resize', this.updateWorkspaceRect);
-        document.addEventListener('iron-signal', this.onIronSignal);
     }
     detachEvents() {
-        this.removeEventListener('opened-changed', this._manageModals);
         this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
-        document.removeEventListener('iron-signal', this.onIronSignal);
     }
     constructor() {
         super();
         this._openOfflineDialog = this._openOfflineDialog.bind(this);
-        this._manageModals = this._manageModals.bind(this);
 
         this.reset = this.reset.bind(this);
     }
@@ -564,12 +298,6 @@ flex-direction: column;
         this.codeEditor = this.$['root-view'];
 
         this.bindEvents();
-        this._registerElement('workspace-panel', this.$['workspace-panel']);
-        this._registerElement('source-panel', this.$['source-panel']);
-        // TODO: solve this
-        // this._registerElement('parts-panel', this.$['parts-modal']);
-        // Legacy
-        this._registerElement('blocks-panel', this.$['source-panel']);
     }
     get sourceContainer() {
         return this.$['source-container']
@@ -577,18 +305,6 @@ flex-direction: column;
     disconnectedCallback() {
         super.disconnectedCallback();
         this.detachEvents();
-    }
-    onIronSignal(e) {
-        if (!e.detail) {
-            return;
-        }
-        switch (e.detail.name) {
-        case 'new-part-request':
-            this._newPartRequest(e);
-            break;
-        default:
-            break;
-        }
     }
     _setCodeDisplay(code, workspaceTab) {
         if (workspaceTab === 'workspace') {
@@ -599,42 +315,6 @@ flex-direction: column;
     updateWorkspaceRect(e) {
         this.set('workspaceRect', e.detail);
     }
-    /**
-   * Add draggable properties to the added element in the workspace
-   * @param  {Event} e
-   */
-    workspaceUiReady(e) {
-        const element = e.detail;
-        if (element.instance) {
-            return;
-        }
-        if (!this.draggables) {
-            this.draggables = [];
-        }
-        this.draggables.push(element);
-        this._enableDrag(element);
-    }
-    getDragMoveListener(scale = false) {
-        return (event) => {
-            let target = event.target,
-                pos = target.model.position,
-                delta = {
-                    x: event.dx,
-                    y: event.dy,
-                };
-
-            if (scale) {
-                delta = this.scaleToWorkspace(delta);
-            }
-
-            pos.x += delta.x;
-            pos.y += delta.y;
-
-            target.set('model.position.x', pos.x);
-            target.set('model.position.y', pos.y);
-            target.notifyPath('model.position');
-        };
-    }
     scaleToWorkspace(point) {
         let rect = this.workspaceRect,
             fullSize = this.mode.workspace.viewport;
@@ -643,48 +323,6 @@ flex-direction: column;
             x: point.x / rect.width * fullSize.width,
             y: point.y / rect.height * fullSize.height,
         };
-    }
-    _cleanDraggables() {
-        if (!this.draggables) {
-            this.draggables = [];
-        }
-        // If a part is removed, the element will disappear from the array
-        this.draggables = this.draggables.filter(d => !!d);
-    }
-    _disableDrag() {
-        this._cleanDraggables();
-        this.draggables.forEach((draggable) => {
-            interact(draggable).draggable(false);
-        });
-    }
-    _enableDrag(el) {
-        let draggables;
-        let restrictEl;
-        this._cleanDraggables();
-        if (el) {
-            draggables = [el];
-        } else {
-            draggables = this.draggables;
-        }
-        draggables.forEach((draggable) => {
-            if (!draggable.model) {
-                return;
-            }
-            restrictEl = draggable.model.restrict === 'workspace' ?
-                this.editor.outputView.getRestrictElement() : this.$['workspace-panel'];
-            interact(draggable).draggable({
-                onmove: this.getDragMoveListener(true),
-                onend: (e) => {
-                    const model = e.target.model;
-                    this.notifyChange('move-part', {
-                        part: model,
-                    });
-                },
-                restrict: {
-                    restriction: restrictEl,
-                },
-            });
-        });
     }
     applyHiddenClass() {
         return this.running ? '' : 'hidden';
@@ -735,20 +373,6 @@ flex-direction: column;
         // We need to trigger the resize of the kano-ui-workspace and the blockly workspace
         window.dispatchEvent(new Event('resize'));
     }
-
-    _runningChanged() {
-        this.notifyChange('running', {
-            value: this.running,
-        });
-        if (!this.running) {
-            this._enableDrag();
-        } else {
-            // Disable drag when starts
-            this._disableDrag();
-            this.set('editableLayout', false);
-        }
-    }
-
     _onLockdownClicked() {
         this.fire('lockdown-clicked');
     }
@@ -764,16 +388,6 @@ flex-direction: column;
     }
     _openOfflineDialog() {
         this.$['dialog-offline'].open();
-    }
-    _workspaceTabChanged(current, previous) {
-        if (current && previous) {
-            this.fire('tracking-event', {
-                name: 'workspace_view_changed',
-                data: {
-                    view: current,
-                },
-            });
-        }
     }
 }
 

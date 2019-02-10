@@ -31,23 +31,6 @@ class KCCodeEditor extends Store.StateReceiver(PolymerElement) {
                 type: Boolean,
                 value: true,
             },
-            toolbox: {
-                type: Array,
-                linkState: 'toolbox',
-            },
-            code: {
-                type: Object,
-                linkState: 'code',
-            },
-            source: {
-                type: Object,
-                linkState: 'source',
-                observer: '_sourceChanged',
-            },
-            user: {
-                type: Object,
-                linkState: 'user',
-            },
         };
     }
     _sourceChanged() {

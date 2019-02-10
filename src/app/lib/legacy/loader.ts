@@ -1,5 +1,5 @@
-import { IEditor } from '../part/editor';
 import AppModule from '../app-modules/app-module';
+import Editor from '../editor/editor';
 
 export const BlocklyTransformer = {
     getDOM(source : string) {
@@ -44,11 +44,11 @@ function rewriteSource(app : any) {
     }
 }
 
-function rewriteParts(app : any, editor : IEditor) {
+function rewriteParts(app : any, editor : Editor) {
     const registered = editor.parts.getRegisteredParts();
     registered.forEach((partClass) => partClass.transformLegacy(app));
 }
-function rewriteModules(app : any, editor : IEditor) {
+function rewriteModules(app : any, editor : Editor) {
     const modules = editor.output.runner.getRegisteredModules();
     modules.forEach((mod) => {
         const moduleClass = (mod.constructor as typeof AppModule);
@@ -59,7 +59,7 @@ function rewriteModules(app : any, editor : IEditor) {
     });
 }
 
-export function transformLegacyApp(app : any, editor : IEditor) {
+export function transformLegacyApp(app : any, editor : Editor) {
     if (!app) {
         return app;
     }

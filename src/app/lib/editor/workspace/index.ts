@@ -1,10 +1,13 @@
-export const WorkspaceViewProviderMixin = base => class extends base {
-    constructor(editor) {
-        super();
+import Editor from '../editor.js';
+import { KCPartsControls } from '../../../elements/kc-workspace-frame/kc-parts-controls.js';
+
+export abstract class WorkspaceViewProvider {
+    protected editor : Editor;
+    constructor(editor : Editor) {
         this.editor = editor;
     }
     clear() {}
-    setOutputView(outputView) {
+    setOutputView(outputView : any) {
         if (this.outputViewRoot) {
             // Trick to get custom els added
             const root = outputView instanceof HTMLElement ? outputView : outputView.root;
@@ -15,23 +18,17 @@ export const WorkspaceViewProviderMixin = base => class extends base {
             this.outputViewRoot.appendChild(root);
         }
     }
-    onInstall(editor) {
+    onInstall(editor : Editor) {
         this.editor = editor;
     }
     onInject() {}
     onDispose() {}
     /* eslint class-methods-use-this: "off" */
-    get outputViewRoot() {
-        return null;
-    }
-    get partsRoot() {
-        return null;
-    }
+    abstract get outputViewRoot() : HTMLElement;
+    abstract get partsControls() : KCPartsControls;
     get toolbar() {
-        return this.root.querySelector('kc-workspace-toolbar');
+        return (this as any).root.querySelector('kc-workspace-toolbar');
     }
 };
-
-export const WorkspaceViewProvider = WorkspaceViewProviderMixin(class {});
 
 export default WorkspaceViewProvider;

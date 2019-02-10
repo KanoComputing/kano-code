@@ -3,7 +3,6 @@ import { paths } from './blocks/paths.js';
 import { setters } from './blocks/setters.js';
 import { shapes } from './blocks/shapes.js';
 import { space } from './blocks/space.js';
-import { IEditor } from '../../part/editor.js';
 import { DrawModule } from './draw.js';
 
 const COLOR = '#82C23D';
