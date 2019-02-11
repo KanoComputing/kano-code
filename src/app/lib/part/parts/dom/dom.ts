@@ -12,6 +12,7 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         super();
         this.transform = this._components.get('transform') as Transform;
         this._el = this.getElement();
+        (this._el.style as any).willChange = 'transform';
         this._el.style.transformOrigin = 'center center';
         this._el.style.position = 'absolute';
         this._el.style.top = '0';

@@ -147,6 +147,10 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                         .appendField(BlocklyMetaRenderer.verboseWithPrefix(m));
                     this.setColour(m.getColor());
                     this.setOutput(BlocklyMetaRenderer.parseType(m.getReturnType()));
+                    // Allow the api to customise the block further
+                    if (m.def.blockly && typeof m.def.blockly.postProcess === 'function') {
+                        m.def.blockly.postProcess(this);
+                    }
                 },
             };
             Blockly.JavaScript[id] = () => [m.getNameChain('.')];
@@ -162,17 +166,21 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             Blockly.Blocks[id] = {
                 init() {
                     if (input.type === 'field_dropdown') {
-                        this.appendDummyInput()
-                            .appendField(BlocklyMetaRenderer.verboseWithPrefix(m))
+                        this.appendDummyInput(blocklyName)
+                            .appendField(BlocklyMetaRenderer.verboseWithPrefix(m), 'PREFIX')
                             .appendField(new Blockly.FieldDropdown(m.def.enum), blocklyName);
                     } else {
                         this.appendValueInput(blocklyName)
-                            .appendField(BlocklyMetaRenderer.verboseWithPrefix(m))
+                            .appendField(BlocklyMetaRenderer.verboseWithPrefix(m), 'PREFIX')
                             .setCheck(input.check);
                     }
                     this.setColour(m.getColor());
                     this.setPreviousStatement(true);
                     this.setNextStatement(true);
+                    // Allow the api to customise the block further
+                    if (m.def.blockly && typeof m.def.blockly.postProcess === 'function') {
+                        m.def.blockly.postProcess(this);
+                    }
                 },
             };
             Blockly.JavaScript[id] = (block : any) => {
@@ -242,18 +250,18 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                         if (input.type === 'input_statement') {
                             const firstInput = this.appendDummyInput();
                             if (label.length) {
-                                firstInput.appendField(label);
+                                firstInput.appendField(label, 'PREFIX');
                             }
                             blocklyInput = this.appendStatementInput(pName);
                         } else if (input.type === 'field_dropdown') {
                             blocklyInput = this.appendDummyInput(pName)
-                                .appendField(label)
+                                .appendField(label, 'PREFIX')
                                 .appendField(new Blockly.FieldDropdown(p.def.enum), pName);
                         } else {
                             blocklyInput = this.appendValueInput(pName)
                                 .setCheck(input.check);
                             if (label.length) {
-                                blocklyInput.appendField(label);
+                                blocklyInput.appendField(label, 'PREFIX');
                             }
                         }
                         if (index !== 0) {

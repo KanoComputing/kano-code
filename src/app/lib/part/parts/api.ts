@@ -8,3 +8,4 @@ export * from './text/api.js';
 export * from './text-input/api.js';
 export * from './microphone/api.js';
 export * from './iss/api.js';
+export * from './sticker/api.js';

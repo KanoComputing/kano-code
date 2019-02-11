@@ -34,7 +34,7 @@ export const ButtonAPI : IPartAPI = {
     }, {
         type: 'function',
         name: 'onClick',
-        verbose: 'on',
+        verbose: 'on click',
         parameters: [{
             type: 'parameter',
             name: 'callback',

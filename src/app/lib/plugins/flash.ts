@@ -5,11 +5,10 @@ import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
 import Editor from '../editor/editor.js';
 
 export class FlashField extends Field  {
-    private fieldGroup_? : SVGElement;
     private path? : SVGElement;
     private timeoutSub : IDisposable|null = null;
     constructor(text : string) {
-        super();
+        super(text);
         this.height_ = 16;
         this.width_ = 16;
         this.size_ = new goog.math.Size(this.width_, this.height_ + 2 * BlockSvg.INLINE_PADDING_Y);
