@@ -33,9 +33,15 @@ export class ISSPart extends DataPart<ISSData> {
         });
     }
     get latitude() {
+        if (!this.value) {
+            return 0;
+        }
         return this.value.latitude;
     }
     get longitude() {
+        if (!this.value) {
+            return 0;
+        }
         return this.value.latitude;
     }
 }

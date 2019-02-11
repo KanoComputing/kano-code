@@ -9,4 +9,5 @@ declare module '@kano/icons/parts.js' {
     export const microphone : HTMLTemplateElement;
     export const iss : HTMLTemplateElement;
     export const sticker : HTMLTemplateElement;
+    export const weather : HTMLTemplateElement;
 }

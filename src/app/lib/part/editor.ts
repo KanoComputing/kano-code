@@ -3,7 +3,7 @@ import { AddPartDialogProvider } from './dialogs/add.js';
 import { PartContructor } from './manager.js';
 import { memoize } from '../util/decorators.js';
 import { IPartAPI } from './api.js';
-import { IMetaDefinition, IAPIDefinition } from '../meta-api/module.js';
+import { IAPIDefinition } from '../meta-api/module.js';
 import { Part } from './part.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { DefaultInlineDisplay } from './inline-display.js';
@@ -145,7 +145,7 @@ export class EditorPartsManager {
                 return;
             }
             // Add the part. Provide the saved id and name, preventing them to be generated
-            const record = this.addPart(partClass, partData.id, partData.name);
+            const record = this.addPart(partClass, partData);
             // If creating the part failed, bail out
             if (!record) {
                 return;
@@ -154,7 +154,7 @@ export class EditorPartsManager {
             record.part.load(partData);
         });
     }
-    addPart(partClass : PartContructor, id? : string, name? : string) {
+    addPart(partClass : PartContructor, data? : any) {
         if (!this.editor || !this.editor.workspaceView) {
             return;
         }
@@ -163,17 +163,24 @@ export class EditorPartsManager {
             console.warn(`Could not add part: Part with type '${partClass.type}' is not registered`);
             return;
         }
-        if (!name) {
+        let name : string;
+        if (!data || !data.name) {
             name = this.getAvailableName(api.label);
         } else {
-            this.reserveName(name);
+            name = data.name;
+            this.reserveName(data.name);
         }
-        if (!id) {
+        let id : string;
+        if (!data || !data.id) {
             id = this.editor.output.runner.variables.getAvailable(name) as string;
         } else {
+            id = data.id
             this.editor.output.runner.variables.reserve(name);
         }
         const part = this.editor.output.parts.addPart(partClass, { id, name });
+        if (data) {
+            part.load(data);
+        }
         const toolboxModule = this.createToolboxModule(api, id, name);
         const entry = this.editor.toolbox.addEntry(toolboxModule);
         let inlineDisplay;

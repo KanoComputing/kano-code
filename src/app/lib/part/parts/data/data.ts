@@ -12,7 +12,7 @@ class DataComponent extends PartComponent {
 export abstract class DataPart<T> extends Part {
     @component(DataComponent)
     public data : DataComponent;
-    protected value : T = {} as T;
+    protected value : T|null = null;
     constructor() {
         super();
         this.data = this._components.get('data') as DataComponent;
@@ -27,6 +27,10 @@ export abstract class DataPart<T> extends Part {
     }
     fetch(request : () => Promise<T>) {
         return request();
+    }
+    onStop() {
+        super.onStop();
+        this.value = null;
     }
     onUpdate(callback : () => void) {
         this.data.updated.event(callback, null, this.userSubscriptions);

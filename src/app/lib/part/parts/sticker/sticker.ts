@@ -41,7 +41,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         }
         
         const sticker = this.core.image.get();
-        if (sticker) {
+        if (sticker && all[sticker]) {
             this._el.style.backgroundImage = `url(${StickerPart.resolve(all[sticker])})`;
         }
         this.core.apply();
