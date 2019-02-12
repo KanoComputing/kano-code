@@ -3,6 +3,7 @@ import { Field, goog, BlockSvg, utils, Block } from '@kano/kwc-blockly/blockly.j
 import { flash } from '../part/icons.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
 import Editor from '../editor/editor.js';
+import { throttle } from '../decorators.js';
 
 export class FlashField extends Field  {
     private path? : SVGElement;
@@ -31,6 +32,7 @@ export class FlashField extends Field  {
           this.sourceBlock_.getSvgRoot().appendChild(this.fieldGroup_);
     }
     render_() {}
+    @throttle(50)
     trigger() {
         if (!this.path) {
             return;

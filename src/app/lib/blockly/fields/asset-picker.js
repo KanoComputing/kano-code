@@ -1,5 +1,5 @@
 import '@kano/kwc-blockly/blockly.js';
-import '../../../../../elements/kc-asset-picker/kc-asset-picker-dialog.js';
+import '../../../elements/kc-asset-picker/kc-asset-picker-dialog.js';
 
 
 Blockly.FieldAssetPicker = function FieldAssetPicker(heading, type, rootDir, value, root, opt_validator) {

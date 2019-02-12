@@ -10,3 +10,4 @@ export * from './microphone/microphone.js';
 export * from './iss/iss.js';
 export * from './sticker/sticker.js';
 export * from './weather/weather.js';
+export * from './mouse/mouse.js';

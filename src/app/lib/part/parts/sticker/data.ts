@@ -119,7 +119,7 @@ export const stickers : { id: string, label : string, stickers : { [K : string] 
         peach: 'food/food-peach.svg',
         pineapple: 'food/food-pineapple.svg',
         pizza: 'food/food-pizza.svg',
-        shrimp: 'food/food-shrimp.svg',
+        tempura: 'food/food-shrimp.svg',
         sushi: 'food/food-sushi.svg',
         taco: 'food/food-taco.svg',
         tomato: 'food/food-tomato.svg',

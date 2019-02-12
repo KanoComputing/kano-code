@@ -1,4 +1,4 @@
-import { Disposables } from '@kano/common/index.js';
+import { Disposables, subscribeDOM } from '@kano/common/index.js';
 import { WorkspaceViewProvider } from './index.js';
 import '../../../elements/kc-workspace-frame/kc-workspace-frame.js';
 import '../../../elements/kc-workspace-frame/kc-parts-controls.js';
@@ -15,6 +15,12 @@ export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
         this.root = document.createElement('div');
         this.frame.style.margin = '0 40px';
         this.partsControls.setAttribute('slot', 'controls');
+
+        subscribeDOM(this.frame, 'viewport-resize', () => {
+            if (this.editor.output.outputView) {
+                this.editor.output.outputView.resize();
+            }
+        });
 
         this.frame.appendChild(this.partsControls);
 

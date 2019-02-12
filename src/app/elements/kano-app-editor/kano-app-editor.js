@@ -61,7 +61,6 @@ class KanoAppEditor extends PolymerElement {
                 flex: 1 1 auto;
                 display: flex;
                 flex-direction: column;
-                @apply --kano-inset-box-shadow;
                 position: relative;
                 min-width: 50%;
                 max-width: 70%;
@@ -277,13 +276,6 @@ class KanoAppEditor extends PolymerElement {
         const target = this.$[dom(e).rootTarget.id];
         this.async(() => target.parentElement.refit(), 10);
     }
-    bindEvents() {
-        this.updateWorkspaceRect = this.updateWorkspaceRect.bind(this);
-        this.$.workspace.addEventListener('viewport-resize', this.updateWorkspaceRect);
-    }
-    detachEvents() {
-        this.$.workspace.removeEventListener('viewport-resize', this.updateWorkspaceRect);
-    }
     constructor() {
         super();
         this._openOfflineDialog = this._openOfflineDialog.bind(this);
@@ -295,24 +287,15 @@ class KanoAppEditor extends PolymerElement {
         this.target = document.body;
         this.partEditorOpened = false;
         this.codeEditor = this.$['root-view'];
-
-        this.bindEvents();
     }
     get sourceContainer() {
         return this.$['source-container']
-    }
-    disconnectedCallback() {
-        super.disconnectedCallback();
-        this.detachEvents();
     }
     _setCodeDisplay(code, workspaceTab) {
         if (workspaceTab === 'workspace') {
             return;
         }
         return js_beautify(code || '', { indent_size: 2 });
-    }
-    updateWorkspaceRect(e) {
-        this.set('workspaceRect', e.detail);
     }
     scaleToWorkspace(point) {
         let rect = this.workspaceRect,

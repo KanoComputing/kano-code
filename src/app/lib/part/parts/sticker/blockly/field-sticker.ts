@@ -1,6 +1,7 @@
 import { Blockly, utils, goog } from '@kano/kwc-blockly/blockly.js';
 import { FieldIcon } from '../../../../blockly/fields/icon.js';
 import { html, render } from 'lit-html/lit-html.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import '@kano/styles/color.js';
 import '@kano/styles/typography.js';
 
@@ -16,7 +17,8 @@ const styles = html`
         background: var(--color-black);
         border-radius: 3px;
         padding: 4px;
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         max-height: 340px;
     }
     .heading {
@@ -30,13 +32,19 @@ const styles = html`
         max-width: 240px;
     }
     .sticker {
-        border: 1px solid grey;
+        border: 1px solid #23272C;
         border-radius: 3px;
-        background: white;
+        background: #464C51;
         margin: 2px;
-        padding: 2px;
+        padding: 4px;
         cursor: pointer;
         transition: transform linear 50ms;
+        width: 36px;
+        height: 36px;
+        box-sizing: border-box;
+    }
+    .sticker.selected {
+        border-color: var(--color-kano-orange);
     }
     .sticker:hover {
         transform: scale(1.5);
@@ -61,7 +69,7 @@ const styles = html`
 </style>
 `;
 
-function getWidgetTemplate(items : IItemData[], callback : (id : string) => any) {
+function getWidgetTemplate(items : IItemData[], selected: string, callback : (id : string) => any) {
     return html`
         ${styles}
         <div class="content">
@@ -69,7 +77,7 @@ function getWidgetTemplate(items : IItemData[], callback : (id : string) => any)
                 <div class="heading">${item.label}</div>
                 <div class="stickers">
                     ${item.stickers.map((sticker) => html`
-                        <img class="sticker" width="24px" height="24px" src=${sticker.src} @click=${() => callback(sticker.id)}/>
+                        <img class="sticker ${classMap({ selected: sticker.id === selected })}" src=${sticker.src} @click=${() => callback(sticker.id)}/>
                     `)}
                 </div>
             `)}
@@ -84,10 +92,16 @@ export class FieldSticker extends FieldIcon {
         super(value, optValidator);
         this.items = items;
     }
+    renderWidget() {
+        if (!this.domNode) {
+            return;
+        }
+        render(getWidgetTemplate(this.items, this.getValue(), (id) => this.setValue(id)), this.domNode);
+    }
     showEditor_() {
         if (!this.domNode) {
             this.domNode = document.createElement('div');
-            render(getWidgetTemplate(this.items, (id) => this.setValue(id)), this.domNode);
+            this.renderWidget();
         }
         Blockly.WidgetDiv.show(
             this,
@@ -96,6 +110,10 @@ export class FieldSticker extends FieldIcon {
         );
         const div = Blockly.WidgetDiv.DIV;
         div.appendChild(this.domNode);
+        const selected = this.domNode.querySelector('.selected');
+        if (selected) {
+            selected.scrollIntoView();
+        }
         this.position();
         if ('animate' in HTMLElement.prototype) {
             div.animate({
@@ -132,6 +150,10 @@ export class FieldSticker extends FieldIcon {
             return item.src;
         }
         return '';
+    }
+    setValue(v : string) {
+        super.setValue(v);
+        this.renderWidget();
     }
     static widgetDispose_() {}
 }

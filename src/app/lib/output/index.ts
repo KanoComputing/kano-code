@@ -16,9 +16,10 @@ export interface IOutputProvider {
     getVisuals() : IVisualsContext;
     getAudio() : IAudioContext;
     getDOM() : IDOMContext;
+    resize() : void;
 }
 
-export class OutputViewProvider implements IOutputProvider {
+export abstract class OutputViewProvider implements IOutputProvider {
     public root : HTMLElement = document.createElement('div');
     start() {}
     stop() {}
@@ -43,11 +44,8 @@ export class OutputViewProvider implements IOutputProvider {
     getAudio() : any {
         throw new Error('Could not get audio context: The output did not create an AudioContext');
     }
-    getDOM() {
-        return {
-            root: this.root,
-        };
-    }
+    abstract getDOM() : IDOMContext;
+    abstract resize() : void;
 };
 
 export default OutputViewProvider;

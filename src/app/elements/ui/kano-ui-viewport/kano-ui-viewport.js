@@ -183,7 +183,6 @@ class KanoUIViewport extends PolymerElement {
         } else {
             style.top = null;
         }
-
         this.dispatchEvent(new CustomEvent('viewport-resize', {
             detail: this.$.view.getBoundingClientRect(),
             bubbles: true,

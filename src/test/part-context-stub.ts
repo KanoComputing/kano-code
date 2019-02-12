@@ -1,6 +1,6 @@
 import { IVisualsContext, IAudioContext, IDOMContext } from '../app/lib/output/output.js';
 import { Microphone } from '../app/lib/output/microphone.js';
-import audio from '../app/lib/asset/parsers/audio.js';
+import { IEvent } from '@kano/common/index.js';
 
 function stub(target : any, key : string, descriptor : any) {
     const originalMethod = descriptor.value;
@@ -53,6 +53,7 @@ export class PartContextStub {
         };
         this.dom = {
             root: document.createElement('div'),
+            onDidResize: (() => {}) as unknown as IEvent<void>,
         };
     }
     wasCalled(stub : any, args? : any[]) : boolean {

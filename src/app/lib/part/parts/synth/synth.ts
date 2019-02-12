@@ -1,8 +1,7 @@
 import { Part, IPartContext } from '../../part.js';
-import { Monotron } from '../../../../scripts/kano/music/monotron/monotron.js';
+import { Monotron } from '../../../music/monotron/monotron.js';
 import { part, property, component } from '../../decorators.js';
 import { PartComponent } from '../../component.js';
-import { debug } from '../../../decorators.js';
 import { transformLegacySynth } from './legacy.js';
 
 const OSCILLATOR_FREQ_RANGE_LOW = 55; // --> A0 note in pitch standard tuning

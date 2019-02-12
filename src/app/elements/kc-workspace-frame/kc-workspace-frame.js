@@ -10,6 +10,7 @@ import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
 import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import { Utils } from '../../scripts/kano/make-apps/utils.js';
+import { throttle } from '../../lib/util/throttle.js';
 
 class KcWorkspaceFrame extends mixinBehaviors([
     I18nBehavior,

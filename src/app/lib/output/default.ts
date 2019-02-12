@@ -1,11 +1,13 @@
 import { OutputViewProvider } from './index.js';
-import { IVisualsContext, IAudioContext } from './output.js';
+import { IVisualsContext, IAudioContext, IDOMContext } from './output.js';
 import { Microphone } from './microphone.js';
+import { EventEmitter } from '@kano/common/index.js';
 
 export class DefaultOutputViewProvider extends OutputViewProvider {
     private canvas : HTMLCanvasElement;
     private _audioContext : AudioContext = new AudioContext();
     private _microphone : Microphone;
+    private _onDidResize : EventEmitter = new EventEmitter();
     constructor() {
         super();
         this.canvas = document.createElement('canvas') as HTMLCanvasElement;
@@ -32,9 +34,18 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
             microphone: this._microphone,
         };
     }
+    resize() {
+        this._onDidResize.fire();
+    }
     onDispose() {
         super.onDispose();
         this._audioContext.close();
+    }
+    getDOM() : IDOMContext {
+        return {
+            root: this.root,
+            onDidResize: this._onDidResize.event,
+        }
     }
 }
 

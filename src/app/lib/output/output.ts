@@ -8,7 +8,7 @@ import { OutputViewProvider, IOutputProvider } from './index.js';
 import { PartsManager, PartContructor } from '../part/manager.js';
 import { Part } from '../part/part.js';
 import { Microphone } from './microphone.js';
-import { EventEmitter } from '@kano/common/index.js';
+import { EventEmitter, IEvent } from '@kano/common/index.js';
 
 export interface IOutputProfile {
     id : string;
@@ -33,6 +33,7 @@ export interface IAudioContext {
 
 export interface IDOMContext {
     root : HTMLElement;
+    onDidResize : IEvent<void>;
 }
 
 export class Output extends PluginReceiver {

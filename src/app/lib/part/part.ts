@@ -1,4 +1,4 @@
-import { Disposables, IDisposable } from '@kano/common/index.js';
+import { IDisposable, IEvent } from '@kano/common/index.js';
 import { collectPrototype } from './util.js';
 import { PartComponent } from './component.js';
 import { Microphone } from '../output/microphone.js';
@@ -20,6 +20,7 @@ export interface IPartContext {
     };
     dom : {
         root : HTMLElement;
+        onDidResize : IEvent<void>;
     };
 }
 

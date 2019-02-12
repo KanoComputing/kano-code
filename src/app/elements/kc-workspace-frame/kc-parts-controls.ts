@@ -1,17 +1,20 @@
 import { LitElement, html, customElement, property, css } from 'lit-element/lit-element.js';
-import '@polymer/iron-icon/iron-icon.js';
 import '@kano/styles/color.js';
+import '@kano/styles/typography.js';
 import { close } from '@kano/icons/ui.js';
-import '../kano-part-list-item/kano-part-list-item.js';
+import './kc-part-list-item.js';
 import { EventEmitter, IDisposable } from '@kano/common/index.js';
 import { templateContent } from '../../lib/directives/template-content.js';
 import { PartInlineDisplay } from '../../lib/part/inline-display.js';
+import { add } from './icons.js';
+import { styleMap } from 'lit-html/directives/style-map';
 
 export interface IStackEntry {
     id : string;
     name : string;
     icon : HTMLTemplateElement;
     inlineDisplay : PartInlineDisplay;
+    color : string;
 }
 
 @customElement('kc-parts-controls')
@@ -19,7 +22,7 @@ export class KCPartsControls extends LitElement {
     private _onDidClickAddParts: EventEmitter = new EventEmitter();
     private _onDidClickRemovePart: EventEmitter<string> = new EventEmitter();
     @property({ type: Array })
-    public parts: any[] = [];
+    public parts : IStackEntry[] = [];
     public get onDidClickAddParts() {
         return this._onDidClickAddParts.event;
     }
@@ -30,6 +33,7 @@ export class KCPartsControls extends LitElement {
         return css`
             :host {
                 display: block;
+                font-family: var(--font-body);
             }
             .add-parts {
                 display: flex;
@@ -46,15 +50,16 @@ export class KCPartsControls extends LitElement {
                 background: rgba(255, 255, 255, 0.25);
                 color: rgba(255, 255, 255, 0.75);
                 border-radius: 3px;
-            }
-            button#add-part-button {
                 display: flex;
                 flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
                 padding: 8px 10px;
                 font-size: 12px;
                 cursor: pointer;
                 width: 100%;
                 margin-bottom: 10px;
+                border: none;
             }
             button#add-part-button:hover {
                 background: #fd6a21;
@@ -62,8 +67,10 @@ export class KCPartsControls extends LitElement {
             button#add-part-button:hover > label {
                 color: white;
             }
-            button>* {
-                margin: 0 auto;
+            button#add-part-button > .icon {
+                width: 20px;
+                height: 20px;
+                fill: white;
             }
             paper-dialog {
                 background: transparent;
@@ -92,27 +99,11 @@ export class KCPartsControls extends LitElement {
                 background-color: var(--kano-app-editor-workspace-background);
                 box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.75);
             }
-            kano-part-list-item {
+            kc-part-list-item {
                 flex: 1;
                 flex-basis: 0.000000001px;
                 cursor: pointer;
                 max-width: 100%;
-            }
-            iron-icon {
-                --iron-icon-width: 27px;
-                --iron-icon-height: 27px;
-                --iron-icon-fill-color: #8F9195;
-            }
-            button#add-part-button iron-icon {
-                fill: rgba(255, 255, 255, 0.75);
-            }
-            button#add-part-button:hover iron-icon {
-                fill: rgba(255, 255, 255, 1);
-            }
-            button#add-part-button iron-icon {
-                --iron-icon-width: 16px;
-                --iron-icon-height: 16px;
-                margin-right: 0px;
             }
             .handle {
                 cursor: move;
@@ -131,9 +122,6 @@ export class KCPartsControls extends LitElement {
             .remove:hover {
                 fill: var(--color-flamingo);
             }
-            iron-icon.handle:hover {
-                fill: #fff;
-            }
             [hidden] {
                 display: none !important;
             }
@@ -144,15 +132,16 @@ export class KCPartsControls extends LitElement {
         <div class="add-parts">
             <button id="add-part-button" type="button" @click=${this._addPartClicked}>
                 <label for="add-part-button">Add Parts</label>
+                <div class="icon">${templateContent(add)}</div>
             </button>
         </div>
         <div class="part-list">
             <slot name="extra-parts"></slot>
             ${this.parts.map(part => html`
             <div class="part" id="part-${part.id}">
-                <kano-part-list-item .model=${part} @click=${()=> this._partItemTapped(part)}>
+                <kc-part-list-item label=${part.name} .icon=${part.icon} style=${styleMap({ '--kano-part-list-item-highlight-color': part.color })} @click=${()=> this._partItemTapped(part)}>
                     ${part.inlineDisplay.domNode}
-                </kano-part-list-item>
+                </kc-part-list-item>
                 <button type="button" class="remove" @click=${()=> this._removePartClicked(part)}>
                     ${templateContent(close)}
                 </button>
@@ -174,7 +163,7 @@ export class KCPartsControls extends LitElement {
         this.dispatchEvent(new CustomEvent('part-clicked', { detail: part }));
     }
     addEntry(model : IStackEntry): IDisposable {
-        const item = { name: model.name, id: model.id, icon: model.icon, inlineDisplay: model.inlineDisplay };
+        const item = model;
         this.parts.push(item);
         this.parts = [...this.parts];
         return {

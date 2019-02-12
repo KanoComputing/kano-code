@@ -9,18 +9,6 @@ import { TelemetryClient } from '@kano/telemetry/index.js';
 import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
 
-export interface IPartDefinition {
-    name : string;
-    type : string;
-}
-
-function getPartInfo(part : IPartAPI) : IPartDefinition {
-    return {
-        name: part.label,
-        type: part.type,
-    };
-}
-
 interface IPartRecord {
     type : string;
     toolboxEntry : IDisposable;
@@ -39,7 +27,7 @@ export class EditorPartsManager {
     constructor(editor : Editor) {
         this.editor = editor;
         this.editor.output.parts.managed = true;
-        this.addDialogProvider = new AddPartDialogProvider(editor);
+        this.addDialogProvider = new AddPartDialogProvider();
     }
     // Assume this will not change during a session.
     // All parts must be defined initially.
@@ -61,13 +49,13 @@ export class EditorPartsManager {
             // Get all registered parts
             const parts = this.getRegisteredParts();
             // Gather displayable information about these parts
-            const partInfos : IPartDefinition[] = [];
+            const partInfos : IPartAPI[] = [];
             parts.forEach((p) => {
                 const api = this.apiRegistry.get(p.type);
                 if (!api) {
                     throw new Error(`Could not inject: Part '${p.type}' is missing its API`);
                 }
-                partInfos.push(getPartInfo(api));
+                partInfos.push(api);
             });
             // Update the dialog and open it
             this.addDialogProvider.setParts(partInfos);
@@ -189,7 +177,7 @@ export class EditorPartsManager {
         } else {
             inlineDisplay = new DefaultInlineDisplay(part);
         }
-        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id, icon: api.icon, inlineDisplay });
+        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id, icon: api.icon, inlineDisplay, color: api.color });
         const partRecord : IPartRecord = {
             type: api.type,
             part,

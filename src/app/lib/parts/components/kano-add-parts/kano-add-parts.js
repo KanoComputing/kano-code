@@ -15,7 +15,7 @@ class KanoAddParts extends PolymerElement {
         <style>
             :host {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 max-height: inherit;
                 color: white;
                 background-color: var(--kano-app-editor-workspace-background);
@@ -39,15 +39,15 @@ flex-direction: column;
             }
             .categories {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
             }
             .category-box .categories>* {
                 width: 238px;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 justify-content: flex-start;
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
             }
             .category-box .categories>*:not(:first-of-type) {
                 margin-left: 32px;
@@ -63,7 +63,7 @@ flex-basis: 0.000000001px;
             }
             header {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: center;
                 flex-shrink: 0;
                 height: 58px;
@@ -72,7 +72,7 @@ flex-direction: row;
             }
             header .label {
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
                 font-size: 16px;
                 font-weight: bold;
             }
@@ -101,7 +101,7 @@ flex-basis: 0.000000001px;
             }
             .no-part {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: center;
                 background-color: #22272d;
                 width: 802px;

@@ -5,7 +5,7 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@kano/kwc-style/input.js';
 import { I18nMixin } from '../../i18n/index.js';
-import { BlockAnimation } from '../../../scripts/splash.js';
+import { BlockAnimation } from '../../splash.js';
 
 import { img } from '../../icon/index.js';
 import { success } from '../assets/index.js';
