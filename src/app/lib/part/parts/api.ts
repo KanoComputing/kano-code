@@ -11,3 +11,4 @@ export * from './iss/api.js';
 export * from './sticker/api.js';
 export * from './weather/api.js';
 export * from './mouse/api.js';
+export * from './speaker/api.js';

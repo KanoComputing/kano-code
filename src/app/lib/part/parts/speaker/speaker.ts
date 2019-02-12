@@ -1,0 +1,126 @@
+import { Part, IPartContext } from '../../part.js';
+import { part, property, component } from '../../decorators.js';
+import { samples, ISample } from './data.js';
+import { SamplePlayer } from '../../../music/sample-player.js';
+import { PartComponent } from '../../component.js';
+
+// Build a map of id => sample data to access those swiftly
+const samplesMap : Map<string, ISample> = new Map();
+
+samples.forEach((set) => {
+    set.samples.forEach((sample) => {
+        samplesMap.set(sample.id, sample);
+    });
+});
+
+const bufferCache : Map<string, AudioBuffer> = new Map();
+
+class SpeakerComponent extends PartComponent {
+    @property({ type: Number, value: 1 })
+    public playbackRate : number = 1;
+    @property({ type: Number, value: 1 })
+    public volume : number = 1;
+}
+
+@part('speaker')
+export class SpeakerPart extends Part {
+    private ctx? : AudioContext;
+    private destination? : AudioNode;
+    private players : SamplePlayer[] = [];
+    @component(SpeakerComponent)
+    public core : SpeakerComponent;
+    static get defaultSample() { return 'claves'; }
+    static get items() { return samples; }
+    static resolve(id : string) {
+        return `/assets/audio/samples/${id}`;
+    }
+    constructor() {
+        super();
+        this.core = this._components.get('core') as SpeakerComponent;
+        this.core.onDidInvalidate(() => {
+            this.render();
+        }, this, this.subscriptions);
+    }
+    onInstall(context : IPartContext) {
+        this.ctx = context.audio.context;
+        this.destination = context.audio.destination;
+    }
+    loadSample(src : string) {
+        return fetch(src)
+            .then(r => r.arrayBuffer())
+            .then(r => this.ctx!.decodeAudioData(r));
+    }
+    getSample(src : string) : Promise<AudioBuffer>{
+        if (!bufferCache.has(src)) {
+            return this.loadSample(src)
+                .then((buffer) => {
+                    bufferCache.set(src, buffer);
+                    return buffer;
+                });
+        }
+        return Promise.resolve(bufferCache.get(src)!);
+    }
+    onStop() {
+        super.onStop();
+        this.stop();
+    }
+    render() {
+        if (!this.core.invalidated) {
+            return;
+        }
+        this.players.forEach((player) => {
+            player.source!.playbackRate.value = this.core.playbackRate;
+            player.volume = this.core.volume;
+        });
+        this.core.apply();
+    }
+    play(id : string, loop : boolean = false) {
+        const sample = samplesMap.get(id);
+        if (!sample) {
+            return;
+        }
+        this.getSample(SpeakerPart.resolve(sample.src))
+            .then((buffer) => {
+                const player = new SamplePlayer(this.ctx!, buffer, this.destination!, { loop });
+                player.play();
+                if (!player.source) {
+                    return;
+                }
+                player.source.playbackRate.value = this.core.playbackRate;
+                player.volume = this.core.volume;
+                // Remove play when it finishes
+                player.onDidEnd(() => {
+                    const idx = this.players.indexOf(player);
+                    this.players.splice(idx, 1);
+                });
+                this.players.push(player);
+            });
+    }
+    loop(id : string) {
+        this.play(id, true);
+    }
+    stop() {
+        this.players.forEach((player) => {
+            // Ignore sources not started
+            try {
+                player.stop();
+            } catch (e) {}
+        });
+        this.players.length = 0;
+    }
+    set pitch(r : number) {
+        this.core.playbackRate = Math.min(Math.max(r, 0), 200) / 100;
+        this.core.invalidate();
+    }
+    get pitch() {
+        return this.core.playbackRate * 100;
+    }
+    set volume(v : number) {
+        // the maximum value is limited to an ear-friendly sound pressure level
+        this.core.volume = Math.min(Math.max(v, 0), 100) * 0.004;
+        this.core.invalidate();
+    }
+    get volume() {
+        return this.core.volume / 0.004;
+    }
+}

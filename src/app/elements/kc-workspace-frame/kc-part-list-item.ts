@@ -1,6 +1,7 @@
 import '@kano/styles/typography.js';
 import { LitElement, css, html, property, customElement } from 'lit-element/lit-element.js';
 import { templateContent } from '../../lib/directives/template-content.js';
+import '../kc-editable-label.js';
 
 @customElement('kc-part-list-item')
 export class KCPartListItem extends LitElement {
@@ -36,12 +37,15 @@ export class KCPartListItem extends LitElement {
                 flex: 1 1 auto;
                 margin-left: 8px;
             }
+            .edit-icon {
+                display: none;
+            }
         `;
     }
     render() {
         return html`
             <div id="icon" class="icon">${this.icon ? templateContent(this.icon) : ''}</div>
-            <div class$="label">${this.label}</div>
+            <kc-editable-label class$="label" .label=${this.label}></kc-editable-label>
             <div class="controls" id="controls"><slot></slot></div>
         `;
     }

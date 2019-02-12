@@ -1,4 +1,4 @@
-import './kc-blockly-sounds.js';
+import '../../../elements/kc-blockly-sounds.js';
 
 export const FieldSoundsFactory = (Blockly) => {
     // /* eslint no-underscore-dangle: "off" */

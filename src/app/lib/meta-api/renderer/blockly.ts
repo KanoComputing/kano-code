@@ -200,7 +200,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
         const defaults : any = {};
         if (m.def.blockly && m.def.blockly.shadow) {
-            defaults[blocklyName] = { shadow: m.def.blockly.shadow(m.def.default), default: m.def.default };
+            defaults[blocklyName] = { shadow: m.def.blockly.shadow(m.def.default, m.getRoot()), default: m.def.default };
         } else {
             defaults[blocklyName] = m.def.default;
         }
@@ -224,7 +224,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         const defaults = params.filter(p => typeof p.def.default !== 'undefined').reduce((acc, p) => {
             const pName = p.def.name.toUpperCase();
             if (p.def.blockly && p.def.blockly.shadow) {
-                acc[pName] = { shadow: p.def.blockly.shadow(p.def.default), default: p.def.default };
+                acc[pName] = { shadow: p.def.blockly.shadow(p.def.default, m.getRoot()), default: p.def.default };
             } else {
                 acc[pName] = p.def.default;
             }

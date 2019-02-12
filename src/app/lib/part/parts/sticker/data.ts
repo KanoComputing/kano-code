@@ -147,7 +147,7 @@ export const stickers : { id: string, label : string, stickers : { [K : string] 
         'doubting donut': 'street art/doubting-donut.svg',
         'krink marker': 'street art/krink-marker.svg',
         markers: 'street art/markers.svg',
-        mouse: 'street art/mouse.svg',
+        'mouse art': 'street art/mouse.svg',
         mrsprinkles: 'street art/mrsprinkles.svg',
         old: 'street art/old-schooler.svg',
         peace: 'street art/peace.svg',
