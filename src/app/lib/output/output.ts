@@ -5,8 +5,8 @@ import { DefaultOutputViewProvider } from './default.js';
 import { Plugin } from '../editor/plugin.js';
 import { AppModule } from '../app-modules/app-module.js';
 import { OutputViewProvider, IOutputProvider } from './index.js';
-import { PartsManager, PartContructor } from '../part/manager.js';
-import { Part } from '../part/part.js';
+import { PartsManager, PartContructor } from '../parts/manager.js';
+import { Part } from '../parts/part.js';
 import { Microphone } from './microphone.js';
 import { EventEmitter, IEvent } from '@kano/common/index.js';
 

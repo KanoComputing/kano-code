@@ -85,6 +85,9 @@ class BlocklyMetaRenderer implements IMetaRenderer {
 
         return this.defaults.createCategory(category) as ICategory;
     }
+    disposeToolboxEntry(category : ICategory) {
+        
+    }
     static render(m : MetaModule) : IRenderedBlock[] {
         switch (m.def.type) {
             case 'module': {

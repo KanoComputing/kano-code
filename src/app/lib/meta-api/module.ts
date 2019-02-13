@@ -9,6 +9,7 @@ export interface ICategory {
 
 export interface IMetaRenderer {
     renderToolboxEntry(entry : MetaModule, whitelist : any[]|null) : ICategory|null;
+    disposeToolboxEntry(entry : ICategory) : void;
 }
 
 export interface IMetaDefinition {

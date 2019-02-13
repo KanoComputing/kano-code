@@ -2,8 +2,8 @@ import * as code from '../../index.js';
 import * as APIs from '../../toolbox.js';
 import * as i18n from '../../i18n.js';
 import * as Modules from '../../modules.js';
-import * as Parts from '../../dist/app/lib/part/parts/index.js';
-import * as PartAPIs from '../../dist/app/lib/part/parts/api.js';
+import * as Parts from '../../dist/app/lib/parts/parts/index.js';
+import * as PartAPIs from '../../dist/app/lib/parts/parts/api.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js'
 
 const Shapes = {

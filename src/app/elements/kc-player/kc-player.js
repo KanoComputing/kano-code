@@ -121,7 +121,7 @@ class KCPlayer extends PolymerElement {
                     <iron-icon icon="kano-icons:close"></iron-icon>
                 </div>
             </button>
-            <kc-player-toolbar running="[[running]]" on-run-button-clicked="_toggleRunning" on-reset-button-clicked="_reset" on-fullscreen-button-clicked="_toggleFullscreen"></kc-player-toolbar>
+            <kc-player-toolbar running="[[running]]" on-run-clicked="_toggleRunning" on-reset-clicked="_reset" on-fullscreen-clicked="_toggleFullscreen"></kc-player-toolbar>
         </template>
         `;
     }

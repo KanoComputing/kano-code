@@ -1,11 +1,22 @@
 import BlocklyChallenge from './blockly.js';
+import { Editor } from '../editor/editor.js';
+import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
+import { KCEditorBanner } from '../../elements/kano-editor-banner/kano-editor-banner.js';
+import { Blockly } from '@kano/kwc-blockly/blockly.js';
+import { subscribeDOM } from '@kano/common/index.js';
+import { BannerWidget } from './widget/banner.js';
 
 // TODO: Use Symbol('store) instead
 const PARTS_STORE = 'parts';
 
-class KanoCodeChallenge extends BlocklyChallenge {
-    constructor(...args) {
-        super(...args);
+export class KanoCodeChallenge extends BlocklyChallenge {
+    protected _banner? : KCEditorBanner;
+    protected editor : Editor;
+    protected _bannerListener? : (e : any) => void;
+    protected bannerWidget : BannerWidget;
+    constructor(editor : Editor) {
+        super((editor.sourceEditor as BlocklySourceEditor).getWorkspace());
+        this.editor = editor;
         this.addValidation('add-part', this.matchAddPart);
         this.addValidation('background', this.matchProperty);
         this.addValidation('select-part', this.matchPartTarget);
@@ -26,8 +37,31 @@ class KanoCodeChallenge extends BlocklyChallenge {
         this.addOppositeAction('add-part', 'close-parts', this._partsClosed);
 
         this.defineShorthand('create-part', this._createPartShorthand.bind(this));
+
+        this.defineBehavior('banner', this._displayBanner.bind(this), this._hideBanner.bind(this));
+
+        this.bannerWidget = new BannerWidget(this.editor);
+        this.bannerWidget.onDidClick(() => this.nextStep());
     }
-    _getOpenPartsDialogStep(data) {
+    _fitBanner() {
+        this.bannerWidget.layout();
+    }
+    _displayBanner(data : any) {
+        let text;
+        if (typeof data === 'string') {
+            text = data;
+        } else {
+            text = '';
+        }
+        this.bannerWidget.show();
+        this.bannerWidget.setData({
+            text,
+        });
+    }
+    _hideBanner() {
+        this.bannerWidget.hide();
+    }
+    _getOpenPartsDialogStep(data : any) {
         return {
             validation: {
                 'open-parts': true,
@@ -40,7 +74,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
             },
         };
     }
-    _getCreatePartStep(data) {
+    _getCreatePartStep(data : any) {
         return {
             validation: {
                 'add-part': {
@@ -58,7 +92,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
             }],
         };
     }
-    _createPartShorthand(data) {
+    _createPartShorthand(data : any) {
         const openPartsDialogStep = this._getOpenPartsDialogStep(data);
         const createStep = this._getCreatePartStep(data);
         const steps = [openPartsDialogStep, createStep];
@@ -73,7 +107,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
             this.stepIndex -= 1;
         }
     }
-    matchTrigger(validation, event) {
+    matchTrigger(validation : any, event : any) {
         let { emitter } = validation;
         if (emitter.part) {
             emitter = this.getFromStore(PARTS_STORE, emitter.part);
@@ -81,10 +115,10 @@ class KanoCodeChallenge extends BlocklyChallenge {
         return emitter === event.trigger.emitter &&
                 validation.event === event.trigger.event;
     }
-    matchPartChange(validation, event) {
+    matchPartChange(validation : any, event : any) {
         return this.matchProperty(validation, event);
     }
-    matchPartTarget(validation, event) {
+    matchPartTarget(validation : any, event : any) {
         const target = this.getFromStore(PARTS_STORE, validation.target);
         if (!event.part && validation.target) {
             return false;
@@ -101,11 +135,10 @@ class KanoCodeChallenge extends BlocklyChallenge {
      * validation: 'position.*' will match things like 'position.x' and
      * 'position.y'
      */
-    matchProperty(validation, event) {
+    matchProperty(validation : any, event : any) {
         // Split the properties paths
         let validationParts = validation.property.split('.'),
-            eventParts = event.property.split('.'),
-            count = this.changeCounts[this.step];
+            eventParts = event.property.split('.');
         // Loop through the smallest part
         for (let i = 0, len = validationParts.length; i < len; i++) {
             // If the validation used the joker, the remaining parts are accepted
@@ -117,18 +150,13 @@ class KanoCodeChallenge extends BlocklyChallenge {
                 return false;
             }
         }
-        if (validation.count) {
-            if (count < validation.count) {
-                return false;
-            }
-        }
         if (typeof validation.value !== 'undefined') {
             return this.matchValue(validation, event);
         }
 
         return true;
     }
-    _processPart(part) {
+    _processPart(part : any) {
         if (part.target && part.type) {
             const partId = this.getFromStore(PARTS_STORE, part.target);
             const blockId = `${partId}#${part.type}`;
@@ -147,13 +175,13 @@ class KanoCodeChallenge extends BlocklyChallenge {
         }
         return part;
     }
-    matchValue(validation, event) {
+    matchValue(validation : any, event : any) {
         return validation.value === event.value;
     }
-    matchTool(validation, event) {
+    matchTool(validation : any, event : any) {
         return validation.tool === event.tool;
     }
-    matchAddPart(validation, event) {
+    matchAddPart(validation : any, event : any) {
         // Check the type of the added part
         if (!this.matchPartType(validation, event)) {
             return false;
@@ -164,16 +192,16 @@ class KanoCodeChallenge extends BlocklyChallenge {
         }
         return true;
     }
-    matchPartType(validation, event) {
+    matchPartType(validation : any, event : any) {
         return validation.type === event.data.part.type;
     }
-    matchSettingsInteraction(validation, event) {
+    matchSettingsInteraction(validation : any, event : any) {
         return validation.setting === event.setting;
     }
     get done() {
         return this.stepIndex === this.steps.length - 1;
     }
-    _getOpenFlyoutStep(data) {
+    _getOpenFlyoutStep(data : any) {
         const step = super._getOpenFlyoutStep(data);
         return Object.assign(step, {
             banner: {
@@ -186,7 +214,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
             },
         });
     }
-    _getCreateBlockStep(data) {
+    _getCreateBlockStep(data : any) {
         const step = super._getCreateBlockStep(data);
         return Object.assign(step, {
             banner: {
@@ -199,7 +227,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
             },
         });
     }
-    _getConnectBlockStep(data) {
+    _getConnectBlockStep(data : any) {
         const step = super._getConnectBlockStep(data);
         return Object.assign(step, {
             banner: {
@@ -212,7 +240,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
             },
         });
     }
-    _getDropBlockStep(data) {
+    _getDropBlockStep(data : any) {
         const step = super._getDropBlockStep(data);
         return Object.assign(step, {
             banner: {
@@ -220,7 +248,7 @@ class KanoCodeChallenge extends BlocklyChallenge {
             },
         });
     }
-    _changeInputShorthand(data) {
+    _changeInputShorthand(data : any) {
         const step = super._changeInputShorthand(data);
         Object.assign(step, {
             banner: {

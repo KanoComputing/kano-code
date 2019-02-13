@@ -18,7 +18,6 @@ import '../kano-workspace/kano-workspace.js';
 import '../kano-part-editor/kano-part-editor.js';
 import '../kano-animated-svg/kano-animated-svg.js';
 import '../kano-code-display/kano-code-display.js';
-import { Utils } from '../../scripts/kano/make-apps/utils.js';
 
 class KanoAppEditor extends PolymerElement {
     static get is() { return 'kano-app-editor'; }
@@ -226,6 +225,17 @@ class KanoAppEditor extends PolymerElement {
             .activity-bar button:not([disabled]):hover img {
                 opacity: 1;
             }
+            #widget-layer {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+            }
+            #widget-layer * {
+                pointer-events: all;
+            }
         </style>
         <div class="activity-bar" id="activity-bar"></div>
         <section id="section" on-mousemove="mouseMoved" on-mouseup="completedResizing">
@@ -248,7 +258,11 @@ class KanoAppEditor extends PolymerElement {
                 </div>
             </div>
         </section>
+        <div id="widget-layer"></div>
         `;
+    }
+    get widgetLayer() {
+        return this.$['widget-layer'];
     }
     /**
    * Load the saved work from the local storage
@@ -257,10 +271,6 @@ class KanoAppEditor extends PolymerElement {
         if (!savedApp) {
             return;
         }
-        // Force a color update and a register block to make sure the loaded code will be
-        // rendered with the right colors
-        // TODO: Move to blockly plugin
-        Utils.updatePartsColors(this.addedParts);
         this.$['root-view'].computeBlocks();
         this.unsavedChanges = false;
     }

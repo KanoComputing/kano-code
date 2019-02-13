@@ -8,10 +8,12 @@ import { Part } from './part.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
+import { ToolboxEntry } from '../editor/toolbox.js';
+import { QueryEngine } from '../editor/selector/selector.js';
 
 interface IPartRecord {
     type : string;
-    toolboxEntry : IDisposable;
+    toolboxEntry : ToolboxEntry;
     partsControlsEntry : IDisposable;
     part : Part;
 }
@@ -184,6 +186,9 @@ export class EditorPartsManager {
             toolboxEntry: entry,
             partsControlsEntry,
         };
+        partsControlsEntry.onDidChangeName((newName : string) => {
+            this.renamePart(partRecord, newName);
+        });
         this.parts.set(id, partRecord);
         if (api.onInstall) {
             api.onInstall(this.editor, part);
@@ -258,12 +263,92 @@ export class EditorPartsManager {
         }
         return false;
     }
+    renamePart(partRecord : IPartRecord, newName : string) {
+        const api = this.apiRegistry.get(partRecord.type);
+        if (!api) {
+            return;
+        }
+        // Free all reserved names and ids
+        if (partRecord.part.name) {
+            this.freeName(partRecord.part.name);
+        }
+        if (partRecord.part.id) {
+            this.editor.output.runner.variables.free(partRecord.part.id);
+            // Remove from the parts map as its id will change
+            this.parts.delete(partRecord.part.id);
+        }
+        // Generate a safe name that will not clash with others
+        const safeName = this.getAvailableName(newName);
+        const oldId = partRecord.part.id;
+        partRecord.part.name = safeName;
+        partRecord.part.id = this.editor.output.runner.variables.getAvailable(safeName) as string;
+
+        const toolboxModule = this.createToolboxModule(api, partRecord.part.id, safeName);
+        partRecord.toolboxEntry.update(toolboxModule);
+
+        this.parts.set(partRecord.part.id, partRecord);
+
+        if (this.editor.sourceType === 'blockly') {
+            const source = this.editor.sourceEditor.getSource();
+            const parser = new DOMParser();
+            const dom = parser.parseFromString(source, 'text/xml');
+            if (dom.documentElement.nodeName === 'parsererror') {
+                return;
+            }
+            const root = dom.documentElement;
+            const els = [...root.querySelectorAll(`block[type^="${oldId}_"],shadow[type^="${oldId}_"]`)];
+            els.forEach((el) => {
+                const type = el.getAttribute('type')!;
+                const newType = type.replace(new RegExp(`^${oldId}_`), `${partRecord.part.id}_`);
+                el.setAttribute('type', newType);
+            });
+            const serializer = new XMLSerializer();
+            const newSource = serializer.serializeToString(root);
+            this.editor.sourceEditor.setSource(newSource);
+        }
+    }
     registerAPI(partAPI : IPartAPI) {
         this.apiRegistry.set(partAPI.type, partAPI);
     }
     reset() {
         this.parts.forEach((_, id) => {
             this.removePart(id);
+        });
+    }
+    registerQueryHandlers(engine : QueryEngine) {
+        engine.registerTagHandler('default-part', (selector) => {
+            if (selector.id) {
+                const partRecord = this.parts.get(selector.id);
+                if (!partRecord) {
+                    throw new Error(`Could not find part with id ${selector.id}`);
+                }
+                return {
+                    part: partRecord.part,
+                    getToolboxId() { return partRecord.part.id; },
+                    getHTMLElement() {
+                        return document.createElement('div');
+                    },
+                };
+            }
+            throw new Error('Could not query part: Neither id nor class defined');
+        });
+        // part can look for part aliases or apis
+        engine.registerTagHandler('part', (selector) => {
+            if (selector.id) {
+                // Handle aliases
+            } else if (selector.class) {
+                const api = this.apiRegistry.get(selector.class);
+                if (!api) {
+                    throw new Error(`Could not find part with type ${selector.class}`);
+                }
+                return {
+                    api,
+                    getHTMLElement() {
+                        return document.createElement('div');
+                    },
+                };
+            }
+            throw new Error('Could not query part: Neither id nor class defined');
         });
     }
     dispose() {

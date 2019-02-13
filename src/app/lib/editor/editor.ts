@@ -11,7 +11,7 @@ import { EditorOrPlayer } from './editor-or-player.js';
 import { Output } from '../output/output.js';
 import { ActivityBar } from './activity-bar.js';
 import { WorkspaceToolbar } from './workspace/toolbar.js';
-import { EditorPartsManager } from '../part/editor.js';
+import { EditorPartsManager } from '../parts/editor.js';
 import { BlocklySourceEditor } from './source-editor/blockly.js';
 import { transformLegacyApp } from '../legacy/loader.js';
 import { SourceEditor } from './source-editor/source-editor.js';
@@ -22,6 +22,8 @@ import CreationStorageProvider from '../creation/creation-storage-provider.js';
 import { deprecated } from '../decorators.js';
 import { WorkspaceViewProvider } from './workspace/index.js';
 import { EventEmitter } from '@kano/common/index.js';
+import { IEditorWidget } from './widget/widget.js';
+import { QueryEngine } from './selector/selector.js';
 
 declare global {
     interface Window {
@@ -87,7 +89,10 @@ export class Editor extends EditorOrPlayer {
     get onDidReset() { return this._onDidReset.event }
     private _onDidLoad : EventEmitter = new EventEmitter();
     get onDidLoad() { return this._onDidLoad.event }
+    private _onDidInject : EventEmitter = new EventEmitter();
+    get onDidInject() { return this._onDidInject.event }
 
+    private queryEngine : QueryEngine = new QueryEngine();
     constructor(opts : IEditorOptions = {}) {
         super();
         this.config = Config.merge(opts);
@@ -101,6 +106,7 @@ export class Editor extends EditorOrPlayer {
         if (this.sourceType === 'blockly') {
         }
         this.sourceEditor = new BlocklySourceEditor(this);
+        this.sourceEditor.registerQueryHandlers(this.queryEngine);
 
         this.addPlugin(this.workspaceToolbar);
         this.addPlugin(this.dialogs);
@@ -109,7 +115,10 @@ export class Editor extends EditorOrPlayer {
         this.addPlugin(this.creation);
         this.addPlugin(this.activityBar);
 
+        this.toolbox.registerQueryHandlers(this.queryEngine);
+
         this.parts = new EditorPartsManager(this);
+        this.parts.registerQueryHandlers(this.queryEngine);
         window.Kano.Code.mainEditor = this;
     }
     _setupMediaPath(path = '/node_modules/@kano/code') {
@@ -200,6 +209,7 @@ export class Editor extends EditorOrPlayer {
             this.load(this._queuedApp);
             this._queuedApp = null;
         }
+        this._onDidInject.fire();
     }
     dispose() {
         if (this.injected) {
@@ -394,6 +404,15 @@ export class Editor extends EditorOrPlayer {
     }
     get root() {
         return this.rootEl.shadowRoot;
+    }
+    addContentWidget(widget : IEditorWidget) {
+        (this.rootEl as any).widgetLayer.appendChild(widget.getDomNode());
+    }
+    removeContentWidget(widget : IEditorWidget) {
+        (this.rootEl as any).widgetLayer.removeChild(widget.getDomNode());
+    }
+    querySelector(selector : string) {
+        return this.queryEngine.query(selector);
     }
 }
 

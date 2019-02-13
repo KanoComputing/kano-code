@@ -4,8 +4,9 @@ import MetaModule, { IMetaRenderer, IAPIDefinition } from '../meta-api/module.js
 import BlocklyMetaRenderer from '../meta-api/renderer/blockly.js';
 import TypeScriptMetaRenderer from '../meta-api/renderer/typescript.js';
 import Editor from './editor.js';
+import { QueryEngine, ISelector } from './selector/selector.js';
 
-class Entry {
+export class ToolboxEntry {
     private toolbox : Toolbox;
     private entry : IAPIDefinition;
     constructor(toolbox : Toolbox, entry : IAPIDefinition) {
@@ -21,7 +22,7 @@ class Entry {
     }
 }
 
-class Toolbox extends Plugin {
+export class Toolbox extends Plugin {
     private editor? : Editor;
     private renderer? : IMetaRenderer;
     private entries : IAPIDefinition[] = [];
@@ -46,7 +47,7 @@ class Toolbox extends Plugin {
     addEntry(entry : IAPIDefinition, position? : number) {
         const mod = this.editor!.output.runner.getModule((entry as any).id || entry.name);
         const injectIndex = typeof position === 'undefined' ? this.entries.length : position;
-        const disposableEntry = new Entry(this, entry);
+        const disposableEntry = new ToolboxEntry(this, entry);
         this.entries.splice(injectIndex, 0, entry);
         if (typeof entry.onInstall === 'function') {
             entry.onInstall(this.editor!, mod);
@@ -82,6 +83,9 @@ class Toolbox extends Plugin {
             .map(entry => this.renderer!.renderToolboxEntry(new MetaModule(entry), this.whitelist))
             .filter(entry => entry);
         this.editor.sourceEditor.setToolbox(toolbox);
+    }
+    registerQueryHandlers(engine : QueryEngine) {
+        
     }
 }
 

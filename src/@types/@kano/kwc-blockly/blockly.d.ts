@@ -3,11 +3,19 @@ declare module '@kano/kwc-blockly/blockly.js' {
         static INLINE_PADDING_Y : number
         static SEP_SPACE_X : number;
     }
+    class Connection {
+        targetBlock() : Block;
+        targetConnection : Connection;
+        sourceBlock_ : Block;
+    }
     class Input {
+        name : string;
         type : number;
         appendField<T extends Field = Field>(field : T|string, name? : string) : Field;
         insertFieldAt(index : number, field : Field|string, name : string) : Field;
         removeField(name : string) : Input;
+        connection? : Connection;
+        sourceBlock_ : Block;
     }
     class Block {
         id : string;
@@ -23,6 +31,9 @@ declare module '@kano/kwc-blockly/blockly.js' {
         appendDummyInput(n? : string) : Input;
         getInput(n : string) : Input|null;
         removeInput(n : string) : void;
+        isShadow() : boolean;
+        nextConnection? : Connection;
+        previousConnection? : Connection;
         RTL : boolean;
     }
     class Field {
@@ -48,8 +59,24 @@ declare module '@kano/kwc-blockly/blockly.js' {
         protected render_() : void;
         public getText() : string;
     }
+    class Toolbox {
+        opened : boolean;
+        getCategoryElement(id : string) : HTMLElement;
+        flyout_ : Flyout|null;
+    }
+    class Flyout {
+        getWidth() : number;
+        getBlockByType(type : string) : Block|null;
+    }
     class Workspace {
         getAllBlocks() : Block[];
+        getBlockById(id : string) : Block|null;
+        getMetrics() : any;
+        getFlyout_() : Flyout;
+        addChangeListener(callback : (e : any) => void) : (e : any) => void;
+        removeChangeListener(callback : (e : any) => void) : void;
+        toolbox : Toolbox;
+        toolbox_ : Toolbox;
     }
     const goog : any;
     const utils : {
@@ -72,6 +99,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
     }
     class Events {
         MOVE : string;
+        OPEN_FLYOUT : string;
+        CLOSE_FLYOUT : string;
         isEnabled() : boolean;
         BlockChange : typeof BlockChange;
         fire(event : BlocklyEvent) : void;
@@ -87,5 +116,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         bindEvent_(target : HTMLElement|SVGElement, event : string, thisArg : any, callback : Function) : void;
         WidgetDiv : WidgetDiv;
         Events : Events;
+        setPhantomBlock(connection : Connection, target : Block) : void;
+        removePhantomBlock() : void;
+        selected? : Block;
     }
 }

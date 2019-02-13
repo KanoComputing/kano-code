@@ -1,6 +1,9 @@
-import { Meta, MetaModule, MetaVariable, MetaParameter, MetaFunction, IMetaRenderer } from '../module.js';
+import { Meta, MetaModule, MetaVariable, MetaParameter, MetaFunction, IMetaRenderer, ICategory } from '../module.js';
 
 class TypeScriptMetaRenderer implements IMetaRenderer {
+    disposeToolboxEntry(entry : ICategory): void {
+        throw new Error('Method not implemented.');
+    }
     renderToolboxEntry(mod : MetaModule, whitelist : any[]) {
         let definitionFile;
         // Legacy module signature

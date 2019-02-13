@@ -1,7 +1,10 @@
 import Challenge from 'challenge-engine/definition.js';
+import { Workspace, Block, Blockly } from '@kano/kwc-blockly/blockly.js';
 
 class BlocklyChallenge extends Challenge {
-    constructor(workspace) {
+    protected workspace : Workspace;
+    protected eventsMap : { [K : string] : string };
+    constructor(workspace : Workspace) {
         super();
         this.workspace = workspace;
         this.eventsMap = {
@@ -35,11 +38,11 @@ class BlocklyChallenge extends Challenge {
 
         this.createStore('blocks');
     }
-    _updateStep(...args) {
-        super._updateStep.apply(this, ...args);
+    _updateStep() {
+        super._updateStep();
         Blockly.WidgetDiv.hide();
     }
-    _processBlock(block) {
+    _processBlock(block : any) {
         if (block.id) {
             block.id = this.getFromStore('blocks', block.id);
         } else if (block.rawId) {
@@ -47,20 +50,20 @@ class BlocklyChallenge extends Challenge {
         }
         return block;
     }
-    _wrongCategory(validation) {
+    _wrongCategory() {
         this._updateStep();
     }
-    _deleteNotExpected(validation, detail) {
+    _deleteNotExpected(validation : any, detail : any) {
         // Ignore delete events from shadow blocks
         if (detail.oldXml.tagName.toLowerCase() === 'shadow') {
             return;
         }
         this.stepIndex -= 2;
     }
-    _flyoutClosed(validation) {
+    _flyoutClosed() {
         this.stepIndex -= 1;
     }
-    _onPhantomBlockEnter(phantom_block) {
+    _onPhantomBlockEnter(phantom_block : any) {
         let connection,
             target,
             host;
@@ -71,6 +74,10 @@ class BlocklyChallenge extends Challenge {
             return;
         }
         host = this.getTargetBlock(phantom_block.location.block);
+
+        if (!host) {
+            return;
+        }
 
         if (phantom_block.target === '@previous') {
             connection = host.previousConnection;
@@ -93,10 +100,10 @@ class BlocklyChallenge extends Challenge {
         }
         Blockly.setPhantomBlock(connection, target);
     }
-    _onPhantomBlockLeave(data) {
+    _onPhantomBlockLeave() {
         Blockly.removePhantomBlock();
     }
-    _getOpenFlyoutStep(data) {
+    _getOpenFlyoutStep(data : any) {
         return {
             validation: {
                 blockly: {
@@ -105,7 +112,7 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
-    _getCloseFlyoutStep(data) {
+    _getCloseFlyoutStep(data : any) {
         return {
             validation: {
                 blockly: {
@@ -114,7 +121,7 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
-    _getCreateBlockStep(data) {
+    _getCreateBlockStep(data : any) {
         return {
             validation: {
                 blockly: {
@@ -126,7 +133,7 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
-    _getConnectBlockStep(data) {
+    _getConnectBlockStep(data : any) {
         return {
             validation: {
                 blockly: {
@@ -144,7 +151,7 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
-    _getDropBlockStep(data) {
+    _getDropBlockStep(data : any) {
         return {
             validation: {
                 blockly: {
@@ -155,10 +162,10 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
-    _createBlockShorthand(data) {
+    _createBlockShorthand(data : any) {
         const openFlyoutStep = this._getOpenFlyoutStep(data);
         const createStep = this._getCreateBlockStep(data);
-        const steps = [createStep];
+        const steps : any[] = [createStep];
         if (this.workspace.toolbox_) {
             steps.unshift(openFlyoutStep);
         }
@@ -169,7 +176,7 @@ class BlocklyChallenge extends Challenge {
         }
         return steps;
     }
-    _changeInputShorthand(data) {
+    _changeInputShorthand(data : any) {
         return {
             validation: {
                 blockly: {
@@ -181,7 +188,7 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
-    getBlockType(validation) {
+    getBlockType(validation : any) {
         let target = validation.type && validation.type.part ? this.getFromStore('parts', validation.type.part) : validation.rawTarget,
             type;
         // Use the type or the value directly
@@ -196,13 +203,13 @@ class BlocklyChallenge extends Challenge {
         type = target ? `${target}#${type}` : type;
         return type;
     }
-    getTypeString(validation) {
+    getTypeString(validation : any) : string {
         if (typeof validation === 'string') {
             return validation;
         }
         return this.getTypeString(validation.type);
     }
-    getTargetBlock(selector) {
+    getTargetBlock(selector : any) {
         let block;
         if (typeof selector === 'string') {
             block = this.workspace.getBlockById(this.getFromStore('blocks', selector));
@@ -211,29 +218,37 @@ class BlocklyChallenge extends Challenge {
         } else if (selector.rawId) {
             block = this.workspace.getBlockById(selector.rawId);
         }
-        if (selector.shadow) {
+        if (selector.shadow && block) {
             block = this.getTargetBlockShadow(block, selector.shadow);
         }
         return block;
     }
-    getTargetBlockShadow(block, selector) {
+    getTargetBlockShadow(block : Block, selector : any) : Block|null {
         if (typeof selector === 'string') {
-            return block.getInput(selector).connection.targetBlock();
+            const input = block.getInput(selector);
+            if (!input || !input.connection) {
+                return null;
+            }
+            return input.connection.targetBlock();
         } else if ('shadow' in selector && 'name' in selector) {
-            return this.getTargetBlockShadow(block.getInput(selector.name).connection.targetBlock(), selector.shadow);
+            const input = block.getInput(selector.name);
+            if (!input || !input.connection) {
+                return null;
+            }
+            return this.getTargetBlockShadow(input.connection.targetBlock(), selector.shadow);
         }
         return null;
     }
-    _matchCategory(validation, event) {
+    _matchCategory(validation : any, event : any) {
         if (validation.value) {
             validation = validation.value;
         }
         return event.categoryId === validation;
     }
-    _matchBlockType(type, event) {
+    _matchBlockType(type : string, event : any) {
         return event.xml.getAttribute('type') === type;
     }
-    _matchDelete(validation, event) {
+    _matchDelete(validation : any, event : any) {
         let target = validation.target || validation,
             blockId;
         if (typeof target === 'string') {
@@ -244,12 +259,12 @@ class BlocklyChallenge extends Challenge {
             blockId = target.rawId;
         }
         if (blockId !== event.blockId) {
-            return;
+            return false;
         }
         delete this._stores.blocks[target];
         return true;
     }
-    _matchCreate(validation, event) {
+    _matchCreate(validation : any, event : any) {
         const type = this.getBlockType(validation);
         // Check the type of the added block
         if (this._matchBlockType(type, event)) {
@@ -260,8 +275,9 @@ class BlocklyChallenge extends Challenge {
             }
             return true;
         }
+        return false;
     }
-    _matchConnect(validation, event) {
+    _matchConnect(validation : any, event : any) {
         // Extract the validation object, target and parent step ids and
         // the block moved
         let target = this.getTargetBlock(validation.target),
@@ -269,7 +285,7 @@ class BlocklyChallenge extends Challenge {
 
         // Check that the element moved is the one targeted and that its
         // new parent is the right one
-        if (event.blockId === target.id && event.newParentId === parent.id) {
+        if (target && parent && event.blockId === target.id && event.newParentId === parent.id) {
             let connection;
 
             if (!validation.parent.inputName || validation.parent.inputName === '@next') {
@@ -291,16 +307,28 @@ class BlocklyChallenge extends Challenge {
             connection = connection.targetConnection;
             return (connection.sourceBlock_.id === target.id);
         }
+        return false;
     }
-    _matchDrop(validation, event) {
-        let targetId = this.getTargetBlock(validation.target).id,
-            block = event;
+    _matchDrop(validation : any, event : any) {
+        const _block = this.getTargetBlock(validation.target);
+        if (!_block) {
+            return false;
+        }
+        let targetId = _block.id;
+        let block = event;
         // Check that the element that changed is the one we target
         return block.blockId === targetId;
     }
-    _matchBlocklyValue(validation, event) {
-        const targetId = this.getTargetBlock(validation.target).id;
+    _matchBlocklyValue(validation : any, event : any) {
+        const _block = this.getTargetBlock(validation.target);
+        if (!_block) {
+            return false;
+        }
+        const targetId = _block.id;
         const eventBlock = this.workspace.getBlockById(event.blockId);
+        if (!eventBlock) {
+            return false;
+        }
         const block = eventBlock;
         let failed = false;
         if (block.id !== targetId) {
@@ -320,9 +348,6 @@ class BlocklyChallenge extends Challenge {
             let {
                 value
             } = validation;
-            if (value.event_from) {
-                value = `${this.stepIds[value.event_from]}.${value.event}`;
-            }
             /* eslint eqeqeq: "off" */
             if (newValue != value) {
                 failed = true;
@@ -330,18 +355,17 @@ class BlocklyChallenge extends Challenge {
         }
         return !failed;
     }
-    _validate(validation, e) {
-        let blocklyStep = validation,
-            detail = e.data.event,
+    _validate(validation : any, e : any) : boolean {
+        let detail = e.data.event,
             block = this.workspace.getBlockById(detail.blockId);
         detail.type = this.eventsMap[detail.type] || detail.type;
         // Ignore connect event with no parent
         // Ignore all events from shadow blocks except `value`
         if (detail.type === 'connect' && !detail.newParentId ||
             detail.type !== 'value' && (block && block.isShadow())) {
-            return;
+            return false;
         }
-        this._checkEvent(validation, detail);
+        return this._checkEvent(validation, detail);
     }
 }
 

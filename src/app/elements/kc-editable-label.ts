@@ -1,4 +1,4 @@
-import { LitElement, customElement, html, property } from 'lit-element/lit-element.js';
+import { LitElement, customElement, html, property, css, CSSResultArray } from 'lit-element/lit-element.js';
 
 @customElement('kc-editable-label')
 export class KCEditableLabel extends LitElement {
@@ -6,6 +6,20 @@ export class KCEditableLabel extends LitElement {
     public editing : boolean = false;
     @property({ type: String })
     public label : string = '';
+    static get styles() : CSSResultArray {
+        return [css`
+            input {
+                font-family: inherit;
+                font-size: inherit;
+                background: transparent;
+                color: white;
+                border: 1px solid grey;
+                outline: none;
+                padding: 2px;
+                margin: -3px;
+            }
+        `];
+    }
     render() {
         return html`${this.editing ? this.inputEl : this.labelEl}`;
     }
@@ -26,17 +40,25 @@ export class KCEditableLabel extends LitElement {
         });
     }
     _onInputKeyDown(e : KeyboardEvent) {
-        if (e.keyCode === 13 || e.keyCode === 27) {
+        if (e.keyCode === 27) {
             this.input!.blur();
+        }
+        if (e.keyCode === 13) {
+            this.apply();
         }
     }
     _onInputBlur() {
-        this.apply();
+        this.cancel();
+    }
+    cancel() {
+        this.editing = false;
     }
     apply() {
         const value = this.input!.value;
         this.editing = false;
-        this.label = value;
-        this.dispatchEvent(new CustomEvent('change', { detail: value }));
+        if (value !== this.label) {
+            this.label = value;
+            this.dispatchEvent(new CustomEvent('change', { detail: value, bubbles: true, composed: true }));
+        }
     }
 }

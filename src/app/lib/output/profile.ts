@@ -2,7 +2,7 @@ import { Output } from './output.js';
 import { Plugin } from '../editor/plugin.js';
 import { AppModule } from '../app-modules/app-module.js';
 import { IOutputProvider } from './index.js';
-import { Part } from '../part/part.js';
+import { Part } from '../parts/part.js';
 
 export interface IOutputProfile {
     id : string;

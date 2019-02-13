@@ -2,11 +2,9 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import 'monaco-editor-element/dist/monaco-editor/vs/loader.js';
 import 'monaco-editor-element/monaco-editor.js';
-import '../../scripts/kano/make-apps/store.js';
 import '../kano-style/themes/dark.js';
-import { Store } from '../../scripts/legacy/store.js';
 
-class KCCodeEditor extends Store.StateReceiver(PolymerElement) {
+class KCCodeEditor extends PolymerElement {
     static get template() {
         return html`
         <style>

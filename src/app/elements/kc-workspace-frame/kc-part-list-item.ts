@@ -1,7 +1,7 @@
 import '@kano/styles/typography.js';
 import { LitElement, css, html, property, customElement } from 'lit-element/lit-element.js';
 import { templateContent } from '../../lib/directives/template-content.js';
-import '../kc-editable-label.js';
+import '../kc-validated-editable-label.js';
 
 @customElement('kc-part-list-item')
 export class KCPartListItem extends LitElement {
@@ -9,6 +9,8 @@ export class KCPartListItem extends LitElement {
     public label : string = '';
     @property({ type: HTMLTemplateElement })
     public icon? : HTMLTemplateElement;
+    @property({ type: Function })
+    public validator : (oldName : string, newName : string) => boolean = () => true;
     static get styles() {
         return css`
             :host {
@@ -45,7 +47,7 @@ export class KCPartListItem extends LitElement {
     render() {
         return html`
             <div id="icon" class="icon">${this.icon ? templateContent(this.icon) : ''}</div>
-            <kc-editable-label class$="label" .label=${this.label}></kc-editable-label>
+            <kc-validated-editable-label class$="label" .label=${this.label} .validator=${this.validator}></kc-validated-editable-label>
             <div class="controls" id="controls"><slot></slot></div>
         `;
     }

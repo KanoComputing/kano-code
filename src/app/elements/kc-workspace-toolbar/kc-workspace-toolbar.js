@@ -324,10 +324,10 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
         return !show;
     }
     fullscreenClicked() {
-        this.dispatchEvent(new CustomEvent('fullscreen-clicked'));
+        this.dispatchEvent(new CustomEvent('fullscreen-clicked', { bubbles: true, composed: true }));
     }
     restartClicked() {
-        this.dispatchEvent(new CustomEvent('restart-clicked'));
+        this.dispatchEvent(new CustomEvent('restart-clicked', { bubbles: true, composed: true }));
     }
     _getRunningStatus(running) {
         return running ? 'running' : 'stopped';
@@ -355,16 +355,16 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
         e.stopPropagation();
     }
     _reset() {
-        this.dispatchEvent(new CustomEvent('reset-clicked'));
+        this.dispatchEvent(new CustomEvent('reset-clicked', { bubbles: true, composed: true }));
     }
     _export() {
-        this.dispatchEvent(new CustomEvent('export-clicked'));
+        this.dispatchEvent(new CustomEvent('export-clicked', { bubbles: true, composed: true }));
     }
     _load() {
-        this.dispatchEvent(new CustomEvent('import-clicked'));
+        this.dispatchEvent(new CustomEvent('import-clicked', { bubbles: true, composed: true }));
     }
     _save() {
-        this.dispatchEvent(new CustomEvent('save-clicked'));
+        this.dispatchEvent(new CustomEvent('save-clicked', { bubbles: true, composed: true }));
     }
     _fullscreenChanged(fullscreen) {
         this.fullscreenEntry.updateIronIcon(`kc-ui:${fullscreen ? 'minimize' : 'maximize'}`);

@@ -1,25 +1,14 @@
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import '@kano/polymer-sortablejs/polymer-sortablejs.js';
 import { close } from '@kano/icons/ui.js';
-import { IronResizableBehavior } from '@polymer/iron-resizable-behavior/iron-resizable-behavior.js';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import '../ui/kano-ui-viewport/kano-ui-viewport.js';
 import '../kc-workspace-toolbar/kc-workspace-toolbar.js';
-import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';
-import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
-import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
-import { Utils } from '../../scripts/kano/make-apps/utils.js';
-import { throttle } from '../../lib/util/throttle.js';
+import { button } from '@kano/styles/button.js';
 
-class KcWorkspaceFrame extends mixinBehaviors([
-    I18nBehavior,
-    AppEditorBehavior,
-    AppElementRegistryBehavior,
-    IronResizableBehavior,
-], PolymerElement) {
+class KcWorkspaceFrame extends PolymerElement {
     static get template() {
         return html`
+        ${button}
         <style>
             :host {
                 display: block;
@@ -66,7 +55,7 @@ class KcWorkspaceFrame extends mixinBehaviors([
             }
             .controls {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 justify-content: space-between;
                 flex: 1 1 auto;
                 box-sizing: border-box;
@@ -90,12 +79,9 @@ flex-direction: column;
             }
             button#fullscreen-close {
                 align-self: flex-end;
-                @apply --kano-button;
                 background: rgba(255, 255, 255, 0.25);
                 color: rgba(255, 255, 255, 0.75);
                 border-radius: 3px;
-            }
-            button#fullscreen-close {
                 position: fixed;
                 top: 16px;
                 right: 16px;
@@ -141,18 +127,12 @@ flex-direction: column;
             <slot name="controls"></slot>
         </div>
         <div class="overlay">
-            <button id="fullscreen-close" on-tap="_toggleFullscreen">
+            <button id="fullscreen-close" class="btn" on-tap="_toggleFullscreen">
                 <div class="icon">${close}</div>
             </button>
             <kc-workspace-toolbar running="[[running]]"
                                     no-part-controls
-                                    on-save-button-clicked="_toggleFullscreen"
-                                    on-run-clicked="_runButtonClicked"
                                     on-fullscreen-clicked="_toggleFullscreen"
-                                    on-restart-clicked="_restartClicked"
-                                    on-export-clicked="_exportClicked"
-                                    on-import-clicked="_importClicked"
-                                    on-reset-clicked="_resetClicked"
                                     fullscreen="[[fullscreen]]"></kc-workspace-toolbar>
         </div>
         <iron-a11y-keys keys="meta+enter" on-keys-pressed="_goFullscreen" target="[[target]]"></iron-a11y-keys>
@@ -180,19 +160,19 @@ flex-direction: column;
     }
     constructor() {
         super();
-        this._onIronResize = this._onIronResize.bind(this);
+        this._onResize = this._onResize.bind(this);
     }
     connectedCallback() {
         super.connectedCallback();
         this.target = document.body;
-        this.addEventListener('iron-resize', this._onIronResize);
+        window.addEventListener('resize', this._onResize);
         this._setViewportHeight();
     }
     disconnectedCallback() {
         super.disconnectedCallback();
-        this.removeEventListener('iron-resize', this._onIronResize);
+        window.removeEventListener('resize', this._onResize);
     }
-    _onIronResize() {
+    _onResize() {
         this._setViewportHeight();
     }
     addMenuOption(label, icon, callback) {
@@ -239,29 +219,11 @@ flex-direction: column;
         }
     }
     _toggleFullscreen() {
-        this.toggleClass('fullscreen');
+        this.classList.toggle('fullscreen');
         this.fullscreen = !this.fullscreen;
         this._setViewportHeight();
 
-        Utils.triggerResize();
-    }
-    _resetAppState() {
-        this.dispatchEvent(new CustomEvent('reset-app-state'));
-    }
-    _restartClicked() {
-        this.dispatchEvent(new CustomEvent('restart-clicked'));
-    }
-    _exportClicked() {
-        this.dispatchEvent(new CustomEvent('export-clicked'));
-    }
-    _importClicked() {
-        this.dispatchEvent(new CustomEvent('import-clicked'));
-    }
-    _resetClicked() {
-        this.dispatchEvent(new CustomEvent('reset-clicked'));
-    }
-    _runButtonClicked() {
-        this.dispatchEvent(new CustomEvent('run-button-clicked'));
+        window.dispatchEvent(new Event('resize'));
     }
     getViewportScale() {
         return this.$.content.getScale();

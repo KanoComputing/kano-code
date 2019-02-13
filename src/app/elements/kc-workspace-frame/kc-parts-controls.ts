@@ -3,9 +3,9 @@ import '@kano/styles/color.js';
 import '@kano/styles/typography.js';
 import { close } from '@kano/icons/ui.js';
 import './kc-part-list-item.js';
-import { EventEmitter, IDisposable } from '@kano/common/index.js';
+import { EventEmitter, IDisposable, IEvent } from '@kano/common/index.js';
 import { templateContent } from '../../lib/directives/template-content.js';
-import { PartInlineDisplay } from '../../lib/part/inline-display.js';
+import { PartInlineDisplay } from '../../lib/parts/inline-display.js';
 import { add } from './icons.js';
 import { styleMap } from 'lit-html/directives/style-map';
 
@@ -15,6 +15,7 @@ export interface IStackEntry {
     icon : HTMLTemplateElement;
     inlineDisplay : PartInlineDisplay;
     color : string;
+    entry? : any;
 }
 
 @customElement('kc-parts-controls')
@@ -139,7 +140,12 @@ export class KCPartsControls extends LitElement {
             <slot name="extra-parts"></slot>
             ${this.parts.map(part => html`
             <div class="part" id="part-${part.id}">
-                <kc-part-list-item label=${part.name} .icon=${part.icon} style=${styleMap({ '--kano-part-list-item-highlight-color': part.color })} @click=${()=> this._partItemTapped(part)}>
+                <kc-part-list-item label=${part.name}
+                                   .icon=${part.icon}
+                                   .validator=${this._validatePartName.bind(this)}
+                                   style=${styleMap({ '--kano-part-list-item-highlight-color': part.color })}
+                                   @click=${()=> this._partItemTapped(part)}
+                                   @change=${(e : CustomEvent) => this._onNameChange(e, part)}>
                     ${part.inlineDisplay.domNode}
                 </kc-part-list-item>
                 <button type="button" class="remove" @click=${()=> this._removePartClicked(part)}>
@@ -162,16 +168,37 @@ export class KCPartsControls extends LitElement {
     _partItemTapped(part: any) {
         this.dispatchEvent(new CustomEvent('part-clicked', { detail: part }));
     }
-    addEntry(model : IStackEntry): IDisposable {
+    addEntry(model : IStackEntry) : IPartsControlsEntry {
         const item = model;
-        this.parts.push(item);
-        this.parts = [...this.parts];
-        return {
+        const entry : IPartsControlsEntry = {
+            _onDidChangeName: new EventEmitter<string>(),
+            get onDidChangeName() { return this._onDidChangeName.event },
             dispose: () => {
                 const index = this.parts.indexOf(item);
                 this.parts.splice(index, 1);
                 this.parts = [...this.parts];
             },
         };
+        item.entry = entry;
+        this.parts.push(item);
+        this.parts = [...this.parts];
+        return entry;
     }
+    _onNameChange(e : CustomEvent, part : IStackEntry) {
+        part.name = e.detail;
+        part.entry!._onDidChangeName.fire(e.detail);
+    }
+    _validatePartName(oldName : string, newName : string) {
+        const existing = this.parts.find(p => newName !== oldName && p.name === newName);
+        if (existing) {
+            return 'A part with that name already exist';
+        }
+        return true;
+    }
+}
+
+interface IPartsControlsEntry {
+    _onDidChangeName : EventEmitter<string>;
+    onDidChangeName : IEvent<string>;
+    dispose() : void;
 }

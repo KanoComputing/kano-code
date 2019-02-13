@@ -101,10 +101,10 @@ class KCPlayerToolbar extends PolymerElement {
         this.dispatchEvent(new CustomEvent('fullscreen-button-clicked'));
     }
     pauseClicked() {
-        this.dispatchEvent(new CustomEvent('run-button-clicked'));
+        this.dispatchEvent(new CustomEvent('run-clicked'));
     }
     resetClicked() {
-        this.dispatchEvent(new CustomEvent('reset-button-clicked'));
+        this.dispatchEvent(new CustomEvent('reset-clicked'));
     }
     _getRunningStatus(running) {
         return running ? 'running' : 'stopped';
