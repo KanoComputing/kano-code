@@ -25,6 +25,9 @@ export class BannerWidget implements IEditorWidget {
         }
         return this.domNode;
     }
+    getPosition() {
+        return null;
+    }
     getWorkspace() {
         return (this.editor.sourceEditor as BlocklySourceEditor).getWorkspace();
     }

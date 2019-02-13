@@ -140,7 +140,7 @@ export class KCPartsControls extends LitElement {
             <slot name="extra-parts"></slot>
             ${this.parts.map(part => html`
             <div class="part" id="part-${part.id}">
-                <kc-part-list-item label=${part.name}
+                <kc-part-list-item .label=${part.name}
                                    .icon=${part.icon}
                                    .validator=${this._validatePartName.bind(this)}
                                    style=${styleMap({ '--kano-part-list-item-highlight-color': part.color })}
@@ -167,6 +167,12 @@ export class KCPartsControls extends LitElement {
     }
     _partItemTapped(part: any) {
         this.dispatchEvent(new CustomEvent('part-clicked', { detail: part }));
+    }
+    getPartNode(id : string) {
+        if (!this.renderRoot) {
+            throw new Error('Could not get part DOM node: renderRoot was not set');
+        }
+        return this.renderRoot.querySelector(`#part-${id}`) as HTMLElement;
     }
     addEntry(model : IStackEntry) : IPartsControlsEntry {
         const item = model;

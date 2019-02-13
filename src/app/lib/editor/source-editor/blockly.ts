@@ -9,6 +9,7 @@ import { memoize } from '../../util/decorators.js';
 export class BlocklySourceEditor implements SourceEditor {
     private editor : Editor;
     private _onDidCodeChange : EventEmitter<string> = new EventEmitter<string>();
+    private _onDidSourceChange : EventEmitter<any> = new EventEmitter<any>();
     public domNode : HTMLElement = document.createElement('kc-blockly-editor');
     constructor(editor : Editor) {
         this.editor = editor;
@@ -16,9 +17,15 @@ export class BlocklySourceEditor implements SourceEditor {
         subscribeDOM(this.domNode, 'code-changed', (e : any) => {
             this._onDidCodeChange.fire(e.detail.value);
         });
+        subscribeDOM(this.domNode, 'action', (e : any) => {
+            this._onDidSourceChange.fire(e.detail);
+        });
     }
     get onDidCodeChange() {
         return this._onDidCodeChange.event;
+    }
+    get onDidSourceChange() {
+        return this._onDidSourceChange.event;
     }
     setToolbox(toolbox : any) : void {
         (this.domNode as any).defaultCategories = toolbox;
@@ -43,6 +50,7 @@ export class BlocklySourceEditor implements SourceEditor {
                 }
                 return {
                     block,
+                    getId() { return block.id; },
                     getBlock() { return block; },
                     getHTMLElement() {
                         return block.getSvgRoot();
@@ -57,6 +65,7 @@ export class BlocklySourceEditor implements SourceEditor {
                 }
                 return {
                     block,
+                    getId() { return block.id },
                     getBlock() { return block; },
                     getHTMLElement() {
                         return block.getSvgRoot();
@@ -82,6 +91,7 @@ export class BlocklySourceEditor implements SourceEditor {
             const workspace = this.getWorkspace();
             return {
                 entry,
+                getId() { return entry.id; },
                 getToolboxId() { return entry.id },
                 getHTMLElement() {
                     return workspace.toolbox.getCategoryElement(this.entry.id);
@@ -109,6 +119,7 @@ export class BlocklySourceEditor implements SourceEditor {
                     }
                     return {
                         block,
+                        getId() { return `${scope}_${selector.id}`; },
                         getHTMLElement() {
                             return block.getSvgRoot();
                         },
@@ -121,6 +132,7 @@ export class BlocklySourceEditor implements SourceEditor {
                     }
                     return {
                         block,
+                        getId() { return block.id },
                         getBlock() { return block; },
                         getHTMLElement() {
                             return block.getSvgRoot();
@@ -147,6 +159,7 @@ export class BlocklySourceEditor implements SourceEditor {
             }
             return {
                 input,
+                getId() { return block.id },
                 getInput() { return input },
                 // TODO: This can't get the input location. enhacne the query api to return DOMElement AND rect relative to the element
                 getHTMLElement() {

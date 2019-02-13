@@ -36,16 +36,18 @@ const challengeData = {
     defaultApp: JSON.stringify(app),
     steps: [{
         banner: 'Welcome to your first challenge',
+        beacon: 'default-part#button>toolbox',
+        validation: {
+            blockly: {
+                'open-flyout': 'default-part#button',
+            },
+        },
     }, {
-        banner: 'This is the second step',
+        banner: 'Here is a beacon',
+        beacon: 'default-part#button>toolbox>block#onClick',
     }, {
-        beacon: 'block#default_app_onStart',
-        beacon: 'block#default_app_onStart>input#callback',
-        beacon: 'block-alias#block_0',
-        beacon: 'part#button',
-        beacon: 'part-alias#button_0',
-        beacon: 'part-alias#button_0>inline-display',
-        beacon: 'part-alias#button_0>toolbox',
+        banner: 'Here is a beacon',
+        beacon: 'default-block#default_app_onStart',
     }],
 };
 
@@ -59,5 +61,8 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
 
         editor.inject(document.body);
 
-        challenge.start();
+        setTimeout(() => {
+            challenge.start();
+        });
+
     });

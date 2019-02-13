@@ -2,25 +2,20 @@ import BlocklyChallenge from './blockly.js';
 import { Editor } from '../editor/editor.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
 import { KCEditorBanner } from '../../elements/kano-editor-banner/kano-editor-banner.js';
-import { Blockly } from '@kano/kwc-blockly/blockly.js';
-import { subscribeDOM } from '@kano/common/index.js';
 import { BannerWidget } from './widget/banner.js';
+import { BeaconWidget } from './widget/beacon.js';
+import { IEditorWidget } from '../editor/widget/widget.js';
 
 // TODO: Use Symbol('store) instead
 const PARTS_STORE = 'parts';
 
 export class KanoCodeChallenge extends BlocklyChallenge {
-    protected _banner? : KCEditorBanner;
     protected editor : Editor;
-    protected _bannerListener? : (e : any) => void;
-    protected bannerWidget : BannerWidget;
+    protected widgets : Map<string, IEditorWidget> = new Map();
     constructor(editor : Editor) {
         super((editor.sourceEditor as BlocklySourceEditor).getWorkspace());
         this.editor = editor;
         this.addValidation('add-part', this.matchAddPart);
-        this.addValidation('background', this.matchProperty);
-        this.addValidation('select-part', this.matchPartTarget);
-        this.addValidation('selected-part-change', this.matchPartChange);
         this.addValidation('trigger', this.matchTrigger);
         this.addValidation('running', this.matchValue);
         this.addValidation('select-new-part', this.matchPartType);
@@ -28,38 +23,65 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.addValidation('disable-refresh', this.matchPartTarget);
         this.addValidation('manual-refresh', this.matchPartTarget);
         this.addValidation('open-settings-tooltip', this.matchPartTarget);
-        this.addValidation('open-part-settings', this.matchPartTarget);
-        this.addValidation('settings-interaction', this.matchSettingsInteraction);
-        this.addValidation('light-animation-tool-changed', this.matchValue);
-        this.addValidation('light-animation-paint', this.matchTool);
-        this.addValidation('light-animation-preview-changed', this.matchValue);
 
         this.addOppositeAction('add-part', 'close-parts', this._partsClosed);
 
         this.defineShorthand('create-part', this._createPartShorthand.bind(this));
 
-        this.defineBehavior('banner', this._displayBanner.bind(this), this._hideBanner.bind(this));
+        this.defineBehavior('banner', this.displayBanner.bind(this), this.hideBanner.bind(this));
+        this.defineBehavior('beacon', this.displayBeacon.bind(this), this.hideBeacon.bind(this));
 
-        this.bannerWidget = new BannerWidget(this.editor);
-        this.bannerWidget.onDidClick(() => this.nextStep());
+        this.definePropertyProcessor([
+            'validation.blockly.open-flyout',
+            'validation.blockly.close-flyout',
+            'validation.blockly.create.type',
+        ], (v : string) => {
+            const result = this.editor.querySelector(v);
+            return result.getId();
+        });
+
+        // TODO: dispose cycle
+        this.workspace.addChangeListener(() => {
+            this.widgets.forEach((w) => this.editor.layoutContentWidget(w));
+        });
     }
-    _fitBanner() {
-        this.bannerWidget.layout();
-    }
-    _displayBanner(data : any) {
+    displayBanner(data : any) {
+        const widget = new BannerWidget(this.editor);
+        widget.onDidClick(() => this.nextStep());
         let text;
         if (typeof data === 'string') {
             text = data;
         } else {
             text = '';
         }
-        this.bannerWidget.show();
-        this.bannerWidget.setData({
+        widget.setData({
             text,
         });
+        widget.show();
+        this.widgets.set('banner', widget);
     }
-    _hideBanner() {
-        this.bannerWidget.hide();
+    hideBanner() {
+        const widget = this.widgets.get('banner');
+        if (!widget) {
+            return;
+        }
+        widget.hide();
+    }
+    displayBeacon(data : any) {
+        if (typeof data !== 'string') {
+            throw new Error('Beacon prop must be a string');
+        }
+        const widget = new BeaconWidget();
+        widget.setPosition(data);
+        this.editor.addContentWidget(widget);
+        this.widgets.set('beacon', widget);
+    }
+    hideBeacon() {
+        const widget = this.widgets.get('beacon');
+        if (!widget) {
+            return;
+        }
+        this.editor.removeContentWidget(widget);
     }
     _getOpenPartsDialogStep(data : any) {
         return {

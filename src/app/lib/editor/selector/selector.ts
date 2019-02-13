@@ -8,6 +8,7 @@ export interface ISelector {
 export interface IQueryResult {
     [K : string] : any;
     getHTMLElement() : HTMLElement|SVGElement;
+    getId() : any;
 }
 
 export interface ITagHandler {

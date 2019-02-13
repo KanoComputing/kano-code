@@ -22,6 +22,8 @@ declare module 'challenge-engine/definition.js' {
         trigger(name : string) : void;
         start() : void;
         nextStep() : void;
+        triggerEvent(name : string, data : any) : void;
+        definePropertyProcessor(props : string[], processor : Function) : void;
     }
     export default Challenge;
 }

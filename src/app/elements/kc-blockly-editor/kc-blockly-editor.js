@@ -116,14 +116,14 @@ class KCBlocklyEditor extends mixinBehaviors([behaviors], PolymerElement) {
         if (e.detail.type === 'close-flyout') {
             // Defer the notification
             this.closeFlyoutTimeoutId = setTimeout(() => {
-                this.notifyChange('blockly', { event: e.detail });
+                this.dispatchEvent(new CustomEvent('action', { detail: e.detail }));
             });
         } else {
             // A create event will cancel its previous close-flyout event
             if (e.detail.type === 'create') {
                 clearTimeout(this.closeFlyoutTimeoutId);
             }
-            this.notifyChange('blockly', { event: e.detail });
+            this.dispatchEvent(new CustomEvent('action', { detail: e.detail }));
         }
     }
     computeToolbox() {

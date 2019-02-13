@@ -264,34 +264,6 @@ class KanoAppEditor extends PolymerElement {
     get widgetLayer() {
         return this.$['widget-layer'];
     }
-    /**
-   * Load the saved work from the local storage
-   */
-    load(savedApp) {
-        if (!savedApp) {
-            return;
-        }
-        this.$['root-view'].computeBlocks();
-        this.unsavedChanges = false;
-    }
-    reset() {
-        this.$['dialog-reset-warning'].open();
-    }
-    _toggleFullscreenModal(isFullScreen) {
-        this.$['edit-part-dialog'].fitInto = isFullScreen ? window : this.$['source-panel'];
-        this.$['edit-part-dialog'].withBackdrop = isFullScreen;
-        this.toggleClass('large-modal', isFullScreen, this.$['edit-part-dialog-content']);
-    }
-    _repositionPanel(e) {
-        const target = this.$[dom(e).rootTarget.id];
-        this.async(() => target.parentElement.refit(), 10);
-    }
-    constructor() {
-        super();
-        this._openOfflineDialog = this._openOfflineDialog.bind(this);
-
-        this.reset = this.reset.bind(this);
-    }
     connectedCallback() {
         super.connectedCallback();
         this.target = document.body;
@@ -377,9 +349,6 @@ class KanoAppEditor extends PolymerElement {
     }
     getWorkspace() {
         return this.$.workspace;
-    }
-    _openOfflineDialog() {
-        this.$['dialog-offline'].open();
     }
 }
 

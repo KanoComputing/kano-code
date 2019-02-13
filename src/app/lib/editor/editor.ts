@@ -23,7 +23,7 @@ import { deprecated } from '../decorators.js';
 import { WorkspaceViewProvider } from './workspace/index.js';
 import { EventEmitter } from '@kano/common/index.js';
 import { IEditorWidget } from './widget/widget.js';
-import { QueryEngine } from './selector/selector.js';
+import { QueryEngine, IQueryResult } from './selector/selector.js';
 
 declare global {
     interface Window {
@@ -405,8 +405,24 @@ export class Editor extends EditorOrPlayer {
     get root() {
         return this.rootEl.shadowRoot;
     }
+    resolvePosition(result : IQueryResult) {
+        return result.getHTMLElement().getBoundingClientRect();
+    }
     addContentWidget(widget : IEditorWidget) {
-        (this.rootEl as any).widgetLayer.appendChild(widget.getDomNode());
+        const domNode = widget.getDomNode();
+        domNode.style.position = 'absolute';
+        (this.rootEl as any).widgetLayer.appendChild(domNode);
+        this.layoutContentWidget(widget);
+    }
+    layoutContentWidget(widget : IEditorWidget) {
+        const position = widget.getPosition();
+        if (position === null) {
+            return;
+        }
+        const result = this.querySelector(position);
+        const rect = this.resolvePosition(result);
+        const domNode = widget.getDomNode();
+        domNode.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
     }
     removeContentWidget(widget : IEditorWidget) {
         (this.rootEl as any).widgetLayer.removeChild(widget.getDomNode());

@@ -319,14 +319,20 @@ export class EditorPartsManager {
         engine.registerTagHandler('default-part', (selector) => {
             if (selector.id) {
                 const partRecord = this.parts.get(selector.id);
-                if (!partRecord) {
+                const { partsControls } = this.editor.workspaceView!;
+                if (!partRecord || !partsControls) {
                     throw new Error(`Could not find part with id ${selector.id}`);
                 }
                 return {
                     part: partRecord.part,
                     getToolboxId() { return partRecord.part.id; },
+                    getId() { return partRecord.part.id; },
                     getHTMLElement() {
-                        return document.createElement('div');
+                        const node = partsControls.getPartNode(partRecord.part.id!);
+                        if (!node) {
+                            throw new Error(`Could not find part with id '${partRecord.part.id}'`);
+                        }
+                        return node;
                     },
                 };
             }
@@ -343,6 +349,7 @@ export class EditorPartsManager {
                 }
                 return {
                     api,
+                    getId() { return api.type; },
                     getHTMLElement() {
                         return document.createElement('div');
                     },

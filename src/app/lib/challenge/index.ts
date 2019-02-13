@@ -1,5 +1,6 @@
 import { Editor } from '../editor/editor.js';
 import { KanoCodeChallenge } from './kano-code.js';
+import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
 
 interface IChallengeData {
     steps : any[];
@@ -26,6 +27,14 @@ export class Challenge {
         }
         this.engine = new KanoCodeChallenge(this.editor);
         this.engine.setSteps(this.challengeData.steps || []);
+        if (this.editor.sourceType === 'blockly') {
+            (this.editor.sourceEditor as BlocklySourceEditor).onDidSourceChange((e : any) => {
+                if (!this.engine) {
+                    return;
+                }
+                this.engine.triggerEvent('blockly', { event: e });
+            });
+        }
     }
     start() {
         if (!this.editor.injected) {
