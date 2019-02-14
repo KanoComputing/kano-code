@@ -142,7 +142,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         return `${root.def.blockly.prefix} ${m.getVerboseDisplay()}`;
     }
     static renderGetter(m : MetaVariable) : IRenderedBlock {
-        const id = `get_${BlocklyMetaRenderer.getId(m)}`;
+        const id = `${BlocklyMetaRenderer.getId(m)}_get`;
         const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
                 init() {
@@ -162,7 +162,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         return { register, id, toolbox };
     }
     static renderSetter(m : MetaVariable) : IRenderedBlock {
-        const id = `set_${BlocklyMetaRenderer.getId(m)}`;
+        const id = `${BlocklyMetaRenderer.getId(m)}_set`;
         const blocklyName = m.def.name.toUpperCase();
         const input = BlocklyMetaRenderer.parseInputType(m.def.returnType, m);
         const register = (Blockly : any) => {

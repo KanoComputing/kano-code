@@ -10,10 +10,10 @@ export function transformLegacySlider(app : any) {
     if (root) {
         LegacyUtil.forEachPart(app, 'slider', ({ id }) => {
             LegacyUtil.transformBlock(root, `block[type="${id}#set_value"]`, (block) => {
-                block.setAttribute('type', `set_${id}_value`);
+                block.setAttribute('type', `${id}_value_set`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#get_value"]`, (block) => {
-                block.setAttribute('type', `get_${id}_value`);
+                block.setAttribute('type', `${id}_value_get`);
             });
             LegacyUtil.transformEventBlock(root, `${id}.update`, `${id}_onChange`, 'CALLBACK');
         });

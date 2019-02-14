@@ -24,6 +24,7 @@ import { WorkspaceViewProvider } from './workspace/index.js';
 import { EventEmitter } from '@kano/common/index.js';
 import { IEditorWidget } from './widget/widget.js';
 import { QueryEngine, IQueryResult } from './selector/selector.js';
+import { ContentWidgets } from './widget/content-widgets.js';
 
 declare global {
     interface Window {
@@ -91,8 +92,11 @@ export class Editor extends EditorOrPlayer {
     get onDidLoad() { return this._onDidLoad.event }
     private _onDidInject : EventEmitter = new EventEmitter();
     get onDidInject() { return this._onDidInject.event }
+    private _onDidLayoutChange : EventEmitter = new EventEmitter();
+    get onDidLayoutChange() { return this._onDidLayoutChange.event }
 
-    private queryEngine : QueryEngine = new QueryEngine();
+    public queryEngine : QueryEngine = new QueryEngine();
+    private contentWidgets? : ContentWidgets;
     constructor(opts : IEditorOptions = {}) {
         super();
         this.config = Config.merge(opts);
@@ -106,6 +110,9 @@ export class Editor extends EditorOrPlayer {
         if (this.sourceType === 'blockly') {
         }
         this.sourceEditor = new BlocklySourceEditor(this);
+        this.sourceEditor.onDidCodeChange((code) => {
+            this.setCode(code);
+        });
         this.sourceEditor.registerQueryHandlers(this.queryEngine);
 
         this.addPlugin(this.workspaceToolbar);
@@ -154,16 +161,6 @@ export class Editor extends EditorOrPlayer {
             plugin.onInject();
         }
     }
-    setupElements() {
-        const workspace = (this.rootEl as any).getWorkspace();
-        const sourceView = (this.rootEl as any).shadowRoot.querySelector('#root-view');
-        this.elementsRegistry.set('workspace', workspace);
-        this.elementsRegistry.set('source-view', sourceView);
-
-        this.sourceEditor.onDidCodeChange((code) => {
-            this.setCode(code);
-        });
-    }
     /**
      * TODO: Remove once the editor moved to a better element registry API
      * Ads an element to the old app-element-registry-behavior
@@ -184,7 +181,7 @@ export class Editor extends EditorOrPlayer {
             this.registerWorkspaceViewProvider(new DefaultWorkspaceViewProvider(this));
         }
     }
-    inject(element = document.body, before = null) {
+    inject(element = document.body, before? : HTMLElement) {
         if (this.injected) {
             return;
         }
@@ -197,13 +194,13 @@ export class Editor extends EditorOrPlayer {
         }
         this.appendSourceEditor();
         this.appendWorkspaceView();
-        this.setupElements();
         this.output.onInject();
         if (this.workspaceProvider) {
             this.workspaceProvider.onInject();
         }
         this.parts.onInject();
         this.runPluginTask('onInject');
+        this.contentWidgets = new ContentWidgets(this, (this.rootEl as any).widgetLayer);
         this.telemetry.trackEvent({ name: 'ide_opened' });
         if (this._queuedApp) {
             this.load(this._queuedApp);
@@ -409,23 +406,43 @@ export class Editor extends EditorOrPlayer {
         return result.getHTMLElement().getBoundingClientRect();
     }
     addContentWidget(widget : IEditorWidget) {
-        const domNode = widget.getDomNode();
-        domNode.style.position = 'absolute';
-        (this.rootEl as any).widgetLayer.appendChild(domNode);
-        this.layoutContentWidget(widget);
+        if (!this.contentWidgets) {
+            throw new Error('Could not use content widgets: Editor was not injected');
+        }
+        this.contentWidgets.addWidget(widget);
     }
     layoutContentWidget(widget : IEditorWidget) {
-        const position = widget.getPosition();
-        if (position === null) {
-            return;
+        if (!this.contentWidgets) {
+            throw new Error('Could not use content widgets: Editor was not injected');
         }
-        const result = this.querySelector(position);
-        const rect = this.resolvePosition(result);
-        const domNode = widget.getDomNode();
-        domNode.style.transform = `translate(${rect.left}px, ${rect.top}px)`;
+        this.contentWidgets.layoutWidget(widget);
     }
     removeContentWidget(widget : IEditorWidget) {
-        (this.rootEl as any).widgetLayer.removeChild(widget.getDomNode());
+        if (!this.contentWidgets) {
+            throw new Error('Could not use content widgets: Editor was not injected');
+        }
+        this.contentWidgets.removeWidget(widget);
+    }
+    queryElement(selector : string) {
+        return this.querySelector(selector).getHTMLElement();
+    }
+    queryPosition(selector : string) {
+        // Retrieve the result using the usual querying system
+        const root = this.queryEngine.parse(selector);
+        const result = this.queryEngine.resolve(root);
+        // A position is provided, use it
+        if (typeof result.getPosition === 'function') {
+            return result.getPosition();
+        }
+        // Otherwise, generate the position using the DOMRect and alignment
+        const rect = result.getHTMLElement().getBoundingClientRect();
+        let x = rect.left;
+        let y = rect.top;
+        if (root.position) {
+            x += rect.width * (root.position.x || 0) / 100;
+            y += rect.height * (root.position.y || 0) / 100;
+        }
+        return { x, y };
     }
     querySelector(selector : string) {
         return this.queryEngine.query(selector);

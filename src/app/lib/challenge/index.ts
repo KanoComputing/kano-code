@@ -35,6 +35,16 @@ export class Challenge {
                 this.engine.triggerEvent('blockly', { event: e });
             });
         }
+        this.editor.queryEngine.registerTagHandler('alias', (selector) => {
+            if (!selector.id) {
+                throw new Error('Could not find alias: No id provided');
+            }
+            const s = this.engine!.aliases.get(selector.id);
+            if (!s) {
+                throw new Error(`Could not find alias: '${selector.id}' was not registered before`);
+            }
+            return this.editor.querySelector(s);
+        });
     }
     start() {
         if (!this.editor.injected) {

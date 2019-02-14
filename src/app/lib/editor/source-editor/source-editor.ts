@@ -1,5 +1,5 @@
 import { IEvent } from '@kano/common/index.js';
-import { QueryEngine } from '../selector/selector';
+import { QueryEngine } from '../selector/selector.js';
 
 export interface SourceEditor {
     onDidCodeChange : IEvent<string>;

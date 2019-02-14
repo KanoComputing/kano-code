@@ -35,7 +35,7 @@ export function transformLegacyDOMPart(type : string, app : any) {
                 block.setAttribute('type', `${id}_moveTo`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#ui_show_hide"]`, (block) => {
-                block.setAttribute('type', `set_${id}_opacity`);
+                block.setAttribute('type', `${id}_opacity_set`);
                 const field = block.querySelector('field[name="VISIBILITY"]');
                 if (!field) {
                     return;
@@ -64,16 +64,16 @@ export function transformLegacyDOMPart(type : string, app : any) {
                 block.appendChild(value);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#ui_x"]`, (block) => {
-                block.setAttribute('type', `get_${id}_x`);
+                block.setAttribute('type', `${id}_x_get`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#ui_y"]`, (block) => {
-                block.setAttribute('type', `get_${id}_y`);
+                block.setAttribute('type', `${id}_y_get`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#ui_size"]`, (block) => {
-                block.setAttribute('type', `get_${id}_scale`);
+                block.setAttribute('type', `${id}_scale_get`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#ui_rotation"]`, (block) => {
-                block.setAttribute('type', `get_${id}_rotation`);
+                block.setAttribute('type', `${id}_rotation_get`);
             });
         });
         const serializer = new XMLSerializer();

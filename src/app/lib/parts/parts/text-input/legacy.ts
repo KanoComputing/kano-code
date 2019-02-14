@@ -11,16 +11,16 @@ export function transformLegacyTextInput(app : any) {
         LegacyUtil.forEachPart(app, 'text-input', ({ id }) => {
             LegacyUtil.transformBlock(root, `block[type="${id}#input_text_set_value"]`, (block) => {
                 LegacyUtil.renameValue(block, 'INPUT', 'VALUE');
-                block.setAttribute('type', `set_${id}_value`);
+                block.setAttribute('type', `${id}_value_set`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#input_text_get_value"]`, (block) => {
-                block.setAttribute('type', `get_${id}_value`);
+                block.setAttribute('type', `${id}_value_get`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#input_text_set_placeholder"]`, (block) => {
-                block.setAttribute('type', `set_${id}_placeholder`);
+                block.setAttribute('type', `${id}_placeholder_set`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#input_text_get_placeholder"]`, (block) => {
-                block.setAttribute('type', `get_${id}_placeholder`);
+                block.setAttribute('type', `${id}_placeholder_get`);
             });
             LegacyUtil.transformEventBlock(root, `${id}.input-keyup`, `${id}_onChange`, 'CALLBACK');
         });

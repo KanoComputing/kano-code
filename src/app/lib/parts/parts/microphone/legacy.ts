@@ -15,9 +15,9 @@ export function transformLegacyMicrophone(app : any) {
                 return;
             }
             if (field.textContent === 'volume') {
-                block.setAttribute('type', `get_${id}_volume`);
+                block.setAttribute('type', `${id}_volume_get`);
             } else {
-                block.setAttribute('type', `get_${id}_pitch`);
+                block.setAttribute('type', `${id}_pitch_get`);
             }
             block.removeChild(field);
         });

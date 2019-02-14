@@ -8,7 +8,7 @@ export function transformLegacyTerminal(app : any) {
         }
         LegacyUtil.forEachPart(app, 'terminal', ({ id }) => {
             LegacyUtil.transformBlock(root, `block[type="${id}#toggle_on_off"]`, (block) => {
-                block.setAttribute('type', `set_${id}_visible`);
+                block.setAttribute('type', `${id}_visible_set`);
                 LegacyUtil.transformField(block, 'TOGGLE', (_, content) => {
                     return {
                         name: 'VISIBLE',

@@ -10,17 +10,17 @@ export function transformLegacyButton(app : any) {
     if (root) {
         LegacyUtil.forEachPart(app, 'button', ({ id }) => {
             LegacyUtil.transformBlock(root, `block[type="${id}#set_label"]`, (block) => {
-                block.setAttribute('type', `set_${id}_label`);
+                block.setAttribute('type', `${id}_label_set`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#get_label"]`, (block) => {
-                block.setAttribute('type', `get_${id}_label`);
+                block.setAttribute('type', `${id}_label_get`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#set_background_colour"]`, (block) => {
-                block.setAttribute('type', `set_${id}_background`);
+                block.setAttribute('type', `${id}_background_set`);
                 LegacyUtil.renameValue(block, 'COLOUR', 'BACKGROUND');
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#set_text_colour"]`, (block) => {
-                block.setAttribute('type', `set_${id}_color`);
+                block.setAttribute('type', `${id}_color_set`);
                 LegacyUtil.renameValue(block, 'COLOUR', 'COLOR');
             });
             LegacyUtil.transformEventBlock(root, `${id}.clicked`, `${id}_onClick`, 'CALLBACK');

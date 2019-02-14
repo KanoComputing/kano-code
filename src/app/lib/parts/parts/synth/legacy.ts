@@ -8,7 +8,7 @@ export function transformLegacySynth(app : any) {
     if (root) {
         LegacyUtil.forEachPart(app, 'synth', ({ id }) => {
             LegacyUtil.transformBlock(root, `block[type="${id}#synth_set_volume"]`, (block) => {
-                block.setAttribute('type', `set_${id}_volume`);
+                block.setAttribute('type', `${id}_volume_set`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#synth_play_frequency_for"]`, (block) => {
                 block.setAttribute('type', `${id}_playFrequency`);
@@ -22,11 +22,11 @@ export function transformLegacySynth(app : any) {
                 block.setAttribute('type', `${id}_stop`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#synth_set_frequency"]`, (block) => {
-                block.setAttribute('type', `set_${id}_pitch`);
+                block.setAttribute('type', `${id}_pitch_set`);
                 LegacyUtil.renameValue(block, 'FREQUENCY', 'PITCH');
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#synth_set_wave"]`, (block) => {
-                block.setAttribute('type', `set_${id}_wave`);
+                block.setAttribute('type', `${id}_wave_set`);
                 const field = block.querySelector('field[name="WAVE"]');
                 if (!field) {
                     return;

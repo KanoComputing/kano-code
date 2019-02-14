@@ -7,6 +7,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         targetBlock() : Block;
         targetConnection : Connection;
         sourceBlock_ : Block;
+        getSourceBlock() : Block;
     }
     class Input {
         name : string;
@@ -32,6 +33,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getInput(n : string) : Input|null;
         removeInput(n : string) : void;
         isShadow() : boolean;
+        getParent() : Block|null;
         nextConnection? : Connection;
         previousConnection? : Connection;
         RTL : boolean;
@@ -80,6 +82,9 @@ declare module '@kano/kwc-blockly/blockly.js' {
     }
     const goog : any;
     const utils : {
+        genUid : {
+            soup_ : string;
+        };
         getViewportBBox() : any;
         createSvgElement(tag : string, props? : any, parent? : SVGElement|null) : SVGElement;
     }

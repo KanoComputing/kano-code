@@ -1,12 +1,21 @@
 import Challenge from 'challenge-engine/definition.js';
 import { Workspace, Block, Blockly } from '@kano/kwc-blockly/blockly.js';
+import { Editor } from '../editor/editor.js';
+import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
+import { IQueryResult } from '../editor/selector/selector.js';
 
 class BlocklyChallenge extends Challenge {
+    protected editor : Editor;
     protected workspace : Workspace;
     protected eventsMap : { [K : string] : string };
-    constructor(workspace : Workspace) {
+    public aliases : Map<string, string> = new Map();
+    constructor(editor : Editor) {
         super();
-        this.workspace = workspace;
+        this.editor = editor;
+        if (this.editor.sourceType !== 'blockly') {
+            throw new Error('Cannot use a blockly challenge with non-blockly editor');
+        }
+        this.workspace = (editor.sourceEditor as BlocklySourceEditor).getWorkspace();
         this.eventsMap = {
             move: 'connect',
             change: 'value',
@@ -239,11 +248,10 @@ class BlocklyChallenge extends Challenge {
         }
         return null;
     }
-    _matchCategory(validation : any, event : any) {
-        if (validation.value) {
-            validation = validation.value;
-        }
-        return event.categoryId === validation;
+    _matchCategory(validation : string, event : any) {
+        const result = this.editor.querySelector(validation);
+        const id = result.getId();
+        return event.categoryId === id;
     }
     _matchBlockType(type : string, event : any) {
         return event.xml.getAttribute('type') === type;
@@ -265,13 +273,14 @@ class BlocklyChallenge extends Challenge {
         return true;
     }
     _matchCreate(validation : any, event : any) {
-        const type = this.getBlockType(validation);
+        const result = this.editor.querySelector(validation.type);
+        const type = result.getId();
         // Check the type of the added block
         if (this._matchBlockType(type, event)) {
             // The new block created is added to the step, using its
             // step id for further reference
-            if (validation.id) {
-                this.addToStore('blocks', validation.id, event.blockId);
+            if (validation.alias) {
+                this.aliases.set(validation.alias, `block#${event.blockId}`);
             }
             return true;
         }
@@ -280,24 +289,23 @@ class BlocklyChallenge extends Challenge {
     _matchConnect(validation : any, event : any) {
         // Extract the validation object, target and parent step ids and
         // the block moved
-        let target = this.getTargetBlock(validation.target),
-            parent = this.getTargetBlock(validation.parent);
+        const target = this.editor.querySelector(validation.target).block as Block;
+        const parent = this.editor.querySelector(validation.parent).block as Block;
 
         // Check that the element moved is the one targeted and that its
         // new parent is the right one
         if (target && parent && event.blockId === target.id && event.newParentId === parent.id) {
             let connection;
 
-            if (!validation.parent.inputName || validation.parent.inputName === '@next') {
-                connection = parent.nextConnection;
-            } else {
-                const input = parent.getInput(validation.parent.inputName);
+            if (!validation.connection) {
+                return true;
+            }
 
-                if (input) {
-                    connection = input.connection;
-                } else {
-                    return false;
-                }
+            const input = parent.getInput(validation.connection);
+            if (input) {
+                connection = input.connection;
+            } else {
+                return false;
             }
 
             if (!connection) {
@@ -305,7 +313,7 @@ class BlocklyChallenge extends Challenge {
             }
 
             connection = connection.targetConnection;
-            return (connection.sourceBlock_.id === target.id);
+            return (connection.getSourceBlock().id === target.id);
         }
         return false;
     }
@@ -320,40 +328,46 @@ class BlocklyChallenge extends Challenge {
         return block.blockId === targetId;
     }
     _matchBlocklyValue(validation : any, event : any) {
-        const _block = this.getTargetBlock(validation.target);
-        if (!_block) {
-            return false;
-        }
-        const targetId = _block.id;
-        const eventBlock = this.workspace.getBlockById(event.blockId);
-        if (!eventBlock) {
-            return false;
-        }
-        const block = eventBlock;
-        let failed = false;
-        if (block.id !== targetId) {
-            return false;
-        }
-        const newValue = eventBlock.getFieldValue(event.name);
-        if (validation.minLength &&
-            newValue.length &&
-            newValue.length < validation.minLength) {
-            failed = true;
-        }
-        // Check that
-        // the value is set to the one we expect
-        // We use the double equal to be sure we catch Number/String
-        // parsing
-        if (validation.value) {
-            let {
-                value
-            } = validation;
-            /* eslint eqeqeq: "off" */
-            if (newValue != value) {
-                failed = true;
+
+        const target = this.editor.querySelector(validation.target);
+        const eventBlock = this.workspace.getBlockById(event.blockId)!;
+        const field = eventBlock.getField(event.name);
+
+        function validateSource() {
+            if (target.field) {
+                // Check field directly
+                return target.field === field;
+            } else if (target.block) {
+                // Recursively check the blocks. A matching block return immediately.
+                // A shadow block runs again with its parent
+                function checkBlock(block : Block) : boolean {
+                    // Check this is the block emitting the event
+                    if (target.block === block) {
+                        return true;
+                    }
+                    const parent = block.getParent();
+                    // If the block is shadow go up the chain and try again
+                    if (block.isShadow() && parent) {
+                        return checkBlock(parent);
+                    }
+                    return false;
+                }
+                return checkBlock(eventBlock);
             }
         }
-        return !failed;
+
+        if (validateSource()) {
+            if (validation.value) {
+                // Weak comparison to match numbers too
+                return validation.value == event.newValue;
+            }
+            if (validation.minLength) {
+                return event.newValue.length >= validation.minLength;
+            }
+            return true;
+        }
+
+        return false;
     }
     _validate(validation : any, e : any) : boolean {
         let detail = e.data.event,

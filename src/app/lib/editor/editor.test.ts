@@ -2,7 +2,7 @@ import { Editor } from './editor.js';
 
 suite('Editor', () => {
     suite('#inject', () => {
-        let editor;
+        let editor : Editor;
         setup(() => {
             editor = new Editor();
         });

@@ -5,9 +5,14 @@ export interface ISelector {
     child? : ISelector;
 }
 
+export interface IRootSelector extends ISelector {
+    position? : { x : number, y : number };
+}
+
 export interface IQueryResult {
     [K : string] : any;
     getHTMLElement() : HTMLElement|SVGElement;
+    getPosition?() : { x : number, y : number };
     getId() : any;
 }
 
@@ -17,7 +22,7 @@ export interface ITagHandler {
 
 export class QueryEngine {
     private handlers : Map<string, ITagHandler> = new Map();
-    static parseValue(selector : ISelector, value : string, modifier : string) {
+    static parseValue(selector : ISelector, root : IRootSelector, value : string, modifier : string) {
         if (modifier === '') {
             selector.tag = value;
         } else if (modifier === '#') {
@@ -28,6 +33,14 @@ export class QueryEngine {
             selector.child = {};
             selector = selector.child;
             selector.tag = value;
+        } else if (modifier === ':') {
+            const parts = value.split(',');
+            if (parts.length !== 2) {
+                return selector;
+            }
+            const x = parseFloat(parts[0]);
+            const y = parseFloat(parts[1]);
+            root.position = { x, y };
         }
         return selector;
     }
@@ -35,8 +48,8 @@ export class QueryEngine {
         this.handlers.set(tag, handler);
     }
     parse(input : string) {
-        const reg = /#|>|\./g;
-        const root : ISelector = {};
+        const reg = /#|>|\.|:/g;
+        const root : IRootSelector = {};
         let selector = root;
         let res;
         let value;
@@ -44,13 +57,13 @@ export class QueryEngine {
         let prevModifier = '';
         while ((res = reg.exec(input)) !== null) {
             value = input.substring(prevIndex, res.index);
-            selector = QueryEngine.parseValue(selector, value, prevModifier);
+            selector = QueryEngine.parseValue(selector, root, value, prevModifier);
             prevModifier = res[0];
             prevIndex = reg.lastIndex;
         }
         // Handle the rest of the string
         value = input.substring(prevIndex, input.length);
-        QueryEngine.parseValue(selector, value, prevModifier);
+        QueryEngine.parseValue(selector, root, value, prevModifier);
         return root;
     }
     resolve(selector : ISelector, parent? : IQueryResult) : IQueryResult {

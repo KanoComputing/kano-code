@@ -30,24 +30,49 @@ class EditorProfile extends code.EditorProfile {
 
 const lang = i18n.getLang();
 
-const app = {"source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"app_onStart\" id=\"default_app_onStart\" x=\"118\" y=\"91\"><field name=\"FLASH\"></field><statement name=\"CALLBACK\"><block type=\"set_button_label\" id=\"[a;ncelj8}iL`cD[w?(b\"><value name=\"LABEL\"><shadow type=\"text\" id=\"fy6tFa1d;7A|y.{6oBT$\"><field name=\"TEXT\">Challenge 1</field></shadow></value></block></statement></block><block type=\"button_onClick\" id=\"inmW{Pq9h87UV=%EVAVj\" x=\"117\" y=\"192\"><field name=\"FLASH\"></field></block></xml>","code":"app.onStart(function() {\n  button.label = 'Challenge 1';\n\n});\n\nbutton.onClick(function() {\n\n});\n","parts":[{"type":"button","id":"button","name":"Button"}]};
-
+const app = {"source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"app_onStart\" id=\"default_app_onStart\" x=\"118\" y=\"91\"><field name=\"FLASH\"></field><statement name=\"CALLBACK\"><block type=\"button_background_set\" id=\"bpN^4*Dg-KXuv,l*vOxD\"><value name=\"BACKGROUND\"><shadow type=\"colour_picker\" id=\"Nm8-O4aePXTld$G%G2Tr\"><field name=\"COLOUR\">#01579B</field></shadow></value></block></statement></block><block type=\"button_onClick\" id=\"Dhl_@,ICJMrobV3oBJWR\" x=\"117\" y=\"222\"><field name=\"FLASH\"></field></block></xml>","code":"app.onStart(function() {\n  button.background = '#01579B';\n\n});\n\nbutton.onClick(function() {\n\n});\n","parts":[{"type":"button","id":"button","name":"Button"}]};
 const challengeData = {
     defaultApp: JSON.stringify(app),
     steps: [{
-        banner: 'Welcome to your first challenge',
-        beacon: 'default-part#button>toolbox',
+        beacon: 'part#button>toolbox:100,50',
         validation: {
             blockly: {
-                'open-flyout': 'default-part#button',
+                'open-flyout': 'part#button',
             },
         },
     }, {
-        banner: 'Here is a beacon',
-        beacon: 'default-part#button>toolbox>block#onClick',
+        beacon: 'part#button>flyout-block.label_set',
+        validation: {
+            blockly: {
+                create: {
+                    type: 'part#button>flyout-block.label_set',
+                    alias: 'set_back',
+                },
+            },
+        },
     }, {
-        banner: 'Here is a beacon',
-        beacon: 'default-block#default_app_onStart',
+        beacon: 'part#button>block.onClick',
+        validation: {
+            blockly: {
+                connect: {
+                    parent: 'part#button>block.onClick',
+                    connection: 'CALLBACK',
+                    target: 'alias#set_back',
+                },
+            },
+        },
+    }, {
+        beacon: 'alias#set_back',
+        validation: {
+            blockly: {
+                value: {
+                    target: 'alias#set_back',
+                    value: 'Lol'
+                },
+            },
+        },
+    }, {
+        banner: 'Done',
     }],
 };
 

@@ -11,10 +11,10 @@ export function transformLegacyText(app : any) {
         LegacyUtil.forEachPart(app, 'text', ({ id }) => {
             LegacyUtil.transformBlock(root, `block[type="${id}#set_value"]`, (block) => {
                 LegacyUtil.renameValue(block, 'INPUT', 'VALUE');
-                block.setAttribute('type', `set_${id}_value`);
+                block.setAttribute('type', `${id}_value_set`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#get_text"]`, (block) => {
-                block.setAttribute('type', `get_${id}_value`);
+                block.setAttribute('type', `${id}_value_set`);
             });
         });
         const serializer = new XMLSerializer();

@@ -1,10 +1,13 @@
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
 import { SourceEditor } from './source-editor.js';
 import '../../../elements/kc-blockly-editor/kc-blockly-editor.js';
-import { Workspace, Block, Input } from '@kano/kwc-blockly/blockly.js';
+import { Workspace, Block, Input, utils } from '@kano/kwc-blockly/blockly.js';
 import Editor from '../editor.js';
 import { QueryEngine, ISelector, IQueryResult } from '../selector/selector.js';
 import { memoize } from '../../util/decorators.js';
+
+// Exclude those characters. This will allow the editor's quirying system to query block ids
+utils.genUid.soup_ = utils.genUid.soup_.replace(/#|>|\.|:/g, '');
 
 export class BlocklySourceEditor implements SourceEditor {
     private editor : Editor;
@@ -41,12 +44,13 @@ export class BlocklySourceEditor implements SourceEditor {
         return (this.domNode as any).getBlocklyWorkspace();
     }
     registerQueryHandlers(engine: QueryEngine) {
-        engine.registerTagHandler('default-block', (selector : ISelector) => {
+        engine.registerTagHandler('block', (selector : ISelector, parent) => {
             if (selector.id) {
                 const workspace = this.getWorkspace();
-                const block = workspace.getBlockById(selector.id);
+                const id = selector.id;
+                const block = workspace.getBlockById(id);
                 if (!block) {
-                    throw new Error(`Could not find block with id '${selector.id}'`);
+                    throw new Error(`Could not find block with id '${id}'`);
                 }
                 return {
                     block,
@@ -57,11 +61,16 @@ export class BlocklySourceEditor implements SourceEditor {
                     },
                 };
             } else if (selector.class) {
+                let scope = '';
+                if (parent) {
+                    scope = `${parent.getId()}_`;
+                }
                 const workspace = this.getWorkspace();
                 const allBlocks = workspace.getAllBlocks();
-                const block = allBlocks.find(b => b.type === selector.class);
+                const type = `${scope}${selector.class}`;
+                const block = allBlocks.find(b => b.type === type);
                 if (!block) {
-                    throw new Error(`Could not find block with type '${selector.class}'`);
+                    throw new Error(`Could not find block with type '${type}'`);
                 }
                 return {
                     block,
@@ -98,7 +107,7 @@ export class BlocklySourceEditor implements SourceEditor {
                 },
             };
         });
-        engine.registerTagHandler('block', (selector : ISelector, parent? : IQueryResult) => {
+        engine.registerTagHandler('flyout-block', (selector : ISelector, parent? : IQueryResult) => {
             let scope : string = '';
             if (!parent) {
                 // Handle aliases
@@ -126,14 +135,17 @@ export class BlocklySourceEditor implements SourceEditor {
                     };
                 } else if (selector.class) {
                     const workspace = this.getWorkspace();
-                    const block = this.getBlockByType(workspace, selector.class);
+                    const flyout = workspace.toolbox.flyout_;
+                    if (!flyout) {
+                        throw new Error('Could not find block in flyout: No flyout is opened');
+                    }
+                    const block = flyout.getBlockByType(`${scope}_${selector.class}`);
                     if (!block) {
-                        throw new Error(`Could not find block with type '${selector.class}'`);
+                        throw new Error(`Could not find block ${selector.class}`);
                     }
                     return {
                         block,
-                        getId() { return block.id },
-                        getBlock() { return block; },
+                        getId() { return `${scope}_${selector.class}`; },
                         getHTMLElement() {
                             return block.getSvgRoot();
                         },

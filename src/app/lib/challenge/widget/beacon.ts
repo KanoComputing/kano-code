@@ -10,7 +10,7 @@ export class BeaconWidget implements IEditorWidget {
         }
         return this.domNode;
     }
-    setPosition(p : string) {
+    setPosition(p : string|null) {
         this.position = p;
     }
     getPosition() {

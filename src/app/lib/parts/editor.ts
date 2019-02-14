@@ -316,7 +316,7 @@ export class EditorPartsManager {
         });
     }
     registerQueryHandlers(engine : QueryEngine) {
-        engine.registerTagHandler('default-part', (selector) => {
+        engine.registerTagHandler('part', (selector) => {
             if (selector.id) {
                 const partRecord = this.parts.get(selector.id);
                 const { partsControls } = this.editor.workspaceView!;
@@ -335,13 +335,6 @@ export class EditorPartsManager {
                         return node;
                     },
                 };
-            }
-            throw new Error('Could not query part: Neither id nor class defined');
-        });
-        // part can look for part aliases or apis
-        engine.registerTagHandler('part', (selector) => {
-            if (selector.id) {
-                // Handle aliases
             } else if (selector.class) {
                 const api = this.apiRegistry.get(selector.class);
                 if (!api) {

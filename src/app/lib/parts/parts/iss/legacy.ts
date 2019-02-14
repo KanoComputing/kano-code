@@ -15,9 +15,9 @@ export function transformLegacyISS(app : any) {
                     return;
                 }
                 if (keyField.textContent === 'latitude') {
-                    block.setAttribute('type', `get_${id}_latitude`);
+                    block.setAttribute('type', `${id}_latitude_get`);
                 } else if (keyField.textContent === 'longitude') {
-                    block.setAttribute('type', `get_${id}_longitude`);
+                    block.setAttribute('type', `${id}_longitude_get`);
                 }
                 block.removeChild(keyField);
             });

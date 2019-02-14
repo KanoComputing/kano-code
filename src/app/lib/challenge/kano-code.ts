@@ -1,7 +1,5 @@
 import BlocklyChallenge from './blockly.js';
 import { Editor } from '../editor/editor.js';
-import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
-import { KCEditorBanner } from '../../elements/kano-editor-banner/kano-editor-banner.js';
 import { BannerWidget } from './widget/banner.js';
 import { BeaconWidget } from './widget/beacon.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
@@ -13,7 +11,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     protected editor : Editor;
     protected widgets : Map<string, IEditorWidget> = new Map();
     constructor(editor : Editor) {
-        super((editor.sourceEditor as BlocklySourceEditor).getWorkspace());
+        super(editor);
         this.editor = editor;
         this.addValidation('add-part', this.matchAddPart);
         this.addValidation('trigger', this.matchTrigger);
@@ -30,15 +28,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
 
         this.defineBehavior('banner', this.displayBanner.bind(this), this.hideBanner.bind(this));
         this.defineBehavior('beacon', this.displayBeacon.bind(this), this.hideBeacon.bind(this));
-
-        this.definePropertyProcessor([
-            'validation.blockly.open-flyout',
-            'validation.blockly.close-flyout',
-            'validation.blockly.create.type',
-        ], (v : string) => {
-            const result = this.editor.querySelector(v);
-            return result.getId();
-        });
 
         // TODO: dispose cycle
         this.workspace.addChangeListener(() => {
