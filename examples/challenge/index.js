@@ -52,11 +52,11 @@ const challengeData = {
         },
     }, {
         beacon: 'part#button>block.onClick',
+        phantom_block: 'part#button>block.onClick>input#CALLBACK',
         validation: {
             blockly: {
                 connect: {
-                    parent: 'part#button>block.onClick',
-                    connection: 'CALLBACK',
+                    parent: 'part#button>block.onClick>input#CALLBACK',
                     target: 'alias#set_back',
                 },
             },
@@ -80,14 +80,14 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
     .then(() => {
         const editor = new code.Editor();
 
-        const challenge = new Challenge(editor, challengeData);
-
         editor.registerProfile(new EditorProfile());
 
         editor.inject(document.body);
 
-        setTimeout(() => {
-            challenge.start();
-        });
-
+        fetch('/assets/stories/locales/en-US/hoc_02/steps.json')
+            .then(r => r.json())
+            .then(c => {
+                const challenge = new Challenge(editor, c);
+                challenge.start();
+            });
     });

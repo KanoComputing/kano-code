@@ -29,6 +29,8 @@ export class ContentWidgets {
         const p = this.editor.queryPosition(position);
         const domNode = widget.getDomNode();
         domNode.style.transform = `translate(${p.x}px, ${p.y}px)`;
+        // TODO: This is a hack to display widgets over dialogs. Implement a dialog tracker in the dialogs module and use it to query the highest z-index
+        domNode.style.zIndex = '200';
     }
     removeWidget(widget : IEditorWidget) {
         this.domNode.removeChild(widget.getDomNode());

@@ -4,6 +4,8 @@ import '../kano-circle-progress/kano-circle-progress.js';
 import { LitElement, css, html, customElement, property } from 'lit-element/lit-element.js';
 import { templateContent } from '../../lib/directives/template-content.js';
 import { button } from '@kano/styles/button.js';
+import '../kano-blockly-block/kano-blockly-block.js';
+import './kano-value-preview.js';
 
 @customElement('kc-editor-banner')
 export class KCEditorBanner extends LitElement {
@@ -18,25 +20,31 @@ export class KCEditorBanner extends LitElement {
     @property({ type: Boolean })
     showSaveButton : boolean = false;
     @property({ type: String })
-    buttonState : 'active'|'inactive'|'hidden' = 'hidden';
+    buttonState : 'active'|'inactive'|'hidden' = 'inactive';
     static get styles() {
         return [css`
+            @keyframes pop-in {
+                0% {
+                    transform: scale(1, 1);
+                }
+                50% {
+                    transform: scale(1.1, 1.1);
+                }
+                100% {
+                    transform: scale(1.0, 1.0);
+                }
+            }
             :host {
                 position: relative;
                 display: flex;
-                flex-direction: row;
-                align-items: flex-start;
+                flex-direction: column;
+                align-items: stretch;
                 padding: 16px;
-                display: block;
                 background: white;
                 box-sizing: border-box;
-            }
-            .container {
-                display: flex;
-                flex-wrap: wrap;
-            }
-            .avatar {
-                margin-bottom: 10px;
+                border-radius: 6px;
+                box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+                animation: pop-in 200ms linear 1;
             }
             .content {
                 flex: 1;
@@ -47,9 +55,7 @@ export class KCEditorBanner extends LitElement {
                 box-sizing: border-box;
                 font-family: var(--font-body);
                 font-size: 16px;
-                color: #414a51;
-                margin-bottom: 10px;
-                margin-right: 10px;
+                color: #22272D;
                 min-width: 200px;
                 display: inline-block;
             }
@@ -73,8 +79,9 @@ export class KCEditorBanner extends LitElement {
                 flex-basis: 0.000000001px;
             }
             .buttons {
-                display: block;
-                margin-left: 56px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
             }
             .button {
                 opacity: 0;
@@ -123,89 +130,47 @@ export class KCEditorBanner extends LitElement {
                 max-height: 18px;
                 transform: translateY(4px);
             }
-            .button paper-spinner-lite {
-                --paper-spinner-color: white;
-                --paper-spinner-stroke-width: 2px;
-
-                width: 18px;
-                height: 18px;
-                display: block;
-                margin: 0px 7px;
-            }
-            kwc-button.active paper-spinner-lite {
-                display: none;
-            }
-            kwc-button.hidden {
-                display: none;
-            }
             .button.inactive {
                 filter: grayscale(100%);
                 cursor: wait;
             }
-            kano-circle-progress {
-                margin-right: 16px;
-                height: 40px;
-                width: 40px;
-                --kano-circle-progress: {
-                    stroke: #fec02d;
-                };
-                --kano-circle-progress-back: {
-                    stroke: var(--color-porcelain);
-                };
-            }
-            button, kano-glint-animation {
-                align-self: center;
-            }
-            .undo-redo button {
-                border: none;
-                outline: none;
-                cursor: no-drop;
-                padding: 3px 5px;
-                transition: all 300ms;
-                color: #d2d6d8;
-            }
-            .undo-redo button.active {
-                color: #9fa4a8;
-                cursor: pointer;
-            }
-            .undo-redo button.active:hover {
-                color: var(--color-orange, #ff2800);
-            }
-            .undo-redo {
-                margin: auto;
-            }
             #banner-button {
-                height: 38px;
+                background: transparent;
+                color: black;
+                padding: 0px;
+                font-size: 16px;
             }
             #banner-button-container {
                 display: inline-block;
+            }
+            #banner-button.hidden {
+                display: none;
+            }
+            #banner-button:disabled {
+                opacity: 0.5;
+                background: transparent !important;
             }
         `];
     }
     render() {
         return html`
         ${templateContent(button)}
-        <div class="container">
-            <div class="avatar">
-                <kano-circle-progress radius="40" stroke-width="7" .value=${this.progress} ></kano-circle-progress>
-            </div>
-            <div class="content">
-                <div class="text">
-                    ${this.head.length ? this.headEl : ''}
-                    <div class="body">
-                        <marked-element .markdown=${this.text}>
-                            <div class="markdown-html" slot="markdown-html"></div>
-                        </marked-element>
-                    </div>
+        <div class="content">
+            <div class="text">
+                ${this.head.length ? this.headEl : ''}
+                <div class="body">
+                    <marked-element .markdown=${this.text}>
+                        <div class="markdown-html" slot="markdown-html"></div>
+                    </marked-element>
                 </div>
             </div>
         </div>
-            <div class="buttons">
+        <div class="buttons">
             <button class="btn" id="banner-save-button" @click=${this._saveTapped} hidden=${!this.showSaveButton}>
                 Save
             </button>
             <div id="banner-button-container">
-                <button id="banner-button" class="btn ${this.buttonState || 'hidden'}" @click=${this._buttonTapped} variant="primary">
+                <button id="banner-button" class="btn ${this.buttonState || 'hidden'}" @click=${this._buttonTapped} ?disabled=${this.buttonState === 'inactive'}>
                     ${this.buttonLabel}
                 </button>
             </div>

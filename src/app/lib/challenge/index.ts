@@ -1,6 +1,7 @@
 import { Editor } from '../editor/editor.js';
 import { KanoCodeChallenge } from './kano-code.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
+import { transformChallenge } from './legacy.js';
 
 interface IChallengeData {
     steps : any[];
@@ -13,6 +14,8 @@ export class Challenge {
     private engine? : KanoCodeChallenge;
     constructor(editor : Editor, challengeData : IChallengeData) {
         this.editor = editor;
+        // Take care of legacy challenges
+        transformChallenge(challengeData);
         this.challengeData = challengeData;
         if (this.editor.injected) {
             this.onInject();
@@ -44,6 +47,25 @@ export class Challenge {
                 throw new Error(`Could not find alias: '${selector.id}' was not registered before`);
             }
             return this.editor.querySelector(s);
+        });
+        this.editor.queryEngine.registerTagHandler('banner-button', (selector) => {
+            const widget = this.engine!.widgets.get('banner');
+            if (!widget) {
+                throw new Error('Could not query banner button: Banner is not displayed');
+            }
+            const domNode = widget.getDomNode();
+            const bannerEl = domNode.querySelector('kc-editor-banner');
+            if (!bannerEl) {
+                throw new Error('Could not query banner button: Banner element does not exists');
+            }
+            return {
+                getHTMLElement() {
+                    return bannerEl.shadowRoot!.querySelector('#banner-button') as HTMLElement;
+                },
+                getId() {
+                    return 'banner-button';
+                }
+            };
         });
     }
     start() {

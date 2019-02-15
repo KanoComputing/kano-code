@@ -8,6 +8,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         targetConnection : Connection;
         sourceBlock_ : Block;
         getSourceBlock() : Block;
+        x_ : number;
+        y_ : number;
     }
     class Input {
         name : string;
@@ -37,6 +39,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         nextConnection? : Connection;
         previousConnection? : Connection;
         RTL : boolean;
+        svgPath_ : SVGPathElement;
+        getRelativeToSurfaceXY() : { x : number, y : number };
     }
     class Field {
         protected width_ : number;
@@ -44,7 +48,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         protected size_ : any;
         protected text_ : string;
         protected tooltip_ : string;
-        protected fieldGroup_ : SVGElement|null;
+        public fieldGroup_ : SVGElement|null;
         protected borderRect_ : SVGElement|null;
         protected visible_ : boolean;
         protected sourceBlock_ : Block;

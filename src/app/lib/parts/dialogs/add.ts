@@ -22,7 +22,10 @@ export class AddPartDialogProvider extends DialogProvider {
     createDom() : any {
         return this.domNode;
     }
-    dispoe() {
+    getPartButton(type : string) {
+        return this.domNode.getPartElement(type) as HTMLElement;
+    }
+    dispose() {
         super.dispose();
         this._clickSub.dispose();
     }

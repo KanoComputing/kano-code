@@ -14,7 +14,7 @@ import '../kano-tooltip/kano-tooltip.js';
 import '../kano-arrow/kano-arrow.js';
 import '../kano-blockly-block/kano-blockly-block.js';
 import '../kano-highlight/kano-highlight.js';
-import '../kano-value-preview/kano-value-preview.js';
+import '../kano-editor-banner/kano-value-preview.js';
 import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import '../behaviors/kano-blockly-validator-behavior.js';
 import { I18nBehavior } from '../behaviors/kano-i18n-behavior.js';

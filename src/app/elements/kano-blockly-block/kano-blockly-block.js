@@ -5,7 +5,6 @@ import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
 Polymer({
     _template: html`
-        <style include="kwc-blockly-style"></style>
         <style>
             :host {
                 display: block;
@@ -50,11 +49,8 @@ Polymer({
         if (!this.ws) {
             this._createWorskspace();
         }
-        let cat, 
-colour, 
-xml, 
-extraArgs = '';
-        xml = Blockly.Xml.textToDom(`<xml><block type="${type}" ${extraArgs}></block></xml>`);
+        let extraArgs = '';
+        const xml = Blockly.Xml.textToDom(`<xml><block type="${type}" ${extraArgs}></block></xml>`);
         this.ws.clear();
         this.ws.scale = 0.9;
         this.async(() => {

@@ -7,6 +7,8 @@ export class BeaconWidget implements IEditorWidget {
     getDomNode() {
         if (!this.domNode) {
             this.domNode = new KCBeacon();
+            this.domNode.style.pointerEvents = 'none';
+            this.domNode.style.transition = 'transform linear 50ms';
         }
         return this.domNode;
     }

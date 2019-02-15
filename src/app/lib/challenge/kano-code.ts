@@ -3,13 +3,16 @@ import { Editor } from '../editor/editor.js';
 import { BannerWidget } from './widget/banner.js';
 import { BeaconWidget } from './widget/beacon.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
+import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
+import { Part } from '../parts/part.js';
 
 // TODO: Use Symbol('store) instead
 const PARTS_STORE = 'parts';
 
 export class KanoCodeChallenge extends BlocklyChallenge {
     protected editor : Editor;
-    protected widgets : Map<string, IEditorWidget> = new Map();
+    public widgets : Map<string, IEditorWidget> = new Map();
+    private _beaconSub? : IDisposable;
     constructor(editor : Editor) {
         super(editor);
         this.editor = editor;
@@ -33,18 +36,28 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.workspace.addChangeListener(() => {
             this.widgets.forEach((w) => this.editor.layoutContentWidget(w));
         });
+
+        this.editor.parts.onDidOpenAddParts(() => {
+            this.triggerEvent('open-parts');
+        });
+        this.editor.parts.onDidAddPart((part) => {
+            this.triggerEvent('add-part', part);
+        });
     }
     displayBanner(data : any) {
         const widget = new BannerWidget(this.editor);
         widget.onDidClick(() => this.nextStep());
         let text;
+        let nextButton = false;
         if (typeof data === 'string') {
             text = data;
-        } else {
-            text = '';
+        } else if (typeof data.text === 'string') {
+            text = data.text;
+            nextButton = !!data.nextButton;
         }
         widget.setData({
             text,
+            nextButton,
         });
         widget.show();
         this.widgets.set('banner', widget);
@@ -60,17 +73,26 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         if (typeof data !== 'string') {
             throw new Error('Beacon prop must be a string');
         }
-        const widget = new BeaconWidget();
-        widget.setPosition(data);
-        this.editor.addContentWidget(widget);
-        this.widgets.set('beacon', widget);
+        // Create beacon with a delay, this is nicer visually. 
+        // TODO: Get notified when the scroll ends and update layout then.
+        this._beaconSub = subscribeTimeout(() => {
+            const widget = new BeaconWidget();
+            widget.setPosition(data);
+            this.editor.addContentWidget(widget);
+            this.widgets.set('beacon', widget);
+        }, 300);
     }
     hideBeacon() {
+        // If a beacon is queud for display, cancel the timeout
+        if (this._beaconSub) {
+            this._beaconSub.dispose();
+        }
         const widget = this.widgets.get('beacon');
         if (!widget) {
             return;
         }
         this.editor.removeContentWidget(widget);
+        this.widgets.delete('beacon');
     }
     _getOpenPartsDialogStep(data : any) {
         return {
@@ -192,19 +214,19 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     matchTool(validation : any, event : any) {
         return validation.tool === event.tool;
     }
-    matchAddPart(validation : any, event : any) {
+    matchAddPart(validation : any, event : { data : Part }) {
         // Check the type of the added part
-        if (!this.matchPartType(validation, event)) {
+        if (!this.matchPartType(validation, event.data)) {
             return false;
         }
         // If an id is provided, save the id of the added part
-        if (validation.id) {
-            this.addToStore(PARTS_STORE, validation.id, event.data.part.id);
+        if (validation.alias) {
+            this.aliases.set(validation.alias, `part#${event.data.id}`);
         }
         return true;
     }
-    matchPartType(validation : any, event : any) {
-        return validation.type === event.data.part.type;
+    matchPartType(validation : any, part : Part) {
+        return validation.type === (part.constructor as any).type;
     }
     matchSettingsInteraction(validation : any, event : any) {
         return validation.setting === event.setting;

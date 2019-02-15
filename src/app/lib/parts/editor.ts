@@ -1,4 +1,4 @@
-import { IDisposable } from '@kano/common/index.js';
+import { IDisposable, EventEmitter } from '@kano/common/index.js';
 import { AddPartDialogProvider } from './dialogs/add.js';
 import { PartContructor } from './manager.js';
 import { memoize } from '../util/decorators.js';
@@ -26,6 +26,10 @@ export class EditorPartsManager {
     private parts : Map<string, IPartRecord> = new Map();
     private names : Set<string> = new Set();
     private _telemetry : TelemetryClient = new TelemetryClient({ scope: 'parts' });
+    private _onDidOpenAddParts : EventEmitter = new EventEmitter();
+    private _onDidAddPart : EventEmitter<Part> = new EventEmitter();
+    get onDidOpenAddParts() { return this._onDidOpenAddParts.event; };
+    get onDidAddPart() { return this._onDidAddPart.event; };
     constructor(editor : Editor) {
         this.editor = editor;
         this.editor.output.parts.managed = true;
@@ -62,6 +66,7 @@ export class EditorPartsManager {
             // Update the dialog and open it
             this.addDialogProvider.setParts(partInfos);
             this.addDialog.open();
+            this._onDidOpenAddParts.fire();
         });
         partsControls.onDidClickRemovePart((id : string) => {
             this.removePartAttempt(id);
@@ -193,6 +198,7 @@ export class EditorPartsManager {
         if (api.onInstall) {
             api.onInstall(this.editor, part);
         }
+        this._onDidAddPart.fire(part);
         return partRecord;
     }
     removePartAttempt(id : string) {
@@ -343,12 +349,25 @@ export class EditorPartsManager {
                 return {
                     api,
                     getId() { return api.type; },
-                    getHTMLElement() {
-                        return document.createElement('div');
+                    getHTMLElement: () => {
+                        return this.addDialogProvider.getPartButton(api.type);
                     },
                 };
             }
             throw new Error('Could not query part: Neither id nor class defined');
+        });
+        engine.registerTagHandler('add-part-button', () => {
+            return {
+                getHTMLElement: () => {
+                    if (!this.editor || !this.editor.workspaceView || !this.editor.workspaceView.partsControls) {
+                        throw new Error('Could not query add part button: Editor is not setup');
+                    }
+                    return this.editor.workspaceView.partsControls.addPartsButton as HTMLElement;
+                },
+                getId() {
+                    return 'add-part-button';
+                },
+            };
         });
     }
     dispose() {

@@ -10,15 +10,6 @@ Custom property | Description | Default
 `--kano-circle-progress` | Mixin applied to the circle SVG element | `{}`
 `--kano-circle-progress-back` | Mixin applied to the circle SVG element use as a background | `{}`
 
-
-@group Kano Elements
-@demo ./kano-circle-progress/demo/kano-circle-progress.html
-
-*/
-/*
-  FIXME(polymer-modulizer): the above comments were extracted
-  from HTML and may be out of place here. Review them and
-  then delete this comment!
 */
 import '@polymer/polymer/polymer-legacy.js';
 
@@ -77,13 +68,13 @@ Polymer({
       }
   },
 
-  attached () {
+  attached() {
       this.radius = this.radius || this.offsetWidth;
       this._update();
       this._computeDashoffset(0);
   },
 
-  _computeDashoffset (value) {
+  _computeDashoffset(value) {
       var circle = this.$.circle,
           r = circle.getAttribute('r'),
           c = Math.PI * (r * 2),
@@ -92,7 +83,7 @@ Polymer({
       circle.setAttributeNS(null, 'stroke-dashoffset', (1 - val) * c);
   },
 
-  _update () {
+  _update() {
       var svg = this.$.svg,
           circle = this.$.circle,
           circleFull = this.$$('#circle-full'),

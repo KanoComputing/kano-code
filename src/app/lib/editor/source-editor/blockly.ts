@@ -1,7 +1,7 @@
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
 import { SourceEditor } from './source-editor.js';
 import '../../../elements/kc-blockly-editor/kc-blockly-editor.js';
-import { Workspace, Block, Input, utils } from '@kano/kwc-blockly/blockly.js';
+import { Workspace, Block, Input, utils, Connection, Field } from '@kano/kwc-blockly/blockly.js';
 import Editor from '../editor.js';
 import { QueryEngine, ISelector, IQueryResult } from '../selector/selector.js';
 import { memoize } from '../../util/decorators.js';
@@ -109,8 +109,26 @@ export class BlocklySourceEditor implements SourceEditor {
         });
         engine.registerTagHandler('flyout-block', (selector : ISelector, parent? : IQueryResult) => {
             let scope : string = '';
+            console.log(selector, parent);
             if (!parent) {
-                // Handle aliases
+                if (selector.class) {
+                    const workspace = this.getWorkspace();
+                    const flyout = workspace.toolbox.flyout_;
+                    if (!flyout) {
+                        throw new Error('Could not find block in flyout: No flyout is opened');
+                    }
+                    const block = flyout.getBlockByType(selector.class);
+                    if (!block) {
+                        throw new Error(`Could not find block ${selector.class}`);
+                    }
+                    return {
+                        block,
+                        getId() { return selector.class; },
+                        getHTMLElement() {
+                            return block.getSvgRoot();
+                        },
+                    };
+                }
                 throw new Error('Not implemented');
             } else {
                 if (typeof parent.getToolboxId === 'function') {
@@ -154,33 +172,105 @@ export class BlocklySourceEditor implements SourceEditor {
                 throw new Error('Could not query toolbox. Neither id nor class is defined');
             }
         });
+        // input means input and fields
         engine.registerTagHandler('input', (selector : ISelector, parent? : IQueryResult) => {
             if (!parent || typeof parent.getBlock !== 'function') {
                 throw new Error('Could not query input: Parent selector is not a block');
             }
             const block = parent.getBlock() as Block;
             const id = selector.id || selector.class;
-            let input : Input|null;
+            let input : Input|null = null;
+            let field : Field|null = null;
             if (!id) {
                 input = block.inputList[0];
             } else {
                 input = block.getInput(id.toUpperCase());
+                if (!input) {
+                    field = block.getField(id.toUpperCase());
+                }
             }
-            if (!input) {
-                throw new Error('Could not find input');
+            if (!input && !field) {
+                throw new Error(`Could not find input or field named '${id}'`);
             }
             return {
                 input,
+                field,
                 getId() { return block.id },
-                getInput() { return input },
-                // TODO: This can't get the input location. enhacne the query api to return DOMElement AND rect relative to the element
+                getInput() { return input; },
+                getField() { return field; },
+                getPosition: () => {
+                    const rect = this.getInputPosition(block, id ? id.toUpperCase() : undefined);
+                    return { x: rect.left, y: rect.top };
+                },
                 getHTMLElement() {
                     return input!.sourceBlock_.getSvgRoot();
                 },
             };
         });
+        engine.registerTagHandler('next', (selector : ISelector, parent? : IQueryResult) => {
+            if (!parent || typeof parent.getBlock !== 'function') {
+                throw new Error('Could not query input: Parent selector is not a block');
+            }
+            const block = parent.getBlock() as Block;
+            let connection : Connection|undefined = block.nextConnection;
+            if (!connection) {
+                throw new Error('Could not find input');
+            }
+            return {
+                connection,
+                getId() { return block.id },
+                getConnection() { return connection },
+                getPosition: () => {
+                    const rect = this.getInputPosition(block);
+                    return { x: rect.left, y: rect.top };
+                },
+                getHTMLElement() {
+                    return block.getSvgRoot();
+                },
+            };
+        });
     }
+    getInputPosition(block : Block, name? : string) {
+        let connection,
+            blockRect,
+            blockPos,
+            inputRelPos;
 
+        if (!name) {
+            connection = block.nextConnection;
+        } else {
+            // For positioning, assume input === field
+            const field = block.getField(name);
+            if (field && field.fieldGroup_) {
+                return field.fieldGroup_.getBoundingClientRect();
+            } else {
+                const input = block.getInput(name);
+                if (!input) {
+                    return block.getSvgRoot().getBoundingClientRect();
+                }
+                connection = input.connection;
+            }
+        }
+
+        if (!connection) {
+            return block.getSvgRoot().getBoundingClientRect();
+        }
+        blockRect = block.svgPath_.getBoundingClientRect();
+        blockPos = block.getRelativeToSurfaceXY();
+        inputRelPos = {
+            x: connection.x_ - blockPos.x,
+            y: connection.y_ - blockPos.y,
+        };
+
+        return {
+            left: blockRect.left + inputRelPos.x,
+            top: blockRect.top + inputRelPos.y,
+            right: blockRect.right + blockRect.width - inputRelPos.x,
+            bottom: blockRect.bottom + blockRect.height - inputRelPos.y,
+            width: 1,
+            height: 1,
+        } as DOMRect;
+    }
     getBlockByType(workspace : Workspace, type : string) {
         const allBlocks = workspace.getAllBlocks();
         return allBlocks.find(b => b.type === type);

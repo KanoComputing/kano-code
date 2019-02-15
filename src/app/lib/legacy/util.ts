@@ -47,6 +47,9 @@ export const LegacyUtil = {
         });
     },
     forEachPart(app : any, type : string, callback : (part : any) => void) {
+        if (!app.parts) {
+            return;
+        }
         const part : any[] = app.parts.filter((part : any) => part.type === type);
         part.forEach(callback);
     },

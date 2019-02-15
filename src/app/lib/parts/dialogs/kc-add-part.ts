@@ -56,12 +56,16 @@ export class KCAddPart extends LitElement {
             <div class="parts">
                 ${this.parts.map((part) => html`
                     <kc-add-part-item
-                        label=${part.label}
+                        id=${part.type}
+                        .label=${part.label}
                         style=${styleMap({ '--kc-add-part-item-hover-color': part.color })}
                         @click=${() => this._onClick(part)}>${templateContent(part.icon)}</kc-add-part-item>
                 `)}
             </div>
         `;
+    }
+    getPartElement(type : string) {
+        return this.renderRoot!.querySelector(`#${type}`);
     }
     _onClick(part : IPartAPI) {
         this.dispatchEvent(new CustomEvent('part-click', { detail: part, bubbles: true, composed: true }));

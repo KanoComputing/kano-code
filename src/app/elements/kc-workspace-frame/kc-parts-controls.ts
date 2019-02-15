@@ -156,6 +156,9 @@ export class KCPartsControls extends LitElement {
         </div>
 `;
     }
+    get addPartsButton() {
+        return this.renderRoot!.querySelector('#add-part-button');
+    }
     _addPartClicked() {
         this._onDidClickAddParts.fire();
     }

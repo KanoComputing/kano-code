@@ -1,8 +1,7 @@
 import Challenge from 'challenge-engine/definition.js';
-import { Workspace, Block, Blockly } from '@kano/kwc-blockly/blockly.js';
+import { Workspace, Block, Blockly, Input, Connection } from '@kano/kwc-blockly/blockly.js';
 import { Editor } from '../editor/editor.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
-import { IQueryResult } from '../editor/selector/selector.js';
 
 class BlocklyChallenge extends Challenge {
     protected editor : Editor;
@@ -44,20 +43,10 @@ class BlocklyChallenge extends Challenge {
         this.defineShorthand('change-input', this._changeInputShorthand.bind(this));
 
         this.defineBehavior('phantom_block', this._onPhantomBlockEnter.bind(this), this._onPhantomBlockLeave);
-
-        this.createStore('blocks');
     }
     _updateStep() {
         super._updateStep();
         Blockly.WidgetDiv.hide();
-    }
-    _processBlock(block : any) {
-        if (block.id) {
-            block.id = this.getFromStore('blocks', block.id);
-        } else if (block.rawId) {
-            block.id = block.rawId;
-        }
-        return block;
     }
     _wrongCategory() {
         this._updateStep();
@@ -73,40 +62,25 @@ class BlocklyChallenge extends Challenge {
         this.stepIndex -= 1;
     }
     _onPhantomBlockEnter(phantom_block : any) {
-        let connection,
-            target,
-            host;
-
-        if (!phantom_block ||
-            !phantom_block.location ||
+        if (typeof phantom_block !== 'string' ||
             !Blockly.selected) {
             return;
         }
-        host = this.getTargetBlock(phantom_block.location.block);
+        const target = Blockly.selected;
+        const result = this.editor.querySelector(phantom_block);
+        let connection = result.connection as Connection;
 
-        if (!host) {
+        if (connection) {
+            Blockly.setPhantomBlock(connection, target);
             return;
         }
 
-        if (phantom_block.target === '@previous') {
-            connection = host.previousConnection;
-        } else if (phantom_block.target === '@next') {
-            connection = host.nextConnection;
-        } else if (phantom_block.target) {
-            for (let i = 0; i < host.inputList.length; i++) {
-                if (host.inputList[i].name === phantom_block.target) {
-                    connection = host.inputList[i].connection;
-                    break;
-                }
-            }
-        } else {
-            connection = host.nextConnection;
-        }
-        target = Blockly.selected;
+        const input = result.input as Input;
 
-        if (!connection) {
+        if (!input || !input.connection) {
             return;
         }
+        connection = input.connection;
         Blockly.setPhantomBlock(connection, target);
     }
     _onPhantomBlockLeave() {
@@ -197,59 +171,13 @@ class BlocklyChallenge extends Challenge {
             },
         };
     }
-    getBlockType(validation : any) {
-        let target = validation.type && validation.type.part ? this.getFromStore('parts', validation.type.part) : validation.rawTarget,
-            type;
-        // Use the type or the value directly
-        // Allows to declare shorthand creation as:
-        // create: 'text'
-        // or
-        // create: {
-        //     type: 'text'
-        // }
-
-        type = this.getTypeString(validation);
-        type = target ? `${target}#${type}` : type;
-        return type;
-    }
-    getTypeString(validation : any) : string {
-        if (typeof validation === 'string') {
-            return validation;
-        }
-        return this.getTypeString(validation.type);
-    }
-    getTargetBlock(selector : any) {
-        let block;
-        if (typeof selector === 'string') {
-            block = this.workspace.getBlockById(this.getFromStore('blocks', selector));
-        } else if (selector.id) {
-            block = this.workspace.getBlockById(this.getFromStore('blocks', selector.id));
-        } else if (selector.rawId) {
-            block = this.workspace.getBlockById(selector.rawId);
-        }
-        if (selector.shadow && block) {
-            block = this.getTargetBlockShadow(block, selector.shadow);
-        }
-        return block;
-    }
-    getTargetBlockShadow(block : Block, selector : any) : Block|null {
-        if (typeof selector === 'string') {
-            const input = block.getInput(selector);
-            if (!input || !input.connection) {
-                return null;
-            }
-            return input.connection.targetBlock();
-        } else if ('shadow' in selector && 'name' in selector) {
-            const input = block.getInput(selector.name);
-            if (!input || !input.connection) {
-                return null;
-            }
-            return this.getTargetBlockShadow(input.connection.targetBlock(), selector.shadow);
-        }
-        return null;
-    }
-    _matchCategory(validation : string, event : any) {
-        const result = this.editor.querySelector(validation);
+    /**
+     * Check if the event is about a specific toolbox entry
+     * @param toolboxEntry An id for a toolbox entry
+     * @param event An event from the Blockly workspace
+     */
+    _matchCategory(toolboxEntry : string, event : any) {
+        const result = this.editor.querySelector(toolboxEntry);
         const id = result.getId();
         return event.categoryId === id;
     }
@@ -272,6 +200,11 @@ class BlocklyChallenge extends Challenge {
         delete this._stores.blocks[target];
         return true;
     }
+    /**
+     * Check whether the create event received matches the expected validation
+     * @param validation A validation object defined in a challenge step
+     * @param event An event from the Blockly workspace
+     */
     _matchCreate(validation : any, event : any) {
         const result = this.editor.querySelector(validation.type);
         const type = result.getId();
@@ -280,59 +213,71 @@ class BlocklyChallenge extends Challenge {
             // The new block created is added to the step, using its
             // step id for further reference
             if (validation.alias) {
+                // Create an alias selector for that block
                 this.aliases.set(validation.alias, `block#${event.blockId}`);
             }
             return true;
         }
         return false;
     }
+    /**
+     * Check whether the connect event received matches the expected validation
+     * @param validation A validation object defined in a challenge step
+     * @param event An event from the Blockly workspace
+     */
     _matchConnect(validation : any, event : any) {
-        // Extract the validation object, target and parent step ids and
-        // the block moved
+        // Extract the validation object, target and parent step ids and the block connected
         const target = this.editor.querySelector(validation.target).block as Block;
-        const parent = this.editor.querySelector(validation.parent).block as Block;
+        // const parent = this.editor.querySelector(validation.parent).input as Input;
+        const parentResult = this.editor.querySelector(validation.parent);
+        let connection = parentResult.connection as Connection;
 
-        // Check that the element moved is the one targeted and that its
-        // new parent is the right one
-        if (target && parent && event.blockId === target.id && event.newParentId === parent.id) {
-            let connection;
-
-            if (!validation.connection) {
-                return true;
-            }
-
-            const input = parent.getInput(validation.connection);
-            if (input) {
+        // Check that the element moved is the one targeted and that its new parent is the right one
+        if (target && parent && event.blockId === target.id) {
+            if (!connection) {
+                const input = parentResult.input as Input;
+                if (!input.connection) {
+                    return false;
+                }
                 connection = input.connection;
-            } else {
-                return false;
             }
-
+            // No connection attached to the input, fail
             if (!connection) {
                 return false;
             }
-
+            // Check that the block attached to the defined connection if the targetted one
             connection = connection.targetConnection;
             return (connection.getSourceBlock().id === target.id);
         }
         return false;
     }
+    /**
+     * Check whether a block dropped on the workspace matches the expected block
+     * @param validation A validation object defined in a challenge step
+     * @param event An event from the Blockly workspace
+     */
     _matchDrop(validation : any, event : any) {
-        const _block = this.getTargetBlock(validation.target);
-        if (!_block) {
-            return false;
-        }
-        let targetId = _block.id;
-        let block = event;
+        const result = this.editor.querySelector(validation.target);
+        const id = result.getId();
         // Check that the element that changed is the one we target
-        return block.blockId === targetId;
+        return event.blockId === id;
     }
+    /**
+     * Check wether the value change event from blockly matches the validation
+     * @param validation A validation object defined in a challenge step
+     * @param event An event from the Blockly workspace
+     */
     _matchBlocklyValue(validation : any, event : any) {
-
+        // Retrieve the block expected to trigger the event
         const target = this.editor.querySelector(validation.target);
+        // Retrieve the block that effectively triggered the event
         const eventBlock = this.workspace.getBlockById(event.blockId)!;
+        // Retrieve the field that triggered the event
         const field = eventBlock.getField(event.name);
 
+        /**
+         * Check the source of the event against the expected target declared in the challenge step
+         */
         function validateSource() {
             if (target.field) {
                 // Check field directly
@@ -353,9 +298,31 @@ class BlocklyChallenge extends Challenge {
                     return false;
                 }
                 return checkBlock(eventBlock);
+            } else if (target.input) {
+                const input = target.input as Input;
+                if (!input.connection) {
+                    return false;
+                }
+                const connectedBlock = input.connection.getSourceBlock();
+                // Check the target input's connection and matches it with the block emitting the event
+                function checkInput(block : Block) : boolean {
+                    // Connected block is the emitter, validate
+                    if (connectedBlock === block) {
+                        return true;
+                    }
+                    // Grab the parent and run the check again. Until no more shadow
+                    const parent = block.getParent();
+                    // If the block is shadow go up the chain and try again
+                    if (block.isShadow() && parent) {
+                        return checkInput(parent);
+                    }
+                    return false;
+                }
+                return checkInput(eventBlock);
             }
         }
 
+        // If the source matches, validate the provided value
         if (validateSource()) {
             if (validation.value) {
                 // Weak comparison to match numbers too
