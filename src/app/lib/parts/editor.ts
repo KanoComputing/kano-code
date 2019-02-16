@@ -8,7 +8,7 @@ import { Part } from './part.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
-import { ToolboxEntry } from '../editor/toolbox.js';
+import { ToolboxEntry, IToolboxWhitelist } from '../editor/toolbox.js';
 import { QueryEngine } from '../editor/selector/selector.js';
 
 interface IPartRecord {
@@ -25,6 +25,7 @@ export class EditorPartsManager {
     private apiRegistry : Map<string, IPartAPI> = new Map();
     private parts : Map<string, IPartRecord> = new Map();
     private names : Set<string> = new Set();
+    private whitelist : IToolboxWhitelist|null = null;
     private _telemetry : TelemetryClient = new TelemetryClient({ scope: 'parts' });
     private _onDidOpenAddParts : EventEmitter = new EventEmitter();
     private _onDidAddPart : EventEmitter<Part> = new EventEmitter();
@@ -40,6 +41,9 @@ export class EditorPartsManager {
     @memoize
     getRegisteredParts() {
         return this.editor.output.parts.getRegisteredParts();
+    }
+    setWhitelist(whitelist : IToolboxWhitelist) {
+        this.whitelist = whitelist;
     }
     onInject() {
         if (!this.editor.workspaceView) {
@@ -65,6 +69,9 @@ export class EditorPartsManager {
             });
             // Update the dialog and open it
             this.addDialogProvider.setParts(partInfos);
+            if (this.whitelist) {
+                this.addDialogProvider.setWhitelist(Object.keys(this.whitelist));
+            }
             this.addDialog.open();
             this._onDidOpenAddParts.fire();
         });
@@ -198,6 +205,12 @@ export class EditorPartsManager {
         if (api.onInstall) {
             api.onInstall(this.editor, part);
         }
+        if (this.whitelist) {
+            const list = this.whitelist[api.type];
+            if (list) {
+                this.editor.toolbox.whitelistEntry(id, list);
+            }
+        }
         this._onDidAddPart.fire(part);
         return partRecord;
     }
@@ -311,6 +324,13 @@ export class EditorPartsManager {
             const serializer = new XMLSerializer();
             const newSource = serializer.serializeToString(root);
             this.editor.sourceEditor.setSource(newSource);
+        }
+        if (oldId) {
+            this.editor.toolbox.removeWhitelistEntry(oldId);
+        }
+        if (this.whitelist && this.whitelist[partRecord.type]) {
+            const list = this.whitelist[partRecord.type];
+            this.editor.toolbox.whitelistEntry(partRecord.part.id, list);
         }
     }
     registerAPI(partAPI : IPartAPI) {

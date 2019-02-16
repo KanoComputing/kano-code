@@ -8,6 +8,7 @@ const ID = 'color';
 export const ColorAPI = {
     type: 'blockly',
     id: ID,
+    name: ID,
     typeScriptDefinition: `
         declare namespace colour {
             declare enum type {

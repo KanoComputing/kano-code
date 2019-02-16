@@ -1,35 +1,48 @@
 const blockAliases : { [K : string] : any } = {};
 
+const partBlocks : { [K : string] : any } = {
+    mouse: {
+        mouse_x: 'x_get',
+        mouse_y: 'y_get',
+    },
+};
+
 export function transformToolboxSelector(legacySelector : any) {
     if (typeof legacySelector === 'string') {
         if (legacySelector === 'normal') {
             return 'toolbox#draw';
         }
         return `toolbox#${legacySelector}`;
+    } else if (typeof legacySelector.part === 'string') {
+        const alias = blockAliases[legacySelector.part];
+        if (alias) {
+            return `alias#${legacySelector.part}>toolbox`;
+        } else {
+            return `part#${legacySelector.part}>toolbox`;
+        }
     }
-    // TODO: Handle parts and stuff
 }
 
 const legacyToolboxMap : { [K : string] : string } = {
-    colour_picker: 'flyout-block.colour_picker',
-    repeat_x_times: 'flyout-block.repeat_x_times',
-    set_background_color: 'flyout-block.draw_set_background_color',
-    set_transparency: 'flyout-block.draw_set_transparency',
-    clear: 'flyout-block.draw_clear',
-    color: 'flyout-block.draw_color',
-    no_fill: 'flyout-block.draw_no_fill',
-    stroke: 'flyout-block.draw_stroke',
-    move_to: 'flyout-block.draw_move_to',
-    move_to_random: 'flyout-block.draw_move_to_random',
-    move: 'flyout-block.draw_move',
-    line_to: 'flyout-block.draw_line_to',
-    line: 'flyout-block.draw_line',
-    circle: 'flyout-block.draw_circle',
-    ellipse: 'flyout-block.draw_ellipse',
-    square: 'flyout-block.draw_square',
-    rectangle: 'flyout-block.draw_rectangle',
-    arc: 'flyout-block.draw_arc',
-    pixel: 'flyout-block.draw_pixel',
+    colour_picker: 'colour_picker',
+    repeat_x_times: 'repeat_x_times',
+    set_background_color: 'draw_set_background_color',
+    set_transparency: 'draw_set_transparency',
+    clear: 'draw_clear',
+    color: 'draw_color',
+    no_fill: 'draw_no_fill',
+    stroke: 'draw_stroke',
+    move_to: 'draw_move_to',
+    move_to_random: 'draw_move_to_random',
+    move: 'draw_move',
+    line_to: 'draw_line_to',
+    line: 'draw_line',
+    circle: 'draw_circle',
+    ellipse: 'draw_ellipse',
+    square: 'draw_square',
+    rectangle: 'draw_rectangle',
+    arc: 'draw_arc',
+    pixel: 'draw_pixel',
 }
 
 function transformLocation(location : any) {
@@ -63,7 +76,7 @@ function transformLocation(location : any) {
             return selector;
         } else {
             const mappedSelector = legacyToolboxMap[location.flyout_block];
-            return mappedSelector || `flyout-block.${location.flyout_block}`;
+            return `flyout-block.${mappedSelector}` || `flyout-block.${location.flyout_block}`;
         }
     } else if (typeof location.flyout_block === 'object') {
         if (location.flyout_block.part && location.flyout_block.type) {
@@ -71,10 +84,17 @@ function transformLocation(location : any) {
             const original = blockAliases[location.flyout_block.part];
             if (original) {
                 selector = `alias#${location.flyout_block.part}`;
+                const map = partBlocks[original];
+                if (map) {
+                    const blockName = map[location.flyout_block.type];
+                    if (blockName) {
+                        selector += `>flyout-block.${blockName}`;
+                    }
+                }
             } else {
                 selector = `part#${location.flyout_block.part}`;
+                selector += `>flyout-block.${location.flyout_block.type}`;
             }
-            selector += `>flyout-block.${location.flyout_block.type}`;
             return selector;
         }
     } else if (location.block) {
@@ -197,10 +217,45 @@ export function transformBlocklyValidation(step: any, validation : any) {
         if (typeof validation.create.id === 'string') {
             blockAliases[validation.create.id] = validation.create.type;
         }
-        validation.create = {
-            type: transformLocation({ flyout_block: validation.create.type }),
-            alias: validation.create.id,
-        };
+        if (typeof validation.create.target === 'string') {
+            const original = blockAliases[validation.create.target];
+            let selector;
+            if (original) {
+                selector = `alias#${validation.create.target}`;
+                const map = partBlocks[original];
+                let blockName;
+                if (map) {
+                    blockName = map[validation.create.type];
+                    if (blockName) {
+                        selector += `>flyout-block.${blockName}`;
+                    }
+                } else {
+                    blockName = validation.create.type;
+                }
+            } else {
+                selector = `part#${validation.create.target}`;
+                selector += `>flyout-block.${validation.create.type}`;
+            }
+            validation.create = {
+                type: selector,
+                alias: validation.create.id,
+            };
+        } else {
+            if (validation.create.type) {
+                let blockName;
+                if (validation.create.type.indexOf('#') !== -1) {
+                    let [entry, block] = validation.create.type.split('#');
+                    blockName = block;
+                } else {
+                    const mappedSelector = legacyToolboxMap[validation.create.type];
+                    blockName = mappedSelector || validation.create.type;
+                }
+            }
+            validation.create = {
+                type: transformLocation({ flyout_block: validation.create.type }),
+                alias: validation.create.id,
+            };
+        }
     }
     if (validation.connect) {
         let parent = transformLocation({ block: validation.connect.parent });
@@ -260,7 +315,6 @@ export function transformStep(step : any) {
     if (step.banner) {
         step.banner = transformBanner(step.banner);
     }
-    console.log(JSON.stringify(step, null, '    '));
 }
 export function transformBanner(data : any) {
     if (typeof data.next_button === 'boolean') {

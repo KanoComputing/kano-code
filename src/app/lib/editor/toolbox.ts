@@ -4,7 +4,11 @@ import MetaModule, { IMetaRenderer, IAPIDefinition } from '../meta-api/module.js
 import BlocklyMetaRenderer from '../meta-api/renderer/blockly.js';
 import TypeScriptMetaRenderer from '../meta-api/renderer/typescript.js';
 import Editor from './editor.js';
-import { QueryEngine, ISelector } from './selector/selector.js';
+import { QueryEngine } from './selector/selector.js';
+
+export interface IToolboxWhitelist {
+    [K : string] : string[];
+}
 
 export class ToolboxEntry {
     private toolbox : Toolbox;
@@ -26,7 +30,7 @@ export class Toolbox extends Plugin {
     private editor? : Editor;
     private renderer? : IMetaRenderer;
     private entries : IAPIDefinition[] = [];
-    private whitelist : any[]|null = null;
+    private whitelist : IToolboxWhitelist|null = null;
     onInstall(editor : Editor) {
         this.editor = editor;
         switch (editor.sourceType) {
@@ -65,8 +69,21 @@ export class Toolbox extends Plugin {
         this.entries.splice(index, 1, entry);
         this.update();
     }
-    setWhitelist(whitelist : any[]) {
+    setWhitelist(whitelist : IToolboxWhitelist) {
         this.whitelist = whitelist;
+        this.update();
+    }
+    whitelistEntry(id : string, whitelist : string[]) {
+        this.whitelist = this.whitelist || {};
+        this.whitelist[id] = whitelist;
+        this.update();
+    }
+    removeWhitelistEntry(id : string) {
+        if (!this.whitelist || !this.whitelist[id]) {
+            return;
+        }
+        delete this.whitelist[id];
+        this.update();
     }
     update() {
         // Not injected yet, let the inject callback generate the toolbox
@@ -79,8 +96,19 @@ export class Toolbox extends Plugin {
         if (!this.editor || !this.renderer) {
             return;
         }
-        const toolbox = this.entries
-            .map(entry => this.renderer!.renderToolboxEntry(new MetaModule(entry), this.whitelist))
+        let entries = this.entries;
+        if (this.whitelist) {
+            const modules = Object.keys(this.whitelist);
+            entries = this.entries.filter(e => modules.indexOf(e.name) !== -1);
+        }
+        const toolbox = entries
+            .map(entry => {
+                let moduleWhitelist : string[]|null = null;
+                if (this.whitelist && this.whitelist[entry.name]) {
+                    moduleWhitelist = this.whitelist[entry.name];
+                } 
+                return this.renderer!.renderToolboxEntry(new MetaModule(entry), moduleWhitelist);
+            })
             .filter(entry => entry);
         this.editor.sourceEditor.setToolbox(toolbox);
     }

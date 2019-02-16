@@ -23,7 +23,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
     constructor() {
         this.defaults = new Defaults();
     }
-    renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : any[]) {
+    renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : string[]|null) {
         mod.def.register(Blockly);
         if (mod.def.defaults) {
             Object.keys(mod.def.defaults).forEach((blockId) => {
@@ -43,11 +43,17 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         }
         return this.defaults.createCategory(category);
     }
-    renderToolboxEntry(mod : MetaModule, whitelist : any[]) {
+    renderToolboxEntry(mod : MetaModule, whitelist : string[]|null) {
         // Legacy module signature
         if (mod.def.type && mod.def.type === 'blockly') {
             return this.renderLegacyToolboxEntry(mod as unknown as ILegacyModule, whitelist);
         }
+        if (mod.symbols) {
+            mod.symbols.forEach((sym) => {
+                sym.def.disabled = !!(whitelist && whitelist.indexOf(sym.def.name) === -1);
+            });
+        }
+
         const blocks = BlocklyMetaRenderer.render(mod);
 
         const register = (Blockly : any) => {
@@ -57,10 +63,6 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         let filteredBlocks = blocks.filter((block : any) => block.toolbox);
         const prefix = mod.def.blockly
             && mod.def.blockly.idPrefix ? mod.def.blockly.idPrefix : '';
-        if (whitelist) {
-            const expandedWhitelist = whitelist.map(item => `${prefix}${item}`);
-            filteredBlocks = filteredBlocks.filter(block => expandedWhitelist.indexOf(block.id) !== -1);
-        }
 
         const category = {
             name: mod.getVerboseDisplay(),
@@ -79,10 +81,6 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         }, {});
 
         register(Blockly);
-        if (!filteredBlocks.length || (typeof mod.def.toolbox !== 'undefined' && mod.def.toolbox === false)) {
-            return null;
-        }
-
         return this.defaults.createCategory(category) as ICategory;
     }
     disposeToolboxEntry(category : ICategory) {
@@ -158,7 +156,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             };
             Blockly.JavaScript[id] = () => [m.getNameChain('.')];
         };
-        const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
+        const toolbox = BlocklyMetaRenderer.isInToolbox(m);
         return { register, id, toolbox };
     }
     static renderSetter(m : MetaVariable) : IRenderedBlock {
@@ -200,7 +198,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 return `${m.getNameChain('.')} = ${value};\n`;
             };
         };
-        const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
+        const toolbox = BlocklyMetaRenderer.isInToolbox(m);
         const defaults : any = {};
         if (m.def.blockly && m.def.blockly.shadow) {
             defaults[blocklyName] = { shadow: m.def.blockly.shadow(m.def.default, m.getRoot()), default: m.def.default };
@@ -337,8 +335,11 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             (Blockly as any).Blocks[alias] = (Blockly as any).Blocks[id];
             (Blockly as any).JavaScript[alias] = (Blockly as any).JavaScript[id];
         });
-        const toolbox = m.def.blockly && typeof m.def.blockly.toolbox !== 'undefined' ? m.def.blockly.toolbox : true;
+        const toolbox = BlocklyMetaRenderer.isInToolbox(m);
         return [{ register, id, defaults, toolbox }];
+    }
+    static isInToolbox(m : Meta) {
+        return !m.def.disabled && (!m.def.blockly || !m.def.blockly.toolbox);
     }
     static parseInputType(type : any, param : Meta) {
         if (param.def.blockly && param.def.blockly.customField) {

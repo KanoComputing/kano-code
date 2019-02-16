@@ -2,10 +2,14 @@ import { Editor } from '../editor/editor.js';
 import { KanoCodeChallenge } from './kano-code.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
 import { transformChallenge } from './legacy.js';
+import { IToolboxWhitelist } from '../editor/toolbox.js';
 
 interface IChallengeData {
+    version? : string;
     steps : any[];
     defaultApp? : string;
+    partsWhitelist? : IToolboxWhitelist;
+    whitelist? : IToolboxWhitelist;
 }
 
 export class Challenge {
@@ -14,8 +18,10 @@ export class Challenge {
     private engine? : KanoCodeChallenge;
     constructor(editor : Editor, challengeData : IChallengeData) {
         this.editor = editor;
-        // Take care of legacy challenges
-        transformChallenge(challengeData);
+        if (!challengeData.version) {
+            // Take care of legacy challenges
+            transformChallenge(challengeData);
+        }
         this.challengeData = challengeData;
         if (this.editor.injected) {
             this.onInject();
@@ -27,6 +33,12 @@ export class Challenge {
         // Load the default app if provided
         if (this.challengeData.defaultApp) {
             this.editor.load(JSON.parse(this.challengeData.defaultApp));
+        }
+        if (this.challengeData.partsWhitelist) {
+            this.editor.parts.setWhitelist(this.challengeData.partsWhitelist);
+        }
+        if (this.challengeData.whitelist) {
+            this.editor.toolbox.setWhitelist(this.challengeData.whitelist);
         }
         this.engine = new KanoCodeChallenge(this.editor);
         this.engine.setSteps(this.challengeData.steps || []);

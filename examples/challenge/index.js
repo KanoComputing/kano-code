@@ -32,7 +32,14 @@ const lang = i18n.getLang();
 
 const app = {"source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"app_onStart\" id=\"default_app_onStart\" x=\"118\" y=\"91\"><field name=\"FLASH\"></field><statement name=\"CALLBACK\"><block type=\"button_background_set\" id=\"bpN^4*Dg-KXuv,l*vOxD\"><value name=\"BACKGROUND\"><shadow type=\"colour_picker\" id=\"Nm8-O4aePXTld$G%G2Tr\"><field name=\"COLOUR\">#01579B</field></shadow></value></block></statement></block><block type=\"button_onClick\" id=\"Dhl_@,ICJMrobV3oBJWR\" x=\"117\" y=\"222\"><field name=\"FLASH\"></field></block></xml>","code":"app.onStart(function() {\n  button.background = '#01579B';\n\n});\n\nbutton.onClick(function() {\n\n});\n","parts":[{"type":"button","id":"button","name":"Button"}]};
 const challengeData = {
+    version: '2',
     defaultApp: JSON.stringify(app),
+    partsWhitelist: {
+        'mouse': ['x', 'y'],
+    },
+    whitelist: {
+        color: ['colour_picker'],
+    },
     steps: [{
         beacon: 'part#button>toolbox:100,50',
         validation: {

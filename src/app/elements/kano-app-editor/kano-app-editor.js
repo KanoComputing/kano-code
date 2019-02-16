@@ -235,6 +235,7 @@ class KanoAppEditor extends PolymerElement {
             }
             #widget-layer * {
                 pointer-events: all;
+                overflow: hidden;
             }
         </style>
         <div class="activity-bar" id="activity-bar"></div>

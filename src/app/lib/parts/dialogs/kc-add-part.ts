@@ -11,6 +11,8 @@ import './kc-add-part-item.js';
 export class KCAddPart extends LitElement {
     @property({ type: Array, value: () => [] })
     public parts : IPartAPI[] = [];
+    @property({ type: Array, value: null })
+    public whitelist : string[]|null = null;
     static get styles() {
         return css`
             :host {
@@ -54,7 +56,7 @@ export class KCAddPart extends LitElement {
                 <button type="button" class="btn secondary" dialog-dismiss>Done</button>
             </header>
             <div class="parts">
-                ${this.parts.map((part) => html`
+                ${this.getFilteredParts().map((part) => html`
                     <kc-add-part-item
                         id=${part.type}
                         .label=${part.label}
@@ -66,6 +68,12 @@ export class KCAddPart extends LitElement {
     }
     getPartElement(type : string) {
         return this.renderRoot!.querySelector(`#${type}`);
+    }
+    getFilteredParts() {
+        if (!this.whitelist) {
+            return this.parts;
+        }
+        return this.parts.filter(p => this.whitelist!.indexOf(p.type) !== -1);
     }
     _onClick(part : IPartAPI) {
         this.dispatchEvent(new CustomEvent('part-click', { detail: part, bubbles: true, composed: true }));

@@ -109,7 +109,6 @@ export class BlocklySourceEditor implements SourceEditor {
         });
         engine.registerTagHandler('flyout-block', (selector : ISelector, parent? : IQueryResult) => {
             let scope : string = '';
-            console.log(selector, parent);
             if (!parent) {
                 if (selector.class) {
                     const workspace = this.getWorkspace();

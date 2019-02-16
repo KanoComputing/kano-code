@@ -8,7 +8,7 @@ export interface ICategory {
 }
 
 export interface IMetaRenderer {
-    renderToolboxEntry(entry : MetaModule, whitelist : any[]|null) : ICategory|null;
+    renderToolboxEntry(entry : MetaModule, whitelist : string[]|null) : ICategory|null;
     disposeToolboxEntry(entry : ICategory) : void;
 }
 
@@ -27,6 +27,7 @@ export interface IMetaDefinition {
     toolbox? : boolean;
     getter? : boolean;
     setter? : boolean;
+    disabled? : boolean;
 }
 
 export interface IAPIDefinition extends IMetaDefinition {
@@ -41,6 +42,9 @@ export class Meta {
         this.parent = parent;
         this.def = def;
         this.build();
+    }
+    disable() {
+        this.def.disabled = true;
     }
     build() {
         if (!this.def.symbols) {

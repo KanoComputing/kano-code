@@ -4,7 +4,7 @@ import { KCAddPart } from './kc-add-part.js';
 import { IPartAPI } from '../api.js';
 
 export class AddPartDialogProvider extends DialogProvider {
-    private domNode : KCAddPart = new KCAddPart;
+    private domNode : KCAddPart = new KCAddPart();
     private _clickSub : IDisposable;
     private _onDidClickPart : EventEmitter<string> = new EventEmitter<string>();
     constructor() {
@@ -18,6 +18,9 @@ export class AddPartDialogProvider extends DialogProvider {
     }
     setParts(parts : IPartAPI[]) {
         this.domNode.parts = parts;
+    }
+    setWhitelist(parts : string[]) {
+        this.domNode.whitelist = parts;
     }
     createDom() : any {
         return this.domNode;
