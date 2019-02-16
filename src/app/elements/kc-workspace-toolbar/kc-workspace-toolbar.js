@@ -52,15 +52,11 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             kano-animated-svg {
                 min-width: 17px;
                 min-height: 17px;
-
-                --kano-animated-path: {
-                    fill: white;
-                    stroke: white;
-                    stroke-width: 2px;
-                    stroke-linecap: round;
-                    stroke-linejoin: round;
-                    transition: all ease-in-out 200ms;
-                }
+                fill: white;
+                stroke: white;
+                stroke-width: 2px;
+                stroke-linecap: round;
+                stroke-linejoin: round;
             }
             kano-tooltip {
                 box-sizing: border-box;

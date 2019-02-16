@@ -29,14 +29,12 @@ class KCPlayerToolbar extends PolymerElement {
             .icon kano-animated-svg {
                 width: 18px;
                 height: 18px;
-                --kano-animated-path: {
-                    fill: var(--color-porcelain);
-                    stroke: var(--color-porcelain);
-                    stroke-width: 2px;
-                    stroke-linecap: round;
-                    stroke-linejoin: round;
-                    transition: all ease-in-out 200ms;
-                }
+                fill: var(--color-porcelain);
+                stroke: var(--color-porcelain);
+                stroke-width: 2px;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                transition: all ease-in-out 200ms;
             }
             .icon {
                 display: flex;
@@ -75,7 +73,7 @@ class KCPlayerToolbar extends PolymerElement {
             <iron-icon icon="kc-ui:maximize"></iron-icon>
         </button>
         <button class="pause icon" on-click="pauseClicked">
-            <kano-animated-svg width="17" height="20" paths="[[makeButtonIconPaths]]" selected="[[_getRunningStatus(running)]]">
+            <kano-animated-svg width="17" height="20" .paths="[[makeButtonIconPaths]]" .selected="[[_getRunningStatus(running)]]">
             </kano-animated-svg>
         </button>
         <button class="reset icon" on-tap="resetClicked">
