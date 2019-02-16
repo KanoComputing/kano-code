@@ -3,6 +3,7 @@ import { KanoCodeChallenge } from './kano-code.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
 import { transformChallenge } from './legacy.js';
 import { IToolboxWhitelist } from '../editor/toolbox.js';
+import { subscribe, IDisposable } from '@kano/common/index.js';
 
 interface IChallengeData {
     version? : string;
@@ -12,10 +13,14 @@ interface IChallengeData {
     whitelist? : IToolboxWhitelist;
 }
 
+// Trick to make the custom emitter from the challenge engine have a normal eventemitter api
+(KanoCodeChallenge.prototype as any).on = (KanoCodeChallenge.prototype as any).addEventListener;
+
 export class Challenge {
     public editor : Editor;
     private challengeData : IChallengeData;
     private engine? : KanoCodeChallenge;
+    private subscriptions : IDisposable[] = [];
     constructor(editor : Editor, challengeData : IChallengeData) {
         this.editor = editor;
         if (!challengeData.version) {
@@ -50,7 +55,8 @@ export class Challenge {
                 this.engine.triggerEvent('blockly', { event: e });
             });
         }
-        this.editor.queryEngine.registerTagHandler('alias', (selector) => {
+        let sub : IDisposable;
+        sub = this.editor.queryEngine.registerTagHandler('alias', (selector) => {
             if (!selector.id) {
                 throw new Error('Could not find alias: No id provided');
             }
@@ -60,7 +66,8 @@ export class Challenge {
             }
             return this.editor.querySelector(s);
         });
-        this.editor.queryEngine.registerTagHandler('banner-button', (selector) => {
+        this.subscriptions.push(sub);
+        sub = this.editor.queryEngine.registerTagHandler('banner-button', (selector) => {
             const widget = this.engine!.widgets.get('banner');
             if (!widget) {
                 throw new Error('Could not query banner button: Banner is not displayed');
@@ -79,6 +86,7 @@ export class Challenge {
                 }
             };
         });
+        this.subscriptions.push(sub);
     }
     start() {
         if (!this.editor.injected) {
@@ -86,9 +94,14 @@ export class Challenge {
         }
         // Engine is defined as the editor is injected
         const engine = this.engine!;
+        subscribe(engine, 'done', () => {
+            this.editor.toolbox.setWhitelist(null);
+        }, this, this.subscriptions);
         engine.start();
     }
     dispose() {
         // Here get rid of all modifications made to the editor
+        this.subscriptions.forEach(d => d.dispose());
+        this.subscriptions.length = 0;
     }
 }

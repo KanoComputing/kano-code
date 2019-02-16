@@ -1,8 +1,8 @@
 import { registerTypeSerializer, defaultSerializer } from '../../component.js';
 
 export class Sticker {
-    private _value : string;
-    constructor(value : string) {
+    private _value : string|null;
+    constructor(value : string|null) {
         this._value = value;
     }
     set(v : string) {

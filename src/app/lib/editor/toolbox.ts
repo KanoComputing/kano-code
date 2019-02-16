@@ -69,7 +69,7 @@ export class Toolbox extends Plugin {
         this.entries.splice(index, 1, entry);
         this.update();
     }
-    setWhitelist(whitelist : IToolboxWhitelist) {
+    setWhitelist(whitelist : IToolboxWhitelist|null) {
         this.whitelist = whitelist;
         this.update();
     }

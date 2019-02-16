@@ -14,8 +14,8 @@ class MouseComponent extends PartComponent {
     public up : EventEmitter = new EventEmitter();
     @property({ type: EventEmitter, value: new EventEmitter(), noReset: true })
     public move : EventEmitter = new EventEmitter();
-    @property({ type: Sticker, value: () => new Sticker(StickerPart.defaultSticker) })
-    public cursor : Sticker = new Sticker(StickerPart.defaultSticker);
+    @property({ type: Sticker, value: () => new Sticker(null) })
+    public cursor : Sticker = new Sticker(null);
 }
 
 @part('mouse')
@@ -94,15 +94,17 @@ export class MousePart extends Part {
         if (!this.core.invalidated) {
             return;
         }
+        if (!this._root) {
+            return;
+        }
         const sticker = this.core.cursor.get();
         if (sticker && all[sticker]) {
             this.loadImage(StickerPart.resolve(all[sticker]))
                 .then((url) => {
-                    if (!this._root) {
-                        return;
-                    }
-                    this._root.style.cursor = `url('${url}'), auto`;
+                    this._root!.style.cursor = `url('${url}'), auto`;
                 });
+        } else {
+            this._root.style.cursor = '';
         }
         this.core.apply();
     }

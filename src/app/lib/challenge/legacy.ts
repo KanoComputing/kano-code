@@ -24,25 +24,25 @@ export function transformToolboxSelector(legacySelector : any) {
 }
 
 const legacyToolboxMap : { [K : string] : string } = {
-    colour_picker: 'colour_picker',
-    repeat_x_times: 'repeat_x_times',
-    set_background_color: 'draw_set_background_color',
-    set_transparency: 'draw_set_transparency',
-    clear: 'draw_clear',
-    color: 'draw_color',
-    no_fill: 'draw_no_fill',
-    stroke: 'draw_stroke',
-    move_to: 'draw_move_to',
-    move_to_random: 'draw_move_to_random',
-    move: 'draw_move',
-    line_to: 'draw_line_to',
-    line: 'draw_line',
-    circle: 'draw_circle',
-    ellipse: 'draw_ellipse',
-    square: 'draw_square',
-    rectangle: 'draw_rectangle',
-    arc: 'draw_arc',
-    pixel: 'draw_pixel',
+    colour_picker: 'flyout-block.colour_picker',
+    repeat_x_times: 'flyout-block.repeat_x_times',
+    set_background_color: 'flyout-block.draw_set_background_color',
+    set_transparency: 'flyout-block.draw_set_transparency',
+    clear: 'flyout-block.draw_clear',
+    color: 'flyout-block.draw_color',
+    no_fill: 'flyout-block.draw_no_fill',
+    stroke: 'flyout-block.draw_stroke',
+    move_to: 'flyout-block.draw_move_to',
+    move_to_random: 'flyout-block.draw_move_to_random',
+    move: 'flyout-block.draw_move',
+    line_to: 'flyout-block.draw_line_to',
+    line: 'flyout-block.draw_line',
+    circle: 'flyout-block.draw_circle',
+    ellipse: 'flyout-block.draw_ellipse',
+    square: 'flyout-block.draw_square',
+    rectangle: 'flyout-block.draw_rectangle',
+    arc: 'flyout-block.draw_arc',
+    pixel: 'flyout-block.draw_pixel',
 }
 
 function transformLocation(location : any) {
@@ -76,7 +76,7 @@ function transformLocation(location : any) {
             return selector;
         } else {
             const mappedSelector = legacyToolboxMap[location.flyout_block];
-            return `flyout-block.${mappedSelector}` || `flyout-block.${location.flyout_block}`;
+            return mappedSelector || `flyout-block.${location.flyout_block}`;
         }
     } else if (typeof location.flyout_block === 'object') {
         if (location.flyout_block.part && location.flyout_block.type) {
@@ -149,7 +149,6 @@ function transformConnection(location : any, target : string) : string|null {
             }
         }
     }
-    console.log(location, target);
     return null;
 }
 
@@ -241,16 +240,6 @@ export function transformBlocklyValidation(step: any, validation : any) {
                 alias: validation.create.id,
             };
         } else {
-            if (validation.create.type) {
-                let blockName;
-                if (validation.create.type.indexOf('#') !== -1) {
-                    let [entry, block] = validation.create.type.split('#');
-                    blockName = block;
-                } else {
-                    const mappedSelector = legacyToolboxMap[validation.create.type];
-                    blockName = mappedSelector || validation.create.type;
-                }
-            }
             validation.create = {
                 type: transformLocation({ flyout_block: validation.create.type }),
                 alias: validation.create.id,

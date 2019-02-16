@@ -85,15 +85,14 @@ const challengeData = {
 
 i18n.load(lang, { blockly: true, kanoCodePath: '/' })
     .then(() => {
-        const editor = new code.Editor();
-
-        editor.registerProfile(new EditorProfile());
-
-        editor.inject(document.body);
-
         fetch('/assets/stories/locales/en-US/hoc_02/steps.json')
             .then(r => r.json())
             .then(c => {
+                const editor = new code.Editor();
+        
+                editor.registerProfile(new EditorProfile());
+        
+                editor.inject(document.body);
                 const challenge = new Challenge(editor, c);
                 challenge.start();
             });

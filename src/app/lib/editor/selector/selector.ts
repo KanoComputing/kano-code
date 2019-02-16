@@ -46,6 +46,11 @@ export class QueryEngine {
     }
     registerTagHandler(tag : string, handler : ITagHandler) {
         this.handlers.set(tag, handler);
+        return {
+            dispose: () => {
+                this.handlers.delete(tag);
+            },
+        };
     }
     parse(input : string) {
         const reg = /#|>|\.|:/g;
