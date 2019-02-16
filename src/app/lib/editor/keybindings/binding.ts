@@ -1,10 +1,12 @@
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 
 export class Binding {
-    constructor(keys, cb, target) {
+    public root : HTMLElement;
+    private cb : () => any;
+    constructor(keys : string, cb : () => any, target : HTMLElement) {
         this.root = document.createElement('iron-a11y-keys');
-        this.root.keys = keys;
-        this.root.target = target;
+        (this.root as any).keys = keys;
+        (this.root as any).target = target;
         this.cb = cb;
         this.root.addEventListener('keys-pressed', this.cb);
     }

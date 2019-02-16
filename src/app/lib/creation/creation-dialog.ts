@@ -1,13 +1,14 @@
 import { DialogProvider } from '../editor/dialogs/dialog-provider.js';
-
+import { subscribe } from '../util/subscription.js';
+import { IDisposable } from '@kano/common/index.js';
 import './components/kc-creation-form.js';
 
-import { subscribe, Subscriptions } from '../util/subscription.js';
-
 export class CreationDialogProvider extends DialogProvider {
+    private subscriptions : IDisposable[] = [];
+    private form : HTMLElement;
+    private previewDiv : HTMLElement;
     constructor() {
         super();
-        this.subscriptions = new Subscriptions();
         this.form = document.createElement('kc-creation-form');
         this.form.style.margin = '0';
         this.form.style.padding = '0';
@@ -23,7 +24,7 @@ export class CreationDialogProvider extends DialogProvider {
 
         this.form.appendChild(this.previewDiv);
     }
-    _onSubmit(e) {
+    _onSubmit(e : CustomEvent) {
         this.emit('submit', {
             title: e.detail.title,
             description: e.detail.description,
@@ -43,14 +44,15 @@ export class CreationDialogProvider extends DialogProvider {
             this.previewDiv.removeChild(this.previewDiv.lastChild);
         }
     }
-    setRecording(state) {
-        this.form.recording = state;
+    setRecording(state : boolean) {
+        (this.form as any).recording = state;
     }
-    setPage(page) {
-        this.form.page = page;
+    setPage(page : string) {
+        (this.form as any).page = page;
     }
     dispose() {
-        this.subscriptions.dispose();
+        this.subscriptions.forEach(d => d.dispose());
+        this.subscriptions.length = 0;
     }
 }
 

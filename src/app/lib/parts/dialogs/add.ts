@@ -29,7 +29,6 @@ export class AddPartDialogProvider extends DialogProvider {
         return this.domNode.getPartElement(type) as HTMLElement;
     }
     dispose() {
-        super.dispose();
         this._clickSub.dispose();
     }
 }

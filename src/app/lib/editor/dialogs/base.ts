@@ -1,7 +1,23 @@
 import EventEmitter from '../../util/event-emitter.js';
 
-export class Base extends EventEmitter {
-    constructor(opts = {}) {
+export interface IDialogBaseOptions {
+    [K : string] : any;
+    fitInto? : HTMLElement;
+    overlayInto? : HTMLElement;
+}
+
+export type DialogElement<T extends HTMLElement = HTMLElement> = T & {
+    open() : void;
+    close() : void;
+    refit() : void;
+    backdropElement : HTMLElement;
+}
+
+export abstract class Base<T extends DialogElement> extends EventEmitter {
+    protected fitInto : HTMLElement;
+    protected overlayInto? : HTMLElement;
+    public root : T;
+    constructor(opts : IDialogBaseOptions= {}) {
         super();
         this.fitInto = opts.fitInto || document.body;
         this.overlayInto = opts.overlayInto;
@@ -45,10 +61,8 @@ export class Base extends EventEmitter {
         backdropElement.style.width = '';
         backdropElement.style.height = '';
     }
-    createDom() {
-        return document.createElement('div');
-    }
-    createButton(label) {
+    abstract createDom(opts : IDialogBaseOptions) : T;
+    createButton(label : string) {
         const button = document.createElement('button');
         button.innerText = label;
         button.setAttribute('slot', 'actions');

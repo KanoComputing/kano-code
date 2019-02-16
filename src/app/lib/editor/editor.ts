@@ -25,6 +25,7 @@ import { EventEmitter } from '@kano/common/index.js';
 import { IEditorWidget } from './widget/widget.js';
 import { QueryEngine, IQueryResult } from './selector/selector.js';
 import { ContentWidgets } from './widget/content-widgets.js';
+import { KanoAppEditor } from '../../elements/kano-app-editor/kano-app-editor.js';
 
 declare global {
     interface Window {
@@ -63,7 +64,7 @@ export class Editor extends EditorOrPlayer {
     public config : any;
     public logger : Logger = new Logger();
     public elementsRegistry : Map<string, HTMLElement> = new Map();
-    public rootEl : HTMLElement = document.createElement('kano-app-editor');
+    public rootEl : KanoAppEditor = document.createElement('kano-app-editor') as KanoAppEditor;
     public sourceType : 'blockly'|'code' = 'blockly';
     public output : Output = new Output();
     public telemetry : TelemetryClient = new TelemetryClient({ scope: 'kc-editor' });
@@ -173,7 +174,6 @@ export class Editor extends EditorOrPlayer {
     }
     appendSourceEditor() {
         (this.rootEl as any).sourceContainer.appendChild(this.sourceEditor.domNode);
-        (this.rootEl as any).$['root-view'] = this.sourceEditor.domNode;
     }
     ensureProviders() {
         this.output.ensureOutputView();
@@ -192,21 +192,23 @@ export class Editor extends EditorOrPlayer {
         } else {
             element.appendChild(this.rootEl);
         }
-        this.appendSourceEditor();
-        this.appendWorkspaceView();
-        this.output.onInject();
-        if (this.workspaceProvider) {
-            this.workspaceProvider.onInject();
-        }
-        this.parts.onInject();
-        this.runPluginTask('onInject');
-        this.contentWidgets = new ContentWidgets(this, (this.rootEl as any).widgetLayer);
-        this.telemetry.trackEvent({ name: 'ide_opened' });
-        if (this._queuedApp) {
-            this.load(this._queuedApp);
-            this._queuedApp = null;
-        }
-        this._onDidInject.fire();
+        this.rootEl.updateComplete.then(() => {
+            this.appendSourceEditor();
+            this.appendWorkspaceView();
+            this.output.onInject();
+            if (this.workspaceProvider) {
+                this.workspaceProvider.onInject();
+            }
+            this.parts.onInject();
+            this.runPluginTask('onInject');
+            this.contentWidgets = new ContentWidgets(this, (this.rootEl as any).widgetLayer);
+            this.telemetry.trackEvent({ name: 'ide_opened' });
+            if (this._queuedApp) {
+                this.load(this._queuedApp);
+                this._queuedApp = null;
+            }
+            this._onDidInject.fire();
+        });
     }
     dispose() {
         if (this.injected) {
@@ -393,7 +395,7 @@ export class Editor extends EditorOrPlayer {
         if (!this.workspaceProvider) {
             return;
         }
-        (this.rootEl as any).$.workspace.appendView(this.workspaceProvider);
+        this.rootEl.workspaceEl!.appendChild(this.workspaceProvider.root);
         this.workspaceProvider.setOutputView(this.output.outputView);
     }
     get workspaceView() {

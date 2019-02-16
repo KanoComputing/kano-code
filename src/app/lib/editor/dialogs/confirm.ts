@@ -1,6 +1,8 @@
 import { button } from '@kano/styles/button.js';
-import '../../../elements/kano-alert/kano-alert.js';
-import { Alert } from './alert.js';
+import { KanoAlert } from '../../../elements/kano-alert/kano-alert.js';
+import { Alert, KanoAlertElement, IDialogAlertOptions } from './alert.js';
+
+export interface IDialogConfirmOptions extends IDialogAlertOptions {}
 
 const DEFAULT_OPTS = {
     confirmLabel: 'Confirm',
@@ -8,9 +10,9 @@ const DEFAULT_OPTS = {
 };
 
 export class Confirm extends Alert {
-    createDom(opts) {
+    createDom(opts : IDialogConfirmOptions) {
         const options = Object.assign({}, DEFAULT_OPTS, opts);
-        const root = document.createElement('kano-alert');
+        const root = new KanoAlert() as KanoAlertElement;
         root.appendChild(button.content.cloneNode(true));
         // OverlayInto is defined, Do not use modal nor backdrop
         root.modal = typeof this.overlayInto === 'undefined';
@@ -28,7 +30,7 @@ export class Confirm extends Alert {
         root.appendChild(dismiss);
         return root;
     }
-    _onClose(e) {
+    _onClose(e : CustomEvent) {
         if (e.detail.confirmed) {
             this.emit('confirm');
         } else {

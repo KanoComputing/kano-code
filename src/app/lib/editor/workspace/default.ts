@@ -7,7 +7,7 @@ import { KCPartsControls } from '../../../elements/kc-workspace-frame/kc-parts-c
 
 export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
     private subscriptions : Disposables = new Disposables();
-    private root : HTMLElement = document.createElement('div');
+    public root : HTMLElement = document.createElement('div');
     private frame : HTMLElement = document.createElement('kc-workspace-frame');
     public partsControls : KCPartsControls = document.createElement('kc-parts-controls') as KCPartsControls;
     constructor(editor : Editor) {

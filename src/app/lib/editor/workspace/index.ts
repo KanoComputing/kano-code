@@ -6,6 +6,7 @@ export abstract class WorkspaceViewProvider {
     abstract source : string;
     abstract outputViewRoot : HTMLElement;
     abstract partsControls : KCPartsControls;
+    public abstract root : HTMLElement;
     constructor(editor : Editor) {
         this.editor = editor;
     }

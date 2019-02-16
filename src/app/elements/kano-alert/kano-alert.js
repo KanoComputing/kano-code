@@ -45,7 +45,7 @@ import '@kano/styles/typography.js';
 import { button } from '@kano/styles/button.js';
 import { warning } from './icons.js';
 
-class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElement) {
+export class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElement) {
     static get template() {
         return html`
         ${button}
