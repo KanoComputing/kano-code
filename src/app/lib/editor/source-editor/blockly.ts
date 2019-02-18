@@ -50,7 +50,8 @@ export class BlocklySourceEditor implements SourceEditor {
                 const id = selector.id;
                 const block = workspace.getBlockById(id);
                 if (!block) {
-                    throw new Error(`Could not find block with id '${id}'`);
+                    return null;
+                    // throw new Error(`Could not find block with id '${id}'`);
                 }
                 return {
                     block,
@@ -70,7 +71,8 @@ export class BlocklySourceEditor implements SourceEditor {
                 const type = `${scope}${selector.class}`;
                 const block = allBlocks.find(b => b.type === type);
                 if (!block) {
-                    throw new Error(`Could not find block with type '${type}'`);
+                    return null;
+                    // throw new Error(`Could not find block with type '${type}'`);
                 }
                 return {
                     block,
@@ -81,21 +83,24 @@ export class BlocklySourceEditor implements SourceEditor {
                     },
                 };
             }
-            throw new Error('Could not query block. Neither id nor class is defined');
+            return null;
+            // throw new Error('Could not query block. Neither id nor class is defined');
         });
-        engine.registerTagHandler('toolbox', (selector : ISelector, parent? : IQueryResult) => {
+        engine.registerTagHandler('toolbox', (selector : ISelector, parent : IQueryResult|null) => {
             let id : string;
             if (parent && typeof parent.getToolboxId === 'function') {
                 id = parent.getToolboxId();
             } else if (selector.id) {
                 id = selector.id;
             } else {
-                throw new Error('Could not query toolbox. Neither id nor class is defined');
+                return null;
+                // throw new Error('Could not query toolbox. Neither id nor class is defined');
             }
             const toolbox = (this.domNode as any).defaultCategories as any[];
             const entry = toolbox.find(e => e.id === id);
             if (!entry) {
-                throw new Error(`Could not find toolbox entry with id '${id}'`);
+                return null;
+                // throw new Error(`Could not find toolbox entry with id '${id}'`);
             }
             const workspace = this.getWorkspace();
             return {
@@ -107,18 +112,20 @@ export class BlocklySourceEditor implements SourceEditor {
                 },
             };
         });
-        engine.registerTagHandler('flyout-block', (selector : ISelector, parent? : IQueryResult) => {
+        engine.registerTagHandler('flyout-block', (selector : ISelector, parent : IQueryResult|null) => {
             let scope : string = '';
             if (!parent) {
                 if (selector.class) {
                     const workspace = this.getWorkspace();
                     const flyout = workspace.toolbox.flyout_;
                     if (!flyout) {
-                        throw new Error('Could not find block in flyout: No flyout is opened');
+                        return null;
+                        // throw new Error('Could not find block in flyout: No flyout is opened');
                     }
                     const block = flyout.getBlockByType(selector.class);
                     if (!block) {
-                        throw new Error(`Could not find block ${selector.class}`);
+                        return null;
+                        // throw new Error(`Could not find block ${selector.class}`);
                     }
                     return {
                         block,
@@ -128,7 +135,7 @@ export class BlocklySourceEditor implements SourceEditor {
                         },
                     };
                 }
-                throw new Error('Not implemented');
+                return null;
             } else {
                 if (typeof parent.getToolboxId === 'function') {
                     scope = parent.getToolboxId();
@@ -137,11 +144,13 @@ export class BlocklySourceEditor implements SourceEditor {
                     const workspace = this.getWorkspace();
                     const flyout = workspace.toolbox.flyout_;
                     if (!flyout) {
-                        throw new Error('Could not find block in flyout: No flyout is opened');
+                        return null;
+                        // throw new Error('Could not find block in flyout: No flyout is opened');
                     }
                     const block = flyout.getBlockByType(`${scope}_${selector.id}`);
                     if (!block) {
-                        throw new Error(`Could not find block ${selector.id}`);
+                        return null;
+                        // throw new Error(`Could not find block ${selector.id}`);
                     }
                     return {
                         block,
@@ -154,11 +163,13 @@ export class BlocklySourceEditor implements SourceEditor {
                     const workspace = this.getWorkspace();
                     const flyout = workspace.toolbox.flyout_;
                     if (!flyout) {
-                        throw new Error('Could not find block in flyout: No flyout is opened');
+                        return null;
+                        // throw new Error('Could not find block in flyout: No flyout is opened');
                     }
                     const block = flyout.getBlockByType(`${scope}_${selector.class}`);
                     if (!block) {
-                        throw new Error(`Could not find block ${selector.class}`);
+                        return null;
+                        // throw new Error(`Could not find block ${selector.class}`);
                     }
                     return {
                         block,
@@ -168,13 +179,14 @@ export class BlocklySourceEditor implements SourceEditor {
                         },
                     };
                 }
-                throw new Error('Could not query toolbox. Neither id nor class is defined');
+                return null;
             }
         });
         // input means input and fields
-        engine.registerTagHandler('input', (selector : ISelector, parent? : IQueryResult) => {
+        engine.registerTagHandler('input', (selector : ISelector, parent : IQueryResult|null) => {
             if (!parent || typeof parent.getBlock !== 'function') {
-                throw new Error('Could not query input: Parent selector is not a block');
+                return null;
+                // throw new Error('Could not query input: Parent selector is not a block');
             }
             const block = parent.getBlock() as Block;
             const id = selector.id || selector.class;
@@ -189,7 +201,8 @@ export class BlocklySourceEditor implements SourceEditor {
                 }
             }
             if (!input && !field) {
-                throw new Error(`Could not find input or field named '${id}'`);
+                return null;
+                // throw new Error(`Could not find input or field named '${id}'`);
             }
             return {
                 input,
@@ -206,14 +219,15 @@ export class BlocklySourceEditor implements SourceEditor {
                 },
             };
         });
-        engine.registerTagHandler('next', (selector : ISelector, parent? : IQueryResult) => {
+        engine.registerTagHandler('next', (selector : ISelector, parent : IQueryResult|null) => {
             if (!parent || typeof parent.getBlock !== 'function') {
-                throw new Error('Could not query input: Parent selector is not a block');
+                return null;
+                // throw new Error('Could not query input: Parent selector is not a block');
             }
             const block = parent.getBlock() as Block;
             let connection : Connection|undefined = block.nextConnection;
             if (!connection) {
-                throw new Error('Could not find input');
+                return null;
             }
             return {
                 connection,

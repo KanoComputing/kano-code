@@ -1,9 +1,5 @@
 import * as code from '../../index.js';
-import * as APIs from '../../toolbox.js';
 import * as i18n from '../../i18n.js';
-import * as Modules from '../../modules.js';
-import * as Parts from '../../dist/app/lib/parts/parts/index.js';
-import * as PartAPIs from '../../dist/app/lib/parts/parts/api.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js'
 
 const Shapes = {
@@ -54,31 +50,20 @@ class ShapesModule extends code.AppModule {
     }
 }
 
-class OutputProfile extends code.OutputProfile {
-    get modules() {
-        return Object.values(Modules).concat([ShapesModule]);
-    }
-    get parts() {
-        return Object.values(Parts);
+class OutputProfile extends code.DefaultOutputProfile {
+    onInstall(output) {
+        super.onInstall(output);
+        this.modules.push(ShapesModule);
     }
 }
 
-class EditorProfile extends code.EditorProfile {
-    constructor() {
-        super();
+class EditorProfile extends code.DefaultEditorProfile {
+    onInstall(editor) {
+        super.onInstall(editor);
         this.storage = new LocalStoragePlugin('intro');
-    }
-    get plugins() {
-        return [this.storage];
-    }
-    get parts() {
-        return Object.values(PartAPIs);
-    }
-    get toolbox() {
-        return Object.values(APIs).concat([Shapes]);
-    }
-    get outputProfile() {
-        return new OutputProfile();
+        this.plugins.push(this.storage);
+        this.toolbox.push(Shapes);
+        this.outputProfile = new OutputProfile();
     }
 }
 

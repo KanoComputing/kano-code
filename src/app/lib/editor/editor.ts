@@ -16,7 +16,7 @@ import { BlocklySourceEditor } from './source-editor/blockly.js';
 import { transformLegacyApp } from '../legacy/loader.js';
 import { SourceEditor } from './source-editor/source-editor.js';
 import { Plugin } from './plugin.js';
-import EditorProfile from './profile.js';
+import EditorProfile, { DefaultEditorProfile } from './profile.js';
 import { CreationCustomPreviewProvider } from '../creation/creation-preview-provider.js';
 import CreationStorageProvider from '../creation/creation-storage-provider.js';
 import { deprecated } from '../decorators.js';
@@ -162,30 +162,22 @@ export class Editor extends EditorOrPlayer {
             plugin.onInject();
         }
     }
-    /**
-     * TODO: Remove once the editor moved to a better element registry API
-     * Ads an element to the old app-element-registry-behavior
-     */
-    registerLegacyElement(id : string, el : HTMLElement) {
-        (this.rootEl as any)._registerElement(id, el);
-    }
     getElement(id : string) {
         return this.elementsRegistry.get(id);
     }
     appendSourceEditor() {
         (this.rootEl as any).sourceContainer.appendChild(this.sourceEditor.domNode);
     }
-    ensureProviders() {
-        this.output.ensureOutputView();
-        if (!this.workspaceProvider) {
-            this.registerWorkspaceViewProvider(new DefaultWorkspaceViewProvider(this));
+    ensureProfile() {
+        if (!this.profile) {
+            this.registerProfile(new DefaultEditorProfile());
         }
     }
     inject(element = document.body, before? : HTMLElement) {
         if (this.injected) {
             return;
         }
-        this.ensureProviders();
+        this.ensureProfile();
         this.injected = true;
         if (before) {
             element.insertBefore(this.rootEl, before);
@@ -206,6 +198,8 @@ export class Editor extends EditorOrPlayer {
             if (this._queuedApp) {
                 this.load(this._queuedApp);
                 this._queuedApp = null;
+            } else {
+                this.reset();
             }
             this._onDidInject.fire();
         });
@@ -426,12 +420,19 @@ export class Editor extends EditorOrPlayer {
         this.contentWidgets.removeWidget(widget);
     }
     queryElement(selector : string) {
-        return this.querySelector(selector).getHTMLElement();
+        const result = this.querySelector(selector);
+        if (!result) {
+            return null;
+        }
+        return result.getHTMLElement();
     }
     queryPosition(selector : string) {
         // Retrieve the result using the usual querying system
         const root = this.queryEngine.parse(selector);
         const result = this.queryEngine.resolve(root);
+        if (!result) {
+            return null;
+        }
         // A position is provided, use it
         if (typeof result.getPosition === 'function') {
             return result.getPosition();

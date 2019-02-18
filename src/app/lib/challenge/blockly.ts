@@ -68,6 +68,9 @@ class BlocklyChallenge extends Challenge {
         }
         const target = Blockly.selected;
         const result = this.editor.querySelector(phantom_block);
+        if (!result) {
+            return false;
+        }
         let connection = result.connection as Connection;
 
         if (connection) {
@@ -178,6 +181,9 @@ class BlocklyChallenge extends Challenge {
      */
     _matchCategory(toolboxEntry : string, event : any) {
         const result = this.editor.querySelector(toolboxEntry);
+        if (!result) {
+            return false;
+        }
         const id = result.getId();
         return event.categoryId === id;
     }
@@ -207,6 +213,9 @@ class BlocklyChallenge extends Challenge {
      */
     _matchCreate(validation : any, event : any) {
         const result = this.editor.querySelector(validation.type);
+        if (!result) {
+            return false;
+        }
         const type = result.getId();
         // Check the type of the added block
         if (this._matchBlockType(type, event)) {
@@ -226,10 +235,17 @@ class BlocklyChallenge extends Challenge {
      * @param event An event from the Blockly workspace
      */
     _matchConnect(validation : any, event : any) {
+        const result = this.editor.querySelector(validation.target);
+        if (!result) {
+            return false;
+        }
         // Extract the validation object, target and parent step ids and the block connected
-        const target = this.editor.querySelector(validation.target).block as Block;
+        const target = result.block as Block;
         // const parent = this.editor.querySelector(validation.parent).input as Input;
         const parentResult = this.editor.querySelector(validation.parent);
+        if (!parentResult) {
+            return false;
+        }
         let connection = parentResult.connection as Connection;
 
         // Check that the element moved is the one targeted and that its new parent is the right one
@@ -258,6 +274,9 @@ class BlocklyChallenge extends Challenge {
      */
     _matchDrop(validation : any, event : any) {
         const result = this.editor.querySelector(validation.target);
+        if (!result) {
+            return false;
+        }
         const id = result.getId();
         // Check that the element that changed is the one we target
         return event.blockId === id;
@@ -279,6 +298,9 @@ class BlocklyChallenge extends Challenge {
          * Check the source of the event against the expected target declared in the challenge step
          */
         function validateSource() {
+            if (!target) {
+                return false;
+            }
             if (target.field) {
                 // Check field directly
                 return target.field === field;
@@ -286,6 +308,9 @@ class BlocklyChallenge extends Challenge {
                 // Recursively check the blocks. A matching block return immediately.
                 // A shadow block runs again with its parent
                 function checkBlock(block : Block) : boolean {
+                    if (!target) {
+                        return false;
+                    }
                     // Check this is the block emitting the event
                     if (target.block === block) {
                         return true;

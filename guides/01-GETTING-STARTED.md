@@ -87,31 +87,4 @@ i18n.load(lang, { blockly: true })
     });
 ```
 
-This will now display a completely empty editor in the page. Let's add some block in the toolbox, import the toolbox APIs at the top of the file:
-
-```js
-import * as APIs from '@kano/code/toolbox.js';
-```
-
-Now let's create a new EditorProfile. This will contain the editor's configuration for this session. It can be used to define the toolbox, output view, plugins and react to lifecycle event.
-
-```js
-class EditorProfile extends code.EditorProfile {
-    get toolbox() {
-        return Object.values(APIs);
-    }
-}
-```
-
-Now, before injecting the editor. register your Profile:
-
-```js
-const editor = new code.Editor();
-
-editor.registerProfile(new EditorProfile());
-
-editor.inject(document.body);
-
-```
-
-Refresh and you can now see the toolbox fileld with the default entries.
+Refresh and you will see a default Kano Code editor.

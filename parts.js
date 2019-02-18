@@ -1,1 +1,1 @@
-export * from './dist/app/lib/parts/index.js';
+export * from './dist/app/lib/parts/parts/index.js';

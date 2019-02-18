@@ -5,16 +5,9 @@ import '@kano/kwc-blockly/kwc-blockly.js';
 import '@kano/kwc-blockly/blockly_built/msg/js/en.js';
 import '@kano/kwc-blockly/blocks.js';
 import '@kano/kwc-blockly/javascript.js';
-import { AppEditorBehavior } from '../behaviors/kano-app-editor-behavior.js';
-import { AppElementRegistryBehavior } from '../behaviors/kano-app-element-registry-behavior.js';
 import '../kano-style/themes/dark.js';
 
-const behaviors = [
-    AppEditorBehavior,
-    AppElementRegistryBehavior,
-];
-
-class KCBlocklyEditor extends mixinBehaviors([behaviors], PolymerElement) {
+class KCBlocklyEditor extends PolymerElement {
     static get template() {
         return html`
         <style>
@@ -49,7 +42,6 @@ class KCBlocklyEditor extends mixinBehaviors([behaviors], PolymerElement) {
                     flyout="[[flyout]]"
                     on-change="_onBlocklyChanged"
                     on-code-changed="_onCodeChanged"
-                    on-blockly-ready="_onBlocklyReady"
                     media="[[media]]">
         </kwc-blockly>
 `;
@@ -93,17 +85,7 @@ class KCBlocklyEditor extends mixinBehaviors([behaviors], PolymerElement) {
         super.connectedCallback();
         this.toolboxReady = false;
     }
-    _onBlocklyReady() {
-        const binGroup = this.$['code-editor'].workspace.svgGroup_;
-        if (binGroup) {
-            this._registerElement('blockly-bin', binGroup.querySelector('.blocklyTrash'));
-        }
-        this._registerElement('blockly-toolbox', this.$['code-editor'].getToolbox());
-        // TODO: kwc-blockly should be able to report this at any moment. But at this exact point
-        // it doesn't. Use `getFlyout` once kwc-blockly fixes this issue
-        const flyout = this.flyout ? this.$['code-editor'].$.flyout : this.$['code-editor'].$.toolbox.$.flyout;
-        this._registerElement('blockly-flyout', flyout);
-    }
+
     _onCodeChanged(e) {
         this.dispatchEvent(new CustomEvent('code-changed', { detail: { value: e.detail.value } }));
     }
@@ -153,11 +135,6 @@ class KCBlocklyEditor extends mixinBehaviors([behaviors], PolymerElement) {
             this.set('toolbox', toolbox);
             this.set('noToolbox', false);
         }
-        // Update the flyout element as it can change
-        // TODO: kwc-blockly should be able to report this at any moment. But at this exact point
-        // it doesn't. Use `getFlyout` once kwc-blockly fixes this issue
-        const flyout = this.flyout ? this.$['code-editor'].$.flyout : this.$['code-editor'].$.toolbox.$.flyout;
-        this._registerElement('blockly-flyout', flyout);
         if (!this.toolboxReady) {
             this.toolboxReady = true;
             this.$['code-editor'].loadBlocks(this.blocks);

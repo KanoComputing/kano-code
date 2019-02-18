@@ -1,23 +1,29 @@
 import { Output } from './output.js';
-import { Plugin } from '../editor/plugin.js';
-import { AppModule } from '../app-modules/app-module.js';
 import { IOutputProvider } from './index.js';
-import { Part } from '../parts/part.js';
+import * as Modules from '../modules/index.js';
+import * as Parts from '../parts/parts/index.js';
+import DefaultOutputViewProvider from './default.js';
 
-export interface IOutputProfile {
-    id : string;
-    onInstall?(output : Output) : void;
-    plugins? : Plugin[];
-    modules? : Type<AppModule>[];
-    parts? : Type<Part>[];
-    outputProvider? : IOutputProvider;
+export abstract class OutputProfile {
+    abstract id : string;
+    abstract outputProvider? : IOutputProvider;
+    abstract plugins? : any[];
+    abstract modules? : any[];
+    abstract parts? : any[];
+    abstract onInstall(output : Output) : void;
 }
 
-export class OutputProfile implements IOutputProfile {
-    get id() { return 'default'; }
-    onInstall() {}
-    get plugins() { return []; }
-    get modules() { return []; }
+export class DefaultOutputProfile extends OutputProfile {
+    id: string = 'default';
+    outputProvider? : IOutputProvider;
+    plugins? : any[];
+    parts? : any[];
+    modules? : any[];
+    onInstall(output : Output) {
+        this.parts = Object.values(Parts);
+        this.modules = Object.values(Modules);
+        this.outputProvider = new DefaultOutputViewProvider();
+    }
 }
 
 export default OutputProfile;

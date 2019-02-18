@@ -1,23 +1,38 @@
-import { OutputProfile } from '../output/profile.js';
+import { OutputProfile, DefaultOutputProfile } from '../output/profile.js';
 import { Editor } from './editor.js';
 import { CreationCustomPreviewProvider } from '../creation/creation-preview-provider.js';
 import CreationStorageProvider from '../creation/creation-storage-provider.js';
 import WorkspaceViewProvider from './workspace/index.js';
+import * as PartAPIs from '../parts/parts/api.js'; 
+import * as APIs from '../modules/api.js';
+import DefaultWorkspaceViewProvider from './workspace/default.js';
 
 export abstract class EditorProfile {
-    private editor : Editor;
-    constructor(editor : Editor) {
-        this.editor = editor;
+    abstract workspaceViewProvider? : WorkspaceViewProvider;
+    abstract onInstall(editor : Editor) : void;
+    abstract parts? : any[];
+    abstract plugins? : any[];
+    abstract toolbox? : any[];
+    abstract outputProfile? : OutputProfile;
+    abstract creationPreviewProvider? : CreationCustomPreviewProvider;
+    abstract creationStorageProvider? : CreationStorageProvider;
+}
+
+export class DefaultEditorProfile extends EditorProfile {
+    parts? : any[];
+    plugins? : any[];
+    toolbox? : any[];
+    workspaceViewProvider? : DefaultWorkspaceViewProvider;
+    creationPreviewProvider? : CreationCustomPreviewProvider;
+    creationStorageProvider? : CreationStorageProvider;
+    outputProfile? : OutputProfile;
+    onInstall(editor: Editor) {
+        this.workspaceViewProvider = new DefaultWorkspaceViewProvider(editor);
+        this.plugins = [];
+        this.parts = Object.values(PartAPIs);
+        this.toolbox = Object.values(APIs);
+        this.outputProfile = new DefaultOutputProfile();
     }
-    onInstall(editor : Editor) {}
-    get parts() { return []; }
-    get plugins() { return []; }
-    get toolbox() { return []; }
-    get outputProfile() { return new OutputProfile(); }
-    abstract get workspaceViewProvider() : WorkspaceViewProvider;
-    get source() { return ''; }
-    abstract get creationPreviewProvider() : CreationCustomPreviewProvider|undefined;
-    abstract get creationStorageProvider() : CreationStorageProvider|undefined;
 }
 
 export default EditorProfile;

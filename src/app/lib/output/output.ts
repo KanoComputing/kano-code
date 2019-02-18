@@ -86,7 +86,7 @@ export class Output extends PluginReceiver {
         this.outputViewProvider = provider;
         this.outputViewProvider.onInstall(this);
     }
-    registerProfile(outputProfile : IOutputProfile) {
+    registerProfile(outputProfile? : IOutputProfile) {
         // No outputProfile was provider, fallback to default
         if (!outputProfile) {
             return;

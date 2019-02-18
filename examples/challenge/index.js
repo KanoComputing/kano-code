@@ -1,32 +1,6 @@
 import { Challenge } from '../../challenge.js';
 import * as code from '../../index.js';
-import * as APIs from '../../toolbox.js';
 import * as i18n from '../../i18n.js';
-import * as Modules from '../../modules.js';
-import * as Parts from '../../dist/app/lib/parts/parts/index.js';
-import * as PartAPIs from '../../dist/app/lib/parts/parts/api.js';
-
-
-class OutputProfile extends code.OutputProfile {
-    get modules() {
-        return Object.values(Modules);
-    }
-    get parts() {
-        return Object.values(Parts);
-    }
-}
-
-class EditorProfile extends code.EditorProfile {
-    get parts() {
-        return Object.values(PartAPIs);
-    }
-    get toolbox() {
-        return Object.values(APIs);
-    }
-    get outputProfile() {
-        return new OutputProfile();
-    }
-}
 
 const lang = i18n.getLang();
 
@@ -89,8 +63,6 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
             .then(r => r.json())
             .then(c => {
                 const editor = new code.Editor();
-        
-                editor.registerProfile(new EditorProfile());
         
                 editor.inject(document.body);
                 const challenge = new Challenge(editor, c);

@@ -26,12 +26,33 @@ const Shapes = {
     }],
 };
 
-class EditorProfile extends code.EditorProfile {
-    get toolbox() {
-        // Add our API to the list using concat
-        return Object.values(APIs).concat([Shapes]);
+// Also create a new Editor Profile extending the default one. The default editor profile is loaded when none is provided.
+// We just add our custom toolbox entry to the list.
+class EditorProfile extends code.DefaultEditorProfile {
+    onInstall(editor) {
+        super.onInstall(editor);
+        this.toolbox.push(Shapes);
     }
 }
+```
+
+We now need to register the profile to the editor:
+
+```js
+const lang = i18n.getLang();
+
+i18n.load(lang, { blockly: true, kanoCodePath: '/' })
+    .then(() => {
+        const editor = new code.Editor();
+
+        // Add this line
+        editor.registerProfile(new EditorProfile());
+
+        editor.inject(document.body);
+
+        editor.profile.storage.load();
+    });
+
 ```
 
 Refresh and you see a new entry in the toolbox. Inside there is a unique block with no connection name 'Draw a heart'. Drag this block in the workspace and click on the `JavaScript` tab to see the generated code: `shapes.heart`.

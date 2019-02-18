@@ -13,8 +13,9 @@ Start by creating a new `OutputProfile`:
 
 ```js
 class OutputProfile extends code.OutputProfile {
-    get modules() {
-        // return modules here
+    onInstall(output) {
+        super.onInstall(output);
+        // Add the modules to this.modules
     }
 }
 ```
@@ -22,12 +23,11 @@ class OutputProfile extends code.OutputProfile {
 Then let your EditorProfile know that you want it to run alongside your OutputProfile.
 
 ```js
-class EditorProfile extends code.EditorProfile {
-    get toolbox() {
-        return Object.values(APIs).concat([Shapes]);
-    }
-    get outputProfile() {
-        return new OutputProfile();
+class EditorProfile extends code.DefaultEditorProfile {
+    onInstall(editor) {
+        super.onInstall(editor);
+        this.toolbox.push(Shapes);
+        this.outputProfile = new OutputProfile();
     }
 }
 ```
@@ -57,8 +57,9 @@ Add this new module to the list in the `OutputProfile`:
 
 ```js
 class OutputProfile extends code.OutputProfile {
-    get modules() {
-        return [ShapesModule];
+    onInstall(output) {
+        super.onInstall(output);
+        this.modules.push(ShapesModule);
     }
 }
 ```
@@ -101,21 +102,5 @@ class ShapesModule extends code.AppModule {
 ```
 
 Drag the heart block and see it being painted on the canvas. You can change the color using the picker and see it change.
-
-But if your try to plug the random color block in the heart block, you'll be welcomed with a `color is not defined` error. It will be the same with every other default block. That is because all the default APIs must also have their implementation loaded. Import the Modules and add them to your OutputProfile:
-
-```js
-// Import this at the top
-import * as Modules from '@kano/code/modules.js';
-// ...
-
-class OutputProfile extends code.OutputProfile {
-    get modules() {
-        return Object.values(Modules).concat([ShapesModule]);
-    }
-}
-```
-
-You can now use all the default blocks with your output.
 
 As a stretch goal, you can add some parameters to the definition to control the x, y position and the scale, and add thos methods to the implementation.

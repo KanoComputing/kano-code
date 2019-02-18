@@ -1,8 +1,8 @@
 import '@polymer/iron-pages/iron-pages.js';
-import '@polymer/paper-tabs/paper-tabs.js';
 import 'js-beautify/js/lib/beautify.js';
 import '../kano-code-display/kano-code-display.js';
 import { property, customElement, css, LitElement, html, query } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map';
 
 declare global {
     interface Window { js_beautify : any }
@@ -57,36 +57,33 @@ export class KanoAppEditor extends LitElement {
                 width: 33%;
                 background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
             }
-            paper-tabs {
+            .tabs {
                 height: 32px;
                 background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
-                --paper-tab-ink: var(--color-dark);
+                display: flex;
+                flex-direction: row;
             }
-            .tab-selector {
-                --paper-tabs-selection-bar: {
-                    border-bottom: none;
-                };
-            }
-            paper-tab {
+            .tab {
+                border: none;
+                background: transparent;
                 width: 50%;
-                color: #fff;
                 font-family: var(--font-body);
                 font-weight: bold;
                 text-transform: uppercase;
                 padding: 0;
-                border-top: 1px solid var(--kano-app-editor-workspace-background, #f2f2f2);
-                border-left: 1px solid var(--kano-app-editor-workspace-background, #f2f2f2);
                 padding: 0;
+                cursor: pointer;
+                font-weight: bold;
+                font-size: 14px;
+                outline: none;
+                background: #394148;
+                opacity: 0.8;
+                color: rgba(255, 255, 255, 0.5);
             }
-            .tab-selector .tab {
-                --paper-tab-content: {
-                    padding: 0 8px;
-                };
-                --paper-tab-content-unselected: {
-                    color: rgba(255, 255, 255, 0.5);
-                    background-color: var(--color-abbey);
-                };
-                --paper-tab-ink: var(--color-dark);
+            .tab.selected {
+                color: #fff;
+                opacity: 1;
+                background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
             }
             :host iron-pages.workspace-pages {
                 display: flex;
@@ -196,14 +193,13 @@ export class KanoAppEditor extends LitElement {
                      @mousemove=${(e : MouseEvent) => this.mouseMoved(e)}
                      @mouseup=${() => this.completedResizing()}>
                 <div class="ui-edition" id="workspace-panel">
-                    <paper-tabs class="tab-selector"
+                    <div class="tabs"
                                 attr-for-selected="id"
                                 .selected=${this.workspaceTab}
-                                @selected-changed=${(e : CustomEvent) => this._onSelectedChanged(e)}
                                 autoselect>
-                        <paper-tab id="workspace" class="tab">Canvas</paper-tab>
-                        <paper-tab id="code-display" class="tab">JavaScript</paper-tab>
-                    </paper-tabs>
+                        ${this.getTab('Canvas', 'workspace')}
+                        ${this.getTab('JavaScript', 'code-display')}
+                    </div>
                     <iron-pages class="workspace-pages" attr-for-selected="name" .selected=${this.workspaceTab}>
                         <div name="workspace" id="workspace-host" class="visible-when-running"></div>
                         <kano-code-display name="code-display" id="code-display" .code=${this._setCodeDisplay(this.code, this.workspaceTab)} lang="javascript"></kano-code-display>
@@ -217,6 +213,11 @@ export class KanoAppEditor extends LitElement {
                 </div>
             </section>
             <div id="widget-layer"></div>
+        `;
+    }
+    getTab(label : string, id : string) {
+        return html`
+            <button class="tab ${classMap({ selected: this.workspaceTab === id })}" @click=${() => this.workspaceTab = id}>${label}</button>
         `;
     }
     _onSelectedChanged(e : CustomEvent) {

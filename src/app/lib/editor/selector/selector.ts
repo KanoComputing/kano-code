@@ -17,7 +17,7 @@ export interface IQueryResult {
 }
 
 export interface ITagHandler {
-    (selector : ISelector, parent? : IQueryResult) : IQueryResult;
+    (selector : ISelector, parent : IQueryResult|null) : IQueryResult|null;
 }
 
 export class QueryEngine {
@@ -71,7 +71,7 @@ export class QueryEngine {
         QueryEngine.parseValue(selector, root, value, prevModifier);
         return root;
     }
-    resolve(selector : ISelector, parent? : IQueryResult) : IQueryResult {
+    resolve(selector : ISelector, parent : IQueryResult|null = null) : IQueryResult|null {
         if (!selector.tag) {
             throw new Error('Could not resolve selector: tag is empty');
         }

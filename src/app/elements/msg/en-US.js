@@ -1,4 +1,4 @@
-import { Msg as Msg$0 } from '../behaviors/kano-i18n-behavior.js';
+export const Msg$0 = {};
 Msg$0['add-parts-1'] = "We'll start by adding parts to our app.";
 Msg$0['add-parts-2'] = "To build the interface of the app, we need parts";
 
