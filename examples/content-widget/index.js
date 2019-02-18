@@ -29,7 +29,7 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
                 return this.domNode;
             },
             getPosition() {
-                return 'block.app_onStart:100,0';
+                return 'block.app_onStart>input#callback:100,0';
             },
         };
 

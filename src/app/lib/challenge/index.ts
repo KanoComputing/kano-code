@@ -3,7 +3,7 @@ import { KanoCodeChallenge } from './kano-code.js';
 import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
 import { transformChallenge } from './legacy.js';
 import { IToolboxWhitelist } from '../editor/toolbox.js';
-import { subscribe, IDisposable } from '@kano/common/index.js';
+import { subscribe, IDisposable, EventEmitter } from '@kano/common/index.js';
 
 interface IChallengeData {
     version? : string;
@@ -21,6 +21,8 @@ export class Challenge {
     private challengeData : IChallengeData;
     private engine? : KanoCodeChallenge;
     private subscriptions : IDisposable[] = [];
+    private _onDidEnd : EventEmitter = new EventEmitter();
+    get onDidEnd() { return this._onDidEnd.event; }
     constructor(editor : Editor, challengeData : IChallengeData) {
         this.editor = editor;
         if (!challengeData.version) {
@@ -96,6 +98,7 @@ export class Challenge {
         const engine = this.engine!;
         subscribe(engine, 'done', () => {
             this.editor.toolbox.setWhitelist(null);
+            this._onDidEnd.fire();
         }, this, this.subscriptions);
         engine.start();
     }

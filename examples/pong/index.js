@@ -1,61 +1,22 @@
 import * as code from '../../index.js';
-import * as api from '../../api.js';
 import * as i18n from '../../i18n.js';
 import { PongOutputProfile } from './profile.js';
 
 const lang = i18n.getLang();
 
 // Load Kano Code locales and elements
-Promise.all([
-    i18n.load(`/locale/editor/${lang}.json`),
-    i18n.loadBlocklyMsg(`/locale/blockly/${lang}.json`),
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/en.json'),
-    i18n.loadBlocklyMsg('/node_modules/@kano/kwc-blockly/blockly_built/msg/json/constants.json'),
-]).then(() => {
-    // Define what the workpsace will be, in this case, it only contains the output
-    // and an output code element to display the generated code in real time
-    class PongWorkspaceViewProvider extends code.WorkspaceViewProvider {
-        onInstall(editor) {
-            this.editor = editor;
-            this.root = document.createElement('div');
-            this.root.innerHTML = `
-                <style>
-                    #tools {
-                        color: white;
-                        padding: 32px;
-                        font-family: Arial;
-                    }    
-                </style>
-                <div id="output"></div>
-                <div id="tools">
-                    <pre>
-                        <code id="code-output"></code>    
-                    </pre>
-                </div>
-            `;
-            this.root.style.width = '100%';
-            // Listen to the running state change
-            this.editor.output.on('running-state-changed', () => {
-                this.updateCodeOutput();
-            });
-        }
-        get outputViewRoot() {
-            return this.root.querySelector('#output');
-        }
-        updateCodeOutput() {
-            // Put the current code from the editor in the code element
-            this.root.querySelector('#code-output').innerHTML = `\n${this.editor.output.getCode() || ''}`;
-        }
-    }
+i18n.load(lang, { blockly: true, kanoCodePath: '/' })
+    .then(() => {
 
-    // CReate the editor
+    // Create the editor
     const editor = new code.Editor();
 
     // Create the toolbox defining three methods in the pong module
     const PongToolbox = {
         type: 'module',
         name: 'pong',
-        color: '#00796b',
+        verbose: 'Pong',
+        color: '#ff6f00',
         symbols: [{
             type: 'function',
             name: 'setBackgroundColor',
@@ -92,9 +53,10 @@ Promise.all([
     const AIToolbox = {
         type: 'module',
         name: 'ai',
-        color: '#00796b',
+        verbose: 'A.I.',
+        color: '#ff6f00',
         symbols: [{
-            type: 'function',
+            type: 'variable',
             name: 'position',
             verbose: 'AI paddle position',
             returnType: Number,
@@ -114,35 +76,26 @@ Promise.all([
     const BallToolbox = {
         type: 'module',
         name: 'ball',
-        color: '#00796b',
+        verbose: 'Ball',
+        color: '#ff6f00',
         symbols: [{
-            type: 'function',
+            type: 'variable',
             name: 'position',
             verbose: 'Ball position',
             returnType: Number,
         }],
     };
 
-    class PongProfile extends code.EditorProfile {
-        onInstall() {
-            this._outputProfile = new PongOutputProfile();
-            this._workspaceViewProvider = new PongWorkspaceViewProvider();
-        }
-        get outputProfile() {
-            return this._outputProfile;
-        }
-        get workspaceViewProvider() {
-            return this._workspaceViewProvider;
-        }
-        get toolbox() {
-            return [
-                api.MathAPI,
-                api.ControlAPI,
-                api.LogicAPI,
+    class PongProfile extends code.DefaultEditorProfile {
+        onInstall(editor) {
+            super.onInstall(editor);
+            this.outputProfile = new PongOutputProfile();
+            this.toolbox.push(
                 PongToolbox,
                 AIToolbox,
                 BallToolbox,
-            ];
+            );
+            this.workspaceViewProvider.source = "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></variables><block type=\"app_onStart\" id=\"l|j!a9vaY]-`RKlm;JH{\" x=\"67\" y=\"63\"><field name=\"FLASH\"></field><statement name=\"CALLBACK\"><block type=\"every_x_seconds\" id=\"d[fnQF,CX9-{h_6gyvyI\"><field name=\"UNIT\">frames</field><value name=\"INTERVAL\"><shadow type=\"math_number\" id=\"TA+9Q)bf0q$ln_g4@$eu\"><field name=\"NUM\">1</field></shadow></value><statement name=\"DO\"><block type=\"controls_if\" id=\"5iMs.K!W:p`6SZ%fA%XI\"><mutation else=\"1\"></mutation><value name=\"IF0\"><block type=\"logic_compare\" id=\"feWu0@cp4:i~)3is`lJw\"><field name=\"OP\">LT</field><value name=\"A\"><block type=\"ai_position_get\" id=\"yl_g9J?E-:q[j]h^|m`N\"></block></value><value name=\"B\"><block type=\"ball_position_get\" id=\"ug{(Qz|vk(c.=qeQqdxB\"></block></value></block></value><statement name=\"DO0\"><block type=\"ai_move\" id=\"b=A/q,pEYNwwM|%q+fi[\"><value name=\"AMOUNT\"><shadow type=\"math_number\" id=\"/23M?zLYc=S(F:HJ)ym_\"><field name=\"NUM\">1</field></shadow></value></block></statement><statement name=\"ELSE\"><block type=\"ai_move\" id=\"1Xa3]N6#-oT5-hjVN5N?\"><value name=\"AMOUNT\"><shadow type=\"math_number\" id=\"KhCGjN*s-@FgoH$u|=[N\"><field name=\"NUM\">-1</field></shadow></value></block></statement></block></statement></block></statement></block></xml>";
         }
     }
 
@@ -150,11 +103,6 @@ Promise.all([
 
     editor.inject();
 
-    fetch('./default.xml')
-        .then(r => r.text())
-        .then((source) => {
-            editor.load({ source });
-            editor.output.setRunningState(true);
-        });
+    editor.output.setRunningState(true);
 
 });

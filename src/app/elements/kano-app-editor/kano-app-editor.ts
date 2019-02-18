@@ -16,16 +16,25 @@ export class KanoAppEditor extends LitElement {
     public workspaceTab : string = 'workspace';
     @property({ type: Boolean })
     public isResizing : boolean = false;
+
     @query('#section')
     private section? : HTMLElement;
+
     @query('#workspace-panel')
     private workspacePanel? : HTMLElement;
+
     @query('#source-container')
     public sourceContainer? : HTMLElement;
+
     @query('#widget-layer')
     public widgetLayer? : HTMLElement;
+
     @query('#workspace-host')
     public workspaceEl? : HTMLElement;
+
+    @query('#activity-bar')
+    public activityBarEl? : HTMLElement;
+    
     static get styles() {
         return [css`
             :host {

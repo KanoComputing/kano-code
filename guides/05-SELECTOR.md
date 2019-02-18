@@ -52,6 +52,7 @@ When running a challenge, a user can create a block or part at runtime. These ca
 |Tag|Description|Modifiers|Example|
 |---|---|---|---|
 |`alias`|Returns a previously saved result|`#`|`alias#block_0>input.NAME`, `alias#part_0`|
+|`banner-button`|Returns the button in the challenge's banner. null if the banner is not currently displayed|`N/A`|`banner-button`|
 
 
 ## API
