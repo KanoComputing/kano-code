@@ -102,7 +102,7 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
     editor.registerProfile(new PongProfile());
 
     editor.inject();
-
-    editor.output.setRunningState(true);
-
+    editor.onDidInject(() => {
+        editor.output.setRunningState(true);
+    });
 });
