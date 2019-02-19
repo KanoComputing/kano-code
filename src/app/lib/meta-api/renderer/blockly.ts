@@ -287,7 +287,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             };
             Blockly.JavaScript[id] = (block : any) => {
                 if (m.def.blockly && typeof m.def.blockly.javascript === 'function') {
-                    return m.def.blockly.javascript(Blockly, block);
+                    return m.def.blockly.javascript(Blockly, block, m);
                 }
                 const values = params.map((p, index) => {
                     const argName = p.def.name.toUpperCase();

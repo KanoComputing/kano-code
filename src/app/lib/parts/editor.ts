@@ -1,20 +1,21 @@
-import { IDisposable, EventEmitter } from '@kano/common/index.js';
+import { EventEmitter } from '@kano/common/index.js';
 import { AddPartDialogProvider } from './dialogs/add.js';
 import { PartContructor } from './manager.js';
 import { memoize } from '../util/decorators.js';
 import { IPartAPI } from './api.js';
 import { IAPIDefinition } from '../meta-api/module.js';
-import { Part } from './part.js';
+import { Part, IPart } from './part.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
 import { ToolboxEntry, IToolboxWhitelist } from '../editor/toolbox.js';
 import { QueryEngine } from '../editor/selector/selector.js';
+import { IPartsControlsEntry } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
 
 interface IPartRecord {
     type : string;
     toolboxEntry : ToolboxEntry;
-    partsControlsEntry : IDisposable;
+    partsControlsEntry : IPartsControlsEntry;
     part : Part;
 }
 
@@ -185,12 +186,7 @@ export class EditorPartsManager {
         }
         const toolboxModule = this.createToolboxModule(api, id, name);
         const entry = this.editor.toolbox.addEntry(toolboxModule);
-        let inlineDisplay;
-        if (api.inlineDisplay) {
-            inlineDisplay = new api.inlineDisplay(part);
-        } else {
-            inlineDisplay = new DefaultInlineDisplay(part);
-        }
+        const inlineDisplay = EditorPartsManager.getInlineDisplay(api, part);
         const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id, icon: api.icon, inlineDisplay, color: api.color });
         const partRecord : IPartRecord = {
             type: api.type,
@@ -282,6 +278,13 @@ export class EditorPartsManager {
         }
         return false;
     }
+    static getInlineDisplay(api : IPartAPI, part : Part) {
+        if (api.inlineDisplay) {
+            return new api.inlineDisplay(part);
+        } else {
+            return new DefaultInlineDisplay(part);
+        }
+    }
     renamePart(partRecord : IPartRecord, newName : string) {
         const api = this.apiRegistry.get(partRecord.type);
         if (!api) {
@@ -304,6 +307,16 @@ export class EditorPartsManager {
 
         const toolboxModule = this.createToolboxModule(api, partRecord.part.id, safeName);
         partRecord.toolboxEntry.update(toolboxModule);
+
+        const inlineDisplay = EditorPartsManager.getInlineDisplay(api, partRecord.part);
+
+        partRecord.partsControlsEntry.update({
+            name: partRecord.part.name,
+            id: partRecord.part.id,
+            icon: api.icon,
+            inlineDisplay,
+            color: api.color,
+        });
 
         this.parts.set(partRecord.part.id, partRecord);
 

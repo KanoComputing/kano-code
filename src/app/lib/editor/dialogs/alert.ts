@@ -35,7 +35,7 @@ export class Alert extends Base<KanoAlertElement> {
         root.heading = opts.heading;
         root.text = opts.text;
         const buttonEl = this.createButton(opts.buttonLabel || 'Ok');
-        buttonEl.className = 'btn tertiary kano-alert-primary';
+        buttonEl.className = 'btn l tertiary kano-alert-primary';
         buttonEl.setAttribute('dialog-dismiss', '');
         root.appendChild(buttonEl);
         return root;

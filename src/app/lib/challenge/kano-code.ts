@@ -5,6 +5,7 @@ import { BeaconWidget } from './widget/beacon.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
 import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
 import { Part } from '../parts/part.js';
+import { Tooltip } from './widget/tooltip.js';
 
 // TODO: Use Symbol('store) instead
 const PARTS_STORE = 'parts';
@@ -13,6 +14,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     protected editor : Editor;
     public widgets : Map<string, IEditorWidget> = new Map();
     private _beaconSub? : IDisposable;
+    private tooltips : Tooltip[] = [];
     constructor(editor : Editor) {
         super(editor);
         this.editor = editor;
@@ -31,6 +33,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
 
         this.defineBehavior('banner', this.displayBanner.bind(this), this.hideBanner.bind(this));
         this.defineBehavior('beacon', this.displayBeacon.bind(this), this.hideBeacon.bind(this));
+        this.defineBehavior('tooltips', this.displayTooltips.bind(this), this.hideTooltips.bind(this));
 
         // TODO: dispose cycle
         this.workspace.addChangeListener(() => {
@@ -43,6 +46,37 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.editor.parts.onDidAddPart((part) => {
             this.triggerEvent('add-part', part);
         });
+    }
+    displayTooltips(tooltips : any[]) {
+        tooltips.forEach((tooltipData) => {
+            const tooltip = new Tooltip();
+            this.editor.addContentWidget(tooltip);
+            this.tooltips.push(tooltip);
+            if (tooltipData.text) {
+                tooltip.setText(tooltipData.text);
+            }
+            if (tooltipData.position) {
+                tooltip.setPosition(tooltipData.position);
+            }
+            tooltip.setOffset(tooltipData.offset || 0);
+            if (tooltipData.target) {
+                const target = this.editor.queryElement(tooltipData.target);
+                if (!target) {
+                    // TODO: error managment
+                    return;
+                }
+                tooltip.layout(target as HTMLElement);
+            }
+        });
+    }
+    hideTooltips() {
+        this.tooltips.forEach((tooltip) => {
+            tooltip.close().then(() => {
+                this.editor.removeContentWidget(tooltip);
+                tooltip.dispose();
+            });
+        });
+        this.tooltips.length = 0;
     }
     displayBanner(data : any) {
         const widget = new BannerWidget(this.editor);

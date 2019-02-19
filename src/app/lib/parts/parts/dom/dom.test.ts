@@ -35,7 +35,7 @@ suite('DOMPart', () => {
 
         assert.equal((part as any)._el.style.transform, `translate(${x}px, ${y}px) scale(${scale}, ${scale}) rotate(${rotation}deg)`);
     });
-    test('#turn()', () => {
+    test('#rotation', () => {
         return new Promise((resolve) => {
             const rotation = 12;
             const part = new DOMTest();
@@ -45,7 +45,7 @@ suite('DOMPart', () => {
                 resolve();
             });
 
-            part.turn('to', rotation);
+            part.rotation = rotation;
         });
     });
     test('#moveAlong()', () => {

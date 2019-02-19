@@ -183,6 +183,11 @@ export class KCPartsControls extends LitElement {
         const entry : IPartsControlsEntry = {
             _onDidChangeName: new EventEmitter<string>(),
             get onDidChangeName() { return this._onDidChangeName.event },
+            update: (model : IStackEntry) => {
+                const index = this.parts.indexOf(item);
+                this.parts.splice(index, 1, model);
+                this.parts = [...this.parts];
+            },
             dispose: () => {
                 const index = this.parts.indexOf(item);
                 this.parts.splice(index, 1);
@@ -207,8 +212,9 @@ export class KCPartsControls extends LitElement {
     }
 }
 
-interface IPartsControlsEntry {
+export interface IPartsControlsEntry {
     _onDidChangeName : EventEmitter<string>;
     onDidChangeName : IEvent<string>;
     dispose() : void;
+    update(model : IStackEntry) : void;
 }

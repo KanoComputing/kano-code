@@ -8,13 +8,17 @@ const app = {"source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></
 const challengeData = {
     version: '2',
     defaultApp: JSON.stringify(app),
-    partsWhitelist: {
-        'mouse': ['x', 'y'],
-    },
-    whitelist: {
-        color: ['colour_picker'],
-    },
+    // partsWhitelist: {
+    //     'button': ['onClick'],
+    // },
+    // whitelist: {
+    //     color: ['colour_picker'],
+    // },
     steps: [{
+        tooltips: [{
+            target: 'add-part-button',
+            text: 'Jello'
+        }],
         beacon: 'part#button>toolbox:100,50',
         validation: {
             blockly: {
@@ -33,6 +37,11 @@ const challengeData = {
         },
     }, {
         beacon: 'part#button>block.onClick',
+        tooltips: [{
+            target: 'part#button>block.onClick',
+            text: 'Jello',
+            position: 'right'
+        }],
         phantom_block: 'part#button>block.onClick>input#CALLBACK',
         validation: {
             blockly: {
@@ -65,7 +74,7 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
                 const editor = new code.Editor();
 
                 editor.onDidInject(() => {
-                    const challenge = new Challenge(editor, c);
+                    const challenge = new Challenge(editor, challengeData);
                     challenge.start();
                 });
         

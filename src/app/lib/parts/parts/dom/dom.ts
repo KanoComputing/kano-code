@@ -36,14 +36,12 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         this.transform.apply();
     }
     abstract getElement() : T
-    turn(type : TurnType, a : number) {
-        if (type === 'to') {
-            this.transform.rotation = a;
-        } else if (type === 'clockwise') {
-            this.transform.rotation += a;
-        } else {
-            this.transform.rotation -= a;
-        }
+    turnCW(a : number) {
+        this.transform.rotation += a;
+        this.transform.invalidate();
+    }
+    turnCCW(a : number) {
+        this.transform.rotation -= a;
         this.transform.invalidate();
     }
     moveAlong(distance : number) {
@@ -85,6 +83,10 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
     }
     get rotation() {
         return this.transform.rotation;
+    }
+    set rotation(a : number) {
+        this.transform.rotation = a;
+        this.transform.invalidate();
     }
     onClick(callback : () => void) {
         this.transform.click.event(callback, null, this.userSubscriptions);

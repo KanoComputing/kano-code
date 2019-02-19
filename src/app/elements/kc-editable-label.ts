@@ -41,14 +41,14 @@ export class KCEditableLabel extends LitElement {
     }
     _onInputKeyDown(e : KeyboardEvent) {
         if (e.keyCode === 27) {
-            this.input!.blur();
+            this.cancel();
         }
         if (e.keyCode === 13) {
             this.apply();
         }
     }
     _onInputBlur() {
-        this.cancel();
+        this.apply();
     }
     cancel() {
         this.editing = false;

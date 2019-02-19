@@ -1,6 +1,6 @@
-import { IMetaDefinition } from '../../../meta-api/module.js';
+import { IMetaDefinition, Meta } from '../../../meta-api/module.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash.js';
-import { Block } from '@kano/kwc-blockly/blockly.js';
+import { Block, Blockly } from '@kano/kwc-blockly/blockly.js';
 import Editor from '../../../editor/editor.js';
 import { DOMPart } from '../dom/dom.js';
 
@@ -23,6 +23,7 @@ export const TransformAPI : IMetaDefinition[] = [
         parameters: [{
             type: 'parameter',
             name: 'type',
+            verbose: '',
             returnType: 'Enum',
             enum: [
                 ['\u21BB', 'clockwise'],
@@ -35,6 +36,20 @@ export const TransformAPI : IMetaDefinition[] = [
             returnType: Number,
             default: 0,
         }],
+        blockly: {
+            javascript(Blockly : Blockly, block : Block, m : Meta) {
+                const type = block.getFieldValue('TYPE');
+                const value = Blockly.JavaScript.valueToCode(block, 'ROTATION') || 0;
+                const prefix = m.getNameChain('.').replace(/\.turn$/, '');
+                if (type === 'to') {
+                    return `${prefix}.rotation = ${value};\n`;
+                } else if (type === 'clockwise') {
+                    return `${prefix}.turnCW(${value});\n`;
+                } else {
+                    return `${prefix}.turnCCW(${value});\n`;
+                }
+            },
+        },
     },
     {
         type: 'function',
