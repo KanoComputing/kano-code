@@ -89,4 +89,11 @@ export class QueryEngine {
         const selector = this.parse(input);
         return this.resolve(selector);
     }
+    /**
+     * Prints a warning mesasge explaining why a query would fail. Used by tagHandlers to provide debugging information about selectors
+     * @param message The reason for a query's failure
+     */
+    warn(message : string) {
+        console.warn(`[SELECTOR] ${message}`);
+    }
 }

@@ -1,6 +1,6 @@
 import { IPartAPI } from '../../api.js';
 import { SliderPart } from './slider.js';
-import { TransformAPI } from '../transform/api.js';
+import { TransformAPI, onTransformInstall } from '../transform/api.js';
 import { slider } from '@kano/icons/parts.js';
 import { SliderInlineDisplay } from './inline.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash.js';
@@ -38,6 +38,7 @@ export const SliderAPI : IPartAPI = {
         },
     }, ...TransformAPI],
     onInstall(editor : Editor, part : SliderPart) {
+        onTransformInstall(editor, part);
         if (!part.id) {
             return;
         }

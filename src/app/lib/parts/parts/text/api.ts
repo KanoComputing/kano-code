@@ -1,7 +1,8 @@
 import { IPartAPI } from '../../api.js';
 import { TextPart } from './text.js';
 import { text } from '@kano/icons/parts.js';
-import { TransformAPI } from '../transform/api.js';
+import { TransformAPI, onTransformInstall } from '../transform/api.js';
+import { Editor } from '../../../index.js';
 
 export const TexAPI : IPartAPI = {
     type: TextPart.type,
@@ -22,4 +23,7 @@ export const TexAPI : IPartAPI = {
         returnType: 'Color',
         default: '#000000',
     }, ...TransformAPI],
+    onInstall(editor : Editor, part : TextPart) {
+        onTransformInstall(editor, part);
+    },
 }

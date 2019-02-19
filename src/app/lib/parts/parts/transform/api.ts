@@ -1,4 +1,8 @@
 import { IMetaDefinition } from '../../../meta-api/module.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash.js';
+import { Block } from '@kano/kwc-blockly/blockly.js';
+import Editor from '../../../editor/editor.js';
+import { DOMPart } from '../dom/dom.js';
 
 export const TransformAPI : IMetaDefinition[] = [
     {
@@ -86,4 +90,30 @@ export const TransformAPI : IMetaDefinition[] = [
         name: 'rotation',
         returnType: Number,
     },
+    {
+        type: 'function',
+        name: 'onClick',
+        verbose: 'on click',
+        parameters: [{
+            type: 'parameter',
+            name: 'callback',
+            verbose: '',
+            returnType: Function,
+        }],
+        blockly: {
+            postProcess(block : Block) {
+                addFlashField(block);
+                block.setPreviousStatement(false);
+                block.setNextStatement(false);
+            },
+        },
+    },
 ];
+
+
+export function onTransformInstall(editor : Editor, part : DOMPart) {
+    if (!part.id) {
+        return;
+    }
+    setupFlash(editor, part.id, part.transform.click, 'onClick');
+}

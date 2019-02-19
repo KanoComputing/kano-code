@@ -16,9 +16,6 @@ class ButtonComponent extends PartComponent {
 
     @property({ type: Color, value: '#FFFFFF' })
     public textColor : string = '#FFFFFF';
-
-    @property({ type: EventEmitter, value: new EventEmitter(), noReset: true })
-    public click : EventEmitter = new EventEmitter();
 }
 
 @part('button')
@@ -43,12 +40,6 @@ export class ButtonPart extends DOMPart {
     constructor() {
         super();
         this.core = this._components.get('core') as ButtonComponent;
-        subscribeDOM(this._el, 'click', () => {
-            if (!this.core) {
-                return;
-            }
-            this.core.click.fire();
-        }, this, this.subscriptions);
         this.core.invalidate();
     }
     onInstall(context : IPartContext) {
@@ -89,8 +80,5 @@ export class ButtonPart extends DOMPart {
     }
     get background() {
         return this.core.backgroundColor;
-    }
-    onClick(callback : () => void) {
-        this.core.click.event(callback, null, this.userSubscriptions);
     }
 }

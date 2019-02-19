@@ -222,27 +222,28 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
         this.addSettingsEntry({
             title: this.localize('RESET_WORKSPACE', 'Reset Workspace'),
             ironIcon: 'kc-ui:reset',
-        }).on('activate', () => this._reset());
+        }).onDidActivate(() => this._reset());
         this.addSettingsEntry({
             title: this.localize('EXPORT', 'Export'),
             ironIcon: 'kc-ui:export',
-        }).on('activate', () => this._export());
+        }).onDidActivate(() => this._export());
         this.addSettingsEntry({
             title: this.localize('IMPORT', 'Import'),
             ironIcon: 'kc-ui:import',
-        }).on('activate', () => this._load());
+        }).onDidActivate(() => this._load());
         this.addEntry({
             id: 'restart',
             position: ToolbarEntryPosition.RIGHT,
             title: 'Restart',
             ironIcon: 'kc-ui:reset',
-        }).on('activate', () => this.restartClicked());
+        }).onDidActivate(() => this.restartClicked());
         this.fullscreenEntry = this.addEntry({
             id: 'fullscreen',
             position: ToolbarEntryPosition.RIGHT,
             title: 'Fullscreen',
             ironIcon: 'kc-ui:maximize',
-        }).on('activate', () => this.fullscreenClicked());
+        });
+        this.fullscreenEntry.onDidActivate(() => this.fullscreenClicked());
         this.timers = new Map();
     }
     addEntry(opts = {}) {

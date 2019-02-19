@@ -59,13 +59,16 @@ const challengeData = {
 
 i18n.load(lang, { blockly: true, kanoCodePath: '/' })
     .then(() => {
-        fetch('/assets/stories/locales/en-US/hoc_02/steps.json')
+        fetch('/assets/stories/locales/en-US/hoc_01/steps.json')
             .then(r => r.json())
             .then(c => {
                 const editor = new code.Editor();
+
+                editor.onDidInject(() => {
+                    const challenge = new Challenge(editor, c);
+                    challenge.start();
+                });
         
                 editor.inject(document.body);
-                const challenge = new Challenge(editor, c);
-                challenge.start();
             });
     });

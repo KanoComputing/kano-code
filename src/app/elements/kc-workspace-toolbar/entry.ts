@@ -1,17 +1,24 @@
-import EventEmitter from '../../lib/util/event-emitter.js';
+import { EventEmitter } from '@kano/common/index.js';
 
 export const ToolbarEntryPosition = {
     LEFT: 0,
     RIGHT: 1,
 };
 
-export class ToolbarEntry extends EventEmitter {
-    constructor(toolbar, opts) {
-        super();
+export interface IToolboarEntryOptions {
+    callback?() : void;
+}
+
+export class ToolbarEntry {
+    private _onDidActivate : EventEmitter = new EventEmitter();
+    get onDidActivate() { return this._onDidActivate.event; }
+    private toolbar : any;
+    private opts : IToolboarEntryOptions;
+    constructor(toolbar : any, opts : IToolboarEntryOptions) {
         this.toolbar = toolbar;
         this.opts = opts;
         this.opts.callback = () => {
-            this.emit('activate');
+            this._onDidActivate.fire();
         };
     }
     _inject() {
@@ -24,27 +31,34 @@ export class ToolbarEntry extends EventEmitter {
         const index = this._getIndex();
         this.toolbar.splice('entries', index, 1);
     }
-    updateIcon(icon) {
+    updateIcon(icon : string) {
         const index = this._getIndex();
         this.toolbar.set(`entries.${index}.icon`, icon);
     }
-    updateIronIcon(icon) {
+    updateIronIcon(icon : string) {
         const index = this._getIndex();
         this.toolbar.set(`entries.${index}.ironIcon`, icon);
     }
-    updateTitle(title) {
+    updateTitle(title : string) {
         const index = this._getIndex();
         this.toolbar.set(`entries.${index}.title`, title);
     }
 }
 
-export class ToolbarSettingsEntry extends EventEmitter {
-    constructor(toolbar, opts) {
-        super();
+export interface IToolboarSettingsEntryOptions {
+    callback?() : void;
+}
+
+export class ToolbarSettingsEntry {
+    private _onDidActivate : EventEmitter = new EventEmitter();
+    get onDidActivate() { return this._onDidActivate.event; }
+    private toolbar : any;
+    private opts : IToolboarSettingsEntryOptions;
+    constructor(toolbar : any, opts : IToolboarSettingsEntryOptions) {
         this.toolbar = toolbar;
         this.opts = opts;
         this.opts.callback = () => {
-            this.emit('activate');
+            this._onDidActivate.fire();
         };
     }
     _inject() {
@@ -57,15 +71,15 @@ export class ToolbarSettingsEntry extends EventEmitter {
         const index = this._getIndex();
         this.toolbar.splice('settingsEntries', index, 1);
     }
-    updateIcon(icon) {
+    updateIcon(icon : string) {
         const index = this._getIndex();
         this.toolbar.set(`settingsEntries.${index}.icon`, icon);
     }
-    updateIronIcon(icon) {
+    updateIronIcon(icon : string) {
         const index = this._getIndex();
         this.toolbar.set(`settingsEntries.${index}.ironIcon`, icon);
     }
-    updateTitle(title) {
+    updateTitle(title : string) {
         const index = this._getIndex();
         this.toolbar.set(`settingsEntries.${index}.title`, title);
     }

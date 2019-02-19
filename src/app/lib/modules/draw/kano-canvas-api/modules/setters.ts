@@ -34,7 +34,7 @@ export class Setters {
     * @param {*...} attributes
     * @return void
     */
-    stroke(attributes : string|number[]) {
+    stroke(...attributes : (string|number)[]) {
         var style = Utils.parseLineStyle(attributes);
         if (style.color) {
             this.strokeColor(style.color);

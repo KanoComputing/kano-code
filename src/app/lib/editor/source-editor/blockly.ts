@@ -50,8 +50,8 @@ export class BlocklySourceEditor implements SourceEditor {
                 const id = selector.id;
                 const block = workspace.getBlockById(id);
                 if (!block) {
+                    engine.warn(`Could not find block with id '${id}'`);
                     return null;
-                    // throw new Error(`Could not find block with id '${id}'`);
                 }
                 return {
                     block,
@@ -71,8 +71,8 @@ export class BlocklySourceEditor implements SourceEditor {
                 const type = `${scope}${selector.class}`;
                 const block = allBlocks.find(b => b.type === type);
                 if (!block) {
+                    engine.warn(`Could not find block with type '${type}'`);
                     return null;
-                    // throw new Error(`Could not find block with type '${type}'`);
                 }
                 return {
                     block,
@@ -83,8 +83,8 @@ export class BlocklySourceEditor implements SourceEditor {
                     },
                 };
             }
+            engine.warn('Could not query block. Neither id nor class is defined');
             return null;
-            // throw new Error('Could not query block. Neither id nor class is defined');
         });
         engine.registerTagHandler('toolbox', (selector : ISelector, parent : IQueryResult|null) => {
             let id : string;
@@ -93,14 +93,14 @@ export class BlocklySourceEditor implements SourceEditor {
             } else if (selector.id) {
                 id = selector.id;
             } else {
+                engine.warn('Could not query toolbox. Neither id nor class is defined');
                 return null;
-                // throw new Error('Could not query toolbox. Neither id nor class is defined');
             }
             const toolbox = (this.domNode as any).defaultCategories as any[];
             const entry = toolbox.find(e => e.id === id);
             if (!entry) {
+                engine.warn(`Could not find toolbox entry with id '${id}'`);
                 return null;
-                // throw new Error(`Could not find toolbox entry with id '${id}'`);
             }
             const workspace = this.getWorkspace();
             return {
@@ -119,13 +119,13 @@ export class BlocklySourceEditor implements SourceEditor {
                     const workspace = this.getWorkspace();
                     const flyout = workspace.toolbox.flyout_;
                     if (!flyout) {
+                        engine.warn('Could not find block in flyout: No flyout is opened');
                         return null;
-                        // throw new Error('Could not find block in flyout: No flyout is opened');
                     }
                     const block = flyout.getBlockByType(selector.class);
                     if (!block) {
+                        engine.warn(`Could not find block ${selector.class}`);
                         return null;
-                        // throw new Error(`Could not find block ${selector.class}`);
                     }
                     return {
                         block,
@@ -144,13 +144,13 @@ export class BlocklySourceEditor implements SourceEditor {
                     const workspace = this.getWorkspace();
                     const flyout = workspace.toolbox.flyout_;
                     if (!flyout) {
+                        engine.warn('Could not find block in flyout: No flyout is opened');
                         return null;
-                        // throw new Error('Could not find block in flyout: No flyout is opened');
                     }
                     const block = flyout.getBlockByType(`${scope}_${selector.id}`);
                     if (!block) {
+                        engine.warn(`Could not find block ${selector.id}`);
                         return null;
-                        // throw new Error(`Could not find block ${selector.id}`);
                     }
                     return {
                         block,
@@ -163,13 +163,13 @@ export class BlocklySourceEditor implements SourceEditor {
                     const workspace = this.getWorkspace();
                     const flyout = workspace.toolbox.flyout_;
                     if (!flyout) {
+                        engine.warn('Could not find block in flyout: No flyout is opened');
                         return null;
-                        // throw new Error('Could not find block in flyout: No flyout is opened');
                     }
                     const block = flyout.getBlockByType(`${scope}_${selector.class}`);
                     if (!block) {
+                        engine.warn(`Could not find block ${selector.class}`);
                         return null;
-                        // throw new Error(`Could not find block ${selector.class}`);
                     }
                     return {
                         block,
@@ -185,8 +185,8 @@ export class BlocklySourceEditor implements SourceEditor {
         // input means input and fields
         engine.registerTagHandler('input', (selector : ISelector, parent : IQueryResult|null) => {
             if (!parent || typeof parent.getBlock !== 'function') {
+                engine.warn('Could not query input: Parent selector is not a block');
                 return null;
-                // throw new Error('Could not query input: Parent selector is not a block');
             }
             const block = parent.getBlock() as Block;
             const id = selector.id || selector.class;
@@ -201,8 +201,8 @@ export class BlocklySourceEditor implements SourceEditor {
                 }
             }
             if (!input && !field) {
+                engine.warn(`Could not find input or field named '${id}'`);
                 return null;
-                // throw new Error(`Could not find input or field named '${id}'`);
             }
             return {
                 input,
@@ -221,8 +221,8 @@ export class BlocklySourceEditor implements SourceEditor {
         });
         engine.registerTagHandler('next', (selector : ISelector, parent : IQueryResult|null) => {
             if (!parent || typeof parent.getBlock !== 'function') {
+                engine.warn('Could not query input: Parent selector is not a block');
                 return null;
-                // throw new Error('Could not query input: Parent selector is not a block');
             }
             const block = parent.getBlock() as Block;
             let connection : Connection|undefined = block.nextConnection;

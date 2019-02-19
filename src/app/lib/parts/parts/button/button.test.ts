@@ -1,4 +1,3 @@
-import { click } from '@polymer/iron-test-helpers/mock-interactions.js';
 import { ButtonPart } from './button.js';
 import { PartContextStub } from '../../../../../test/part-context-stub.js';
 
@@ -62,18 +61,6 @@ suite('ButtonPart', () => {
             });
     
             button.background = testColor;
-        });
-    });
-    test('#onClick()', () => {
-        return new Promise((resolve) => {
-            const button = new ButtonPart();
-            
-            // Make sure it triggers
-            button.onClick(() => {
-                resolve();
-            });
-            
-            click((button as any)._el);
         });
     });
     test('#render()', () => {

@@ -350,6 +350,11 @@ class BlocklyChallenge extends Challenge {
         // If the source matches, validate the provided value
         if (validateSource()) {
             if (validation.value) {
+                // Check whether the new value is a variable id, if so match against the variable name
+                const variable = this.workspace.getVariableById(event.newValue);
+                if (variable) {
+                    return validation.value == variable.name;
+                }
                 // Weak comparison to match numbers too
                 return validation.value == event.newValue;
             }

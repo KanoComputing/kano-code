@@ -1,8 +1,6 @@
-import EventEmitter from '../util/event-emitter.js';
-
 export type PluginLifecycleStep = 'onInstall'|'onInject'|'onDispose'|'onImport'|'onCreationImport'|'onExport'|'onCreationExport';
 
-export class Plugin extends EventEmitter {
+export class Plugin {
     onInstall(editorOrOutput : any) {}
     onInject() {}
     onDispose() {}

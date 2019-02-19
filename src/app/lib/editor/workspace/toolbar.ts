@@ -88,7 +88,7 @@ export class WorkspaceToolbar extends Plugin {
                 heading: 'Reset',
                 text: 'You\'ll lose any unsaved changes',
             });
-            this.resetDialog.on('confirm', () => {
+            this.resetDialog.onDidConfirm(() => {
                 if (!this.editor) {
                     return;
                 }

@@ -4,6 +4,7 @@ import { subscribeDOM, EventEmitter } from '@kano/common/index.js';
 import { PartComponent } from '../../component.js';
 import { StickerPart } from '../sticker/sticker.js';
 import { Sticker } from '../sticker/types.js';
+import { transformLegacyMouse } from './legacy.js';
 
 const all = StickerPart.items.reduce<{ [K : string] : string }>((acc, item) => Object.assign(acc, item.stickers), {});
 
@@ -31,6 +32,9 @@ export class MousePart extends Part {
     private _imageCache : Map<string, string> = new Map();
     @component(MouseComponent)
     public core : MouseComponent;
+    static transformLegacy(app : any) {
+        transformLegacyMouse(app);
+    }
     constructor() {
         super();
         this.core = this._components.get('core') as MouseComponent;

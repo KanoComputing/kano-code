@@ -1,6 +1,7 @@
 import { button } from '@kano/styles/button.js';
 import { KanoAlert } from '../../../elements/kano-alert/kano-alert.js';
 import { Base, IDialogBaseOptions, DialogElement } from './base.js';
+import { EventEmitter } from '@kano/common/index.js';
 
 export interface IDialogAlertOptions extends IDialogBaseOptions {
     heading : string;
@@ -17,6 +18,8 @@ export type KanoAlertElement = DialogElement<KanoAlert> & {
 };
 
 export class Alert extends Base<KanoAlertElement> {
+    private _onDidClose : EventEmitter = new EventEmitter();
+    get onDidClose() { return this._onDidClose.event; }
     constructor(opts : IDialogAlertOptions = { heading: '', text: ''}) {
         super(opts);
         this._onClose = this._onClose.bind(this);
@@ -38,7 +41,7 @@ export class Alert extends Base<KanoAlertElement> {
         return root;
     }
     _onClose(e : Event) {
-        this.emit('close');
+        this._onDidClose.fire();
     }
     dispose() {
         super.dispose();

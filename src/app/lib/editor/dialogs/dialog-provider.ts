@@ -1,6 +1,4 @@
-import EventEmitter from '../../util/event-emitter.js';
-
-export abstract class DialogProvider extends EventEmitter {
+export abstract class DialogProvider {
     abstract createDom() : HTMLElement;
     abstract dispose() : void;
 }

@@ -52,8 +52,9 @@ export interface ICreationBundle {}
 /**
  * A full Kano Code Editor with customizable Workspace and Output
  * Example:
+ * 
  * ```js
- * import * as code from '@kano/code/app/lib/index.js'
+ * import * as code from '@kano/code/index.js'
  *
  * const editor = new code.Editor();
  *

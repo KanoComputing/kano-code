@@ -2,13 +2,12 @@ import { TelemetryClient } from '@kano/telemetry/index.js';
 import { Plugin } from '../editor/plugin.js';
 import { CreationDialogProvider } from './creation-dialog.js';
 import { Player } from '../player/index.js';
-import { Subscriptions, subscribe } from '../util/subscription.js';
 import { ToolbarEntryPosition } from '../../elements/kc-workspace-toolbar/entry.js';
 
 export class CreationPlugin extends Plugin {
     constructor() {
         super();
-        this.subscriptions = new Subscriptions();
+        this.subscriptions = [];
         this._telemetry = new TelemetryClient({ scope: 'creations' });
         this.enabled = true;
     }
@@ -24,9 +23,9 @@ export class CreationPlugin extends Plugin {
         // Add to subscriptions
         this.subscriptions.push(
             // Listen to the submit event from the form
-            subscribe(this.creationDialogProvider, 'submit', this._onSubmit.bind(this)),
-            subscribe(this.creationDialogProvider, 'dismiss', this._onDismiss.bind(this)),
-            subscribe(this.creationDialog, 'close', () => this._onClose()),
+            this.creationDialogProvider.onDidSubmit(this._onSubmit.bind(this)),
+            this.creationDialogProvider.onDidDismiss(this._onDismiss.bind(this)),
+            this.creationDialog.onDidClose(() => this._onClose()),
         );
         this._updateSaveButton();
     }
@@ -40,7 +39,7 @@ export class CreationPlugin extends Plugin {
             title: 'Save',
             ironIcon: 'kc-ui:save',
         });
-        this._saveEntry.on('activate', () => this.init());
+        this._saveEntry.onDidActivate(() => this.init());
     }
     _removeSaveButton() {
         if (!this._saveEntry) {
@@ -116,7 +115,8 @@ export class CreationPlugin extends Plugin {
     }
     dispose() {
         // Dispose of the subscriptions
-        this.subscriptions.dispose();
+        this.subscriptions.forEach(d => d.dispose())
+        this.subscriptions.length = 0;
         this.creationDialog.dispose();
     }
     enable() {

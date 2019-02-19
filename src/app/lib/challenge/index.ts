@@ -60,11 +60,13 @@ export class Challenge {
         let sub : IDisposable;
         sub = this.editor.queryEngine.registerTagHandler('alias', (selector) => {
             if (!selector.id) {
-                throw new Error('Could not find alias: No id provided');
+                this.editor.queryEngine.warn('Could not find alias: No id provided');
+                return null;
             }
             const s = this.engine!.aliases.get(selector.id);
             if (!s) {
-                throw new Error(`Could not find alias: '${selector.id}' was not registered before`);
+                this.editor.queryEngine.warn(`Could not find alias: '${selector.id}' was not registered before`);
+                return null;
             }
             return this.editor.querySelector(s);
         });
@@ -72,12 +74,14 @@ export class Challenge {
         sub = this.editor.queryEngine.registerTagHandler('banner-button', (selector) => {
             const widget = this.engine!.widgets.get('banner');
             if (!widget) {
-                throw new Error('Could not query banner button: Banner is not displayed');
+                this.editor.queryEngine.warn('Could not query banner button: Banner is not displayed');
+                return null;
             }
             const domNode = widget.getDomNode();
             const bannerEl = domNode.querySelector('kc-editor-banner');
             if (!bannerEl) {
-                throw new Error('Could not query banner button: Banner element does not exists');
+                this.editor.queryEngine.warn('Could not query banner button: Banner element does not exists');
+                return null;
             }
             return {
                 getHTMLElement() {

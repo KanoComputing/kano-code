@@ -67,7 +67,7 @@ export const Utils = {
     * @param {Boolean} close
     * @return {Object}
     */
-    parseLineStyle(attributes : string|number[]) {
+    parseLineStyle(attributes : (string|number)[]) {
         var out : { width? : number, color? : string } = {},
         i, attr;
 

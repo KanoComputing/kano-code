@@ -9,7 +9,7 @@ export class ButtonInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
         super(part);
         this.domNode = this.flash.domNode;
         this.domNode.style.marginRight = '8px';
-        part.core.click.event(() => {
+        part.transform.click.event(() => {
             this.flash.trigger();
         });
     }

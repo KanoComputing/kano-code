@@ -1,8 +1,9 @@
 import { sticker } from '@kano/icons/parts.js';
 import { IPartAPI } from '../../api.js';
 import { StickerPart } from './sticker.js';
-import { TransformAPI } from '../transform/api.js';
+import { TransformAPI, onTransformInstall } from '../transform/api.js';
 import { getter, random, randomFrom } from './common.js';
+import { Editor } from '../../../editor/editor.js';
 
 export const StickerAPI : IPartAPI = {
     type: StickerPart.type,
@@ -22,4 +23,7 @@ export const StickerAPI : IPartAPI = {
             },
         },
     }, random, randomFrom, ...TransformAPI, getter],
+    onInstall(editor : Editor, part : StickerPart) {
+        onTransformInstall(editor, part);
+    },
 };

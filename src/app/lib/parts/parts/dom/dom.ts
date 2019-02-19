@@ -1,6 +1,7 @@
 import { Part, IPartContext } from '../../part.js';
 import { component } from '../../decorators.js';
 import { Transform } from '../../components/transform.js';
+import { subscribeDOM } from '@kano/common/index.js';
 
 type TurnType = 'clockwise'|'counterclockwise'|'to';
 
@@ -20,6 +21,9 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         this._components.forEach((component) => {
             component.onDidInvalidate(this.render, this, this.subscriptions);
         });
+        subscribeDOM(this._el, 'click', () => {
+            this.transform.click.fire();
+        }, this, this.subscriptions);
     }
     onInstall(context : IPartContext) {
         context.dom.root.appendChild(this._el);
@@ -81,6 +85,9 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
     }
     get rotation() {
         return this.transform.rotation;
+    }
+    onClick(callback : () => void) {
+        this.transform.click.event(callback, null, this.userSubscriptions);
     }
     dispose() {
         super.dispose();

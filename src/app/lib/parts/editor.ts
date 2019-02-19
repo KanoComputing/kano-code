@@ -225,7 +225,7 @@ export class EditorPartsManager {
                 text: `You can't delete '${partRecord.part.name}' because it is used in the code`,
                 buttonLabel: 'Ok',
             });
-            alertDelete.on('close', () => {
+            alertDelete.onDidClose(() => {
                 alertDelete.dispose();
                 this._telemetry.trackEvent({ name: 'part_remove_dialog_closed' });
             });
@@ -235,7 +235,7 @@ export class EditorPartsManager {
                 heading: 'Are you sure',
                 text: `You are about to delete '${partRecord.part.name}'`,
             });
-            confirmDelete.on('confirm', () => {
+            confirmDelete.onDidConfirm(() => {
                 this.removePart(id);
                 confirmDelete.dispose();
                 this._telemetry.trackEvent({ name: 'part_remove_dialog_closed' });
@@ -347,7 +347,8 @@ export class EditorPartsManager {
                 const partRecord = this.parts.get(selector.id);
                 const { partsControls } = this.editor.workspaceView!;
                 if (!partRecord || !partsControls) {
-                    throw new Error(`Could not find part with id ${selector.id}`);
+                    engine.warn(`Could not find part with id ${selector.id}`);
+                    return null;
                 }
                 return {
                     part: partRecord.part,
@@ -364,7 +365,8 @@ export class EditorPartsManager {
             } else if (selector.class) {
                 const api = this.apiRegistry.get(selector.class);
                 if (!api) {
-                    throw new Error(`Could not find part with type ${selector.class}`);
+                    engine.warn(`Could not find part with type ${selector.class}`);
+                    return null;
                 }
                 return {
                     api,
@@ -374,7 +376,8 @@ export class EditorPartsManager {
                     },
                 };
             }
-            throw new Error('Could not query part: Neither id nor class defined');
+            engine.warn('Could not query part: Neither id nor class defined');
+            return null;
         });
         engine.registerTagHandler('add-part-button', () => {
             return {

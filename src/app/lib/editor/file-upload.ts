@@ -1,5 +1,6 @@
 import { Plugin } from './plugin.js';
 import Editor from './editor.js';
+import { EventEmitter } from '@kano/common/index.js';
 
 export interface IFileDropTarget extends HTMLElement {
     animateDragEnter() : void;
@@ -11,6 +12,8 @@ class FileUpload extends Plugin {
     private targetEl : HTMLElement;
     private overlay : IFileDropTarget;
     private editor? : Editor;
+    private _onDidUpload : EventEmitter<any> = new EventEmitter();
+    get onDidUpload() { return this._onDidUpload.event; }
     constructor(targetEl : HTMLElement, overlay : IFileDropTarget) {
         super();
         this.targetEl = targetEl;
@@ -67,7 +70,7 @@ class FileUpload extends Plugin {
             });
     }
     _onFileDropped(content : any) {
-        this.emit('upload', content);
+        this._onDidUpload.fire(content);
     }
     static _readFile(f : Blob) {
         return new Promise((resolve, reject) => {

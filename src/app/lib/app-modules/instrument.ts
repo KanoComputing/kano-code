@@ -1,14 +1,19 @@
-import EventEmitter from '../util/event-emitter.js';
+import { EventEmitter } from '@kano/common/index.js';
 
-export class Instrument extends EventEmitter {
+export interface ICallDescription {
+    method : string;
+    args : any[];
+}
+
+export class Instrument {
     private fullPath : string;
     private root : any;
     private method : string;
     private methodParent? : any;
     private methodName? : string;
     private originalFunc? : Function;
+    private _onDidMethodCall : EventEmitter<ICallDescription> = new EventEmitter();
     constructor(fullPath : string, root : any, method : string) {
-        super();
         this.fullPath = fullPath;
         this.root = root;
         this.method = method;
@@ -36,7 +41,7 @@ export class Instrument extends EventEmitter {
     }
     callMethod(originalFunc? : Function) {
         return (...args : any[]) => {
-            this.emit('method-called', { method: this.fullPath, args });
+            this._onDidMethodCall.fire({ method: this.fullPath, args });
             if (originalFunc) {
                 return originalFunc(...args);
             }

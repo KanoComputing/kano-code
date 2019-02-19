@@ -1,5 +1,6 @@
 import { PartComponent } from '../component.js';
 import { property } from '../decorators.js';
+import { EventEmitter } from '@kano/common/index.js';
 
 export class Transform extends PartComponent {
     @property({ type: Number, value: 0 })
@@ -12,4 +13,6 @@ export class Transform extends PartComponent {
     rotation : number = 0;
     @property({ type: Number, value: 1 })
     opacity : number = 1;
+    @property({ type: EventEmitter, value: new EventEmitter(), noReset: true })
+    public click : EventEmitter = new EventEmitter();
 }

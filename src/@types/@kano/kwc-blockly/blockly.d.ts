@@ -74,6 +74,9 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getWidth() : number;
         getBlockByType(type : string) : Block|null;
     }
+    class Variable {
+        name : string;
+    }
     class Workspace {
         getAllBlocks() : Block[];
         getBlockById(id : string) : Block|null;
@@ -81,12 +84,14 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getFlyout_() : Flyout;
         addChangeListener(callback : (e : any) => void) : (e : any) => void;
         removeChangeListener(callback : (e : any) => void) : void;
+        getVariableById(id : string) : Variable|null;
         toolbox : Toolbox;
         toolbox_ : Toolbox;
     }
     const goog : any;
     const utils : {
         genUid : {
+            () : string;
             soup_ : string;
         };
         getViewportBBox() : any;

@@ -1,15 +1,23 @@
 import { EditorOrPlayer } from '../editor/editor-or-player.js';
-import { Output } from '../output/output.js';
+import { Output, IOutputProfile } from '../output/output.js';
 
 const profiles = new Map();
 
 export class Player extends EditorOrPlayer {
+    public output : Output;
+    public profiles : Map<string, IOutputProfile> = new Map();
+    private _fullscreenEnabled : boolean = true;
+    private _fullscreen : boolean = true;
+    public element? : HTMLElement;
+    public outputRoot? : HTMLElement;
+    public before? : HTMLElement;
+    public injected : boolean = false;
     constructor() {
         super();
         this.output = new Output();
         this.enableFullscreen();
     }
-    static registerProfile(profile) {
+    static registerProfile(profile : IOutputProfile) {
         profiles.set(profile.id, profile);
     }
     disableFullscreen() {
@@ -18,7 +26,7 @@ export class Player extends EditorOrPlayer {
     enableFullscreen() {
         this._fullscreenEnabled = true;
     }
-    load(data) {
+    load(data : any) {
         const profile = profiles.get(data.profile);
         if (!profile) {
             throw new Error(`Could not load creation: Profile '${data.profile}' not registered`);
@@ -38,7 +46,7 @@ export class Player extends EditorOrPlayer {
             return;
         }
         // Remove old outputView node if it was added previously
-        if (this.outputRoot) {
+        if (this.outputRoot && this.outputRoot.parentNode) {
             this.outputRoot.parentNode.removeChild(this.outputRoot);
         }
         // Trick to get custom els added
@@ -50,7 +58,7 @@ export class Player extends EditorOrPlayer {
         }
         this.output.onInject();
     }
-    inject(element = document.body, before = null) {
+    inject(element = document.body, before? : HTMLElement) {
         if (this.injected) {
             return;
         }
@@ -59,8 +67,8 @@ export class Player extends EditorOrPlayer {
         this.before = before;
         this._injectOutputView();
     }
-    setRunningState(...args) {
-        this.output.setRunningState(...args);
+    setRunningState(state : boolean) {
+        this.output.setRunningState(state);
     }
     getRunningState() {
         return this.output.getRunningState();
@@ -68,7 +76,7 @@ export class Player extends EditorOrPlayer {
     toggleRunningState() {
         this.output.toggleRunningState();
     }
-    setFullscreen(state) {
+    setFullscreen(state : boolean) {
         this._fullscreen = state;
         this._updateFullscreen();
     }
@@ -97,7 +105,7 @@ export class Player extends EditorOrPlayer {
         }
     }
     dispose() {
-        if (this.element && this.outputRoot.parentNode === this.element) {
+        if (this.element && this.outputRoot && this.outputRoot.parentNode === this.element) {
             this.element.removeChild(this.outputRoot);
         }
         this.output.dispose();

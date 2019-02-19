@@ -1,5 +1,3 @@
-import EventEmitter from '../../util/event-emitter.js';
-
 export interface IDialogBaseOptions {
     [K : string] : any;
     fitInto? : HTMLElement;
@@ -13,12 +11,11 @@ export type DialogElement<T extends HTMLElement = HTMLElement> = T & {
     backdropElement : HTMLElement;
 }
 
-export abstract class Base<T extends DialogElement> extends EventEmitter {
+export abstract class Base<T extends DialogElement> {
     protected fitInto : HTMLElement;
     protected overlayInto? : HTMLElement;
     public root : T;
     constructor(opts : IDialogBaseOptions= {}) {
-        super();
         this.fitInto = opts.fitInto || document.body;
         this.overlayInto = opts.overlayInto;
         this.root = this.createDom(opts);

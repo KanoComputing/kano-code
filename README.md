@@ -11,12 +11,6 @@ editor.inject(document.body);
 
 ```
 
-## The editor
-
-[Editor's documentation](./app/lib/editor/README.md)
-
-[Challenges documentation](./app/lib/challenge/README.md)
-
 ## Development
 
 This project is going under a transition to TypeScript. The TypeScript compiler is setup to allow JavaScript files.
@@ -26,13 +20,13 @@ If you are about to create a new file, create a TypeScript file instead of a Jav
 
 Install dependencies
 
-```bash
+```sh
 yarn
 ```
 
 ### watch
 
-```bash
+```sh
 yarn tsc --watch
 ```
 
@@ -40,19 +34,19 @@ yarn tsc --watch
 
 In a separate terminal
 
-```bash
+```sh
 yarn serve
 ```
 
-### Demos
+Browse the directories under `examples` to run the editor.
 
-While serving, visit any of those:
+### Test
 
-http://localhost:4000/examples/intro/
-http://localhost:4000/examples/pong/
+While writing tests, run
 
+```sh
+yarn serve-test
+```
 
-##
+And open the prompted URL to run your tests. You can click on a suite to only run that suite.
 
- - Use decorators for parts and components? Stage 2 Ecmascript, experimental TypeScript
- - memoize utils, memoize decorator?

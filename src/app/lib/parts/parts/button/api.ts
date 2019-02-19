@@ -1,6 +1,6 @@
 import { ButtonPart } from './button.js';
 import { IPartAPI } from '../../api.js';
-import { TransformAPI } from '../transform/api.js';
+import { TransformAPI, onTransformInstall } from '../transform/api.js';
 import { button } from '@kano/icons/parts.js'
 import { ButtonInlineDisplay } from './inline.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash.js';
@@ -31,28 +31,8 @@ export const ButtonAPI : IPartAPI = {
         returnType: 'Color',
         default: '#FFFFFF',
         setter: true,
-    }, {
-        type: 'function',
-        name: 'onClick',
-        verbose: 'on click',
-        parameters: [{
-            type: 'parameter',
-            name: 'callback',
-            verbose: '',
-            returnType: Function,
-        }],
-        blockly: {
-            postProcess(block : Block) {
-                addFlashField(block);
-                block.setPreviousStatement(false);
-                block.setNextStatement(false);
-            },
-        },
     }, ...TransformAPI],
     onInstall(editor : Editor, part : ButtonPart) {
-        if (!part.id) {
-            return;
-        }
-        setupFlash(editor, part.id, part.core.click, 'onClick');
+        onTransformInstall(editor, part);
     }
 };
