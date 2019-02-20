@@ -15,11 +15,13 @@ const challengeData = {
     //     color: ['colour_picker'],
     // },
     steps: [{
-        tooltips: [{
-            target: 'add-part-button',
-            text: 'Jello'
-        }],
+        banner: 'Some markdown syntax ${toolbox#color}',
         beacon: 'part#button>toolbox:100,50',
+        tooltips: [{
+            target: 'part#button>toolbox',
+            text: 'Here ${part#button>toolbox}',
+            position: 'right'
+        }],
         validation: {
             blockly: {
                 'open-flyout': 'part#button',

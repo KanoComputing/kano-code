@@ -6,6 +6,7 @@ import { templateContent } from '../../lib/directives/template-content.js';
 import { button } from '@kano/styles/button.js';
 import '../kano-blockly-block/kano-blockly-block.js';
 import './kano-value-preview.js';
+import { challengeStyles } from '../../lib/challenge/styles.js';
 
 @customElement('kc-editor-banner')
 export class KCEditorBanner extends LitElement {
@@ -150,7 +151,7 @@ export class KCEditorBanner extends LitElement {
                 opacity: 0.5;
                 background: transparent !important;
             }
-        `];
+        `, challengeStyles];
     }
     render() {
         return html`

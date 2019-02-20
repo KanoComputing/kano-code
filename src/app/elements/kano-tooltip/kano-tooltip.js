@@ -130,8 +130,8 @@ class KanoTooltip extends PolymerElement {
                 animation-direction: reverse;
             }
         </style>
-        <div class\$="tooltip [[position]]" id="tooltip">
-            <div class="caret-shadow" hidden\$="{{caretHidden(position)}}"></div>
+        <div class$="tooltip [[position]]" id="tooltip">
+            <div class="caret-shadow" hidden$="{{caretHidden(position)}}"></div>
             <slot></slot>
         </div>
 `;

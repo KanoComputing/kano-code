@@ -8,6 +8,10 @@ export class Tooltip {
     getMarked() {
         if (!this.markedEl) {
             this.markedEl = document.createElement('marked-element');
+            const renderTarget = document.createElement('div');
+            renderTarget.classList.add('markdown-html');
+            renderTarget.setAttribute('slot', 'markdown-html');
+            this.markedEl.appendChild(renderTarget);
         }
         return this.markedEl;
     }
@@ -21,7 +25,7 @@ export class Tooltip {
             this.domNode.style.setProperty('--kano-tooltip-border-width', '1px');
             this.domNode.style.color = 'black';
             this.domNode.style.fontFamily = 'var(--font-body)';
-            this.domNode.style.padding = '16px 26px 16px';
+            this.domNode.style.padding = '8px';
             content.appendChild(this.getMarked());
             this.domNode.appendChild(content);
         }

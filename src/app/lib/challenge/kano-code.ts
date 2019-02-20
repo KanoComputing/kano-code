@@ -6,9 +6,7 @@ import { IEditorWidget } from '../editor/widget/widget.js';
 import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
 import { Part } from '../parts/part.js';
 import { Tooltip } from './widget/tooltip.js';
-
-// TODO: Use Symbol('store) instead
-const PARTS_STORE = 'parts';
+import { challengeStyles } from './styles.js';
 
 export class KanoCodeChallenge extends BlocklyChallenge {
     protected editor : Editor;
@@ -19,13 +17,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         super(editor);
         this.editor = editor;
         this.addValidation('add-part', this.matchAddPart);
-        this.addValidation('trigger', this.matchTrigger);
         this.addValidation('running', this.matchValue);
-        this.addValidation('select-new-part', this.matchPartType);
-        this.addValidation('enable-refresh', this.matchPartTarget);
-        this.addValidation('disable-refresh', this.matchPartTarget);
-        this.addValidation('manual-refresh', this.matchPartTarget);
-        this.addValidation('open-settings-tooltip', this.matchPartTarget);
 
         this.addOppositeAction('add-part', 'close-parts', this._partsClosed);
 
@@ -46,6 +38,26 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.editor.parts.onDidAddPart((part) => {
             this.triggerEvent('add-part', part);
         });
+        const style = document.createElement('style');
+        style.textContent = challengeStyles.cssText;
+        this.editor.rootEl.shadowRoot!.appendChild(style);
+    }
+    processRichText(text : string) {
+        return text.replace(/\${(.+)}/g, (m, g0) => {
+            const result = this.editor.querySelector(g0);
+            if (!result) {
+                return m;
+            }
+            if (result.entry) {
+                return `
+                <div class="toolbox-entry">
+                    <div class="color" style="background-color: ${result.entry.colour};"></div>
+                    <div>${result.entry.name}</div>
+                </div>
+                `;
+            }
+            return m;
+        });
     }
     displayTooltips(tooltips : any[]) {
         tooltips.forEach((tooltipData) => {
@@ -53,7 +65,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.editor.addContentWidget(tooltip);
             this.tooltips.push(tooltip);
             if (tooltipData.text) {
-                tooltip.setText(tooltipData.text);
+                tooltip.setText(this.processRichText(tooltipData.text));
             }
             if (tooltipData.position) {
                 tooltip.setPosition(tooltipData.position);
@@ -90,7 +102,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             nextButton = !!data.nextButton;
         }
         widget.setData({
-            text,
+            text: this.processRichText(text),
             nextButton,
         });
         widget.show();
@@ -174,24 +186,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.stepIndex -= 1;
         }
     }
-    matchTrigger(validation : any, event : any) {
-        let { emitter } = validation;
-        if (emitter.part) {
-            emitter = this.getFromStore(PARTS_STORE, emitter.part);
-        }
-        return emitter === event.trigger.emitter &&
-                validation.event === event.trigger.event;
-    }
-    matchPartChange(validation : any, event : any) {
-        return this.matchProperty(validation, event);
-    }
-    matchPartTarget(validation : any, event : any) {
-        const target = this.getFromStore(PARTS_STORE, validation.target);
-        if (!event.part && validation.target) {
-            return false;
-        }
-        return target === event.part.id;
-    }
     /**
      * Will tell if a property defined in a validation and an event matches
      * Example:
@@ -222,25 +216,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         }
 
         return true;
-    }
-    _processPart(part : any) {
-        if (part.target && part.type) {
-            const partId = this.getFromStore(PARTS_STORE, part.target);
-            const blockId = `${partId}#${part.type}`;
-            part.type = blockId;
-            return part;
-        } else if (part.part && part.type) {
-            const partId = this.getFromStore(PARTS_STORE, part.part);
-            return `${partId}#${part.type}`;
-        } else if (part.part) {
-            return this.getFromStore(PARTS_STORE, part.part) || part;
-        } else if (part.rawPart) {
-            if (part.type) {
-                return `${part.rawPart}#${part.type}`;
-            }
-            return part.rawPart;
-        }
-        return part;
     }
     matchValue(validation : any, event : any) {
         return validation.value === event.value;
