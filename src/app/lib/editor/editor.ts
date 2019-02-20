@@ -65,13 +65,16 @@ export class Editor extends EditorOrPlayer {
     public config : any;
     public logger : Logger = new Logger();
     public elementsRegistry : Map<string, HTMLElement> = new Map();
-    public rootEl : KanoAppEditor = document.createElement('kano-app-editor') as KanoAppEditor;
+    public domNode : KanoAppEditor = document.createElement('kano-app-editor') as KanoAppEditor;
     public sourceType : 'blockly'|'code' = 'blockly';
     public output : Output = new Output();
     public telemetry : TelemetryClient = new TelemetryClient({ scope: 'kc-editor' });
     public sourceEditor : SourceEditor;
     public workspaceToolbar : WorkspaceToolbar = new WorkspaceToolbar();
     public dialogs : Dialogs = new Dialogs();
+    /**
+     * Controls ley bindings for the editor.
+     */
     public keybindings : Keybindings = new Keybindings();
     public toolbox : Toolbox = new Toolbox();
     public creation : CreationPlugin = new CreationPlugin();
@@ -83,28 +86,52 @@ export class Editor extends EditorOrPlayer {
     private _queuedApp : string|null = null;
     public workspaceProvider? : WorkspaceViewProvider;
     public profile? : EditorProfile;
-    public unsavedChanges : boolean = false;
     public creationPreviewProvider? : CreationCustomPreviewProvider;
     public creationStorageProvider? : CreationStorageProvider;
+    public queryEngine : QueryEngine = new QueryEngine();
+    private contentWidgets? : ContentWidgets;
 
     // Events
     private _onDidReset : EventEmitter = new EventEmitter();
+    /**
+     * @event
+     */
     get onDidReset() { return this._onDidReset.event }
+
     private _onDidLoad : EventEmitter = new EventEmitter();
+    /**
+     * @event
+     */
     get onDidLoad() { return this._onDidLoad.event }
+
     private _onDidInject : EventEmitter = new EventEmitter();
+    /**
+     * @event
+     */
     get onDidInject() { return this._onDidInject.event }
+
     private _onDidLayoutChange : EventEmitter = new EventEmitter();
+    /**
+     * @event
+     */
     get onDidLayoutChange() { return this._onDidLayoutChange.event }
 
-    public queryEngine : QueryEngine = new QueryEngine();
-    private contentWidgets? : ContentWidgets;
+    /**
+     * Creates a new Editor. This editor can then be injected into any web page
+     * @example
+     *```js
+     *
+     *const editor = new Editor();
+     *editor.inject(document.body);
+     *```
+     * @param opts Set of options for the new Editor
+     */
     constructor(opts : IEditorOptions = {}) {
         super();
         this.config = Config.merge(opts);
         this.logger.setLevel(this.config.LOG_LEVEL);
-        this.elementsRegistry.set('editor', this.rootEl);
-        (this.rootEl as any).editor = this;
+        this.elementsRegistry.set('editor', this.domNode);
+        (this.domNode as any).editor = this;
         this.sourceType = opts.sourceType || 'blockly';
         this._setupMediaPath(opts.mediaPath);
 
@@ -130,7 +157,7 @@ export class Editor extends EditorOrPlayer {
         this.parts.registerQueryHandlers(this.queryEngine);
         window.Kano.Code.mainEditor = this;
     }
-    _setupMediaPath(path = '/node_modules/@kano/code') {
+    private _setupMediaPath(path = '/node_modules/@kano/code') {
         this._mediaPath = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
     }
     asAbsoluteMediaPath(path = '') {
@@ -146,14 +173,16 @@ export class Editor extends EditorOrPlayer {
     /**
      * Adds a plugin to this editor, plugins have access to lifecycle steps and
      * customization APIs to tailor the coding experience to your needs
-     * Example:
-     *
-     * const MyPlugin extends code.Plugin {
-     *     onInstall(editor) {
-     *         // Do something with the editor
-     *     }
-     *     onInject() {}
-     * }
+     * @example
+     *```js
+     * 
+     *const MyPlugin extends code.Plugin {
+     *    onInstall(editor) {
+     *        // Do something with the editor
+     *    }
+     *    onInject() {}
+     *}
+     ```
      * @param plugin The plugin to add
      */
     addPlugin(plugin : Plugin) {
@@ -167,7 +196,7 @@ export class Editor extends EditorOrPlayer {
         return this.elementsRegistry.get(id);
     }
     appendSourceEditor() {
-        (this.rootEl as any).sourceContainer.appendChild(this.sourceEditor.domNode);
+        (this.domNode as any).sourceContainer.appendChild(this.sourceEditor.domNode);
     }
     ensureProfile() {
         if (!this.profile) {
@@ -181,11 +210,11 @@ export class Editor extends EditorOrPlayer {
         this.ensureProfile();
         this.injected = true;
         if (before) {
-            element.insertBefore(this.rootEl, before);
+            element.insertBefore(this.domNode, before);
         } else {
-            element.appendChild(this.rootEl);
+            element.appendChild(this.domNode);
         }
-        this.rootEl.updateComplete.then(() => {
+        this.domNode.updateComplete.then(() => {
             this.appendSourceEditor();
             this.appendWorkspaceView();
             this.output.onInject();
@@ -194,20 +223,20 @@ export class Editor extends EditorOrPlayer {
             }
             this.parts.onInject();
             this.runPluginTask('onInject');
-            this.contentWidgets = new ContentWidgets(this, (this.rootEl as any).widgetLayer);
+            this.contentWidgets = new ContentWidgets(this, (this.domNode as any).widgetLayer);
             this.telemetry.trackEvent({ name: 'ide_opened' });
             if (this._queuedApp) {
                 this.load(this._queuedApp);
                 this._queuedApp = null;
             } else {
-                this.reset();
+                this.reset(false);
             }
             this._onDidInject.fire();
         });
     }
     dispose() {
         if (this.injected) {
-            (this.rootEl as any).parentNode.removeChild(this.rootEl);
+            (this.domNode as any).parentNode.removeChild(this.domNode);
         }
         this.output.dispose();
         if (this.workspaceView) {
@@ -233,17 +262,18 @@ export class Editor extends EditorOrPlayer {
         this._onDidLoad.fire();
         this.telemetry.trackEvent({ name: 'app_imported' });
     }
-    reset() {
+    reset(trigger : boolean = true) {
         const source = this.workspaceProvider ? this.workspaceProvider.source : '';
         this.setCode();
         this.parts.reset();
         this.load({ source, parts: [] });
-        this._onDidReset.fire();
+        if (trigger) {
+            this._onDidReset.fire();
+        }
     }
     setCode(content? : string) {
         this.output.setCode(content);
-        (this.rootEl as any).code = content;
-        this.unsavedChanges = true;
+        (this.domNode as any).code = content;
         this.output.restart();
     }
     restart() {
@@ -330,7 +360,7 @@ export class Editor extends EditorOrPlayer {
         return this.export();
     }
     share() {
-        (this.rootEl as any).share();
+        (this.domNode as any).share();
     }
     @deprecated('Use editor.sourceEditor.getSource() instead')
     getSource() {
@@ -344,10 +374,10 @@ export class Editor extends EditorOrPlayer {
         return ws.getViewport();
     }
     getWorkspace() {
-        return (this.rootEl as any).getWorkspace();
+        return (this.domNode as any).getWorkspace();
     }
     getBlocklyWorkspace() {
-        return (this.rootEl as any).getBlocklyWorkspace();
+        return (this.domNode as any).getBlocklyWorkspace();
     }
     registerProfile(profile : EditorProfile) {
         if (profile.onInstall) {
@@ -390,14 +420,14 @@ export class Editor extends EditorOrPlayer {
         if (!this.workspaceProvider) {
             return;
         }
-        this.rootEl.workspaceEl!.appendChild(this.workspaceProvider.root);
+        this.domNode.workspaceEl!.appendChild(this.workspaceProvider.root);
         this.workspaceProvider.setOutputView(this.output.outputView);
     }
     get workspaceView() {
         return this.workspaceProvider;
     }
     get root() {
-        return this.rootEl.shadowRoot;
+        return this.domNode.shadowRoot;
     }
     resolvePosition(result : IQueryResult) {
         return result.getHTMLElement().getBoundingClientRect();

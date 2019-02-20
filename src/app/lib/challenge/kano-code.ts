@@ -40,7 +40,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         });
         const style = document.createElement('style');
         style.textContent = challengeStyles.cssText;
-        this.editor.rootEl.shadowRoot!.appendChild(style);
+        this.editor.domNode.shadowRoot!.appendChild(style);
     }
     processRichText(text : string) {
         return text.replace(/\${(.+)}/g, (m, g0) => {

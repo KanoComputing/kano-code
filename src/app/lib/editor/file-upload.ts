@@ -53,7 +53,7 @@ class FileUpload extends Plugin {
         e.preventDefault();
         e.stopPropagation();
         if (this.editor) {
-            this.editor.rootEl.style.pointerEvents = 'initial';
+            this.editor.domNode.style.pointerEvents = 'initial';
         }
         this._animateDrop();
         const { files } = e.dataTransfer;
@@ -90,13 +90,13 @@ class FileUpload extends Plugin {
             return;
         }
         if (this.editor) {
-            this.editor.rootEl.style.pointerEvents = 'none';
+            this.editor.domNode.style.pointerEvents = 'none';
         }
         this._animateDragEnter();
     }
     _onDragleave() {
         if (this.editor) {
-            this.editor.rootEl.style.pointerEvents = 'initial';
+            this.editor.domNode.style.pointerEvents = 'initial';
         }
         this._animateDragLeave();
     }

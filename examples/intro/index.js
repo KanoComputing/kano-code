@@ -75,7 +75,9 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
 
         editor.registerProfile(new EditorProfile());
 
-        editor.inject(document.body);
+        editor.onDidInject(() => {
+            editor.profile.storage.load();
+        });
 
-        editor.profile.storage.load();
+        editor.inject(document.body);
     });

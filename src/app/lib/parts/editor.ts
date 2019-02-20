@@ -45,6 +45,15 @@ export class EditorPartsManager {
     }
     setWhitelist(whitelist : IToolboxWhitelist) {
         this.whitelist = whitelist;
+        if (!this.editor.workspaceView) {
+            return;
+        }
+        const { partsControls } = this.editor.workspaceView;
+        if (!partsControls) {
+            return;
+        }
+        const partsWhitelist = Object.keys(this.whitelist);
+        partsControls.addPartsHidden = !partsWhitelist.length;
     }
     onInject() {
         if (!this.editor.workspaceView) {
@@ -53,6 +62,10 @@ export class EditorPartsManager {
         const { partsControls } = this.editor.workspaceView;
         if (!partsControls) {
             return;
+        }
+        if (this.whitelist) {
+            const partsWhitelist = Object.keys(this.whitelist);
+            partsControls.addPartsHidden = !partsWhitelist.length;
         }
         this.addDialog = this.editor.dialogs.registerDialog(this.addDialogProvider);
         // Listen to clicks on the add parts button
@@ -71,7 +84,8 @@ export class EditorPartsManager {
             // Update the dialog and open it
             this.addDialogProvider.setParts(partInfos);
             if (this.whitelist) {
-                this.addDialogProvider.setWhitelist(Object.keys(this.whitelist));
+                const partsWhitelist = Object.keys(this.whitelist);
+                this.addDialogProvider.setWhitelist(partsWhitelist);
             }
             this.addDialog.open();
             this._onDidOpenAddParts.fire();
@@ -405,6 +419,14 @@ export class EditorPartsManager {
                 },
             };
         });
+    }
+    /**
+     * Disable all parts. This prevents users from being able to create parts.
+     * Parts can still be created and visible if their are loaded through the editor
+     */
+    disable() {
+        // Just set an empty whitelist. This will make the add parts button disappear
+        this.setWhitelist({});
     }
     dispose() {
         this.apiRegistry.clear();

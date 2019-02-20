@@ -24,6 +24,10 @@ export class KCPartsControls extends LitElement {
     private _onDidClickRemovePart: EventEmitter<string> = new EventEmitter();
     @property({ type: Array })
     public parts : IStackEntry[] = [];
+
+    @property({ type: Boolean })
+    public addPartsHidden : boolean = false;
+
     public get onDidClickAddParts() {
         return this._onDidClickAddParts.event;
     }
@@ -132,7 +136,7 @@ export class KCPartsControls extends LitElement {
     render() {
         return html`
         <div class="add-parts">
-            <button id="add-part-button" type="button" @click=${this._addPartClicked}>
+            <button id="add-part-button" type="button" @click=${this._addPartClicked} ?hidden=${this.addPartsHidden}>
                 <label for="add-part-button">Add Parts</label>
                 <div class="icon">${templateContent(add)}</div>
             </button>
@@ -146,7 +150,7 @@ export class KCPartsControls extends LitElement {
                                    .validator=${this._validatePartName.bind(this)}
                                    style=${styleMap({ '--kano-part-list-item-highlight-color': part.color })}
                                    @click=${()=> this._partItemTapped(part)}
-                                   @change=${(e : CustomEvent) => this._onNameChange(e, part)}>
+                                   @label-change=${(e : CustomEvent) => this._onNameChange(e, part)}>
                     ${part.inlineDisplay.domNode}
                 </kc-part-list-item>
                 <button type="button" class="remove" @click=${()=> this._removePartClicked(part)}>

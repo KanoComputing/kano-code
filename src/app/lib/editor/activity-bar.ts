@@ -178,7 +178,7 @@ export class ActivityBar extends Plugin {
         if (!this.editor) {
             return;
         }
-        const container = (this.editor.rootEl as any).activityBarEl;
+        const container = (this.editor.domNode as any).activityBarEl;
         if (!container) {
             return;
         }

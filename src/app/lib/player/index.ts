@@ -20,6 +20,9 @@ export class Player extends EditorOrPlayer {
     static registerProfile(profile : IOutputProfile) {
         profiles.set(profile.id, profile);
     }
+    getCode() {
+        return this.output.getCode();
+    }
     disableFullscreen() {
         this._fullscreenEnabled = false;
     }

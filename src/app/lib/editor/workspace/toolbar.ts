@@ -1,7 +1,8 @@
-import { Disposables, subscribe, subscribeDOM, IDisposable } from '@kano/common/index.js';
+import { subscribeDOM, IDisposable } from '@kano/common/index.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { Plugin } from '../plugin.js';
 import Editor from '../editor.js';
+import { ToolbarEntryPosition } from '../../../elements/kc-workspace-toolbar/entry.js';
 
 /**
  * Manages the actions in the toolbar avilable in the workspace
@@ -12,6 +13,7 @@ export class WorkspaceToolbar extends Plugin {
     private editor? : Editor;
     private toolbar? : any;
     private resetDialog? : any;
+    private defaultEntries : Map<string, any> = new Map();
     constructor() {
         super();
         this._telemetry = new TelemetryClient({ scope: 'workspace_toolbar' });
@@ -37,14 +39,57 @@ export class WorkspaceToolbar extends Plugin {
         this.editor.output.onDidRunningStateChange(() => this.updateRunningState(), this, this.subscriptions);
         this.editor.output.onDidFullscreenChange(() => this.updateFullscreen(), this, this.subscriptions);
 
+        let entry = this.addSettingsEntry({
+            title: 'Reset Workspace',
+            ironIcon: 'kc-ui:reset',
+        });
+        entry.onDidActivate(() => this.reset());
+        this.defaultEntries.set('reset', entry);
+        
+        entry = this.addSettingsEntry({
+            title: 'Export',
+            ironIcon: 'kc-ui:export',
+        })
+        entry.onDidActivate(() => this.export());
+        this.defaultEntries.set('export', entry);
+
+        entry = this.addSettingsEntry({
+            title: 'Import',
+            ironIcon: 'kc-ui:import',
+        });
+        entry.onDidActivate(() => this.import());
+        this.defaultEntries.set('import', entry);
+
+        entry = this.addEntry({
+            id: 'restart',
+            position: ToolbarEntryPosition.RIGHT,
+            title: 'Restart',
+            ironIcon: 'kc-ui:reset',
+        });
+        entry.onDidActivate(() => this.restart());
+        this.defaultEntries.set('restart', entry);
+
+        entry = this.addEntry({
+            id: 'fullscreen',
+            position: ToolbarEntryPosition.RIGHT,
+            title: 'Fullscreen',
+            ironIcon: 'kc-ui:maximize',
+        });
+        entry.onDidActivate(() => this.toggleFullscreen());
+
+        this.defaultEntries.set('fullscreen', entry);
+
         this.subscriptions.push(
-            subscribeDOM(this.toolbar, 'restart-clicked', this.restart.bind(this)),
             subscribeDOM(this.toolbar, 'run-clicked', this.toggleRun.bind(this)),
-            subscribeDOM(this.toolbar, 'fullscreen-clicked', this.toggleFullscreen.bind(this)),
-            subscribeDOM(this.toolbar, 'reset-clicked', this.reset.bind(this)),
-            subscribeDOM(this.toolbar, 'export-clicked', this.export.bind(this)),
-            subscribeDOM(this.toolbar, 'import-clicked', this.import.bind(this)),
         );
+    }
+    disable(id : string) {
+        const entry = this.defaultEntries.get(id);
+        console.log(entry);
+        if (!entry) {
+            return;
+        }
+        entry.dispose();
     }
     updateRunningState() {
         if (!this.toolbar || !this.editor) {
@@ -57,6 +102,11 @@ export class WorkspaceToolbar extends Plugin {
             return;
         }
         this.toolbar.fullscreen = this.editor.output.getFullscreen();
+        const fullscreenEntry = this.defaultEntries.get('fullscreen');
+        if (!fullscreenEntry) {
+            return;
+        }
+        fullscreenEntry.updateIronIcon(`kc-ui:${this.toolbar.fullscreen ? 'minimize' : 'maximize'}`);
     }
     restart() {
         if (!this.editor) {

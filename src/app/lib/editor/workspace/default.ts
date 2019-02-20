@@ -19,10 +19,17 @@ export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
         this.frame.style.margin = '0 40px';
         this.partsControls.setAttribute('slot', 'controls');
 
+        this.editor.output.onDidFullscreenChange(() => {
+            (this.frame as any).fullscreen = this.editor.output.getFullscreen();
+        });
+
         subscribeDOM(this.frame, 'viewport-resize', () => {
             if (this.editor.output.outputView) {
                 this.editor.output.outputView.resize();
             }
+        });
+        subscribeDOM(this.frame, 'close-fullscreen', () => {
+            this.editor.output.setFullscreen(false)
         });
 
         this.frame.appendChild(this.partsControls);

@@ -201,7 +201,6 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             fullscreen: {
                 type: Boolean,
                 value: false,
-                observer: '_fullscreenChanged',
             },
             settingsEntries: {
                 type: Array,
@@ -219,31 +218,6 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             stopped: 'M 4,18 10.5,14 10.5,6 4,2 z M 10.5,14 17,10 17,10 10.5,6 z',
             running: 'M 2,18 6,18 6,2 2,2 z M 11,18 15,18 15,2 11,2 z',
         };
-        this.addSettingsEntry({
-            title: this.localize('RESET_WORKSPACE', 'Reset Workspace'),
-            ironIcon: 'kc-ui:reset',
-        }).onDidActivate(() => this._reset());
-        this.addSettingsEntry({
-            title: this.localize('EXPORT', 'Export'),
-            ironIcon: 'kc-ui:export',
-        }).onDidActivate(() => this._export());
-        this.addSettingsEntry({
-            title: this.localize('IMPORT', 'Import'),
-            ironIcon: 'kc-ui:import',
-        }).onDidActivate(() => this._load());
-        this.addEntry({
-            id: 'restart',
-            position: ToolbarEntryPosition.RIGHT,
-            title: 'Restart',
-            ironIcon: 'kc-ui:reset',
-        }).onDidActivate(() => this.restartClicked());
-        this.fullscreenEntry = this.addEntry({
-            id: 'fullscreen',
-            position: ToolbarEntryPosition.RIGHT,
-            title: 'Fullscreen',
-            ironIcon: 'kc-ui:maximize',
-        });
-        this.fullscreenEntry.onDidActivate(() => this.fullscreenClicked());
         this.timers = new Map();
     }
     addEntry(opts = {}) {
@@ -320,12 +294,6 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
     mousePositionHidden(show) {
         return !show;
     }
-    fullscreenClicked() {
-        this.dispatchEvent(new CustomEvent('fullscreen-clicked', { bubbles: true, composed: true }));
-    }
-    restartClicked() {
-        this.dispatchEvent(new CustomEvent('restart-clicked', { bubbles: true, composed: true }));
-    }
     _getRunningStatus(running) {
         return running ? 'running' : 'stopped';
     }
@@ -350,21 +318,6 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
 
         e.preventDefault();
         e.stopPropagation();
-    }
-    _reset() {
-        this.dispatchEvent(new CustomEvent('reset-clicked', { bubbles: true, composed: true }));
-    }
-    _export() {
-        this.dispatchEvent(new CustomEvent('export-clicked', { bubbles: true, composed: true }));
-    }
-    _load() {
-        this.dispatchEvent(new CustomEvent('import-clicked', { bubbles: true, composed: true }));
-    }
-    _save() {
-        this.dispatchEvent(new CustomEvent('save-clicked', { bubbles: true, composed: true }));
-    }
-    _fullscreenChanged(fullscreen) {
-        this.fullscreenEntry.updateIronIcon(`kc-ui:${fullscreen ? 'minimize' : 'maximize'}`);
     }
 }
 

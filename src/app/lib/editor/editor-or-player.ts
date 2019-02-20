@@ -1,10 +1,10 @@
-/* eslint class-methods-use-this: "off" */
 import { PluginReceiver } from './plugin/receiver.js';
+import { Output } from '../output/output.js';
 
-export class EditorOrPlayer extends PluginReceiver {
-    getCode() {}
-    get outputView() { return {}; }
-    inject() {}
+export abstract class EditorOrPlayer extends PluginReceiver {
+    abstract getCode() : string;
+    abstract output : Output;
+    abstract inject(host : HTMLElement, before? : HTMLElement) : void;
 }
 
 export default EditorOrPlayer;

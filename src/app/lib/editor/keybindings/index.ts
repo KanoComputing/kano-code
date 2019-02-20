@@ -7,11 +7,19 @@ export class Keybindings extends Plugin {
     onInstall(editor : Editor) {
         this.editor = editor;
     }
-    register(keys : string, cb : () => any, target : HTMLElement) {
+    /**
+    * @example
+    *```js
+    *
+    *keybindings.register('ctrl+g', () => console.log('Keybinding triggered'));
+    *keybindings.register('esc', () => console.log('Keybinding triggered'), input);
+    *```
+    */
+    register(keys : string, cb : () => any, target? : HTMLElement) {
         if (!this.editor) {
             throw new Error('Could not register keybinding: Editor was not installed');
         }
-        const binding = new Binding(keys, cb, target || this.editor.rootEl);
+        const binding = new Binding(keys, cb, target || this.editor.domNode);
         this.editor.root!.appendChild(binding.root);
         return binding;
     }

@@ -72,10 +72,12 @@ class KcWorkspaceFrame extends PolymerElement {
                 z-index: 300;
                 background: var(--kano-app-editor-workspace-background, #f2f2f2);
             }
-            .overlay kc-workspace-toolbar {
-                position: absolute;
-                bottom: 0px;
+            :host(.fullscreen) kc-workspace-toolbar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
                 width: 100%;
+                z-index: 302;
             }
             button#fullscreen-close {
                 align-self: flex-end;
@@ -120,20 +122,13 @@ class KcWorkspaceFrame extends PolymerElement {
             </div>
         </kano-ui-viewport>
         <div class="controls">
-            <kc-workspace-toolbar
-                id="toolbar"
-                on-fullscreen-clicked="_toggleFullscreen">
-            </kc-workspace-toolbar>
+            <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>
             <slot name="controls"></slot>
         </div>
         <div class="overlay">
-            <button id="fullscreen-close" class="btn" on-tap="_toggleFullscreen">
+            <button id="fullscreen-close" class="btn" on-tap="_closeFullscreen">
                 <div class="icon">${close}</div>
             </button>
-            <kc-workspace-toolbar running="[[running]]"
-                                    no-part-controls
-                                    on-fullscreen-clicked="_toggleFullscreen"
-                                    fullscreen="[[fullscreen]]"></kc-workspace-toolbar>
         </div>
         <iron-a11y-keys keys="meta+enter" on-keys-pressed="_goFullscreen" target="[[target]]"></iron-a11y-keys>
         <iron-a11y-keys keys="esc" on-keys-pressed="_cancelFullscreen" target="[[target]]"></iron-a11y-keys>
@@ -155,6 +150,7 @@ class KcWorkspaceFrame extends PolymerElement {
             fullscreen: {
                 type: Boolean,
                 value: false,
+                observer: '_fullscreenChanged',
             },
         };
     }
@@ -218,11 +214,12 @@ class KcWorkspaceFrame extends PolymerElement {
             this._toggleFullscreen();
         }
     }
-    _toggleFullscreen() {
-        this.classList.toggle('fullscreen');
-        this.fullscreen = !this.fullscreen;
+    _closeFullscreen() {
+        this.dispatchEvent(new CustomEvent('close-fullscreen'));
+    }
+    _fullscreenChanged() {
+        this.classList.toggle('fullscreen', this.fullscreen);
         this._setViewportHeight();
-
         window.dispatchEvent(new Event('resize'));
     }
     getViewportScale() {

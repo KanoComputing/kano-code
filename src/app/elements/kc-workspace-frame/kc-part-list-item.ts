@@ -47,9 +47,12 @@ export class KCPartListItem extends LitElement {
     render() {
         return html`
             <div id="icon" class="icon">${this.icon ? templateContent(this.icon) : ''}</div>
-            <kc-validated-editable-label class$="label" .label=${this.label} .validator=${this.validator}></kc-validated-editable-label>
+            <kc-validated-editable-label class$="label" .label=${this.label} .validator=${this.validator} @change=${this._onLabelChange}></kc-validated-editable-label>
             <div class="controls" id="controls"><slot></slot></div>
         `;
+    }
+    _onLabelChange(e : CustomEvent) {
+        this.dispatchEvent(new CustomEvent('label-change', { detail: e.detail, bubbles: true, composed: true }))
     }
 }
 

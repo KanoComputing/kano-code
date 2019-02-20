@@ -2,7 +2,7 @@ import { PluginReceiver } from '../editor/plugin/receiver.js';
 import { Runner } from '../editor/runner.js';
 import { OutputModule } from './module.js';
 import { DefaultOutputViewProvider } from './default.js';
-import { Plugin } from '../editor/plugin.js';
+import { Plugin, PluginLifecycleStep } from '../editor/plugin.js';
 import { AppModule } from '../app-modules/app-module.js';
 import { OutputViewProvider, IOutputProvider } from './index.js';
 import { PartsManager, PartContructor } from '../parts/manager.js';
@@ -74,6 +74,9 @@ export class Output extends PluginReceiver {
         this.runner.addModule(OutputModule);
         this.parts = new PartsManager(this);
         this.addPlugin(this.runner);
+    }
+    public runPluginTask(taskName : PluginLifecycleStep, ...args : any[]) {
+        super.runPluginTask(taskName, ...args);
     }
     addPart(partClass : Type<Part>) {
         this.parts.addPart(partClass);

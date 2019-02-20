@@ -11,7 +11,7 @@ suite('Editor', () => {
 
             const bodyChildren = [...document.body.children];
 
-            assert(bodyChildren.indexOf(editor.rootEl) !== -1);
+            assert(bodyChildren.indexOf(editor.domNode) !== -1);
         });
         test('should add itself to the DOM node provided', () => {
             const node = document.createElement('div');
@@ -22,7 +22,7 @@ suite('Editor', () => {
 
             const children = [...node.children];
 
-            assert(children.indexOf(editor.rootEl) !== -1);
+            assert(children.indexOf(editor.domNode) !== -1);
         });
         test('should add itself before any reference node provided', () => {
             const node = document.createElement('div');
@@ -35,7 +35,7 @@ suite('Editor', () => {
 
             const children = [...node.children];
 
-            const editorIndex = children.indexOf(editor.rootEl);
+            const editorIndex = children.indexOf(editor.domNode);
             const referenceIndex = children.indexOf(reference);
 
 
