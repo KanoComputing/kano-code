@@ -87,6 +87,6 @@ Examples:
 Supported elements are:
 
 |Element|Description|Example|
-|---|---|---|---|
+|---|---|---|
 |Toolbox entry|Displays a preview of the toolbnox entry|`toolbox#app`, `part#button>toolbox`|
 |Part|Displays a preview of a part|`part.button`|
