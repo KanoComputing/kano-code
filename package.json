@@ -18,7 +18,7 @@
     "docs": "esdoc",
     "serve-test": "web-tester serve dist/**/*.test.js",
     "test": "web-tester run dist/**/*.test.js",
-    "test-ci": "yarn run --silent test > test-results.xml",
+    "test-ci": "yarn run --silent test --reporter xunit > test-results.xml",
     "coverage": "web-tester cover dist/**/*.test.js --exclude ./dist/test/**/*",
     "coverage-ci": "yarn run --silent coverage --reporter cobertura",
     "checkstyle": "eslint ./app/lib ./app/elements",
