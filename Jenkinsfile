@@ -6,11 +6,6 @@ pipeline {
         label 'ubuntu_18.04_with_docker'
     }
     stages {
-        stage('check environment') {
-            steps {
-                prepare_env()
-            }
-        }
         stage('checkout') {
             steps {
                 checkout scm
