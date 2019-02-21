@@ -32,7 +32,7 @@ Displays one or more tooltip on the editor. Each tooltip will have a target elem
 Syntax:
 
 |Key|Description|Example|
-|---|---|---|---|
+|---|---|---|
 |`target`|An editor selector pointing at the element the tooltip will point at|`toolbox#app`, `part#button>toolbox`|
 |`text`|The content of the tooltip. Supports markdown|`Anything really ${toolbox#app} *CONTENT*`|
 |`position`|Which way the tooltip will face its target|`top`, `right`, `bottom`, `left`|
