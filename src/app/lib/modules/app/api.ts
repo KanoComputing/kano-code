@@ -1,6 +1,6 @@
 import { ApplicationModule } from './app.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import { addFlashField, setupFlash } from '../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../plugins/flash/flash.js';
 import { IAPIDefinition } from '../../meta-api/module.js';
 
 export const AppAPI : IAPIDefinition = {

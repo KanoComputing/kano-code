@@ -4,7 +4,7 @@ import { textInput } from '@kano/icons/parts.js';
 import { TransformAPI, onTransformInstall } from '../transform/api.js';
 import { TextInputInlineDisplay } from './inline.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import { addFlashField, setupFlash } from '../../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import Editor from '../../../editor/editor.js';
 
 export const TextInputAPI : IPartAPI = {

@@ -1,7 +1,7 @@
 import { MousePart } from './mouse.js';
 import { IPartAPI } from '../../api.js';
 import { svg } from '@kano/icons-rendering/index.js';
-import { addFlashField, setupFlash } from '../../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import Editor from '../../../editor/editor.js';
 import * as StickerBlocks from '../sticker/common.js';

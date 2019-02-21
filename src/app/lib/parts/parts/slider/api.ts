@@ -3,7 +3,7 @@ import { SliderPart } from './slider.js';
 import { TransformAPI, onTransformInstall } from '../transform/api.js';
 import { slider } from '@kano/icons/parts.js';
 import { SliderInlineDisplay } from './inline.js';
-import { addFlashField, setupFlash } from '../../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import Editor from '../../../editor/editor.js';
 

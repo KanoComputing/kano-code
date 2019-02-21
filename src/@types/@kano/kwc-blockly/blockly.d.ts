@@ -64,6 +64,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         protected updateWidth() : void;
         protected render_() : void;
         public getText() : string;
+        public setSourceBlock(block : Block) : void;
     }
     class Toolbox {
         opened : boolean;

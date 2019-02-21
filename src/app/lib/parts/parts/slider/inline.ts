@@ -1,6 +1,6 @@
 import { PartInlineDisplay } from '../../inline-display.js';
 import { SliderPart } from './slider.js';
-import { Flash } from '../../../plugins/flash.js';
+import { Flash } from '../../../plugins/flash/flash.js';
 
 export class SliderInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
     public domNode: HTMLDivElement;

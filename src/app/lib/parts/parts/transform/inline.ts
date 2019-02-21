@@ -2,7 +2,7 @@ import { PartInlineDisplay } from '../../inline-display.js';
 import { KcEditableNumber } from '../../../../elements/kc-editable-number.js';
 import { subscribeDOM, IDisposable } from '@kano/common/index.js';
 import { DOMPart } from '../dom/dom.js';
-import { Flash } from '../../../plugins/flash.js';
+import { Flash } from '../../../plugins/flash/flash.js';
 
 class Control {
     public domNode : KcEditableNumber = new KcEditableNumber();

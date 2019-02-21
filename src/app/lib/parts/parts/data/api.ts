@@ -1,6 +1,6 @@
 import { IMetaDefinition } from '../../../meta-api/module.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import { addFlashField, setupFlash } from '../../../plugins/flash.js';
+import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { DataPart } from './data.js';
 import Editor from '../../../editor/editor.js';
 
