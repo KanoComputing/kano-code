@@ -27,6 +27,13 @@ pipeline {
                 }
             }
         }
+        stage('build') {
+            steps {
+                script {
+                    sh "yarn tsc"
+                }
+            }
+        }
         stage('test') {
             steps {
                 script {
