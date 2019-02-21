@@ -19,7 +19,7 @@ const challengeData = {
         beacon: 'part#button>toolbox:100,50',
         tooltips: [{
             target: 'part#button>toolbox',
-            text: 'Here ${part#button>toolbox}',
+            text: 'Here ${part.button} 🎂',
             position: 'right'
         }],
         validation: {
@@ -41,7 +41,7 @@ const challengeData = {
         beacon: 'part#button>block.onClick',
         tooltips: [{
             target: 'part#button>block.onClick',
-            text: 'Jello',
+            text: 'Jello 🤷‍♀️',
             position: 'right'
         }],
         phantom_block: 'part#button>block.onClick>input#CALLBACK',

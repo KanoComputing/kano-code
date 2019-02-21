@@ -30,9 +30,7 @@ import { KanoAppEditor } from '../../elements/kano-app-editor/kano-app-editor.js
 declare global {
     interface Window {
         Kano : {
-            Code : {
-                mainEditor? : Editor|null,
-            },
+            Code : any;
         },
     }
 }

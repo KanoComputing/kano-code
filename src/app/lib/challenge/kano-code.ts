@@ -7,6 +7,9 @@ import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
 import { Part } from '../parts/part.js';
 import { Tooltip } from './widget/tooltip.js';
 import { challengeStyles } from './styles.js';
+import './components/kc-toolbox-entry-preview.js';
+import './components/kc-part-api-preview.js';
+import { dataURI } from '@kano/icons-rendering/index.js';
 
 export class KanoCodeChallenge extends BlocklyChallenge {
     protected editor : Editor;
@@ -16,54 +19,79 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     constructor(editor : Editor) {
         super(editor);
         this.editor = editor;
+        // Support Editor actions in challenges
         this.addValidation('add-part', this.matchAddPart);
         this.addValidation('running', this.matchValue);
 
+        // Opposite aciotns and fallbacks
         this.addOppositeAction('add-part', 'close-parts', this._partsClosed);
 
+        // Shorthand for quick part validation
         this.defineShorthand('create-part', this._createPartShorthand.bind(this));
 
+        // Define the challenges widgets for each step through the challenge data
         this.defineBehavior('banner', this.displayBanner.bind(this), this.hideBanner.bind(this));
         this.defineBehavior('beacon', this.displayBeacon.bind(this), this.hideBeacon.bind(this));
         this.defineBehavior('tooltips', this.displayTooltips.bind(this), this.hideTooltips.bind(this));
 
+        // Update the layout of the widget on every sourceEditor event
+        // TODO: Only layout on some events to improve performances
         // TODO: dispose cycle
         this.workspace.addChangeListener(() => {
             this.widgets.forEach((w) => this.editor.layoutContentWidget(w));
         });
-
+        // Trigger challenge events on editor events
         this.editor.parts.onDidOpenAddParts(() => {
             this.triggerEvent('open-parts');
         });
         this.editor.parts.onDidAddPart((part) => {
             this.triggerEvent('add-part', part);
         });
+        // Inject challenge styles into the editor
         const style = document.createElement('style');
         style.textContent = challengeStyles.cssText;
         this.editor.domNode.shadowRoot!.appendChild(style);
     }
-    processRichText(text : string) {
+    /**
+     * Parses the provided text, extract and replace eventual template values with preview widgets.
+     * It is important to make sure each preview widget returns only one element for it to be displayed inline
+     * If it returns more than one, marked.js will display it as a block
+     * @param text Source text to be processed as rich content
+     */
+    protected processRichText(text : string) {
         return text.replace(/\${(.+)}/g, (m, g0) => {
             const result = this.editor.querySelector(g0);
             if (!result) {
                 return m;
             }
             if (result.entry) {
+                // Matches a toolbox entry
                 return `
-                <div class="toolbox-entry">
-                    <div class="color" style="background-color: ${result.entry.colour};"></div>
-                    <div>${result.entry.name}</div>
-                </div>
+                    <kc-toolbox-entry-preview name="${result.entry.name}" color="${result.entry.colour}"></kc-toolbox-entry-preview>
+                `;
+            } else if (result.api && result.api.icon) {
+                // Matches a part api
+                return `
+                    <kc-part-api-preview label="${result.api.label}" icon="${dataURI(result.api.icon)}"></kc-part-api-preview>
                 `;
             }
-            return m;
+            // Warn and return an empty string if not supported
+            console.warn(`[CHALLENGE] selector '${g0}' does not match any markdown widget`);
+            return '';
         });
     }
-    displayTooltips(tooltips : any[]) {
+    /**
+     * Displays a list of tooltips as content widgets of the editor
+     * @param tooltips A list of tooltip data from a challenge step
+     */
+    protected displayTooltips(tooltips : any[]) {
         tooltips.forEach((tooltipData) => {
+            // Create the tooltip widget and add it to the editor
             const tooltip = new Tooltip();
             this.editor.addContentWidget(tooltip);
+            // Keep a reference to the widgets
             this.tooltips.push(tooltip);
+            // Update tooltip's data
             if (tooltipData.text) {
                 tooltip.setText(this.processRichText(tooltipData.text));
             }
@@ -81,7 +109,10 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             }
         });
     }
-    hideTooltips() {
+    /**
+     * Remove the tooltips previously added
+     */
+    protected hideTooltips() {
         this.tooltips.forEach((tooltip) => {
             tooltip.close().then(() => {
                 this.editor.removeContentWidget(tooltip);
@@ -90,8 +121,13 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         });
         this.tooltips.length = 0;
     }
-    displayBanner(data : any) {
+    /**
+     * Displays a banner as a content widget on top of the sourceEditor
+     * @param data Banner data from a challenge step
+     */
+    protected displayBanner(data : any) {
         const widget = new BannerWidget(this.editor);
+        // TODO: dispose of this listener
         widget.onDidClick(() => this.nextStep());
         let text;
         let nextButton = false;
@@ -108,14 +144,21 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         widget.show();
         this.widgets.set('banner', widget);
     }
-    hideBanner() {
+    /**
+     * Removes a previously added banner
+     */
+    protected hideBanner() {
         const widget = this.widgets.get('banner');
         if (!widget) {
             return;
         }
         widget.hide();
     }
-    displayBeacon(data : any) {
+    /**
+     * Displays a beacon as a content widget on the editor
+     * @param data Beacon data from a challenge step
+     */
+    protected displayBeacon(data : any) {
         if (typeof data !== 'string') {
             throw new Error('Beacon prop must be a string');
         }
@@ -128,8 +171,11 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.widgets.set('beacon', widget);
         }, 300);
     }
-    hideBeacon() {
-        // If a beacon is queud for display, cancel the timeout
+    /**
+     * Removes a previously added beacon
+     */
+    protected hideBeacon() {
+        // If a beacon is queued for display, cancel the timeout
         if (this._beaconSub) {
             this._beaconSub.dispose();
         }

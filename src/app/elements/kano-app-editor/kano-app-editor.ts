@@ -4,10 +4,6 @@ import '../kano-code-display/kano-code-display.js';
 import { property, customElement, css, LitElement, html, query } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 
-declare global {
-    interface Window { js_beautify : any }
-}
-
 @customElement('kano-app-editor')
 export class KanoAppEditor extends LitElement {
     @property({ type: String })

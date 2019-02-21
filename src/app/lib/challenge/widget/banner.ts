@@ -6,14 +6,6 @@ import { Blockly } from '@kano/kwc-blockly/blockly.js';
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
 import 'twemoji-min/2/twemoji.min.js';
 
-declare global {
-    interface Window {
-        twemoji : {
-            parse(input : string) : string;
-        };
-    }
-}
-
 export interface IBannerData {
     text : string;
     nextButton : boolean;

@@ -1,19 +1,6 @@
 import 'prismjs/prism.js';
-import './kano-prism-theme.js';
 import { LitElement, customElement, property, css, html, query } from 'lit-element';
 import { prismTheme } from './kano-prism-theme.js';
-
-declare global {
-    interface PrismLanguage {}
-    interface Window {
-        Prism : {
-            languages : {
-                [K : string] : PrismLanguage;
-            }
-            highlight(cod : string, language : PrismLanguage) : string;
-        }
-    }
-}
 
 const CODE_DISPLAY_LINE_HEIGHT = 20;
 

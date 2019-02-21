@@ -3,13 +3,13 @@ import { ActivityBar } from './activity-bar.js';
 import Editor from './editor.js';
 
 class EditorStub {
-    public domNode : HTMLElement;
+    public domNode : any;
     public barRoot : HTMLElement = document.createElement('div');
     public injected : boolean = false;
     constructor() {
-        this.barRoot.setAttribute('id', 'activity-bar');
-        this.domNode = document.createElement('div');
-        this.domNode.appendChild(this.barRoot);
+        this.domNode = {
+            activityBarEl: this.barRoot,
+        };
     }
 }
 

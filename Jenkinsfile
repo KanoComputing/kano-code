@@ -37,6 +37,7 @@ pipeline {
                     docker.image('kanocomputing/puppeteer').inside('--cap-add=SYS_ADMIN') {
                         // Run the Unit test
                         sh "yarn test-ci"
+                        sh "yarn coverage-ci"
                     }
                 }
             }
@@ -45,6 +46,7 @@ pipeline {
     post {
         always {
             junit allowEmptyResults: true, testResults: 'test-results.xml'
+            cobertura coberturaReportFile: 'coverage/cobertura-coverage.xml'
         }
         regression {
             notify_culprits currentBuild.result

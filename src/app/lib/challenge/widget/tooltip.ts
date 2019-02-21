@@ -1,17 +1,15 @@
 import '../../../elements/kano-tooltip/kano-tooltip.js';
-import '@polymer/marked-element/marked-element.js';
 import '@kano/styles/typography.js';
+import 'marked/lib/marked.js';
+import 'twemoji-min/2/twemoji.min.js';
 
 export class Tooltip {
     private domNode : HTMLElement|null = null;
     private markedEl : HTMLElement|null = null;
     getMarked() {
         if (!this.markedEl) {
-            this.markedEl = document.createElement('marked-element');
-            const renderTarget = document.createElement('div');
-            renderTarget.classList.add('markdown-html');
-            renderTarget.setAttribute('slot', 'markdown-html');
-            this.markedEl.appendChild(renderTarget);
+            this.markedEl = document.createElement('div');
+            this.markedEl.classList.add('markdown-html');
         }
         return this.markedEl;
     }
@@ -33,7 +31,8 @@ export class Tooltip {
     }
     setText(text : string) {
         const marked = this.getMarked() as any;
-        marked.markdown = text;
+        const emojiReady = window.twemoji.parse(text);
+        marked.innerHTML = window.marked(emojiReady);
     }
     setPosition(position : string) {
         const marked = this.getDomNode() as any;

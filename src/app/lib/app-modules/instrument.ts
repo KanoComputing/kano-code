@@ -13,6 +13,7 @@ export class Instrument {
     private methodName? : string;
     private originalFunc? : Function;
     private _onDidMethodCall : EventEmitter<ICallDescription> = new EventEmitter();
+    get onDidMethodCall() { return this._onDidMethodCall.event; }
     constructor(fullPath : string, root : any, method : string) {
         this.fullPath = fullPath;
         this.root = root;

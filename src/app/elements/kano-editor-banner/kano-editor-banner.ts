@@ -1,8 +1,9 @@
-import '@polymer/marked-element/marked-element.js';
+
 import '@kano/styles/color.js';
 import '../kano-circle-progress/kano-circle-progress.js';
 import { LitElement, css, html, customElement, property } from 'lit-element/lit-element.js';
 import { templateContent } from '../../lib/directives/template-content.js';
+import { marked } from '../../lib/directives/marked.js';
 import { button } from '@kano/styles/button.js';
 import '../kano-blockly-block/kano-blockly-block.js';
 import './kano-value-preview.js';
@@ -160,9 +161,9 @@ export class KCEditorBanner extends LitElement {
             <div class="text">
                 ${this.head.length ? this.headEl : ''}
                 <div class="body">
-                    <marked-element .markdown=${this.text}>
-                        <div class="markdown-html" slot="markdown-html"></div>
-                    </marked-element>
+                    <div class="markdown-html" id="markdown-html">
+                        ${marked(this.text)}
+                    </div>
                 </div>
             </div>
         </div>
@@ -181,9 +182,9 @@ export class KCEditorBanner extends LitElement {
     get headEl() {
         return html`
         <div class="head">
-            <marked-element .markdown=${this.head}>
-                <div class="markdown-html" slot="markdown-html"></div>
-            </marked-element>
+            <div class="markdown-html" id="markdown-html">
+                ${marked(this.head)}
+            </div>
         </div>
         `;
     }

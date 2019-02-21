@@ -35,7 +35,7 @@ suite('Intrument', () => {
     test('Should notify when instrumented method is called', (done) => {
         const arg = Math.random();
         const instrument = output.runner.instrumentize('test.testMethod');
-        instrument.on('method-called', (e: any) => {
+        instrument.onDidMethodCall((e: any) => {
             assert(e.method === 'test.testMethod');
             assert(e.args[0] === arg);
             done();
@@ -48,7 +48,7 @@ suite('Intrument', () => {
     test('Should notify when instrumented method in module is called', (done) => {
         const arg = Math.random();
         const instrument = output.runner.instrumentize('test.testModule.testMethodInModule');
-        instrument.on('method-called', (e: any) => {
+        instrument.onDidMethodCall((e: any) => {
             assert(e.method === 'test.testModule.testMethodInModule');
             assert(e.args[0] === arg);
             done();
@@ -60,7 +60,7 @@ suite('Intrument', () => {
     });
     test('Should notify before the body of the function is called', (done) => {
         const instrument = output.runner.instrumentize('test.testMethod');
-        instrument.on('method-called', (e: any) => {
+        instrument.onDidMethodCall((e: any) => {
             if (e.method === 'test.testMethod') {
                 assert(!methodCalled);
             }
@@ -73,7 +73,7 @@ suite('Intrument', () => {
     });
     test('Should NOT notify once instrument has been disposed of', (done) => {
         const instrument = output.runner.instrumentize('test.testMethod');
-        instrument.on('method-called', (e: any) => {
+        instrument.onDidMethodCall((e: any) => {
             throw new Error('Instrument still in place after being disposed of');
         });
 

@@ -17,8 +17,10 @@
     "serve": "es6-server",
     "docs": "esdoc",
     "serve-test": "web-tester serve dist/**/*.test.js",
-    "test": "web-tester run ./tests/unit",
+    "test": "web-tester run dist/**/*.test.js",
     "test-ci": "yarn run --silent test > test-results.xml",
+    "coverage": "web-tester cover dist/**/*.test.js --exclude ./dist/test/**/*",
+    "coverage-ci": "yarn run --silent coverage --reporter cobertura",
     "checkstyle": "eslint ./app/lib ./app/elements",
     "checkstyle-ci": "yarn checkstyle -f checkstyle -o eslint.xml",
     "prepublishOnly": "yarn build"
@@ -30,7 +32,7 @@
   "license": "ISC",
   "devDependencies": {
     "@kano/es6-server": "^1.0.1",
-    "@kano/web-tester": "^1.0.0-alpha.10",
+    "@kano/web-tester": "^1.0.0-alpha.12",
     "@polymer/iron-test-helpers": "^3.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
@@ -77,6 +79,7 @@
     "js-beautify": "^1.7.5",
     "lit-element": "^2.0.1",
     "lit-html": "^1.0.0",
+    "marked": "^0.6.1",
     "monaco-editor-element": "https://github.com/paulvarache/monaco-editor-element",
     "omggif": "^1.0.9",
     "prismjs": "^1.15.0",

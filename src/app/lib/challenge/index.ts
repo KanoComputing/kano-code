@@ -5,6 +5,10 @@ import { transformChallenge } from './legacy.js';
 import { IToolboxWhitelist } from '../editor/toolbox.js';
 import { subscribe, IDisposable, EventEmitter } from '@kano/common/index.js';
 
+// window namespaces used for easy access to editors in development
+window.Kano = window.Kano || {};
+window.Kano.Code = window.Kano.Code || {};
+
 interface IChallengeData {
     version? : string;
     steps : any[];
@@ -35,6 +39,7 @@ export class Challenge {
         } else {
             this.editor.onDidInject(() => this.onInject());
         }
+        window.Kano.Code.mainChallenge = this;
     }
     onInject() {
         // Load the default app if provided
@@ -110,5 +115,8 @@ export class Challenge {
         // Here get rid of all modifications made to the editor
         this.subscriptions.forEach(d => d.dispose());
         this.subscriptions.length = 0;
+        if (window.Kano.Code.mainChallenge === this) {
+            window.Kano.Code.mainChallenge = null;
+        }
     }
 }
