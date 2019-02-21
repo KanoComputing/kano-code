@@ -7,8 +7,8 @@ export class KcPartApiPreview extends LitElement {
     public label : string = '';
     
     @property({ type: String })
-
     public icon : string = '';
+    
     static get styles() {
         return [css`
             :host {

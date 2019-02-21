@@ -23,7 +23,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.addValidation('add-part', this.matchAddPart);
         this.addValidation('running', this.matchValue);
 
-        // Opposite aciotns and fallbacks
+        // Opposite actions and fallbacks
         this.addOppositeAction('add-part', 'close-parts', this._partsClosed);
 
         // Shorthand for quick part validation
