@@ -15,22 +15,13 @@ pipeline {
             steps {
                 script {
                     docker.image('node:8-alpine').inside('-u root') {
-                        withCredentials([string(credentialsId: 'npm-read-only', variable: 'NPM_TOKEN')]) {
-                            sh "apk update && apk upgrade && apk add --no-cache bash git openssh"
-                            sh "mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts"
-                            sh "echo \"//registry.npmjs.org/:_authToken=${NPM_TOKEN}\" > ~/.npmrc"
-                            sshagent(['read-only-github']) {
-                                sh "yarn"
-                            }
+                        sh "apk update && apk upgrade && apk add --no-cache bash git openssh"
+                        sh "mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts"
+                        sshagent(['read-only-github']) {
+                            sh "yarn"
+                            sh "yarn tsc"
                         }
                     }
-                }
-            }
-        }
-        stage('build') {
-            steps {
-                script {
-                    sh "yarn tsc"
                 }
             }
         }
