@@ -1,0 +1,3 @@
+import './index.js';
+
+// Coverage
