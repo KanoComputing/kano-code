@@ -82,6 +82,7 @@ def updatePR() {
             print "New comment"
             def comment = pullRequest.comment(markdown)
             writeFile file: idFile, text: comment.id.toString()
+            comment = null
         }
     } catch(Exception e) {
         print e
