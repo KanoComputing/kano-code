@@ -55,8 +55,8 @@ pipeline {
 }
 
 def updatePR() {
+    def idFile = '.gh-comment-id'
     try {
-        def idFile = '.gh-comment-id'
         if (!env.CHANGE_ID) {
             return;
         }
