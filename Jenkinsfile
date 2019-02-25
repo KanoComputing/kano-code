@@ -42,6 +42,16 @@ pipeline {
         always {
             junit allowEmptyResults: true, testResults: 'test-results.xml'
             cobertura coberturaReportFile: 'coverage/cobertura-coverage.xml'
+            def commentId = readFile('.gh-comment-id')
+            def markdown = readFile('coverage/coverage-summary.md')
+            if (env.CHANGE_ID) {
+                if (commentId) {
+                    def id = pullRequest.editComment(commentId, markdown)
+                } else {
+                    def id = pullRequest.comment(markdown)
+                    writeFile('.gh-comment-id', id)
+                }
+            }
         }
         regression {
             notify_culprits currentBuild.result
