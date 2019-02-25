@@ -76,8 +76,10 @@ def updatePR() {
         }
         print commentId
         if (commentId) {
+            print "Update comment"
             pullRequest.editComment(commentId, markdown)
         } else {
+            print "New comment"
             def comment = pullRequest.comment(markdown)
             writeFile file: idFile, text: comment.id.toString()
         }
