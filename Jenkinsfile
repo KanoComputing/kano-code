@@ -55,25 +55,29 @@ pipeline {
 }
 
 def updatePR() {
-    sh "cat .gh-comment-id"
-    def idFile = '.gh-comment-id'
-    if (!env.CHANGE_ID) {
-        return;
-    }
-    def markdown
     try {
-        markdown = readFile 'coverage/coverage-summary.md'
+        def idFile = '.gh-comment-id'
+        if (!env.CHANGE_ID) {
+            return;
+        }
+        def markdown
+        try {
+            markdown = readFile 'coverage/coverage-summary.md'
+        } catch(Exception e) {
+            return;
+        }
+        def commentId
+        try {
+            commentId = readFile(idFile) as Long
+        } catch (Exception e) {}
+        if (commentId) {
+            pullRequest.editComment(commentId, markdown)
+        } else {
+            def comment = pullRequest.comment(markdown)
+            writeFile file: idFile, text: comment.id.toString()
+        }
     } catch(Exception e) {
-        return;
-    }
-    def commentId
-    try {
-        commentId = readFile(idFile) as Long
-    } catch (Exception e) {}
-    if (commentId) {
-        pullRequest.editComment(commentId, markdown)
-    } else {
-        def comment = pullRequest.comment(markdown)
-        writeFile file: idFile, text: comment.id.toString()
+        // Delete the file in case of errors
+        sh "rm ${idFile}"
     }
 }
