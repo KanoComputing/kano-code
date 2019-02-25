@@ -55,14 +55,25 @@ pipeline {
 }
 
 def updatePR() {
-    def commentId = readFile('.gh-comment-id')
-    def markdown = readFile('coverage/coverage-summary.md')
-    if (env.CHANGE_ID) {
-        if (commentId) {
-            def id = pullRequest.editComment(commentId, markdown)
-        } else {
-            def id = pullRequest.comment(markdown)
-            writeFile('.gh-comment-id', id)
-        }
+    sh "cat .gh-comment-id"
+    def idFile = '.gh-comment-id'
+    if (!env.CHANGE_ID) {
+        return;
+    }
+    def markdown
+    try {
+        markdown = readFile 'coverage/coverage-summary.md'
+    } catch(Exception e) {
+        return;
+    }
+    def commentId
+    try {
+        commentId = readFile(idFile) as Long
+    } catch (Exception e) {}
+    if (commentId) {
+        pullRequest.editComment(commentId, markdown)
+    } else {
+        def comment = pullRequest.comment(markdown)
+        writeFile file: idFile, text: comment.id.toString()
     }
 }
