@@ -54,6 +54,9 @@ pipeline {
     }
 }
 
+/**
+ * Reads the coverage report and post it on a potential github PR
+ */
 def updatePR() {
     def idFile = '.gh-comment-id'
     try {
@@ -64,28 +67,20 @@ def updatePR() {
         try {
             markdown = readFile 'coverage/coverage-summary.md'
         } catch(Exception e) {
-            print e
             return;
         }
-        print markdown
         def commentId
         try {
             commentId = readFile(idFile) as Long
-        } catch (Exception e) {
-            print e
-        }
-        print commentId
+        } catch (Exception e) {}
         if (commentId) {
-            print "Update comment"
             pullRequest.editComment(commentId, markdown)
         } else {
-            print "New comment"
             def comment = pullRequest.comment(markdown)
             writeFile file: idFile, text: comment.id.toString()
             comment = null
         }
     } catch(Exception e) {
-        print e
         // Delete the file in case of errors
         sh "rm ${idFile}"
     }

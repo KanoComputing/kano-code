@@ -9,7 +9,6 @@ export abstract class PartInlineDisplay<T extends HTMLElement = HTMLElement> {
     abstract onInject() : void;
 }
 
-
 export class DefaultInlineDisplay extends PartInlineDisplay {
     public domNode: HTMLElement = document.createElement('div');
     onInject() {}
