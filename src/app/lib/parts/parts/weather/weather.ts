@@ -63,13 +63,11 @@ export class WeatherPart extends DataPart<IWeatherData> {
         transformLegacyWeather(app);
     }
     query() : Promise<IWeatherData> {
-        return this.fetch(() => {
-            return fetch(`https://apps-data.kano.me/data-src/weather-city/?q=${encodeURIComponent(this._location)}&units=${encodeURIComponent(this._units)}`)
-                .then(r => r.json())
-                .then((r) => {
-                    return r.value as IWeatherData;
-                });
-        });
+        return fetch(`https://apps-data.kano.me/data-src/weather-city/?q=${encodeURIComponent(this._location)}&units=${encodeURIComponent(this._units)}`)
+            .then(r => r.json())
+            .then((r) => {
+                return r.value as IWeatherData;
+            });
     }
     is(type : WeatherType) : boolean {
         if (!this.value) {

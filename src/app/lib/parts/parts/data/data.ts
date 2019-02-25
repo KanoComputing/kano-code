@@ -17,16 +17,13 @@ export abstract class DataPart<T> extends Part {
         super();
         this.data = this._components.get('data') as DataComponent;
     }
-    @throttle(1000)
+    @throttle(1000, true)
     refresh() {
-        this.query()
+        return this.query()
             .then((data) => {
                 this.value = data;
                 this.data.updated.fire();
             });
-    }
-    fetch(request : () => Promise<T>) {
-        return request();
     }
     onStop() {
         super.onStop();

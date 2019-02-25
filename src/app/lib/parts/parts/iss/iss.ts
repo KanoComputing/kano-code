@@ -24,13 +24,11 @@ export class ISSPart extends DataPart<ISSData> {
         transformLegacyISS(app);
     }
     query() : Promise<ISSData> {
-        return this.fetch(() => {
-            return fetch('https://apps-data.kano.me/data-src/iss/')
-                .then(r => r.json())
-                .then((r) => {
-                    return r.value as ISSData;
-                });
-        });
+        return fetch('https://apps-data.kano.me/data-src/iss/')
+            .then(r => r.json())
+            .then((r) => {
+                return r.value as ISSData;
+            });
     }
     get latitude() {
         if (!this.value) {
@@ -42,6 +40,6 @@ export class ISSPart extends DataPart<ISSData> {
         if (!this.value) {
             return 0;
         }
-        return this.value.latitude;
+        return this.value.longitude;
     }
 }
