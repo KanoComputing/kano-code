@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html, body {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+        }
+        .column {
+            background: lightgrey;
+            width: 960px;
+            padding: 16px;
+        }
+        .inject {
+            height: 640px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="column">
+        <p>Here is an editor. You can play with it</p>
+        <div class="inject"></div>
+        <p>And this is another one. WOW!!!</p>
+        <div class="inject" id="second"></div>
+    </div>
+    <script src="index.js" type="module"></script>
+</body>
+</html>

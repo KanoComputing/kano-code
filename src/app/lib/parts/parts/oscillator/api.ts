@@ -35,7 +35,6 @@ export const OscillatorAPI : IPartAPI = {
             ['sawtooth', 'sawtooth'],
             ['triangle', 'triangle'],
         ],
-        default: 'sine',
         getter: false,
         setter: true,
     }],
