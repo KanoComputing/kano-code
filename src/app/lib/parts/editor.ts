@@ -4,7 +4,7 @@ import { PartContructor } from './manager.js';
 import { memoize } from '../util/decorators.js';
 import { IPartAPI } from './api.js';
 import { IAPIDefinition } from '../meta-api/module.js';
-import { Part, IPart } from './part.js';
+import { Part } from './part.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
@@ -201,7 +201,14 @@ export class EditorPartsManager {
         const toolboxModule = this.createToolboxModule(api, id, name);
         const entry = this.editor.toolbox.addEntry(toolboxModule);
         const inlineDisplay = EditorPartsManager.getInlineDisplay(api, part);
-        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id, icon: api.icon, inlineDisplay, color: api.color });
+        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({
+            name,
+            id,
+            icon: api.icon,
+            inlineDisplay,
+            color: api.color,
+            editor : this.editor,
+        });
         const partRecord : IPartRecord = {
             type: api.type,
             part,
@@ -330,6 +337,7 @@ export class EditorPartsManager {
             icon: api.icon,
             inlineDisplay,
             color: api.color,
+            editor: this.editor,
         });
 
         this.parts.set(partRecord.part.id, partRecord);

@@ -13,4 +13,5 @@ export class MicrophoneInlineDisplay extends PartInlineDisplay<KCMicrophoneDispl
         }, 100);
     }
     onInject() {}
+    onDispose() {}
 }

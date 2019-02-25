@@ -9,4 +9,5 @@ export class OscillatorInlineDisplay extends PartInlineDisplay {
         (this.domNode as any).part = part;
     }
     onInject() {}
+    onDispose() {}
 }
