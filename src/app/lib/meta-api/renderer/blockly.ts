@@ -258,6 +258,9 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                             blocklyInput = this.appendDummyInput(pName)
                                 .appendField(label, 'PREFIX')
                                 .appendField(new Blockly.FieldDropdown(p.def.enum), pName);
+                        } else if (p.def.blockly && p.def.blockly.customField) {
+                            blocklyInput = this.appendDummyInput(pName);
+                            blocklyInput.appendField(p.def.blockly.customField(Blockly, this), pName);
                         } else {
                             blocklyInput = this.appendValueInput(pName)
                                 .setCheck(input.check);
@@ -267,9 +270,6 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                         }
                         if (index !== 0) {
                             blocklyInput.setAlign(Blockly.ALIGN_RIGHT);
-                        }
-                        if (p.def.blockly && p.def.blockly.customField) {
-                            blocklyInput.appendField(p.def.blockly.customField(Blockly, this), pName);
                         }
                     });
                     const output = BlocklyMetaRenderer.parseType(m.getReturnType());
