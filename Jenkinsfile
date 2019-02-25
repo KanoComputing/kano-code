@@ -64,13 +64,16 @@ def updatePR() {
         try {
             markdown = readFile 'coverage/coverage-summary.md'
         } catch(Exception e) {
+            print e
             return;
         }
         print markdown
         def commentId
         try {
             commentId = readFile(idFile) as Long
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            print e
+        }
         print commentId
         if (commentId) {
             pullRequest.editComment(commentId, markdown)
