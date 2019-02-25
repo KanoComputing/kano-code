@@ -66,10 +66,12 @@ def updatePR() {
         } catch(Exception e) {
             return;
         }
+        print markdown
         def commentId
         try {
             commentId = readFile(idFile) as Long
         } catch (Exception e) {}
+        print commentId
         if (commentId) {
             pullRequest.editComment(commentId, markdown)
         } else {
@@ -77,6 +79,7 @@ def updatePR() {
             writeFile file: idFile, text: comment.id.toString()
         }
     } catch(Exception e) {
+        print e
         // Delete the file in case of errors
         sh "rm ${idFile}"
     }
