@@ -20,7 +20,7 @@
     "test": "web-tester run dist/**/*.test.js",
     "test-ci": "yarn run --silent test --reporter xunit > test-results.xml",
     "coverage": "web-tester cover dist/**/*.test.js --exclude ./dist/test/**/*",
-    "coverage-ci": "yarn run --silent coverage --reporter cobertura",
+    "coverage-ci": "yarn run --silent coverage -r cobertura -r markdown",
     "checkstyle": "eslint ./app/lib ./app/elements",
     "checkstyle-ci": "yarn checkstyle -f checkstyle -o eslint.xml",
     "prepublishOnly": "yarn build"
