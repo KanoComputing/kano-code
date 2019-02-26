@@ -57,6 +57,9 @@ export const SpeakerAPI : IPartAPI = {
                 },
             },
         }],
+        blockly: {
+            extraArgs: ['time'],
+        },
     }, {
         type: 'function',
         name: 'loop',

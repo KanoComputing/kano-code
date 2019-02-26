@@ -321,6 +321,11 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     }
                     return value;
                 });
+                if (m.def.blockly && m.def.blockly.extraArgs) {
+                    m.def.blockly.extraArgs.forEach((arg : string) => {
+                        values.push(arg);
+                    });
+                }
                 let code : string|string[] = `${m.getNameChain('.')}(${values.join(', ')})`;
                 if (block.outputConnection) {
                     code = [code];

@@ -66,6 +66,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         protected render_() : void;
         public getText() : string;
         public setSourceBlock(block : Block) : void;
+        public dispose() : void;
     }
     class Toolbox {
         opened : boolean;
@@ -126,6 +127,9 @@ declare module '@kano/kwc-blockly/blockly.js' {
         BlockChange : typeof BlockChange;
         fire(event : BlocklyEvent) : void;
     }
+    class FieldConfig extends Field {
+        position() : void;
+    }
     const Blockly : {
         DUMMY_INPUT : number;
         ALIGN_RIGHT : string;
@@ -140,5 +144,6 @@ declare module '@kano/kwc-blockly/blockly.js' {
         setPhantomBlock(connection : Connection, target : Block) : void;
         removePhantomBlock() : void;
         selected? : Block;
+        FieldConfig : typeof FieldConfig;
     }
 }

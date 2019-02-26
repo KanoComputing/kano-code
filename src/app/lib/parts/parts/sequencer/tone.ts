@@ -1,13 +1,15 @@
-import 'tone/build/Tone.js';
+import { Sequence, Transport, Tone } from '../../../../../modules/tone.js';
 import { EventEmitter } from '@kano/common/index.js';
 
 export class Sequencer {
     public steps : boolean[];
-    public loop : window.Tone.Sequence;
+    public loop : Sequence;
     private _onDidStep : EventEmitter<number> = new EventEmitter();
-    private _onDidHit : EventEmitter<number> = new EventEmitter();
+    private _onDidStepsChange : EventEmitter = new EventEmitter();
+    private _onHit : EventEmitter<number> = new EventEmitter();
     get onDidStep() { return this._onDidStep.event; }
-    get onDidHit() { return this._onDidHit.event; }
+    get onDidStepsChange() { return this._onDidStepsChange.event; }
+    get onHit() { return this._onHit.event; }
     constructor(size : number, bpm : number) {
         const columns = [];
         this.steps = [];
@@ -15,26 +17,23 @@ export class Sequencer {
             columns.push(i);
             this.steps.push(false);
         }
-        this.loop = new window.Tone.Sequence((time, col) => {
+        this.loop = new Sequence((time, col) => {
             this._onDidStep.fire(col);
-            if (this.steps && this.steps[col]) {
-                this._onDidHit.fire(time);
+            if (this.steps[col]) {
+                this._onHit.fire(time);
             }
         }, columns, `${size}n`);
-        window.Tone.Transport.start();
+        if (Transport.state !== 'started') {
+            Transport.start();
+        }
         this.setBPM(bpm);
     }
     setBPM(v : number) {
-        window.Tone.Transport.bpm.value = v;
+        const rate = v / Transport.bpm.value;
+        this.loop.playbackRate = rate;
     }
     setSteps(steps : boolean[]) {
         this.steps = steps;
-    }
-    enableStep(index : number) {
-        this.steps[index] = true;
-    }
-    disableStep(index : number) {
-        this.steps[index] = false;
     }
     start() {
         this.loop.start();
@@ -42,10 +41,19 @@ export class Sequencer {
     stop() {
         this.loop.stop();
     }
+    shuffle() {
+        const newArray = [];
+        for (let i = 0; i < this.steps.length; i += 1) {
+            newArray.push(Math.random() < 0.5);
+        }
+        this.setSteps(newArray);
+        this._onDidStepsChange.fire();
+    }
     dispose() {
-        this.loop.stop();
+        this.stop();
         this._onDidStep.dispose();
-        this._onDidHit.dispose();
+        this._onHit.dispose();
+        this._onDidStepsChange.dispose();
     }
 }
 
