@@ -4,6 +4,7 @@ import { speaker } from '@kano/icons/parts.js';
 import MetaModule, { IMetaDefinition } from '../../../meta-api/module.js';
 import { Block, Blockly } from '@kano/kwc-blockly/blockly.js';
 import { FieldSample } from './blockly/field-sample.js';
+import { WebAudioTimestamp } from '../../../types.js';
 
 export const getter : IMetaDefinition = {
     type: 'function',
@@ -56,10 +57,14 @@ export const SpeakerAPI : IPartAPI = {
                     return `<shadow type="${m.def.name}_getSample"><field name="SAMPLE">${SpeakerPart.defaultSample}</field></shadow>`;
                 },
             },
+        }, {
+            type: 'parameter',
+            name: 'time',
+            returnType: WebAudioTimestamp,
+            blockly: {
+                scoped: true,
+            },
         }],
-        blockly: {
-            extraArgs: ['time'],
-        },
     }, {
         type: 'function',
         name: 'loop',

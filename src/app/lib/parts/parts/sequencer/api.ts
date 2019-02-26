@@ -9,6 +9,7 @@ import { FieldSequenceConfig } from './blockly/field-sequence-config.js';
 import { Meta } from '../../../meta-api/module.js';
 import { onDidCreateBlockType } from '../../../util/blockly.js';
 import { SequencerInlineDisplay } from './inline.js';
+import { WebAudioTimestamp } from '../../../types.js';
 
 export const SequencerAPI : IPartAPI = {
     type: SequencerPart.type,
@@ -26,14 +27,19 @@ export const SequencerAPI : IPartAPI = {
             verbose: '',
             blockly: {
                 customField() {
-                    return new FieldSequence(16);
+                    return new FieldSequence(8);
                 },
             },
         }, {
-            type: 'parameter',
+            type: 'function',
             name: 'callback',
             verbose: '',
             returnType: Function,
+            parameters: [{
+                type: 'parameter',
+                name: 'time',
+                returnType: WebAudioTimestamp,
+            }],
         }],
         blockly: {
             postProcess(block : Block) {
@@ -62,7 +68,7 @@ export const SequencerAPI : IPartAPI = {
                 if (!input) {
                     return;
                 }
-                const configField = new FieldSequenceConfig('Sequencer', 16);
+                const configField = new FieldSequenceConfig('Sequencer', 8);
                 input.insertFieldAt(0, configField, 'CONFIG');
             },
             javascript(Blockly : Blockly, block : Block, m : Meta) {

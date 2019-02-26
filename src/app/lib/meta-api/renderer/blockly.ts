@@ -1,5 +1,7 @@
 import Defaults from '../../blockly/defaults.js';
 import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaRenderer, ICategory } from '../module.js';
+import { walkUpstream } from '../../util/blockly.js';
+import { Block } from '@kano/kwc-blockly/blockly.js';
 
 interface ILegacyModule {
     def : {
@@ -17,6 +19,12 @@ interface IRenderedBlock {
     defaults? : any[];
     register(Blockly : any) : void;
 }
+
+/**
+ * Holds the definitions associated with their generated blocks
+ * Used to retrieve on the fly the definition for a given block
+ */
+const definitionsMap : Map<string, Meta> = new Map();
 
 class BlocklyMetaRenderer implements IMetaRenderer {
     private defaults : Defaults;
@@ -219,6 +227,46 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         }
         return value;
     }
+    /**
+     * Looks up a Blockly block tree and find a parent block that has a callback function definition
+     * with an argument matching the required type. Return the argument name.
+     * @param block A blockly block
+     * @param returnType A function argument to match
+     */
+    static findScopedArgument(block : Block, returnType : any) {
+        // Look up the tree. The visitor will invalidate each non matching node and return a matching name
+        const scope = walkUpstream(block, (b) => {
+            // Retrieve the MetaDefinition from the block type
+            const blockDefinition = definitionsMap.get(b.type);
+            // No definition or no parameters means it cannot create a scope
+            if (!blockDefinition || !blockDefinition.def.parameters) {
+                return false;
+            }
+            const { parameters } = blockDefinition as MetaFunction;
+            // Look for a function parameters. Those can have scope defined parameters
+            const funcParam = parameters.find((param) => param.def.type === 'function');
+            if (!funcParam) {
+                return false;
+            }
+            // This function, being a callback definition can have parameters. Look for a matching type
+            const funcParams = funcParam.def.parameters;
+            if (!funcParams) {
+                return false;
+            }
+            // These are the callback function's defined arguments. One might gives us the value we need
+            const param = funcParams.find((param) => param.returnType === returnType);
+            if (!param) {
+                return false;
+            }
+            return param;
+        });
+        // No scope found, bail out
+        if (!scope) {
+            return null;
+        }
+        // Return argument name
+        return scope.name;
+    }
     static renderFunction(m : MetaFunction) {
         const id = BlocklyMetaRenderer.getId(m);
         const params = m.getParameters();
@@ -234,16 +282,18 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             }
             return acc;
         }, {} as any);
+        // Exclude scoped params for the blockly interface generation
+        const blocksParams = params.filter(p => !p.def.blockly || !p.def.blockly.scoped);
         const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
                 init() {
                     this.setColour(m.getColor());
                     this.setOutput(BlocklyMetaRenderer.parseType(m.getReturnType()));
-                    if (!params.length) {
+                    if (!blocksParams.length) {
                         this.appendDummyInput()
                             .appendField(BlocklyMetaRenderer.verboseWithPrefix(m));
                     }
-                    params.forEach((p, index) => {
+                    blocksParams.forEach((p, index) => {
                         const pName = p.def.name.toUpperCase();
                         const input = BlocklyMetaRenderer.parseInputType(p.def.returnType, p);
                         const label = index === 0 ? `${BlocklyMetaRenderer.verboseWithPrefix(m)} ${p.getVerboseDisplay()}` : p.getVerboseDisplay();
@@ -278,7 +328,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                         this.setNextStatement(true);
                         this.setPreviousStatement(true);
                     }
-                    this.setInputsInline(params.length === 2);
+                    this.setInputsInline(blocksParams.length === 2);
                     // Allow the api to customise the block further
                     if (m.def.blockly && typeof m.def.blockly.postProcess === 'function') {
                         m.def.blockly.postProcess(this);
@@ -290,13 +340,16 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     return m.def.blockly.javascript(Blockly, block, m);
                 }
                 const values = params.map((p, index) => {
+                    if (p.def.blockly && p.def.blockly.scoped) {
+                        return this.findScopedArgument(block, p.getReturnType());
+                    }
                     const argName = p.def.name.toUpperCase();
                     const input = block.getInput(argName);
                     const field = block.getField(argName);
                     let value;
                     if (field) {
                         value = block.getFieldValue(argName);
-                        value = BlocklyMetaRenderer.formatFieldValue(value, params[index].def.default);
+                        value = this.formatFieldValue(value, params[index].def.default);
                     } else {
                         switch (input.type) {
                             case Blockly.INPUT_VALUE: {
@@ -311,7 +364,13 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                                 if (!statement) {
                                     statement = typeof params[index].def.default === 'undefined' ? '' : params[index].def.default;
                                 }
-                                value = `function() {\n${statement}\n}`;
+                                let args : string[] = [];
+                                if (params[index].def.parameters) {
+                                    params[index].def.parameters!.forEach((param) => {
+                                        args.push(param.name);
+                                    });
+                                }
+                                value = `function(${args.join(', ')}) {\n${statement}\n}`;
                                 break;
                             }
                             default: {
@@ -320,12 +379,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                         }
                     }
                     return value;
-                });
-                if (m.def.blockly && m.def.blockly.extraArgs) {
-                    m.def.blockly.extraArgs.forEach((arg : string) => {
-                        values.push(arg);
-                    });
-                }
+                }).filter(v => v !== null);
                 let code : string|string[] = `${m.getNameChain('.')}(${values.join(', ')})`;
                 if (block.outputConnection) {
                     code = [code];
@@ -335,10 +389,12 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 return code;
             };
         };
+        definitionsMap.set(id, m);
         const aliases : string[] = m.def.blockly && m.def.blockly.aliases ? m.def.blockly.aliases : [];
         aliases.forEach((alias) => {
             (Blockly as any).Blocks[alias] = (Blockly as any).Blocks[id];
             (Blockly as any).JavaScript[alias] = (Blockly as any).JavaScript[id];
+            definitionsMap.set(alias, m);
         });
         const toolbox = BlocklyMetaRenderer.isInToolbox(m);
         return [{ register, id, defaults, toolbox }];
