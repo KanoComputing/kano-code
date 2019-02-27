@@ -38,7 +38,10 @@ export const SequencerAPI : IPartAPI = {
             parameters: [{
                 type: 'parameter',
                 name: 'time',
-                returnType: WebAudioTimestamp,
+                returnType: Number,
+                blockly: {
+                    scope: WebAudioTimestamp,
+                },
             }],
         }],
         blockly: {

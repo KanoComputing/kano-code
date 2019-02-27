@@ -39,8 +39,11 @@ const api = {
             parameters: [{
                 type: 'parameter',
                 name: 'result',
+                returnType: Number,
                 // This indicates that the scoped argument will have to match this symbol
-                returnType: ExampleResult,
+                blockly: {
+                    scope: ExampleResult,
+                },
             }],
         }],
     }, {
@@ -60,10 +63,10 @@ const api = {
         }, {
             type: 'parameter',
             name: 'result',
-            // Only accepts arguments from the upper scope that matches this type
-            returnType: ExampleResult,
+            returnType: Number,
             blockly: {
-                scoped: true,
+                // Only accepts arguments from the upper scope that matches this type
+                scope: ExampleResult,
             },
         }],
     }],
@@ -109,17 +112,21 @@ const api = {
             parameters: [{
                 type: 'parameter',
                 name: 'result',
+                returnType: Number,
                 // This indicates that the scoped argument will have to match this symbol
-                returnType: ExampleResult,
+                blockly: {
+                    scope: ExampleResult,
+                },
             }],
         }],
     }, {
         // This is the doSomething function. It accepts a x,y and optional scoped result parameters
         type: 'variable',
         name: 'someData',
-        returnType: ExampleResult,
+        // This has its own return type
+        returnType: Number,
         blockly: {
-            scoped: true,
+            scope: ExampleResult,
         },
     }],
 }

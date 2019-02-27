@@ -60,9 +60,9 @@ export const SpeakerAPI : IPartAPI = {
         }, {
             type: 'parameter',
             name: 'time',
-            returnType: WebAudioTimestamp,
+            returnType: Number,
             blockly: {
-                scoped: true,
+                scope: WebAudioTimestamp,
             },
         }],
     }, {

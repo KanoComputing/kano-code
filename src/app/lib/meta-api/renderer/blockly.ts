@@ -163,8 +163,8 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 },
             };
             Blockly.JavaScript[id] = (block : Block) => {
-                if (m.def.blockly && m.def.blockly.scoped) {
-                    const result = this.findScopedArgument(block, m.getReturnType());
+                if (m.def.blockly && m.def.blockly.scope) {
+                    const result = this.findScopedArgument(block, m.def.blockly.scope);
                     if (result) {
                         return [result];
                     }
@@ -252,7 +252,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             }
             const { parameters } = blockDefinition as MetaFunction;
             // Look for a function parameters. Those can have scope defined parameters
-            const funcParam = parameters.find((param) => param.def.type === 'function');
+            const funcParam = parameters.find((param) => param.getReturnType() === Function);
             if (!funcParam) {
                 return false;
             }
@@ -262,7 +262,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 return false;
             }
             // These are the callback function's defined arguments. One might gives us the value we need
-            const param = funcParams.find((param) => param.returnType === returnType);
+            const param = funcParams.find((param) => param.blockly && param.blockly.scope === returnType);
             if (!param) {
                 return false;
             }
@@ -291,7 +291,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             return acc;
         }, {} as any);
         // Exclude scoped params for the blockly interface generation
-        const blocksParams = params.filter(p => !p.def.blockly || !p.def.blockly.scoped);
+        const blocksParams = params.filter(p => !p.def.blockly || !p.def.blockly.scope);
         const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
                 init() {
@@ -348,8 +348,8 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     return m.def.blockly.javascript(Blockly, block, m);
                 }
                 const values = params.map((p, index) => {
-                    if (p.def.blockly && p.def.blockly.scoped) {
-                        return this.findScopedArgument(block, p.getReturnType());
+                    if (p.def.blockly && p.def.blockly.scope) {
+                        return this.findScopedArgument(block, p.def.blockly.scope);
                     }
                     const argName = p.def.name.toUpperCase();
                     const input = block.getInput(argName);
