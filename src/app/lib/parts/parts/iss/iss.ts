@@ -1,6 +1,7 @@
 import { DataPart } from '../data/data.js';
 import { part } from '../../decorators.js';
 import { transformLegacyISS } from './legacy.js';
+import { join } from '../../../util/path.js';
 
 interface ISSData {
     altitude : number;
@@ -18,13 +19,15 @@ interface ISSData {
     visibility: string;
 }
 
+
+
 @part('iss')
 export class ISSPart extends DataPart<ISSData> {
     static transformLegacy(app : any) {
         transformLegacyISS(app);
     }
     query() : Promise<ISSData> {
-        return fetch('https://apps-data.kano.me/data-src/iss/')
+        return fetch(join(DataPart.getBaseUrl(), '/iss/'))
             .then(r => r.json())
             .then((r) => {
                 return r.value as ISSData;

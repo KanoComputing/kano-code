@@ -3,6 +3,8 @@ import { DOMPart } from '../dom/dom.js';
 import { PartComponent } from '../../component.js';
 import { Sticker } from './types.js';
 import { stickers } from './data.js';
+import Output from '../../../output/output.js';
+import { join } from '../../../util/path.js';
 
 const all = stickers.reduce<{ [K : string] : string }>((acc, item) => Object.assign(acc, item.stickers), {});
 
@@ -11,13 +13,16 @@ class StickerComponent extends PartComponent {
     public image : Sticker = new Sticker(StickerPart.defaultSticker);
 }
 
+const ASSET_URL_PREFIX_KEY = 'sticker:base-url';
+
 @part('sticker')
 export class StickerPart extends DOMPart<HTMLDivElement> {
     @component(StickerComponent)
     public core : StickerComponent;
     static get items() { return stickers; }
     static resolve(item : string) {
-        return encodeURI(`/assets/part/stickers/${item}`);
+        const prefix = Output.config.get(ASSET_URL_PREFIX_KEY, '/assets/part/stickers/');
+        return encodeURI(join(prefix, item));
     }
     static get defaultSticker() { return 'crocodile'; }
     constructor() {

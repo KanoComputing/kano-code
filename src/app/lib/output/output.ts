@@ -36,6 +36,23 @@ export interface IDOMContext {
     onDidResize : IEvent<void>;
 }
 
+export type IConfigResolver = <T>(key : string) => T|null;
+
+let configResolver : IConfigResolver|null = null;
+
+export const OutputConfig = {
+    get<T>(key : string, fallback : T) : T {
+        if (!configResolver) {
+            return fallback;
+        }
+        const value = configResolver<T>(key);
+        if (!value) {
+            return fallback;
+        }
+        return value;
+    }
+}
+
 export class Output extends PluginReceiver {
     public runner : Runner;
     private _running : boolean = false;
@@ -65,8 +82,21 @@ export class Output extends PluginReceiver {
     // Events
     private _onDidRunningStateChange : EventEmitter<boolean> = new EventEmitter<boolean>();
     get onDidRunningStateChange() { return this._onDidRunningStateChange.event }
+
     private _onDidFullscreenChange : EventEmitter<boolean> = new EventEmitter<boolean>();
     get onDidFullscreenChange() { return this._onDidFullscreenChange.event }
+
+    static get config() {
+        return OutputConfig;
+    }
+
+    /**
+     * Set the global configuration resolver
+     * @param resolver A configuration resolver
+     */
+    static setConfigResolver(resolver : IConfigResolver) {
+        configResolver = resolver;
+    }
 
     constructor() {
         super();

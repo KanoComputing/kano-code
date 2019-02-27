@@ -309,3 +309,48 @@ export const MouseAPI : IPartAPI = {
     }],
 };
 ```
+
+## Part list
+
+### button
+### clock
+### data
+
+This Part is abstract and will never be instanciated in the editor. It is used as a foundation for any part that handle remote data
+
+Configuration keys:
+ - `data:base-url`: Defines the base url for the data source API
+
+### dom
+
+This Part is abstract and will never be instanciated in the editor. It is used as a foundation for any part that is rendered using the DOM
+
+### iss
+
+Extends the data part. Delivers the position of the iss in space
+
+### microphone
+### mouse
+### oscillator
+### slider
+### speaker
+
+Configuration keys:
+ - `speaker:base-url`: Defines the base url for the speaker samples directory
+
+### sticker
+
+Configuration keys:
+ - `sticker:base-url`: Defines the base url for the sticker assets directory
+
+### synth
+### terminal
+### text
+### text-input
+### transform
+
+This Part is abstract and will never be instanciated in the editor. It is used as a foundation for any part that need to handle a transform matrix and opacity value
+
+### weather
+
+Extends the data part. Delivers weather information

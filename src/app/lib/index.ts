@@ -4,6 +4,7 @@ export * from './editor/plugin.js';
 export * from './editor/dialogs/dialog-provider.js';
 export * from './creation/creation-storage-provider.js';
 export * from './creation/creation-preview-provider.js';
+export * from './output/output.js';
 export * from './output/profile.js';
 export * from './editor/profile.js';
 export * from './app-modules/app-module.js';

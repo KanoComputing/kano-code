@@ -1,6 +1,7 @@
 import { DataPart } from '../data/data.js';
 import { part } from '../../decorators.js';
 import { transformLegacyWeather } from './legacy.js';
+import { join } from '../../../util/path.js';
 
 const emojiMap : { [K : string] : string } = {
     '01d': '\u2600\uFE0F',
@@ -63,7 +64,8 @@ export class WeatherPart extends DataPart<IWeatherData> {
         transformLegacyWeather(app);
     }
     query() : Promise<IWeatherData> {
-        return fetch(`https://apps-data.kano.me/data-src/weather-city/?q=${encodeURIComponent(this._location)}&units=${encodeURIComponent(this._units)}`)
+        const url = join(DataPart.getBaseUrl(), `/weather-city/?q=${encodeURIComponent(this._location)}&units=${encodeURIComponent(this._units)}`);
+        return fetch(url)
             .then(r => r.json())
             .then((r) => {
                 return r.value as IWeatherData;

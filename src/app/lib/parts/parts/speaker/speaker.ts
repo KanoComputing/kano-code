@@ -3,6 +3,8 @@ import { part, property, component } from '../../decorators.js';
 import { samples, ISample } from './data.js';
 import { SamplePlayer } from '../../../music/sample-player.js';
 import { PartComponent } from '../../component.js';
+import Output from '../../../output/output.js';
+import { join } from '../../../util/path.js';
 
 // Build a map of id => sample data to access those swiftly
 const samplesMap : Map<string, ISample> = new Map();
@@ -22,6 +24,8 @@ class SpeakerComponent extends PartComponent {
     public volume : number = 1;
 }
 
+const SAMPLE_URL_PREFIX_KEY = 'speaker:base-url';
+
 @part('speaker')
 export class SpeakerPart extends Part {
     private ctx? : AudioContext;
@@ -32,7 +36,8 @@ export class SpeakerPart extends Part {
     static get defaultSample() { return 'claves'; }
     static get items() { return samples; }
     static resolve(id : string) {
-        return `/assets/audio/samples/${id}`;
+        const prefix = Output.config.get(SAMPLE_URL_PREFIX_KEY, '/assets/audio/samples/');
+        return join(prefix, id);
     }
     constructor() {
         super();
