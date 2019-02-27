@@ -1,4 +1,4 @@
-import { Part, IPartContext } from '../../part.js';
+import { Part } from '../../part.js';
 import { part, property, component } from '../../decorators.js';
 import { EventEmitter } from '@kano/common/index.js';
 import { PartComponent } from '../../component.js';
