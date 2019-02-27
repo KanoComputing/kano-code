@@ -1,4 +1,4 @@
-import { Sequence, Transport, Tone } from '../../../../../modules/tone.js';
+import { Sequence, Transport } from '../../../../../modules/tone.js';
 import { EventEmitter } from '@kano/common/index.js';
 
 export class Sequencer {

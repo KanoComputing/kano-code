@@ -103,7 +103,6 @@ export const SequencerAPI : IPartAPI = {
         const sourceEditor = editor.sourceEditor as BlocklySourceEditor;
         const workspace = sourceEditor.getWorkspace();
         function updateSequence(field : FieldSequence) {
-            part.sequences.set(field.__id, field.getSteps());
             const seq = part.sequencers.get(field.__id);
             if (!seq) {
                 return;

@@ -34,8 +34,6 @@ export class SequencerPart extends Part {
     private _onDidStep : EventEmitter<IStepEvent> = new EventEmitter();
     private _onDidStepsChange : EventEmitter<IStepsChangeEvent> = new EventEmitter();
     private _onDidChangeSequencers : EventEmitter = new EventEmitter();
-    // Stores all the steps for each sequence. Persists across restarts, sequencers get their steps from here
-    public sequences : Map<string, boolean[]> = new Map();
     get onDidStep() { return this._onDidStep.event; }
     get onDidStepsChange() { return this._onDidStepsChange.event; }
     get onDidChangeSequencers() { return this._onDidChangeSequencers.event; }
@@ -66,7 +64,7 @@ export class SequencerPart extends Part {
         // Create a new sequencer
         const seq = new Sequencer(steps.length, this.core.bpm);
         // Update its steps from the sequence store
-        seq.setSteps(this.sequences.get(id)!);
+        seq.setSteps(steps.map(num => !!num));
         // Copy the id locally
         const seqId = id;
         this.sequencers.set(seqId, seq);

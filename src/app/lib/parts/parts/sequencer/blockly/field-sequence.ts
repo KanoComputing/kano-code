@@ -18,6 +18,7 @@ export class FieldSequence extends Field {
     private _size : number = 8;
     private _steps : boolean[];
     private _stepWidth : number;
+    private _step : number = 0;
     public __id : string;
     private dot? : SVGCircleElement;
     private _onDidChangeSteps : EventEmitter<ISequenceConfig> = new EventEmitter();
@@ -201,6 +202,9 @@ export class FieldSequence extends Field {
         if (this.wrapRect) {
             this.wrapRect.setAttribute('width', this.width_.toString());
         }
+        if (this.dot) {
+            this.dot.setAttribute('cx', (this._step * (this._stepWidth + 3) + 4 + (this._stepWidth / 2) - REVERSE_PADDING_X).toString());
+        }
         // This is read by the block to compute its overall size for rendering
         this.size_.width = this.width_ - REVERSE_PADDING_X * 2;
     }
@@ -209,10 +213,11 @@ export class FieldSequence extends Field {
         return this.__id;
     }
     setCurrentStep(index : number) {
+        this._step = index;
         if (!this.dot) {
             return;
         }
-        this.dot.setAttribute('cx', (index * (this._stepWidth + 3) + 4 + (this._stepWidth / 2) - REVERSE_PADDING_X).toString());
+        this.dot.setAttribute('cx', (this._step * (this._stepWidth + 3) + 4 + (this._stepWidth / 2) - REVERSE_PADDING_X).toString());
     }
     dispose() {
         super.dispose();

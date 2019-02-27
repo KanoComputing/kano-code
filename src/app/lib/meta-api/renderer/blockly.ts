@@ -162,7 +162,15 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     }
                 },
             };
-            Blockly.JavaScript[id] = () => [m.getNameChain('.')];
+            Blockly.JavaScript[id] = (block : Block) => {
+                if (m.def.blockly && m.def.blockly.scoped) {
+                    const result = this.findScopedArgument(block, m.getReturnType());
+                    if (result) {
+                        return [result];
+                    }
+                }
+                return [m.getNameChain('.')];
+            };
         };
         const toolbox = BlocklyMetaRenderer.isInToolbox(m);
         return { register, id, toolbox };
