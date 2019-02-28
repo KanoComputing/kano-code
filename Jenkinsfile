@@ -42,6 +42,7 @@ pipeline {
         always {
             junit allowEmptyResults: true, testResults: 'test-results.xml'
             cobertura coberturaReportFile: 'coverage/cobertura-coverage.xml'
+            updatePR()
         }
         regression {
             notify_culprits currentBuild.result
@@ -50,5 +51,37 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '20'))
         timeout(time: 60, unit: 'MINUTES')
+    }
+}
+
+/**
+ * Reads the coverage report and post it on a potential github PR
+ */
+def updatePR() {
+    def idFile = '.gh-comment-id'
+    try {
+        if (!env.CHANGE_ID) {
+            return;
+        }
+        def markdown
+        try {
+            markdown = readFile 'coverage/coverage-summary.md'
+        } catch(Exception e) {
+            return;
+        }
+        def commentId
+        try {
+            commentId = readFile(idFile) as Long
+        } catch (Exception e) {}
+        if (commentId) {
+            pullRequest.editComment(commentId, markdown)
+        } else {
+            def comment = pullRequest.comment(markdown)
+            writeFile file: idFile, text: comment.id.toString()
+            comment = null
+        }
+    } catch(Exception e) {
+        // Delete the file in case of errors
+        sh "rm ${idFile}"
     }
 }

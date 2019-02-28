@@ -12,3 +12,4 @@ export * from './sticker/sticker.js';
 export * from './weather/weather.js';
 export * from './mouse/mouse.js';
 export * from './speaker/speaker.js';
+export * from './sequencer/sequencer.js';

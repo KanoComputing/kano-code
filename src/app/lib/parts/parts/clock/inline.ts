@@ -17,7 +17,7 @@ export class ClockInlineDisplay extends PartInlineDisplay {
         this.domNode.setTime(new Date())
     }
     onInject() {}
-    dispose() {
+    onDispose() {
         this.interval.dispose();
     }
 }

@@ -8,12 +8,14 @@ import { templateContent } from '../../lib/directives/template-content.js';
 import { PartInlineDisplay } from '../../lib/parts/inline-display.js';
 import { add } from './icons.js';
 import { styleMap } from 'lit-html/directives/style-map';
+import { Editor } from '../../lib/index.js';
 
 export interface IStackEntry {
     id : string;
     name : string;
     icon : HTMLTemplateElement;
     inlineDisplay : PartInlineDisplay;
+    editor : Editor;
     color : string;
     entry? : any;
 }
@@ -188,11 +190,13 @@ export class KCPartsControls extends LitElement {
             _onDidChangeName: new EventEmitter<string>(),
             get onDidChangeName() { return this._onDidChangeName.event },
             update: (model : IStackEntry) => {
+                item.inlineDisplay.onDispose();
                 const index = this.parts.indexOf(item);
                 this.parts.splice(index, 1, model);
                 this.parts = [...this.parts];
             },
             dispose: () => {
+                item.inlineDisplay.onDispose();
                 const index = this.parts.indexOf(item);
                 this.parts.splice(index, 1);
                 this.parts = [...this.parts];
@@ -201,6 +205,7 @@ export class KCPartsControls extends LitElement {
         item.entry = entry;
         this.parts.push(item);
         this.parts = [...this.parts];
+        item.inlineDisplay.onInject(item.editor);
         return entry;
     }
     _onNameChange(e : CustomEvent, part : IStackEntry) {

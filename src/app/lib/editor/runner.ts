@@ -77,7 +77,9 @@ export class Runner extends Plugin {
         try {
             // Run the code
             this.vm.runInContext(appCode);
-        } catch(e) {}
+        } catch(e) {
+            console.error(e);
+        }
         appModules.afterRun();
     }
     instrumentize(method : string) {

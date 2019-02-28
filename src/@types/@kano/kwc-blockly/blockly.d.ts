@@ -41,6 +41,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         RTL : boolean;
         svgPath_ : SVGPathElement;
         getRelativeToSurfaceXY() : { x : number, y : number };
+        workspace : Workspace;
     }
     class Field {
         protected width_ : number;
@@ -65,6 +66,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         protected render_() : void;
         public getText() : string;
         public setSourceBlock(block : Block) : void;
+        public dispose() : void;
     }
     class Toolbox {
         opened : boolean;
@@ -88,6 +90,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getVariableById(id : string) : Variable|null;
         toolbox : Toolbox;
         toolbox_ : Toolbox;
+        componentRoot_ : HTMLElement;
+        scale : number;
     }
     const goog : any;
     const utils : {
@@ -96,7 +100,9 @@ declare module '@kano/kwc-blockly/blockly.js' {
             soup_ : string;
         };
         getViewportBBox() : any;
-        createSvgElement(tag : string, props? : any, parent? : SVGElement|null) : SVGElement;
+        createSvgElement<T extends SVGElement = SVGElement>(tag : string, props? : any, parent? : SVGElement|null) : T;
+        addClass(el : SVGElement, cl : string) : void;
+        removeClass(el : SVGElement, cl : string) : void;
     }
     class Generator {
         valueToCode(block : Block, name : string) : string;
@@ -113,12 +119,16 @@ declare module '@kano/kwc-blockly/blockly.js' {
         constructor(block : Block, type : string, name : string, oldValue : any, newValue : any);
     }
     class Events {
+        CREATE : string;
         MOVE : string;
         OPEN_FLYOUT : string;
         CLOSE_FLYOUT : string;
         isEnabled() : boolean;
         BlockChange : typeof BlockChange;
         fire(event : BlocklyEvent) : void;
+    }
+    class FieldConfig extends Field {
+        position() : void;
     }
     const Blockly : {
         DUMMY_INPUT : number;
@@ -134,5 +144,6 @@ declare module '@kano/kwc-blockly/blockly.js' {
         setPhantomBlock(connection : Connection, target : Block) : void;
         removePhantomBlock() : void;
         selected? : Block;
+        FieldConfig : typeof FieldConfig;
     }
 }

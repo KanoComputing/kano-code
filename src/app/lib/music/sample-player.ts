@@ -39,7 +39,7 @@ export class SamplePlayer {
         this._volume = Math.max(0, Math.min(1, v));
         this.gainControl.gain.value = this._volume;
     }
-    play() {
+    play(time = 0) {
         this.paused = false;
         this.playing = true;
         this.source = this.ctx.createBufferSource();
@@ -55,10 +55,10 @@ export class SamplePlayer {
         };
         if (this.pausedAt) {
             this.startedAt = Date.now() - this.pausedAt;
-            this.source.start(0, this.pausedAt / 1000);
+            this.source.start(time, this.pausedAt / 1000);
         } else {
             this.startedAt = Date.now();
-            this.source.start(0);
+            this.source.start(time);
         }
         this._onDidStart.fire();
     }

@@ -20,7 +20,7 @@
     "test": "web-tester run dist/**/*.test.js",
     "test-ci": "yarn run --silent test --reporter xunit > test-results.xml",
     "coverage": "web-tester cover dist/**/*.test.js --exclude ./dist/test/**/*",
-    "coverage-ci": "yarn run --silent coverage --reporter cobertura",
+    "coverage-ci": "yarn run --silent coverage -r cobertura -r markdown",
     "checkstyle": "eslint ./app/lib ./app/elements",
     "checkstyle-ci": "yarn checkstyle -f checkstyle -o eslint.xml",
     "prepublishOnly": "yarn build"
@@ -32,7 +32,7 @@
   "license": "ISC",
   "devDependencies": {
     "@kano/es6-server": "^1.0.1",
-    "@kano/web-tester": "^1.0.0-alpha.12",
+    "@kano/web-tester": "^1.0.0-alpha.14",
     "@polymer/iron-test-helpers": "^3.0.1",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
@@ -85,6 +85,7 @@
     "monaco-editor-element": "https://github.com/paulvarache/monaco-editor-element",
     "omggif": "^1.0.9",
     "prismjs": "^1.15.0",
+    "tone": "^0.12.80",
     "twemoji-min": "git+ssh://git@github.com:KanoComputing/twemoji-min.git"
   }
 }

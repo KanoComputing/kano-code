@@ -14,4 +14,5 @@ export class SliderInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
         });
     }
     onInject() {}
+    onDispose() {}
 }

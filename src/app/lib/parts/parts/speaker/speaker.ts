@@ -79,7 +79,7 @@ export class SpeakerPart extends Part {
         });
         this.core.apply();
     }
-    play(id : string, loop : boolean = false) {
+    _play(id : string, loop : boolean = false, time? : number) {
         const sample = samplesMap.get(id);
         if (!sample) {
             return;
@@ -87,7 +87,7 @@ export class SpeakerPart extends Part {
         this.getSample(SpeakerPart.resolve(sample.src))
             .then((buffer) => {
                 const player = new SamplePlayer(this.ctx!, buffer, this.destination!, { loop });
-                player.play();
+                player.play(time);
                 if (!player.source) {
                     return;
                 }
@@ -101,8 +101,11 @@ export class SpeakerPart extends Part {
                 this.players.push(player);
             });
     }
+    play(id : string, time : number) {
+        this._play(id, false, time);
+    }
     loop(id : string) {
-        this.play(id, true);
+        this._play(id, true);
     }
     stop() {
         this.players.forEach((player) => {

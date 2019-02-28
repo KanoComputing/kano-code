@@ -14,4 +14,5 @@ export class TextInputInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
         });
     }
     onInject() {}
+    onDispose() {}
 }

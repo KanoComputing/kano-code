@@ -200,7 +200,14 @@ export class EditorPartsManager {
         const toolboxModule = this.createToolboxModule(api, id, name);
         const entry = this.editor.toolbox.addEntry(toolboxModule);
         const inlineDisplay = EditorPartsManager.getInlineDisplay(api, part);
-        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({ name, id, icon: api.icon, inlineDisplay, color: api.color });
+        const partsControlsEntry = this.editor.workspaceView.partsControls.addEntry({
+            name,
+            id,
+            icon: api.icon,
+            inlineDisplay,
+            color: api.color,
+            editor : this.editor,
+        });
         const partRecord : IPartRecord = {
             type: api.type,
             part,
@@ -329,6 +336,7 @@ export class EditorPartsManager {
             icon: api.icon,
             inlineDisplay,
             color: api.color,
+            editor: this.editor,
         });
 
         this.parts.set(partRecord.part.id, partRecord);

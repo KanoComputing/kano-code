@@ -54,4 +54,5 @@ export class TransformInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
         });
     }
     onInject() {}
+    onDispose() {}
 }

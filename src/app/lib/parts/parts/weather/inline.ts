@@ -46,4 +46,5 @@ export class WeatherInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
         this.part._units = option.value as 'metric'|'imperial';
     }
     onInject() {}
+    onDispose() {}
 }
