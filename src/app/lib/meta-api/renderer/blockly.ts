@@ -84,7 +84,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         return this.defaults.createCategory(category) as ICategory;
     }
     disposeToolboxEntry(category : ICategory) {
-        
+
     }
     static render(m : MetaModule) : IRenderedBlock[] {
         switch (m.def.type) {
@@ -190,7 +190,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     value = block.getFieldValue(blocklyName);
                     value = BlocklyMetaRenderer.formatFieldValue(value, m.def.default);
                 } else {
-                    value = Blockly.JavaScript.valueToCode(block, blocklyName);
+                    value = Blockly.JavaScript.valueToCode(block, blocklyName, Blockly.JavaScript.ORDER_ASSIGNMENT);
                     if (value === '') {
                         value = 'null';
                     }
@@ -300,7 +300,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     } else {
                         switch (input.type) {
                             case Blockly.INPUT_VALUE: {
-                                value = Blockly.JavaScript.valueToCode(block, argName);
+                                value = Blockly.JavaScript.valueToCode(block, argName, Blockly.JavaScript.ORDER_COMMA);
                                 if (!value) {
                                     value = typeof params[index].def.default === 'undefined' ? 'null' : params[index].def.default;
                                 }
@@ -323,7 +323,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 });
                 let code : string|string[] = `${m.getNameChain('.')}(${values.join(', ')})`;
                 if (block.outputConnection) {
-                    code = [code];
+                    code = [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
                 } else {
                     code = `${code};\n`;
                 }

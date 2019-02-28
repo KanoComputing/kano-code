@@ -39,7 +39,7 @@ export const TransformAPI : IMetaDefinition[] = [
         blockly: {
             javascript(Blockly : Blockly, block : Block, m : Meta) {
                 const type = block.getFieldValue('TYPE');
-                const value = Blockly.JavaScript.valueToCode(block, 'ROTATION') || 0;
+                const value = Blockly.JavaScript.valueToCode(block, 'ROTATION', Blockly.JavaScript.ORDER_ASSIGNMENT) || 0;
                 const prefix = m.getNameChain('.').replace(/\.turn$/, '');
                 if (type === 'to') {
                     return `${prefix}.rotation = ${value};\n`;

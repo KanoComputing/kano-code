@@ -20,7 +20,7 @@ export const general : any[] = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let c = Blockly.JavaScript.valueToCode(block, 'COLOR') || '#ffffff';
+            let c = Blockly.JavaScript.valueToCode(block, 'COLOR', Blockly.JavaScript.ORDER_ASSIGNMENT) || '#ffffff';
             return `ctx.background = ${c};\n`;
         };
     }
@@ -44,7 +44,7 @@ export const general : any[] = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let a = Blockly.JavaScript.valueToCode(block, 'ALPHA') || '100';
+            let a = Blockly.JavaScript.valueToCode(block, 'ALPHA', Blockly.JavaScript.ORDER_ASSIGNMENT) || '100';
             return `ctx.opacity = ${a};\n`;
         };
     }

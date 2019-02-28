@@ -22,7 +22,7 @@ export const shapes = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let radius = Blockly.JavaScript.valueToCode(block, 'RADIUS') || 'null';
+            let radius = Blockly.JavaScript.valueToCode(block, 'RADIUS', Blockly.JavaScript.ORDER_NONE) || 'null';
             return `ctx.circle(${radius});\n`;
         };
     }
@@ -52,8 +52,8 @@ export const shapes = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let radiusx = Blockly.JavaScript.valueToCode(block, 'RADIUSX') || 'null',
-                radiusy = Blockly.JavaScript.valueToCode(block, 'RADIUSY') || 'null';
+            let radiusx = Blockly.JavaScript.valueToCode(block, 'RADIUSX', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                radiusy = Blockly.JavaScript.valueToCode(block, 'RADIUSY', Blockly.JavaScript.ORDER_COMMA) || 'null';
             return `ctx.ellipse(${radiusx}, ${radiusy});`;
         };
     }
@@ -77,7 +77,7 @@ export const shapes = [{
     },
     javascript: (part : any) => {
         return function (block: Block) {
-            let size = Blockly.JavaScript.valueToCode(block, 'SIZE') || 'null';
+            let size = Blockly.JavaScript.valueToCode(block, 'SIZE', Blockly.JavaScript.ORDER_NONE) || 'null';
             return `ctx.square(${size});`;
         };
     }
@@ -107,8 +107,8 @@ export const shapes = [{
     },
     javascript: (part : any) => {
         return function (block: Block) {
-            let width = Blockly.JavaScript.valueToCode(block, 'WIDTH') || 'null',
-                height = Blockly.JavaScript.valueToCode(block, 'HEIGHT') || 'null';
+            let width = Blockly.JavaScript.valueToCode(block, 'WIDTH', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                height = Blockly.JavaScript.valueToCode(block, 'HEIGHT', Blockly.JavaScript.ORDER_COMMA) || 'null';
             return `ctx.rectangle(${width}, ${height});`;
         };
     }
@@ -147,9 +147,9 @@ export const shapes = [{
     },
     javascript: (part : any) => {
         return function (block: Block) {
-            let radius = Blockly.JavaScript.valueToCode(block, 'RADIUS') || 'null',
-                start = Blockly.JavaScript.valueToCode(block, 'START') || 'null',
-                end = Blockly.JavaScript.valueToCode(block, 'END') || 'null',
+            let radius = Blockly.JavaScript.valueToCode(block, 'RADIUS', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                start = Blockly.JavaScript.valueToCode(block, 'START', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                end = Blockly.JavaScript.valueToCode(block, 'END', Blockly.JavaScript.ORDER_COMMA) || 'null',
                 close = block.getFieldValue('CLOSE') || false;
             return `ctx.arc(${radius}, ${start}, ${end}, ${close});`;
         };
@@ -268,10 +268,10 @@ export const shapes = [{
     javascript: (part : any) => {
         return function (block : Block) {
             let points = [],
-                close = Blockly.JavaScript.valueToCode(block, 'CLOSE') || true;
+                close = Blockly.JavaScript.valueToCode(block, 'CLOSE', Blockly.JavaScript.ORDER_COMMA) || true;
             for (let i = 1; i <= (block as any).points; i++) {
-                points.push(Blockly.JavaScript.valueToCode(block, `X${i}`) || 0);
-                points.push(Blockly.JavaScript.valueToCode(block, `Y${i}`) || 0);
+                points.push(Blockly.JavaScript.valueToCode(block, `X${i}`, Blockly.JavaScript.ORDER_COMMA) || 0);
+                points.push(Blockly.JavaScript.valueToCode(block, `Y${i}`, Blockly.JavaScript.ORDER_COMMA) || 0);
             }
             return `ctx.polygon(${points.join(', ')}, ${close});`;
         };

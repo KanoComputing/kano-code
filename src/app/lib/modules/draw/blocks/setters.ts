@@ -20,7 +20,7 @@ export const setters = [{
     },
     javascript: () => {
         return function javascript(block : Block) {
-            const color = Blockly.JavaScript.valueToCode(block, 'COLOR') || 'null';
+            const color = Blockly.JavaScript.valueToCode(block, 'COLOR', Blockly.JavaScript.ORDER_NONE) || 'null';
             return `ctx.color(${color});\n`;
         };
     },
@@ -65,8 +65,8 @@ export const setters = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let color = Blockly.JavaScript.valueToCode(block, 'COLOR') || 'null',
-                size = Blockly.JavaScript.valueToCode(block, 'SIZE') || 'null';
+            let color = Blockly.JavaScript.valueToCode(block, 'COLOR', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                size = Blockly.JavaScript.valueToCode(block, 'SIZE', Blockly.JavaScript.ORDER_COMMA) || 'null';
             return `ctx.stroke(${color}, ${size});\n`;
         };
     },

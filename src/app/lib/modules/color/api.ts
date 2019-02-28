@@ -35,7 +35,7 @@ export const ColorAPI = {
 
         Blockly.JavaScript.random_colour = () => {
             const code = 'colour.random()';
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         Blockly.Blocks.create_color = {
@@ -100,14 +100,14 @@ export const ColorAPI = {
 
         Blockly.JavaScript.create_color = (block : Block) => {
             const type = block.getFieldValue<'rgb'|'hsv'>('TYPE');
-            const one = Blockly.JavaScript.valueToCode(block, '1') || 0;
-            let two = Blockly.JavaScript.valueToCode(block, '2');
-            let three = Blockly.JavaScript.valueToCode(block, '3');
+            const one = Blockly.JavaScript.valueToCode(block, '1', Blockly.JavaScript.ORDER_COMMA) || 0;
+            let two = Blockly.JavaScript.valueToCode(block, '2', Blockly.JavaScript.ORDER_COMMA);
+            let three = Blockly.JavaScript.valueToCode(block, '3', Blockly.JavaScript.ORDER_COMMA);
             const defaults = type === 'hsv' ? 100 : 0;
             two = two || defaults;
             three = three || defaults;
             const code = `colour.create('${type}', ${one}, ${two}, ${three})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         Blockly.Blocks.color_lerp = {
@@ -137,11 +137,11 @@ export const ColorAPI = {
         };
 
         Blockly.JavaScript.color_lerp = (block : Block) => {
-            const from = Blockly.JavaScript.valueToCode(block, 'FROM') || '"#000000"';
-            const to = Blockly.JavaScript.valueToCode(block, 'TO') || '"#ffffff"';
-            const percent = Blockly.JavaScript.valueToCode(block, 'PERCENT') || 50;
+            const from = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.ORDER_COMMA) || '"#000000"';
+            const to = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_COMMA) || '"#ffffff"';
+            const percent = Blockly.JavaScript.valueToCode(block, 'PERCENT', Blockly.JavaScript.ORDER_COMMA) || 50;
             const code = `colour.lerp(${from}, ${to}, ${percent})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         Blockly.Blocks.colour_picker.customColor = COLOR;

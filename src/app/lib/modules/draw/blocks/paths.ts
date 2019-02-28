@@ -27,8 +27,8 @@ export const paths : any[] = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
-                y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
+            let x = Blockly.JavaScript.valueToCode(block, 'X', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                y = Blockly.JavaScript.valueToCode(block, 'Y', Blockly.JavaScript.ORDER_COMMA) || 'null';
             return `ctx.lineTo(${x}, ${y});\n`;
         };
     }
@@ -59,8 +59,8 @@ export const paths : any[] = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
-                y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
+            let x = Blockly.JavaScript.valueToCode(block, 'X', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                y = Blockly.JavaScript.valueToCode(block, 'Y', Blockly.JavaScript.ORDER_COMMA) || 'null';
             return `ctx.line(${x}, ${y});\n`;
         };
     },

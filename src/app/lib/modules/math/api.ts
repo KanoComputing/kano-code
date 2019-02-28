@@ -76,11 +76,11 @@ export const MathAPI = {
         };
 
         Blockly.JavaScript.math_min_max = (block : Block) => {
-            let arg1 = Blockly.JavaScript.valueToCode(block, 'ARG1') || 0,
-                arg2 = Blockly.JavaScript.valueToCode(block, 'ARG2') || 0,
+            let arg1 = Blockly.JavaScript.valueToCode(block, 'ARG1', Blockly.JavaScript.ORDER_COMMA) || 0,
+                arg2 = Blockly.JavaScript.valueToCode(block, 'ARG2', Blockly.JavaScript.ORDER_COMMA) || 0,
                 minmax = block.getFieldValue('MINMAX') || 'min',
                 code = `Math.${minmax}(${arg1}, ${arg2})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         /* --- max(x, y) */
@@ -107,10 +107,10 @@ export const MathAPI = {
         };
 
         Blockly.JavaScript.math_max = (block : Block) => {
-            let arg1 = Blockly.JavaScript.valueToCode(block, 'ARG1') || 0,
-                arg2 = Blockly.JavaScript.valueToCode(block, 'ARG2') || 0,
+            let arg1 = Blockly.JavaScript.valueToCode(block, 'ARG1', Blockly.JavaScript.ORDER_COMMA) || 0,
+                arg2 = Blockly.JavaScript.valueToCode(block, 'ARG2', Blockly.JavaScript.ORDER_COMMA) || 0,
                 code = `Math.max(${arg1}, ${arg2})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         /* --- min(x, y) */
@@ -137,10 +137,10 @@ export const MathAPI = {
         };
 
         Blockly.JavaScript.math_min = (block : Block) => {
-            let arg1 = Blockly.JavaScript.valueToCode(block, 'ARG1') || 0,
-                arg2 = Blockly.JavaScript.valueToCode(block, 'ARG2') || 0,
+            let arg1 = Blockly.JavaScript.valueToCode(block, 'ARG1', Blockly.JavaScript.ORDER_COMMA) || 0,
+                arg2 = Blockly.JavaScript.valueToCode(block, 'ARG2', Blockly.JavaScript.ORDER_COMMA) || 0,
                 code = `Math.min(${arg1}, ${arg2})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         /* --- sign(x) */
@@ -163,9 +163,9 @@ export const MathAPI = {
         };
 
         Blockly.JavaScript.math_sign = (block : Block) => {
-            let arg = Blockly.JavaScript.valueToCode(block, 'ARG'),
+            let arg = Blockly.JavaScript.valueToCode(block, 'ARG', Blockly.JavaScript.ORDER_NONE),
                 code = `math.sign(${arg}})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         /* --- random(min, max) */
@@ -192,10 +192,10 @@ export const MathAPI = {
         };
 
         Blockly.JavaScript.math_random = (block : Block) => {
-            let min = Blockly.JavaScript.valueToCode(block, 'MIN') || 0,
-                max = Blockly.JavaScript.valueToCode(block, 'MAX') || 0,
+            let min = Blockly.JavaScript.valueToCode(block, 'MIN', Blockly.JavaScript.ORDER_COMMA) || 0,
+                max = Blockly.JavaScript.valueToCode(block, 'MAX', Blockly.JavaScript.ORDER_COMMA) || 0,
                 code = `math.random(${min}, ${max})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         Blockly.Blocks.math_lerp = {
@@ -225,11 +225,11 @@ export const MathAPI = {
         };
 
         Blockly.JavaScript.math_lerp = (block : Block) => {
-            let from = Blockly.JavaScript.valueToCode(block, 'FROM') || 0,
-                to = Blockly.JavaScript.valueToCode(block, 'TO') || 200,
-                percent = Blockly.JavaScript.valueToCode(block, 'PERCENT') || 50,
+            let from = Blockly.JavaScript.valueToCode(block, 'FROM', Blockly.JavaScript.ORDER_COMMA) || 0,
+                to = Blockly.JavaScript.valueToCode(block, 'TO', Blockly.JavaScript.ORDER_COMMA) || 200,
+                percent = Blockly.JavaScript.valueToCode(block, 'PERCENT', Blockly.JavaScript.ORDER_COMMA) || 50,
                 code = `math.lerp(${from}, ${to}, ${percent})`;
-            return [code];
+            return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
         };
 
         Blockly.JavaScript.math_arithmetic = (block : Block) => {
@@ -254,7 +254,7 @@ export const MathAPI = {
             }
             // Power in JavaScript requires a special case since it has no operator.
             if (!operator) {
-                code = `Math.pow(${argument0}, ${argument1 })`;
+                code = `Math.pow(${argument0}, ${argument1})`;
                 return [code, Blockly.JavaScript.ORDER_FUNCTION_CALL];
             }
             code = argument0 + operator + argument1;
@@ -296,7 +296,7 @@ export const MathAPI = {
         Blockly.JavaScript.unary = (block : Block) => {
             let leftHand = block.getFieldValue('LEFT_HAND'),
                 op = block.getFieldValue('OPERATOR') || '+=',
-                rightHand = Blockly.JavaScript.valueToCode(block, 'RIGHT_HAND'),
+                rightHand = Blockly.JavaScript.valueToCode(block, 'RIGHT_HAND', Blockly.JavaScript.ORDER_ASSIGNMENT),
                 code;
 
             // Default to 1 for multiplication and division, otherwise default to 0

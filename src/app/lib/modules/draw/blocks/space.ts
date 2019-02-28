@@ -27,8 +27,8 @@ export const space = [{
     },
     javascript: (part : any) => {
         return function (block: Block) {
-            let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
-                y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
+            let x = Blockly.JavaScript.valueToCode(block, 'X', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                y = Blockly.JavaScript.valueToCode(block, 'Y', Blockly.JavaScript.ORDER_COMMA) || 'null';
             return `ctx.moveTo(${x}, ${y});\n`;
         };
     }
@@ -77,8 +77,8 @@ export const space = [{
     },
     javascript: (part : any) => {
         return function (block: Block) {
-            let x = Blockly.JavaScript.valueToCode(block, 'X') || 'null',
-                y = Blockly.JavaScript.valueToCode(block, 'Y') || 'null';
+            let x = Blockly.JavaScript.valueToCode(block, 'X', Blockly.JavaScript.ORDER_COMMA) || 'null',
+                y = Blockly.JavaScript.valueToCode(block, 'Y', Blockly.JavaScript.ORDER_COMMA) || 'null';
             return `ctx.move(${x}, ${y});\n`;
         };
     },

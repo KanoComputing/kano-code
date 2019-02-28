@@ -91,7 +91,7 @@ export const ControlAPI = {
 
         Blockly.JavaScript.every_x_seconds = (block : Block) => {
             const statement = Blockly.JavaScript.statementToCode(block, 'DO');
-            const interval = Blockly.JavaScript.valueToCode(block, 'INTERVAL') || 5;
+            const interval = Blockly.JavaScript.valueToCode(block, 'INTERVAL', Blockly.JavaScript.ORDER_COMMA) || 5;
             const unit = block.getFieldValue('UNIT') || 'seconds';
             return `time.every(${interval}, '${unit}', function () {\n${statement}});\n`;
         };
@@ -133,7 +133,7 @@ export const ControlAPI = {
 
         Blockly.JavaScript.in_x_time = (block : Block) => {
             const statement = Blockly.JavaScript.statementToCode(block, 'DO');
-            const delay = Blockly.JavaScript.valueToCode(block, 'DELAY') || 1;
+            const delay = Blockly.JavaScript.valueToCode(block, 'DELAY', Blockly.JavaScript.ORDER_COMMA) || 1;
             const unit = block.getFieldValue('UNIT') || 'seconds';
             return `time.later(${delay}, '${unit}', function () {\n${statement}});\n`;
         };
@@ -161,7 +161,7 @@ export const ControlAPI = {
         };
 
         Blockly.JavaScript.repeat_x_times = (block : Block) => {
-            let n = Blockly.JavaScript.valueToCode(block, 'N') || 2;
+            let n = Blockly.JavaScript.valueToCode(block, 'N', Blockly.JavaScript.ORDER_RELATIONAL) || 2;
             let branch = Blockly.JavaScript.statementToCode(block, 'DO');
             const loopVar = Blockly.JavaScript.variableDB_.getDistinctName('i', Blockly.Variables.NAME_TYPE);
             branch = Blockly.JavaScript.addLoopTrap(branch, block.id);
