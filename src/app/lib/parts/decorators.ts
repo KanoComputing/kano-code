@@ -12,7 +12,7 @@ import { PartComponent } from './component.js';
  * @param name Label for the part
  */
 export function part(type : string) {
-    return function (constructor : Type<Part>) {
+    return function (constructor : typeof Part) {
         Object.defineProperty(constructor, 'type', {
             writable: false,
             configurable: false,

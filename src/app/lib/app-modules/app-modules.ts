@@ -1,11 +1,12 @@
 import AppModule from './app-module.js';
 
-declare interface Constructor<T> {
-    [K : string] : any;
-    new(...args : any[]) : T;
+export interface AppModuleConstructor {
+    id : string;
+    aliases? : string[];
+    new(...args : any[]) : AppModule;
 }
 
-class AppModules {
+export class AppModules {
     public modules : { [K : string] : AppModule } = {};
     public state : 'running'|'stopped' = 'stopped';
     public static default : AppModules;
@@ -13,7 +14,7 @@ class AppModules {
     constructor(output? : any) {
         this.output = output;
     }
-    define(id : string, ModuleClass : Constructor<AppModule>) {
+    define(id : string, ModuleClass : AppModuleConstructor) {
         if (id in this.modules) {
             throw new Error(`Could not add module '${id}': Module was already added`);
         }

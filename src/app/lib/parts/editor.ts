@@ -1,10 +1,9 @@
 import { EventEmitter } from '@kano/common/index.js';
 import { AddPartDialogProvider } from './dialogs/add.js';
-import { PartContructor } from './manager.js';
 import { memoize } from '../util/decorators.js';
 import { IPartAPI } from './api.js';
 import { IAPIDefinition } from '../meta-api/module.js';
-import { Part, IPart } from './part.js';
+import { Part } from './part.js';
 import { TelemetryClient } from '@kano/telemetry/index.js';
 import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
@@ -171,7 +170,7 @@ export class EditorPartsManager {
             record.part.load(partData);
         });
     }
-    addPart(partClass : PartContructor, data? : any) {
+    addPart(partClass : typeof Part, data? : any) {
         if (!this.editor || !this.editor.workspaceView) {
             return;
         }

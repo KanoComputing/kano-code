@@ -1,11 +1,6 @@
 import { Part } from './part.js';
 import { Output } from '../output/output.js';
 
-export type PartContructor = Type<Part> & {
-    type : string;
-    transformLegacy : (app : any) => void;
-}
-
 export interface ISerializedPart {
     id? : string;
     name? : string;
@@ -14,7 +9,7 @@ export interface ISerializedPart {
 
 export class PartsManager {
     private _parts : Set<Part> = new Set();
-    private _registeredParts : Map<string, PartContructor> = new Map();
+    private _registeredParts : Map<string, typeof Part> = new Map();
     private output : Output;
     // If it is managed, the loading from an export will be done by the editor
     public managed : boolean = false;
@@ -30,10 +25,10 @@ export class PartsManager {
     onInject() {
         this.output.dom.root.style.position = 'relative';
     }
-    registerPart(partClass : PartContructor) {
+    registerPart(partClass : typeof Part) {
         this._registeredParts.set(partClass.type, partClass);
     }
-    addPart(partClass : Type<Part>, data? : ISerializedPart) : Part {
+    addPart(partClass : typeof Part, data? : ISerializedPart) : Part {
         const part = new partClass();
         if (data) {
             part.load(data);

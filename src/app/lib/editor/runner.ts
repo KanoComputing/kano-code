@@ -1,12 +1,12 @@
 import VM from '../vm.js';
 import AppModulesLoader from '../app-modules/index.js';
 import { Plugin } from './plugin.js';
-import AppModule from '../app-modules/app-module.js';
 import { VariableStore } from './variables.js';
 import Output from '../output/output.js';
+import { AppModuleConstructor } from '../app-modules/app-modules.js';
 
 export class Runner extends Plugin {
-    private modules : Type<AppModule>[] = [];
+    private modules : AppModuleConstructor[] = [];
     private output? : Output;
     private appModulesLoader : AppModulesLoader|null = null;
     private vm : VM|null = null;
@@ -21,7 +21,7 @@ export class Runner extends Plugin {
     getRegisteredModules() {
         return Object.values(this.appModulesLoader!.appModules.modules);
     }
-    addModule(mod : Type<AppModule>) {
+    addModule(mod : AppModuleConstructor) {
         const mods = Array.isArray(mod) ? mod : [mod];
         mods.forEach(m => this.modules.push(m));
         this._updateModules();

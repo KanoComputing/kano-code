@@ -27,9 +27,10 @@ export abstract class AppModule {
     public methods : IMethodTree;
     private lifecycle : { [K : string] : Function };
     private symbols : string[];
-    private static nextCall : { [K : string] : number|null };
-    private static waiting : { [K : string] : Function|null };
     protected output : Output;
+    public static get id() : string {
+        throw new Error('No id defined');
+    }
     public static transformLegacy(app : any) {}
     constructor(output : Output) {
         this.output = output;
@@ -41,7 +42,6 @@ export abstract class AppModule {
     getSymbols() {
         return this.symbols;
     }
-    config(_ : any) {}
     addMethod(name : string, cbName : Function|string) {
         if (typeof cbName === 'function') {
             this.rootModule.addMethod(name, cbName);
@@ -70,31 +70,6 @@ export abstract class AppModule {
         if (typeof this.lifecycle[name] === 'function') {
             this.lifecycle[name].call(this);
         }
-    }
-    throttle(id : string, cb : Function, delay : number) {
-        // Push the logic to next event loop iteration.
-        // This let the blocking calls to the same id stack up
-        setTimeout(() => {
-            AppModule.nextCall = AppModule.nextCall || {};
-            AppModule.waiting = AppModule.waiting || {};
-            // Last call buffer time passed, call the method and create a buffer time
-            if (!AppModule.nextCall[id]) {
-                // When the time has passed, check if a call was made and if so,
-                // execute the callback
-                AppModule.nextCall[id] = window.setTimeout(() => {
-                    AppModule.nextCall[id] = null;
-                    if (AppModule.waiting[id] instanceof Function) {
-                        this.throttle(id, AppModule.waiting[id] as Function, delay);
-                        AppModule.waiting[id] = null;
-                    }
-                }, delay);
-                // Execute the callback
-                cb();
-            } else {
-                // The last call was less than `delay` ms ago, just update the waiting call
-                AppModule.waiting[id] = cb; 
-            }
-        });
     }
 }
 

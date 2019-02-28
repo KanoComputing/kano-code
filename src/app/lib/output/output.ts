@@ -3,19 +3,19 @@ import { Runner } from '../editor/runner.js';
 import { OutputModule } from './module.js';
 import { DefaultOutputViewProvider } from './default.js';
 import { Plugin, PluginLifecycleStep } from '../editor/plugin.js';
-import { AppModule } from '../app-modules/app-module.js';
 import { OutputViewProvider, IOutputProvider } from './index.js';
-import { PartsManager, PartContructor } from '../parts/manager.js';
+import { PartsManager } from '../parts/manager.js';
 import { Part } from '../parts/part.js';
 import { Microphone } from './microphone.js';
 import { EventEmitter, IEvent } from '@kano/common/index.js';
+import { AppModuleConstructor } from '../app-modules/app-modules.js';
 
 export interface IOutputProfile {
     id : string;
     onInstall?(output : Output) : void;
-    modules? : Type<AppModule>[];
+    modules? : AppModuleConstructor[];
     plugins? : Plugin[];
-    parts? : PartContructor[];
+    parts? : (typeof Part)[];
     outputViewProvider? : OutputViewProvider;
 }
 
@@ -108,7 +108,7 @@ export class Output extends PluginReceiver {
     public runPluginTask(taskName : PluginLifecycleStep, ...args : any[]) {
         super.runPluginTask(taskName, ...args);
     }
-    addPart(partClass : Type<Part>) {
+    addPart(partClass : typeof Part) {
         this.parts.addPart(partClass);
     }
     addPlugin(plugin : Plugin) {
@@ -149,7 +149,7 @@ export class Output extends PluginReceiver {
         }
         // Add defined modules to the runner
         if (this.outputProfile.modules) {
-            this.outputProfile.modules.forEach((m : Type<AppModule>) => this.runner.addModule(m));
+            this.outputProfile.modules.forEach((m : AppModuleConstructor) => this.runner.addModule(m));
         }
         if (this.outputProfile.parts) {
             this.outputProfile.parts.forEach(p => this.parts.registerPart(p));

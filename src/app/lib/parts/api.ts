@@ -3,6 +3,10 @@ import { PartInlineDisplay } from './inline-display.js';
 import { Part } from './part.js';
 import { Editor } from '../editor/editor.js';
 
+interface InlineDisplayConstructor {
+    new(...args : any[]) : PartInlineDisplay;
+}
+
 export interface IPartAPI {
     type : string;
     color : string;
@@ -10,6 +14,6 @@ export interface IPartAPI {
     label : string;
     symbols : IMetaDefinition[];
     icon : HTMLTemplateElement;
-    inlineDisplay? : Type<PartInlineDisplay>;
+    inlineDisplay? : InlineDisplayConstructor;
     onInstall?(editor : Editor, part : Part) : void;
 };

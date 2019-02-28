@@ -1,6 +1,10 @@
 import { EventEmitter } from '@kano/common/index.js';
 import { collectPrototype } from './util.js';
 
+/**
+ * @module part
+ */
+
 export interface IComponentSerializer {
     serialize(data : any) : any;
     load(data : any) : any;

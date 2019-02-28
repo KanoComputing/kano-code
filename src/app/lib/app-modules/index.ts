@@ -1,15 +1,10 @@
-import AppModules from './app-modules.js';
-import AppModule from './app-module.js';
-
-type IAppModuleType = Type<AppModule> & {
-    id? : string;
-}
+import { AppModules, AppModuleConstructor } from './app-modules.js';
 
 class AppModulesLoader {
     private output : any;
     public appModules : AppModules;
-    private modules : IAppModuleType[];
-    constructor(output : any, modules : IAppModuleType[]) {
+    private modules : AppModuleConstructor[];
+    constructor(output : any, modules : AppModuleConstructor[]) {
         this.output = output;
         this.appModules = new AppModules(output);
         this.modules = modules;
