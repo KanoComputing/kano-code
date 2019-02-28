@@ -7,7 +7,7 @@ import { classMap } from 'lit-html/directives/class-map';
 @customElement('kano-app-editor')
 export class KanoAppEditor extends LitElement {
     @property({ type: String })
-    public code : string|null = null;
+    public code? : string;
     @property({ type: String })
     public workspaceTab : string = 'workspace';
     @property({ type: Boolean })
@@ -230,7 +230,7 @@ export class KanoAppEditor extends LitElement {
     _onSelectedChanged(e : CustomEvent) {
         this.workspaceTab = e.detail.value;
     }
-    _setCodeDisplay(code : string|null, workspaceTab : string) {
+    _setCodeDisplay(code : string|undefined, workspaceTab : string) {
         if (workspaceTab === 'workspace') {
             return;
         }

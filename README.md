@@ -50,3 +50,13 @@ yarn serve-test
 
 And open the prompted URL to run your tests. You can click on a suite to only run that suite.
 
+### Documentation
+
+The documentation is not hosted at the moment. Clone the project and run
+
+```
+yarn docs
+yarn serve
+```
+
+Then navigate to http://localhost:4000/docs/

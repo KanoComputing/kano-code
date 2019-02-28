@@ -48,88 +48,123 @@ export interface IEditorOptions {
 export interface ICreationBundle {}
 
 /**
+ * [[include:Editor.md]]
  * A full Kano Code Editor with customizable Workspace and Output
- * Example:
- * 
- * ```js
- * import * as code from '@kano/code/index.js'
- *
- * const editor = new code.Editor();
- *
- * editor.inject(document.body);
- * ```
  */
 export class Editor extends EditorOrPlayer {
     public config : any;
+    /**
+     * Logger for this instance. Can configure log level on a per Editor scope
+     */
     public logger : Logger = new Logger();
-    public elementsRegistry : Map<string, HTMLElement> = new Map();
+    /**
+     * The DOM root of the editor. An kano-app-editor custom element
+     */
     public domNode : KanoAppEditor = document.createElement('kano-app-editor') as KanoAppEditor;
+    /**
+     * The type of source for this editor. Defines what type of source editor will be provided to the user
+     */
     public sourceType : 'blockly'|'code' = 'blockly';
+    /**
+     * The output being driven by this editor
+     */
     public output : Output = new Output();
+    /**
+     * A TelemetryClient instance receiving every telemetry events from the editor. If you create a plugin, you can mount your own client
+     */
     public telemetry : TelemetryClient = new TelemetryClient({ scope: 'kc-editor' });
+    /**
+     * The instance of the source editor
+     */
     public sourceEditor : SourceEditor;
+    /**
+     * The toolbar in the workspace
+     */
     public workspaceToolbar : WorkspaceToolbar = new WorkspaceToolbar();
+    /**
+     * Dialogs API for this editor
+     */
     public dialogs : Dialogs = new Dialogs();
     /**
      * Controls ley bindings for the editor.
      */
     public keybindings : Keybindings = new Keybindings();
+    /**
+     * Handles the API definitions and generate the right toolbox for each source editor
+     */
     public toolbox : Toolbox = new Toolbox();
+    /**
+     * The creation plugin adds the option to save an app as a creation with a cover and the app's source
+     */
     public creation : CreationPlugin = new CreationPlugin();
+    /**
+     * The parts editor manager handles the creation of parts in the editor
+     */
     public parts : EditorPartsManager;
+    /**
+     * API for the editor's activity bar
+     */
     public activityBar : ActivityBar = new ActivityBar();
+    /**
+     * Whether the editor is part of a DOM tree right now
+     */
     public injected : boolean = false;
     private _registeredEvents : string[] = [];
     private _mediaPath : string = '';
     private _queuedApp : string|null = null;
+    /**
+     * The provided Workspace, or a default one
+     */
     public workspaceProvider? : WorkspaceViewProvider;
+    /**
+     * The provided Editor profile, or a default one
+     */
     public profile? : EditorProfile;
     public creationPreviewProvider? : CreationCustomPreviewProvider;
     public creationStorageProvider? : CreationStorageProvider;
     public queryEngine : QueryEngine = new QueryEngine();
+    /**
+     * Apis to control the content widgets displayed in the editor
+     */
     private contentWidgets? : ContentWidgets;
 
     // Events
     private _onDidReset : EventEmitter = new EventEmitter();
     /**
+     * Fired when the user resets the editor
      * @event
      */
     get onDidReset() { return this._onDidReset.event }
 
     private _onDidLoad : EventEmitter = new EventEmitter();
     /**
+     * Fired after an app has beed loaded
      * @event
      */
     get onDidLoad() { return this._onDidLoad.event }
 
     private _onDidInject : EventEmitter = new EventEmitter();
     /**
+     * Fired after the editor has been injected in a DOM tree
      * @event
      */
     get onDidInject() { return this._onDidInject.event }
 
     private _onDidLayoutChange : EventEmitter = new EventEmitter();
     /**
+     * Fired when the internal layout of the editor changed
      * @event
      */
     get onDidLayoutChange() { return this._onDidLayoutChange.event }
-
+    
     /**
      * Creates a new Editor. This editor can then be injected into any web page
-     * @example
-     *```js
-     *
-     *const editor = new Editor();
-     *editor.inject(document.body);
-     *```
-     * @param opts Set of options for the new Editor
+     * @param opts Options for the editor
      */
     constructor(opts : IEditorOptions = {}) {
         super();
         this.config = Config.merge(opts);
         this.logger.setLevel(this.config.LOG_LEVEL);
-        this.elementsRegistry.set('editor', this.domNode);
-        (this.domNode as any).editor = this;
         this.sourceType = opts.sourceType || 'blockly';
         this._setupMediaPath(opts.mediaPath);
 
@@ -158,29 +193,17 @@ export class Editor extends EditorOrPlayer {
     private _setupMediaPath(path = '/node_modules/@kano/code') {
         this._mediaPath = path.length > 1 && path.endsWith('/') ? path.slice(0, -1) : path;
     }
+    /**
+     * Returns the absolute path to the provided relative resource
+     * @param path A path relative to the media directory
+     */
     asAbsoluteMediaPath(path = '') {
         const normalized = path.replace(/^(\.\/|\.\.\/|\/)/, '');
         return `${this._mediaPath}/${normalized}`;
     }
-    registerEvent(name : string) {
-        this._registeredEvents.push(name);
-    }
-    getEvents() {
-        return this._registeredEvents;
-    }
     /**
      * Adds a plugin to this editor, plugins have access to lifecycle steps and
      * customization APIs to tailor the coding experience to your needs
-     * @example
-     *```js
-     * 
-     *const MyPlugin extends code.Plugin {
-     *    onInstall(editor) {
-     *        // Do something with the editor
-     *    }
-     *    onInject() {}
-     *}
-     ```
      * @param plugin The plugin to add
      */
     addPlugin(plugin : Plugin) {
@@ -190,17 +213,21 @@ export class Editor extends EditorOrPlayer {
             plugin.onInject();
         }
     }
-    getElement(id : string) {
-        return this.elementsRegistry.get(id);
+    protected appendSourceEditor() {
+        if (this.domNode && this.domNode.sourceContainer) {
+            this.domNode.sourceContainer.appendChild(this.sourceEditor.domNode);
+        }
     }
-    appendSourceEditor() {
-        (this.domNode as any).sourceContainer.appendChild(this.sourceEditor.domNode);
-    }
-    ensureProfile() {
+    protected ensureProfile() {
         if (!this.profile) {
             this.registerProfile(new DefaultEditorProfile());
         }
     }
+    /**
+     * Injectes the editor into a host element
+     * @param element The host element to inject the editor into
+     * @param before Another element before which the editor should be injected
+     */
     inject(element = document.body, before? : HTMLElement) {
         if (this.injected) {
             return;
@@ -232,6 +259,9 @@ export class Editor extends EditorOrPlayer {
             this._onDidInject.fire();
         });
     }
+    /**
+     * Gets rid of this editor. Free any allocated resources and remove the editor from the DOM if it was injected
+     */
     dispose() {
         if (this.injected) {
             (this.domNode as any).parentNode.removeChild(this.domNode);
@@ -246,6 +276,10 @@ export class Editor extends EditorOrPlayer {
         }
         this.telemetry.trackEvent({ name: 'ide_exited' });
     }
+    /**
+     * Load a previously saved app
+     * @param app A JSON object representation of an app
+     */
     load(app : any) {
         const safeApp = transformLegacyApp(app, this);
         if (!this.injected) {
@@ -260,6 +294,10 @@ export class Editor extends EditorOrPlayer {
         this._onDidLoad.fire();
         this.telemetry.trackEvent({ name: 'app_imported' });
     }
+    /**
+     * Resets the editor. Removes every part, reset the source to the default source
+     * @param trigger Fire the reset event or not. Useful when we want to reset just before a load without triggering the onDidReset event
+     */
     reset(trigger : boolean = true) {
         const source = this.workspaceProvider ? this.workspaceProvider.source : '';
         this.setCode();
@@ -269,17 +307,24 @@ export class Editor extends EditorOrPlayer {
             this._onDidReset.fire();
         }
     }
+    /**
+     * Update the generated code and restart the output
+     * @param content the generated code
+     */
     setCode(content? : string) {
         this.output.setCode(content);
-        (this.domNode as any).code = content;
+        this.domNode.code = content;
         this.output.restart();
     }
+    /**
+     * Restarts the app
+     */
     restart() {
         this.output.restart();
     }
-    restartApp() {
-        this.restart();
-    }
+    /**
+     * Generate a creation from the curretn app
+     */
     exportCreation() {
         let data = this.export();
         this.plugins.forEach((plugin) => {
@@ -288,6 +333,9 @@ export class Editor extends EditorOrPlayer {
         data = this.output.onCreationExport(data);
         return data;
     }
+    /**
+     * Generate a JSON object representation of the current app
+     */
     export() {
         let app = {
             source: this.sourceEditor.getSource(),
@@ -299,6 +347,9 @@ export class Editor extends EditorOrPlayer {
         app = this.output.onExport(app);
         return app;
     }
+    /**
+     * Downloads a .kcode file with the exported app
+     */
     exportToDisk() {
         const savedApp = this.export();
         const a = document.createElement('a');
@@ -312,6 +363,9 @@ export class Editor extends EditorOrPlayer {
         URL.revokeObjectURL(url);
         this.telemetry.trackEvent({ name: 'app_exported' });
     }
+    /**
+     * Prompts the user to load a .kcode from its disk and loads it
+     */
     importFromDisk() {
         const fileInput = document.createElement('input');
         fileInput.setAttribute('type', 'file');
@@ -356,9 +410,6 @@ export class Editor extends EditorOrPlayer {
     }
     save() {
         return this.export();
-    }
-    share() {
-        (this.domNode as any).share();
     }
     @deprecated('Use editor.sourceEditor.getSource() instead')
     getSource() {
@@ -430,24 +481,41 @@ export class Editor extends EditorOrPlayer {
     resolvePosition(result : IQueryResult) {
         return result.getHTMLElement().getBoundingClientRect();
     }
+    /**
+     * Adds a widget to the editor.
+     * [[include:addContentWidget.md]]
+     * @param widget An editor widget
+     */
     addContentWidget(widget : IEditorWidget) {
         if (!this.contentWidgets) {
             throw new Error('Could not use content widgets: Editor was not injected');
         }
         this.contentWidgets.addWidget(widget);
     }
+    /**
+     * Update the position of a previously added widget
+     * @param widget An editor widget
+     */
     layoutContentWidget(widget : IEditorWidget) {
         if (!this.contentWidgets) {
             throw new Error('Could not use content widgets: Editor was not injected');
         }
         this.contentWidgets.layoutWidget(widget);
     }
+    /**
+     * Removes a previously added widget
+     * @param widget An editor widget
+     */
     removeContentWidget(widget : IEditorWidget) {
         if (!this.contentWidgets) {
             throw new Error('Could not use content widgets: Editor was not injected');
         }
         this.contentWidgets.removeWidget(widget);
     }
+    /**
+     * Uses the [[QueryEngine]] to query for an element using that selector and returns the matching HTMLElement
+     * @param selector An element selector
+     */
     queryElement(selector : string) {
         const result = this.querySelector(selector);
         if (!result) {
@@ -455,6 +523,10 @@ export class Editor extends EditorOrPlayer {
         }
         return result.getHTMLElement();
     }
+    /**
+     * Uses the [[QueryEngine]] to query for an element using that selector and returns the matching x, y position
+     * @param selector An element selector
+     */
     queryPosition(selector : string) {
         // Retrieve the result using the usual querying system
         const root = this.queryEngine.parse(selector);
@@ -476,6 +548,10 @@ export class Editor extends EditorOrPlayer {
         }
         return { x, y };
     }
+    /**
+     * Uses the [[QueryEngine]] to query for an element using that selector and returns the result
+     * @param selector An element selector
+     */
     querySelector(selector : string) {
         return this.queryEngine.query(selector);
     }

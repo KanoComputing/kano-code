@@ -1,5 +1,3 @@
-## Part
-
 Create a new part like so
 
 ```ts
@@ -7,6 +5,9 @@ Create a new part like so
 class MyPart extends Part {
     onInstall(context : IPartContext) {
         // Do something with the visuals, audio or dom from the output:
+        // context.visuals
+        // context.audio
+        // context.dom
     }
 }
 

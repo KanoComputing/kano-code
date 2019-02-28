@@ -15,7 +15,7 @@
     "build": "yarn clean && yarn build:src && yarn build:def",
     "clean": "rimraf ./dist",
     "serve": "es6-server",
-    "docs": "yarn typedoc --out docs --excludePrivate --excludeExternals --externalPattern node_modules --mode modules --exclude ./src/**/*.test.ts --exclude ./src/test/**/* --includes docs-src",
+    "docs": "yarn typedoc --options tdconfig.json",
     "serve-test": "web-tester serve dist/**/*.test.js",
     "test": "web-tester run dist/**/*.test.js",
     "test-ci": "yarn run --silent test --reporter xunit > test-results.xml",
@@ -40,7 +40,6 @@
     "rimraf": "^2.6.3",
     "sinon": "^7.2.4",
     "typedoc": "^0.14.2",
-    "typedoc-plugin-external-module-name": "^2.0.0",
     "typescript": "^3.2.4"
   },
   "dependencies": {

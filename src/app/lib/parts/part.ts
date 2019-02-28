@@ -4,11 +4,6 @@ import { PartComponent } from './component.js';
 import { Microphone } from '../output/microphone.js';
 
 /**
- * @module part
- * @preferred
- */
-
-/**
  * Declares the APIs available for the part to use.
  * This usually give access to the output's APIs.
  */
@@ -30,20 +25,41 @@ export interface IPartContext {
 }
 
 /**
- * Parent class for each Part. It handles setting up the components, and the lifecycle steps.
- * [[include:part.md]]
+ * [[include:Part.md]]
+ * 
+ * This class is the parent for each Part. It handles setting up the components, and the lifecycle steps.
  */
 export class Part {
-    // A bug in EventEmitter makes it only accept arrays. No Disposables
+    /**
+     * A bug in EventEmitter makes it only accept arrays. No Disposables
+     */
     protected subscriptions : IDisposable[] = [];
-    // Put all your user subscriptions in there, They will be disposed off on every app stop
+    /**
+     * Put all your user subscriptions in there, They will be disposed off on every app stop
+     */
     protected userSubscriptions : IDisposable[] = [];
+    /**
+     * Map of components for the part. See [[PartComponent]]
+     */
     protected _components : Map<string, PartComponent> = new Map();
+    /**
+     * Unique id generated from the name by the editor when created
+     */
     public id? : string;
+    /**
+     * Unique name generated from the label by the editor when created. The user can update this name, and the id will be re-generated to match the new name
+     */
     public name? : string;
+    /**
+     * Unique type string for this part
+     */
     static get type() : string {
         throw new Error('Could not create part, type is not defined');
     }
+    /**
+     * Apply a series of transformations to a legacy app to make it compatible with the most up-to-date APIs
+     * @param app A previously saved app
+     */
     static transformLegacy(app : any) {}
     constructor() {
         const components = collectPrototype<typeof PartComponent>('components', this.constructor, Part);
