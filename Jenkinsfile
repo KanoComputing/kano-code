@@ -37,6 +37,27 @@ pipeline {
                 }
             }
         }
+        stage('docs') {
+            steps {
+                script {
+                    if (env.BRANCH_NAME !== "master") {
+                        return;
+                    }
+                    def version = get_npm_package_version();
+                    docker.image('node:8-alpine').inside {
+                        sh "yarn docs"
+                    }
+                    docker.image('ughly/alpine-aws-cli').inside {
+                        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'kart', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                            // Clean previous docs
+                            sh "aws s3 rm s3://code-docs.kano.me/${version} --recursive"
+                            // Upload files
+                            sh "aws s3 cp ./docs/ s3://code-docs.kano.me/${version} --recursive"
+                        }
+                    }
+                }
+            }
+        }
     }
     post {
         always {
