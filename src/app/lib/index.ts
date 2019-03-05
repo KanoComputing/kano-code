@@ -1,3 +1,4 @@
+import './flags/flags-manager.js';
 export * from './editor/editor.js';
 export * from './player/index.js';
 export * from './editor/plugin.js';

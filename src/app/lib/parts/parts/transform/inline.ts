@@ -3,6 +3,11 @@ import { KcEditableNumber } from '../../../../elements/kc-editable-number.js';
 import { subscribeDOM, IDisposable } from '@kano/common/index.js';
 import { DOMPart } from '../dom/dom.js';
 import { Flash } from '../../../plugins/flash/flash.js';
+import { Flags } from '../../../flags/flags-manager.js';
+
+const EXPERIMENTAL_POSITION_INPUT = 'EXPERIMENTAL_POSITION_INPUT';
+
+Flags.register(EXPERIMENTAL_POSITION_INPUT);
 
 class Control {
     public domNode : KcEditableNumber = new KcEditableNumber();
@@ -39,13 +44,13 @@ export class TransformInlineDisplay extends PartInlineDisplay<HTMLDivElement> {
         this.domNode.style.alignItems = 'center';
         this.domNode.style.justifyContent = 'flex-end';
 
-        // TODO: Experimental inline controls. Implements after we figured out the default values/running dynamics
-
-        // let input = new Control(part, 'x');
-        // this.domNode.appendChild(input.domNode);
-
-        // input = new Control(part, 'y');
-        // this.domNode.appendChild(input.domNode);
+        if (Flags.getFlag(EXPERIMENTAL_POSITION_INPUT)) {
+            let input = new Control(part, 'x');
+            this.domNode.appendChild(input.domNode);
+    
+            input = new Control(part, 'y');
+            this.domNode.appendChild(input.domNode);
+        }
 
         this.domNode.appendChild(this.flash.domNode);
         this.domNode.style.marginRight = '8px';
