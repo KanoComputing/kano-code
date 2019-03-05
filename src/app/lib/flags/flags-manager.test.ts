@@ -8,6 +8,7 @@ suite('FlagsManager', () => {
 
         const saveStub = sinon.stub(manager, 'saveFlag');
         const getStub = sinon.stub(manager, 'getFlag').returns(true);
+        const logStub = sinon.stub(console, 'log');
 
         manager.register('TEST_EXPERIMENT');
 
@@ -15,6 +16,7 @@ suite('FlagsManager', () => {
         assert(getStub.called);
         manager.flags.TEST_EXPERIMENT = true;
         assert(saveStub.called);
+        logStub.restore();
     });
     test('#saveFlag()', () => {
         const manager = new FlagsManager();
