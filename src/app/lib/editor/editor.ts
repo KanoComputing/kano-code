@@ -247,8 +247,8 @@ export class Editor extends EditorOrPlayer {
                 this.workspaceProvider.onInject();
             }
             this.parts.onInject();
-            this.runPluginTask('onInject');
             this.contentWidgets = new ContentWidgets(this, (this.domNode as any).widgetLayer);
+            this.runPluginTask('onInject');
             this.telemetry.trackEvent({ name: 'ide_opened' });
             if (this._queuedApp) {
                 this.load(this._queuedApp);
@@ -440,8 +440,7 @@ export class Editor extends EditorOrPlayer {
             throw new Error('Could not register EditorProfile: plugins is not an array');
         }
         this.profile = profile;
-        const workspaceViewProvider = this.profile.workspaceViewProvider
-            || new DefaultWorkspaceViewProvider(this);
+        const workspaceViewProvider = this.profile.workspaceViewProvider || new DefaultWorkspaceViewProvider();
         this.registerWorkspaceViewProvider(workspaceViewProvider);
         if (this.profile.plugins) {
             this.profile.plugins.forEach(p => this.addPlugin(p));

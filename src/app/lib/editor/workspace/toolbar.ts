@@ -85,7 +85,6 @@ export class WorkspaceToolbar extends Plugin {
     }
     disable(id : string) {
         const entry = this.defaultEntries.get(id);
-        console.log(entry);
         if (!entry) {
             return;
         }
@@ -176,7 +175,7 @@ export class WorkspaceToolbar extends Plugin {
     }
     static createDisposableNoop() {
         return {
-            on() {},
+            onDidActivate() {},
             updateTitle() {},
             updateIcon() {},
             updateIronIcon() {},

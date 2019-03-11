@@ -27,7 +27,7 @@ export class DefaultEditorProfile extends EditorProfile {
     creationStorageProvider? : CreationStorageProvider;
     outputProfile? : OutputProfile;
     onInstall(editor: Editor) {
-        this.workspaceViewProvider = new DefaultWorkspaceViewProvider(editor);
+        this.workspaceViewProvider = new DefaultWorkspaceViewProvider();
         this.plugins = [];
         this.parts = Object.values(PartAPIs);
         this.toolbox = Object.values(APIs);

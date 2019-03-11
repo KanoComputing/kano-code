@@ -166,10 +166,10 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 if (m.def.blockly && m.def.blockly.scope) {
                     const result = this.findScopedArgument(block, m.def.blockly.scope);
                     if (result) {
-                        return [result];
+                        return [result, Blockly.JavaScript.ORDER_ATOMIC];
                     }
                 }
-                return [m.getNameChain('.')];
+                return [m.getNameChain('.'), Blockly.JavaScript.ORDER_FUNCTION_CALL];
             };
         };
         const toolbox = BlocklyMetaRenderer.isInToolbox(m);

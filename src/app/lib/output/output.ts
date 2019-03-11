@@ -13,6 +13,7 @@ import { AppModuleConstructor } from '../app-modules/app-modules.js';
 export interface IOutputProfile {
     id : string;
     onInstall?(output : Output) : void;
+    onInject() : void;
     modules? : AppModuleConstructor[];
     plugins? : Plugin[];
     parts? : (typeof Part)[];
@@ -201,8 +202,8 @@ export class Output extends PluginReceiver {
     }
     onInject() {
         this.ensureOutputView();
-        if (this.outputViewProvider) {
-            this.outputViewProvider.onInject();
+        if (this.outputProfile) {
+            this.outputProfile.onInject();
         }
         this.parts.onInject();
         this.runPluginTask('onInject');

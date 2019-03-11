@@ -10,27 +10,18 @@ const DEFAULT_SOURCE = `<xml xmlns="http://www.w3.org/1999/xhtml"><variables></v
 export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
     private subscriptions : Disposables = new Disposables();
     public root : HTMLElement = document.createElement('div');
-    private frame : HTMLElement = document.createElement('kc-workspace-frame');
+    private frame? : HTMLElement;
     public partsControls : KCPartsControls = document.createElement('kc-parts-controls') as KCPartsControls;
     public source : string = DEFAULT_SOURCE;
-    constructor(editor : Editor) {
-        super(editor);
+    constructor() {
+        super();
+        this.createDOM();
+    }
+    createDOM() {
         this.root = document.createElement('div');
+        this.frame = document.createElement('kc-workspace-frame');
         this.frame.style.margin = '0 40px';
         this.partsControls.setAttribute('slot', 'controls');
-
-        this.editor.output.onDidFullscreenChange(() => {
-            (this.frame as any).fullscreen = this.editor.output.getFullscreen();
-        });
-
-        subscribeDOM(this.frame, 'viewport-resize', () => {
-            if (this.editor.output.outputView) {
-                this.editor.output.outputView.resize();
-            }
-        });
-        subscribeDOM(this.frame, 'close-fullscreen', () => {
-            this.editor.output.setFullscreen(false)
-        });
 
         this.frame.appendChild(this.partsControls);
 
@@ -38,6 +29,24 @@ export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
     }
     onInstall(editor : Editor) {
         this.editor = editor;
+
+        this.editor.output.onDidFullscreenChange(() => {
+            (this.frame as any).fullscreen = this.editor!.output.getFullscreen();
+        });
+
+        if (!this.frame) {
+            return;
+        }
+
+        subscribeDOM(this.frame, 'viewport-resize', () => {
+            if (!this.editor || !this.editor.output.outputView) {
+                return;
+            }
+            this.editor.output.outputView.resize();
+        });
+        subscribeDOM(this.frame, 'close-fullscreen', () => {
+            this.editor!.output.setFullscreen(false)
+        });
 
         (this.frame as any).width = this.editor.output.visuals.width;
         (this.frame as any).height = this.editor.output.visuals.height;
