@@ -191,12 +191,8 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             validation: {
                 'open-parts': true,
             },
-            beacon: {
-                target: 'add-part-button',
-            },
-            banner: {
-                text: data.openPartsCopy || 'Open the parts dialog',
-            },
+            beacon: 'add-part-button',
+            banner: data.openPartsCopy || 'Open the parts dialog',
         };
     }
     _getCreatePartStep(data : any) {
@@ -204,16 +200,14 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             validation: {
                 'add-part': {
                     type: data.part,
-                    id: data.alias,
+                    alias: data.alias,
                 },
             },
-            beacon: {
-                target: `parts-panel-${data.part}`,
-            },
+            beacon: `part.${data.part}`,
             tooltips: [{
                 text: data.addPartCopy || `Click '${data.part}' to add it.`,
                 position: 'top',
-                location: 'parts-panel',
+                target: 'add-part-menu',
             }],
         };
     }
@@ -292,59 +286,35 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     _getOpenFlyoutStep(data : any) {
         const step = super._getOpenFlyoutStep(data);
         return Object.assign(step, {
-            banner: {
-                text: data.openFlyoutCopy || `Open the ${data.category} category`,
-            },
-            beacon: {
-                target: {
-                    category: data.category,
-                },
-            },
+            banner: data.openFlyoutCopy || `Open the ${data.category} category`,
+            beacon: `${data.category}:100,50`,
         });
     }
     _getCreateBlockStep(data : any) {
         const step = super._getCreateBlockStep(data);
         return Object.assign(step, {
-            banner: {
-                text: data.grabBlockCopy || 'Grab this block',
-            },
-            beacon: {
-                target: {
-                    flyout_block: data.blockType,
-                },
-            },
+            banner: data.grabBlockCopy || 'Grab this block',
+            beacon: `${data.category}>flyout-block.${data.blockType}`,
         });
     }
     _getConnectBlockStep(data : any) {
         const step = super._getConnectBlockStep(data);
         return Object.assign(step, {
-            banner: {
-                text: data.connectCopy || 'Connect to this block',
-            },
-            beacon: {
-                target: {
-                    block: data.connectTo,
-                },
-            },
+            banner: data.connectCopy || 'Connect to this block',
+            beacon: data.connectTo,
         });
     }
     _getDropBlockStep(data : any) {
         const step = super._getDropBlockStep(data);
         return Object.assign(step, {
-            banner: {
-                text: data.dropCopy || 'Drop this block anywhere in your code space',
-            },
+            banner: data.dropCopy || 'Drop this block anywhere in your code space',
         });
     }
     _changeInputShorthand(data : any) {
         const step = super._changeInputShorthand(data);
         Object.assign(step, {
-            banner: {
-                text: data.bannerCopy || `Change this value to ${data.value}`,
-            },
-            beacon: {
-                target: { block: data.block },
-            },
+            banner: data.bannerCopy || `Change this value to ${data.value}`,
+            beacon: data.block,
         });
         return step;
     }

@@ -167,16 +167,19 @@ export class BlocklySourceEditor implements SourceEditor {
                         engine.warn('Could not find block in flyout: No flyout is opened');
                         return null;
                     }
-                    const block = flyout.getBlockByType(`${scope}_${selector.class}`);
+                    let block = flyout.getBlockByType(`${scope}_${selector.class}`);
+                    if (!block) {
+                        block = flyout.getBlockByType(selector.class);
+                    }
                     if (!block) {
                         engine.warn(`Could not find block ${selector.class}`);
                         return null;
                     }
                     return {
                         block,
-                        getId() { return `${scope}_${selector.class}`; },
+                        getId() { return block!.type; },
                         getHTMLElement() {
-                            return block.getSvgRoot();
+                            return block!.getSvgRoot();
                         },
                     };
                 }
@@ -211,6 +214,12 @@ export class BlocklySourceEditor implements SourceEditor {
                 getId() { return block.id },
                 getInput() { return input; },
                 getField() { return field; },
+                getBlock() {
+                    if (!input || !input.connection || !input.connection.targetConnection) {
+                        return null;
+                    }
+                    return input.connection.targetConnection.getSourceBlock();
+                },
                 getPosition: () => {
                     const rect = this.getInputPosition(block, id ? id.toUpperCase() : undefined);
                     return { x: rect.left, y: rect.top };

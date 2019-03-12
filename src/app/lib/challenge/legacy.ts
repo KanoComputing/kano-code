@@ -23,7 +23,9 @@ const partBlocks : { [K : string] : any } = {
     clock: {
         get_formatted_time: 'get',
     },
-    speaker: {},
+    speaker: {
+        speaker_sample: 'getSample',
+    },
 };
 
 export function transformToolboxSelector(legacySelector : any) {
@@ -135,10 +137,19 @@ function transformLocation(location : any) {
             }
             selector = `block#${id}`;
         }
-        if (typeof location.block.shadow === 'string') {
-            selector += `>input#${transformConnection(location, location.block.shadow)}`;
+        if (location.block.shadow) {
+            selector += `>${transformShadow(location, location.block.shadow)}`;
         } else if (typeof location.block.inputName === 'string') {
             selector += `>input#${transformConnection(location, location.block.inputName)}`;
+        }
+
+        function transformShadow(location : any, shadow : any) : string {
+            if (typeof shadow === 'string') {
+                return `input#${transformConnection(location, shadow)}`;
+            } else if (typeof shadow === 'object') {
+                return `input#${shadow.name}>${transformShadow(location, shadow.shadow)}`
+            }
+            return '';
         }
 
         return selector;
@@ -393,6 +404,9 @@ export function transformStep(step : any) {
     if (step.banner) {
         step.banner = transformBanner(step.banner);
     }
+    transformCreateBlockShorthand(step);
+    transformChangeInputShorthand(step);
+    transformCreatePartShorthand(step);
 }
 export function transformBanner(data : any) {
     if (typeof data.next_button === 'boolean') {
@@ -400,6 +414,80 @@ export function transformBanner(data : any) {
         delete data.next_button;
     }
     return data;
+}
+
+function transformCreatePartShorthand(step : any) {
+    if (step.type !== 'create-part') {
+        return;
+    }
+    if (step.alias) {
+        blockAliases[step.alias] = step.part;
+    }
+}
+
+function transformChangeInputShorthand(step : any) {
+    if (step.type !== 'change-input') {
+        return;
+    }
+    step.block = transformLocation({ block: step.block });
+}
+
+function transformCreateBlockShorthand(step : any) {
+    const categoryBlacklist = ['control'];
+    if (step.type !== 'create-block') {
+        return;
+    }
+    // step.category = transformLocation({ category: step.category });
+    if (step.blockType.type) {
+        if (step.blockType.part) {
+            const original = blockAliases[step.blockType.part];
+            if (original) {
+                const map = partBlocks[original];
+                if (map) {
+                    const blockName = map[step.blockType.type];
+                    if (blockName) {
+                        step.blockType = blockName;
+                    } else {
+                        console.warn('[LEGACY CHALLENGE] Missing block mapping for part', original, step.blockType.type);
+                    }
+                } else {
+                    console.warn('[LEGACY CHALLENGE] Missing mapping for part', original)
+                }
+            }
+        }
+        if (step.blockType.type) {
+            step.blockType = step.blockType.type;
+        }
+    } else if (categoryBlacklist.indexOf(step.category) === -1) {
+        const pieces = step.blockType.split('_');
+        pieces.shift();
+        step.blockType = pieces.join('_');
+    }
+    if (step.category.part) {
+        step.category = `alias#${step.category.part}>toolbox`;
+    } else {
+        step.category = `toolbox#${step.category}`;
+    }
+    if (step.connectTo) {
+        let selector;
+        if (step.connectTo.id) {
+            selector = `alias#${step.connectTo.id}`;
+        }
+        if (step.connectTo.shadow) {
+            selector += `>input#${step.connectTo.shadow}`;
+            if (step.connectTo.inputName) {
+                selector += `>input#${step.connectTo.inputName}`;
+            }
+        } else if (step.connectTo.inputName) {
+            selector += `>input#${step.connectTo.inputName}`;
+        } else {
+            selector += '>next';
+        }
+        step.connectTo = selector;
+    }
+    if (step.alias) {
+        blockAliases[step.alias] = step.blockType;
+    }
 }
 
 export function transformChallenge(data : any) {
@@ -411,6 +499,9 @@ export function transformChallenge(data : any) {
 }
 
 function stripStickerSet(data : any) {
+    if (data.scene) {
+        Object.assign(data, data.scene);
+    }
     if (!data.steps) {
         return;
     }

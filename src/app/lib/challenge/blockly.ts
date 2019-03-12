@@ -112,8 +112,8 @@ class BlocklyChallenge extends Challenge {
             validation: {
                 blockly: {
                     create: {
-                        type: data.blockType,
-                        id: data.alias,
+                        type: `${data.category}>flyout-block.${data.blockType}`,
+                        alias: data.alias,
                     },
                 },
             },
@@ -125,16 +125,11 @@ class BlocklyChallenge extends Challenge {
                 blockly: {
                     connect: {
                         parent: data.connectTo,
-                        target: data.alias,
+                        target: `alias#${data.alias}`,
                     },
                 },
             },
-            phantom_block: {
-                location: {
-                    block: data.connectTo,
-                },
-                target: data.connectTo.inputName,
-            },
+            phantom_block: data.connectTo,
         };
     }
     _getDropBlockStep(data : any) {
@@ -142,7 +137,7 @@ class BlocklyChallenge extends Challenge {
             validation: {
                 blockly: {
                     drop: {
-                        target: data.alias,
+                        target: `alias#${data.alias}`,
                     },
                 },
             },

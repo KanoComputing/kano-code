@@ -426,6 +426,19 @@ export class EditorPartsManager {
                 },
             };
         });
+        engine.registerTagHandler('add-part-menu', () => {
+            return {
+                getHTMLElement: () => {
+                    if (!this.editor || !this.addDialogProvider) {
+                        throw new Error('Could not query add part menu: Editor is not setup');
+                    }
+                    return this.addDialogProvider.domNode as HTMLElement;
+                },
+                getId() {
+                    return 'add-part-menu';
+                },
+            };
+        });
     }
     /**
      * Disable all parts. This prevents users from being able to create parts.

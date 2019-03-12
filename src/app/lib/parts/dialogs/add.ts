@@ -4,7 +4,7 @@ import { KCAddPart } from './kc-add-part.js';
 import { IPartAPI } from '../api.js';
 
 export class AddPartDialogProvider extends DialogProvider {
-    private domNode : KCAddPart = new KCAddPart();
+    public domNode : KCAddPart = new KCAddPart();
     private _clickSub : IDisposable;
     private _onDidClickPart : EventEmitter<string> = new EventEmitter<string>();
     constructor() {
