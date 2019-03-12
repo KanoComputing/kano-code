@@ -16,6 +16,7 @@ export class Dialog extends Base<KanoAlertElement> {
 
     createDom(opts : DialogProvider) {
         const root = document.createElement('paper-dialog') as KanoAlertElement;
+        root.style.background = 'transparent';
         // OverlayInto is defined, Do not use modal nor backdrop
         root.modal = typeof this.overlayInto === 'undefined';
         root.withBackdrop = typeof this.overlayInto !== 'undefined';

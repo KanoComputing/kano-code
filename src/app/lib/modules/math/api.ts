@@ -294,10 +294,10 @@ export const MathAPI = {
         };
 
         Blockly.JavaScript.unary = (block : Block) => {
-            let leftHand = block.getFieldValue('LEFT_HAND'),
-                op = block.getFieldValue('OPERATOR') || '+=',
-                rightHand = Blockly.JavaScript.valueToCode(block, 'RIGHT_HAND', Blockly.JavaScript.ORDER_ASSIGNMENT),
-                code;
+            const op = block.getFieldValue('OPERATOR') || '+=';
+            let rightHand = Blockly.JavaScript.valueToCode(block, 'RIGHT_HAND', Blockly.JavaScript.ORDER_ASSIGNMENT);
+
+            const varName = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('LEFT_HAND'), Blockly.Variables.NAME_TYPE);
 
             // Default to 1 for multiplication and division, otherwise default to 0
             if (['/=', '*='].indexOf(op) !== -1) {
@@ -305,8 +305,7 @@ export const MathAPI = {
             } else {
                 rightHand = rightHand || 0;
             }
-            code = `${leftHand} ${op} ${rightHand};\n`;
-            return code;
+            return `${varName} ${op} ${rightHand};\n`;
         };
         // Assign custom color to blockly core blocks
         [

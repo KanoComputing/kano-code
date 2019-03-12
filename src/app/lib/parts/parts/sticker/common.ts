@@ -31,7 +31,6 @@ export const getter : IMetaDefinition = {
             if (!input) {
                 return;
             }
-            input.removeField('PREFIX');
             input.type = Blockly.DUMMY_INPUT;
         },
         javascript(Blockly : Blockly, block : Block) {

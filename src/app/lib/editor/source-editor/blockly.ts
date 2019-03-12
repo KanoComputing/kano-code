@@ -5,6 +5,7 @@ import { Workspace, Block, Input, utils, Connection, Field } from '@kano/kwc-blo
 import Editor from '../editor.js';
 import { QueryEngine, ISelector, IQueryResult } from '../selector/selector.js';
 import { memoize } from '../../util/decorators.js';
+import '../../blockly/core/xml.js';
 
 // Exclude those characters. This will allow the editor's quirying system to query block ids
 utils.genUid.soup_ = utils.genUid.soup_.replace(/#|>|\.|:/g, '');

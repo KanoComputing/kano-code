@@ -5,15 +5,7 @@ import { SamplePlayer } from '../../../music/sample-player.js';
 import { PartComponent } from '../../component.js';
 import Output from '../../../output/output.js';
 import { join } from '../../../util/path.js';
-
-// Build a map of id => sample data to access those swiftly
-const samplesMap : Map<string, ISample> = new Map();
-
-samples.forEach((set) => {
-    set.samples.forEach((sample) => {
-        samplesMap.set(sample.id, sample);
-    });
-});
+import { transformLegacySpeaker } from './legacy.js';
 
 const bufferCache : Map<string, AudioBuffer> = new Map();
 
@@ -33,14 +25,24 @@ export class SpeakerPart extends Part {
     private players : SamplePlayer[] = [];
     @component(SpeakerComponent)
     public core : SpeakerComponent;
+    private samplesMap : Map<string, ISample> = new Map();
     static get defaultSample() { return 'claves'; }
     static get items() { return samples; }
     static resolve(id : string) {
         const prefix = Output.config.get(SAMPLE_URL_PREFIX_KEY, '/assets/audio/samples/');
         return join(prefix, id);
     }
+    static transformLegacy(app : any) {
+        transformLegacySpeaker(app);
+    }
     constructor() {
         super();
+        // Build a map of id => sample data to access those swiftly
+        (this.constructor as typeof SpeakerPart).items.forEach((set) => {
+            set.samples.forEach((sample) => {
+                this.samplesMap.set(sample.id, sample);
+            });
+        });
         this.core = this._components.get('core') as SpeakerComponent;
         this.core.onDidInvalidate(() => {
             this.render();
@@ -80,7 +82,7 @@ export class SpeakerPart extends Part {
         this.core.apply();
     }
     _play(id : string, loop : boolean = false, time? : number) {
-        const sample = samplesMap.get(id);
+        const sample = this.samplesMap.get(id);
         if (!sample) {
             return;
         }
