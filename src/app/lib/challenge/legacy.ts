@@ -437,7 +437,6 @@ function transformCreateBlockShorthand(step : any) {
     if (step.type !== 'create-block') {
         return;
     }
-    // step.category = transformLocation({ category: step.category });
     if (step.blockType.type) {
         if (step.blockType.part) {
             const original = blockAliases[step.blockType.part];
