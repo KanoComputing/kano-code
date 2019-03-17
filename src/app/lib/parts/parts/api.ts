@@ -13,3 +13,4 @@ export * from './weather/api.js';
 export * from './mouse/api.js';
 export * from './speaker/api.js';
 export * from './sequencer/api.js';
+export * from './touch/api.js';
