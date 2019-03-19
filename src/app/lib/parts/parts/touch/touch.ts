@@ -17,15 +17,15 @@ export class TouchPart extends Part {
             this.resize(context);
         });
         subscribeDOM(context.dom.root, 'touchmove', (e : TouchEvent) => {
-            let touches = e.changedTouches;
+            const touches = e.changedTouches;
             // In case no resize event is triggered before the touch part is added
             if (!this._rect) {
                 return;
             }
             // Adjust the cursor position by making the coordinates relative to the top left corner of the output
             // Also applies the scale
-            let x = Math.max(0, Math.min(context.visuals.width, (touches[0].clientX - this._rect.left) * this._scale));
-            let y = Math.max(0, Math.min(context.visuals.height, (touches[0].clientY - this._rect.top) * this._scale));
+            const x = Math.max(0, Math.min(context.visuals.width, (touches[0].clientX - this._rect.left) * this._scale));
+            const y = Math.max(0, Math.min(context.visuals.height, (touches[0].clientY - this._rect.top) * this._scale));
 
             // Record the current timestamp
             const now = Date.now();
