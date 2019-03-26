@@ -119,5 +119,4 @@ export const TouchAPI : IPartAPI = {
         setupFlash(editor, part.id, part.core.touchEnd, 'onTouchEnd');
         setupFlash(editor, part.id, part.core.touchMove, 'onTouchMove');
     },
-
 };

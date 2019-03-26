@@ -29,7 +29,7 @@ export class TouchPart extends Part {
      *   The identifier of the Touch object.
      */
     protected _findOngoingTouch(touch : Touch) {
-        return this._ongoingTouches.findIndex(ongoingTouch => ongoingTouch.id == touch.identifier);
+        return this._ongoingTouches.findIndex(ongoingTouch => ongoingTouch.id === touch.identifier);
     }
 
     protected _addOngoingTouch(touch: Touch) {
@@ -42,14 +42,14 @@ export class TouchPart extends Part {
         const y = Math.max(0, Math.min(this._height, (touch.clientY - this._rect.top) * this._scale));
 
         // The value that will be stored
-        let touchValue = { id: touch.identifier, x: x, y: y, dx: 0, dy: 0 };
+        const touchValue = { id: touch.identifier, x: x, y: y, dx: 0, dy: 0 };
 
         const existingIndex = this._findOngoingTouch(touch);
         // If a touch with this id already exists, update it.
         if (existingIndex >= 0) {
             // Calculate dx and dy
-            touchValue.dx =  touchValue.x - this._ongoingTouches[existingIndex].x;
-            touchValue.dy =  touchValue.y - this._ongoingTouches[existingIndex].y;
+            touchValue.dx = touchValue.x - this._ongoingTouches[existingIndex].x;
+            touchValue.dy = touchValue.y - this._ongoingTouches[existingIndex].y;
             this._ongoingTouches[existingIndex] = touchValue;
         }
         else {
