@@ -10,13 +10,13 @@ doTheThing(function (x, y) {
 
 ```
 
-This is not something that cna be transletd in blocks. But we can make it available to users by automatically generating the Javascript code that fit a specific set of blocks.
+This is not something that can be transletd in blocks. But we can make it available to users by automatically generating the Javascript code that fit a specific set of blocks.
 
 A block can declare one of its parameters as scoped. When translating that  block into code, the renderer will try to look up the block tree to find a parent block that creates a scope (C-Shaped) and that declares an argument with a matching type.    
 
 ## Function blocks
 
-A function block will generate a Javascript function call. This call can have ine or many optional parameters at the end.
+A function block will generate a Javascript function call. This call can have one or many optional parameters at the end.
 If the parameter is scoped, the renderer will try to pass the value from a parent block that has a matching argument.
 
 ```js
