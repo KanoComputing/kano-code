@@ -45,7 +45,7 @@ pipeline {
         stage('docs') {
             steps {
                 script {
-                    if (env.BRANCH_NAME !== "master") {
+                    if (env.BRANCH_NAME != "master") {
                         return;
                     }
                     def version = get_npm_package_version();
