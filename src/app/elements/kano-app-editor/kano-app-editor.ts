@@ -46,6 +46,8 @@ export class KanoAppEditor extends LitElement {
                 flex-direction: row-reverse;
                 flex: 1;
                 flex-basis: 0.000000001px;
+                position: relative;
+                overflow: hidden;
             }
             :host section #source-panel {
                 flex: 1 1 auto;
