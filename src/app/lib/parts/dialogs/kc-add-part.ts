@@ -46,6 +46,10 @@ export class KCAddPart extends LitElement {
             kc-add-part-item {
                 margin-bottom: 8px;
             }
+            kc-add-part-item svg {
+                width: 24px !important;
+                height: 24px !important;
+            }
         `;
     }
     render() {

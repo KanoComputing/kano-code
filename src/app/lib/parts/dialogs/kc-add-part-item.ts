@@ -55,7 +55,7 @@ export class KCAddPartItem extends LitElement {
                 flex: 1;
                 flex-basis: 0.000000001px;
             }
-            .icon::slotted(*) {
+            .icon::slotted(* svg) {
                 /* terminal has width and height defined as 100%. This is a workaround to get proper rendering */
                 width: 24px !important;
                 height: 24px !important;

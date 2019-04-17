@@ -100,13 +100,6 @@ export class KCPartsControls extends LitElement {
                 height: 40px;
                 color: #fff;
             }
-            .part.sortable-ghost {
-                opacity: 0.3;
-            }
-            .part.sortable-drag {
-                background-color: var(--kano-app-editor-workspace-background);
-                box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.75);
-            }
             kc-part-list-item {
                 flex: 1;
                 flex-basis: 0.000000001px;
