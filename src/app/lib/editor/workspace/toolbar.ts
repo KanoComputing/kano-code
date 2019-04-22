@@ -31,7 +31,10 @@ export class WorkspaceToolbar extends Plugin {
             return;
         }
    
-        this.toolbar = this.editor.root.querySelector('kc-workspace-toolbar');
+        const editorShadowRoot = this.editor.root;
+        if (editorShadowRoot) {
+            this.toolbar = editorShadowRoot.querySelector('kc-workspace-toolbar');
+        }
         if (!this.toolbar) {
             return;
         }
