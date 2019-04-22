@@ -3,6 +3,8 @@ import 'js-beautify/js/lib/beautify.js';
 import '../kano-code-display/kano-code-display.js';
 import { property, customElement, css, LitElement, html, query } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
+import '../kc-workspace-toolbar/kc-workspace-toolbar.js';
+
 
 @customElement('kano-app-editor')
 export class KanoAppEditor extends LitElement {
@@ -71,28 +73,29 @@ export class KanoAppEditor extends LitElement {
                 background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
                 display: flex;
                 flex-direction: row;
+                margin-top:10px;
             }
             .tab {
+                align-self: center;
                 border: none;
                 background: transparent;
                 width: 50%;
                 font-family: var(--font-body);
                 font-weight: bold;
-                text-transform: uppercase;
-                padding: 0;
-                padding: 0;
                 cursor: pointer;
                 font-weight: bold;
                 font-size: 14px;
                 outline: none;
-                background: #394148;
                 opacity: 0.8;
                 color: rgba(255, 255, 255, 0.5);
+                border-radius: 50px;
+                margin: 10px;
+                padding: 10px;
             }
             .tab.selected {
                 color: #fff;
                 opacity: 1;
-                background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
+                background: #394148;
             }
             :host iron-pages.workspace-pages {
                 display: flex;
@@ -138,6 +141,9 @@ export class KanoAppEditor extends LitElement {
             }
             .editor {
                 position: relative;
+            }
+            kc-workspace-toolbar {
+                padding: 20px 0;
             }
             .activity-bar {
                 background: #1A1A1A;
@@ -206,8 +212,10 @@ export class KanoAppEditor extends LitElement {
                                 attr-for-selected="id"
                                 .selected=${this.workspaceTab}
                                 autoselect>
-                        ${this.getTab('Canvas', 'workspace')}
-                        ${this.getTab('JavaScript', 'code-display')}
+                        ${this.getTab('Artboard', 'workspace')}
+                        ${this.getTab('Code', 'code-display')}
+                        ${this.getTab('Pause', 'pause')}
+                        <!-- <kc-workspace-toolbar></kc-workspace-toolbar> -->
                     </div>
                     <iron-pages class="workspace-pages" attr-for-selected="name" .selected=${this.workspaceTab}>
                         <div name="workspace" id="workspace-host" class="visible-when-running"></div>
@@ -238,6 +246,7 @@ export class KanoAppEditor extends LitElement {
         }
         return window.js_beautify(code || '', { indent_size: 2 });
     }
+
     /**
    * Resize the workspace
    */

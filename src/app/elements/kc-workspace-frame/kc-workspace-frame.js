@@ -56,9 +56,10 @@ class KcWorkspaceFrame extends PolymerElement {
             .controls {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
+                /* justify-content: space-between; */
                 flex: 1 1 auto;
                 box-sizing: border-box;
+                margin: 20px;
             }
             :host(:not(.fullscreen)) .overlay {
                 display: none;
@@ -122,7 +123,7 @@ class KcWorkspaceFrame extends PolymerElement {
             </div>
         </kano-ui-viewport>
         <div class="controls">
-            <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>
+            <!-- <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar> -->
             <slot name="controls"></slot>
         </div>
         <div class="overlay">
