@@ -69,10 +69,11 @@ export class KanoAppEditor extends LitElement {
                 background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
             }
             .tabs {
-                height: 32px;
+                height: 100%;
                 background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
                 display: flex;
                 flex-direction: row;
+                align-self: flex-end;
                 margin-top:10px;
             }
             .tab {
@@ -142,8 +143,25 @@ export class KanoAppEditor extends LitElement {
             .editor {
                 position: relative;
             }
+            :host(.fullscreen) kc-workspace-toolbar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                z-index: 302;
+            }
             kc-workspace-toolbar {
                 padding: 20px 0;
+            }
+            .top-container {
+                display: flex;
+            }
+            .controls {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                flex: 1 1 auto;
+                box-sizing: border-box;
             }
             .activity-bar {
                 background: #1A1A1A;
@@ -208,14 +226,17 @@ export class KanoAppEditor extends LitElement {
                      @mousemove=${(e : MouseEvent) => this.mouseMoved(e)}
                      @mouseup=${() => this.completedResizing()}>
                 <div class="ui-edition" id="workspace-panel">
-                    <div class="tabs"
-                                attr-for-selected="id"
-                                .selected=${this.workspaceTab}
-                                autoselect>
-                        ${this.getTab('Artboard', 'workspace')}
-                        ${this.getTab('Code', 'code-display')}
-                        ${this.getTab('Pause', 'pause')}
-                        <!-- <kc-workspace-toolbar></kc-workspace-toolbar> -->
+                    <div class="top-container">
+                        <div class="tabs"
+                                    attr-for-selected="id"
+                                    .selected=${this.workspaceTab}
+                                    autoselect>
+                            ${this.getTab('Artboard', 'workspace')}
+                            ${this.getTab('Code', 'code-display')}
+                        </div>
+                        <div class="controls">
+                            <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>
+                        </div>
                     </div>
                     <iron-pages class="workspace-pages" attr-for-selected="name" .selected=${this.workspaceTab}>
                         <div name="workspace" id="workspace-host" class="visible-when-running"></div>

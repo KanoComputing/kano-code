@@ -113,6 +113,9 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             ul li button {
                 border: 0;
             }
+            button.tool {
+                border-radius: 18px;
+            }
             ul li button:focus {
                 outline: none;
             }
@@ -130,7 +133,7 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
                 display: none !important;
             }
         </style>
-        <button id="settings" type="button" class="tool settings" hidden$="[[!showSettings]]" on-tap="_openSettings">
+        <!-- <button id="settings" type="button" class="tool settings" hidden$="[[!showSettings]]" on-tap="_openSettings">
             <iron-icon icon="kc-ui:settings"></iron-icon>
         </button>
         <template is="dom-repeat" items="[[entries]]" filter="_isLeft">
@@ -145,7 +148,7 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
             <kano-value-rendering font="bold 24px Bariol" width="32" height="16" value="[[mouseX]]" text-align="end" offset-x="25"></kano-value-rendering>
             <span>, y:</span>
             <kano-value-rendering font="bold 24px Bariol" width="32" height="16" value="[[mouseY]]" text-align="end" offset-x="25"></kano-value-rendering>
-        </div>
+        </div> -->
         <template is="dom-repeat" items="[[entries]]" filter="_isRight">
             <kano-tooltip id$="tooltip-[[item.id]]" class="fly" position="top" offset="16"><div class="text">[[item.title]]</div></kano-tooltip>
             <button id$="entry-[[item.id]]" type="button" class="tool" on-click="_entryClicked" on-mouseenter="_startEntryTimer" on-mouseleave="_stopEntryTimer">

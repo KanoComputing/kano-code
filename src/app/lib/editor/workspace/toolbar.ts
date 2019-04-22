@@ -30,8 +30,8 @@ export class WorkspaceToolbar extends Plugin {
         if (!this.editor || !this.editor.workspaceView) {
             return;
         }
-        const workspaceView = this.editor.workspaceView;
-        this.toolbar = workspaceView.toolbar;
+   
+        this.toolbar = this.editor.root.querySelector('kc-workspace-toolbar');
         if (!this.toolbar) {
             return;
         }
