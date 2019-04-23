@@ -1,4 +1,4 @@
-import Defaults from '../../blockly/defaults.js';
+import Defaults, { IBlocklyCategory } from '../../blockly/defaults.js';
 import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaRenderer, ICategory } from '../module.js';
 import { walkUpstream } from '../../util/blockly.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
@@ -7,9 +7,7 @@ interface ILegacyModule {
     def : {
         register(Blockly : any) : void;
         defaults : any;
-        category : {
-            blocks : any[];
-        };
+        category : IBlocklyCategory;
     };
 }
 
@@ -27,9 +25,11 @@ interface IRenderedBlock {
 const definitionsMap : Map<string, Meta> = new Map();
 
 class BlocklyMetaRenderer implements IMetaRenderer {
-    private defaults : Defaults;
-    constructor() {
-        this.defaults = new Defaults();
+    public defaults : Defaults = new Defaults();
+    public blocksMap : Map<string, MetaModule> = new Map();
+    public legacyBlocksMap : Map<string, ILegacyModule> = new Map();
+    getEntryForBlock(blockType : string) {
+        return this.blocksMap.get(blockType);
     }
     renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : string[]|null) {
         mod.def.register(Blockly);
@@ -49,7 +49,13 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 return whitelist.indexOf(id) !== -1;
             });
         }
-        return this.defaults.createCategory(category);
+        const cat = this.defaults.createCategory(category);
+        cat.blocks.forEach((block) => {
+            // Create fake module with mapped data from legacy category
+            const entry = new MetaModule({ name: category.id, verbose: category.name, color: category.colour, type: 'module' });
+            this.blocksMap.set(block.id, entry);
+        });
+        return cat as ICategory;
     }
     renderToolboxEntry(mod : MetaModule, whitelist : string[]|null) {
         // Legacy module signature
@@ -89,7 +95,11 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         }, {});
 
         register(Blockly);
-        return this.defaults.createCategory(category) as ICategory;
+        const cat = this.defaults.createCategory(category);
+        cat.blocks.forEach((block) => {
+            this.blocksMap.set(block.id, mod);
+        });
+        return cat as ICategory;
     }
     disposeToolboxEntry(category : ICategory) {
 

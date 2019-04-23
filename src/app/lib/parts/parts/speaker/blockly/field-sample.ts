@@ -1,4 +1,4 @@
-import { Field, Blockly, utils, goog } from '@kano/kwc-blockly/blockly.js';
+import { Field, utils, goog, WidgetDiv } from '@kano/kwc-blockly/blockly.js';
 import { ISampleSet } from '../data';
 import { html, render } from 'lit-html/lit-html.js';
 
@@ -24,12 +24,12 @@ export class FieldSample extends Field {
         this.setValue(value);
     }
     showEditor_() {
-        Blockly.WidgetDiv.show(
+        WidgetDiv.show(
             this,
             this.sourceBlock_.RTL,
             FieldSample.widgetDispose_,
         );
-        const div = Blockly.WidgetDiv.DIV;
+        const div = WidgetDiv.DIV;
         this.domNode.style.background = 'white';
         render(getTemplate(this.items, (id) => {
             this.setValue(id);
@@ -41,7 +41,7 @@ export class FieldSample extends Field {
         const viewportBBox = utils.getViewportBBox();
         const anchorBBox = this.getScaledBBox_();
         const elementSize = goog.style.getSize(this.domNode);
-        Blockly.WidgetDiv.positionWithAnchor(
+        WidgetDiv.positionWithAnchor(
             viewportBBox,
             anchorBBox,
             elementSize,

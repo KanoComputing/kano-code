@@ -28,7 +28,7 @@ export class ToolboxEntry {
 
 export class Toolbox extends Plugin {
     private editor? : Editor;
-    private renderer? : IMetaRenderer;
+    public renderer? : IMetaRenderer;
     private entries : IAPIDefinition[] = [];
     private whitelist : IToolboxWhitelist|null = null;
     onInstall(editor : Editor) {

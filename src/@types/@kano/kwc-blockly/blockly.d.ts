@@ -54,7 +54,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         protected visible_ : boolean;
         protected sourceBlock_ : Block;
         public name : string;
-        constructor(value : string|null, validator? : () => void);
+        constructor(value : string|null, validator? : (v : string) => void);
         forceRerender() : void;
         getValue() : string;
         setValue(v : string) : void;
@@ -67,6 +67,15 @@ declare module '@kano/kwc-blockly/blockly.js' {
         public getText() : string;
         public setSourceBlock(block : Block) : void;
         public dispose() : void;
+    }
+    class FieldTextInput extends Field {
+        static htmlInput_ : HTMLInputElement;
+        spellcheck_ : boolean;
+        static FONTSIZE : number;
+        validate_() : void;
+        resizeEditor_() : void;
+        bindEvents_(input : HTMLInputElement) : void;
+        widgetDispose_() : Function;
     }
     class Toolbox {
         opened : boolean;
@@ -144,11 +153,11 @@ declare module '@kano/kwc-blockly/blockly.js' {
         ORDER_NONE : number;
     }
     class WidgetDiv {
-        isVisible() : boolean;
-        hide() : void;
-        DIV : HTMLDivElement;
-        show(block : Field, rtl : boolean, dispose : Function) : void;
-        positionWithAnchor(a : any, b : any, c : any, rtl : boolean) : void;
+        static isVisible() : boolean;
+        static hide() : void;
+        static DIV : HTMLDivElement;
+        static show(block : Field, rtl : boolean, dispose : Function) : void;
+        static positionWithAnchor(a : any, b : any, c : any, rtl : boolean) : void;
     }
     class BlocklyEvent {}
     class BlockChange extends BlocklyEvent {
@@ -175,11 +184,14 @@ declare module '@kano/kwc-blockly/blockly.js' {
             [K : string] : any;
         };
         bindEvent_(target : HTMLElement|SVGElement, event : string, thisArg : any, callback : Function) : void;
-        WidgetDiv : WidgetDiv;
+        WidgetDiv : typeof WidgetDiv;
         Events : Events;
         setPhantomBlock(connection : Connection, target : Block) : void;
         removePhantomBlock() : void;
         selected? : Block;
         FieldConfig : typeof FieldConfig;
+    }
+    class Xml {
+        static workspaceToDom(workspace : Workspace) : XMLDocument;
     }
 }
