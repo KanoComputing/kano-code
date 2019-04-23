@@ -101,8 +101,9 @@ class KcWorkspaceFrame extends PolymerElement {
                 fill: rgba(255, 255, 255, 1);
             }
             button#fullscreen-close {
-                width: 20px;
-                height: 20px;
+                width: 30px;
+                height: 30px;
+                border-radius: 15px;
             }
             [hidden] {
                 display: none !important;
