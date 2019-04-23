@@ -150,12 +150,16 @@ export class KanoAppEditor extends LitElement {
                 width: 100%;
                 z-index: 302;
             }
+            kc-workspace-frame {
+                margin: 0px 20px!important;
+            }
             kc-workspace-toolbar {
                 padding: 20px 0;
             }
             .top-container {
                 display: flex;
             }
+
             .controls {
                 display: flex;
                 flex: 1;

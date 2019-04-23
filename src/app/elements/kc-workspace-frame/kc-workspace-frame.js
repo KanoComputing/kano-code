@@ -30,6 +30,7 @@ class KcWorkspaceFrame extends PolymerElement {
                     border: none;
                 };
             }
+
             .pause-overlay {
                 position: absolute;
                 top: 0px;
