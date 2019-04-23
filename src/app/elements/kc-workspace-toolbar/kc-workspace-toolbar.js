@@ -134,6 +134,7 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
                 display: none !important;
             }
         </style>
+        <!-- @TODO delete this commented out section once the equivalent functionality is in kit-app-ui -->
         <!-- <button id="settings" type="button" class="tool settings" hidden$="[[!showSettings]]" on-tap="_openSettings">
             <iron-icon icon="kc-ui:settings"></iron-icon>
         </button>

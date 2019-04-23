@@ -5,7 +5,6 @@ import { property, customElement, css, LitElement, html, query } from 'lit-eleme
 import { classMap } from 'lit-html/directives/class-map';
 import '../kc-workspace-toolbar/kc-workspace-toolbar.js';
 
-
 @customElement('kano-app-editor')
 export class KanoAppEditor extends LitElement {
     @property({ type: String })
@@ -74,7 +73,7 @@ export class KanoAppEditor extends LitElement {
                 display: flex;
                 flex-direction: row;
                 align-self: flex-end;
-                margin-top:10px;
+                margin-top: 10px;
             }
             .tab {
                 align-self: center;
@@ -143,16 +142,6 @@ export class KanoAppEditor extends LitElement {
             .editor {
                 position: relative;
             }
-            :host(.fullscreen) kc-workspace-toolbar {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                z-index: 302;
-            }
-            kc-workspace-frame {
-                margin: 0px 20px!important;
-            }
             kc-workspace-toolbar {
                 padding: 20px 0;
             }
@@ -165,7 +154,6 @@ export class KanoAppEditor extends LitElement {
                 display: flex;
                 flex: 1;
                 flex-direction: column;
-                flex: 1 1 auto;
                 box-sizing: border-box;
             }
             .activity-bar {

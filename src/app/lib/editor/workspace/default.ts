@@ -20,7 +20,7 @@ export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
     createDOM() {
         this.root = document.createElement('div');
         this.frame = document.createElement('kc-workspace-frame');
-        this.frame.style.margin = '0 40px';
+        this.frame.style.margin = '0 20px';
         this.partsControls.setAttribute('slot', 'controls');
 
         this.frame.appendChild(this.partsControls);
