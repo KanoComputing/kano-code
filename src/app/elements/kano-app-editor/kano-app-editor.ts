@@ -158,6 +158,7 @@ export class KanoAppEditor extends LitElement {
             }
             .top-container {
                 display: flex;
+                margin-bottom: -16px;
             }
 
             .controls {

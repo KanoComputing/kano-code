@@ -61,7 +61,7 @@ export class KCPartsControls extends LitElement {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                padding: 8px 10px;
+                padding: 8px 30px;
                 font-size: 12px;
                 cursor: pointer;
                 width: 100%;

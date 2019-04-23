@@ -54,10 +54,9 @@ class KcWorkspaceFrame extends PolymerElement {
             .controls {
                 display: flex;
                 flex-direction: column;
-                /* justify-content: space-between; */
                 flex: 1 1 auto;
                 box-sizing: border-box;
-                margin: 20px;
+                margin: 12px 0;
             }
             :host(:not(.fullscreen)) .overlay {
                 display: none;
