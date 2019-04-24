@@ -1,7 +1,7 @@
 import Challenge from 'challenge-engine/definition.js';
 import { Workspace, Block, Blockly, Input, Connection } from '@kano/kwc-blockly/blockly.js';
 import { Editor } from '../editor/editor.js';
-import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
+import { BlocklySourceEditor } from '../source-editor/blockly.js';
 
 class BlocklyChallenge extends Challenge {
     protected editor : Editor;

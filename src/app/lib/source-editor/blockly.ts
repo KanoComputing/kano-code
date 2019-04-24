@@ -1,20 +1,24 @@
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
 import { SourceEditor } from './source-editor.js';
-import '../../../elements/kc-blockly-editor/kc-blockly-editor.js';
+import '../../elements/kc-blockly-editor/kc-blockly-editor.js';
 import { Workspace, Block, Input, utils, Connection, Field } from '@kano/kwc-blockly/blockly.js';
-import Editor from '../editor.js';
-import { QueryEngine, ISelector, IQueryResult } from '../selector/selector.js';
-import { memoize } from '../../util/decorators.js';
-import '../../blockly/core/xml.js';
+import Editor from '../editor/editor.js';
+import { QueryEngine, ISelector, IQueryResult } from '../editor/selector/selector.js';
+import { memoize } from '../util/decorators.js';
+import '../blockly/core/xml.js';
+import { BlocklyCreator } from './blockly/creator.js';
+import BlocklyMetaRenderer from './blockly/api-renderer.js';
 
 // Exclude those characters. This will allow the editor's quirying system to query block ids
 utils.genUid.soup_ = utils.genUid.soup_.replace(/#|>|\.|:/g, '');
 
 export class BlocklySourceEditor implements SourceEditor {
-    private editor : Editor;
+    public editor : Editor;
     private _onDidCodeChange : EventEmitter<string> = new EventEmitter<string>();
     private _onDidSourceChange : EventEmitter<any> = new EventEmitter<any>();
     public domNode : HTMLElement = document.createElement('kc-blockly-editor');
+    private creator? : BlocklyCreator;
+    private apiRenderer? : BlocklyMetaRenderer;
     constructor(editor : Editor) {
         this.editor = editor;
         (this.domNode as any).media = this.editor.config.BLOCKLY_MEDIA || '/node_modules/@kano/kwc-blockly/blockly_built/media/';
@@ -297,5 +301,17 @@ export class BlocklySourceEditor implements SourceEditor {
     getBlockByType(workspace : Workspace, type : string) {
         const allBlocks = workspace.getAllBlocks();
         return allBlocks.find(b => b.type === type);
+    }
+    getCreator() {
+        if (!this.creator) {
+            this.creator = new BlocklyCreator(this.editor);
+        }
+        return this.creator;
+    }
+    getApiRenderer() {
+        if (!this.apiRenderer) {
+            this.apiRenderer = new BlocklyMetaRenderer();
+        }
+        return this.apiRenderer;
     }
 }

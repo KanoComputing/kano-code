@@ -1,6 +1,6 @@
-import { Meta, MetaModule, MetaVariable, MetaParameter, MetaFunction, IMetaRenderer, ICategory } from '../module.js';
+import { Meta, MetaModule, MetaVariable, MetaParameter, MetaFunction, IMetaRenderer, ICategory } from '../../meta-api/module.js';
 
-class TypeScriptMetaRenderer implements IMetaRenderer {
+export class TypeScriptMetaRenderer implements IMetaRenderer {
     disposeToolboxEntry(entry : ICategory): void {
         throw new Error('Method not implemented.');
     }
@@ -44,24 +44,30 @@ class TypeScriptMetaRenderer implements IMetaRenderer {
             return '';
         }
         return `
-        declare namespace ${m.def.name} {
+        declare const ${m.def.name} = {
             ${m.symbols.map(sym => TypeScriptMetaRenderer.render(sym)).join('\n')}
         }
         `;
     }
     static renderVariable(m : MetaVariable) : string {
-        return `declare var ${m.def.name}: ${TypeScriptMetaRenderer.parseType(m.getReturnType())};`;
+        return `${m.def.name}: ${TypeScriptMetaRenderer.parseType(m.getReturnType())};`;
     }
     static renderParam(param : MetaParameter) : string {
         return `${param.def.name}: ${TypeScriptMetaRenderer.parseType(param.getReturnType())}`;
     }
     static renderFunction(m : MetaFunction) {
-        return `declare function ${m.def.name}(${m.getParameters().map(param => TypeScriptMetaRenderer.renderParam(param)).join(', ')}): ${m.getReturnType()};`;
+        return `${m.def.name}(${m.getParameters().map(param => TypeScriptMetaRenderer.renderParam(param)).join(', ')}): ${m.getReturnType()};`;
     }
     static parseType(type : any) {
         switch (type) {
         case Number: {
             return 'number';
+        }
+        case String: {
+            return 'string';
+        }
+        case Function: {
+            return 'Function';
         }
         default: {
             return type;

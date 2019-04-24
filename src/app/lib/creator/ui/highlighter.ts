@@ -8,7 +8,8 @@ export class Highlighter {
         if (!this.domNode) {
             this.domNode = document.createElement('div');
             this.domNode.style.position = 'fixed';
-            this.domNode.style.background = 'rgba(0, 0, 0, 0.5)';
+            this.domNode.style.background = 'rgba(33, 150, 243, 0.4)';
+            this.domNode.style.border = '1px solid rgb(33, 150, 243)';
         }
         return this.domNode;
     }

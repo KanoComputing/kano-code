@@ -10,6 +10,7 @@
   "scripts": {
     "typedoc": "typedoc",
     "tsc": "tsc",
+    "rollup": "rollup",
     "build:def": "tsc --allowJs false --declaration --emitDeclarationOnly || exit 0",
     "build:src": "tsc",
     "build": "yarn clean && yarn build:src && yarn build:def",
@@ -21,7 +22,10 @@
     "ci:test": "yarn run --silent test --reporter xunit > test-results.xml",
     "coverage": "web-tester cover dist/**/*.test.js --exclude ./dist/test/**/*",
     "ci:coverage": "yarn run --silent coverage -r cobertura -r markdown",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "bundle-monaco-worker:editor": "rollup node_modules/monaco-editor/esm/vs/editor/editor.worker.js -f iife --name editorWorker -o ./monaco-workers/editor.worker.js",
+    "bundle-monaco-worker:ts": "rollup node_modules/monaco-editor/esm/vs/language/typescript/ts.worker.js -f iife --name tsWorker -o ./monaco-workers/ts.worker.js",
+    "bundle-monaco-workers": "yarn bundle-monaco-worker:editor && yarn bundle-monaco-worker:ts"
   },
   "publishConfig": {
     "access": "restricted"
@@ -36,7 +40,9 @@
     "@types/mocha": "^5.2.5",
     "@types/sinon": "^7.0.6",
     "@webcomponents/shadycss": "^1.9.1",
+    "fast-glob": "^2.2.6",
     "rimraf": "^2.6.3",
+    "rollup": "^1.10.1",
     "sinon": "^7.2.4",
     "typedoc": "^0.14.2",
     "typescript": "^3.2.4"

@@ -2,6 +2,8 @@ import Editor from '../editor/editor.js';
 import { Disposables } from '@kano/common/index.js';
 import { CreatorUI } from './ui/creator-ui.js';
 import { Highlighter } from './ui/highlighter.js';
+import { ToolbarEntryPosition } from '../../elements/kc-workspace-toolbar/entry.js';
+import { downloadFile } from '../util/file.js';
 
 export interface IStepData {
     [K : string] : any;
@@ -10,7 +12,6 @@ export interface IStepData {
 export interface IGeneratedStep {
     source : string;
     data : IStepData;
-    middleware? : string;
 }
 
 export abstract class Creator {
@@ -19,6 +20,10 @@ export abstract class Creator {
     protected ui : CreatorUI = new CreatorUI();
     protected highlighter : Highlighter = new Highlighter();
     protected generatedSteps? : IGeneratedStep[];
+    /**
+     * Store the middlewares created by the user. The generated step source will be used as a key
+     */
+    protected middlewares : Map<string, string> = new Map();
     constructor(editor : Editor) {
         this.editor = editor;
         this.subscriptions = [];
@@ -27,33 +32,60 @@ export abstract class Creator {
         } else {
             this.editor.onDidInject(() => this.onInject(), this, this.subscriptions);
         }
-        this.ui.onDidFocusStep((step : IGeneratedStep) => {
-            const el = this.editor.queryElement(step.source);
-            if (!el) {
-                return;
-            }
-            this.highlighter.highlight(el);
-        }, this, this.subscriptions);
-        this.ui.onDidBlurStep(() => {
-            this.highlighter.clear();
-        }, this, this.subscriptions);
-        this.ui.onDidUpdateStepData((info) => {
-            if (!this.generatedSteps) {
-                return;
-            }
-            this.generatedSteps.splice(info.index, 1, info.step);
-            this.ui.setStepData(this.generatedSteps);
+        this.ui.setMiddlewares(this.middlewares);
+        this.ui.onDidFocusStep((step : IGeneratedStep) => this.focusTarget(step.source), this, this.subscriptions);
+        this.ui.onDidBlurStep(() => this.blurTarget(), this, this.subscriptions);
+        this.ui.onDidUpdateMiddleware((info) => {
+            this.middlewares.set(info.source, info.middleware);
+            this.ui.setMiddlewares(this.middlewares);
         });
         this.editor.sourceEditor.onDidCodeChange(() => {
-            const stepData = this.generate();
-            this.generatedSteps = this.generate();
-            this.ui.setStepData(this.generatedSteps);
+            this.onCodeChanged();
         }, this, this.subscriptions);
     }
+    onCodeChanged() {
+        this.generatedSteps = this.generate();
+        this.ui.setStepData(this.generatedSteps);
+    }
     generate() : IGeneratedStep[] {
+        const parts = this.editor.output.parts.getParts();
+        const steps = [];
+        parts.forEach((part) => {
+            console.log(part);
+        });
         return [];
     }
-    onInject() {}
+    generateChallenge() {
+        const generatedStep = this.generate();
+        const steps = generatedStep.map((generatedStep) => generatedStep.data);
+        const app = this.editor.save();
+        return {
+            app,
+            challenge: {
+                steps,
+            },
+        };
+    }
+    focusTarget(source : string) {
+        const el = this.editor.queryElement(source);
+        if (!el) {
+            return;
+        }
+        this.highlighter.highlight(el);
+    }
+    blurTarget() {
+        this.highlighter.clear();
+    }
+    onInject() {
+        const generateButton = this.editor.workspaceToolbar.addEntry({
+            id: 'generate-challenge',
+            position: ToolbarEntryPosition.RIGHT,
+        });
+        generateButton.onDidActivate(() => {
+            const challengeSource = this.generateChallenge();
+            downloadFile('new-challenge.kch', JSON.stringify(challengeSource, null, '    '));
+        });
+    }
     dispose() {
         this.subscriptions.forEach(d => d.dispose());
         this.subscriptions.length = 0;

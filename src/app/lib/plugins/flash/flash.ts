@@ -1,7 +1,7 @@
 import { subscribeTimeout, IDisposable, EventEmitter } from '@kano/common/index.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { flash } from './icons.js';
-import { BlocklySourceEditor } from '../../editor/source-editor/blockly.js';
+import { BlocklySourceEditor } from '../../source-editor/blockly.js';
 import Editor from '../../editor/editor.js';
 import { FlashField } from './field.js';
 

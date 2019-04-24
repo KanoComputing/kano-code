@@ -12,9 +12,8 @@ import { Output } from '../output/output.js';
 import { ActivityBar } from './activity-bar.js';
 import { WorkspaceToolbar } from './workspace/toolbar.js';
 import { EditorPartsManager } from '../parts/editor.js';
-import { BlocklySourceEditor } from './source-editor/blockly.js';
 import { transformLegacyApp } from '../legacy/loader.js';
-import { SourceEditor } from './source-editor/source-editor.js';
+import { SourceEditor, getSourceEditor } from '../source-editor/source-editor.js';
 import { Plugin } from './plugin.js';
 import EditorProfile, { DefaultEditorProfile } from './profile.js';
 import { CreationCustomPreviewProvider } from '../creation/creation-preview-provider.js';
@@ -40,7 +39,7 @@ window.Kano = window.Kano || {};
 window.Kano.Code = window.Kano.Code || {};
 
 export interface IEditorOptions {
-    sourceType? : 'blockly'|'code';
+    sourceType? : string;
     mediaPath? : string;
     blockly? : any;
 }
@@ -64,7 +63,7 @@ export class Editor extends EditorOrPlayer {
     /**
      * The type of source for this editor. Defines what type of source editor will be provided to the user
      */
-    public sourceType : 'blockly'|'code' = 'blockly';
+    public sourceType : string = 'blockly';
     /**
      * The output being driven by this editor
      */
@@ -168,10 +167,13 @@ export class Editor extends EditorOrPlayer {
         this.sourceType = opts.sourceType || 'blockly';
         this._setupMediaPath(opts.mediaPath);
 
-        // No support for dynamic editor yet
-        if (this.sourceType === 'blockly') {
+        const SourceEditorClass = getSourceEditor(this.sourceType);
+
+        if (!SourceEditorClass) {
+            throw new Error(`Could not create Editor: Source editor '${this.sourceType}' was not registered. Make sure your import an editor from @kano/code/source-editor`);
         }
-        this.sourceEditor = new BlocklySourceEditor(this);
+
+        this.sourceEditor = new SourceEditorClass(this);
         this.sourceEditor.onDidCodeChange((code) => {
             this.setCode(code);
         });
@@ -214,8 +216,10 @@ export class Editor extends EditorOrPlayer {
         }
     }
     protected appendSourceEditor() {
-        if (this.domNode && this.domNode.sourceContainer) {
-            this.domNode.sourceContainer.appendChild(this.sourceEditor.domNode);
+        if (this.domNode) {
+            this.sourceEditor.domNode.setAttribute('slot', 'source-editor');
+            this.sourceEditor.domNode.style.flex = '1';
+            this.domNode.appendChild(this.sourceEditor.domNode);
         }
     }
     protected ensureProfile() {

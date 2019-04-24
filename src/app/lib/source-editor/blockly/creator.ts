@@ -1,11 +1,23 @@
-import { Creator, IStepData, IGeneratedStep } from './creator.js';
-import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
-import { Xml, BlockSvg } from '@kano/kwc-blockly/blockly.js';
-import { BlocklyCreatorToolbox } from './blockly/toolbox.js';
-import { findStartNodes, getAncestor } from './blockly/xml.js';
-import BlocklyMetaRenderer from '../meta-api/renderer/blockly.js';
+import { Creator, IGeneratedStep } from '../../creator/creator.js';
+import { BlocklySourceEditor } from '../blockly.js';
+import { Xml, Block } from '@kano/kwc-blockly/blockly.js';
+import { BlocklyCreatorToolbox } from './creator/toolbox.js';
+import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue } from './creator/xml.js';
+import BlocklyMetaRenderer from './api-renderer.js';
+import { runMiddleware } from '../../creator/util.js';
+import { SourceEditor } from '../source-editor.js';
 
-const CUSTOM_BLOCKS = ['generator_step'];
+const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
+
+function isBlocklySourceEditor(sourceEditor : SourceEditor) : sourceEditor is BlocklySourceEditor {
+    return sourceEditor.editor.sourceType === 'blockly';
+}
+
+interface IConnectionInfo {
+    name : string;
+    parentStep? : IGeneratedStep;
+    id? : string;
+}
 
 export class BlocklyCreator extends Creator {
     sourceEditor? : BlocklySourceEditor;
@@ -16,8 +28,11 @@ export class BlocklyCreator extends Creator {
         return `block_${this.aliasCounter}`;
     }
     onInject() {
+        super.onInject();
         this.editor.toolbox.addEntry(BlocklyCreatorToolbox, 0);
-        this.sourceEditor = this.editor.sourceEditor as BlocklySourceEditor;
+        if (isBlocklySourceEditor(this.editor.sourceEditor)) {
+            this.sourceEditor = this.editor.sourceEditor;
+        }
     }
     generate() {
         this.aliasCounter = -1;
@@ -37,21 +52,27 @@ export class BlocklyCreator extends Creator {
         
         return steps;
     }
-    getConnectionForStatement(block : HTMLElement) {
-        const statement = getAncestor(block, b => b.tagName.toLowerCase() === 'statement' || b.tagName.toLowerCase() === 'value');
-        if (!statement) {
+    getConnectionForStatementOrValue(block : HTMLElement) : IConnectionInfo|null {
+        // Find the statement or value node that hosts the block. Make sure to not accept statements or values inside a shadow block
+        const input = getAncestor(block, b => nodeIsNonShadowStatementOrValue(b));
+        if (!input) {
             return null;
         }
-        const name = statement.getAttribute('name');
-        const parentBlock = getAncestor(statement, b => b.tagName.toLowerCase() === 'block') as HTMLElement;
+        // Retrieve the name of the input
+        const name = input.getAttribute('name')!;
+        // Find the input's parent block
+        const parentBlock = getAncestor(input, b => b.tagName.toLowerCase() === 'block') as HTMLElement;
+        // Bail out if it doesn't have a parent
         if (!parentBlock) {
             return null;
         }
+        // Retrieve the step that created this parent block
         const step = this.nodeMap.get(parentBlock);
+        // No step means the block is in the default app, in that case return the id of the parent block
         if (!step) {
             return {
                 name,
-                id: parentBlock.getAttribute('id'),
+                id: parentBlock.getAttribute('id')!,
             };
         }
         return {
@@ -59,11 +80,14 @@ export class BlocklyCreator extends Creator {
             parentStep: step,
         };
     }
-    generateConnectionQuery(result : any) {
+    generateConnectionQuery(result : IConnectionInfo) {
         let connectionQuery = null;
         if (result.parentStep) {
+            const stepData = result.parentStep.data;
+            const middleware = this.middlewares.get(result.parentStep.source);
+            const data = runMiddleware(stepData, middleware);
             // There is a parent step found, get the alias
-            connectionQuery = `alias#${result.parentStep.data.alias}>input#${result.name}`;
+            connectionQuery = `alias#${data.alias}>input#${result.name}`;
         } else if (result.id) {
             // There no parent found, but we got an id, use the id
             connectionQuery = `block#${result.id}>input#${result.name}`;
@@ -76,18 +100,28 @@ export class BlocklyCreator extends Creator {
         if (!type) {
             return [];
         }
+        let steps : IGeneratedStep[] = [];
         if (type === 'generator_step') {
-            const field = block.querySelector('field[name="JSON"]') as HTMLElement;
-            const dataString = field.innerText;
-            let data = {};
-            try {
-                data = JSON.parse(dataString);
-            } catch(e) {}
             const customStep = {
                 source: `block#${id}`,
-                data,
+                data: {},
             };
-            let steps = [customStep];
+            steps.push(customStep);
+            const next = block.querySelector('next') as HTMLElement;
+            if (next) {
+                steps = steps.concat(this.nodeToSteps(next));
+            }
+            return steps;
+        } else if (type === 'generator_banner') {
+            const field = block.querySelector('field[name="TEXT"]') as HTMLElement;
+            if (field) {
+                steps.push({
+                    source: `block#${id}`,
+                    data: {
+                        banner: field.innerText,
+                    },
+                });
+            }
             const next = block.querySelector('next') as HTMLElement;
             if (next) {
                 steps = steps.concat(this.nodeToSteps(next));
@@ -114,7 +148,7 @@ export class BlocklyCreator extends Creator {
         }
         // Resolve an eventual parent connection
         let connectionQuery = null;
-        let parentConnection = this.getConnectionForStatement(block);
+        let parentConnection = this.getConnectionForStatementOrValue(block);
         if (parentConnection) {
             connectionQuery = this.generateConnectionQuery(parentConnection);
         }
@@ -177,6 +211,67 @@ export class BlocklyCreator extends Creator {
         return this.blockToSteps(block);
     }
     valueToSteps(node : HTMLElement) : IGeneratedStep[] {
-        return [];
+        const name = node.getAttribute('name') || '';
+        // Statements only have one block in them
+        const block = [...node.children].find(n => n.tagName.toLowerCase() === 'block') as HTMLElement;
+        if (!block) {
+            const shadow = node.querySelector('shadow') as HTMLElement;
+            if (!shadow) {
+                return [];
+            }
+            return this.shadowToSteps(node.parentElement!, name, shadow);
+        }
+        return this.blockToSteps(block);
+    }
+    shadowToSteps(parent : HTMLElement, inputName : string, shadow : HTMLElement) : IGeneratedStep[] {
+        const parentType = parent.getAttribute('type');
+        const id = shadow.getAttribute('id');
+        if (!parentType) {
+            return [];
+        }
+        const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
+        const defaults = renderer.getShadowForBlock(parentType);
+        const shadowString = defaults[inputName];
+        if (!shadowString) {
+            console.warn(`Could not infer challenge step in shadow block: Missing default definition for input '${inputName}' in block '${parentType}'`);
+        }
+        const shadowTree = parseXml(shadowString);
+        const result = findFirstTreeDiff(shadowTree.documentElement, shadow);
+        if (result.type === DiffResultType.INNER_TEXT) {
+            const parentStep = this.nodeMap.get(parent);
+            let target;
+            // This comes from a default block, point to the block using its id
+            if (!parentStep) {
+                target = `block#${id}`;
+            } else {
+                target = `alias#${parentStep.data.alias}>input#${inputName}`;
+            }
+            const step = {
+                source: `block#${id}`,
+                data: {
+                    type: 'change-input',
+                    target,
+                    value: result.to,
+                    bannerCopy: `Change the strength from <kano-value-preview><span>${result.from}</span></kano-value-preview> to <kano-value-preview><span>${result.to}</span></kano-value-preview>`,
+                },
+            };
+            return [step];
+        } else if (result.type === DiffResultType.NODE && result.to) {
+            return this.blockToSteps(result.to);
+        } else {
+            return [];
+        }
+    }
+    focusTarget(source : string) {
+        const target = this.editor.querySelector(source);
+        if (!target) {
+            return;
+        }
+        if (target.block) {
+            const block = target.block as Block;
+            this.highlighter.highlight(block.svgPath_);
+        } else {
+            super.focusTarget(source);
+        }
     }
 }

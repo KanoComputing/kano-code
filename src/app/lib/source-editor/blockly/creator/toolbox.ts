@@ -1,6 +1,6 @@
 import { Blockly, Block } from '@kano/kwc-blockly/blockly.js';
-import { TextareaField } from './textarea.js';
-import { IAPIDefinition } from '../../meta-api/module.js';
+import { TextareaField } from '../field/textarea.js';
+import { IAPIDefinition } from '../../../meta-api/module.js';
 
 export const BlocklyCreatorToolbox : IAPIDefinition = {
     type: 'module',
@@ -60,18 +60,7 @@ export const BlocklyCreatorToolbox : IAPIDefinition = {
     }, {
         type: 'function',
         name: 'step',
-        parameters: [{
-            type: 'parameter',
-            name: 'json',
-            returnType: String,
-            blockly: {
-                customField() {
-                    return new TextareaField(`{
-    
-}`);
-                },
-            },
-        }],
+        verbose: 'custom step',
         blockly: {
             javascript() {
                 return '// @step\n';

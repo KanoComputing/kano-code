@@ -1,5 +1,5 @@
 import Defaults, { IBlocklyCategory } from '../../blockly/defaults.js';
-import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaRenderer, ICategory } from '../module.js';
+import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaRenderer, ICategory } from '../../meta-api/module.js';
 import { walkUpstream } from '../../util/blockly.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 
@@ -30,6 +30,9 @@ class BlocklyMetaRenderer implements IMetaRenderer {
     public legacyBlocksMap : Map<string, ILegacyModule> = new Map();
     getEntryForBlock(blockType : string) {
         return this.blocksMap.get(blockType);
+    }
+    getShadowForBlock(blockType : string) {
+        return this.defaults.shadowMap.get(blockType);
     }
     renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : string[]|null) {
         mod.def.register(Blockly);

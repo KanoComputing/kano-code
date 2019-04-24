@@ -1,7 +1,7 @@
 import Editor from '../../editor/editor.js';
 import { KCEditorBanner } from '../../../elements/kano-editor-banner/kano-editor-banner.js';
 import { IEditorWidget } from '../../editor/widget/widget.js';
-import { BlocklySourceEditor } from '../../editor/source-editor/blockly.js';
+import { BlocklySourceEditor } from '../../source-editor/blockly.js';
 import { Blockly } from '@kano/kwc-blockly/blockly.js';
 import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
 import 'twemoji-min/2/twemoji.min.js';

@@ -239,7 +239,7 @@ export class KanoAppEditor extends LitElement {
                 <div name="code" class="editor" id="source-panel">
                     <div id="resize" @mousedown=${(e : MouseEvent) => this.resizeWorkspace(e)} class="visible-when-running"></div>
                     <div main class="main">
-                        <div id="source-container"></div>
+                        <slot name="source-editor"></slot>
                     </div>
                 </div>
             </section>

@@ -1,6 +1,6 @@
 import { Editor } from '../editor/editor.js';
 import { KanoCodeChallenge } from './kano-code.js';
-import { BlocklySourceEditor } from '../editor/source-editor/blockly.js';
+import { BlocklySourceEditor } from '../source-editor/blockly.js';
 import { transformChallenge } from './legacy.js';
 import { IToolboxWhitelist } from '../editor/toolbox.js';
 import { IDisposable, EventEmitter, subscribeDOM } from '@kano/common/index.js';

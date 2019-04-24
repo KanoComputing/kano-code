@@ -4,7 +4,7 @@ import { speaker } from '@kano/icons/parts.js';
 import { FieldSequence } from './blockly/field-sequence.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import Editor from '../../../editor/editor.js';
-import { BlocklySourceEditor } from '../../../editor/source-editor/blockly.js';
+import { BlocklySourceEditor } from '../../../source-editor/blockly.js';
 import { FieldSequenceConfig } from './blockly/field-sequence-config.js';
 import { Meta } from '../../../meta-api/module.js';
 import { onDidCreateBlockType } from '../../../util/blockly.js';

@@ -1,9 +1,11 @@
-import { LitElement, html, css, property, customElement } from 'lit-element/lit-element.js';
-import { IGeneratedStep, IStepData } from '../creator.js';
+import { LitElement, html, css, property, customElement, query } from 'lit-element/lit-element.js';
+import { IGeneratedStep } from '../creator.js';
 import { IDisposable, EventEmitter } from '@kano/common/index.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { prismTheme } from '../../../elements/kano-code-display/kano-prism-theme.js';
 import { highlight } from '../../directives/prism.js';
+import * as monaco from '../../source-editor/monaco/editor.js';
+import { runMiddleware } from '../util.js';
 
 @customElement('kc-creator')
 export class CreatorUI extends LitElement {
@@ -16,8 +18,18 @@ export class CreatorUI extends LitElement {
     @property({ type: Number })
     public selectedStepIndex : number = -1;
 
+    @property({ type: Map })
+    public middlewares : Map<string, string> = new Map();
+
     get selectedStep() {
         return this.generatedSteps[this.selectedStepIndex];
+    }
+
+    get middleware() {
+        if (!this.selectedStep) {
+            return;
+        }
+        return this.middlewares.get(this.selectedStep.source);
     }
 
     _onDidFocusStep : EventEmitter<IGeneratedStep> = new EventEmitter();
@@ -26,50 +38,63 @@ export class CreatorUI extends LitElement {
     _onDidBlurStep : EventEmitter<IGeneratedStep> = new EventEmitter();
     get onDidBlurStep() { return this._onDidBlurStep.event; }
 
-    _onDidUpdateStepData : EventEmitter<{ index : number, step : IGeneratedStep }> = new EventEmitter();
-    get onDidUpdateStepData() { return this._onDidUpdateStepData.event; }
+    _onDidUpdateMiddleware : EventEmitter<{ source : string, middleware : string }> = new EventEmitter();
+    get onDidUpdateMiddleware() { return this._onDidUpdateMiddleware.event; }
+
+    @query('#monaco-container')
+    monacoContainer? : HTMLElement;
+
+    editor? : monaco.editor.IStandaloneCodeEditor;
 
     static get styles() {
         return [prismTheme, css`
-            :host {
+            kc-creator {
                 display: flex;
                 flex-direction: row;
                 font-family: 'Segoe UI', Tahoma, sans-serif;
                 color: #d5d5d5;
             }
-            .col {
+            kc-creator .col {
                 flex: 1;
                 background: #242424;
                 display: flex;
                 flex-direction: column;
             }
-            .step {
+            kc-creator .preview {
+                flex: 2;
+            }
+            kc-creator .code {
+                flex: 4;
+            }
+            kc-creator .step {
                 cursor: pointer;
                 padding: 4px;
                 font-size: 12px;
             }
-            .step:nth-child(odd) {
+            kc-creator .step:nth-child(odd) {
                 background: #292929;
             }
-            .step:hover,
-            .step.selected {
+            kc-creator .step:hover,
+            kc-creator .step.selected {
                 background: #12243d;
             }
-            .preview {
+            kc-creator .preview {
                 background: #1e1e1e;
+                max-width: 33.33%;
             }
-            .header {
+            kc-creator .header {
+                font-size: 14px;
                 background: #333;
                 border-bottom: 1px solid #3d3d3d;
                 padding: 4px;
             }
-            .col:not(:last-child) {
+            kc-creator .col:not(:last-child) {
                 border-left: 1px solid #3d3d3d;
             }
-            .code textarea {
+            kc-creator .code #monaco-container {
                 flex: 1;
             }
-            [hidden] {
+            kc-creator [hidden] {
                 display: none !important;
             }
         `];
@@ -92,25 +117,63 @@ export class CreatorUI extends LitElement {
             </div>
             <div class="col code" ?hidden=${!this.selectedStep}>
                 <div class="header">Middleware</div>
-                <textarea @input=${(e : Event) => this._onCodeChanged(e.target as HTMLTextAreaElement)}>${this.selectedStep ? (this.selectedStep.middleware || 'return step;') : 'return step;'}</textarea>
+                <div id="monaco-container"></div>
             </div>
         `;
     }
+    createRenderRoot() {
+        /**
+         * Render template in light DOM. Note that shadow DOM features like 
+         * encapsulated CSS are unavailable.
+         */
+            return this;
+    }
     renderPreview() {
-        const middleware = this.selectedStep ? (this.selectedStep.middleware || 'return step;') : 'return step;';
         const stepData = this.selectedStep ? this.selectedStep.data : {};
-        const transformedData = this.runMiddleware(stepData, middleware);
+        const transformedData = runMiddleware(stepData, this.middleware);
         const stepDataString = this.selectedStep ? JSON.stringify(transformedData, null, '    ') : '';
         return html`
             <pre><code>${highlight(stepDataString, 'javascript')}</code></pre>
         `;
     }
+    firstUpdated() {
+        if (!this.monacoContainer) {
+            return;
+        }
+        this.editor = monaco.editor.create(this.monacoContainer, {
+            language: 'javascript',
+            theme: 'vs-dark',
+        });
+        const model = this.editor.getModel();
+        if (model) {
+            model.onDidChangeContent(() => {
+                this._onCodeChanged();
+            });
+        }
+    }
+    updated(changedProps : Map<string, unknown>) {
+        if (!changedProps.has('selectedStepIndex') || !this.editor) {
+            return;
+        }
+        this.editor.layout();
+        if (!this.selectedStep) {
+            return;
+        }
+        monaco.languages.typescript.javascriptDefaults.setCompilerOptions({ noLib: true, allowNonTsExtensions: true });
+        monaco.languages.typescript.javascriptDefaults.addExtraLib(`const step = ${JSON.stringify(this.selectedStep.data)}`, 'selected-step.js');
+        this.editor.setValue(this.middleware || '\n\nreturn step;');
+    }
     inject(target : HTMLElement) {
+        // This force lit to add the styles even if it is not a shadow root enabled element
+        (this as any)._needsShimAdoptedStyleSheets = true;
         target.appendChild(this);
         this.style.height = `400px`;
     }
     setStepData(steps : IGeneratedStep[]) {
         this.generatedSteps = steps.slice(0);
+    }
+    setMiddlewares(middlewares : Map<string, string>) {
+        this.middlewares = new Map(middlewares);
     }
     selectStep(index : number) {
         this.selectedStepIndex = index;
@@ -121,25 +184,17 @@ export class CreatorUI extends LitElement {
         }
         this.subscriptions.forEach(d => d.dispose());
         this.subscriptions.length = 0;
-    }
-    runMiddleware(stepData : IStepData, middleware : string) {
-        let result = stepData;
-        try {
-            const fn = new Function('step', middleware);
-            result = fn.call(null, Object.assign({}, stepData));
-        } catch (e) {
-            console.error(e);
+        if (this.editor) {
+            this.editor.dispose();
         }
-        return result;
     }
-    _onCodeChanged(target : HTMLTextAreaElement) {
-        this._onDidUpdateStepData.fire({
-            index: this.selectedStepIndex,
-            step: {
-                source: this.selectedStep.source,
-                data: this.selectedStep.data,
-                middleware: target.value,
-            },
+    _onCodeChanged() {
+        if (!this.editor) {
+            return;
+        }
+        this._onDidUpdateMiddleware.fire({
+            source: this.selectedStep.source,
+            middleware: this.editor.getValue(),
         });
     }
     _onMouseEnter(step : IGeneratedStep) {

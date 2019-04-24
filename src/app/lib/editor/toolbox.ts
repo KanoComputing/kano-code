@@ -1,8 +1,5 @@
 import { Plugin } from './plugin.js';
-import MetaModule, { IMetaRenderer, IAPIDefinition } from '../meta-api/module.js';
-// TODO: Only load the required renderer for the source type
-import BlocklyMetaRenderer from '../meta-api/renderer/blockly.js';
-import TypeScriptMetaRenderer from '../meta-api/renderer/typescript.js';
+import { MetaModule, IMetaRenderer, IAPIDefinition } from '../meta-api/module.js';
 import Editor from './editor.js';
 import { QueryEngine } from './selector/selector.js';
 
@@ -33,17 +30,7 @@ export class Toolbox extends Plugin {
     private whitelist : IToolboxWhitelist|null = null;
     onInstall(editor : Editor) {
         this.editor = editor;
-        switch (editor.sourceType) {
-        case 'code': {
-            this.renderer = new TypeScriptMetaRenderer();
-            break;
-        }
-        default:
-        case 'blockly': {
-            this.renderer = new BlocklyMetaRenderer();
-            break;
-        }
-        }
+        this.renderer = this.editor.sourceEditor.getApiRenderer();
     }
     setEntries(entries : IAPIDefinition[]) {
         this.entries = entries;
