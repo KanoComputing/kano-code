@@ -49,6 +49,7 @@ export class KanoAppEditor extends LitElement {
                 flex-basis: 0.000000001px;
                 position: relative;
                 overflow: hidden;
+                margin-top: 35px;
             }
             :host section #source-panel {
                 flex: 1 1 auto;
@@ -205,6 +206,7 @@ export class KanoAppEditor extends LitElement {
                 width: 100%;
                 height: 100%;
                 pointer-events: none;
+                margin-top: 35px;
             }
             #widget-layer * {
                 pointer-events: all;
