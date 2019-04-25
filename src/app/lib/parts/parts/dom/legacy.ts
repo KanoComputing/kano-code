@@ -75,6 +75,7 @@ export function transformLegacyDOMPart(type : string, app : any) {
             LegacyUtil.transformBlock(root, `block[type="${id}#ui_rotation"]`, (block) => {
                 block.setAttribute('type', `${id}_rotation_get`);
             });
+            LegacyUtil.transformEventBlock(root, `${id}.clicked`, `${id}_onClick`, 'CALLBACK');
         });
         const serializer = new XMLSerializer();
         app.source = serializer.serializeToString(root);

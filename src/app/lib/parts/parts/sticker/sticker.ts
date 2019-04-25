@@ -5,6 +5,7 @@ import { Sticker } from './types.js';
 import { stickers } from './data.js';
 import Output from '../../../output/output.js';
 import { join } from '../../../util/path.js';
+import { transformLegacySticker } from './legacy.js';
 
 const all = stickers.reduce<{ [K : string] : string }>((acc, item) => Object.assign(acc, item.stickers), {});
 
@@ -19,6 +20,9 @@ const ASSET_URL_PREFIX_KEY = 'sticker:base-url';
 export class StickerPart extends DOMPart<HTMLDivElement> {
     @component(StickerComponent)
     public core : StickerComponent;
+    static transformLegacy(app : any) {
+        transformLegacySticker(app);
+    }
     static get items() { return stickers; }
     static resolve(item : string) {
         const prefix = Output.config.get(ASSET_URL_PREFIX_KEY, '/assets/part/stickers/');

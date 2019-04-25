@@ -1,11 +1,32 @@
-import AppModule from '../app-modules/app-module';
-import Editor from '../editor/editor';
+import { AppModule } from '../app-modules/app-module.js';
+import { Editor } from '../editor/editor.js';
+import { LegacyUtil } from './util.js';
+import { utils } from '@kano/kwc-blockly/blockly.js';
 
 function rewriteSource(app : any) {
     if (app.code && app.code.snapshot) {
         app.source = app.code.snapshot.blocks;
         delete app.code;
     }
+    rewriteBlocks(app);
+}
+
+function rewriteBlocks(app : any) {
+    const root = LegacyUtil.getDOM(app.source);
+    if (!root) {
+        return;
+    }
+    const all = [...root.querySelectorAll('[id]')];
+    all.forEach((el) => {
+        const id = el.getAttribute('id');
+        if (id && /#|>|\.|:/g.test(id)) {
+            const newId = utils.genUid();
+            el.setAttribute('id', newId);
+        }
+    });
+    const serializer = new XMLSerializer();
+    const newSource = serializer.serializeToString(root);
+    app.source = newSource;
 }
 
 function rewriteParts(app : any, editor : Editor) {

@@ -4,6 +4,32 @@ const COLOR = '#1198ff';
 
 const ID = 'control';
 
+const everyUnits = [
+    [
+        'seconds',
+        'seconds',
+    ],
+    [
+        'milliseconds',
+        'milliseconds',
+    ],
+    [
+        'frames',
+        'frames',
+    ],
+];
+
+const inTimeUnits = [
+    [
+        'seconds',
+        'seconds',
+    ],
+    [
+        'milliseconds',
+        'milliseconds',
+    ],
+];
+
 export const ControlAPI = {
     type: 'blockly',
     id: ID,
@@ -62,20 +88,7 @@ export const ControlAPI = {
                     }, {
                         type: 'field_dropdown',
                         name: 'UNIT',
-                        options: [
-                            [
-                                'seconds',
-                                'seconds',
-                            ],
-                            [
-                                'milliseconds',
-                                'milliseconds',
-                            ],
-                            [
-                                'frames',
-                                'frames',
-                            ],
-                        ],
+                        options: everyUnits,
                     }],
                     message1: `${Blockly.Msg.CONTROLS_REPEAT_INPUT_DO} %1`,
                     args1: [{
@@ -108,16 +121,7 @@ export const ControlAPI = {
                     }, {
                         type: 'field_dropdown',
                         name: 'UNIT',
-                        options: [
-                            [
-                                'seconds',
-                                'seconds',
-                            ],
-                            [
-                                'milliseconds',
-                                'milliseconds',
-                            ],
-                        ],
+                        options: inTimeUnits,
                     }],
                     message1: `${Blockly.Msg.CONTROLS_REPEAT_INPUT_DO} %1`,
                     args1: [{
@@ -218,6 +222,14 @@ export const ControlAPI = {
         },
         repeat_x_times: {
             N: 10,
+        },
+    },
+    labels: {
+        every_x_seconds: {
+            UNIT: everyUnits,
+        },
+        in_x_time: {
+            UNIT: inTimeUnits,
         },
     },
 };

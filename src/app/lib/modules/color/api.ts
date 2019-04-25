@@ -5,6 +5,11 @@ const COLOR = '#88c440';
 
 const ID = 'color';
 
+const colorFormats = [
+    ['RGB', 'rgb'],
+    ['HSV', 'hsv'],
+];
+
 export const ColorAPI = {
     type: 'blockly',
     id: ID,
@@ -52,12 +57,7 @@ export const ColorAPI = {
                 },
             },
             init() {
-                const PROPERTIES = [
-                    ['RGB', 'rgb'],
-                    ['HSV', 'hsv'],
-                ];
-
-                const dropdown = new Blockly.FieldDropdown(PROPERTIES, function (this : Field, option : any) {
+                const dropdown = new Blockly.FieldDropdown(colorFormats, function (this : Field, option : any) {
                     (this.sourceBlock_ as any).updateShape_(option);
                 });
 
@@ -173,6 +173,11 @@ export const ColorAPI = {
             FROM: '#000000',
             TO: '#ffffff',
             PERCENT: 50,
+        },
+    },
+    labels: {
+        create_color: {
+            TYPE: colorFormats,
         },
     },
 };

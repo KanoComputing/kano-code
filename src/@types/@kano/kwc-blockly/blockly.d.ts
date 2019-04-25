@@ -112,6 +112,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         createSvgElement<T extends SVGElement = SVGElement>(tag : string, props? : any, parent? : SVGElement|null) : T;
         addClass(el : SVGElement, cl : string) : void;
         removeClass(el : SVGElement, cl : string) : void;
+        replaceMessageReferences(message: string|any): string;
     }
     class Generator {
         valueToCode(block : Block, name : string, outerOrder : number) : string;

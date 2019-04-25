@@ -229,7 +229,10 @@ export class BlocklySourceEditor implements SourceEditor {
                     return { x: rect.left, y: rect.top };
                 },
                 getHTMLElement() {
-                    return input!.sourceBlock_.getSvgRoot();
+                    if (field) {
+                        return field.fieldGroup_;
+                    }
+                    return (input as any).sourceBlock_.getSvgRoot();
                 },
             };
         });

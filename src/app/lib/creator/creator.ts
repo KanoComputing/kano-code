@@ -20,6 +20,7 @@ export abstract class Creator {
     protected ui : CreatorUI = new CreatorUI();
     protected highlighter : Highlighter = new Highlighter();
     protected generatedSteps? : IGeneratedStep[];
+    protected stepsMap : Map<string, IGeneratedStep> = new Map();
     /**
      * Store the middlewares created by the user. The generated step source will be used as a key
      */
@@ -49,11 +50,16 @@ export abstract class Creator {
     }
     generate() : IGeneratedStep[] {
         const parts = this.editor.output.parts.getParts();
-        const steps = [];
+        const steps : IGeneratedStep[] = [];
         parts.forEach((part) => {
-            console.log(part);
+            const step = {
+                source: `part#${part.id}`,
+                data: {},
+            };
+            steps.push(step);
+            this.stepsMap.set(step.source, step);
         });
-        return [];
+        return steps;
     }
     generateChallenge() {
         const generatedStep = this.generate();

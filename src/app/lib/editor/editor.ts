@@ -25,6 +25,12 @@ import { IEditorWidget } from './widget/widget.js';
 import { QueryEngine, IQueryResult } from './selector/selector.js';
 import { ContentWidgets } from './widget/content-widgets.js';
 import { KanoAppEditor } from '../../elements/kano-app-editor/kano-app-editor.js';
+import { FileUpload } from './file-upload.js';
+import { defaultDropOverlayProvider } from './file-drop-provider.js';
+import { extname } from '../util/path.js';
+import './loader/kcode.js';
+import './loader/kch.js';
+import { FileLoaders } from './loader/loader.js';
 
 declare global {
     interface Window {
@@ -101,6 +107,10 @@ export class Editor extends EditorOrPlayer {
      */
     public parts : EditorPartsManager;
     /**
+     * The file upload plugin manages files droppped onto the editor
+     */
+    public fileUpload : FileUpload;
+    /**
      * API for the editor's activity bar
      */
     public activityBar : ActivityBar = new ActivityBar();
@@ -108,7 +118,6 @@ export class Editor extends EditorOrPlayer {
      * Whether the editor is part of a DOM tree right now
      */
     public injected : boolean = false;
-    private _registeredEvents : string[] = [];
     private _mediaPath : string = '';
     private _queuedApp : string|null = null;
     /**
@@ -185,6 +194,23 @@ export class Editor extends EditorOrPlayer {
         this.addPlugin(this.toolbox);
         this.addPlugin(this.creation);
         this.addPlugin(this.activityBar);
+
+        this.fileUpload = new FileUpload(this.domNode, defaultDropOverlayProvider);
+
+        this.fileUpload.onDidUpload((f) => {
+            const extension = extname(f.file.name);
+            if (!extension) {
+                return;
+            }
+            const loader = FileLoaders.get(extension);
+            if (!loader) {
+                this.logger.warn(`Could not load file '${f.file.name}': Not file loader exists for extension '${extension}'`);
+                return;
+            }
+            loader.load(this, f.content.toString());
+        });
+
+        this.addPlugin(this.fileUpload);
 
         this.toolbox.registerQueryHandlers(this.queryEngine);
 

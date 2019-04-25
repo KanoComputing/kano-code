@@ -6,6 +6,15 @@ const COLOR = '#f75846';
 
 const ID = 'logic';
 
+const compareOptions : { [K : string] : string } = {
+    EQ: '= equal',
+    NEQ: '\u2260 not equal',
+    LT: '< less than',
+    LTE: '\u2264 less than or equal',
+    GT: '> greater than',
+    GTE: '\u2265 greater than or equal',
+};
+
 export const LogicAPI = {
     type: 'blockly',
     id: ID,
@@ -20,18 +29,10 @@ export const LogicAPI = {
                     ['>', 'GT'],
                     ['\u2265', 'GTE'],
                 ];
-                const labels = {
-                    EQ: '= equal',
-                    NEQ: '\u2260 not equal',
-                    LT: '< less than',
-                    LTE: '\u2264 less than or equal',
-                    GT: '> greater than',
-                    GTE: '\u2265 greater than or equal',
-                };
                 this.appendValueInput('A');
 
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldCustomDropdown(options, labels), 'OP');
+                    .appendField(new Blockly.FieldCustomDropdown(options, compareOptions), 'OP');
 
                 this.appendValueInput('B');
 
@@ -84,7 +85,18 @@ export const LogicAPI = {
             BOOL: 'TRUE',
         },
         logic_operation: {
-            OP: 'and',
+            OP: 'AND',
+        },
+    },
+    labels: {
+        logic_compare: {
+            OP: Object.keys(compareOptions).map((value) => [compareOptions[value], value]),
+        },
+        logic_boolean: {
+            BOOL: [['true', 'TRUE'], ['false', 'FALSE']],
+        },
+        logic_operation: {
+            OP: [['and', 'AND'], ['or', 'OR']],
         },
     },
 };

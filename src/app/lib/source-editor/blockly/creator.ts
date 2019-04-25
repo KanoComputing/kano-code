@@ -6,6 +6,7 @@ import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultTyp
 import BlocklyMetaRenderer from './api-renderer.js';
 import { runMiddleware } from '../../creator/util.js';
 import { SourceEditor } from '../source-editor.js';
+import { findInSet } from '../../util/set.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
 
@@ -21,7 +22,6 @@ interface IConnectionInfo {
 
 export class BlocklyCreator extends Creator {
     sourceEditor? : BlocklySourceEditor;
-    nodeMap : Map<HTMLElement, IGeneratedStep> = new Map();
     aliasCounter : number = -1;
     createAlias() {
         this.aliasCounter += 1;
@@ -66,13 +66,15 @@ export class BlocklyCreator extends Creator {
         if (!parentBlock) {
             return null;
         }
+        const parentBlockId = parentBlock.getAttribute('id')!
         // Retrieve the step that created this parent block
-        const step = this.nodeMap.get(parentBlock);
+        const source = `block#${parentBlockId}`
+        const step = this.stepsMap.get(source);
         // No step means the block is in the default app, in that case return the id of the parent block
         if (!step) {
             return {
                 name,
-                id: parentBlock.getAttribute('id')!,
+                id: parentBlockId,
             };
         }
         return {
@@ -146,6 +148,22 @@ export class BlocklyCreator extends Creator {
         if (!entry) {
             return [];
         }
+        // The default category is the toolbox
+        let category = `toolbox.${entry.def.name}`;
+        // Try to match a part to the toolbox entry
+        const parts = this.editor.output.parts.getParts();
+        const matchingPart = findInSet(parts, (part) => part.id === entry.def.name);
+        if (matchingPart) {
+            // Found a matching part, try to get the step that created the part
+            const parentStep = this.stepsMap.get(`part#${matchingPart.id}`);
+            if (parentStep && parentStep.data.alias) {
+                // Use the part alias as selector
+                category = `alias#${parentStep.data.alias}>toolbox`;
+            } else {
+                // No step or the step didn't define an alias, use the part id
+                category = `part#${matchingPart.id}>toolbox`;
+            }
+        }
         // Resolve an eventual parent connection
         let connectionQuery = null;
         let parentConnection = this.getConnectionForStatementOrValue(block);
@@ -157,7 +175,7 @@ export class BlocklyCreator extends Creator {
             source: `block#${id}`,
             data: {
                 type: 'create-block',
-                category: entry.def.name,
+                category,
                 blockType: type,
                 alias: this.createAlias(),
                 openFlyoutCopy: `Open the ${entry.getVerboseDisplay()} tray`,
@@ -172,7 +190,7 @@ export class BlocklyCreator extends Creator {
             createBlockStep.data.dropCopy = 'Drop it onto your code space to add it into your program.';
         }
         // Keep track of that new step, map it to its source block.
-        this.nodeMap.set(block, createBlockStep);
+        this.stepsMap.set(createBlockStep.source, createBlockStep);
         let blockSteps : IGeneratedStep[] = [createBlockStep];
         // Go through all blocks and generated their steps
         for (const child of block.children) {
@@ -194,6 +212,9 @@ export class BlocklyCreator extends Creator {
             }
             case 'value': {
                 return this.valueToSteps(node);
+            }
+            case 'field': {
+                return this.fieldToSteps(node);
             }
         }
         return [];
@@ -223,6 +244,61 @@ export class BlocklyCreator extends Creator {
         }
         return this.blockToSteps(block);
     }
+    fieldToSteps(node : HTMLElement) : IGeneratedStep[] {
+        const name = node.getAttribute('name')!;
+        const parent = node.parentElement!;
+        const parentType = parent.getAttribute('type')!;
+        const parentId = parent.getAttribute('id')!;
+        const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
+        const defaults = renderer.getDefaultsForBlock(parentType);
+        if (!defaults) {
+            console.warn(`Could not infer step for challenge: Block '${parentType}' has no default definition`);
+            return [];
+        }
+        const defaultValue = defaults[name];
+        if (!defaultValue) {
+            console.warn(`Could not infer step for challenge: Block '${parentType}' is missing a default declaration for value '${name}'`);
+            return [];
+        }
+        const currentValue = node.textContent!;
+        if (defaultValue === currentValue) {
+            return [];
+        }
+        const source = `block#${parentId}`;
+        const parentStep = this.stepsMap.get(source);
+        let target;
+        // This comes from a default block, point to the block using its id
+        if (!parentStep) {
+            target = `block#${parentId}`;
+        } else {
+            target = `alias#${parentStep.data.alias}>input#${name}`;
+        }
+        let defaultLabel;
+        let currentLabel;
+        if (parentType === 'variables_set' || parentType === 'variables_get') {
+            defaultLabel = defaultValue;
+            currentLabel = currentValue;
+        } else {
+            defaultLabel = renderer.defaults.getLabel(parentType, name, defaultValue);
+            currentLabel = renderer.defaults.getLabel(parentType, name, currentValue);
+        }
+        if (!defaultLabel) {
+            console.warn(`Could not infer default label for value '${defaultValue}': Block '${parentType}' is missing a label definition for input '${name}'`);
+        }
+        if (!currentLabel) {
+            console.warn(`Could not infer default label for value '${currentValue}': Block '${parentType}' is missing a label definition for input '${name}'`);
+        }
+        const step : IGeneratedStep = {
+            source: `block#${parentId}>input#${name}`,
+            data: {
+                type: 'change-input',
+                target,
+                value: currentValue,
+                bannerCopy: `Change the strength from <kano-value-preview><span>${defaultLabel || 'ERROR'}</span></kano-value-preview> to <kano-value-preview><span>${currentLabel || 'ERROR'}</span></kano-value-preview>`,
+            },
+        };
+        return [step];
+    }
     shadowToSteps(parent : HTMLElement, inputName : string, shadow : HTMLElement) : IGeneratedStep[] {
         const parentType = parent.getAttribute('type');
         const id = shadow.getAttribute('id');
@@ -238,7 +314,9 @@ export class BlocklyCreator extends Creator {
         const shadowTree = parseXml(shadowString);
         const result = findFirstTreeDiff(shadowTree.documentElement, shadow);
         if (result.type === DiffResultType.INNER_TEXT) {
-            const parentStep = this.nodeMap.get(parent);
+            const parentId = parent.getAttribute('id')!;
+            const source = `block#${parentId}`;
+            const parentStep = this.stepsMap.get(source);
             let target;
             // This comes from a default block, point to the block using its id
             if (!parentStep) {
@@ -255,6 +333,7 @@ export class BlocklyCreator extends Creator {
                     bannerCopy: `Change the strength from <kano-value-preview><span>${result.from}</span></kano-value-preview> to <kano-value-preview><span>${result.to}</span></kano-value-preview>`,
                 },
             };
+            this.stepsMap.set(step.source, step);
             return [step];
         } else if (result.type === DiffResultType.NODE && result.to) {
             return this.blockToSteps(result.to);

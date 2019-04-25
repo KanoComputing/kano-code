@@ -34,11 +34,24 @@ class BlocklyMetaRenderer implements IMetaRenderer {
     getShadowForBlock(blockType : string) {
         return this.defaults.shadowMap.get(blockType);
     }
+    getDefaultsForBlock(blockType : string) {
+        return this.defaults.values[blockType];
+    }
     renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : string[]|null) {
+        // This is a legacy type, its definition is not strongly typed
+        const def = mod.def as any;
         mod.def.register(Blockly);
         if (mod.def.defaults) {
             Object.keys(mod.def.defaults).forEach((blockId) => {
                 this.defaults.define(blockId, mod.def.defaults[blockId]);
+            });
+        }
+        if (def.labels) {
+            // Register all the labels to the Defaults manager from the legacy definition
+            Object.keys(def.labels).forEach((blockType) => {
+                Object.keys(def.labels[blockType]).forEach((input) => {
+                    def.labels[blockType][input].forEach(([label, value] : [string, string]) => this.defaults.defineLabel(blockType, input, value, label));
+                });
             });
         }
         if (!mod.def.category) {
@@ -71,7 +84,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
             });
         }
 
-        const blocks = BlocklyMetaRenderer.render(mod);
+        const blocks = this.render(mod);
 
         const register = (Blockly : any) => {
             blocks.forEach((block : any) => block.register(Blockly));
@@ -107,16 +120,16 @@ class BlocklyMetaRenderer implements IMetaRenderer {
     disposeToolboxEntry(category : ICategory) {
 
     }
-    static render(m : MetaModule) : IRenderedBlock[] {
+    render(m : MetaModule) : IRenderedBlock[] {
         switch (m.def.type) {
             case 'module': {
-                return BlocklyMetaRenderer.renderModule(m);
+                return this.renderModule(m);
             }
             case 'variable': {
                 return BlocklyMetaRenderer.renderVariable(m as MetaVariable);
             }
             case 'function': {
-                return BlocklyMetaRenderer.renderFunction(m as MetaFunction);
+                return this.renderFunction(m as MetaFunction);
             }
             default: {
                 break;
@@ -124,12 +137,12 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         }
         return [];
     }
-    static renderModule(m : MetaModule) {
+    renderModule(m : MetaModule) {
         if (!m.symbols) {
             return [];
         }
         return m.symbols.reduce((acc, sym) => {
-            const rendered = BlocklyMetaRenderer.render(sym);
+            const rendered = this.render(sym);
             return acc.concat(rendered);
         }, [] as IRenderedBlock[]);
     }
@@ -288,7 +301,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         // Return argument name
         return scope.name;
     }
-    static renderFunction(m : MetaFunction) {
+    renderFunction(m : MetaFunction) {
         const id = BlocklyMetaRenderer.getId(m);
         const params = m.getParameters();
         const defaults = params.filter(p => typeof p.def.default !== 'undefined').reduce((acc, p) => {
@@ -299,7 +312,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 acc[pName] = p.def.default;
             }
             if (p.def.enum && p.def.enum.length) {
-                acc.label = p.def.enum[0][0]
+                p.def.enum.forEach(([label, value]) => this.defaults.defineLabel(id, pName, value, label));
             }
             return acc;
         }, {} as any);
@@ -362,7 +375,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 }
                 const values = params.map((p, index) => {
                     if (p.def.blockly && p.def.blockly.scope) {
-                        return this.findScopedArgument(block, p.def.blockly.scope);
+                        return BlocklyMetaRenderer.findScopedArgument(block, p.def.blockly.scope);
                     }
                     const argName = p.def.name.toUpperCase();
                     const input = block.getInput(argName);
@@ -370,7 +383,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                     let value;
                     if (field) {
                         value = block.getFieldValue(argName);
-                        value = this.formatFieldValue(value, params[index].def.default);
+                        value = BlocklyMetaRenderer.formatFieldValue(value, params[index].def.default);
                     } else {
                         switch (input.type) {
                             case Blockly.INPUT_VALUE: {

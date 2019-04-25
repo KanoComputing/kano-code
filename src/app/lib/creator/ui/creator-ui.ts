@@ -63,6 +63,11 @@ export class CreatorUI extends LitElement {
             kc-creator .preview {
                 flex: 2;
             }
+            kc-creator pre {
+                overflow: auto;
+                flex: 1;
+                margin: 0;
+            }
             kc-creator .code {
                 flex: 4;
             }
@@ -97,19 +102,26 @@ export class CreatorUI extends LitElement {
             kc-creator [hidden] {
                 display: none !important;
             }
+            kc-creator .steps-list {
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+            }
         `];
     }
     render() {
         return html`
             <div class="col steps">
                 <div class="header">Steps</div>
-                ${this.generatedSteps.map((step, index) => html`
-                    <div @mouseenter=${() => this._onMouseEnter(step)}
-                         @mouseleave=${() => this._onMouseLeave(step)}
-                         @click=${() => this._onClick(step)}
-                         class=${classMap({ selected: this.selectedStepIndex === index, step: true })}
-                         >${step.source}</div>
-                `)}
+                <div class="steps-list">
+                    ${this.generatedSteps.map((step, index) => html`
+                        <div @mouseenter=${() => this._onMouseEnter(step)}
+                            @mouseleave=${() => this._onMouseLeave(step)}
+                            @click=${() => this._onClick(step)}
+                            class=${classMap({ selected: this.selectedStepIndex === index, step: true })}
+                            >${step.source}</div>
+                    `)}
+                </div>
             </div>
             <div class="col preview" ?hidden=${!this.selectedStep}>
                 <div class="header">Preview</div>

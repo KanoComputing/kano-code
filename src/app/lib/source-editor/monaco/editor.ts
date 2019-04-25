@@ -1,5 +1,5 @@
-import 'monaco-editor/esm/vs/language/typescript/monaco.contribution.js';
-import 'monaco-editor/esm/vs/basic-languages/monaco.contribution.js';
+import '../../../../vendor/monaco-editor/esm/vs/language/typescript/monaco.contribution.js';
+import '../../../../vendor/monaco-editor/esm/vs/basic-languages/monaco.contribution.js';
 
 declare global {
     interface Window {
@@ -14,10 +14,10 @@ window.MonacoEnvironment = {
     // TODO: Create a Kano Code environment to resolve those
     getWorkerUrl(moduleId, label) {
         if (label === 'javascript') {
-            return '/monaco-workers/ts.worker.js';
+            return '/dist/vendor/monaco-workers/ts.worker.js';
         }
-        return '/monaco-workers/editor.worker.js';
+        return '/dist/vendor/monaco-workers/editor.worker.js';
     }
 }
 
-export * from 'monaco-editor/esm/vs/editor/edcore.main.js';
+export * from '../../../../vendor/monaco-editor/esm/vs/editor/edcore.main.js';
