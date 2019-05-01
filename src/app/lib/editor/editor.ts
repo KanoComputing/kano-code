@@ -186,6 +186,9 @@ export class Editor extends EditorOrPlayer {
         this.sourceEditor.onDidCodeChange((code) => {
             this.setCode(code);
         });
+        this.sourceEditor.onDidLayout(() => {
+            this._onDidLayoutChange.fire();
+        });
         this.sourceEditor.registerQueryHandlers(this.queryEngine);
 
         this.addPlugin(this.workspaceToolbar);

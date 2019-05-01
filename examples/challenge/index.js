@@ -1,4 +1,4 @@
-import { Challenge } from '../../challenge.js';
+import * as challenge from '../../challenge.js';
 import * as code from '../../index.js';
 import * as i18n from '../../i18n.js';
 
@@ -15,6 +15,11 @@ const challengeData = {
     //     color: ['colour_picker'],
     // },
     steps: [{
+        banner: {
+            text: 'This is the button part ${part#button>toolbox} and this banner can have a lot of text, the overflow should be just fine',
+            nextButton: true,
+        },
+    }, {
         banner: 'Some markdown syntax ${toolbox#color}',
         beacon: 'part#button>toolbox:100,50',
         tooltips: [{
@@ -63,8 +68,6 @@ const challengeData = {
                 },
             },
         },
-    }, {
-        banner: 'Done',
     }],
 };
 
@@ -76,8 +79,17 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
                 const editor = new code.Editor();
 
                 editor.onDidInject(() => {
-                    const challenge = new Challenge(editor, challengeData);
-                    challenge.start();
+                    const ch = challenge.createChallenge(editor, challengeData, { end: { showNextButton: true } });
+                    ch.engine.setBannerIconProvider({
+                        domNode: null,
+                        getDomNode() {
+                            if (!this.domNode) {
+                                this.domNode = document.createElement('button');
+                            }
+                            return this.domNode;
+                        },
+                    });
+                    ch.start();
                 });
         
                 editor.inject(document.body);

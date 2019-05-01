@@ -1,5 +1,13 @@
 import '../../../../vendor/monaco-editor/esm/vs/language/typescript/monaco.contribution.js';
 import '../../../../vendor/monaco-editor/esm/vs/basic-languages/monaco.contribution.js';
+import { SimpleEditorModelResolverService } from '../../../../vendor/monaco-editor/esm/vs/editor/standalone/browser/simpleServices.js';
+/**
+ * Monkeypatch to make 'Find All References' work across multiple files
+ * https://github.com/Microsoft/monaco-editor/issues/779#issuecomment-374258435
+ */
+SimpleEditorModelResolverService.prototype.findModel = function(editor: any, resource: { toString: () => void; }) {
+  return (monaco as any).editor.getModels().find((model: { uri: { toString: () => void; }; }) => model.uri.toString() === resource.toString());
+};
 
 declare global {
     interface Window {

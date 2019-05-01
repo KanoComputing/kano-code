@@ -14,7 +14,7 @@ export interface IGeneratedStep {
     data : IStepData;
 }
 
-export abstract class Creator {
+export class Creator {
     protected editor : Editor;
     protected subscriptions : Disposables[];
     protected ui : CreatorUI = new CreatorUI();

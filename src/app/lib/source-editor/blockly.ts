@@ -6,8 +6,8 @@ import Editor from '../editor/editor.js';
 import { QueryEngine, ISelector, IQueryResult } from '../editor/selector/selector.js';
 import { memoize } from '../util/decorators.js';
 import '../blockly/core/xml.js';
-import { BlocklyCreator } from './blockly/creator.js';
 import BlocklyMetaRenderer from './blockly/api-renderer.js';
+import { debounce } from '../decorators.js';
 
 // Exclude those characters. This will allow the editor's quirying system to query block ids
 utils.genUid.soup_ = utils.genUid.soup_.replace(/#|>|\.|:/g, '');
@@ -16,8 +16,8 @@ export class BlocklySourceEditor implements SourceEditor {
     public editor : Editor;
     private _onDidCodeChange : EventEmitter<string> = new EventEmitter<string>();
     private _onDidSourceChange : EventEmitter<any> = new EventEmitter<any>();
+    private _onDidLayout : EventEmitter = new EventEmitter();
     public domNode : HTMLElement = document.createElement('kc-blockly-editor');
-    private creator? : BlocklyCreator;
     private apiRenderer? : BlocklyMetaRenderer;
     constructor(editor : Editor) {
         this.editor = editor;
@@ -28,9 +28,28 @@ export class BlocklySourceEditor implements SourceEditor {
         subscribeDOM(this.domNode, 'action', (e : any) => {
             this._onDidSourceChange.fire(e.detail);
         });
+        this.editor.onDidInject(() => {
+            const workspace = (this.domNode as any).getBlocklyWorkspace() as Workspace;
+            workspace.addChangeListener((e) => {
+                // Be greedy for now. TODO: tweak this to ignore non relevent events
+                if (e.type === 'open-flyout' || e.type === 'close-flyout') {
+                    // These events are triggered before the dom layout changes, this trick makes the layout event triggered sync with the actual DOM change
+                    setTimeout(() => this.triggerLayout());
+                } else {
+                    this.triggerLayout();
+                }
+            });
+        });
+    }
+    @debounce(10)
+    triggerLayout() {
+        this._onDidLayout.fire();
     }
     get onDidCodeChange() {
         return this._onDidCodeChange.event;
+    }
+    get onDidLayout() {
+        return this._onDidLayout.event;
     }
     get onDidSourceChange() {
         return this._onDidSourceChange.event;
@@ -47,6 +66,38 @@ export class BlocklySourceEditor implements SourceEditor {
     @memoize
     getWorkspace() : Workspace {
         return (this.domNode as any).getBlocklyWorkspace();
+    }
+    findBlockForSvgElement(el : HTMLElement) {
+        function step(el : HTMLElement|null) : HTMLElement|null {
+            if (!el) {
+                return null;
+            }
+            if (el.tagName.toLowerCase() === 'svg') {
+                return null;
+            }
+            if (el.getAttribute('class') !== 'blocklyDraggable') {
+                return step(el.parentElement);
+            }
+            return el;
+        }
+        const rootEl = step(el);
+        if (!rootEl) {
+            return null;
+        }
+        const { id } = rootEl.dataset;
+        if (!id) {
+            return null;
+        }
+        const workspace = this.getWorkspace();
+        return workspace.getBlockById(id);
+    }
+    elementFromPoint(x : number, y : number) {
+        const blocklyEl = (this.domNode as any).$['code-editor'];
+        return blocklyEl.shadowRoot.elementFromPoint(x, y);
+    }
+    blockFromPoint(x : number, y : number) {
+        const el = this.elementFromPoint(x, y);
+        return this.findBlockForSvgElement(el);
     }
     registerQueryHandlers(engine: QueryEngine) {
         engine.registerTagHandler('block', (selector : ISelector, parent) => {
@@ -304,12 +355,6 @@ export class BlocklySourceEditor implements SourceEditor {
     getBlockByType(workspace : Workspace, type : string) {
         const allBlocks = workspace.getAllBlocks();
         return allBlocks.find(b => b.type === type);
-    }
-    getCreator() {
-        if (!this.creator) {
-            this.creator = new BlocklyCreator(this.editor);
-        }
-        return this.creator;
     }
     getApiRenderer() {
         if (!this.apiRenderer) {

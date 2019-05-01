@@ -26,7 +26,7 @@ export function memoize(target: any, key: string, descriptor: any) {
 				configurable: false,
 				enumerable: false,
 				writable: false,
-				value: fn!.apply(this, args)
+				value: fn!.apply(this, args),
 			});
 		}
 

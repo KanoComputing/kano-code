@@ -15,16 +15,13 @@ export const ColorAPI = {
     id: ID,
     name: ID,
     typeScriptDefinition: `
-        declare namespace colour {
-            declare enum type {
-                RGB: 'rgb',
-                HSV: 'hsv'
-            }
-            declare function random(): string;
-            declare function create(type: color.type, a: number, b: number, c: number): string;
-            declare function lerp(from: number, to: number, percent: number): string;
-        }
-    `,
+const color = {
+    random() : string;
+    create(type : 'rgb', r : number, g : number, b : number) : string;
+    create(type : 'hsv', h : number, s : number, v : number) : string;
+    lerp(from : number, to : number, percent : number) : string;
+};
+`,
     register(Blockly : Blockly) {
         Blockly.Blocks.random_colour = {
             init() {

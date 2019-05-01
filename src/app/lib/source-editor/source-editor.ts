@@ -7,12 +7,12 @@ import { IMetaRenderer } from '../meta-api/module.js';
 
 export interface SourceEditor {
     onDidCodeChange : IEvent<string>;
+    onDidLayout : IEvent<void>;
     setToolbox(toolbox : any) : void;
     setSource(source : string) : void;
     getSource() : string;
     domNode : HTMLElement;
     registerQueryHandlers(engine : QueryEngine) : void;
-    getCreator() : Creator;
     getApiRenderer() : IMetaRenderer;
     editor : Editor;
 }

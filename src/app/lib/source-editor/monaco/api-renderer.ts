@@ -15,7 +15,7 @@ export class TypeScriptMetaRenderer implements IMetaRenderer {
 
         const category = {
             name: mod.getVerboseDisplay(),
-            id: mod.def.name,
+            id: mod.def.type && mod.def.type === 'blockly' ? (mod.def.id || '') : mod.def.name,
             colour: mod.getColor(),
             definitionFile,
         };
@@ -43,22 +43,24 @@ export class TypeScriptMetaRenderer implements IMetaRenderer {
         if (!m.symbols) {
             return '';
         }
-        return `
-        declare const ${m.def.name} = {
-            ${m.symbols.map(sym => TypeScriptMetaRenderer.render(sym)).join('\n')}
-        }
-        `;
+        return `const ${m.def.name} = {
+    ${m.symbols.map(sym => TypeScriptMetaRenderer.render(sym)).join('\n    ')}
+};
+`;
     }
     static renderVariable(m : MetaVariable) : string {
-        return `${m.def.name}: ${TypeScriptMetaRenderer.parseType(m.getReturnType())};`;
+        return `${m.def.name} : ${TypeScriptMetaRenderer.parseType(m.getReturnType())};`;
     }
     static renderParam(param : MetaParameter) : string {
-        return `${param.def.name}: ${TypeScriptMetaRenderer.parseType(param.getReturnType())}`;
+        return `${param.def.name} : ${TypeScriptMetaRenderer.parseType(param.getReturnType())}`;
     }
     static renderFunction(m : MetaFunction) {
-        return `${m.def.name}(${m.getParameters().map(param => TypeScriptMetaRenderer.renderParam(param)).join(', ')}): ${m.getReturnType()};`;
+        return `${m.def.name}(${m.getParameters().map(param => TypeScriptMetaRenderer.renderParam(param)).join(', ')}) : ${TypeScriptMetaRenderer.parseType(m.getReturnType())};`;
     }
     static parseType(type : any) {
+        if (!type) {
+            return 'void';
+        }
         switch (type) {
         case Number: {
             return 'number';

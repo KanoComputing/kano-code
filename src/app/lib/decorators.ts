@@ -77,7 +77,7 @@ export function debounce(delay: number) {
                 Object.defineProperty(this, key, {
                     configurable: true,
                     enumerable: descriptor.enumerable,
-                    value: deb(descriptor.value, delay),
+                    value: deb(descriptor.value.bind(this), delay),
                 });
                 return this[key];
             },

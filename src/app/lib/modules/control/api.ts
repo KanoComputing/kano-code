@@ -33,20 +33,15 @@ const inTimeUnits = [
 export const ControlAPI = {
     type: 'blockly',
     id: ID,
-    typeScriptDefinition: `
-        declare namespace loop {
-            declare function forever(callback: function): void;
-        }
-        declare namespace time {
-            declare enum units {
-                frames = 'frames',
-                seconds = 'seconds',
-                milliseconds = 'milliseconds',
-            }
-            declare function every(interval: number, unit: time.units, callback: function): void;
-            declare function later(delay: number, unit: time.units, callback: function): void;
-        }
-    `,
+    typeScriptDefinition: `const loop = {
+    forever(callback : function) : void;
+};
+
+const time = {
+    every(interval : number, unit : 'seconds'|'milliseconds'|'frames', callback : function) : void;
+    later(delay : number, unit : 'seconds'|'milliseconds'|'frames', callback : function) : void;
+};
+`,
     register(Blockly : Blockly) {
         Blockly.Blocks.loop_forever = {
             init() {

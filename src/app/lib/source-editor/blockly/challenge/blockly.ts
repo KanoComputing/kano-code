@@ -1,16 +1,13 @@
-import Challenge from 'challenge-engine/definition.js';
 import { Workspace, Block, Blockly, Input, Connection } from '@kano/kwc-blockly/blockly.js';
-import { Editor } from '../editor/editor.js';
-import { BlocklySourceEditor } from '../source-editor/blockly.js';
+import { Editor } from '../../../editor/editor.js';
+import { BlocklySourceEditor } from '../../blockly.js';
+import { Engine } from '../../../challenge/engine.js';
 
-class BlocklyChallenge extends Challenge {
-    protected editor : Editor;
+class BlocklyChallenge extends Engine {
     protected workspace : Workspace;
     protected eventsMap : { [K : string] : string };
-    public aliases : Map<string, string> = new Map();
     constructor(editor : Editor) {
-        super();
-        this.editor = editor;
+        super(editor);
         if (this.editor.sourceType !== 'blockly') {
             throw new Error('Cannot use a blockly challenge with non-blockly editor');
         }

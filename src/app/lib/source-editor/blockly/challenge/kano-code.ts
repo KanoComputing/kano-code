@@ -1,21 +1,27 @@
 import BlocklyChallenge from './blockly.js';
-import { Editor } from '../editor/editor.js';
-import { BannerWidget } from './widget/banner.js';
-import { BeaconWidget } from './widget/beacon.js';
-import { IEditorWidget } from '../editor/widget/widget.js';
+import { Editor } from '../../../editor/editor.js';
+import { BannerWidget, IBannerButton } from '../../../challenge/widget/banner.js';
+import { BeaconWidget } from '../../../challenge/widget/beacon.js';
 import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
-import { Part } from '../parts/part.js';
-import { Tooltip } from './widget/tooltip.js';
-import { challengeStyles } from './styles.js';
-import './components/kc-toolbox-entry-preview.js';
-import './components/kc-part-api-preview.js';
+import { Part } from '../../../parts/part.js';
+import { Tooltip } from '../../../challenge/widget/tooltip.js';
+import { challengeStyles } from '../../../challenge/styles.js';
+import '../../../challenge/components/kc-toolbox-entry-preview.js';
+import '../../../challenge/components/kc-part-api-preview.js';
 import { dataURI } from '@kano/icons-rendering/index.js';
+
+export interface IBannerIconProvider {
+    getDomNode() : HTMLElement;
+}
 
 export class KanoCodeChallenge extends BlocklyChallenge {
     protected editor : Editor;
-    public widgets : Map<string, IEditorWidget> = new Map();
     private _beaconSub? : IDisposable;
     private tooltips : Tooltip[] = [];
+    public banner? : BannerWidget;
+    public bannerButton? : IBannerButton;
+    private bannerIconProvider? : IBannerIconProvider;
+    public progress : number = 0;
     constructor(editor : Editor) {
         super(editor);
         this.editor = editor;
@@ -34,12 +40,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.defineBehavior('beacon', this.displayBeacon.bind(this), this.hideBeacon.bind(this));
         this.defineBehavior('tooltips', this.displayTooltips.bind(this), this.hideTooltips.bind(this));
 
-        // Update the layout of the widget on every sourceEditor event
-        // TODO: Only layout on some events to improve performances
-        // TODO: dispose cycle
-        this.workspace.addChangeListener(() => {
-            this.widgets.forEach((w) => this.editor.layoutContentWidget(w));
-        });
         // Trigger challenge events on editor events
         this.editor.parts.onDidOpenAddParts(() => {
             this.triggerEvent('open-parts');
@@ -105,7 +105,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
                     // TODO: error managment
                     return;
                 }
-                tooltip.layout(target as HTMLElement);
+                tooltip.setTarget(target as HTMLElement);
             }
         });
     }
@@ -126,9 +126,13 @@ export class KanoCodeChallenge extends BlocklyChallenge {
      * @param data Banner data from a challenge step
      */
     protected displayBanner(data : any) {
-        const widget = new BannerWidget(this.editor);
-        // TODO: dispose of this listener
-        widget.onDidClick(() => this.nextStep());
+        if (!this.banner) {
+            this.banner = new BannerWidget();
+            this.editor.addContentWidget(this.banner);
+        }
+        if (this.bannerButton) {
+            this.bannerButton.dispose();
+        }
         let text;
         let nextButton = false;
         if (typeof data === 'string') {
@@ -137,22 +141,29 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             text = data.text;
             nextButton = !!data.nextButton;
         }
-        widget.setData({
-            text: this.processRichText(text),
-            nextButton,
-        });
-        widget.show();
-        this.widgets.set('banner', widget);
+        this.banner.setText(this.processRichText(text));
+        this.banner.setProgress(this.stepIndex / (this.steps.length - 1));
+        if (this.bannerIconProvider) {
+            const domNode = this.bannerIconProvider.getDomNode();
+            this.banner.setIconNode(domNode);
+        } else {
+            this.banner.setIconNode(null);
+        }
+        if (nextButton) {
+            this.bannerButton = this.banner.addButton('Next');
+            this.bannerButton.onDidClick(() => this.nextStep());
+        }
+        this.banner.show();
+        // TODO: play card_set here
     }
     /**
      * Removes a previously added banner
      */
     protected hideBanner() {
-        const widget = this.widgets.get('banner');
-        if (!widget) {
+        if (!this.banner) {
             return;
         }
-        widget.hide();
+        this.banner.hide();
     }
     /**
      * Displays a beacon as a content widget on the editor
@@ -216,10 +227,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         const createStep = this._getCreatePartStep(data);
         const steps = [openPartsDialogStep, createStep];
         return steps;
-    }
-    _updateStep() {
-        super._updateStep();
-        this.trigger('step-changed');
     }
     _partsClosed() {
         if (this.stepIndex > 0) {
@@ -317,6 +324,29 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             beacon: data.block,
         });
         return step;
+    }
+    /**
+     * Defines the provider for the banner icon. This provider will define a DOM node tu use instead of the progress circle
+     * @param provider A banner icon provider
+     */
+    setBannerIconProvider(provider : IBannerIconProvider) {
+        this.bannerIconProvider = provider;
+    }
+    onEnd() {
+        super.onEnd();
+        // This is a end of challenge behavior
+        if (this.banner) {
+            // TODO: Set the end of challenge text
+            this.banner.setText('This is the end of the challenge, I hope you were engaged');
+            this.banner.setProgress(1);
+            // Add a button if the challenge is configured to do so
+            // if (this.options.end && this.options.end.showNextButton) {
+            //     const button = this.engine.banner.addButton('Next Challenge', true);
+            //     button.onDidClick(() => this._onDidRequestNextChallenge.fire());
+            // }
+            // Display the last banner
+            this.banner.show();
+        }
     }
 }
 

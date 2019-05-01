@@ -1,4 +1,4 @@
-import { IDisposable } from 'monaco-editor';
+import { IDisposable } from '@kano/common/index.js';
 
 /**
  * A contribution management utility class
@@ -16,5 +16,8 @@ export class ContributionManager<T> {
     }
     get(id : string) {
         return this.contributions.get(id);
+    }
+    dispose() {
+        this.contributions.clear();
     }
 }

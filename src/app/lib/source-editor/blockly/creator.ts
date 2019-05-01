@@ -7,6 +7,7 @@ import BlocklyMetaRenderer from './api-renderer.js';
 import { runMiddleware } from '../../creator/util.js';
 import { SourceEditor } from '../source-editor.js';
 import { findInSet } from '../../util/set.js';
+import { registerCreator } from '../../creator/index.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
 
@@ -275,7 +276,8 @@ export class BlocklyCreator extends Creator {
         }
         let defaultLabel;
         let currentLabel;
-        if (parentType === 'variables_set' || parentType === 'variables_get') {
+        console.log(node);
+        if (parentType === 'variables_set' || parentType === 'variables_get' || (parentType === 'unary' && name === 'LEFT_HAND')) {
             defaultLabel = defaultValue;
             currentLabel = currentValue;
         } else {
@@ -354,3 +356,5 @@ export class BlocklyCreator extends Creator {
         }
     }
 }
+
+registerCreator('blockly', BlocklyCreator);

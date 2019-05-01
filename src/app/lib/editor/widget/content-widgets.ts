@@ -24,6 +24,9 @@ export class ContentWidgets {
     layoutWidget(widget : IEditorWidget) {
         const position = widget.getPosition();
         if (position === null) {
+            if (typeof widget.layout === 'function') {
+                widget.layout(this.editor);
+            }
             return;
         }
         const p = this.editor.queryPosition(position);

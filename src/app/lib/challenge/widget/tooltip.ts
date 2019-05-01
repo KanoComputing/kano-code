@@ -42,9 +42,13 @@ export class Tooltip {
         const domNode = this.getDomNode() as any;
         domNode.offset = offset;
     }
-    layout(target : HTMLElement) {
+    setTarget(target : HTMLElement) {
         const domNode = this.getDomNode() as any;
         domNode.target = target;
+    }
+    layout() {
+        const domNode = this.getDomNode() as any;
+        domNode.updatePosition();
     }
     getPosition() {
         return null;

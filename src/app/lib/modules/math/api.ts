@@ -367,7 +367,7 @@ export const MathAPI = {
     },
     defaults: {
         math_number: {
-            NUM: 0,
+            NUM: '0',
         },
         math_arithmetic: {
             OP: 'ADD',

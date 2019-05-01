@@ -172,7 +172,7 @@ export class CreatorUI extends LitElement {
             return;
         }
         monaco.languages.typescript.javascriptDefaults.setCompilerOptions({ noLib: true, allowNonTsExtensions: true });
-        monaco.languages.typescript.javascriptDefaults.addExtraLib(`const step = ${JSON.stringify(this.selectedStep.data)}`, 'selected-step.js');
+        monaco.languages.typescript.javascriptDefaults.addExtraLib(`const step = ${JSON.stringify(this.selectedStep.data)}`, 'kc://a/selected-step.js');
         this.editor.setValue(this.middleware || '\n\nreturn step;');
     }
     inject(target : HTMLElement) {

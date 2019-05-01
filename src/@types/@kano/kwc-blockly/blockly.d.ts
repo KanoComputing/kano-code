@@ -90,6 +90,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         name : string;
     }
     class Workspace {
+        getCanvas() : SVGElement;
         getAllBlocks() : Block[];
         getBlockById(id : string) : Block|null;
         getMetrics() : any;
