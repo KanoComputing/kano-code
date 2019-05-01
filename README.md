@@ -61,3 +61,7 @@ terraform apply
 ```
 
 The documentation is deployed by jenkins and scoped to the version in `package.json`
+
+### Publish
+
+Run `yarn publish`, update version. Make sure to update version in kit-app-ui as well.
