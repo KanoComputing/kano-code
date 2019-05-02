@@ -182,7 +182,7 @@ export const ControlAPI = {
             },
         };
 
-        Blockly.JavaScript.restart_code = () => 'global.restartCode();';
+        Blockly.JavaScript.restart_code = () => 'app.restart();';
     },
     category: {
         get name() {
