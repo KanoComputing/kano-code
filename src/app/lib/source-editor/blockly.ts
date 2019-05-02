@@ -1,4 +1,4 @@
-import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
+import { EventEmitter, subscribeDOM, IDisposable } from '@kano/common/index.js';
 import { SourceEditor } from './source-editor.js';
 import '../../elements/kc-blockly-editor/kc-blockly-editor.js';
 import { Workspace, Block, Input, utils, Connection, Field } from '@kano/kwc-blockly/blockly.js';
@@ -8,6 +8,7 @@ import { memoize } from '../util/decorators.js';
 import '../blockly/core/xml.js';
 import BlocklyMetaRenderer from './blockly/api-renderer.js';
 import { debounce } from '../decorators.js';
+import { Highlighter } from '../creator/ui/highlighter.js';
 
 // Exclude those characters. This will allow the editor's quirying system to query block ids
 utils.genUid.soup_ = utils.genUid.soup_.replace(/#|>|\.|:/g, '');
@@ -40,6 +41,7 @@ export class BlocklySourceEditor implements SourceEditor {
                 }
             });
         });
+        this.editor.exposeMethod('logBlock', () => this.logBlockUnderCursor());
     }
     @debounce(10)
     triggerLayout() {
@@ -75,7 +77,7 @@ export class BlocklySourceEditor implements SourceEditor {
             if (el.tagName.toLowerCase() === 'svg') {
                 return null;
             }
-            if (el.getAttribute('class') !== 'blocklyDraggable') {
+            if (!el.classList.contains('blocklyDraggable')) {
                 return step(el.parentElement);
             }
             return el;
@@ -91,6 +93,30 @@ export class BlocklySourceEditor implements SourceEditor {
         const workspace = this.getWorkspace();
         return workspace.getBlockById(id);
     }
+    findFieldForSvgElementAndBlock(el : HTMLElement, block : Block) {
+        function step(el : HTMLElement) : HTMLElement|null {
+            if (el.tagName.toLowerCase() === 'svg') {
+                return null;
+            }
+            if (el.tagName.toLowerCase() === 'g' && el.classList.contains('blocklyEditableText')) {
+                return el;
+            }
+            if (!el.parentElement) {
+                return null;
+            }
+            return step(el.parentElement);
+        }
+        const group = step(el);
+        for (let i = 0; i < block.inputList.length; i += 1) {
+            const input = block.inputList[i];
+            for (let j = 0; j < input.fieldRow.length; j += 1) {
+                const field = input.fieldRow[j];
+                if (field.fieldGroup_ === group) {
+                    return field;
+                };
+            }
+        }
+    }
     elementFromPoint(x : number, y : number) {
         const blocklyEl = (this.domNode as any).$['code-editor'];
         return blocklyEl.shadowRoot.elementFromPoint(x, y);
@@ -98,6 +124,49 @@ export class BlocklySourceEditor implements SourceEditor {
     blockFromPoint(x : number, y : number) {
         const el = this.elementFromPoint(x, y);
         return this.findBlockForSvgElement(el);
+    }
+    logBlockUnderCursor() {
+        let selectedTarget : string|undefined;
+        let d : IDisposable;
+        const highlighter = new Highlighter();
+        const sub = subscribeDOM(this.editor.domNode, 'mousemove', (e : MouseEvent) => {
+            highlighter.clear();
+            if (d) {
+                d.dispose();
+            }
+            const el = this.elementFromPoint(e.x, e.y);
+            const block = this.findBlockForSvgElement(el);
+            if (!block) {
+                return;
+            }
+            const field = this.findFieldForSvgElementAndBlock(el, block);
+            let selector = `block#${block.id}`;
+            if (field) {
+                selector += `>input#${field.name}`;
+            }
+            selectedTarget = selector;
+            const target = this.editor.queryElement(selector);
+            if (target) {
+                highlighter.highlight(target);
+            }
+        });
+        const workspace = this.getWorkspace();
+        const cancelSub = subscribeDOM(document.body, 'click', () => {
+            end();
+        });
+        const onClick = (e : any) => {
+            if (e.element && e.element === 'click') {
+                console.log(selectedTarget);
+                end();
+            }
+        }
+        function end() {
+            sub.dispose();
+            cancelSub.dispose();
+            workspace.removeChangeListener(onClick);
+            highlighter.clear();
+        }
+        workspace.addChangeListener(onClick);
     }
     registerQueryHandlers(engine: QueryEngine) {
         engine.registerTagHandler('block', (selector : ISelector, parent) => {
@@ -114,7 +183,7 @@ export class BlocklySourceEditor implements SourceEditor {
                     getId() { return block.id; },
                     getBlock() { return block; },
                     getHTMLElement() {
-                        return block.getSvgRoot();
+                        return block.svgPath_;
                     },
                 };
             } else if (selector.class) {
@@ -135,7 +204,7 @@ export class BlocklySourceEditor implements SourceEditor {
                     getId() { return block.id },
                     getBlock() { return block; },
                     getHTMLElement() {
-                        return block.getSvgRoot();
+                        return block.svgPath_;
                     },
                 };
             }

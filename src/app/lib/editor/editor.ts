@@ -587,6 +587,12 @@ export class Editor extends EditorOrPlayer {
     querySelector(selector : string) {
         return this.queryEngine.query(selector);
     }
+    /**
+     * Adds a method to the editor for develpoment convenience
+     */
+    exposeMethod(name : string, method : Function) {
+        (this as any)[name] = method;
+    }
 }
 
 export default Editor;

@@ -1,10 +1,10 @@
-import '../../../elements/kano-tooltip/kano-tooltip.js';
 import '@kano/styles/typography.js';
 import 'marked/lib/marked.js';
 import 'twemoji-min/2/twemoji.min.js';
+import { KanoTooltip } from '../../../elements/kano-tooltip/kano-tooltip.js';
 
 export class Tooltip {
-    private domNode : HTMLElement|null = null;
+    private domNode : KanoTooltip|null = null;
     private markedEl : HTMLElement|null = null;
     getMarked() {
         if (!this.markedEl) {
@@ -15,15 +15,14 @@ export class Tooltip {
     }
     getDomNode() {
         if (!this.domNode) {
-            this.domNode = document.createElement('kano-tooltip');
+            this.domNode = document.createElement('kano-tooltip') as KanoTooltip;
+            this.domNode.caret = 'start';
             const content = document.createElement('div');
             content.style.padding = '0px 16px';
-            this.domNode.style.setProperty('--kano-tooltip-background-color', 'white');
-            this.domNode.style.setProperty('--kano-tooltip-border-color', 'white');
-            this.domNode.style.setProperty('--kano-tooltip-border-width', '1px');
+            this.domNode.style.setProperty('--kano-tooltip-border-color', 'var(--color-black)');
             this.domNode.style.color = 'black';
             this.domNode.style.fontFamily = 'var(--font-body)';
-            this.domNode.style.padding = '8px';
+            this.domNode.style.fontWeight = 'bold';
             content.appendChild(this.getMarked());
             this.domNode.appendChild(content);
         }

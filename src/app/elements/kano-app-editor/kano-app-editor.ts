@@ -204,10 +204,10 @@ export class KanoAppEditor extends LitElement {
                 width: 100%;
                 height: 100%;
                 pointer-events: none;
+                overflow: hidden;
             }
             #widget-layer * {
                 pointer-events: all;
-                overflow: hidden;
             }
             [hidden] {
                 display: none !important;

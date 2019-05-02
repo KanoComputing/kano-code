@@ -10,14 +10,14 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
         const editor = new code.Editor({ sourceType: 'blockly' });
         const remix = challenge.createRemix(editor, {
             title: 'This is a remix thingy, enagage with it please',
-            app: { source: '<xml><block id="block1" type="app_onStart"><value name="CALLBACK"><block type="draw_set_background_color" id="block2"></block></value></block></xml>' },
+            app: { source: '<xml><block x="200" y="300" id="block1" type="app_onStart"><value name="CALLBACK"><block type="draw_set_background_color" id="block2"><value name="COLOR"><shadow type="colour_picker" id="block3"></shadow></value></block></value></block></xml>' },
             suggestions: [{
                 title: 'First block thing haha',
                 target: 'block#block1',
                 content: 'Hello. Do somethig here? Maybe?'
             }, {
                 title: 'Other block yeah?',
-                target: 'block#block2',
+                target: 'block#block3>input#COLOUR',
                 content: 'Hello. Do somethig here? Maybe?'
             }],
         });

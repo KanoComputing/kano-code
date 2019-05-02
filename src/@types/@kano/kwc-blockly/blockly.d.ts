@@ -19,6 +19,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         removeField(name : string) : Input;
         connection? : Connection;
         sourceBlock_ : Block;
+        fieldRow : Field[];
     }
     class Block {
         id : string;

@@ -8,6 +8,7 @@ export class Highlighter {
         if (!this.domNode) {
             this.domNode = document.createElement('div');
             this.domNode.style.position = 'fixed';
+            this.domNode.style.pointerEvents = 'none';
             this.domNode.style.background = 'rgba(33, 150, 243, 0.4)';
             this.domNode.style.border = '1px solid rgb(33, 150, 243)';
         }

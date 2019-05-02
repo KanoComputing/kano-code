@@ -1,6 +1,7 @@
 import { LitElement, css, html, property, query, customElement } from 'lit-element/lit-element.js';
 
 export type TooltipPosition = 'top'|'right'|'bottom'|'left'|'float'|'rightTop';
+export type CaretType = 'center'|'start';
 
 @customElement('kano-tooltip')
 export class KanoTooltip extends LitElement {
@@ -14,33 +15,34 @@ export class KanoTooltip extends LitElement {
                 z-index: 2;
                 visibility: hidden;
                 text-align: center;
-                --kano-tooltip-border-width: 0px;
-                --kano-tooltip-border-color: transparent;
-                --kano-tooltip-caret-width: 13px;
             }
             :host([position="top"]) {
                 transform-origin: 50% 100%;
+                padding-bottom: 8px;
             }
             :host([position="right"]) {
                 transform-origin: 0% 50%;
+                padding-left: 8px;
             }
             :host([position="bottom"]) {
                 transform-origin: 50% 0%;
+                padding-top: 8px;
             }
             :host([position="left"]) {
                 transform-origin: 100% 50%;
+                padding-right: 8px;
             }
-            :host .tooltip {
+            .tooltip {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
                 position: relative;
                 background-color: var(--kano-tooltip-background-color, white);
-                border-radius: 4px;
-                border: solid;
-                border-color: var(--kano-tooltip-border-color);
-                border-width: var(--kano-tooltip-border-width);
+                border-radius: 10px;
+                border-width: var(--kano-tooltip-border-width, 2px);
+                border-color: var(--kano-tooltip-border-color, transparent);
+                border-style: solid;
                 font-size: 16px;
                 line-height: 16px;
             }
@@ -56,51 +58,93 @@ export class KanoTooltip extends LitElement {
             }
             :host .tooltip .caret-shadow {
                 position: absolute;
-                width: var(--kano-tooltip-caret-width);
-                height: var(--kano-tooltip-caret-width);
+                width: var(--kano-tooltip-caret-width, 13px);
+                height: var(--kano-tooltip-caret-width, 13px);
                 background: #fff;
                 padding: 0px;
                 transform: rotate(45deg);
             }
+            :host([position="top"][caret="start"]) .tooltip .caret-shadow {
+                left: 26px;
+            }
             :host([position="top"]) .tooltip .caret-shadow {
-                top: 99%;
+                top: 100%;
                 left: 50%;
-                border-bottom-right-radius: 2px;
+                border-bottom-right-radius: var(--kano-tooltip-caret-radius, 6px);
                 box-shadow: 2px 2px 2px -1px rgba(0, 0, 0, 0.1);
-                margin-left: calc(var(--kano-tooltip-caret-width) / -2);
-                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-left: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                margin-top: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                border-bottom-color: var(--kano-tooltip-border-color, transparent);
+                border-bottom-width: var(--kano-tooltip-border-width, 2px);
+                border-right-color: var(--kano-tooltip-border-color, transparent);
+                border-right-width: var(--kano-tooltip-border-width, 2px);
+                border-bottom-style: solid;
+                border-right-style: solid;
+            }
+            :host([position="right"][caret="start"]) .tooltip .caret-shadow {
+                top: 26px;
             }
             :host([position="right"]) .tooltip .caret-shadow {
                 top: 50%;
-                right: 99%;
-                border-bottom-left-radius: 2px;
+                right: calc(100% + 0.5px);
+                border-bottom-left-radius: var(--kano-tooltip-caret-radius, 6px);
                 box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
-                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
-                margin-right: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-top: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                margin-right: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                border-bottom-color: var(--kano-tooltip-border-color, transparent);
+                border-bottom-width: var(--kano-tooltip-border-width, 2px);
+                border-left-color: var(--kano-tooltip-border-color, transparent);
+                border-left-width: var(--kano-tooltip-border-width, 2px);
+                border-bottom-style: solid;
+                border-left-style: solid;
             }
             :host([position="rightTop"]) .tooltip .caret-shadow {
                 top: 75%;
-                right: 99%;
-                border-bottom-left-radius: 2px;
+                right: 100%;
+                border-bottom-left-radius: var(--kano-tooltip-caret-radius, 6px);
                 box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
-                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
-                margin-right: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-top: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                margin-right: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                border-bottom-color: var(--kano-tooltip-border-color, transparent);
+                border-bottom-width: var(--kano-tooltip-border-width, 2px);
+                border-left-color: var(--kano-tooltip-border-color, transparent);
+                border-left-width: var(--kano-tooltip-border-width, 2px);
+                border-bottom-style: solid;
+                border-left-style: solid;
+            }
+            :host([position="bottom"][caret="start"]) .tooltip .caret-shadow {
+                left: 26px;
             }
             :host([position="bottom"]) .tooltip .caret-shadow {
-                bottom: 99%;
+                bottom: 100%;
                 left: 50%;
-                border-top-left-radius: 2px;
+                border-top-left-radius: var(--kano-tooltip-caret-radius, 6px);
                 box-shadow: -4px -4px 4px -4px rgba(0, 0, 0, 0.1);
-                margin-left: calc(var(--kano-tooltip-caret-width) / -2);
-                margin-bottom: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-left: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                margin-bottom: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                border-top-color: var(--kano-tooltip-border-color, transparent);
+                border-top-width: var(--kano-tooltip-border-width, 2px);
+                border-left-color: var(--kano-tooltip-border-color, transparent);
+                border-left-width: var(--kano-tooltip-border-width, 2px);
+                border-top-style: solid;
+                border-left-style: solid;
+            }
+            :host([position="left"][caret="start"]) .tooltip .caret-shadow {
+                top: 26px;
             }
             :host([position="left"]) .tooltip .caret-shadow {
                 top: 50%;
-                left: 99%;
-                border-top-right-radius: 2px;
+                left: 100%;
+                border-top-right-radius: var(--kano-tooltip-caret-radius, 6px);
                 box-shadow: 2px 0 2px -1px rgba(0, 0, 0, 0.1);
-                margin-top: calc(var(--kano-tooltip-caret-width) / -2);
-                margin-left: calc(var(--kano-tooltip-caret-width) / -2);
+                margin-top: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                margin-left: calc(var(--kano-tooltip-caret-width, 13px) / -2);
+                border-top-color: var(--kano-tooltip-border-color, transparent);
+                border-top-width: var(--kano-tooltip-border-width, 2px);
+                border-right-color: var(--kano-tooltip-border-color, transparent);
+                border-right-width: var(--kano-tooltip-border-width, 2px);
+                border-top-style: solid;
+                border-right-style: solid;
             }
             @keyframes pop {
                 0% {
@@ -130,7 +174,7 @@ export class KanoTooltip extends LitElement {
     }
     render() {
         return html`
-            <div class="tooltip ${this.position}" id="tooltip">
+            <div class="tooltip" id="tooltip">
                 <div class="caret-shadow" ?hidden$=${this.caretHidden(this.position)}></div>
                 <slot></slot>
             </div>
@@ -142,9 +186,14 @@ export class KanoTooltip extends LitElement {
     @property({ type: String })
     public position : TooltipPosition = 'top';
 
+    @property({ type: String })
+    public caret : CaretType = 'center';
+
+    @property({ type: Number })
+    public offset = 20;
+
     private _target? : HTMLElement;
     public trackTarget = false;
-    public offset = 20;
     public autoClose = false;
     public opened = false;
     private targetTracker? : number;
@@ -168,8 +217,16 @@ export class KanoTooltip extends LitElement {
 
     updated(changedProps : Map<string, unknown>) {
         super.updated(changedProps);
+        let updatePosition = false;
+
         if (changedProps.has('position')) {
-            this.setAttribute('position', this.position);
+            updatePosition = true;
+        } else if (changedProps.has('caret')) {
+            updatePosition = true;
+        } else if (changedProps.has('offset')) {
+            updatePosition = true;
+        }
+        if (updatePosition) {
             this.updatePosition();
         }
     }
@@ -234,6 +291,9 @@ export class KanoTooltip extends LitElement {
             return;
         }
 
+        this.setAttribute('position', this.position);
+        this.setAttribute('caret', this.caret);
+
         /* Compute stacking context relative to viewport */
         const contextOffset = this._computeContext();
 
@@ -248,8 +308,24 @@ export class KanoTooltip extends LitElement {
         const { style } = this;
         const rect = this.getBoundingClientRect();
 
-        const widthCenter = tRect.left + (tRect.width / 2) - (rect.width / 2) - contextOffset.left;
-        const heightCenter = tRect.top + (tRect.height / 2) - (rect.height / 2) - contextOffset.top;
+        const alignWidth = tRect.width < rect.width;
+        const alignHeight = tRect.height < rect.height;
+
+        let targetAnchorLeft = tRect.left + (tRect.width / 2);
+        let targetAnchorTop = tRect.top + (tRect.height / 2);
+
+        let caretLeft = (rect.width / 2) - contextOffset.left;
+        let caretTop = (rect.height / 2) - contextOffset.top;
+
+        if (this.caret === 'start') {
+            caretLeft = alignWidth ? 29 : 0;
+            caretTop = alignHeight ? 29 : 0;
+            targetAnchorLeft = alignWidth ? targetAnchorLeft : tRect.left;
+            targetAnchorTop = alignHeight ? targetAnchorTop : tRect.top;
+        }
+
+        const widthCenter = targetAnchorLeft - caretLeft;
+        const heightCenter = targetAnchorTop - caretTop;
 
         if (['top', 'bottom'].indexOf(this.position) !== -1) {
             style.left = `${widthCenter}px`;
@@ -260,17 +336,20 @@ export class KanoTooltip extends LitElement {
             style.left = `${widthCenter}px`;
         }
 
+        // Take the caret thickness in account
+        const offset = this.offset;
+
         if (this.position === 'top') {
-            style.top = `${tRect.top - rect.height - contextOffset.top - this.offset}px`;
+            style.top = `${tRect.top - rect.height - contextOffset.top - offset}px`;
         } else if (this.position === 'bottom') {
-            style.top = `${tRect.bottom - contextOffset.top + this.offset}px`;
+            style.top = `${tRect.bottom - contextOffset.top + offset}px`;
         } else if (this.position === 'right') {
-            style.left = `${tRect.right - contextOffset.left + this.offset}px`;
+            style.left = `${tRect.right - contextOffset.left + offset}px`;
         } else if (this.position === 'rightTop') {
-            style.left = `${tRect.right - contextOffset.left + this.offset}px`;
-            style.top = `${tRect.top - (rect.height / 2) - contextOffset.top - this.offset}px`;
+            style.left = `${tRect.right - contextOffset.left + offset}px`;
+            style.top = `${tRect.top - (rect.height / 2) - contextOffset.top - offset}px`;
         } else if (this.position === 'left') {
-            style.left = `${tRect.left - contextOffset.left - rect.width - this.offset}px`;
+            style.left = `${tRect.left - contextOffset.left - rect.width - offset}px`;
         }
 
         this.positionWillChange = false;
@@ -328,17 +407,18 @@ export class KanoTooltip extends LitElement {
         this.tooltip.classList.add('pop-out');
     }
     _getTransformOrigin() {
+        const anchor = this.caret === 'center' ? '50%' : '26px';
         switch (this.position) {
         case 'top':
-            return '50% 100%';
+            return `${anchor} 100%`;
         case 'right':
-            return '0 50%';
+            return `0 ${anchor}`;
         case 'bottom':
-            return '50% 0%';
+            return `${anchor} 0%`;
         case 'left':
-            return '100% 50%';
+            return `100% ${anchor}`;
         default:
-            return '0 50%';
+            return `0 ${anchor}`;
         }
     }
     setupTargetTracking() {
