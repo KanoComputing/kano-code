@@ -1,11 +1,11 @@
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { LitElement, css, html, property, query, customElement } from 'lit-element/lit-element.js';
 
-class KanoTooltip extends PolymerElement {
-    static get is() { return 'kano-tooltip'; }
-    static get template() {
-        return html`
-        <style>
+export type TooltipPosition = 'top'|'right'|'bottom'|'left'|'float'|'rightTop';
+
+@customElement('kano-tooltip')
+export class KanoTooltip extends LitElement {
+    static get styles() {
+        return [css`
             :host {
                 display: inline-block;
                 position: fixed;
@@ -43,7 +43,6 @@ class KanoTooltip extends PolymerElement {
                 border-width: var(--kano-tooltip-border-width);
                 font-size: 16px;
                 line-height: 16px;
-                @apply --kano-tooltip;
             }
             :host([position="top"]) .tooltip {
                 box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.1);
@@ -62,7 +61,6 @@ class KanoTooltip extends PolymerElement {
                 background: #fff;
                 padding: 0px;
                 transform: rotate(45deg);
-                @apply --kano-tooltip-caret;
             }
             :host([position="top"]) .tooltip .caret-shadow {
                 top: 99%;
@@ -104,7 +102,6 @@ class KanoTooltip extends PolymerElement {
                 margin-top: calc(var(--kano-tooltip-caret-width) / -2);
                 margin-left: calc(var(--kano-tooltip-caret-width) / -2);
             }
-
             @keyframes pop {
                 0% {
                     opacity: 0;
@@ -129,52 +126,54 @@ class KanoTooltip extends PolymerElement {
             .pop-out {
                 animation-direction: reverse;
             }
-        </style>
-        <div class$="tooltip [[position]]" id="tooltip">
-            <div class="caret-shadow" hidden$="{{caretHidden(position)}}"></div>
-            <slot></slot>
-        </div>
-`;
+        `];
     }
-    static get properties() {
-        return {
-            position: {
-                type: String,
-                value: 'top',
-                reflectToAttribute: true,
-            },
-            target: {
-                type: Object,
-            },
-            trackTarget: {
-                type: Boolean,
-                value: false,
-            },
-            zIndex: {
-                type: Number,
-                value: null,
-            },
-            offset: {
-                type: Number,
-                value: 20,
-            },
-            autoClose: {
-                type: Boolean,
-                value: false,
-            },
-            opened: {
-                type: Boolean,
-                value: false,
-                notify: true,
-            },
-        };
+    render() {
+        return html`
+            <div class="tooltip ${this.position}" id="tooltip">
+                <div class="caret-shadow" ?hidden$=${this.caretHidden(this.position)}></div>
+                <slot></slot>
+            </div>
+        `;
     }
-    static get observers() {
-        return [
-            'updatePosition(target.*, position, zIndex)',
-            'setupTargetTracking(target)',
-        ];
+    @query('#tooltip')
+    private tooltip? : HTMLElement;
+
+    @property({ type: String })
+    public position : TooltipPosition = 'top';
+
+    private _target? : HTMLElement;
+    public trackTarget = false;
+    public offset = 20;
+    public autoClose = false;
+    public opened = false;
+    private targetTracker? : number;
+    private openedEvent? : MouseEvent|TouchEvent;
+    private positionWillChange = false;
+    private alreadyAnimated = false;
+
+    set target(value : HTMLElement|undefined) {
+        this._target = value;
+        this.setupTargetTracking();
+        this.updatePosition();
     }
+
+    get target() {
+        return this._target;
+    }
+
+    set zIndex(value : number) {
+        this.style.zIndex = value.toString();
+    }
+
+    updated(changedProps : Map<string, unknown>) {
+        super.updated(changedProps);
+        if (changedProps.has('position')) {
+            this.setAttribute('position', this.position);
+            this.updatePosition();
+        }
+    }
+
     connectedCallback() {
         super.connectedCallback();
         const observer = new MutationObserver(() => {
@@ -197,23 +196,34 @@ class KanoTooltip extends PolymerElement {
         document.removeEventListener('touchend', this._onClickEvent);
 
         if (this.targetTracker) {
-            clearInterval(this.targetTracker);
+            window.clearInterval(this.targetTracker);
         }
     }
-    _onClickEvent(e) {
+    _onClickEvent(e : MouseEvent|TouchEvent) {
         if (this.openedEvent === e) {
             return;
         }
-        let target = e.path ? e.path[0] : e.target;
+        let target = e.composedPath()[0] as Node;
         if (this.autoClose && this.opened) {
             // Go up the dom to check if the event originated from inside the tooltip or not
             while (target !== this && target !== document.body && target.parentNode) {
-                target = target.parentNode || target.host;
+                target = target.parentNode || (target as any).host;
             }
             if (target !== this) {
                 this.close();
             }
         }
+    }
+    _onWindowResize() {
+        if (!this.opened) {
+            return;
+        }
+        let resizeTimer;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => this.updatePosition(), 100);
+    }
+    caretHidden(position : TooltipPosition) {
+        return position === 'float';
     }
     updatePosition() {
         this.positionWillChange = true;
@@ -225,7 +235,7 @@ class KanoTooltip extends PolymerElement {
         }
 
         /* Compute stacking context relative to viewport */
-        this._computeContext();
+        const contextOffset = this._computeContext();
 
         /* See whether the target was a rect or an element */
         if ('left' in target && 'top' in target &&
@@ -238,8 +248,8 @@ class KanoTooltip extends PolymerElement {
         const { style } = this;
         const rect = this.getBoundingClientRect();
 
-        const widthCenter = tRect.left + (tRect.width / 2) - (rect.width / 2) - this.contextOffset.left;
-        const heightCenter = tRect.top + (tRect.height / 2) - (rect.height / 2) - this.contextOffset.top;
+        const widthCenter = tRect.left + (tRect.width / 2) - (rect.width / 2) - contextOffset.left;
+        const heightCenter = tRect.top + (tRect.height / 2) - (rect.height / 2) - contextOffset.top;
 
         if (['top', 'bottom'].indexOf(this.position) !== -1) {
             style.left = `${widthCenter}px`;
@@ -251,26 +261,22 @@ class KanoTooltip extends PolymerElement {
         }
 
         if (this.position === 'top') {
-            style.top = `${tRect.top - rect.height - this.contextOffset.top - this.offset}px`;
+            style.top = `${tRect.top - rect.height - contextOffset.top - this.offset}px`;
         } else if (this.position === 'bottom') {
-            style.top = `${tRect.bottom - this.contextOffset.top + this.offset}px`;
+            style.top = `${tRect.bottom - contextOffset.top + this.offset}px`;
         } else if (this.position === 'right') {
-            style.left = `${tRect.right - this.contextOffset.left + this.offset}px`;
+            style.left = `${tRect.right - contextOffset.left + this.offset}px`;
         } else if (this.position === 'rightTop') {
-            style.left = `${tRect.right - this.contextOffset.left + this.offset}px`;
-            style.top = `${tRect.top - (rect.height / 2) - this.contextOffset.top - this.offset}px`;
+            style.left = `${tRect.right - contextOffset.left + this.offset}px`;
+            style.top = `${tRect.top - (rect.height / 2) - contextOffset.top - this.offset}px`;
         } else if (this.position === 'left') {
-            style.left = `${tRect.left - this.contextOffset.left - rect.width - this.offset}px`;
-        }
-
-        if (this.zIndex !== null) {
-            style['z-index'] = this.zIndex;
+            style.left = `${tRect.left - contextOffset.left - rect.width - this.offset}px`;
         }
 
         this.positionWillChange = false;
         this.open();
     }
-    open(e) {
+    open(e? : MouseEvent|TouchEvent) {
         this.openedEvent = e;
         // Let an eventual click event triggering the open go the the click handler
         setTimeout(() => {
@@ -285,12 +291,18 @@ class KanoTooltip extends PolymerElement {
             }
 
             const onAnimationEnd = () => {
-                this.$.tooltip.classList.remove('pop-in');
-                this.$.tooltip.removeEventListener('animationend', onAnimationEnd);
+                if (!this.tooltip) {
+                    return;
+                }
+                this.tooltip.classList.remove('pop-in');
+                this.tooltip.removeEventListener('animationend', onAnimationEnd);
             };
-            this.$.tooltip.style.transformOrigin = this._getTransformOrigin();
-            this.$.tooltip.addEventListener('animationend', onAnimationEnd);
-            this.$.tooltip.classList.add('pop-in');
+            if (!this.tooltip) {
+                return;
+            }
+            this.tooltip.style.transformOrigin = this._getTransformOrigin();
+            this.tooltip.addEventListener('animationend', onAnimationEnd);
+            this.tooltip.classList.add('pop-in');
 
             this.opened = true;
             this.alreadyAnimated = true;
@@ -300,14 +312,20 @@ class KanoTooltip extends PolymerElement {
         this.opened = false;
 
         const onAnimationEnd = () => {
-            this.$.tooltip.classList.remove('pop-out');
+            if (!this.tooltip) {
+                return;
+            }
+            this.tooltip.classList.remove('pop-out');
             this.alreadyAnimated = false;
             this.style.visibility = 'hidden';
-            this.$.tooltip.removeEventListener('animationend', onAnimationEnd);
+            this.tooltip.removeEventListener('animationend', onAnimationEnd);
         };
-        this.$.tooltip.style.transformOrigin = this._getTransformOrigin();
-        this.$.tooltip.addEventListener('animationend', onAnimationEnd);
-        this.$.tooltip.classList.add('pop-out');
+        if (!this.tooltip) {
+            return;
+        }
+        this.tooltip.style.transformOrigin = this._getTransformOrigin();
+        this.tooltip.addEventListener('animationend', onAnimationEnd);
+        this.tooltip.classList.add('pop-out');
     }
     _getTransformOrigin() {
         switch (this.position) {
@@ -335,29 +353,16 @@ class KanoTooltip extends PolymerElement {
         }
 
         if (this.trackTarget && target && 'getBoundingClientRect' in target) {
-            this.targetTracker = setInterval(this.updatePosition.bind(this), 1000);
+            this.targetTracker = window.setInterval(this.updatePosition.bind(this), 1000);
         }
     }
     _computeContext() {
-        this.style.left = 0;
-        this.style.top = 0;
+        this.style.left = '0px';
+        this.style.top = '0px';
         const contextBounds = this.getBoundingClientRect();
-        this.set('contextOffset', {
+        return {
             top: contextBounds.top,
             left: contextBounds.left,
-        });
-    }
-    _onWindowResize() {
-        if (!this.opened) {
-            return;
-        }
-        let resizeTimer;
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => this.updatePosition(), 100);
-    }
-    caretHidden(position) {
-        return position === 'float';
+        };
     }
 }
-
-customElements.define(KanoTooltip.is, KanoTooltip);

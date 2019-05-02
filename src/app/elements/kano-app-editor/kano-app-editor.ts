@@ -1,4 +1,3 @@
-import '@polymer/iron-pages/iron-pages.js';
 import 'js-beautify/js/lib/beautify.js';
 import '../kano-code-display/kano-code-display.js';
 import { property, customElement, css, LitElement, html, query } from 'lit-element';
@@ -210,6 +209,9 @@ export class KanoAppEditor extends LitElement {
                 pointer-events: all;
                 overflow: hidden;
             }
+            [hidden] {
+                display: none !important;
+            }
         `];
     }
     render() {
@@ -231,13 +233,11 @@ export class KanoAppEditor extends LitElement {
                             <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>
                         </div>
                     </div>
-                    <iron-pages class="workspace-pages" attr-for-selected="name" .selected=${this.workspaceTab}>
-                        <div name="workspace" id="workspace-host" class="visible-when-running"></div>
-                        <kano-code-display name="code-display" id="code-display" .code=${this._setCodeDisplay(this.code, this.workspaceTab)} lang="javascript"></kano-code-display>
-                    </iron-pages>
+                    <div id="workspace-host" ?hidden=${this.workspaceTab !== 'workspace'}></div>
+                    <kano-code-display id="code-display" .code=${this._setCodeDisplay(this.code, this.workspaceTab)} lang="javascript" ?hidden=${this.workspaceTab !== 'code-display'}></kano-code-display>
                 </div>
                 <div name="code" class="editor" id="source-panel">
-                    <div id="resize" @mousedown=${(e : MouseEvent) => this.resizeWorkspace(e)} class="visible-when-running"></div>
+                    <div id="resize" @mousedown=${(e : MouseEvent) => this.resizeWorkspace(e)}></div>
                     <div main class="main">
                         <slot name="source-editor"></slot>
                     </div>
