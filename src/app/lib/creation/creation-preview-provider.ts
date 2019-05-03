@@ -10,3 +10,4 @@ export abstract class CreationCustomPreviewProvider extends Plugin {
     abstract createFile(output : Output) : Promise<Blob>|Blob;
     abstract display(blob : Blob) : void;
 }
+

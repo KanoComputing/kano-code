@@ -1,5 +1,6 @@
 import * as code from '../../index.js';
 import * as i18n from '../../i18n.js';
+import * as APIs from '../../toolbox.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js'
 
 const Shapes = {
@@ -62,7 +63,17 @@ class EditorProfile extends code.DefaultEditorProfile {
         super.onInstall(editor);
         this.storage = new LocalStoragePlugin('intro');
         this.plugins.push(this.storage);
-        this.toolbox.push(Shapes);
+        this.toolbox = [
+            Shapes,
+            APIs.AppAPI,
+            APIs.ControlAPI,
+            APIs.LogicAPI,
+            APIs.MathAPI,
+            APIs.VariablesAPI,
+            APIs.ColorAPI,
+            APIs.ListsAPI,
+            APIs.DrawAPI,
+        ];
         this.outputProfile = new OutputProfile();
     }
 }

@@ -17,7 +17,7 @@ export class BlocklyBriefing extends Briefing {
         }
         return this.resetConfirm;
     }
-    reset () {
+    reset() {
         this.editor.reset();
     }
     start() {

@@ -56,11 +56,12 @@ export class BlocklySourceEditor implements SourceEditor {
     get onDidSourceChange() {
         return this._onDidSourceChange.event;
     }
-    setToolbox(toolbox : any) : void {
+    setToolbox(toolbox : any) {
         (this.domNode as any).defaultCategories = toolbox;
     }
-    setSource(source : string) : void {
+    setSource(source : string) {
         (this.domNode as any).blocks = source;
+        (this.domNode as any).loadBlocks(source);
     }
     getSource() {
         return (this.domNode as any).getSource();

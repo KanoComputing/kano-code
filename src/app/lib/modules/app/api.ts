@@ -25,11 +25,7 @@ export const AppAPI : IAPIDefinition = {
                 block.setNextStatement(false);
             },
         },
-    }, {
-        type: 'function',
-        name: 'restart',
-        verbose: 'restart app',
-    }],
+    },],
     onInstall(editor, mod : ApplicationModule) {
         setupFlash(editor, ApplicationModule.id, mod._onDidStart, 'onStart');
     },

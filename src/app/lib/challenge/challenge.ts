@@ -5,6 +5,7 @@ import { IToolboxWhitelist } from '../editor/toolbox.js';
 import { Editor } from '../editor/editor.js';
 import { Engine } from './engine.js';
 import { ContributionManager } from '../contribution.js';
+import { ChallengeBase } from './base.js';
 
 const registeredEngines = new ContributionManager<typeof Engine>();
 
@@ -32,20 +33,18 @@ export interface IChallengeData {
     whitelist? : IToolboxWhitelist;
 }
 
-export class Challenge {
+export class Challenge extends ChallengeBase {
     public editor : Editor;
     private challengeData : IChallengeData;
     public engine : Engine;
     private subscriptions : IDisposable[] = [];
     private options : IChallengeOptions;
-    
-    private _onDidEnd : EventEmitter = new EventEmitter();
-    get onDidEnd() { return this._onDidEnd.event; }
 
     private _onDidRequestNextChallenge : EventEmitter = new EventEmitter();
     get onDidRequestNextChallenge() { return this._onDidRequestNextChallenge.event; }
 
     constructor(editor : Editor, challengeData : IChallengeData, options : IChallengeOptions) {
+        super(editor);
         this.editor = editor;
         this.options = options;
         if (!challengeData.version) {

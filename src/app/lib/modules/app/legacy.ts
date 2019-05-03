@@ -21,9 +21,6 @@ export function transformLegacy(app : any) {
             LegacyUtil.renameStatement(block, 'DO', 'CALLBACK');
         }
     });
-    LegacyUtil.transformBlock(root, 'block[type="restart_code"]', (block) => {
-        block.setAttribute('type', 'app_restart');
-    });
     const serializer = new XMLSerializer();
     app.source = serializer.serializeToString(root);
 }

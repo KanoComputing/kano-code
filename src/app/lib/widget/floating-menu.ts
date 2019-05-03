@@ -24,7 +24,7 @@ export class KCFloatingMenu extends LitElement {
                 border-radius: 6px;
                 box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
                 color: var(--color-black);
-                max-width: 240px;
+                max-width: 280px;
                 align-self: flex-end;
             }
             .content {

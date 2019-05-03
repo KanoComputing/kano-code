@@ -55,7 +55,7 @@ export class Tooltip implements IEditorWidget {
     }
     layout() {
         const domNode = this.getDomNode() as any;
-        domNode.updatePosition();
+        domNode.updatePosition(false);
     }
     getPosition() {
         return null;

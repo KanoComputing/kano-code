@@ -5,6 +5,7 @@ import { ChallengeBase } from '../challenge/base.js';
 export interface IBriefingSample {
     img : string;
     description : string;
+    link : string;
 }
 
 export interface IBriefingData {

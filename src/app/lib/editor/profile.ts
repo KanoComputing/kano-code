@@ -12,6 +12,13 @@ export abstract class EditorProfile {
     abstract onInstall(editor : Editor) : void;
     abstract parts? : any[];
     abstract plugins? : any[];
+    /**
+     * Configures the toolbox for the editor.
+     * To set the toolbox to default entries:
+     * `this.toolbox = Object.values(APIs);`
+     * To set your own order:
+     * `this.toolbox = [APIs.app, APIs.ctx etc];`
+     */
     abstract toolbox? : any[];
     abstract outputProfile? : OutputProfile;
     abstract creationPreviewProvider? : CreationCustomPreviewProvider;

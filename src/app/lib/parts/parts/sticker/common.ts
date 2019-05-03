@@ -35,7 +35,7 @@ export const getter : IMetaDefinition = {
         },
         javascript(Blockly : Blockly, block : Block) {
             const value = block.getFieldValue('STICKER');
-            return [`'${value || ''}'`];
+            return [`'${value || ""}'`, Blockly.JavaScript.ORDER_ATOMIC];
         },
     }
 };

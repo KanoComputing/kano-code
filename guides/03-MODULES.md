@@ -20,13 +20,35 @@ class OutputProfile extends code.OutputProfile {
 }
 ```
 
-Then let your EditorProfile know that you want it to run alongside your OutputProfile.
+Then let your EditorProfile know that you want it to run alongside your OutputProfile. There are 2 ways to do this, first you could just push your Shapes module into your toolbox array.
 
 ```js
 class EditorProfile extends code.DefaultEditorProfile {
     onInstall(editor) {
         super.onInstall(editor);
         this.toolbox.push(Shapes);
+        this.outputProfile = new OutputProfile();
+    }
+}
+```
+Secondly, you can specify an order for your toolbox. This is done by importing your APIs and then creating a new toolbox array listing the order that your modules should be displayed. This also allows you to filter out modules you do not want in your editor.
+```js
+import * as APIs from '../path/to/app/lib/modules/api.js';
+
+class EditorProfile extends code.DefaultEditorProfile {
+    onInstall(editor) {
+        super.onInstall(editor);
+        this.toolbox = [
+            APIs.AppAPI,
+            APIs.ControlAPI,
+            APIs.LogicAPI,
+            Shapes,
+            APIs.MathAPI,
+            APIs.VariablesAPI,
+            APIs.ColorAPI,
+            APIs.ListsAPI,
+            APIs.DrawAPI,
+        ];
         this.outputProfile = new OutputProfile();
     }
 }

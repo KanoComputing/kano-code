@@ -273,7 +273,7 @@ export class KanoTooltip extends LitElement {
     caretHidden(position : TooltipPosition) {
         return position === 'float';
     }
-    updatePosition() {
+    updatePosition(forceOpen : boolean = true) {
         this.positionWillChange = true;
         const { target } = this;
         let tRect;
@@ -344,7 +344,9 @@ export class KanoTooltip extends LitElement {
         }
 
         this.positionWillChange = false;
-        this.open();
+        if (forceOpen) {
+            this.open();
+        }
     }
     open(e? : MouseEvent|TouchEvent) {
         this.openedEvent = e;
