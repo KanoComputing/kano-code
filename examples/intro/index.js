@@ -1,6 +1,6 @@
 import * as code from '../../index.js';
 import * as i18n from '../../i18n.js';
-import * as APIs from '../../dist/app/lib/modules/api.js';
+import * as APIs from '../../toolbox.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js'
 
 const Shapes = {

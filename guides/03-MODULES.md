@@ -31,7 +31,7 @@ class EditorProfile extends code.DefaultEditorProfile {
     }
 }
 ```
-Secondly, you can specify an order for your toolbox. This is done by importing your APIs and then creating a new toolbox array listing the order that your modules should be displayed.
+Secondly, you can specify an order for your toolbox. This is done by importing your APIs and then creating a new toolbox array listing the order that your modules should be displayed. This also allows you to filter out modules you do not want in your editor.
 ```js
 import * as APIs from '../path/to/app/lib/modules/api.js';
 
