@@ -1,6 +1,6 @@
 import { Editor } from '../editor/editor.js';
-import { Tooltip } from '../challenge/widget/tooltip.js';
 import { EventEmitter } from '@kano/common/index.js';
+import { RemixTooltip } from './widget/tooltip.js';
 
 export interface IRemixSuggestion {
     title : string;
@@ -18,7 +18,7 @@ export interface IRemix {
 export class Remix {
     protected editor : Editor;
     protected remix : IRemix;
-    protected tooltip? : Tooltip;
+    protected tooltip? : RemixTooltip;
 
     protected _onDidEnd = new EventEmitter();
     get onDidEnd() { return this._onDidEnd.event; }
@@ -35,13 +35,21 @@ export class Remix {
             this.editor.removeContentWidget(this.tooltip);
             this.tooltip.dispose();
         }
-        this.tooltip = new Tooltip();
+        this.tooltip = new RemixTooltip();
         const target = this.editor.queryElement(suggestion.target);
         this.tooltip.setText(suggestion.content);
         this.tooltip.setPosition('bottom');
         this.tooltip.setOffset(0);
+        this.tooltip.onDidDismiss(() => {
+            this.deselectSuggestion();
+        });
         this.editor.addContentWidget(this.tooltip);
         this.tooltip.setTarget(target as HTMLElement);
+    }
+    deselectSuggestion() {
+        if (this.tooltip) {
+            this.tooltip.close();
+        }
     }
     dispose() {}
 }

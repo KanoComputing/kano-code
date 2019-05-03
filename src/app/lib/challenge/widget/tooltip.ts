@@ -1,37 +1,44 @@
 import '@kano/styles/typography.js';
+import '@kano/styles/color.js';
 import 'marked/lib/marked.js';
 import 'twemoji-min/2/twemoji.min.js';
 import { KanoTooltip } from '../../../elements/kano-tooltip/kano-tooltip.js';
+import { html, render } from 'lit-html/lit-html.js';
+import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
 
 export class Tooltip {
-    private domNode : KanoTooltip|null = null;
-    private markedEl : HTMLElement|null = null;
-    getMarked() {
-        if (!this.markedEl) {
-            this.markedEl = document.createElement('div');
-            this.markedEl.classList.add('markdown-html');
-        }
-        return this.markedEl;
+    protected domNode : KanoTooltip|null = null;
+    protected markedEl : HTMLElement|null = null;
+    protected contentNode : HTMLElement|null = null;
+    render(markdown : string) {
+        return html`
+            <style>
+                .markdown-html {
+                    padding: 0px 16px;
+                    color: var(--color-black);
+                }
+            </style>
+            <div class="markdown-html">${unsafeHTML(markdown)}</div>
+        `;
+    }
+    update(markdown : string) {
+        const tpl = this.render(markdown);
+        render(tpl, this.getDomNode());
     }
     getDomNode() {
         if (!this.domNode) {
             this.domNode = document.createElement('kano-tooltip') as KanoTooltip;
             this.domNode.caret = 'start';
-            const content = document.createElement('div');
-            content.style.padding = '0px 16px';
-            this.domNode.style.setProperty('--kano-tooltip-border-color', 'var(--color-black)');
+            this.domNode.style.setProperty('--kano-tooltip-border-color', 'var(--color-abbey)');
             this.domNode.style.color = 'black';
             this.domNode.style.fontFamily = 'var(--font-body)';
             this.domNode.style.fontWeight = 'bold';
-            content.appendChild(this.getMarked());
-            this.domNode.appendChild(content);
         }
         return this.domNode;
     }
     setText(text : string) {
-        const marked = this.getMarked() as any;
         const emojiReady = window.twemoji.parse(text);
-        marked.innerHTML = window.marked(emojiReady);
+        this.update(window.marked(emojiReady));
     }
     setPosition(position : string) {
         const marked = this.getDomNode() as any;

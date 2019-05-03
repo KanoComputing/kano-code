@@ -22,6 +22,7 @@ export class RemixSuggestions extends LitElement {
     static get styles() {
         return [css`
             :host {
+                overflow: hidden;
                 display: flex;
                 flex-direction: column;
                 font-family: var(--font-body);
@@ -148,6 +149,11 @@ export class SuggestionsWidget extends BlocklyEditorBannerWidget {
             domNode.appendChild(this.listEl);
         }
         return domNode;
+    }
+    deselectSuggestion() {
+        if (this.listEl) {
+            this.listEl.selectedSuggestionIndex = -1;
+        }
     }
     dispose() {
         this.subscriptions.forEach(d => d.dispose());

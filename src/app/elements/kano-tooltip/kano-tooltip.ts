@@ -410,15 +410,15 @@ export class KanoTooltip extends LitElement {
         const anchor = this.caret === 'center' ? '50%' : '26px';
         switch (this.position) {
         case 'top':
-            return `${anchor} 100%`;
+            return `${anchor} 8px`;
         case 'right':
-            return `0 ${anchor}`;
+            return `-8px ${anchor}`;
         case 'bottom':
-            return `${anchor} 0%`;
+            return `${anchor} -8px`;
         case 'left':
-            return `100% ${anchor}`;
+            return `8px ${anchor}`;
         default:
-            return `0 ${anchor}`;
+            return `-8px ${anchor}`;
         }
     }
     setupTargetTracking() {
