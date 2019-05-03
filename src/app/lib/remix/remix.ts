@@ -1,6 +1,5 @@
-import { Editor } from '../editor/editor.js';
-import { EventEmitter } from '@kano/common/index.js';
 import { RemixTooltip } from './widget/tooltip.js';
+import { Briefing, IBriefingData } from '../briefing/briefing.js';
 
 export interface IRemixSuggestion {
     title : string;
@@ -8,28 +7,30 @@ export interface IRemixSuggestion {
     content : string;
 }
 
-export interface IRemix {
-    id : string;
+export interface IRemix extends IBriefingData {
     title : string;
     app : any;
     suggestions : IRemixSuggestion[];
 }
 
-export class Remix {
-    protected editor : Editor;
-    protected remix : IRemix;
-    protected tooltip? : RemixTooltip;
-
-    protected _onDidEnd = new EventEmitter();
-    get onDidEnd() { return this._onDidEnd.event; }
-
-    constructor(editor : Editor, remix : IRemix) {
-        this.editor = editor;
-        this.remix = remix;
-    }
+export class Remix extends Briefing {
+    protected data? : IRemix;
+    protected tooltip : RemixTooltip|null = null;
     start() {
-        this.editor.load(this.remix.app);
+        super.start();
+        if (!this.dialog) {
+            return;
+        }
+        const dialogSub = this.dialog.onDidClose(() => {
+            dialogSub.dispose();
+            if (!this.data) {
+                return;
+            }
+            this.editor.load(this.data.app);
+            this.onDialogClosed();
+        });
     }
+    onDialogClosed() {}
     selectSuggestion(suggestion : IRemixSuggestion) {
         if (this.tooltip) {
             this.editor.removeContentWidget(this.tooltip);
@@ -48,7 +49,11 @@ export class Remix {
     }
     deselectSuggestion() {
         if (this.tooltip) {
-            this.tooltip.close();
+            this.tooltip.close()
+                .then(() => {
+                    this.tooltip!.dispose();
+                    this.tooltip = null;
+                });
         }
     }
     dispose() {}

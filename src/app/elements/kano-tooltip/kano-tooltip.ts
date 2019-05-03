@@ -45,16 +45,7 @@ export class KanoTooltip extends LitElement {
                 border-style: solid;
                 font-size: 16px;
                 line-height: 16px;
-            }
-            :host([position="top"]) .tooltip {
-                box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.1);
-            }
-            :host([position="bottom"]) .tooltip {
-                box-shadow: 0 1px 4px 2px rgba(0, 0, 0, 0.1);
-            }
-            :host([position="left"]) .tooltip,
-            :host([position="right"]) .tooltip {
-                box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.15);
             }
             :host .tooltip .caret-shadow {
                 position: absolute;

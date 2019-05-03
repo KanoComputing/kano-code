@@ -1,7 +1,6 @@
 import Editor from '../editor/editor.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
 import { BlocklySourceEditor } from '../source-editor/blockly.js';
-import { EventEmitter } from '@kano/common/index.js';
 
 export interface IBannerData {
     text : string;

@@ -8,7 +8,8 @@ const lang = i18n.getLang();
 i18n.load(lang, { blockly: true, kanoCodePath: '/' })
     .then(() => {
         const editor = new code.Editor({ sourceType: 'blockly' });
-        const remix = challenge.createRemix(editor, {
+        const remix = challenge.createRemix(editor);
+        remix.setData({
             title: 'This is a remix thingy, enagage with it please',
             app: { source: '<xml><block x="200" y="300" id="block1" type="app_onStart"><value name="CALLBACK"><block type="draw_set_background_color" id="block2"><value name="COLOR"><shadow type="colour_picker" id="block3"></shadow></value></block></value></block></xml>' },
             suggestions: [{

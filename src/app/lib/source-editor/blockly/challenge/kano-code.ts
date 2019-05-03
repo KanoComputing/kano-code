@@ -4,7 +4,7 @@ import { BannerWidget, IBannerButton } from '../../../challenge/widget/banner.js
 import { BeaconWidget } from '../../../challenge/widget/beacon.js';
 import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
 import { Part } from '../../../parts/part.js';
-import { Tooltip } from '../../../challenge/widget/tooltip.js';
+import { Tooltip } from '../../../widget/tooltip.js';
 import { challengeStyles } from '../../../challenge/styles.js';
 import '../../../challenge/components/kc-toolbox-entry-preview.js';
 import '../../../challenge/components/kc-part-api-preview.js';

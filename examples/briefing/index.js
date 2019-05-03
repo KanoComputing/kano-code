@@ -8,7 +8,8 @@ const lang = i18n.getLang();
 i18n.load(lang, { blockly: true, kanoCodePath: '/' })
     .then(() => {
         const editor = new code.Editor({ sourceType: 'blockly' });
-        const briefing = challenge.createBriefing(editor, {
+        const briefing = challenge.createBriefing(editor);
+        briefing.setData({
             id: '001_brief',
             instruction: 'Hello people, hahahahahahaha HAHAHAHAHAHAHAAHAHAH Lol',
             samples: [{

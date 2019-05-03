@@ -2,7 +2,7 @@ import '@kano/styles/typography.js'
 import '@kano/styles/color.js'
 import { html } from 'lit-html/lit-html.js';
 import { close } from '@kano/icons/ui.js';
-import { Tooltip } from '../../challenge/widget/tooltip.js';
+import { Tooltip } from '../../widget/tooltip.js';
 import { templateContent } from '../../directives/template-content.js';
 import { EventEmitter } from '@kano/common/index.js';
 

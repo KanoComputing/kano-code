@@ -2,11 +2,12 @@ import '@kano/styles/typography.js';
 import '@kano/styles/color.js';
 import 'marked/lib/marked.js';
 import 'twemoji-min/2/twemoji.min.js';
-import { KanoTooltip } from '../../../elements/kano-tooltip/kano-tooltip.js';
+import { KanoTooltip } from '../../elements/kano-tooltip/kano-tooltip.js';
 import { html, render } from 'lit-html/lit-html.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
+import { IEditorWidget } from '../editor/widget/widget.js';
 
-export class Tooltip {
+export class Tooltip implements IEditorWidget {
     protected domNode : KanoTooltip|null = null;
     protected markedEl : HTMLElement|null = null;
     protected contentNode : HTMLElement|null = null;

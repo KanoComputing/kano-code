@@ -1,11 +1,11 @@
-import { Remix } from '../../../remix/remix.js';
-import { SuggestionsWidget } from './widget/list.js';
-import { registerRemix } from '../../../remix/index.js';
+import { RemixFloatingMenu } from './widget/floating-menu.js';
+import { registerRemix, IRemix, Remix } from '../../../remix/index.js';
 import { Confirm } from '../../../editor/dialogs/confirm.js';
 
 export class BlocklyRemix extends Remix {
     resetConfirm? : Confirm;
-    banner? : SuggestionsWidget;
+    menu? : RemixFloatingMenu;
+    data? : IRemix;
     getResetConfirm() {
         if (!this.resetConfirm) {
             this.resetConfirm = this.editor.dialogs.registerConfirm({
@@ -13,29 +13,36 @@ export class BlocklyRemix extends Remix {
                 heading: 'Are you sure you want to reset your remix?',
                 text: 'You will loose all your changes',
             });
-            this.resetConfirm.onDidConfirm(() => {
-                // A bug in the loading method does not make this work. Restting before that helps
-                this.editor.reset();
-                this.editor.load(this.remix.app);
-            });
+            this.resetConfirm.onDidConfirm(() => this.reset());
         }
         return this.resetConfirm;
     }
-    start() {
-        super.start();
-        this.banner = new SuggestionsWidget(this.remix.title, this.remix.suggestions);
-        this.banner.onDidSelectSuggestion((s) => this.selectSuggestion(s));
-        this.banner.onDidRequestReset(() => {
+    reset () {
+        this.editor.reset();
+    }
+    onDialogClosed() {
+        if (!this.data) {
+            return;
+        }
+        this.menu = new RemixFloatingMenu(this.data.title, this.data.suggestions);
+        this.menu.onDidSelectSuggestion((s) => this.selectSuggestion(s));
+        this.menu.onDidRequestReset(() => {
             const dialog = this.getResetConfirm();
             dialog.open();
         });
-        this.banner.onDidEnd(() => this._onDidEnd.fire());
-        this.editor.addContentWidget(this.banner);
+        this.menu.onDidRequestExamples(() => {
+            if (!this.dialog) {
+                return;
+            }
+            this.dialog.open();
+        });
+        this.menu.onDidEnd(() => this._onDidEnd.fire());
+        this.editor.addContentWidget(this.menu);
     }
     deselectSuggestion() {
         super.deselectSuggestion();
-        if (this.banner) {
-            this.banner.deselectSuggestion();
+        if (this.menu) {
+            this.menu.deselectSuggestion();
         }
     }
     dispose() {
