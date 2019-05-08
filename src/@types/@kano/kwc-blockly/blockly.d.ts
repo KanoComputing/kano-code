@@ -39,6 +39,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getParent() : Block|null;
         nextConnection? : Connection;
         previousConnection? : Connection;
+        outputConnection? : Connection;
         RTL : boolean;
         svgPath_ : SVGPathElement;
         getRelativeToSurfaceXY() : { x : number, y : number };
@@ -103,6 +104,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         toolbox_ : Toolbox;
         componentRoot_ : HTMLElement;
         scale : number;
+        dispose() : void;
     }
     const goog : any;
     const utils : {
@@ -196,5 +198,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
     }
     class Xml {
         static workspaceToDom(workspace : Workspace) : XMLDocument;
+        static domToWorkspace(dom : HTMLElement, workspace : Workspace) : void;
+        static textToDom(text : string) : HTMLElement;
+        static blockToDom(block : Block) : HTMLElement;
     }
 }

@@ -22,29 +22,16 @@ export class BlocklyBriefing extends Briefing {
     }
     start() {
         super.start();
-        if (!this.dialog) {
+        if (!this.data) {
             return;
         }
-        const dialogSub = this.dialog.onDidClose(() => {
-            // Only wait for the dialog to close once
-            dialogSub.dispose();
-            if (!this.data) {
-                return;
-            }
-            this.menu = new BriefingFloatingMenu(this.data.instruction || '');
-            this.menu.onDidRequestReset(() => {
-                const dialog = this.getResetConfirm();
-                dialog.open();
-            });
-            this.menu.onDidRequestExamples(() => {
-                if (!this.dialog) {
-                    return;
-                }
-                this.dialog.open();
-            });
-            this.menu.onDidEnd(() => this._onDidEnd.fire());
-            this.editor.addContentWidget(this.menu);
+        this.menu = new BriefingFloatingMenu(this.data.instruction || '');
+        this.menu.onDidRequestReset(() => {
+            const dialog = this.getResetConfirm();
+            dialog.open();
         });
+        this.menu.onDidEnd(() => this._onDidEnd.fire());
+        this.editor.addContentWidget(this.menu);
     }
     dispose() {
         super.dispose();

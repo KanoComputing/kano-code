@@ -241,7 +241,7 @@ class BlocklyChallenge extends Engine {
         let connection = parentResult.connection as Connection;
 
         // Check that the element moved is the one targeted and that its new parent is the right one
-        if (target && parent && event.blockId === target.id) {
+        if (target && parentResult && event.blockId === target.id) {
             if (!connection) {
                 const input = parentResult.input as Input;
                 if (!input.connection) {
@@ -255,7 +255,31 @@ class BlocklyChallenge extends Engine {
             }
             // Check that the block attached to the defined connection if the targetted one
             connection = connection.targetConnection;
-            return (connection.getSourceBlock().id === target.id);
+            /**
+             * Check whether the block's ancestry contains the target connection
+             * @param block A block whose ancestry might contain the connection
+             */
+            function step(block : Block) : boolean {
+                // Get the parent connection
+                const blockConnection = block.outputConnection || block.previousConnection;
+                // No connection, bail out
+                if (!blockConnection) {
+                    return false;
+                }
+                // Connection is the one we're looking for, success
+                if (blockConnection === connection) {
+                    return true;
+                }
+                // Get the parent block
+                const parentBlock = block.getParent();
+                // No parent block, reach the top
+                if (!parentBlock) {
+                    return false;
+                }
+                // Has a parent block, recursively check
+                return step(parentBlock);
+            }
+            return step(target);
         }
         return false;
     }

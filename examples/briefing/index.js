@@ -12,13 +12,6 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
         briefing.setData({
             id: '001_brief',
             instruction: 'Hello people, hahahahahahaha HAHAHAHAHA HAHAAHAHAH Lol',
-            samples: [{
-                img: 'https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/5cca3b697215c817bae07b55.gif',
-                description: 'Someone did this and I hate it!'
-            }, {
-                img: 'https://s3-eu-west-1.amazonaws.com/world.kano.me/share-items/covers/5cc9612132dd0f1555fff373.gif',
-                description: 'Bow to the creation king!!!'
-            }],
         });
         editor.inject(document.body);
 

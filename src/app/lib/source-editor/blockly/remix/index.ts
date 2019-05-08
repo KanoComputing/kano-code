@@ -17,10 +17,14 @@ export class BlocklyRemix extends Remix {
         }
         return this.resetConfirm;
     }
-    reset () {
-        this.editor.reset();
+    reset() {
+        if (!this.data) {
+            return;
+        }
+        this.editor.load(this.data.app);
     }
-    onDialogClosed() {
+    start() {
+        super.start();
         if (!this.data) {
             return;
         }

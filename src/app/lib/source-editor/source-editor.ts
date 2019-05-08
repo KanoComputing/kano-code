@@ -1,7 +1,6 @@
 import { IEvent } from '@kano/common/index.js';
 import { QueryEngine } from '../editor/selector/selector.js';
 import { ContributionManager } from '../contribution.js';
-import { Creator } from '../creator/creator.js';
 import { Editor } from '../editor/editor.js';
 import { IMetaRenderer } from '../meta-api/module.js';
 

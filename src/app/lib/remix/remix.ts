@@ -1,5 +1,7 @@
 import { RemixTooltip } from './widget/tooltip.js';
-import { Briefing, IBriefingData } from '../briefing/briefing.js';
+import { ChallengeBase } from '../challenge/base.js';
+import Dialog from '../editor/dialogs/dialog.js';
+import { RemixDialogProvider } from './dialog.js';
 
 export interface IRemixSuggestion {
     title : string;
@@ -7,30 +9,33 @@ export interface IRemixSuggestion {
     content : string;
 }
 
-export interface IRemix extends IBriefingData {
+export interface IRemixSample {
+    img : string;
+    description : string;
+}
+
+export interface IRemix {
     title : string;
     app : any;
     suggestions : IRemixSuggestion[];
+    samples : IRemixSample[];
 }
 
-export class Remix extends Briefing {
+export class Remix extends ChallengeBase {
+    protected dialog? : Dialog;
     protected data? : IRemix;
     protected tooltip : RemixTooltip|null = null;
     start() {
-        super.start();
-        if (!this.dialog) {
-            return;
+        if (!this.editor.injected) {
+            throw new Error('Could not start remix: The editor was not injected');
         }
-        const dialogSub = this.dialog.onDidClose(() => {
-            dialogSub.dispose();
-            if (!this.data) {
-                return;
-            }
-            this.editor.load(this.data.app);
-            this.onDialogClosed();
-        });
+        if (!this.data) {
+            throw new Error('Could not start challenge: No data was provided');
+        }
+        this.dialog = this.editor.dialogs.registerDialog(new RemixDialogProvider(this.data));
+        this.dialog.open();
+        this.editor.load(this.data.app);
     }
-    onDialogClosed() {}
     selectSuggestion(suggestion : IRemixSuggestion) {
         if (this.tooltip) {
             this.editor.removeContentWidget(this.tooltip);

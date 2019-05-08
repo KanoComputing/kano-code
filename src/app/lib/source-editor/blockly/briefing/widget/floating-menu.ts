@@ -9,7 +9,6 @@ export class KCBriefingFloatingMenu extends KCFloatingMenu {
         return html`
             <button class="btn secondary" @click=${() => this._onResetClick()}>Reset</button>
             <button class="btn secondary" @click=${() => this._onDoneClick()}>I'm done</button>
-            <button class="btn secondary" @click=${() => this._onExamplesClick()}>Examples</button>
         `;
     }
     _onResetClick() {
@@ -17,9 +16,6 @@ export class KCBriefingFloatingMenu extends KCFloatingMenu {
     }
     _onDoneClick() {
         this.dispatchEvent(new CustomEvent('done-clicked'));
-    }
-    _onExamplesClick() {
-        this.dispatchEvent(new CustomEvent('examples-clicked'));
     }
 }
 
@@ -33,9 +29,6 @@ export class BriefingFloatingMenu extends FloatingMenu {
     protected _onDidEnd : EventEmitter = new EventEmitter();
     get onDidEnd() { return this._onDidEnd.event; }
 
-    protected _onDidRequestExamples : EventEmitter = new EventEmitter();
-    get onDidRequestExamples() { return this._onDidRequestExamples.event; }
-
     constructor(title: string) {
         super('Briefing', title);
     }
@@ -45,7 +38,6 @@ export class BriefingFloatingMenu extends FloatingMenu {
             this.menuNode.title = this.title;
             this.menuNode.header = this.header;
             subscribeDOM(this.menuNode, 'reset-clicked', () => this._onDidRequestReset.fire(), this, this.subscriptions);
-            subscribeDOM(this.menuNode, 'examples-clicked', () => this._onDidRequestExamples.fire(), this, this.subscriptions);
             subscribeDOM(this.menuNode, 'done-clicked', () => this._onDidEnd.fire(), this, this.subscriptions);
         }
         return this.menuNode;

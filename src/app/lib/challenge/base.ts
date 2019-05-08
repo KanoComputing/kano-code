@@ -14,4 +14,5 @@ export abstract class ChallengeBase {
     setData(data : any) {
         this.data = data;
     }
+    abstract start() : void;
 }

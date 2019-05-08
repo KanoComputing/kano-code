@@ -1,10 +1,10 @@
 import DialogProvider from '../editor/dialogs/dialog-provider.js';
 import { html, render } from 'lit-html/lit-html.js';
-import { IBriefingData } from './briefing.js';
+import { IRemix } from './remix.js';
 
-export class BriefingDialogProvider extends DialogProvider {
-    private data : IBriefingData;
-    constructor(data : IBriefingData) {
+export class RemixDialogProvider extends DialogProvider {
+    private data : IRemix;
+    constructor(data : IRemix) {
         super();
         this.data = data;
     }

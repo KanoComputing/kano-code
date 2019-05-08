@@ -38,7 +38,16 @@ export class KCRemixFloatingMenu extends KCBriefingFloatingMenu {
             }
         `].concat(KCBriefingFloatingMenu.styles);
     }
-
+    renderActions() {
+        return html`
+            <button class="btn secondary" @click=${() => this._onResetClick()}>Reset</button>
+            <button class="btn secondary" @click=${() => this._onDoneClick()}>I'm done</button>
+            <button class="btn secondary" @click=${() => this._onExamplesClick()}>Examples</button>
+        `;
+    }
+    _onExamplesClick() {
+        this.dispatchEvent(new CustomEvent('examples-clicked'));
+    }
     renderContent() {
         return this.suggestions.map((s, index) => html`
             <button @click=${() => this._onClick(index)} class=${classMap({ selected: this.selectedSuggestionIndex === index })}>${s}</button>
@@ -55,6 +64,9 @@ export class RemixFloatingMenu extends BriefingFloatingMenu {
 
     protected _onDidSelectSuggestion : EventEmitter<IRemixSuggestion> = new EventEmitter();
     get onDidSelectSuggestion() { return this._onDidSelectSuggestion.event; }
+
+    protected _onDidRequestExamples : EventEmitter = new EventEmitter();
+    get onDidRequestExamples() { return this._onDidRequestExamples.event; }
 
     constructor(title: string, suggestions : IRemixSuggestion[]) {
         super(title);
