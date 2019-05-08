@@ -84,6 +84,8 @@ export interface IInnerTextDiffResult {
     type : DiffResultType.INNER_TEXT;
     from : string|null;
     to : string|null;
+    aNode : HTMLElement;
+    bNode : HTMLElement;
 }
 
 export interface IEqualDiffResult {
@@ -112,7 +114,7 @@ export function findFirstTreeDiff(treeA : HTMLElement, treeB : HTMLElement) : ID
             const aText = a.textContent;
             const bText = b.textContent;
             if (aText !== bText) {
-                return { type: DiffResultType.INNER_TEXT, from: aText, to: bText }; 
+                return { type: DiffResultType.INNER_TEXT, from: aText, to: bText, aNode: a, bNode: b }; 
             }
         }
         let aChild;

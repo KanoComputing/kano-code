@@ -1,1 +1,1 @@
-import '../dist/app/lib/source-editor/blockly/creator.js';
+import '../dist/app/lib/source-editor/blockly/creator/index.js';

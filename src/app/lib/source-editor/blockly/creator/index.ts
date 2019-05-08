@@ -1,13 +1,15 @@
-import { Creator, IGeneratedStep } from '../../creator/creator.js';
-import { BlocklySourceEditor } from '../blockly.js';
-import { Xml, Block } from '@kano/kwc-blockly/blockly.js';
-import { BlocklyCreatorToolbox } from './creator/toolbox.js';
-import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue } from './creator/xml.js';
-import BlocklyMetaRenderer from './api-renderer.js';
-import { runMiddleware } from '../../creator/util.js';
-import { SourceEditor } from '../source-editor.js';
-import { findInSet } from '../../util/set.js';
-import { registerCreator } from '../../creator/index.js';
+import { Creator, IGeneratedStep } from '../../../creator/creator.js';
+import { BlocklySourceEditor } from '../../blockly.js';
+import { Xml, Block, Field } from '@kano/kwc-blockly/blockly.js';
+import { BlocklyCreatorToolbox } from './toolbox.js';
+import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue, IInnerTextDiffResult } from './xml.js';
+import BlocklyMetaRenderer from '../api-renderer.js';
+import { runMiddleware } from '../../../creator/util.js';
+import { SourceEditor } from '../../source-editor.js';
+import { findInSet } from '../../../util/set.js';
+import { registerCreator, getHelpers, ICreatorHelper } from '../../../creator/index.js';
+import Editor from '../../../editor/editor.js';
+export * from './helpers.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
 
@@ -24,6 +26,11 @@ interface IConnectionInfo {
 export class BlocklyCreator extends Creator {
     sourceEditor? : BlocklySourceEditor;
     aliasCounter : number = -1;
+    helpers : ICreatorHelper[];
+    constructor(editor : Editor) {
+        super(editor);
+        this.helpers = getHelpers('blockly') || [];
+    }
     createAlias() {
         this.aliasCounter += 1;
         return `block_${this.aliasCounter}`;
@@ -276,7 +283,7 @@ export class BlocklyCreator extends Creator {
         }
         let defaultLabel;
         let currentLabel;
-        console.log(node);
+
         if (parentType === 'variables_set' || parentType === 'variables_get' || (parentType === 'unary' && name === 'LEFT_HAND')) {
             defaultLabel = defaultValue;
             currentLabel = currentValue;
@@ -290,7 +297,7 @@ export class BlocklyCreator extends Creator {
         if (!currentLabel) {
             console.warn(`Could not infer default label for value '${currentValue}': Block '${parentType}' is missing a label definition for input '${name}'`);
         }
-        const step : IGeneratedStep = {
+        let step : IGeneratedStep = {
             source: `block#${parentId}>input#${name}`,
             data: {
                 type: 'change-input',
@@ -299,12 +306,47 @@ export class BlocklyCreator extends Creator {
                 bannerCopy: `Change the strength from <kano-value-preview><span>${defaultLabel || 'ERROR'}</span></kano-value-preview> to <kano-value-preview><span>${currentLabel || 'ERROR'}</span></kano-value-preview>`,
             },
         };
+        const field = this.getFieldForNode(node);
+        if (field) {
+            step = this.runFieldHelper(field, defaultValue, currentValue, step);
+        }
         return [step];
+    }
+    getFieldForNode(node : HTMLElement) {
+        if (!this.sourceEditor) {
+            return null;
+        }
+        const name = node.getAttribute('name');
+        if (!name) {
+            return null;
+        }
+        const parent = node.parentElement;
+        if (!parent) {
+            return null;
+        }
+        const parentId = parent.getAttribute('id');
+        if (!parentId) {
+            return null;
+        }
+        const workspace = this.sourceEditor.getWorkspace();
+        const block = workspace.getBlockById(parentId);
+        if (!block) {
+            return null;
+        }
+        return block.getField(name);
+    }
+    runFieldHelper(field : Field, defaultValue : string, currentValue : string, step : IGeneratedStep) {
+        this.helpers.forEach((helper) => {
+            if (typeof helper.field === 'function') {
+                step = helper.field(field, defaultValue, currentValue, step);
+            }
+        });
+        return step;
     }
     shadowToSteps(parent : HTMLElement, inputName : string, shadow : HTMLElement) : IGeneratedStep[] {
         const parentType = parent.getAttribute('type');
         const id = shadow.getAttribute('id');
-        if (!parentType) {
+        if (!parentType || !id) {
             return [];
         }
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
@@ -326,7 +368,7 @@ export class BlocklyCreator extends Creator {
             } else {
                 target = `alias#${parentStep.data.alias}>input#${inputName}`;
             }
-            const step = {
+            let step = {
                 source: `block#${id}`,
                 data: {
                     type: 'change-input',
@@ -334,7 +376,11 @@ export class BlocklyCreator extends Creator {
                     value: result.to,
                     bannerCopy: `Change the strength from <kano-value-preview><span>${result.from}</span></kano-value-preview> to <kano-value-preview><span>${result.to}</span></kano-value-preview>`,
                 },
-            };
+            } as IGeneratedStep;
+            const field = this.getFieldForInnerTextResult(result);
+            if (field) {
+                step = this.runFieldHelper(field, result.from!, result.to!, step);
+            }
             this.stepsMap.set(step.source, step);
             return [step];
         } else if (result.type === DiffResultType.NODE && result.to) {
@@ -342,6 +388,29 @@ export class BlocklyCreator extends Creator {
         } else {
             return [];
         }
+    }
+    getFieldForInnerTextResult(result : IInnerTextDiffResult) {
+        if (!this.sourceEditor) {
+            return null;
+        }
+        const targetShadow = result.bNode.parentElement;
+        if (!targetShadow) {
+            return null;
+        }
+        const targetId = targetShadow.getAttribute('id');
+        if (!targetId) {
+            return null;
+        }
+        const targetName = result.bNode.getAttribute('name');
+        if (!targetName) {
+            return null;
+        }
+        const workspace = this.sourceEditor.getWorkspace();
+        const shadowBlock = workspace.getBlockById(targetId);
+        if (!shadowBlock) {
+            return null;
+        }
+        return shadowBlock.getField(targetName);
     }
     focusTarget(source : string) {
         const target = this.editor.querySelector(source);

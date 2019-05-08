@@ -70,6 +70,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         public setSourceBlock(block : Block) : void;
         public dispose() : void;
     }
+    class FieldColour extends Field {}
     class FieldTextInput extends Field {
         static htmlInput_ : HTMLInputElement;
         spellcheck_ : boolean;
