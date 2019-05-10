@@ -23,7 +23,7 @@ export interface IRemix {
 
 export class Remix extends ChallengeBase {
     protected dialog? : Dialog;
-    protected data? : IRemix;
+    public data? : IRemix;
     protected tooltip : RemixTooltip|null = null;
     start() {
         if (!this.editor.injected) {

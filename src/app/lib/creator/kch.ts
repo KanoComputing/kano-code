@@ -1,5 +1,5 @@
-import { Editor } from '../editor.js';
-import { FileLoaders } from './loader.js';
+import { Editor } from '../editor/editor.js';
+import { FileLoaders } from '../editor/loader/loader.js';
 
 const Loader = {
     load(editor : Editor, content : string) {

@@ -1,16 +1,21 @@
-import { LitElement, html, css, property, customElement, query } from 'lit-element/lit-element.js';
+import { LitElement, html, css, property, customElement } from 'lit-element/lit-element.js';
 import { IGeneratedStep } from '../creator.js';
 import { IDisposable, EventEmitter } from '@kano/common/index.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { prismTheme } from '../../../elements/kano-code-display/kano-prism-theme.js';
 import { highlight } from '../../directives/prism.js';
-import * as monaco from '../../source-editor/monaco/editor.js';
 import { runMiddleware } from '../util.js';
 
 @customElement('kc-creator')
 export class CreatorUI extends LitElement {
 
     subscriptions : IDisposable[] = [];
+
+    @property({ type: String })
+    mode : 'edit'|'play' = 'edit';
+
+    @property({ type: Boolean })
+    collapsed = false;
 
     @property({ type: Array })
     public generatedSteps : IGeneratedStep[] = [];
@@ -35,110 +40,169 @@ export class CreatorUI extends LitElement {
     _onDidFocusStep : EventEmitter<IGeneratedStep> = new EventEmitter();
     get onDidFocusStep() { return this._onDidFocusStep.event; }
 
+    _onDidPlayStep : EventEmitter<IGeneratedStep> = new EventEmitter();
+    get onDidPlayStep() { return this._onDidPlayStep.event; }
+
+    _onDidSelectStep : EventEmitter<IGeneratedStep> = new EventEmitter();
+    get onDidSelectStep() { return this._onDidSelectStep.event; }
+
     _onDidBlurStep : EventEmitter<IGeneratedStep> = new EventEmitter();
     get onDidBlurStep() { return this._onDidBlurStep.event; }
 
     _onDidUpdateMiddleware : EventEmitter<{ source : string, middleware : string }> = new EventEmitter();
     get onDidUpdateMiddleware() { return this._onDidUpdateMiddleware.event; }
 
-    @query('#monaco-container')
-    monacoContainer? : HTMLElement;
-
-    editor? : monaco.editor.IStandaloneCodeEditor;
-
     static get styles() {
         return [prismTheme, css`
-            kc-creator {
+            :host {
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
+                position: relative;
                 font-family: 'Segoe UI', Tahoma, sans-serif;
                 color: #d5d5d5;
             }
-            kc-creator .col {
+            .panes {
+                display: flex;
+                flex-direction: row;
+            }
+            .col {
                 flex: 1;
                 background: #242424;
                 display: flex;
                 flex-direction: column;
             }
-            kc-creator .preview {
-                flex: 2;
-            }
-            kc-creator pre {
+            pre {
                 overflow: auto;
                 flex: 1;
                 margin: 0;
             }
-            kc-creator .code {
+            .code {
                 flex: 4;
             }
-            kc-creator .step {
+            .step {
                 cursor: pointer;
-                padding: 4px;
                 font-size: 12px;
+                display: flex;
+                flex-direction: row;
             }
-            kc-creator .step:nth-child(odd) {
+            .step>* {
+                padding: 4px;
+            }
+            .step:nth-child(odd) {
                 background: #292929;
             }
-            kc-creator .step:hover,
-            kc-creator .step.selected {
+            .step:hover,
+            .step.selected {
                 background: #12243d;
             }
-            kc-creator .preview {
+            .preview {
                 background: #1e1e1e;
-                max-width: 33.33%;
             }
-            kc-creator .header {
+            .header {
+                cursor: pointer;
                 font-size: 14px;
                 background: #333;
                 border-bottom: 1px solid #3d3d3d;
                 padding: 4px;
             }
-            kc-creator .col:not(:last-child) {
+            .col:not(:last-child) {
                 border-left: 1px solid #3d3d3d;
             }
-            kc-creator .code #monaco-container {
-                flex: 1;
-            }
-            kc-creator [hidden] {
+            [hidden] {
                 display: none !important;
             }
-            kc-creator .steps-list {
+            .steps-list {
                 display: flex;
                 flex-direction: column;
                 overflow-y: auto;
+                height: 400px;
+            }
+            .close {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                background: none;
+                border: none;
+                font-size: 18px;
+                cursor: pointer;
+                color: white;
+                width: 28px;
+                height: 28px;
+            }
+            .tick {
+                background: transparent;
+                border: 0;
+                padding: 0; 
+                width: 24px;
+                height: 24px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+            .tick.passed span {
+                opacity: 1;
+            }
+            .tick span {
+                display: block;
+                width: 8px;
+                height: 8px;
+                border-radius: 4px;
+                opacity: 0.5;
+                background: white;
+            }
+            .bar {
+                height: 24px;
+            }
+            .bar.edit {
+                background: #007acc;
+            }
+            .bar.play {
+                background: #c63;
+            }
+            .step .label {
+                flex: 1;
             }
         `];
     }
-    render() {
+    renderStepsList() {
         return html`
-            <div class="col steps">
-                <div class="header">Steps</div>
-                <div class="steps-list">
-                    ${this.generatedSteps.map((step, index) => html`
-                        <div @mouseenter=${() => this._onMouseEnter(step)}
-                            @mouseleave=${() => this._onMouseLeave(step)}
-                            @click=${() => this._onClick(step)}
-                            class=${classMap({ selected: this.selectedStepIndex === index, step: true })}
-                            >${step.source}</div>
-                    `)}
-                </div>
-            </div>
-            <div class="col preview" ?hidden=${!this.selectedStep}>
-                <div class="header">Preview</div>
-                ${this.renderPreview()}
-            </div>
-            <div class="col code" ?hidden=${!this.selectedStep}>
-                <div class="header">Middleware</div>
-                <div id="monaco-container"></div>
+            <div class="steps-list">
+                ${this.generatedSteps.map((step, index) => html`
+                    <div @mouseenter=${() => this._onMouseEnter(step)}
+                        @mouseleave=${() => this._onMouseLeave(step)}
+                        class=${classMap({ selected: this.selectedStepIndex === index, step: true })}
+                        >
+                            <button class=${classMap({ tick: true, passed: index < this.selectedStepIndex })} @click=${() => this.playStep(step)}>
+                                <span></span>
+                            </button>
+                            <span class="label" @click=${() => this._onClick(step)}>${step.source}</span>
+                        </div>
+                `)}
             </div>
         `;
     }
-    createRenderRoot() {
-        /**
-         * Render template in light DOM. Note that shadow DOM features like 
-         * encapsulated CSS are unavailable.
-         */
-            return this;
+    render() {
+        return html`
+            <div class="panes">
+                <div class="col steps">
+                    <div class="header" @click=${() => this.toggle()}>Steps</div>
+                    ${this.collapsed ? '' : this.renderStepsList()}
+                </div>
+                <div class="col preview" ?hidden=${!this.selectedStep}>
+                    <div class="header" @click=${() => this.toggle()}>Preview</div>
+                    ${this.collapsed ? '' : this.renderPreview()}
+                </div>
+                <button ?hidden=${this.collapsed} class="close" @click=${() => this.close()}>&times;</button>
+            </div>
+            ${this.collapsed ? '' : html`<div class="bar ${this.mode}">Bar</div>`}
+        `;
+    }
+    toggle() {
+        this.collapsed = !this.collapsed;
+    }
+    close() {
+        this.collapsed = true;
     }
     renderPreview() {
         const stepData = this.selectedStep ? this.selectedStep.data : {};
@@ -147,39 +211,6 @@ export class CreatorUI extends LitElement {
         return html`
             <pre><code>${highlight(stepDataString, 'javascript')}</code></pre>
         `;
-    }
-    firstUpdated() {
-        if (!this.monacoContainer) {
-            return;
-        }
-        this.editor = monaco.editor.create(this.monacoContainer, {
-            language: 'javascript',
-            theme: 'vs-dark',
-        });
-        const model = this.editor.getModel();
-        if (model) {
-            model.onDidChangeContent(() => {
-                this._onCodeChanged();
-            });
-        }
-    }
-    updated(changedProps : Map<string, unknown>) {
-        if (!changedProps.has('selectedStepIndex') || !this.editor) {
-            return;
-        }
-        this.editor.layout();
-        if (!this.selectedStep) {
-            return;
-        }
-        monaco.languages.typescript.javascriptDefaults.setCompilerOptions({ noLib: true, allowNonTsExtensions: true });
-        monaco.languages.typescript.javascriptDefaults.addExtraLib(`const step = ${JSON.stringify(this.selectedStep.data)}`, 'kc://a/selected-step.js');
-        this.editor.setValue(this.middleware || '\n\nreturn step;');
-    }
-    inject(target : HTMLElement) {
-        // This force lit to add the styles even if it is not a shadow root enabled element
-        (this as any)._needsShimAdoptedStyleSheets = true;
-        target.appendChild(this);
-        this.style.height = `400px`;
     }
     setStepData(steps : IGeneratedStep[]) {
         this.generatedSteps = steps.slice(0);
@@ -190,24 +221,17 @@ export class CreatorUI extends LitElement {
     selectStep(index : number) {
         this.selectedStepIndex = index;
     }
+    playStep(step : IGeneratedStep) {
+        const index = this.generatedSteps.indexOf(step);
+        this.selectStep(index);
+        this._onDidPlayStep.fire(step);
+    }
     dispose() {
         if (this.parentNode) {
             this.parentNode.removeChild(this);
         }
         this.subscriptions.forEach(d => d.dispose());
         this.subscriptions.length = 0;
-        if (this.editor) {
-            this.editor.dispose();
-        }
-    }
-    _onCodeChanged() {
-        if (!this.editor) {
-            return;
-        }
-        this._onDidUpdateMiddleware.fire({
-            source: this.selectedStep.source,
-            middleware: this.editor.getValue(),
-        });
     }
     _onMouseEnter(step : IGeneratedStep) {
         this._onDidFocusStep.fire(step);
@@ -218,5 +242,6 @@ export class CreatorUI extends LitElement {
     _onClick(step : IGeneratedStep) {
         const index = this.generatedSteps.indexOf(step);
         this.selectStep(index);
+        this._onDidSelectStep.fire(step);
     }
 }

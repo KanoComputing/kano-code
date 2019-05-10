@@ -11,7 +11,9 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
         const cr = creator.create(editor);
 
         editor.onDidInject(() => {
-            cr.ui.inject(document.body);
+            fetch('/examples/creator/test.kch')
+                .then(r => r.json())
+                .then(d => cr.loadChallenge(d));
         });
 
         editor.toolbox.addEntry({

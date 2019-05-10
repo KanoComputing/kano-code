@@ -1,6 +1,7 @@
-import * as challenge from '../../challenge.js';
+import * as creator from '../../creator.js';
 import * as code from '../../index.js';
 import * as i18n from '../../i18n.js';
+import '../../source-editor/blockly/stepper.contribution.js';
 
 const lang = i18n.getLang();
 
@@ -8,12 +9,6 @@ const app = {"source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></
 const challengeData = {
     version: '2',
     defaultApp: JSON.stringify(app),
-    // partsWhitelist: {
-    //     'button': ['onClick'],
-    // },
-    // whitelist: {
-    //     color: ['colour_picker'],
-    // },
     steps: [{
         banner: {
             text: 'This is the button part ${part#button>toolbox} and this banner can have a lot of text, the overflow should be just fine',
@@ -108,17 +103,8 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
                 const editor = new code.Editor();
 
                 editor.onDidInject(() => {
-                    const ch = challenge.createChallenge(editor, challengeData, { end: { showNextButton: true } });
-                    // ch.engine.setBannerIconProvider({
-                    //     domNode: null,
-                    //     getDomNode() {
-                    //         if (!this.domNode) {
-                    //             this.domNode = document.createElement('button');
-                    //         }
-                    //         return this.domNode;
-                    //     },
-                    // });
-                    ch.start();
+                    const stepper = creator.createStepper(editor, challengeData);
+                    stepper.stepTo(7);
                 });
         
                 editor.inject(document.body);

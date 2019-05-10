@@ -1,15 +1,18 @@
 import { ContributionManager } from '../contribution.js';
 import { Creator } from './creator.js';
-import Editor from '../editor/editor.js';
+import { Editor } from '../editor/editor.js';
+import { Stepper } from './stepper/stepper.js';
 
 export interface ICreatorHelper {
     [K : string] : (...args : any[]) => any;
 }
 
-const registeredCreators = new ContributionManager<typeof Creator>();
+type CreatorConstructor = new(editor : Editor) => Creator<Stepper>;
+
+const registeredCreators = new ContributionManager<CreatorConstructor>();
 const registeredHelpers = new ContributionManager<ICreatorHelper[]>();
 
-export function registerCreator(id : string, creator : typeof Creator) {
+export function registerCreator(id : string, creator : CreatorConstructor) {
     registeredCreators.register(id, creator);
 }
 

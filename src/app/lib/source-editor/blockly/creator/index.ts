@@ -2,13 +2,13 @@ import { Creator, IGeneratedStep } from '../../../creator/creator.js';
 import { BlocklySourceEditor } from '../../blockly.js';
 import { Xml, Block, Field } from '@kano/kwc-blockly/blockly.js';
 import { BlocklyCreatorToolbox } from './toolbox.js';
-import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue, IInnerTextDiffResult } from './xml.js';
+import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue, IInnerTextDiffResult, getSelectorForNode } from './xml.js';
 import BlocklyMetaRenderer from '../api-renderer.js';
-import { runMiddleware } from '../../../creator/util.js';
 import { SourceEditor } from '../../source-editor.js';
 import { findInSet } from '../../../util/set.js';
 import { registerCreator, getHelpers, ICreatorHelper } from '../../../creator/index.js';
 import Editor from '../../../editor/editor.js';
+import { BlocklyStepper } from './stepper/blockly-stepper.js';
 export * from './helpers.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
@@ -23,13 +23,16 @@ interface IConnectionInfo {
     id? : string;
 }
 
-export class BlocklyCreator extends Creator {
+export class BlocklyCreator extends Creator<BlocklyStepper> {
     sourceEditor? : BlocklySourceEditor;
     aliasCounter : number = -1;
     helpers : ICreatorHelper[];
     constructor(editor : Editor) {
         super(editor);
         this.helpers = getHelpers('blockly') || [];
+    }
+    createStepper() {
+        return new BlocklyStepper(this.editor, this.challenge);
     }
     createAlias() {
         this.aliasCounter += 1;
@@ -55,49 +58,42 @@ export class BlocklyCreator extends Creator {
             if (!startOption.start || startOption.start.tagName === 'variables') {
                 return;
             }
-            steps = steps.concat(this.blockToSteps(startOption.start));
+            steps = steps.concat(this.blockToSteps(startOption.start, true));
         });
         
         return steps;
     }
-    getConnectionForStatementOrValue(block : HTMLElement) : IConnectionInfo|null {
+    getConnectionForStatementOrValue(block : HTMLElement) : string|null {
         // Find the statement or value node that hosts the block. Make sure to not accept statements or values inside a shadow block
         const input = getAncestor(block, b => nodeIsNonShadowStatementOrValue(b));
         if (!input) {
             return null;
         }
-        // Retrieve the name of the input
-        const name = input.getAttribute('name')!;
         // Find the input's parent block
         const parentBlock = getAncestor(input, b => b.tagName.toLowerCase() === 'block') as HTMLElement;
         // Bail out if it doesn't have a parent
         if (!parentBlock) {
             return null;
         }
+        let selector = getSelectorForNode(block, parentBlock);
         const parentBlockId = parentBlock.getAttribute('id')!
         // Retrieve the step that created this parent block
         const source = `block#${parentBlockId}`
         const step = this.stepsMap.get(source);
         // No step means the block is in the default app, in that case return the id of the parent block
         if (!step) {
-            return {
-                name,
-                id: parentBlockId,
-            };
+            return `block#${parentBlockId}>${selector}`;
         }
-        return {
-            name,
-            parentStep: step,
-        };
+        const stepData = step.data;
+        // There is a parent step found, get the alias
+        return `alias#${stepData.alias}>${selector}`;
     }
     generateConnectionQuery(result : IConnectionInfo) {
         let connectionQuery = null;
         if (result.parentStep) {
             const stepData = result.parentStep.data;
-            const middleware = this.middlewares.get(result.parentStep.source);
-            const data = runMiddleware(stepData, middleware);
             // There is a parent step found, get the alias
-            connectionQuery = `alias#${data.alias}>input#${result.name}`;
+            connectionQuery = `alias#${stepData.alias}>input#${result.name}`;
         } else if (result.id) {
             // There no parent found, but we got an id, use the id
             connectionQuery = `block#${result.id}>input#${result.name}`;
@@ -114,7 +110,9 @@ export class BlocklyCreator extends Creator {
         if (type === 'generator_step') {
             const customStep = {
                 source: `block#${id}`,
-                data: {},
+                data: {
+                    _customStep: true,
+                },
             };
             steps.push(customStep);
             const next = block.querySelector('next') as HTMLElement;
@@ -129,6 +127,7 @@ export class BlocklyCreator extends Creator {
                     source: `block#${id}`,
                     data: {
                         banner: field.innerText,
+                        _customBannerStep: true,
                     },
                 });
             }
@@ -140,7 +139,7 @@ export class BlocklyCreator extends Creator {
         }
         return [];
     }
-    blockToSteps(block : HTMLElement) : IGeneratedStep[] {
+    blockToSteps(block : HTMLElement, start = false) : IGeneratedStep[] {
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
         const type = block.getAttribute('type');
         const id = block.getAttribute('id');
@@ -157,7 +156,7 @@ export class BlocklyCreator extends Creator {
             return [];
         }
         // The default category is the toolbox
-        let category = `toolbox.${entry.def.name}`;
+        let category = `toolbox#${entry.def.name}`;
         // Try to match a part to the toolbox entry
         const parts = this.editor.output.parts.getParts();
         const matchingPart = findInSet(parts, (part) => part.id === entry.def.name);
@@ -173,11 +172,7 @@ export class BlocklyCreator extends Creator {
             }
         }
         // Resolve an eventual parent connection
-        let connectionQuery = null;
-        let parentConnection = this.getConnectionForStatementOrValue(block);
-        if (parentConnection) {
-            connectionQuery = this.generateConnectionQuery(parentConnection);
-        }
+        let connectionQuery = this.getConnectionForStatementOrValue(block);
         // This is the actual step generated
         const createBlockStep : IGeneratedStep = {
             source: `block#${id}`,
@@ -192,10 +187,13 @@ export class BlocklyCreator extends Creator {
         };
         // The connect field is only added when a connection is required
         if (connectionQuery) {
-            createBlockStep.data.connect = connectionQuery;
+            createBlockStep.data.connectTo = connectionQuery;
             createBlockStep.data.connectCopy = 'Connect please';
         } else {
             createBlockStep.data.dropCopy = 'Drop it onto your code space to add it into your program.';
+        }
+        if (start) {
+            createBlockStep.data._startStep = true;
         }
         // Keep track of that new step, map it to its source block.
         this.stepsMap.set(createBlockStep.source, createBlockStep);
@@ -361,18 +359,18 @@ export class BlocklyCreator extends Creator {
             const parentId = parent.getAttribute('id')!;
             const source = `block#${parentId}`;
             const parentStep = this.stepsMap.get(source);
-            let target;
+            let selector = getSelectorForNode(result.bNode, parent);
             // This comes from a default block, point to the block using its id
             if (!parentStep) {
-                target = `block#${id}`;
+                selector = `block#${id}>${selector}`;
             } else {
-                target = `alias#${parentStep.data.alias}>input#${inputName}`;
+                selector = `alias#${parentStep.data.alias}>${selector}`;
             }
             let step = {
                 source: `block#${id}`,
                 data: {
                     type: 'change-input',
-                    target,
+                    target: selector,
                     value: result.to,
                     bannerCopy: `Change the strength from <kano-value-preview><span>${result.from}</span></kano-value-preview> to <kano-value-preview><span>${result.to}</span></kano-value-preview>`,
                 },

@@ -5,8 +5,15 @@ import { QueryEngine, ISelector } from '../editor/selector/selector.js';
 import * as monaco from './monaco/editor.js';
 import { Creator } from '../creator/creator.js';
 import { TypeScriptMetaRenderer } from './monaco/api-renderer.js';
+import { Stepper } from '../creator/stepper/stepper.js';
 
-class MonacoCreator extends Creator {}
+class MonacoStepper extends Stepper {}
+
+class MonacoCreator extends Creator<MonacoStepper> {
+    createStepper() : MonacoStepper {
+        return new MonacoStepper(this.editor, this.challenge);
+    }
+}
 
 export class MonacoSourceEditor implements SourceEditor {
     public editor : Editor;
@@ -16,7 +23,7 @@ export class MonacoSourceEditor implements SourceEditor {
     public domNode : HTMLElement = document.createElement('div');
     public monacoEditor : monaco.editor.IStandaloneCodeEditor;
     private subscriptions : IDisposable[] = [];
-    private creator? : Creator;
+    private creator? : MonacoCreator;
     private apiRenderer? : TypeScriptMetaRenderer;
     private models : { model: monaco.editor.ITextModel, lib : monaco.IDisposable }[] = [];
     constructor(editor : Editor) {

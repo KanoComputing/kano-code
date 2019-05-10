@@ -13,7 +13,7 @@ export interface IBriefingData {
 }
 
 export class Briefing extends ChallengeBase {
-    protected data? : IBriefingData;
+    public data? : IBriefingData;
     start() {
         if (!this.editor.injected) {
             throw new Error('Could not start briefing: The editor was not injected');

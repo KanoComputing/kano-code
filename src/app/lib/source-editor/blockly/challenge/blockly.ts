@@ -4,7 +4,7 @@ import { BlocklySourceEditor } from '../../blockly.js';
 import { Engine } from '../../../challenge/engine.js';
 
 class BlocklyChallenge extends Engine {
-    protected workspace : Workspace;
+    public workspace : Workspace;
     protected eventsMap : { [K : string] : string };
     constructor(editor : Editor) {
         super(editor);
@@ -159,7 +159,7 @@ class BlocklyChallenge extends Engine {
             validation: {
                 blockly: {
                     value: {
-                        target: data.block,
+                        target: data.target,
                         value: data.value,
                     },
                 },

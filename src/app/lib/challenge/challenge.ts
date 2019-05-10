@@ -17,14 +17,6 @@ export function registerChallengeEngine(id : string, engine : typeof Engine) {
 window.Kano = window.Kano || {};
 window.Kano.Code = window.Kano.Code || {};
 
-export interface IChallengeEndBehavior {
-    showNextButton : boolean;
-}
-
-export interface IChallengeOptions {
-    end : IChallengeEndBehavior;
-}
-
 export interface IChallengeData {
     version? : string;
     steps : any[];
@@ -35,28 +27,21 @@ export interface IChallengeData {
 
 export class Challenge extends ChallengeBase {
     public editor : Editor;
-    private challengeData : IChallengeData;
-    public engine : Engine;
+    public data : IChallengeData;
+    public engine? : Engine;
     private subscriptions : IDisposable[] = [];
-    private options : IChallengeOptions;
 
     private _onDidRequestNextChallenge : EventEmitter = new EventEmitter();
     get onDidRequestNextChallenge() { return this._onDidRequestNextChallenge.event; }
 
-    constructor(editor : Editor, challengeData : IChallengeData, options : IChallengeOptions) {
+    constructor(editor : Editor, challengeData : IChallengeData) {
         super(editor);
         this.editor = editor;
-        this.options = options;
         if (!challengeData.version) {
             // Take care of legacy challenges
             transformChallenge(challengeData);
         }
-        this.challengeData = challengeData;
-        const EngineContructor = registeredEngines.get(this.editor.sourceType);
-        if (!EngineContructor) {
-            throw new Error(`Could not create challenge: Challenge engine for source type '${this.editor.sourceType}' was not imported.`);
-        }
-        this.engine = new EngineContructor(this.editor);
+        this.data = challengeData;
         if (this.editor.injected) {
             this.onInject();
         } else {
@@ -65,20 +50,16 @@ export class Challenge extends ChallengeBase {
         window.Kano.Code.mainChallenge = this;
     }
     onInject() {
-        // Load the default app if provided
-        if (this.challengeData.defaultApp) {
-            this.editor.load(JSON.parse(this.challengeData.defaultApp));
-        }
-        if (this.challengeData.partsWhitelist) {
-            this.editor.parts.setWhitelist(this.challengeData.partsWhitelist);
-        }
-        if (this.challengeData.whitelist) {
-            this.editor.toolbox.setWhitelist(this.challengeData.whitelist);
-        }
-        const steps = this.challengeData.steps || [];
+        this.reset();
+        const steps = this.data.steps || [];
         // Add an extra empty step. The engine consider the last step as the end by default.
         // This tricks it to thing it's the end. Remove this when the einge updates
         steps.push({});
+        const EngineContructor = registeredEngines.get(this.editor.sourceType);
+        if (!EngineContructor) {
+            throw new Error(`Could not create challenge: Challenge engine for source type '${this.editor.sourceType}' was not imported.`);
+        }
+        this.engine = new EngineContructor(this.editor);
         this.engine.setSteps(steps);
         if (this.editor.sourceType === 'blockly') {
             (this.editor.sourceEditor as BlocklySourceEditor).onDidSourceChange((e : any) => {
@@ -91,6 +72,9 @@ export class Challenge extends ChallengeBase {
         let sub : IDisposable;
         // This allows the querying of aliases defined during a challenge, parts blocks or positions
         sub = this.editor.queryEngine.registerTagHandler('alias', (selector) => {
+            if (!this.engine) {
+                throw new Error('Could not query alias: Editor was not injected');
+            }
             if (!selector.id) {
                 this.editor.queryEngine.warn('Could not find alias: No id provided');
                 return null;
@@ -105,6 +89,9 @@ export class Challenge extends ChallengeBase {
         this.subscriptions.push(sub);
         // This allows challenges to access the next button in the banner
         sub = this.editor.queryEngine.registerTagHandler('banner-button', (selector) => {
+            if (!this.engine) {
+                throw new Error('Could not query banner-button: Editor was not injected');
+            }
             const widget = this.engine.widgets.get('banner');
             if (!widget) {
                 this.editor.queryEngine.warn('Could not query banner button: Banner is not displayed');
@@ -127,6 +114,18 @@ export class Challenge extends ChallengeBase {
         });
         this.subscriptions.push(sub);
     }
+    reset() {
+        // Load the default app if provided
+        if (this.data.defaultApp) {
+            this.editor.load(JSON.parse(this.data.defaultApp));
+        }
+        if (this.data.partsWhitelist) {
+            this.editor.parts.setWhitelist(this.data.partsWhitelist);
+        }
+        if (this.data.whitelist) {
+            this.editor.toolbox.setWhitelist(this.data.whitelist);
+        }
+    }
     start() {
         if (!this.editor.injected) {
             throw new Error('Could not start challenge: Editor was not injected');
@@ -139,6 +138,21 @@ export class Challenge extends ChallengeBase {
             this._onDidEnd.fire();
         }, this, this.subscriptions);
         engine.start();
+    }
+    stop() {
+        if (!this.engine) {
+            return;
+        }
+        if (this.engine.steps) {
+            this.engine.steps = [];
+            this.engine.stepIndex = 0;
+        }
+    }
+    setData(data : any) {
+        super.setData(data);
+        if (this.engine) {
+            this.engine.setSteps(data.steps);
+        }
     }
     dispose() {
         // Here get rid of all modifications made to the editor

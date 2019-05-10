@@ -9,13 +9,15 @@ import { challengeStyles } from '../../../challenge/styles.js';
 import '../../../challenge/components/kc-toolbox-entry-preview.js';
 import '../../../challenge/components/kc-part-api-preview.js';
 import { dataURI } from '@kano/icons-rendering/index.js';
+import { ColorFieldStepHelper } from './helpers/color.js';
+import { DropdownFieldStepHelper } from './helpers/dropdown.js';
 
 export interface IBannerIconProvider {
     getDomNode() : HTMLElement;
 }
 
 export class KanoCodeChallenge extends BlocklyChallenge {
-    protected editor : Editor;
+    public editor : Editor;
     private _beaconSub? : IDisposable;
     private tooltips : Tooltip[] = [];
     public banner? : BannerWidget;
@@ -51,6 +53,9 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         const style = document.createElement('style');
         style.textContent = challengeStyles.cssText;
         this.editor.domNode.shadowRoot!.appendChild(style);
+
+        this.helpers.push(new ColorFieldStepHelper());
+        this.helpers.push(new DropdownFieldStepHelper());
     }
     /**
      * Parses the provided text, extract and replace eventual template values with preview widgets.
@@ -347,6 +352,26 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             // Display the last banner
             this.banner.show();
         }
+    }
+    getExpandedStepIndex(sourceIndex : number) {
+        let step;
+        let counter = 0;
+        // Go through all steps until the source index
+        for (let i = 0; i < this._steps.length && i < sourceIndex; i += 1) {
+            step = this._steps[i];
+            // Shorthand exists
+            if (step.type && this._shorthands[step.type]) {
+                // Expand this step
+                const expanded = this._shorthands[step.type](step);
+                // Add the number of expanded steps
+                counter += expanded.length || 1;
+            } else {
+                // Add one only when no shorthand exist
+                counter += 1;
+            }
+        }
+        // Counter contains the number of steps 
+        return counter;
     }
 }
 

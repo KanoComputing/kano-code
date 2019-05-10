@@ -1,3 +1,5 @@
+import { selectorToMarkedString } from '../../../../../vendor/monaco-editor/esm/vs/language/css/_deps/vscode-css-languageservice/services/selectorPrinting';
+
 export function parseXml(src : string) {
     var parser = new DOMParser();
     var dom = parser.parseFromString(src, 'application/xml');
@@ -137,4 +139,31 @@ export function findFirstTreeDiff(treeA : HTMLElement, treeB : HTMLElement) : ID
         return { type: DiffResultType.EQUAL };
     }
     return next(treeA, treeB);
+}
+
+export function getSelectorForNode(node : HTMLElement, limit : HTMLElement) {
+    const selectors : string[] = [];
+    function step(node : HTMLElement|null) : string {
+        if (!node || node === limit) {
+            return selectors.join('>');
+        }
+        const tagName = node.tagName.toLowerCase();
+        switch (tagName) {
+            case 'statement':
+            case 'value':
+            case 'field': {
+                const name = node.getAttribute('name');
+                if (name) {
+                    selectors.unshift(`input#${name}`);
+                }
+                break;
+            }
+            case 'shadow': {
+                selectors.unshift('shadow');
+                break;
+            }
+        }
+        return step(node.parentElement);
+    }
+    return step(node);
 }

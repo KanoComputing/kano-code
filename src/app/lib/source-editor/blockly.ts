@@ -169,6 +169,20 @@ export class BlocklySourceEditor implements SourceEditor {
         }
         workspace.addChangeListener(onClick);
     }
+    getToolbox() : any[] {
+        return (this.domNode as any).$['code-editor'].toolbox;
+    }
+    getToolboxById(id : string) {
+        const toolbox = this.getToolbox();
+        return toolbox.find(entry => entry.id === id);
+    }
+    getToolboxBlockByType(id : string, type : string) {
+        const toolbox = this.getToolboxById(id);
+        if (!toolbox) {
+            return null;
+        }
+        return toolbox.blocks.find((block : any) => block.id === type);
+    }
     registerQueryHandlers(engine: QueryEngine) {
         engine.registerTagHandler('block', (selector : ISelector, parent) => {
             if (selector.id) {
@@ -212,6 +226,34 @@ export class BlocklySourceEditor implements SourceEditor {
             engine.warn('Could not query block. Neither id nor class is defined');
             return null;
         });
+        engine.registerTagHandler('shadow', (selector : ISelector, parent) => {
+            if (!parent) {
+                throw new Error('Could not query shadow block: Shadow block can only be queried when they have a parent');
+            }
+            let connection : Connection|undefined;
+            if (typeof parent.getInput === 'function') {
+                const input = parent.getInput() as Input|null;
+                if (input) {
+                    connection = input.connection;
+                }
+            }
+            if (!connection && typeof parent.getConnection === 'function') {
+                connection = parent.getConnection();
+            }
+            if (!connection) {
+                throw new Error('Could not query shadow block: Parent selector does not resolve to a connection');
+            }
+            const { targetConnection } = connection;
+            const block = targetConnection.getSourceBlock();
+            return {
+                block,
+                getId() { return block.id; },
+                getBlock() { return block; },
+                getHTMLElement() {
+                    return block.svgPath_;
+                },
+            };
+        });
         engine.registerTagHandler('toolbox', (selector : ISelector, parent : IQueryResult|null) => {
             let id : string;
             if (parent && typeof parent.getToolboxId === 'function') {
@@ -249,15 +291,11 @@ export class BlocklySourceEditor implements SourceEditor {
                         return null;
                     }
                     const block = flyout.getBlockByType(selector.class);
-                    if (!block) {
-                        engine.warn(`Could not find block ${selector.class}`);
-                        return null;
-                    }
                     return {
                         block,
                         getId() { return selector.class; },
                         getHTMLElement() {
-                            return block.getSvgRoot();
+                            return block ? block.getSvgRoot() : flyout as unknown as HTMLElement;
                         },
                     };
                 }
@@ -274,15 +312,11 @@ export class BlocklySourceEditor implements SourceEditor {
                         return null;
                     }
                     const block = flyout.getBlockByType(`${scope}_${selector.id}`);
-                    if (!block) {
-                        engine.warn(`Could not find block ${selector.id}`);
-                        return null;
-                    }
                     return {
                         block,
                         getId() { return `${scope}_${selector.id}`; },
                         getHTMLElement() {
-                            return block.getSvgRoot();
+                            return block ? block.getSvgRoot() : flyout as unknown as HTMLElement;
                         },
                     };
                 } else if (selector.class) {
@@ -296,15 +330,11 @@ export class BlocklySourceEditor implements SourceEditor {
                     if (!block) {
                         block = flyout.getBlockByType(selector.class);
                     }
-                    if (!block) {
-                        engine.warn(`Could not find block ${selector.class}`);
-                        return null;
-                    }
                     return {
                         block,
-                        getId() { return block!.type; },
+                        getId() { return selector.class; },
                         getHTMLElement() {
-                            return block!.getSvgRoot();
+                            return block ? block.getSvgRoot() : flyout as unknown as HTMLElement;
                         },
                     };
                 }

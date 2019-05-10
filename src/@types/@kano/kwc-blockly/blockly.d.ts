@@ -10,6 +10,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getSourceBlock() : Block;
         x_ : number;
         y_ : number;
+        connect(connection : Connection) : void;
     }
     class Input {
         name : string;
@@ -44,6 +45,11 @@ declare module '@kano/kwc-blockly/blockly.js' {
         svgPath_ : SVGPathElement;
         getRelativeToSurfaceXY() : { x : number, y : number };
         workspace : Workspace;
+        setOutput(o : boolean, type? : string) : Block;
+        appendValueInput(name? : string) : Input;
+        appendStatementInput(name? : string) : Input;
+        initSvg() : void;
+        render() : void;
     }
     class Field {
         protected width_ : number;
@@ -54,7 +60,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         public fieldGroup_ : SVGElement|null;
         protected borderRect_ : SVGElement|null;
         protected visible_ : boolean;
-        protected sourceBlock_ : Block;
+        public sourceBlock_ : Block;
         public name : string;
         constructor(value : string|null, validator? : (v : string) => void);
         forceRerender() : void;
@@ -71,6 +77,10 @@ declare module '@kano/kwc-blockly/blockly.js' {
         public dispose() : void;
     }
     class FieldColour extends Field {}
+    class FieldDropdown extends Field {
+        getOptions() : [string, string][];
+    }
+    class FieldCustomDropdown extends FieldDropdown {}
     class FieldTextInput extends Field {
         static htmlInput_ : HTMLInputElement;
         spellcheck_ : boolean;
@@ -101,6 +111,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         addChangeListener(callback : (e : any) => void) : (e : any) => void;
         removeChangeListener(callback : (e : any) => void) : void;
         getVariableById(id : string) : Variable|null;
+        newBlock(type : string, id? : string) : Block;
+        cleanUp() : void;
         toolbox : Toolbox;
         toolbox_ : Toolbox;
         componentRoot_ : HTMLElement;
@@ -170,6 +182,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         constructor(block : Block, type : string, name : string, oldValue : any, newValue : any);
     }
     class Events {
+        UI : string;
         CREATE : string;
         MOVE : string;
         OPEN_FLYOUT : string;
@@ -202,5 +215,6 @@ declare module '@kano/kwc-blockly/blockly.js' {
         static domToWorkspace(dom : HTMLElement, workspace : Workspace) : void;
         static textToDom(text : string) : HTMLElement;
         static blockToDom(block : Block) : HTMLElement;
+        static domToBlock(dom : HTMLElement, workspace : Workspace) : Block;
     }
 }

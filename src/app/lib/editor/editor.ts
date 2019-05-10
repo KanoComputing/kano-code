@@ -29,7 +29,6 @@ import { FileUpload } from './file-upload.js';
 import { defaultDropOverlayProvider } from './file-drop-provider.js';
 import { extname } from '../util/path.js';
 import './loader/kcode.js';
-import './loader/kch.js';
 import { FileLoaders } from './loader/loader.js';
 
 declare global {

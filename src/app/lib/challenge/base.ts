@@ -3,7 +3,7 @@ import { Editor } from '../editor/editor.js';
 
 export abstract class ChallengeBase {
     protected editor : Editor;
-    protected data? : any;
+    public data? : any;
 
     protected _onDidEnd = new EventEmitter();
     get onDidEnd() { return this._onDidEnd.event; }
