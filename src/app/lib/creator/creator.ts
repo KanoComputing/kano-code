@@ -21,6 +21,12 @@ export interface IGeneratedStep {
     data : IStepData;
 }
 
+export interface IGeneratedChallenge {
+    id : string;
+    defaultApp : string;
+    steps : IGeneratedStep[];
+}
+
 export class CreatorWidget implements IEditorWidget {
     public domNode : CreatorUI = new CreatorUI();
     getDomNode() : CreatorUI {
@@ -47,11 +53,10 @@ export abstract class Creator<T extends Stepper> {
     protected challenge : Challenge;
     private codeChangesSub? : IDisposable;
     protected app? : any;
-    protected modifications : Map<string, any> = new Map();
     constructor(editor : Editor) {
         this.editor = editor;
         this.subscriptions = [];
-        this.challenge = this.createChallenge({ steps: [] });
+        this.challenge = this.createChallenge({ id: '', steps: [] });
         this.stepper = this.createStepper();
         if (this.editor.injected) {
             this.onInject();
@@ -80,11 +85,11 @@ export abstract class Creator<T extends Stepper> {
     }
     onCodeChanged() {
         this.app = this.editor.save();
-        this.generatedSteps = this.generate();
-        console.log(this.generatedSteps);
+        const challenge = this.generate();
+        this.generatedSteps = challenge.steps;
         this.ui.domNode.setStepData(this.generatedSteps);
     }
-    generate() : IGeneratedStep[] {
+    generate() : IGeneratedChallenge {
         const parts = this.editor.output.parts.getParts();
         const steps : IGeneratedStep[] = [];
         parts.forEach((part) => {
@@ -95,53 +100,18 @@ export abstract class Creator<T extends Stepper> {
             steps.push(step);
             this.stepsMap.set(step.source, step);
         });
-        return steps;
+        return { id: '', steps, defaultApp: '' };
     }
     generateChallenge() {
-        const generatedStep = this.generate();
-        const steps = generatedStep.map((generatedStep) => generatedStep.data);
-        const app = this.editor.save();
+        const challenge = this.generate();
+        const steps = challenge.steps.map((generatedStep) => generatedStep.data);
         return {
-            app,
+            id: challenge.id,
+            defaultApp: challenge.defaultApp,
             steps,
         };
-    }
-    generateChallengeSource() {
-        const generatedStep = this.generate();
-        const steps = generatedStep.map((g, index) => Object.assign({ id: index }, g.data));
-        const mappings = steps.reduce((acc, step) => {
-            acc[step.id] = step;
-            return acc;
-        }, {} as { [K : string] : any });
-        const app = this.editor.save();
-        return {
-            app,
-            steps,
-            mappings,
-        };
-    }
-    objDiff(orig : any, dest : any) {
-        const diff = {} as any;
-        Object.keys(orig).forEach((key) => {
-            if (typeof orig[key] === 'string' && orig[key] !== dest[key]) {
-                diff[key] = dest[key];
-            }
-        });
-        Object.keys(dest).forEach((key) => {
-            if (!orig[key]) {
-                diff[key] = dest[key];
-            }
-        });
-        return diff;
     }
     loadChallenge(d : any) {
-        this.modifications.clear();
-        d.steps.map((step : any) => {
-            const mapping = d.mappings[step.id];
-            if (mapping) {
-                this.modifications.set(step.id, this.objDiff(mapping, step));
-            }
-        });
         this.stepper.challenge.setData(d);
         this.stepper.stepTo(Infinity);
     }
@@ -162,8 +132,8 @@ export abstract class Creator<T extends Stepper> {
             icon: dataURI(staffPick),
         });
         generateButton.onDidActivate(() => {
-            const challengeSource = this.generateChallengeSource();
-            downloadFile('new-challenge.kch', JSON.stringify(challengeSource, null, '    '));
+            const challengeSource = this.generateChallenge();
+            downloadFile(`${challengeSource.id || 'untitled-challenge'}.kch`, JSON.stringify(challengeSource, null, '    '));
         });
         this.editor.addContentWidget(this.ui);
     }

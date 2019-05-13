@@ -1,7 +1,12 @@
-import Defaults, { IBlocklyCategory } from '../../blockly/defaults.js';
-import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaRenderer, ICategory } from '../../meta-api/module.js';
+import { MetaModule, Meta, MetaVariable, MetaFunction, IMetaRenderer, ICategory, MetaParameter } from '../../meta-api/module.js';
 import { walkUpstream } from '../../util/blockly.js';
-import { Block } from '@kano/kwc-blockly/blockly.js';
+import { Block, FieldTextInput } from '@kano/kwc-blockly/blockly.js';
+import { resolveLegacyShadowTree, resolveShadowTree } from './shadow.js';
+
+export type IBlocklyCategory = ICategory & {
+    blocks : any[];
+    order? : number;
+}
 
 interface ILegacyModule {
     def : {
@@ -11,10 +16,17 @@ interface ILegacyModule {
     };
 }
 
+interface IBlockDefaults {
+    [K : string] : {
+        shadow : string | null;
+        value : any;
+    }
+}
+
 interface IRenderedBlock {
     id : string;
     toolbox : boolean;
-    defaults? : any[];
+    defaults? : IBlockDefaults;
     register(Blockly : any) : void;
 }
 
@@ -25,35 +37,17 @@ interface IRenderedBlock {
 const definitionsMap : Map<string, Meta> = new Map();
 
 class BlocklyMetaRenderer implements IMetaRenderer {
-    public defaults : Defaults = new Defaults();
+    public defaultsMap : Map<string, IBlockDefaults> = new Map();
     public blocksMap : Map<string, MetaModule> = new Map();
     public legacyBlocksMap : Map<string, ILegacyModule> = new Map();
     getEntryForBlock(blockType : string) {
         return this.blocksMap.get(blockType);
     }
-    getShadowForBlock(blockType : string) {
-        return this.defaults.shadowMap.get(blockType);
-    }
     getDefaultsForBlock(blockType : string) {
-        return this.defaults.values[blockType];
+        return this.defaultsMap.get(blockType);
     }
     renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : string[]|null) {
-        // This is a legacy type, its definition is not strongly typed
-        const def = mod.def as any;
         mod.def.register(Blockly);
-        if (mod.def.defaults) {
-            Object.keys(mod.def.defaults).forEach((blockId) => {
-                this.defaults.define(blockId, mod.def.defaults[blockId]);
-            });
-        }
-        if (def.labels) {
-            // Register all the labels to the Defaults manager from the legacy definition
-            Object.keys(def.labels).forEach((blockType) => {
-                Object.keys(def.labels[blockType]).forEach((input) => {
-                    def.labels[blockType][input].forEach(([label, value] : [string, string]) => this.defaults.defineLabel(blockType, input, value, label));
-                });
-            });
-        }
         if (!mod.def.category) {
             return null;
         }
@@ -65,57 +59,82 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                 return whitelist.indexOf(id) !== -1;
             });
         }
-        const cat = this.defaults.createCategory(category);
-        cat.blocks.forEach((block) => {
+        category.blocks = category.blocks.map((blockOrId) => typeof blockOrId === 'string' ? { id: blockOrId } : blockOrId);
+        category.blocks.forEach((block) => {
+            const blockDefaults = mod.def.defaults[block.id] || {} as any;
+            const defaults = {} as any;
+            Object.keys(blockDefaults).forEach((input) => {
+                if (typeof blockDefaults[input] !== 'undefined') {
+                    defaults[input] = {
+                        value: blockDefaults[input],
+                        shadow: resolveLegacyShadowTree(blockDefaults[input]),
+                    };
+                }
+            });
+            block.shadow = this.shadowForDefaults(defaults);
+            this.defaultsMap.set(block.id, defaults);
+        });
+        category.blocks.forEach((block) => {
             // Create fake module with mapped data from legacy category
             const entry = new MetaModule({ name: category.id, verbose: category.name, color: category.colour, type: 'module' });
             this.blocksMap.set(block.id, entry);
         });
-        return cat as ICategory;
+        return category as ICategory;
+    }
+    shadowForDefaults(defaults : IBlockDefaults) {
+        // Generate the shadow map for each input
+        return Object.keys(defaults).reduce((acc : any, input : string) => {
+            if (defaults[input] && defaults[input].shadow) {
+                acc[input] = defaults[input].shadow;
+            }
+            return acc;
+        }, {} as any);
     }
     renderToolboxEntry(mod : MetaModule, whitelist : string[]|null) {
         // Legacy module signature
         if (mod.def.type && mod.def.type === 'blockly') {
             return this.renderLegacyToolboxEntry(mod as unknown as ILegacyModule, whitelist);
         }
+        // Mark all whitelisted symbols as disabled
         if (mod.symbols) {
             mod.symbols.forEach((sym) => {
                 sym.def.disabled = !!(whitelist && whitelist.indexOf(sym.def.name) === -1);
             });
         }
 
+        // Render blocks from symbols
         const blocks = this.render(mod);
 
+        // Prepare a register method to let Blockly know of those new blocks
+        // TODO: Make that a re-usable bit that rpovide a disposable resource
         const register = (Blockly : any) => {
             blocks.forEach((block : any) => block.register(Blockly));
         };
 
+        // Exclude blocks that are excluded from the toolbox
         let filteredBlocks = blocks.filter((block : any) => block.toolbox);
-        const prefix = mod.def.blockly
-            && mod.def.blockly.idPrefix ? mod.def.blockly.idPrefix : '';
 
+        // Create the category compatible with kwc-blockly
         const category = {
             name: mod.getVerboseDisplay(),
             id: mod.def.name,
             colour: mod.getColor(),
-            blocks: filteredBlocks.map((block) => {
-                return {
-                    id: block.id,
-                    defaults: block.defaults ? Object.keys(block.defaults) : [],
-                };
+            blocks: filteredBlocks.map((block : IRenderedBlock) => {
+                const defaults = block.defaults || {} as IBlockDefaults;
+                this.defaultsMap.set(block.id, defaults);
+                // Generate the shadow map for each input
+                const shadow = this.shadowForDefaults(defaults);
+                return { id: block.id, shadow };
             }),
         };
 
-        blocks.forEach((block : any) => {
-            this.defaults.define(block.id.replace(prefix, ''), block.defaults);
-        }, {});
-
+        // Effectively register the new blocks
         register(Blockly);
-        const cat = this.defaults.createCategory(category);
-        cat.blocks.forEach((block) => {
+        // Keep a reference to the blocks for outside reference
+        category.blocks.forEach((block) => {
             this.blocksMap.set(block.id, mod);
         });
-        return cat as ICategory;
+        return category as ICategory;
     }
     disposeToolboxEntry(category : ICategory) {
 
@@ -242,10 +261,11 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         };
         const toolbox = BlocklyMetaRenderer.isInToolbox(m);
         const defaults : any = {};
+        defaults[blocklyName] = { value: m.def.default };
         if (m.def.blockly && m.def.blockly.shadow) {
-            defaults[blocklyName] = { shadow: m.def.blockly.shadow(m.def.default, m.getRoot()), default: m.def.default };
+            defaults[blocklyName].shadow = m.def.blockly.shadow(m.def.default, m.getRoot());
         } else {
-            defaults[blocklyName] = m.def.default;
+            defaults[blocklyName].shadow = resolveShadowTree(m);
         }
         return { register, id, toolbox, defaults };
     }
@@ -306,13 +326,11 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         const params = m.getParameters();
         const defaults = params.filter(p => typeof p.def.default !== 'undefined').reduce((acc, p) => {
             const pName = p.def.name.toUpperCase();
+            acc[pName] = { value: p.def.default };
             if (p.def.blockly && p.def.blockly.shadow) {
-                acc[pName] = { shadow: p.def.blockly.shadow(p.def.default, m.getRoot()), default: p.def.default };
+                acc[pName].shadow = p.def.blockly.shadow(p.def.default, m.getRoot());
             } else {
-                acc[pName] = p.def.default;
-            }
-            if (p.def.enum && p.def.enum.length) {
-                p.def.enum.forEach(([label, value]) => this.defaults.defineLabel(id, pName, value, label));
+                acc[pName].shadow = resolveShadowTree(p);
             }
             return acc;
         }, {} as any);
@@ -320,7 +338,7 @@ class BlocklyMetaRenderer implements IMetaRenderer {
         const blocksParams = params.filter(p => !p.def.blockly || !p.def.blockly.scope);
         const register = (Blockly : any) => {
             Blockly.Blocks[id] = {
-                init() {
+                init(this : Block) {
                     this.setColour(m.getColor());
                     this.setOutput(BlocklyMetaRenderer.parseType(m.getReturnType()));
                     if (!blocksParams.length) {
@@ -345,6 +363,9 @@ class BlocklyMetaRenderer implements IMetaRenderer {
                         } else if (p.def.blockly && p.def.blockly.customField) {
                             blocklyInput = this.appendDummyInput(pName);
                             blocklyInput.appendField(p.def.blockly.customField(Blockly, this), pName);
+                        } else if (input.type === 'field_input') {
+                            blocklyInput = this.appendDummyInput()
+                                .appendField(new FieldTextInput(input.text), pName);
                         } else {
                             blocklyInput = this.appendValueInput(pName)
                                 .setCheck(input.check);

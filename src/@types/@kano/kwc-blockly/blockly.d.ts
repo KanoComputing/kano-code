@@ -15,12 +15,14 @@ declare module '@kano/kwc-blockly/blockly.js' {
     class Input {
         name : string;
         type : number;
-        appendField<T extends Field = Field>(field : T|string, name? : string) : Field;
-        insertFieldAt(index : number, field : Field|string, name : string) : Field;
+        appendField<T extends Field = Field>(field : T|string, name? : string) : Input;
+        insertFieldAt(index : number, field : Field|string, name : string) : Input;
         removeField(name : string) : Input;
         connection? : Connection;
         sourceBlock_ : Block;
         fieldRow : Field[];
+        setCheck(type : string) : Input;
+        setAlign(alignment : boolean) : Input;
     }
     class Block {
         id : string;
@@ -50,6 +52,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         appendStatementInput(name? : string) : Input;
         initSvg() : void;
         render() : void;
+        setFieldValue(value : string, field : string) : void;
+        setInputsInline(inline : boolean) : Block;
     }
     class Field {
         protected width_ : number;
@@ -118,6 +122,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         componentRoot_ : HTMLElement;
         scale : number;
         dispose() : void;
+        centerOnBlock(id : string) : void;
     }
     const goog : any;
     const utils : {

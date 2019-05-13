@@ -353,26 +353,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.banner.show();
         }
     }
-    getExpandedStepIndex(sourceIndex : number) {
-        let step;
-        let counter = 0;
-        // Go through all steps until the source index
-        for (let i = 0; i < this._steps.length && i < sourceIndex; i += 1) {
-            step = this._steps[i];
-            // Shorthand exists
-            if (step.type && this._shorthands[step.type]) {
-                // Expand this step
-                const expanded = this._shorthands[step.type](step);
-                // Add the number of expanded steps
-                counter += expanded.length || 1;
-            } else {
-                // Add one only when no shorthand exist
-                counter += 1;
-            }
-        }
-        // Counter contains the number of steps 
-        return counter;
-    }
 }
 
 export default KanoCodeChallenge;

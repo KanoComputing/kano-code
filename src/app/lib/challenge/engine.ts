@@ -14,6 +14,7 @@ export class Engine extends ChallengeEngine {
     protected subscriptions : IDisposable[] = [];
     protected helpers : IStepHelper[] = [];
     protected stepHelpers : IStepHelper[] = [];
+    public stepsMappings : Map<number, number> = new Map();
 
     constructor(editor : Editor) {
         super();
@@ -33,6 +34,51 @@ export class Engine extends ChallengeEngine {
     onEnd() {}
     registerHelper(helper : IStepHelper) {
         this.helpers.push(helper);
+    }
+    getExpandedStepIndex(sourceIndex : number) {
+        let step;
+        let counter = 0;
+        // Go through all steps until the source index
+        for (let i = 0; i < this._steps.length && i < sourceIndex; i += 1) {
+            step = this._steps[i];
+            // Shorthand exists
+            if (step.type && this._shorthands[step.type]) {
+                // Expand this step
+                const expanded = this._shorthands[step.type](step);
+                // Add the number of expanded steps
+                counter += expanded.length || 1;
+            } else {
+                // Add one only when no shorthand exist
+                counter += 1;
+            }
+        }
+        // Counter contains the number of steps 
+        return counter;
+    }
+    _expandStepsWithMappings() {
+        // Store the mappings between generated steps and original steps
+        const mappings = new Map();
+        // Create a new Array of steps with the expanded shorthands
+        const steps = this._steps.reduce((acc, step, index) => {
+            if (step.type && this._shorthands[step.type]) {
+                // A shorthand exist, use the processor to get all the steps
+                const result = this._shorthands[step.type](step);
+                if (Array.isArray(result)) {
+                    // We got some expanded steps, map all their new indexes to their original step
+                    result.forEach((r : any, i : number) => {
+                        mappings.set(acc.length + i, index);
+                    });
+                } else {
+                    mappings.set(acc.length, index);
+                }
+                return acc.concat(result);
+            }
+            // No expansion, map the step index to the current index
+            mappings.set(acc.length, index);
+            // No, shorthands, return the original step
+            return acc.concat(step);
+        }, []);
+        return { steps, mappings };
     }
     dispose() {
         this.subscriptions.forEach(s => s.dispose());

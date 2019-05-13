@@ -1,6 +1,6 @@
-import { Creator, IGeneratedStep } from '../../../creator/creator.js';
+import { Creator, IGeneratedStep, IGeneratedChallenge } from '../../../creator/creator.js';
 import { BlocklySourceEditor } from '../../blockly.js';
-import { Xml, Block, Field } from '@kano/kwc-blockly/blockly.js';
+import { Xml, Block, Field, Workspace } from '@kano/kwc-blockly/blockly.js';
 import { BlocklyCreatorToolbox } from './toolbox.js';
 import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue, IInnerTextDiffResult, getSelectorForNode } from './xml.js';
 import BlocklyMetaRenderer from '../api-renderer.js';
@@ -9,6 +9,7 @@ import { findInSet } from '../../../util/set.js';
 import { registerCreator, getHelpers, ICreatorHelper } from '../../../creator/index.js';
 import Editor from '../../../editor/editor.js';
 import { BlocklyStepper } from './stepper/blockly-stepper.js';
+import KanoCodeChallenge from '../challenge/kano-code.js';
 export * from './helpers.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
@@ -34,9 +35,9 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
     createStepper() {
         return new BlocklyStepper(this.editor, this.challenge);
     }
-    createAlias() {
+    createAlias(prefix = 'block') {
         this.aliasCounter += 1;
-        return `block_${this.aliasCounter}`;
+        return `${prefix}_${this.aliasCounter}`;
     }
     onInject() {
         super.onInject();
@@ -47,7 +48,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
     }
     generate() {
         this.aliasCounter = -1;
-        let steps : IGeneratedStep[] = super.generate();
+        const challenge = super.generate();
+        let steps = challenge.steps;
         if (!this.sourceEditor) {
             throw new Error('Could not generate challenge steps: The editor was not injected');
         }
@@ -60,8 +62,17 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             }
             steps = steps.concat(this.blockToSteps(startOption.start, true));
         });
+
+        const id = this.generateChallengeId(dom);
         
-        return steps;
+        return Object.assign(challenge, { steps, id });
+    }
+    generateChallengeId(dom : XMLDocument) {
+        const field = dom.querySelector('block[type="generator_id"]>field[name="ID"]');
+        if (!field) {
+            return '';
+        }
+        return field.textContent;
     }
     getConnectionForStatementOrValue(block : HTMLElement) : string|null {
         // Find the statement or value node that hosts the block. Make sure to not accept statements or values inside a shadow block
@@ -78,7 +89,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         let selector = getSelectorForNode(block, parentBlock);
         const parentBlockId = parentBlock.getAttribute('id')!
         // Retrieve the step that created this parent block
-        const source = `block#${parentBlockId}`
+        const source = `block#${parentBlockId}`;
         const step = this.stepsMap.get(source);
         // No step means the block is in the default app, in that case return the id of the parent block
         if (!step) {
@@ -111,10 +122,14 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             const customStep = {
                 source: `block#${id}`,
                 data: {
-                    _customStep: true,
+                    customStep: true,
+                    parent: this.getConnectionForStatementOrValue(block),
+                    alias: this.createAlias('custom_step'),
                 },
-            };
+            } as IGeneratedStep;
             steps.push(customStep);
+            Object.assign(customStep.data, this.getOriginalStepFromSource(customStep.source));
+            this.stepsMap.set(customStep.source, customStep);
             const next = block.querySelector('next') as HTMLElement;
             if (next) {
                 steps = steps.concat(this.nodeToSteps(next));
@@ -122,15 +137,24 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             return steps;
         } else if (type === 'generator_banner') {
             const field = block.querySelector('field[name="TEXT"]') as HTMLElement;
-            if (field) {
-                steps.push({
-                    source: `block#${id}`,
-                    data: {
-                        banner: field.innerText,
-                        _customBannerStep: true,
-                    },
-                });
+            if (!field) {
+                return steps;
             }
+            const step = {
+                source: `block#${id}`,
+                data: {
+                    banner: {
+                        text: field.innerText,
+                        nextButton: true,
+                    },
+                    bannerStep: true,
+                    parent: this.getConnectionForStatementOrValue(block),
+                    alias: this.createAlias('custom_banner'),
+                },
+            } as IGeneratedStep;
+            steps.push(step);
+            Object.assign(step.data, this.getOriginalStepFromSource(step.source));
+            this.stepsMap.set(step.source, step);
             const next = block.querySelector('next') as HTMLElement;
             if (next) {
                 steps = steps.concat(this.nodeToSteps(next));
@@ -192,9 +216,9 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         } else {
             createBlockStep.data.dropCopy = 'Drop it onto your code space to add it into your program.';
         }
-        if (start) {
-            createBlockStep.data._startStep = true;
-        }
+        const originalStep = this.getOriginalStepFromSource(`block#${id}`) || {};
+        // Apply sources
+        Object.assign(createBlockStep.data, originalStep);
         // Keep track of that new step, map it to its source block.
         this.stepsMap.set(createBlockStep.source, createBlockStep);
         let blockSteps : IGeneratedStep[] = [createBlockStep];
@@ -203,6 +227,26 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
         return blockSteps;
+    }
+    getOriginalStepFromSource(source : string) {
+        const result = this.editor.querySelector(source);
+        if (!result) {
+            throw new Error('Deal with this please');
+        }
+        let stepIndex : number|undefined;
+        if (result.block) {
+            stepIndex = this.stepper.blockMap.get(result.block);
+        } else if (result.input) {
+            console.log(result.input);
+        } else if (result.field) {
+            stepIndex = this.stepper.fieldMap.get(result.field);
+        }
+        if (!stepIndex) {
+            return;
+        }
+        const engine = this.challenge.engine as KanoCodeChallenge;
+        const originalStep = engine._steps[stepIndex!];
+        return originalStep;
     }
     /**
      * For a given Blockly XML node, generate the matching steps
@@ -257,11 +301,11 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         const parentId = parent.getAttribute('id')!;
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
         const defaults = renderer.getDefaultsForBlock(parentType);
-        if (!defaults) {
+        if (!defaults || !defaults[name]) {
             console.warn(`Could not infer step for challenge: Block '${parentType}' has no default definition`);
             return [];
         }
-        const defaultValue = defaults[name];
+        const defaultValue = defaults[name].value;
         if (!defaultValue) {
             console.warn(`Could not infer step for challenge: Block '${parentType}' is missing a default declaration for value '${name}'`);
             return [];
@@ -279,31 +323,17 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         } else {
             target = `alias#${parentStep.data.alias}>input#${name}`;
         }
-        let defaultLabel;
-        let currentLabel;
-
-        if (parentType === 'variables_set' || parentType === 'variables_get' || (parentType === 'unary' && name === 'LEFT_HAND')) {
-            defaultLabel = defaultValue;
-            currentLabel = currentValue;
-        } else {
-            defaultLabel = renderer.defaults.getLabel(parentType, name, defaultValue);
-            currentLabel = renderer.defaults.getLabel(parentType, name, currentValue);
-        }
-        if (!defaultLabel) {
-            console.warn(`Could not infer default label for value '${defaultValue}': Block '${parentType}' is missing a label definition for input '${name}'`);
-        }
-        if (!currentLabel) {
-            console.warn(`Could not infer default label for value '${currentValue}': Block '${parentType}' is missing a label definition for input '${name}'`);
-        }
         let step : IGeneratedStep = {
             source: `block#${parentId}>input#${name}`,
             data: {
                 type: 'change-input',
                 target,
                 value: currentValue,
-                bannerCopy: `Change the strength from <kano-value-preview><span>${defaultLabel || 'ERROR'}</span></kano-value-preview> to <kano-value-preview><span>${currentLabel || 'ERROR'}</span></kano-value-preview>`,
+                bannerCopy: `Change the strength from <kano-value-preview><span>${defaultValue || 'ERROR'}</span></kano-value-preview> to <kano-value-preview><span>${currentValue || 'ERROR'}</span></kano-value-preview>`,
             },
         };
+        const originalStep = this.getOriginalStepFromSource(step.source);
+        console.log(originalStep);
         const field = this.getFieldForNode(node);
         if (field) {
             step = this.runFieldHelper(field, defaultValue, currentValue, step);
@@ -348,10 +378,13 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             return [];
         }
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
-        const defaults = renderer.getShadowForBlock(parentType);
-        const shadowString = defaults[inputName];
+        const defaults = renderer.getDefaultsForBlock(parentType);
+        if (!defaults || !defaults[inputName]) {
+            throw new Error(`Could not infer challenge step in shadow block: Missing default definition for input '${inputName}' in block '${parentType}'`);
+        }
+        const shadowString = defaults[inputName].shadow;
         if (!shadowString) {
-            console.warn(`Could not infer challenge step in shadow block: Missing default definition for input '${inputName}' in block '${parentType}'`);
+            throw new Error(`Could not infer challenge step in shadow block: Missing default definition for input '${inputName}' in block '${parentType}'`);
         }
         const shadowTree = parseXml(shadowString);
         const result = findFirstTreeDiff(shadowTree.documentElement, shadow);
@@ -380,6 +413,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 step = this.runFieldHelper(field, result.from!, result.to!, step);
             }
             this.stepsMap.set(step.source, step);
+            const originalStep = this.getOriginalStepFromSource(selector);
+            Object.assign(step.data, originalStep);
             return [step];
         } else if (result.type === DiffResultType.NODE && result.to) {
             return this.blockToSteps(result.to);

@@ -10,7 +10,7 @@ export function parseXml(src : string) {
 }
 
 export function nodeIsNonShadowStatementOrValue(node : Element) {
-    return (node.tagName.toLowerCase() === 'statement' || node.tagName.toLowerCase() === 'value') && !!node.parentElement && node.parentElement.tagName.toLowerCase() !== 'shadow';
+    return (node.tagName.toLowerCase() === 'statement' || node.tagName.toLowerCase() === 'value' || node.tagName.toLowerCase() === 'next') && !!node.parentElement && node.parentElement.tagName.toLowerCase() !== 'shadow';
 }
 
 export function getAncestor(target : Element, test : (node : Element) => boolean) {
@@ -160,6 +160,10 @@ export function getSelectorForNode(node : HTMLElement, limit : HTMLElement) {
             }
             case 'shadow': {
                 selectors.unshift('shadow');
+                break;
+            }
+            case 'next': {
+                selectors.unshift('next');
                 break;
             }
         }

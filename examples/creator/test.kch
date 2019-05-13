@@ -1,78 +1,73 @@
 {
-    "app": {
-        "source": "<xml xmlns=\"http://www.w3.org/1999/xhtml\"><block type=\"app_onStart\" id=\"default_app_onStart\" x=\"40\" y=\"120\"><field name=\"FLASH\"></field><statement name=\"CALLBACK\"><block type=\"draw_set_background_color\" id=\"g?)RglWcIP?!Ia+G3sSi\"><value name=\"COLOR\"><shadow type=\"colour_picker\" id=\"MeB0YE)%8Z!(S0?q@(=q\"><field name=\"COLOUR\">#26A69A</field></shadow></value></block></statement></block></xml>",
-        "code": "app.onStart(function() {\n  ctx.background = '#26A69A';\n\n});\n",
-        "parts": []
-    },
+    "id": "001-having-a-laugh",
+    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"app_onStart\\\" id=\\\"default_app_onStart\\\" x=\\\"40\\\" y=\\\"120\\\"><field name=\\\"FLASH\\\"></field></block></xml>\",\"code\":\"app.onStart(function() {\\n  ctx.background = '#26A69A';\\n\\n});\\n\",\"parts\":[]}",
     "steps": [
         {
-            "id": 0,
             "type": "create-block",
             "category": "toolbox#app",
             "blockType": "app_onStart",
             "alias": "block_0",
             "openFlyoutCopy": "Open the Lol tray",
             "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
-            "dropCopy": "Drop it onto your code space to add it into your program.",
-            "_startStep": true
-        },
-        {
-            "type": "create-block",
-            "category": "toolbox#app",
-            "blockType": "app_onStart",
-            "alias": "block_99",
-            "openFlyoutCopy": "Open the Lol tray",
-            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
             "dropCopy": "Drop it onto your code space to add it into your program."
         },
         {
-            "id": 1,
+            "tooltips": [{
+                "location": "toolbox#app",
+                "text": "This is the toolbox thingy"
+            }],
+            "customStep": true,
+            "parent": "alias#block_0>input#CALLBACK",
+            "alias": "custom_0"
+        },
+        {
+            "banner": {
+                "text": "Hahah",
+                "nextButton": true
+            },
+            "bannerStep": true,
+            "parent": "alias#custom_0>next",
+            "alias": "banner_0"
+        },
+        {
             "type": "create-block",
             "category": "toolbox#draw",
             "blockType": "draw_set_background_color",
             "alias": "block_1",
             "openFlyoutCopy": "Open the Draw tray",
             "grabBlockCopy": "Pick up the thingy with your mouse or finger and drag it into the middle",
-            "connectTo": "alias#block_0>input#CALLBACK",
+            "connectTo": "alias#banner_0>next",
             "connectCopy": "Connect please"
         },
         {
-            "id": 2,
-            "type": "change-input",
-            "target": "alias#block_1>input#COLOR>shadow>input#COLOUR",
-            "value": "#26A69A",
-            "bannerCopy": "Change this poo from <kano-value-preview><span>#ffffff</span></kano-value-preview> to <kano-value-preview><span>#26A69A</span></kano-value-preview>"
-        }
-    ],
-    "mappings": {
-        "0": {
-            "id": 0,
             "type": "create-block",
             "category": "toolbox#app",
             "blockType": "app_onStart",
-            "alias": "block_0",
-            "openFlyoutCopy": "Open the App tray",
+            "alias": "block_99",
+            "openFlyoutCopy": "Open the Thing tray",
             "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
-            "dropCopy": "Drop it onto your code space to add it into your program.",
-            "_startStep": true
+            "dropCopy": "Drop it onto your code space to add it into your program."
         },
-        "1": {
-            "id": 1,
+        {
+            "startStep": true,
+            "parent": "block#default_app_onStart>input#CALLBACK",
+            "alias": "start_0"
+        },
+        {
             "type": "create-block",
             "category": "toolbox#draw",
             "blockType": "draw_set_background_color",
             "alias": "block_1",
             "openFlyoutCopy": "Open the Draw tray",
-            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
-            "connectTo": "alias#block_0>input#CALLBACK",
+            "grabBlockCopy": "Pick up the thingy with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#start_0>next",
             "connectCopy": "Connect please"
         },
-        "2": {
-            "id": 2,
+        {
             "type": "change-input",
             "target": "alias#block_1>input#COLOR>shadow>input#COLOUR",
             "value": "#26A69A",
-            "bannerCopy": "Change this color from <kano-value-preview><span>#ffffff</span></kano-value-preview> to <kano-value-preview><span>#26A69A</span></kano-value-preview>"
+            "bannerCopy": "Change this poo from <kano-value-preview><span>#ffffff</span></kano-value-preview> to <kano-value-preview><span>#26A69A</span></kano-value-preview>"
         }
-    }
+    ]
 }
