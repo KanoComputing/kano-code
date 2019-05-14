@@ -9,7 +9,6 @@ import { IStepHelper } from './helper.js';
 
 export class Engine extends ChallengeEngine {
     protected editor : Editor;
-    public aliases : Map<string, string> = new Map();
     public widgets : Map<string, IEditorWidget> = new Map();
     protected subscriptions : IDisposable[] = [];
     protected helpers : IStepHelper[] = [];

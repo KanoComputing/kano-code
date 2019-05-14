@@ -12,6 +12,9 @@ export class CreatorUI extends LitElement {
     subscriptions : IDisposable[] = [];
 
     @property({ type: String })
+    title : string = '';
+
+    @property({ type: String })
     mode : 'edit'|'play' = 'edit';
 
     @property({ type: Boolean })
@@ -96,6 +99,7 @@ export class CreatorUI extends LitElement {
                 background: #12243d;
             }
             .preview {
+                flex: 5;
                 background: #1e1e1e;
             }
             .header {
@@ -153,6 +157,7 @@ export class CreatorUI extends LitElement {
             }
             .bar {
                 height: 24px;
+                padding-left: 8px;
             }
             .bar.edit {
                 background: #007acc;
@@ -195,7 +200,7 @@ export class CreatorUI extends LitElement {
                 </div>
                 <button ?hidden=${this.collapsed} class="close" @click=${() => this.close()}>&times;</button>
             </div>
-            ${this.collapsed ? '' : html`<div class="bar ${this.mode}">Bar</div>`}
+            ${this.collapsed ? '' : html`<div class="bar ${this.mode}">${this.title}</div>`}
         `;
     }
     toggle() {

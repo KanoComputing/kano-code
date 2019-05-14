@@ -1,5 +1,3 @@
-import { selectorToMarkedString } from '../../../../../vendor/monaco-editor/esm/vs/language/css/_deps/vscode-css-languageservice/services/selectorPrinting';
-
 export function parseXml(src : string) {
     var parser = new DOMParser();
     var dom = parser.parseFromString(src, 'application/xml');
@@ -46,21 +44,16 @@ export function findStartNodes(root : XMLDocument) {
                 root: null,
             };
         }
-        if (startNode.parentNode) {
-            // Replace the generator block with the real first block
-            startNode.parentNode.insertBefore(nextNode, startNode);
-            startNode.parentNode.removeChild(startNode);
-        }
         // Tag the start of the challenge
-        nextNode.setAttribute('challenge-start-node', '');
+        startNode.setAttribute('challenge-start-node', '');
         // Create a new tree for the generator to parse
         const cleanRoot = entryNode.cloneNode(true) as HTMLElement;
         // Grab the entry point of the challenge
         const cleanStartNode = cleanRoot.querySelector('[challenge-start-node]') as HTMLElement;
-        if (nextNode.parentNode) {
+        if (startNode.parentNode) {
             // Remove the start node from the original clone, this leaves the default blocks on
             // the workspace
-            nextNode.parentNode.removeChild(nextNode);
+            startNode.parentNode.removeChild(startNode);
         }
         return {
             preloaded: entryNode,

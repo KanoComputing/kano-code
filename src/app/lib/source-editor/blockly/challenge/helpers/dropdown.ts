@@ -38,6 +38,9 @@ export class DropdownFieldStepHelper extends BlocklyValueStepHelper {
         const block = field.sourceBlock_;
         const options = field.getOptions();
         const targetIndex = options.findIndex(([, value]) => value === step.validation.blockly.value.value);
+        if (!challenge.workspace) {
+            return;
+        }
         challenge.workspace.addChangeListener((e) => {
             console.log(e);
             if (e.type !== Blockly.Events.UI || e.blockId !== block.id) {

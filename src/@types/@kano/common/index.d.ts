@@ -16,4 +16,8 @@ declare module '@kano/common/index.js' {
     function subscribeDOM(target : HTMLElement|SVGElement, name : string, callback : Function, thisArg? : any, subs? : IDisposable[]) : IDisposable;
     function subscribeTimeout(callback : () => void, timeout? : number) : IDisposable;
     function subscribeInterval(callback : () => void, timeout? : number) : IDisposable;
+    function dispose<T extends IDisposable>(disposable: T) : T;
+    function dispose<T extends IDisposable>(...disposables : Array<T | undefined>) : T[];
+    function dispose<T extends IDisposable>(disposables : T[]) : T[];
+    function dispose<T extends IDisposable>(first : T | T[], ...rest: T[]) : T | T[] | undefined;
 }

@@ -4,14 +4,13 @@ import { BlocklySourceEditor } from '../../blockly.js';
 import { Engine } from '../../../challenge/engine.js';
 
 class BlocklyChallenge extends Engine {
-    public workspace : Workspace;
+    public workspace? : Workspace;
     protected eventsMap : { [K : string] : string };
     constructor(editor : Editor) {
         super(editor);
         if (this.editor.sourceType !== 'blockly') {
             throw new Error('Cannot use a blockly challenge with non-blockly editor');
         }
-        this.workspace = (editor.sourceEditor as BlocklySourceEditor).getWorkspace();
         this.eventsMap = {
             move: 'connect',
             change: 'value',
@@ -40,6 +39,12 @@ class BlocklyChallenge extends Engine {
         this.defineShorthand('change-input', this._changeInputShorthand.bind(this));
 
         this.defineBehavior('phantom_block', this._onPhantomBlockEnter.bind(this), this._onPhantomBlockLeave);
+    }
+    getWorkspace() {
+        if (!this.workspace) {
+            this.workspace = (this.editor.sourceEditor as BlocklySourceEditor).getWorkspace();
+        }
+        return this.workspace;
     }
     _updateStep() {
         super._updateStep();
@@ -144,7 +149,8 @@ class BlocklyChallenge extends Engine {
         const openFlyoutStep = this._getOpenFlyoutStep(data);
         const createStep = this._getCreateBlockStep(data);
         const steps : any[] = [createStep];
-        if (this.workspace.toolbox_) {
+        const workspace = this.getWorkspace();
+        if (workspace.toolbox_) {
             steps.unshift(openFlyoutStep);
         }
         if (data.connectTo) {
@@ -215,7 +221,7 @@ class BlocklyChallenge extends Engine {
             // step id for further reference
             if (validation.alias) {
                 // Create an alias selector for that block
-                this.aliases.set(validation.alias, `block#${event.blockId}`);
+                this.editor.registerAlias(validation.alias, `block#${event.blockId}`);
             }
             return true;
         }
@@ -303,10 +309,11 @@ class BlocklyChallenge extends Engine {
      * @param event An event from the Blockly workspace
      */
     _matchBlocklyValue(validation : any, event : any) {
+        const workspace = this.getWorkspace();
         // Retrieve the block expected to trigger the event
         const target = this.editor.querySelector(validation.target);
         // Retrieve the block that effectively triggered the event
-        const eventBlock = this.workspace.getBlockById(event.blockId)!;
+        const eventBlock = workspace.getBlockById(event.blockId)!;
         // Retrieve the field that triggered the event
         const field = eventBlock.getField(event.name);
 
@@ -367,7 +374,7 @@ class BlocklyChallenge extends Engine {
         if (validateSource()) {
             if (validation.value) {
                 // Check whether the new value is a variable id, if so match against the variable name
-                const variable = this.workspace.getVariableById(event.newValue);
+                const variable = workspace.getVariableById(event.newValue);
                 if (variable) {
                     return validation.value == variable.name;
                 }
@@ -383,8 +390,9 @@ class BlocklyChallenge extends Engine {
         return false;
     }
     _validate(validation : any, e : any) : boolean {
-        let detail = e.data.event,
-            block = this.workspace.getBlockById(detail.blockId);
+        const workspace = this.getWorkspace();
+        let detail = e.data.event;
+        let block = workspace.getBlockById(detail.blockId);
         detail.type = this.eventsMap[detail.type] || detail.type;
         // Ignore connect event with no parent
         // Ignore all events from shadow blocks except `value`

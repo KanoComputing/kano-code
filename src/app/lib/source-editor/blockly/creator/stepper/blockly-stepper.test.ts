@@ -50,6 +50,7 @@ suite('BlocklyStepper', () => {
             });
         const challenge = {
             data: {
+                id: 'test',
                 steps: [{
                     type: 'create-block',
                     "category": "toolbox.app",
@@ -70,7 +71,7 @@ suite('BlocklyStepper', () => {
                 }],
             },
         } as Challenge;
-        const stepper = new BlocklyStepper(editor, challenge);
-        stepper.stepTo(2);
+        const stepper = new BlocklyStepper(editor);
+        stepper.stepTo(2, challenge.data);
     });
 });

@@ -30,6 +30,8 @@ import { defaultDropOverlayProvider } from './file-drop-provider.js';
 import { extname } from '../util/path.js';
 import './loader/kcode.js';
 import { FileLoaders } from './loader/loader.js';
+import { aliasTagHandlerFactory } from './selector/alias.js';
+import { toDisposable } from '../../../vendor/monaco-editor/esm/vs/base/common/lifecycle.js';
 
 declare global {
     interface Window {
@@ -130,6 +132,7 @@ export class Editor extends EditorOrPlayer {
     public creationPreviewProvider? : CreationCustomPreviewProvider;
     public creationStorageProvider? : CreationStorageProvider;
     public queryEngine : QueryEngine = new QueryEngine();
+    private selectorAliases : Map<string, string> = new Map();
     /**
      * Apis to control the content widgets displayed in the editor
      */
@@ -189,6 +192,8 @@ export class Editor extends EditorOrPlayer {
             this._onDidLayoutChange.fire();
         });
         this.sourceEditor.registerQueryHandlers(this.queryEngine);
+
+        this.queryEngine.registerTagHandler('alias', aliasTagHandlerFactory(this.queryEngine, this.selectorAliases));
 
         this.addPlugin(this.workspaceToolbar);
         this.addPlugin(this.dialogs);
@@ -591,6 +596,12 @@ export class Editor extends EditorOrPlayer {
      */
     exposeMethod(name : string, method : Function) {
         (this as any)[name] = method;
+    }
+    registerAlias(alias : string, target : string) {
+        this.selectorAliases.set(alias, target);
+        return toDisposable(() => {
+            this.selectorAliases.delete(alias);
+        });
     }
 }
 

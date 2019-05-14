@@ -1,15 +1,10 @@
-import Editor from '../../editor/editor.js';
-import { Challenge } from '../../challenge/index.js';
+import { Editor } from '../../editor/editor.js';
 
 export class Stepper {
-    challenge : Challenge;
     protected editor : Editor;
-    constructor(editor : Editor, challenge : Challenge) {
+    constructor(editor : Editor) {
         this.editor = editor;
-        this.challenge = challenge
     }
-    stepTo(stepIndex : number) {}
-    reset() {
-        this.challenge.stop();
-    }
+    stepTo(stepIndex : number, data : any) {}
+    reset() {}
 }

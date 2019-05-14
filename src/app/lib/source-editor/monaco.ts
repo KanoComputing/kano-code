@@ -11,7 +11,7 @@ class MonacoStepper extends Stepper {}
 
 class MonacoCreator extends Creator<MonacoStepper> {
     createStepper() : MonacoStepper {
-        return new MonacoStepper(this.editor, this.challenge);
+        return new MonacoStepper(this.editor);
     }
 }
 

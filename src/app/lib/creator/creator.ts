@@ -11,6 +11,7 @@ import { Stepper } from './stepper/stepper.js';
 import { IChallengeData, Challenge, createChallenge } from '../challenge/index.js';
 import { IDisposable } from 'monaco-editor';
 import KanoCodeChallenge from '../source-editor/blockly/challenge/kano-code.js';
+import { isColorConstructor } from '../../../vendor/monaco-editor/esm/vs/language/css/_deps/vscode-css-languageservice/languageFacts/facts.js';
 
 export interface IStepData {
     [K : string] : any;
@@ -42,6 +43,8 @@ export class CreatorWidget implements IEditorWidget {
     }
 }
 
+const VERSION = '1.0.0';
+
 export abstract class Creator<T extends Stepper> {
     protected editor : Editor;
     protected subscriptions : Disposables[];
@@ -50,13 +53,13 @@ export abstract class Creator<T extends Stepper> {
     protected generatedSteps? : IGeneratedStep[];
     protected stepsMap : Map<string, IGeneratedStep> = new Map();
     protected stepper : T;
-    protected challenge : Challenge;
     private codeChangesSub? : IDisposable;
     protected app? : any;
+    private loadedChallenge : any;
+    protected challenge? : Challenge;
     constructor(editor : Editor) {
         this.editor = editor;
         this.subscriptions = [];
-        this.challenge = this.createChallenge({ id: '', steps: [] });
         this.stepper = this.createStepper();
         if (this.editor.injected) {
             this.onInject();
@@ -88,6 +91,7 @@ export abstract class Creator<T extends Stepper> {
         const challenge = this.generate();
         this.generatedSteps = challenge.steps;
         this.ui.domNode.setStepData(this.generatedSteps);
+        this.ui.domNode.title = challenge.id;
     }
     generate() : IGeneratedChallenge {
         const parts = this.editor.output.parts.getParts();
@@ -106,14 +110,15 @@ export abstract class Creator<T extends Stepper> {
         const challenge = this.generate();
         const steps = challenge.steps.map((generatedStep) => generatedStep.data);
         return {
+            version: VERSION,
             id: challenge.id,
             defaultApp: challenge.defaultApp,
             steps,
         };
     }
     loadChallenge(d : any) {
-        this.stepper.challenge.setData(d);
-        this.stepper.stepTo(Infinity);
+        this.loadedChallenge = d;
+        this.stepper.stepTo(Infinity, this.loadedChallenge);
     }
     focusTarget(source : string) {
         const el = this.editor.queryElement(source);
@@ -138,16 +143,23 @@ export abstract class Creator<T extends Stepper> {
         this.editor.addContentWidget(this.ui);
     }
     playStep(step : IGeneratedStep) {
+        if (this.challenge) {
+            this.challenge.stop();
+            this.challenge.dispose();
+        }
+        const previewStepper = this.createStepper();
         // Stop watching the changes to prevent the stepper to trigger a generation
         this.unwatchCodeChanges();
-        this.stepper.reset();
+        previewStepper.reset();
         this.editor.load(this.app);
         const data = this.generateChallenge();
-        this.stepper.challenge.setData(data);
+        this.challenge = this.createChallenge(data);
         const stepIndex = this.generatedSteps!.indexOf(step);
         const engine = this.challenge.engine as KanoCodeChallenge;
         const realIndex = engine.getExpandedStepIndex(stepIndex);
-        this.stepper.stepTo(realIndex);
+        previewStepper.stepTo(realIndex, data);
+        this.challenge.start();
+        engine.stepIndex = realIndex;
         this.ui.domNode.mode = 'play';
     }
     selectStep(step : IGeneratedStep) {

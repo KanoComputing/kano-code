@@ -1,6 +1,6 @@
-import { Creator, IGeneratedStep, IGeneratedChallenge } from '../../../creator/creator.js';
+import { Creator, IGeneratedStep } from '../../../creator/creator.js';
 import { BlocklySourceEditor } from '../../blockly.js';
-import { Xml, Block, Field, Workspace } from '@kano/kwc-blockly/blockly.js';
+import { Xml, Block, Field } from '@kano/kwc-blockly/blockly.js';
 import { BlocklyCreatorToolbox } from './toolbox.js';
 import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue, IInnerTextDiffResult, getSelectorForNode } from './xml.js';
 import BlocklyMetaRenderer from '../api-renderer.js';
@@ -9,7 +9,6 @@ import { findInSet } from '../../../util/set.js';
 import { registerCreator, getHelpers, ICreatorHelper } from '../../../creator/index.js';
 import Editor from '../../../editor/editor.js';
 import { BlocklyStepper } from './stepper/blockly-stepper.js';
-import KanoCodeChallenge from '../challenge/kano-code.js';
 export * from './helpers.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
@@ -33,7 +32,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         this.helpers = getHelpers('blockly') || [];
     }
     createStepper() {
-        return new BlocklyStepper(this.editor, this.challenge);
+        return new BlocklyStepper(this.editor);
     }
     createAlias(prefix = 'block') {
         this.aliasCounter += 1;
@@ -47,6 +46,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         }
     }
     generate() {
+        this.stepsMap.clear();
         this.aliasCounter = -1;
         const challenge = super.generate();
         let steps = challenge.steps;
@@ -60,7 +60,11 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             if (!startOption.start || startOption.start.tagName === 'variables') {
                 return;
             }
-            steps = steps.concat(this.blockToSteps(startOption.start, true));
+            if (startOption.start.getAttribute('type') === 'generator_start') {
+                steps = steps.concat(this.startToSteps(startOption.start));
+            } else {
+                steps = steps.concat(this.blockToSteps(startOption.start));
+            }
         });
 
         const id = this.generateChallengeId(dom);
@@ -163,14 +167,34 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         }
         return [];
     }
-    blockToSteps(block : HTMLElement, start = false) : IGeneratedStep[] {
+    startToSteps(block : HTMLElement) {
+        const id = block.getAttribute('id');
+        if (!id) {
+            return [];
+        }
+        const step = {
+            source: `block#${id}`,
+            data: {
+                startStep: true,
+                alias: this.createAlias('start'),
+                parent: this.getConnectionForStatementOrValue(block),
+            }
+        };
+        this.stepsMap.set(step.source, step);
+        let steps : IGeneratedStep[] = [step];
+        for (const child of block.children) {
+            steps = steps.concat(this.nodeToSteps(child as HTMLElement));
+        }
+        return steps;
+    }
+    blockToSteps(block : HTMLElement) : IGeneratedStep[] {
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
         const type = block.getAttribute('type');
         const id = block.getAttribute('id');
         if (!type) {
             return [];
         }
-        // Handle the blocks from the generator categiry separately
+        // Handle the blocks from the generator category separately
         if (CUSTOM_BLOCKS.indexOf(type) !== -1) {
             return this.customBlockToSteps(block);
         }
@@ -233,20 +257,13 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         if (!result) {
             throw new Error('Deal with this please');
         }
-        let stepIndex : number|undefined;
         if (result.block) {
-            stepIndex = this.stepper.blockMap.get(result.block);
+            return this.stepper.blockMap.get(result.block);
         } else if (result.input) {
             console.log(result.input);
         } else if (result.field) {
-            stepIndex = this.stepper.fieldMap.get(result.field);
+            return this.stepper.fieldMap.get(result.field);
         }
-        if (!stepIndex) {
-            return;
-        }
-        const engine = this.challenge.engine as KanoCodeChallenge;
-        const originalStep = engine._steps[stepIndex!];
-        return originalStep;
     }
     /**
      * For a given Blockly XML node, generate the matching steps
@@ -333,7 +350,6 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             },
         };
         const originalStep = this.getOriginalStepFromSource(step.source);
-        console.log(originalStep);
         const field = this.getFieldForNode(node);
         if (field) {
             step = this.runFieldHelper(field, defaultValue, currentValue, step);

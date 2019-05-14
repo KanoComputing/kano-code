@@ -6,32 +6,37 @@ import { KanoCodeChallenge } from '../../challenge/kano-code.js';
 import '../../challenge/index.js';
 import BlocklyMetaRenderer from '../../api-renderer.js';
 import { parseXml } from '../xml.js';
-import { Challenge } from '../../../../challenge/challenge.js';
+import { IDisposable } from 'monaco-editor';
 
 export class BlocklyStepper extends Stepper {
-    public blockMap : WeakMap<Block, number> = new WeakMap();
-    public fieldMap : WeakMap<Field, number> = new WeakMap();
+    public blockMap : WeakMap<Block, any> = new WeakMap();
+    public fieldMap : WeakMap<Field, any> = new WeakMap();
     public customConnections : WeakMap<Connection, Connection> = new WeakMap();
-    constructor(editor : Editor, challenge : Challenge) {
-        super(editor, challenge);
+    public engine : KanoCodeChallenge;
+    private aliases : IDisposable[] = [];
+    constructor(editor : Editor) {
+        super(editor);
+        this.engine = new KanoCodeChallenge(this.editor);
     }
-    stepTo(index : number) {
+    stepTo(index : number, data : any) {
         const sourceEditor = this.editor.sourceEditor as BlocklySourceEditor;
         const workspace = sourceEditor.getWorkspace();
-        const engine = this.challenge.engine as KanoCodeChallenge;
-        const { steps, mappings } = engine._expandStepsWithMappings();
-        this.challenge.reset();
-        this.editor.load(JSON.parse(this.challenge.data.defaultApp!));
-        for (let i = 0; i < index && i < steps.length; i += 1) {
-            this.renderStep(workspace, steps[i], i, mappings);
+        this.engine.setSteps(data.steps);
+        const { steps, mappings } = this.engine._expandStepsWithMappings();
+        const maxIndex = Math.min(index, steps.length);
+        if (data.defaultApp) {
+            this.editor.load(JSON.parse(data.defaultApp));
+        } else {
+            console.log(data.defaultApp);
+            this.editor.reset();
         }
-        const block = this.renderId(workspace, this.challenge.data.id);
+        for (let i = 0; i < maxIndex; i += 1) {
+            const originalStep = this.getOriginalStep(data.steps, i, mappings);
+            this.renderStep(workspace, steps[i], i, originalStep);
+        }
+        const block = this.renderId(workspace, data.id);
         if (block) {
             workspace.centerOnBlock(block.id);
-        }
-        this.challenge.start();
-        if (this.challenge.engine) {
-            this.challenge.engine.stepIndex = index;
         }
     }
     renderId(workpsace: Workspace, id : string) {
@@ -42,27 +47,27 @@ export class BlocklyStepper extends Stepper {
         block.setFieldValue(id, 'ID');
         return block;
     }
-    renderStep(workspace : Workspace, step : any, index : number, mappings : Map<number, number>) {
+    renderStep(workspace : Workspace, step : any, index : number, original : any) {
         if (step.validation && step.validation.blockly) {
             if (step.validation.blockly.create) {
-                this.renderCreate(workspace, step, index, mappings);
+                this.renderCreate(workspace, step, index, original);
             } else if (step.validation.blockly.connect) {
                 this.renderConnect(workspace, step.validation.blockly.connect, index);
             } else if (step.validation.blockly.value) {
-                this.renderValue(workspace, step.validation.blockly.value, index, mappings);
+                this.renderValue(workspace, step.validation.blockly.value, index, original);
             }
         } else {
             if (step.customStep) {
-                this.renderCustomStep(workspace, step, index, mappings);
+                this.renderCustomStep(workspace, step, index, original);
             } else if (step.startStep) {
-                this.renderStartStep(workspace, step, index, mappings);
+                this.renderStartStep(workspace, step, index, original);
             } else if (step.bannerStep) {
-                this.renderBannerStep(workspace, step, index, mappings);
+                this.renderBannerStep(workspace, step, index, original);
             }
         }
         workspace.cleanUp();
     }
-    renderCreate(workspace : Workspace, step : any, index : number, mappings : Map<number, number>) {
+    renderCreate(workspace : Workspace, step : any, index : number, original : any) {
         const validation = step.validation.blockly.create;
         const result = this.editor.querySelector(validation.type);
         if (!result) {
@@ -75,11 +80,9 @@ export class BlocklyStepper extends Stepper {
             // TODO: Deal here
             return;
         }
-        const originalIndex = this.getOriginalStepIndex(index, mappings);
-        this.blockMap.set(block, originalIndex);
-        const engine = this.challenge.engine as KanoCodeChallenge;
+        this.blockMap.set(block, original);
         if (validation.alias) {
-            engine.aliases.set(validation.alias, `block#${block.id}`);
+            this.aliases.push(this.editor.registerAlias(validation.alias, `block#${block.id}`));
         }
     }
     getOriginalStepIndex(index : number, mappings : Map<number, number>) {
@@ -89,9 +92,9 @@ export class BlocklyStepper extends Stepper {
         }
         return originalIndex;
     }
-    getOriginalStep(index : number) {
-        const originalStepIndex = this.challenge.engine!.stepsMappings.get(index);
-        return this.challenge.engine!._steps[originalStepIndex!];
+    getOriginalStep(steps : any[], index : number, mappings : Map<number, number>) {
+        const originalStepIndex = this.getOriginalStepIndex(index, mappings);
+        return steps[originalStepIndex!];
     }
     renderConnect(workspace : Workspace, validation : any, index : number) {
         const parent = this.editor.querySelector(validation.parent);
@@ -112,7 +115,7 @@ export class BlocklyStepper extends Stepper {
         }
         connection.connect(target.block.outputConnection || target.block.previousConnection);
     }
-    renderValue(workspace : Workspace, validation : any, index : number, mappings : Map<number, number>) {
+    renderValue(workspace : Workspace, validation : any, index : number, original : any) {
         // No value defined, just don't change it
         if (!validation.value) {
             return;
@@ -123,20 +126,19 @@ export class BlocklyStepper extends Stepper {
             return;
         }
         if (result.field) {
-            this.fieldMap.set(result.field, this.getOriginalStepIndex(index, mappings));
+            this.fieldMap.set(result.field, original);
             result.field.setValue(validation.value);
         }
     }
-    renderGeneratorStep(workspace : Workspace, validation : any, index : number, type : string, mappings : Map<number, number>) {
+    renderGeneratorStep(workspace : Workspace, validation : any, index : number, type : string, original : any) {
         const block = this.createBlock(workspace, type);
         if (!block) {
             // TODO: Deal here
             return;
         }
-        this.blockMap.set(block, this.getOriginalStepIndex(index, mappings));
-        const engine = this.challenge.engine as KanoCodeChallenge;
+        this.blockMap.set(block, original);
         if (validation.alias) {
-            engine.aliases.set(validation.alias, `block#${block.id}`);
+            this.aliases.push(this.editor.registerAlias(validation.alias, `block#${block.id}`));
         }
         const parent = this.editor.querySelector(validation.parent);
         if (!parent) {
@@ -156,14 +158,14 @@ export class BlocklyStepper extends Stepper {
         connection.connect(block.previousConnection!);
         return block;
     }
-    renderCustomStep(workspace : Workspace, validation : any, index : number, mappings : Map<number, number>) {
-        this.renderGeneratorStep(workspace, validation, index, 'generator_step', mappings);
+    renderCustomStep(workspace : Workspace, validation : any, index : number, original : any) {
+        this.renderGeneratorStep(workspace, validation, index, 'generator_step', original);
     }
-    renderStartStep(workspace : Workspace, validation : any, index : number, mappings : Map<number, number>) {
-        this.renderGeneratorStep(workspace, validation, index, 'generator_start', mappings);
+    renderStartStep(workspace : Workspace, validation : any, index : number, original : any) {
+        this.renderGeneratorStep(workspace, validation, index, 'generator_start', original);
     }
-    renderBannerStep(workspace : Workspace, validation : any, index : number, mappings : Map<number, number>) {
-        const block = this.renderGeneratorStep(workspace, validation, index, 'generator_banner', mappings);
+    renderBannerStep(workspace : Workspace, validation : any, index : number, original : any) {
+        const block = this.renderGeneratorStep(workspace, validation, index, 'generator_banner', original);
         if (!block) {
             // TODO: Deal
             return;

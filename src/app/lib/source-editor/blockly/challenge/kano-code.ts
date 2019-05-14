@@ -282,7 +282,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         }
         // If an id is provided, save the id of the added part
         if (validation.alias) {
-            this.aliases.set(validation.alias, `part#${event.data.id}`);
+            this.editor.registerAlias(validation.alias, `part#${event.data.id}`);
         }
         return true;
     }

@@ -14,6 +14,9 @@ export class ColorFieldStepHelper extends BlocklyValueStepHelper {
     enter(challenge : KanoCodeChallenge, step : IStepData) {
         const field = this.getField(challenge, step) as FieldColour;
         const block = field.sourceBlock_;
+        if (!challenge.workspace) {
+            return;
+        }
         challenge.workspace.addChangeListener((e) => {
             if (e.type !== Blockly.Events.UI || e.blockId !== block.id) {
                 return;

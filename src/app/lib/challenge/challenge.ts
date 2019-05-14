@@ -70,26 +70,8 @@ export class Challenge extends ChallengeBase {
                 this.engine.triggerEvent('blockly', { event: e });
             });
         }
-        let sub : IDisposable;
-        // This allows the querying of aliases defined during a challenge, parts blocks or positions
-        sub = this.editor.queryEngine.registerTagHandler('alias', (selector) => {
-            if (!this.engine) {
-                throw new Error('Could not query alias: Editor was not injected');
-            }
-            if (!selector.id) {
-                this.editor.queryEngine.warn('Could not find alias: No id provided');
-                return null;
-            }
-            const s = this.engine.aliases.get(selector.id);
-            if (!s) {
-                this.editor.queryEngine.warn(`Could not find alias: '${selector.id}' was not registered before`);
-                return null;
-            }
-            return this.editor.querySelector(s);
-        });
-        this.subscriptions.push(sub);
         // This allows challenges to access the next button in the banner
-        sub = this.editor.queryEngine.registerTagHandler('banner-button', (selector) => {
+        const sub = this.editor.queryEngine.registerTagHandler('banner-button', (selector) => {
             if (!this.engine) {
                 throw new Error('Could not query banner-button: Editor was not injected');
             }
