@@ -151,9 +151,9 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                         text: field.innerText,
                         nextButton: true,
                     },
-                    bannerStep: true,
                     parent: this.getConnectionForStatementOrValue(block),
                     alias: this.createAlias('custom_banner'),
+                    validation: 'banner-step',
                 },
             } as IGeneratedStep;
             steps.push(step);
@@ -175,9 +175,9 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         const step = {
             source: `block#${id}`,
             data: {
-                startStep: true,
                 alias: this.createAlias('start'),
                 parent: this.getConnectionForStatementOrValue(block),
+                validation: 'start-step',
             }
         };
         this.stepsMap.set(step.source, step);
@@ -251,6 +251,9 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
         return blockSteps;
+    }
+    getOriginalStepFromBlock(block : Block) {
+        return this.stepper.blockMap.get(block);
     }
     getOriginalStepFromSource(source : string) {
         const result = this.editor.querySelector(source);
@@ -350,6 +353,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             },
         };
         const originalStep = this.getOriginalStepFromSource(step.source);
+        Object.assign(step.data, originalStep);
         const field = this.getFieldForNode(node);
         if (field) {
             step = this.runFieldHelper(field, defaultValue, currentValue, step);
@@ -429,7 +433,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 step = this.runFieldHelper(field, result.from!, result.to!, step);
             }
             this.stepsMap.set(step.source, step);
-            const originalStep = this.getOriginalStepFromSource(selector);
+            const originalStep = this.getOriginalStepFromSource(step.source);
             Object.assign(step.data, originalStep);
             return [step];
         } else if (result.type === DiffResultType.NODE && result.to) {

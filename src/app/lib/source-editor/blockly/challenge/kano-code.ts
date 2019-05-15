@@ -24,6 +24,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     public bannerButton? : IBannerButton;
     private bannerIconProvider? : IBannerIconProvider;
     public progress : number = 0;
+    private stylesheet : HTMLStyleElement;
     constructor(editor : Editor) {
         super(editor);
         this.editor = editor;
@@ -50,9 +51,9 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.triggerEvent('add-part', part);
         });
         // Inject challenge styles into the editor
-        const style = document.createElement('style');
-        style.textContent = challengeStyles.cssText;
-        this.editor.domNode.shadowRoot!.appendChild(style);
+        this.stylesheet = document.createElement('style');
+        this.stylesheet.textContent = challengeStyles.cssText;
+        this.editor.domNode.shadowRoot!.appendChild(this.stylesheet);
 
         this.helpers.push(new ColorFieldStepHelper());
         this.helpers.push(new DropdownFieldStepHelper());
@@ -282,7 +283,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         }
         // If an id is provided, save the id of the added part
         if (validation.alias) {
-            this.editor.registerAlias(validation.alias, `part#${event.data.id}`);
+            this.registerAlias(validation.alias, `part#${event.data.id}`);
         }
         return true;
     }
@@ -352,6 +353,18 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             // Display the last banner
             this.banner.show();
         }
+    }
+    dispose() {
+        super.dispose();
+        this.tooltips.forEach((t) => {
+            t.dispose();
+            this.editor.removeContentWidget(t);
+        });
+        if (this.banner) {
+            this.banner.dispose();
+            this.editor.removeContentWidget(this.banner);
+        }
+        this.stylesheet.remove();
     }
 }
 

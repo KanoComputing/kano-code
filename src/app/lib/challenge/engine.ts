@@ -1,7 +1,7 @@
 import ChallengeEngine from 'challenge-engine/definition.js';
 import Editor from '../editor/editor.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
-import { subscribeDOM, IDisposable } from '@kano/common/index.js';
+import { subscribeDOM, IDisposable, EventEmitter, dispose } from '@kano/common/index.js';
 import { IStepHelper } from './helper.js';
 
 // Trick to make the custom emitter from the challenge engine have a normal eventemitter api
@@ -14,6 +14,10 @@ export class Engine extends ChallengeEngine {
     protected helpers : IStepHelper[] = [];
     protected stepHelpers : IStepHelper[] = [];
     public stepsMappings : Map<number, number> = new Map();
+    protected aliases : IDisposable[] = [];
+
+    private _onDidUpdateStepIndex : EventEmitter<number> = new EventEmitter();
+    get onDidUpdateStepIndex() { return this._onDidUpdateStepIndex.event; }
 
     constructor(editor : Editor) {
         super();
@@ -29,8 +33,12 @@ export class Engine extends ChallengeEngine {
         this.stepHelpers.forEach(helper => helper.leave(this, step));
         this.stepHelpers = this.helpers.filter(helper => helper.test(this, step));
         this.stepHelpers.forEach(helper => helper.enter(this, step));
+        this._onDidUpdateStepIndex.fire(this.stepIndex);
     }
     onEnd() {}
+    registerAlias(alias : string, target : string) {
+        this.aliases.push(this.editor.registerAlias(alias, target));
+    }
     registerHelper(helper : IStepHelper) {
         this.helpers.push(helper);
     }
@@ -80,7 +88,13 @@ export class Engine extends ChallengeEngine {
         return { steps, mappings };
     }
     dispose() {
-        this.subscriptions.forEach(s => s.dispose());
+        dispose(this.subscriptions)
         this.subscriptions.length = 0;
+        dispose(this.aliases);
+        this.aliases.length = 0;
+        this.widgets.forEach((widget) => {
+            this.editor.removeContentWidget(widget);
+        });
+        this._onDidUpdateStepIndex.dispose();
     }
 }

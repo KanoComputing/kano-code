@@ -10,12 +10,6 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
         const editor = new code.Editor({ sourceType: 'blockly' });
         const cr = creator.create(editor);
 
-        editor.onDidInject(() => {
-            fetch('/examples/creator/test.kch')
-                .then(r => r.json())
-                .then(d => cr.loadChallenge(d));
-        });
-
         editor.toolbox.addEntry({
             type: 'module',
             name: 'position',

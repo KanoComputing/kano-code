@@ -1,6 +1,6 @@
 import { BlocklySourceEditor } from '../source-editor/blockly.js';
 import { transformChallenge } from './legacy.js';
-import { IDisposable, EventEmitter, subscribeDOM } from '@kano/common/index.js';
+import { IDisposable, EventEmitter, subscribeDOM, dispose } from '@kano/common/index.js';
 import { IToolboxWhitelist } from '../editor/toolbox.js';
 import { Editor } from '../editor/editor.js';
 import { Engine } from './engine.js';
@@ -138,8 +138,11 @@ export class Challenge extends ChallengeBase {
         }
     }
     dispose() {
+        if (this.engine) {
+            this.engine.dispose();
+        }
         // Here get rid of all modifications made to the editor
-        this.subscriptions.forEach(d => d.dispose());
+        dispose(this.subscriptions);
         this.subscriptions.length = 0;
         if (window.Kano.Code.mainChallenge === this) {
             window.Kano.Code.mainChallenge = null;

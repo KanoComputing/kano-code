@@ -6,7 +6,7 @@ import { KanoCodeChallenge } from '../../challenge/kano-code.js';
 import '../../challenge/index.js';
 import BlocklyMetaRenderer from '../../api-renderer.js';
 import { parseXml } from '../xml.js';
-import { IDisposable } from 'monaco-editor';
+import { IDisposable } from '@kano/common/index.js';
 
 export class BlocklyStepper extends Stepper {
     public blockMap : WeakMap<Block, any> = new WeakMap();
@@ -27,17 +27,14 @@ export class BlocklyStepper extends Stepper {
         if (data.defaultApp) {
             this.editor.load(JSON.parse(data.defaultApp));
         } else {
-            console.log(data.defaultApp);
             this.editor.reset();
         }
         for (let i = 0; i < maxIndex; i += 1) {
             const originalStep = this.getOriginalStep(data.steps, i, mappings);
             this.renderStep(workspace, steps[i], i, originalStep);
         }
-        const block = this.renderId(workspace, data.id);
-        if (block) {
-            workspace.centerOnBlock(block.id);
-        }
+        this.renderId(workspace, data.id);
+        this.mappings = mappings;
     }
     renderId(workpsace: Workspace, id : string) {
         const block = this.createBlock(workpsace, 'generator_id');
@@ -59,9 +56,9 @@ export class BlocklyStepper extends Stepper {
         } else {
             if (step.customStep) {
                 this.renderCustomStep(workspace, step, index, original);
-            } else if (step.startStep) {
+            } else if (step.validation === 'start-step') {
                 this.renderStartStep(workspace, step, index, original);
-            } else if (step.bannerStep) {
+            } else if (step.validation === 'banner-step') {
                 this.renderBannerStep(workspace, step, index, original);
             }
         }
@@ -202,5 +199,9 @@ export class BlocklyStepper extends Stepper {
         block.initSvg();
         block.render();
         return block;
+    }
+    dispose() {
+        this.aliases.forEach(d => d.dispose());
+        this.aliases.length = 0;
     }
 }

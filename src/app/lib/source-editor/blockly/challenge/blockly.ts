@@ -221,7 +221,7 @@ class BlocklyChallenge extends Engine {
             // step id for further reference
             if (validation.alias) {
                 // Create an alias selector for that block
-                this.editor.registerAlias(validation.alias, `block#${event.blockId}`);
+                this.registerAlias(validation.alias, `block#${event.blockId}`);
             }
             return true;
         }
