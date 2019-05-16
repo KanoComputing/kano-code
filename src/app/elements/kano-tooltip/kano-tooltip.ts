@@ -403,7 +403,7 @@ export class KanoTooltip extends LitElement {
         const anchor = this.caret === 'center' ? '50%' : '26px';
         switch (this.position) {
         case 'top':
-            return `${anchor} 8px`;
+            return `${anchor} calc(100% + 8px)`;
         case 'right':
             return `-8px ${anchor}`;
         case 'bottom':

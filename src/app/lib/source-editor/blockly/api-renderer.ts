@@ -36,7 +36,7 @@ interface IRenderedBlock {
  */
 const definitionsMap : Map<string, Meta> = new Map();
 
-class BlocklyMetaRenderer implements IMetaRenderer {
+export class BlocklyMetaRenderer implements IMetaRenderer {
     public defaultsMap : Map<string, IBlockDefaults> = new Map();
     public blocksMap : Map<string, MetaModule> = new Map();
     public legacyBlocksMap : Map<string, ILegacyModule> = new Map();

@@ -1,36 +1,36 @@
 import { LitElement, html, css, property, customElement, query } from 'lit-element/lit-element.js';
 import { IGeneratedStep } from '../creator.js';
-import { IDisposable, EventEmitter } from '@kano/common/index.js';
+import { IDisposable, EventEmitter, dispose } from '@kano/common/index.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { prismTheme } from '../../../elements/kano-code-display/kano-prism-theme.js';
 import { highlight } from '../../directives/prism.js';
-import { runMiddleware } from '../util.js';
 import { templateContent } from '../../directives/template-content.js';
-import { play, stop } from './icons.js';
+import { play, stop, clear, tick } from './icons.js';
 import { KanoTooltip } from '../../../elements/kano-tooltip/kano-tooltip.js';
+import '@kano/styles/color.js';
 
 @customElement('kc-creator')
 export class CreatorUI extends LitElement {
-
-    subscriptions : IDisposable[] = [];
-
     @property({ type: String })
-    title : string = '';
-
-    @property({ type: String })
-    mode : 'edit'|'play' = 'edit';
+    public selectedFile : string|null = null;
 
     @property({ type: Boolean })
-    collapsed = false;
+    public offline = false;
+
+    @property({ type: String })
+    public title : string = '';
+
+    @property({ type: String })
+    public mode : 'edit'|'play' = 'edit';
+
+    @property({ type: Boolean })
+    public collapsed = false;
 
     @property({ type: Array })
     public generatedSteps : IGeneratedStep[] = [];
 
     @property({ type: Number })
     public selectedStepIndex : number = -1;
-
-    @property({ type: Map })
-    public middlewares : Map<string, string> = new Map();
 
     @property({ type: Array })
     public files : string[] = [];
@@ -39,12 +39,10 @@ export class CreatorUI extends LitElement {
         return this.generatedSteps[this.selectedStepIndex];
     }
 
-    get middleware() {
-        if (!this.selectedStep) {
-            return;
-        }
-        return this.middlewares.get(this.selectedStep.source);
-    }
+    private subscriptions : IDisposable[] = [];
+
+    @query('#files-tooltip')
+    private filesTooltip? : KanoTooltip;
 
     _onDidFocusStep : EventEmitter<IGeneratedStep> = new EventEmitter();
     get onDidFocusStep() { return this._onDidFocusStep.event; }
@@ -65,7 +63,13 @@ export class CreatorUI extends LitElement {
     get onDidSelectFile() { return this._onDidSelectFile.event; }
 
     static get styles() {
-        return [prismTheme, css`
+        return [
+            prismTheme,
+            this.barStyles,
+            this.fileStyles,
+            this.connectionStatusStyles,
+            this.stepsListStyles,
+            css`
             :host {
                 display: flex;
                 flex-direction: column;
@@ -91,22 +95,6 @@ export class CreatorUI extends LitElement {
             .code {
                 flex: 4;
             }
-            .step {
-                cursor: pointer;
-                font-size: 12px;
-                display: flex;
-                flex-direction: row;
-            }
-            .step>* {
-                padding: 4px;
-            }
-            .step:nth-child(odd) {
-                background: #292929;
-            }
-            .step:hover,
-            .step.selected {
-                background: #12243d;
-            }
             .preview {
                 flex: 5;
                 background: #1e1e1e;
@@ -124,12 +112,6 @@ export class CreatorUI extends LitElement {
             [hidden] {
                 display: none !important;
             }
-            .steps-list {
-                display: flex;
-                flex-direction: column;
-                overflow-y: auto;
-                height: 200px;
-            }
             .close {
                 position: absolute;
                 top: 0px;
@@ -142,28 +124,67 @@ export class CreatorUI extends LitElement {
                 width: 28px;
                 height: 28px;
             }
-            .tick {
-                background: transparent;
-                border: 0;
-                padding: 0; 
-                width: 24px;
-                height: 24px;
+        `];
+    }
+
+    render() {
+        return html`
+            <div class="panes">
+                <div class="col steps">
+                    <div class="header" @click=${() => this.toggle()}>Steps</div>
+                    ${this.collapsed ? '' : this.renderStepsList()}
+                </div>
+                <div class="col preview" ?hidden=${!this.selectedStep}>
+                    <div class="header" @click=${() => this.toggle()}>Preview</div>
+                    ${this.collapsed ? '' : this.renderPreview()}
+                </div>
+                <button ?hidden=${this.collapsed} class="close" @click=${() => this.close()}>&times;</button>
+            </div>
+            ${this.collapsed ? '' : this.renderBar()}
+        `;
+    }
+
+    static get stepsListStyles() {
+        return css`
+            .steps-list {
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+                height: 200px;
+            }
+            .step {
+                cursor: pointer;
+                font-size: 12px;
                 display: flex;
                 flex-direction: row;
-                align-items: center;
-                justify-content: center;
             }
-            .tick.passed span {
-                opacity: 1;
+            .step>* {
+                padding: 4px;
             }
-            .tick span {
-                display: block;
-                width: 8px;
-                height: 8px;
-                border-radius: 4px;
-                opacity: 0.5;
-                background: white;
+            .step:nth-child(odd) {
+                background: #292929;
             }
+            .step:hover,
+            .step.selected {
+                background: #12243d;
+            }
+        `;
+    }
+    renderStepsList() {
+        return html`
+            <div class="steps-list">
+                ${this.generatedSteps.map((step, index) => html`
+                    <div @mouseenter=${() => this._onMouseEnter(step)}
+                        @mouseleave=${() => this._onMouseLeave(step)}
+                        class=${classMap({ selected: this.selectedStepIndex === index, step: true })}>
+                        <span class="label" @click=${() => this._onClick(step)}>${step.source}</span>
+                    </div>
+                `)}
+            </div>
+        `;
+    }
+    static get barStyles() {
+        return css`
             .bar {
                 display: flex;
                 flex-direction: row;
@@ -200,50 +221,25 @@ export class CreatorUI extends LitElement {
             .step .label {
                 flex: 1;
             }
-            kano-tooltip button {
+            kano-tooltip {
+                --kano-tooltip-border-width: 0px;
+            }
+            .tooltip-content {
+                min-width: 120px; 
+                padding: 16px 0px;
+                display: flex;
+                flex-direction: column;
+            }
+            .tooltip-content button {
+                text-align: left;
                 padding: 8px 16px;
                 background: transparent;
                 border: none;
                 cursor: pointer;
             }
-            kano-tooltip button:hover {
-                background: grey;
+            .tooltip-content button:hover {
+                background: var(--color-stone);
             }
-        `];
-    }
-    @query('#files-tooltip')
-    filesTooltip? : KanoTooltip
-
-    renderStepsList() {
-        return html`
-            <div class="steps-list">
-                ${this.generatedSteps.map((step, index) => html`
-                    <div @mouseenter=${() => this._onMouseEnter(step)}
-                        @mouseleave=${() => this._onMouseLeave(step)}
-                        class=${classMap({ selected: this.selectedStepIndex === index, step: true })}>
-                        <button class=${classMap({ tick: true, passed: index < this.selectedStepIndex })} @click=${() => this.playStep(step)}>
-                            <span></span>
-                        </button>
-                        <span class="label" @click=${() => this._onClick(step)}>${step.source}</span>
-                    </div>
-                `)}
-            </div>
-        `;
-    }
-    render() {
-        return html`
-            <div class="panes">
-                <div class="col steps">
-                    <div class="header" @click=${() => this.toggle()}>Steps</div>
-                    ${this.collapsed ? '' : this.renderStepsList()}
-                </div>
-                <div class="col preview" ?hidden=${!this.selectedStep}>
-                    <div class="header" @click=${() => this.toggle()}>Preview</div>
-                    ${this.collapsed ? '' : this.renderPreview()}
-                </div>
-                <button ?hidden=${this.collapsed} class="close" @click=${() => this.close()}>&times;</button>
-            </div>
-            ${this.collapsed ? '' : this.renderBar()}
         `;
     }
     renderBar() {
@@ -253,17 +249,70 @@ export class CreatorUI extends LitElement {
                     ${this.mode === 'edit' ? templateContent(play) : templateContent(stop)}
                 </button>
                 <button id="title" @click=${() => this.openTooltip()}>${this.title}</button>
+                ${this.offline ? this.renderConnectionStatus() : ''}
             </div>
-            <kano-tooltip position="top" id="files-tooltip" offset="0" auto-close>
-                ${this.files.map((path) => html`<button @click=${() => this.selectFile(path)} >${path}</button>`)}
+            <kano-tooltip position="top" id="files-tooltip" offset="0" .autoClose=${true} caret="start">
+                <div class="tooltip-content">
+                    ${this.files.map((path) => this.renderFile(path))}
+                </div>
             </kano-tooltip>
+        `;
+    }
+    static get fileStyles() {
+        return css`
+            .file {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+            .file .icon {
+                width: 24px;
+                height: 24px;
+                margin-right: 8px;
+            }
+        `;
+    }
+    renderFile(path : string) {
+        return html`
+            <button class="file" @click=${() => this.selectFile(path)}>
+                <div class="icon">${path === this.selectedFile ? templateContent(tick) : ''}</div>
+                <div>${path}</div>
+            </button>
+        `;
+    }
+    static get connectionStatusStyles() {
+        return css`
+            .connection-status {
+                width: 24px;
+                height: 24px;
+                background: red;
+                fill: white;
+            }
+        `;
+    }
+    renderConnectionStatus() {
+        return html`
+            <div title="Could not connect to the challenge server" class="connection-status">
+                ${templateContent(clear)}
+            </div>
+        `;
+    }
+    renderPreview() {
+        const stepData = this.selectedStep ? this.selectedStep.data : {};
+        const stepDataString = this.selectedStep ? JSON.stringify(stepData, null, '    ') : '';
+        return html`
+            <pre><code>${highlight(stepDataString, 'javascript')}</code></pre>
         `;
     }
     selectFile(path : string) {
         this.filesTooltip!.close();
+        this.selectedFile = path;
         this._onDidSelectFile.fire(path);
     }
     openTooltip() {
+        if (!this.files.length) {
+            return;
+        }
         this.filesTooltip!.target = this.renderRoot!.querySelector('#title') as HTMLElement;
         this.filesTooltip!.open();
     }
@@ -273,19 +322,8 @@ export class CreatorUI extends LitElement {
     close() {
         this.collapsed = true;
     }
-    renderPreview() {
-        const stepData = this.selectedStep ? this.selectedStep.data : {};
-        const transformedData = runMiddleware(stepData, this.middleware);
-        const stepDataString = this.selectedStep ? JSON.stringify(transformedData, null, '    ') : '';
-        return html`
-            <pre><code>${highlight(stepDataString, 'javascript')}</code></pre>
-        `;
-    }
     setStepData(steps : IGeneratedStep[]) {
         this.generatedSteps = steps.slice(0);
-    }
-    setMiddlewares(middlewares : Map<string, string>) {
-        this.middlewares = new Map(middlewares);
     }
     selectStep(index : number) {
         this.selectedStepIndex = index;
@@ -294,13 +332,6 @@ export class CreatorUI extends LitElement {
         const index = this.generatedSteps.indexOf(step);
         this.selectStep(index);
         this._onDidPlayStep.fire(step);
-    }
-    dispose() {
-        if (this.parentNode) {
-            this.parentNode.removeChild(this);
-        }
-        this.subscriptions.forEach(d => d.dispose());
-        this.subscriptions.length = 0;
     }
     _onMouseEnter(step : IGeneratedStep) {
         if (this.mode === 'play') {
@@ -321,5 +352,9 @@ export class CreatorUI extends LitElement {
     }
     _onChallengeToggleClick() {
         this._onDidClickChallengeToggle.fire(this.selectedStep);
+    }
+    dispose() {
+        dispose(this.subscriptions);
+        this.subscriptions.length = 0;
     }
 }

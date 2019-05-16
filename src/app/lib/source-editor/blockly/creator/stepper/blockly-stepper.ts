@@ -1,29 +1,35 @@
 import { Stepper } from '../../../../creator/stepper/stepper.js';
 import { BlocklySourceEditor } from '../../../blockly.js';
 import { Editor } from '../../../../editor/editor.js';
-import { Workspace, Connection, Xml, Block, Field } from '@kano/kwc-blockly/blockly.js';
+import { Workspace, Connection, Xml } from '@kano/kwc-blockly/blockly.js';
 import { KanoCodeChallenge } from '../../challenge/kano-code.js';
 import '../../challenge/index.js';
-import BlocklyMetaRenderer from '../../api-renderer.js';
+import { BlocklyMetaRenderer } from '../../api-renderer.js';
 import { parseXml } from '../xml.js';
-import { IDisposable } from '@kano/common/index.js';
+import { IDisposable, dispose } from '@kano/common/index.js';
 
 export class BlocklyStepper extends Stepper {
-    public blockMap : WeakMap<Block, any> = new WeakMap();
-    public fieldMap : WeakMap<Field, any> = new WeakMap();
-    public customConnections : WeakMap<Connection, Connection> = new WeakMap();
     public engine : KanoCodeChallenge;
     private aliases : IDisposable[] = [];
     constructor(editor : Editor) {
         super(editor);
+        // CReate an engine to process the steps we will need to step through
         this.engine = new KanoCodeChallenge(this.editor);
     }
+    reset() {
+        super.reset();
+        dispose(this.aliases);
+        this.aliases.length = 0;
+    }
     stepTo(index : number, data : any) {
+        super.stepTo(index, data);
         const sourceEditor = this.editor.sourceEditor as BlocklySourceEditor;
         const workspace = sourceEditor.getWorkspace();
+        // Give the steps to the engine and generate the expanded steps as well as the mappings
         this.engine.setSteps(data.steps);
         const { steps, mappings } = this.engine._expandStepsWithMappings();
-        const maxIndex = Math.min(index, steps.length);
+        // Target index or end of array, no overflow
+        const maxIndex = Math.max(0, Math.min(index, steps.length));
         if (data.defaultApp) {
             this.editor.load(JSON.parse(data.defaultApp));
         } else {
@@ -38,10 +44,7 @@ export class BlocklyStepper extends Stepper {
     }
     renderId(workpsace: Workspace, id : string) {
         const block = this.createBlock(workpsace, 'generator_id');
-        if (!block) {
-            return;
-        }
-        block.setFieldValue(id, 'ID');
+        block.setFieldValue(id || 'untitled', 'ID');
         return block;
     }
     renderStep(workspace : Workspace, step : any, index : number, original : any) {
@@ -68,16 +71,11 @@ export class BlocklyStepper extends Stepper {
         const validation = step.validation.blockly.create;
         const result = this.editor.querySelector(validation.type);
         if (!result) {
-            // TODO: Deal here
-            return;
+            throw new Error(`Could not reload challenge: Block with type '${validation.type}' does not exist`);
         }
         const type = result.getId();
         const block = this.createBlock(workspace, type);
-        if (!block) {
-            // TODO: Deal here
-            return;
-        }
-        this.blockMap.set(block, original);
+        this.originalSteps.set(`block#${block.id}`, original);
         if (validation.alias) {
             this.aliases.push(this.editor.registerAlias(validation.alias, `block#${block.id}`));
         }
@@ -96,9 +94,11 @@ export class BlocklyStepper extends Stepper {
     renderConnect(workspace : Workspace, validation : any, index : number) {
         const parent = this.editor.querySelector(validation.parent);
         const target = this.editor.querySelector(validation.target);
-        if (!parent || !target) {
-            // TODO: deal here
-            return;
+        if (!target) {
+            throw new Error(`Could not reload challenge: validation for connection does not have a target at '${validation.target}'`);
+        }
+        if (!parent) {
+            throw new Error(`Could not reload challenge: validation for connection does not have a parent at '${validation.parent}'`);
         }
         let connection : Connection|null = null;
         if (parent.connection) {
@@ -107,8 +107,7 @@ export class BlocklyStepper extends Stepper {
             connection = parent.input.connection;
         }
         if (!connection) {
-            // TODO: Deal
-            return;
+            throw new Error(`Could not relaod challenge: Cannot find connection for block '${validation.parent}'`);
         }
         connection.connect(target.block.outputConnection || target.block.previousConnection);
     }
@@ -119,28 +118,23 @@ export class BlocklyStepper extends Stepper {
         }
         const result = this.editor.querySelector(validation.target);
         if (!result) {
-            // TODO: Deal here
-            return;
+            throw new Error(`Could not reload challenge: Cannot find value target at '${validation.target}'`);
         }
         if (result.field) {
-            this.fieldMap.set(result.field, original);
+            const selector = `block#${result.field.sourceBlock_.id}>input#${result.field.name}`;
+            this.originalSteps.set(selector, original);
             result.field.setValue(validation.value);
         }
     }
     renderGeneratorStep(workspace : Workspace, validation : any, index : number, type : string, original : any) {
         const block = this.createBlock(workspace, type);
-        if (!block) {
-            // TODO: Deal here
-            return;
-        }
-        this.blockMap.set(block, original);
+        this.originalSteps.set(`block#${block.id}`, original);
         if (validation.alias) {
             this.aliases.push(this.editor.registerAlias(validation.alias, `block#${block.id}`));
         }
         const parent = this.editor.querySelector(validation.parent);
         if (!parent) {
-            // TODO: deal here
-            return;
+            throw new Error(`Could not reload challenge: The parent '${validation.parent}' for custom block could not be found`);
         }
         let connection : Connection|null = null;
         if (parent.connection) {
@@ -149,8 +143,7 @@ export class BlocklyStepper extends Stepper {
             connection = parent.input.connection;
         }
         if (!connection) {
-            // TODO: Deal
-            return;
+            throw new Error(`Could not reload challenge: Cannot find connection for block '${validation.parent}'`);
         }
         connection.connect(block.previousConnection!);
         return block;
@@ -163,10 +156,6 @@ export class BlocklyStepper extends Stepper {
     }
     renderBannerStep(workspace : Workspace, validation : any, index : number, original : any) {
         const block = this.renderGeneratorStep(workspace, validation, index, 'generator_banner', original);
-        if (!block) {
-            // TODO: Deal
-            return;
-        }
         if (!validation.banner) {
             return;
         }
@@ -176,8 +165,7 @@ export class BlocklyStepper extends Stepper {
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
         const entry = renderer.getEntryForBlock(type);
         if (!entry) {
-            // TODO: Deal here
-            return;
+            throw new Error(`Could not reload challenge: Toolbox entry for type '${type}' does not exist`);
         }
         const blockDef = (this.editor.sourceEditor as BlocklySourceEditor).getToolboxBlockByType(entry.def.name, type);
         const block = workspace.newBlock(type);
@@ -201,7 +189,9 @@ export class BlocklyStepper extends Stepper {
         return block;
     }
     dispose() {
-        this.aliases.forEach(d => d.dispose());
+        super.dispose();
+        dispose(this.aliases);
         this.aliases.length = 0;
+        this.engine.dispose();
     }
 }

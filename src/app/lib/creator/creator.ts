@@ -3,14 +3,15 @@ import { CreatorUI } from './ui/creator-ui.js';
 import { Highlighter } from './ui/highlighter.js';
 import { ToolbarEntryPosition } from '../../elements/kc-workspace-toolbar/entry.js';
 import { downloadFile } from '../util/file.js';
-import { dataURI } from '@kano/icons-rendering/index.js';
-import { staffPick } from '@kano/icons/ui.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
 import { Stepper } from './stepper/stepper.js';
 import { IChallengeData, Challenge, createChallenge } from '../challenge/index.js';
 import { IDisposable } from 'monaco-editor';
-import KanoCodeChallenge from '../source-editor/blockly/challenge/kano-code.js';
+import { KanoCodeChallenge } from '../source-editor/blockly/challenge/kano-code.js';
 import { CreatorDevTools } from './dev.js';
+import { dataURI } from '@kano/icons-rendering/index.js';
+import { download } from './ui/icons.js';
+import { dispose } from '@kano/common/index.js';
 
 export interface IStepData {
     [K : string] : any;
@@ -58,6 +59,7 @@ export abstract class Creator<T extends Stepper> {
     protected challenge : Challenge|null = null;
     protected previewStepper : T|null = null;
     protected devTools = new CreatorDevTools();
+    protected aliasCounter : number = -1;
     constructor(editor : Editor) {
         this.editor = editor;
         this.subscriptions = [];
@@ -79,6 +81,10 @@ export abstract class Creator<T extends Stepper> {
         return createChallenge(this.editor, data);
     }
     abstract createStepper() : T;
+    createAlias(prefix = 'block') {
+        this.aliasCounter += 1;
+        return `${prefix}_${this.aliasCounter}`;
+    }
     watchCodeChanges() {
         this.codeChangesSub = this.editor.sourceEditor.onDidCodeChange(() => {
             this.onCodeChanged();
@@ -103,9 +109,16 @@ export abstract class Creator<T extends Stepper> {
         const parts = this.editor.output.parts.getParts();
         const steps : IGeneratedStep[] = [];
         parts.forEach((part) => {
+            const type = (part.constructor as any).type;
             const step = {
                 source: `part#${part.id}`,
-                data: {},
+                data: {
+                    type: 'create-part',
+                    alias: 'lol',
+                    part: type,
+                    openPartsCopy: 'Open the parts dialog',
+                    addPartCopy: `Click \${part.${type}} to add it.`,
+                },
             };
             steps.push(step);
             this.stepsMap.set(step.source, step);
@@ -123,12 +136,17 @@ export abstract class Creator<T extends Stepper> {
         };
     }
     loadChallenge(d : any) {
+        // Copy the current state, will be used to re-apply the step after everything is re-loaded
         const previousMode = this.ui.domNode.mode;
         const previousIndex = this.ui.domNode.selectedStepIndex;
+        // Leave the play mode, resets everything
         this.editStep();
+        // Update the local copy of the challenge
         this.loadedChallenge = d;
+        // Simulate the whole challenge
         this.stepper.stepTo(Infinity, this.loadedChallenge);
         if (previousMode === 'play') {
+            // The user was previewing a step, trigger a challenge generation and jump to that step
             this.onCodeChanged();
             this.ui.domNode.selectedStepIndex = previousIndex;
             this.playStep(this.ui.domNode.selectedStep);
@@ -148,27 +166,46 @@ export abstract class Creator<T extends Stepper> {
         this.devTools.openFile(path);
     }
     onInject() {
-        const generateButton = this.editor.workspaceToolbar.addEntry({
-            id: 'generate-challenge',
+        this.editor.addContentWidget(this.ui);
+        this.setupDownloadButton();
+        this.registerKeybindings();
+        this.setupDevTools();
+    }
+    /**
+     * Add a download button to the editor's workpscae toolbar.
+     * This button simply generate the challenge and triggers a download
+     */
+    setupDownloadButton() {
+        const downloadButton = this.editor.workspaceToolbar.addEntry({
+            id: 'download-challenge',
             position: ToolbarEntryPosition.RIGHT,
-            icon: dataURI(staffPick),
+            icon: dataURI(download),
         });
-        generateButton.onDidActivate(() => {
+        downloadButton.onDidActivate(() => {
             const challengeSource = this.generateChallenge();
             downloadFile(`${challengeSource.id || 'untitled-challenge'}.kch`, JSON.stringify(challengeSource, null, '    '));
         });
-        this.editor.addContentWidget(this.ui);
-        this.registerKeybindings();
-        this.devTools.onDidChangeFile((data) => {
-            this.loadChallenge(data);
-        }, this, this.subscriptions);
+        this.subscriptions.push(downloadButton);
+    }
+    setupDevTools() {
+        // The selected file changed, reload the challenge
+        this.devTools.onDidChangeFile((data) => this.loadChallenge(data), this, this.subscriptions);
+        // The list of available files changed, update the list in the UI
         this.devTools.onDidUpdateFiles((files) => {
             this.ui.domNode.files = files;
         }, this, this.subscriptions);
+        // THe connection status changed, let the UI know
+        this.devTools.onDidConnectionStatusChange((connected) => {
+            this.ui.domNode.offline = !connected;
+        }, this, this.subscriptions);
+        // Try to connect immediately
         this.devTools.connect();
     }
     playStep(step : IGeneratedStep) {
+        this.ui.domNode.mode = 'play';
+        // Hide any leftover highlight from hovering
         this.highlighter.clear();
+        // Clear up previous challenge and stepper
         if (this.challenge) {
             this.challenge.stop();
             this.challenge.dispose();
@@ -176,19 +213,28 @@ export abstract class Creator<T extends Stepper> {
         if (this.previewStepper) {
             this.previewStepper.dispose();
         }
+        // Create a new stepper
         this.previewStepper = this.createStepper();
-        // Stop watching the changes to prevent the stepper to trigger a generation
-        this.previewStepper.reset();
+        // Load the app being edited
         this.editor.load(this.app);
+        // Generate the challenge from the app
         const data = this.generateChallenge();
+        // Create a challenge instance to go thorugh the steps
         this.challenge = this.createChallenge(data);
+        // Get the index of the step we want to preview
         const stepIndex = this.generatedSteps!.indexOf(step);
         const engine = this.challenge.engine as KanoCodeChallenge;
+        // Find the index of the real step that will be previewed
         const realIndex = engine.getExpandedStepIndex(stepIndex);
+        // Simulate the user goinf through all steps until the target one
         this.previewStepper.stepTo(realIndex, data);
+        // Start the challenge
         this.challenge.start();
+        // Jump to the specific step
         engine.stepIndex = realIndex;
+        // Watch step changes to update the UI accordingly
         this.challenge.engine!.onDidUpdateStepIndex((index) => {
+            // Retrieve the source step using the stepper's mappings
             if (this.previewStepper && this.previewStepper.mappings) {
                 const originalIndex = this.previewStepper.mappings.get(index);
                 if (typeof originalIndex !== 'undefined') {
@@ -196,9 +242,9 @@ export abstract class Creator<T extends Stepper> {
                 }
             }
         });
-        this.ui.domNode.mode = 'play';
     }
     registerKeybindings() {
+        // The left and right chevrons jump through steps
         this.subscriptions.push(
             this.editor.keybindings.register('>', () => this.nextStep()),
             this.editor.keybindings.register('<', () => this.previousStep()),
@@ -213,7 +259,6 @@ export abstract class Creator<T extends Stepper> {
     }
     previousStep() {
         this.ui.domNode.selectedStepIndex = Math.max(this.ui.domNode.selectedStepIndex - 1, 0);
-        this.ui.domNode.selectedStepIndex -= 1;
         if (this.ui.domNode.mode === 'edit') {
             return;
         }
@@ -241,12 +286,12 @@ export abstract class Creator<T extends Stepper> {
             this.previewStepper.dispose();
             this.previewStepper = null;
         }
-        this.stepper.reset();
         this.editor.load(this.app);
         this.ui.domNode.mode = 'edit';
     }
     dispose() {
-        this.subscriptions.forEach(d => d.dispose());
+        this.editor.removeContentWidget(this.ui);
+        dispose(this.subscriptions);
         this.subscriptions.length = 0;
         this.unwatchCodeChanges();
     }

@@ -9,6 +9,7 @@ import { findInSet } from '../../../util/set.js';
 import { registerCreator, getHelpers, ICreatorHelper } from '../../../creator/index.js';
 import Editor from '../../../editor/editor.js';
 import { BlocklyStepper } from './stepper/blockly-stepper.js';
+import { IDisposable, dispose } from '@kano/common/index.js';
 export * from './helpers.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
@@ -25,18 +26,14 @@ interface IConnectionInfo {
 
 export class BlocklyCreator extends Creator<BlocklyStepper> {
     sourceEditor? : BlocklySourceEditor;
-    aliasCounter : number = -1;
     helpers : ICreatorHelper[];
+    aliases : IDisposable[] = [];
     constructor(editor : Editor) {
         super(editor);
         this.helpers = getHelpers('blockly') || [];
     }
     createStepper() {
         return new BlocklyStepper(this.editor);
-    }
-    createAlias(prefix = 'block') {
-        this.aliasCounter += 1;
-        return `${prefix}_${this.aliasCounter}`;
     }
     onInject() {
         super.onInject();
@@ -46,6 +43,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         }
     }
     generate() {
+        dispose(this.aliases);
+        this.aliases.length = 0;
         this.stepsMap.clear();
         this.aliasCounter = -1;
         const challenge = super.generate();
@@ -68,6 +67,9 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         });
 
         const id = this.generateChallengeId(dom);
+
+        dispose(this.aliases);
+        this.aliases.length = 0;
         
         return Object.assign(challenge, { steps, id });
     }
@@ -245,6 +247,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         Object.assign(createBlockStep.data, originalStep);
         // Keep track of that new step, map it to its source block.
         this.stepsMap.set(createBlockStep.source, createBlockStep);
+        this.aliases.push(this.editor.registerAlias(createBlockStep.data.alias, createBlockStep.source));
         let blockSteps : IGeneratedStep[] = [createBlockStep];
         // Go through all blocks and generated their steps
         for (const child of block.children) {
@@ -252,21 +255,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         }
         return blockSteps;
     }
-    getOriginalStepFromBlock(block : Block) {
-        return this.stepper.blockMap.get(block);
-    }
     getOriginalStepFromSource(source : string) {
-        const result = this.editor.querySelector(source);
-        if (!result) {
-            throw new Error('Deal with this please');
-        }
-        if (result.block) {
-            return this.stepper.blockMap.get(result.block);
-        } else if (result.input) {
-            console.log(result.input);
-        } else if (result.field) {
-            return this.stepper.fieldMap.get(result.field);
-        }
+        return this.stepper.originalSteps.get(source);
     }
     /**
      * For a given Blockly XML node, generate the matching steps
@@ -433,7 +423,11 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 step = this.runFieldHelper(field, result.from!, result.to!, step);
             }
             this.stepsMap.set(step.source, step);
-            const originalStep = this.getOriginalStepFromSource(step.source);
+            const r = this.editor.querySelector(selector);
+            if (!r || !r.field) {
+                throw new Error('DEAL');
+            }
+            const originalStep = this.getOriginalStepFromSource(`block#${r.field.sourceBlock_.id}>input#${r.field.name}`);
             Object.assign(step.data, originalStep);
             return [step];
         } else if (result.type === DiffResultType.NODE && result.to) {

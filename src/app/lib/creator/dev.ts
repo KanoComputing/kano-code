@@ -10,6 +10,9 @@ export class CreatorDevTools {
     private _onDidUpdateFiles : EventEmitter<string[]> = new EventEmitter();
     get onDidUpdateFiles() { return this._onDidUpdateFiles.event; }
 
+    private _onDidConnectionStatusChange : EventEmitter<boolean> = new EventEmitter();
+    get onDidConnectionStatusChange() { return this._onDidConnectionStatusChange.event; }
+
     constructor() {}
     connect() {
         return this.loadScript()
@@ -23,7 +26,17 @@ export class CreatorDevTools {
                     this._onDidChangeFile.fire(data);
                 });
                 this.client.emit('get-files');
+                this.client.on('connect', () => this.onConnect());
+                this.client.on('reconnect', () => this.onConnect());
+                this.client.on('disconnect', () => this.onDisconnect());
+                this.client.on('error', () => this.onDisconnect());
             });
+    }
+    onConnect() {
+        this._onDidConnectionStatusChange.fire(true);
+    }
+    onDisconnect() {
+        this._onDidConnectionStatusChange.fire(false);
     }
     loadScript() {
         return new Promise((res, rej) => {
