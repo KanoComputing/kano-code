@@ -55,9 +55,13 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         const workspace = this.sourceEditor.getWorkspace();
         const dom = Xml.workspaceToDom(workspace);
         const startOptions = findStartNodes(dom);
+        const preload : HTMLElement[] = [];
         startOptions.forEach((startOption) => {
             if (!startOption.start || startOption.start.tagName === 'variables') {
                 return;
+            }
+            if (startOption.preloaded) {
+                preload.push(startOption.preloaded);
             }
             if (startOption.start.getAttribute('type') === 'generator_start') {
                 steps = steps.concat(this.startToSteps(startOption.start));
@@ -70,8 +74,16 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
 
         dispose(this.aliases);
         this.aliases.length = 0;
+
+        let defaultApp = challenge.defaultApp;
+
+        try {
+            const app = JSON.parse(challenge.defaultApp);
+            app.source = Xml.domToText(dom);
+            defaultApp = JSON.stringify(app);
+        } catch (e) {}
         
-        return Object.assign(challenge, { steps, id });
+        return Object.assign(challenge, { steps, id, defaultApp });
     }
     generateChallengeId(dom : XMLDocument) {
         const field = dom.querySelector('block[type="generator_id"]>field[name="ID"]');

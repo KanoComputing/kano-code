@@ -84,6 +84,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
     class FieldDropdown extends Field {
         getOptions() : [string, string][];
     }
+    class FieldVariable extends FieldDropdown {}
     class FieldCustomDropdown extends FieldDropdown {}
     class FieldTextInput extends Field {
         static htmlInput_ : HTMLInputElement;
@@ -219,6 +220,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         static workspaceToDom(workspace : Workspace) : XMLDocument;
         static domToWorkspace(dom : HTMLElement, workspace : Workspace) : void;
         static textToDom(text : string) : HTMLElement;
+        static domToText(dom : HTMLElement|XMLDocument) : string;
         static blockToDom(block : Block) : HTMLElement;
         static domToBlock(dom : HTMLElement, workspace : Workspace) : Block;
     }

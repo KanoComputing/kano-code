@@ -26,6 +26,7 @@ class DropdownBeaconWidget extends BeaconWidget {
 
 export class DropdownFieldStepHelper extends BlocklyValueStepHelper {
     beacon? : DropdownBeaconWidget;
+    listener? : (e : any) => void;
     test(challenge : KanoCodeChallenge, step : IStepData) {
         if (!super.test(challenge, step)) {
             return false;
@@ -41,8 +42,7 @@ export class DropdownFieldStepHelper extends BlocklyValueStepHelper {
         if (!challenge.workspace) {
             return;
         }
-        challenge.workspace.addChangeListener((e) => {
-            console.log(e);
+        this.listener = (e : any) => {
             if (e.type !== Blockly.Events.UI || e.blockId !== block.id) {
                 return;
             }
@@ -59,9 +59,13 @@ export class DropdownFieldStepHelper extends BlocklyValueStepHelper {
                 this.beacon.setTargetIndex(targetIndex);
                 this.beacon.layout();
             }
-        });
+        };
+        challenge.workspace.addChangeListener(this.listener);
     }
     leave(challenge : KanoCodeChallenge, step : IStepData) {
+        if (this.listener && challenge.workspace) {
+            challenge.workspace.removeChangeListener(this.listener);
+        }
         if (this.beacon) {
             challenge.editor.removeContentWidget(this.beacon);
         }

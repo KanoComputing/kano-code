@@ -114,7 +114,7 @@ export abstract class Creator<T extends Stepper> {
                 source: `part#${part.id}`,
                 data: {
                     type: 'create-part',
-                    alias: 'lol',
+                    alias: this.createAlias('part'),
                     part: type,
                     openPartsCopy: 'Open the parts dialog',
                     addPartCopy: `Click \${part.${type}} to add it.`,
@@ -122,6 +122,7 @@ export abstract class Creator<T extends Stepper> {
             };
             steps.push(step);
             this.stepsMap.set(step.source, step);
+            this.editor.registerAlias(step.data.alias, step.source);
         });
         return { id: '', steps, defaultApp: '' };
     }

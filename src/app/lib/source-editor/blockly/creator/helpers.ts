@@ -1,6 +1,6 @@
 import { registerCreatorHelper } from '../../../creator/index.js';
 import { IGeneratedStep } from '../../../creator/creator.js';
-import { Field, FieldColour, FieldDropdown } from '@kano/kwc-blockly/blockly.js';
+import { Field, FieldColour, FieldDropdown, FieldVariable } from '@kano/kwc-blockly/blockly.js';
 
 export function registerCreatorFieldHelper<T extends Field>(fieldConstructor : typeof Field, helper : (field : T, prevValue : string, newValue : string, step : IGeneratedStep) => IGeneratedStep) {
     registerCreatorHelper('blockly', {
@@ -20,15 +20,19 @@ registerCreatorFieldHelper(FieldColour, (field : FieldColour, prevValue : string
 });
 
 registerCreatorFieldHelper(FieldDropdown, (field : FieldDropdown, prevValue : string, newValue : string, step : IGeneratedStep) => {
-    const options = field.getOptions();
-    const prevOption = options.find(([, value]) => value === prevValue);
-    const newOption = options.find(([, value]) => value === newValue);
-    if (!prevOption) {
-        throw new Error(`Could not find label for field '${field.name}' with value '${prevValue}'`);
+    if (field instanceof FieldVariable) {
+        return step;
+    } else {
+        const options = field.getOptions();
+        const prevOption = options.find(([, value]) => value === prevValue);
+        const newOption = options.find(([, value]) => value === newValue);
+        if (!prevOption) {
+            throw new Error(`Could not find label for field '${field.name}' with value '${prevValue}'`);
+        }
+        if (!newOption) {
+            throw new Error(`Could not find label for field '${field.name}' with value '${newValue}'`);
+        }
+        step.data.bannerCopy = `Change this value from <kano-value-preview><span>${prevOption[0]}</span></kano-value-preview> to <kano-value-preview><span>${newOption[0]}</span></kano-value-preview>`;
+        return step;
     }
-    if (!newOption) {
-        throw new Error(`Could not find label for field '${field.name}' with value '${newValue}'`);
-    }
-    step.data.bannerCopy = `Change this value from <kano-value-preview><span>${prevOption[0]}</span></kano-value-preview> to <kano-value-preview><span>${newOption[0]}</span></kano-value-preview>`;
-    return step;
 });
