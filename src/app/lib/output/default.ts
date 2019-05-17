@@ -53,7 +53,7 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         const color = this.canvas.style.backgroundColor || '#FFFFFF';
         ctx.beginPath();
         ctx.fillStyle = color;
-        ctx.fillRect(0, 0, 800, 600);
+        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         // Draw the current canvas over the background color
         ctx.drawImage(this.canvas, 0, 0);
     }
