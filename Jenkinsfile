@@ -57,7 +57,7 @@ pipeline {
                             // Clean previous docs
                             sh "aws s3 rm s3://code-docs.kano.me/${version} --recursive"
                             // Upload files
-                            sh "aws s3 cp ./docs/ s3://code-docs.kano.me/${version} --recursive"
+                            sh "aws s3 cp ./www-docs/ s3://code-docs.kano.me/${version} --recursive"
                         }
                     }
                 }

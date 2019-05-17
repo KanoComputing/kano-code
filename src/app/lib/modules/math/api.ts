@@ -5,7 +5,7 @@ const COLOR = '#ff9800';
 
 const arithmeticOptions : { [K : string] : string } = {
     ADD: '%{BKY_MATH_ADDITION_SYMBOL} add',
-    MINUS: '%{BKY_MATH_SUBTRACTION_SYMBOL} substract',
+    MINUS: '%{BKY_MATH_SUBTRACTION_SYMBOL} subtract',
     MULTIPLY: '%{BKY_MATH_MULTIPLICATION_SYMBOL} multiply',
     DIVIDE: '%{BKY_MATH_DIVISION_SYMBOL} divide',
     POWER: '%{BKY_MATH_POWER_SYMBOL} to the power of',

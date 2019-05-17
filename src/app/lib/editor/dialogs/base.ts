@@ -69,6 +69,7 @@ export abstract class Base<T extends DialogElement> {
         if (this.root.parentNode) {
             this.root.parentNode.removeChild(this.root);
         }
+        this.resetBackdropSizing();
     }
 }
 

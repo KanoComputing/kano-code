@@ -91,6 +91,7 @@ class ActivityBarEntry {
 export interface IActivityBarTooltipEntryOptions extends Partial<IActivityBarEntryOptions> {
     root : HTMLElement;
     offset? : number;
+    position? : string;
 }
 
 interface ITooltipElement extends HTMLElement {
@@ -98,6 +99,7 @@ interface ITooltipElement extends HTMLElement {
     offset? : number;
     autoClose? : boolean;
     target? : HTMLElement;
+    caret? : string;
     updatePosition() : void;
     open(e : any) : void;
 }
@@ -105,18 +107,21 @@ interface ITooltipElement extends HTMLElement {
 export class ActivityBarTooltipEntry extends ActivityBarEntry {
     private _contents : HTMLElement;
     private _offset : number;
+    private _position : string;
     private _tooltip? : ITooltipElement;
     constructor(bar : ActivityBar, opts : IActivityBarTooltipEntryOptions) {
         super(bar, opts);
         this._contents = opts.root;
         this._offset = opts.offset || 0;
+        this._position = opts.position || 'right';
         if (!(this._contents instanceof HTMLElement)) {
             throw new Error('Could not create activity bar tooltip entry: Provided root is not a HTMLElement');
         }
     }
     onWillInject(container : HTMLElement) {
         this._tooltip = document.createElement('kano-tooltip') as ITooltipElement;
-        this._tooltip.position = 'right';
+        this._tooltip.position = this._position;
+        this._tooltip.caret = 'start';
         this._tooltip.offset = this._offset;
         this._tooltip.autoClose = true;
         this._tooltip.appendChild(this._contents);

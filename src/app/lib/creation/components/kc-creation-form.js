@@ -40,7 +40,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
             :host {
                 position: relative;
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 font-family: var(--font-body);
                 background: var(--color-black);
                 color: white;
@@ -53,7 +53,7 @@ flex-direction: row;
             .header {
                 position: absolute;
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: center;
                 color: white;
                 top: 32px;
@@ -70,7 +70,7 @@ flex-direction: row;
             .dismiss {
                 position: absolute;
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: center;
                 top: 47px;
                 right: 31px;
@@ -95,26 +95,26 @@ flex-direction: row;
             }
             .options {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 background: var(--color-abbey);
                 padding: var(--section-padding);
                 width: 40%;
             }
             .options>iron-pages {
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
             }
             .options>iron-pages>* {
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
             }
             .gif-creation-header {
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
             }
@@ -137,7 +137,7 @@ flex-direction: column;
             .preview iron-pages>* {
                 height: 100%;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
             }
@@ -176,7 +176,7 @@ flex-direction: column;
 
             form {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 justify-content: center;
                 padding-top: 64px;
             }
@@ -187,7 +187,7 @@ flex-direction: column;
 
             form textarea {
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
                 margin-bottom: 32px;
                 resize: none;
             }
@@ -247,7 +247,7 @@ flex-basis: 0.000000001px;
 
             .composed-button {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
             }
 
             .composed-button button {
@@ -262,7 +262,7 @@ flex-direction: row;
 
             .composed-button input[type="text"] {
                 flex: 1;
-flex-basis: 0.000000001px;
+                flex-basis: 0.000000001px;
                 border: 0px;
                 border-radius: 4px;
                 border-top-right-radius: 0px;
@@ -276,7 +276,7 @@ flex-basis: 0.000000001px;
 
             .saving {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
             }
@@ -342,7 +342,7 @@ flex-direction: column;
             }
             .social-share-container {
                 display: flex;
-flex-direction: row;
+                flex-direction: row;
                 align-items: center;
                 justify-content: center;
                 margin-right: 8px;
@@ -369,7 +369,7 @@ flex-direction: row;
             .success,
             .success .actions {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
             }
             .success {
@@ -389,7 +389,7 @@ flex-direction: column;
             }
             .fail {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
             }
@@ -408,7 +408,7 @@ flex-direction: column;
             }
             .instructions {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 font-size: 14px;
                 margin-bottom: 24px;
@@ -428,7 +428,7 @@ flex-direction: column;
             }
             .gif-creation {
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 position: relative;
             }
@@ -448,7 +448,7 @@ flex-direction: column;
                 width: 100%;
                 height: 100%;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
             }
@@ -462,7 +462,7 @@ flex-direction: column;
                 width: 100%;
                 height: 100%;
                 display: flex;
-flex-direction: column;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 opacity: 0;
