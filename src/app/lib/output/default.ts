@@ -47,6 +47,16 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
             onDidResize: this._onDidResize.event,
         }
     }
+    render(ctx : CanvasRenderingContext2D) {
+        // Background color being set using CSS in the editor to allow users
+        // to change it multiple times.
+        const color = this.canvas.style.backgroundColor || '#FFFFFF';
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.fillRect(0, 0, 800, 600);
+        // Draw the current canvas over the background color
+        ctx.drawImage(this.canvas, 0, 0);
+    }
 }
 
 export default DefaultOutputViewProvider;
