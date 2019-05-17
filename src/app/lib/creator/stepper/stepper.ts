@@ -1,7 +1,9 @@
 import { Editor } from '../../editor/editor.js';
+import { IChallengeData } from '../../challenge/index.js';
 
 export class Stepper {
     protected editor : Editor;
+    public developmentMode = false;
     public mappings? : Map<number, number>;
     /**
      * Creates a relationship between an element in the app and its original step
@@ -16,6 +18,9 @@ export class Stepper {
     }
     reset() {
         this.originalSteps.clear();
+    }
+    stripGeneratorSteps(data : IChallengeData) {
+
     }
     dispose() {
         this.originalSteps.clear();

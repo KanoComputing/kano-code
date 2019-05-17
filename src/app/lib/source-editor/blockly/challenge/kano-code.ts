@@ -9,7 +9,6 @@ import { challengeStyles } from '../../../challenge/styles.js';
 import '../../../challenge/components/kc-toolbox-entry-preview.js';
 import '../../../challenge/components/kc-part-api-preview.js';
 import { dataURI } from '@kano/icons-rendering/index.js';
-import { ColorFieldStepHelper } from './helpers/color.js';
 import { DropdownFieldStepHelper } from './helpers/dropdown.js';
 
 export interface IBannerIconProvider {
@@ -55,7 +54,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.stylesheet.textContent = challengeStyles.cssText;
         this.editor.domNode.shadowRoot!.appendChild(this.stylesheet);
 
-        this.helpers.push(new ColorFieldStepHelper());
         this.helpers.push(new DropdownFieldStepHelper());
     }
     /**
@@ -327,7 +325,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         const step = super._changeInputShorthand(data);
         Object.assign(step, {
             banner: data.bannerCopy || `Change this value to ${data.value}`,
-            beacon: data.block,
+            beacon: data.target,
         });
         return step;
     }

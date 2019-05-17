@@ -3,11 +3,11 @@ import { BlocklySourceEditor } from '../../blockly.js';
 import { Xml, Block, Field } from '@kano/kwc-blockly/blockly.js';
 import { BlocklyCreatorToolbox } from './toolbox.js';
 import { findStartNodes, getAncestor, parseXml, findFirstTreeDiff, DiffResultType, nodeIsNonShadowStatementOrValue, IInnerTextDiffResult, getSelectorForNode } from './xml.js';
-import BlocklyMetaRenderer from '../api-renderer.js';
+import { BlocklyMetaRenderer } from '../api-renderer.js';
 import { SourceEditor } from '../../source-editor.js';
 import { findInSet } from '../../../util/set.js';
 import { registerCreator, getHelpers, ICreatorHelper } from '../../../creator/index.js';
-import Editor from '../../../editor/editor.js';
+import { Editor } from '../../../editor/editor.js';
 import { BlocklyStepper } from './stepper/blockly-stepper.js';
 import { IDisposable, dispose } from '@kano/common/index.js';
 export * from './helpers.js';
@@ -54,36 +54,29 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         }
         const workspace = this.sourceEditor.getWorkspace();
         const dom = Xml.workspaceToDom(workspace);
-        const startOptions = findStartNodes(dom);
-        const preload : HTMLElement[] = [];
-        startOptions.forEach((startOption) => {
-            if (!startOption.start || startOption.start.tagName === 'variables') {
-                return;
-            }
-            if (startOption.preloaded) {
-                preload.push(startOption.preloaded);
-            }
-            if (startOption.start.getAttribute('type') === 'generator_start') {
-                steps = steps.concat(this.startToSteps(startOption.start));
+        const id = this.generateChallengeId(dom);
+        const startNodes = findStartNodes(dom);
+        startNodes.forEach((start) => {
+            // Start generating the steps
+            if (start.getAttribute('type') === 'generator_start') {
+                // Start block is a generator start
+                steps = steps.concat(this.startToSteps(start));
             } else {
-                steps = steps.concat(this.blockToSteps(startOption.start));
+                // Start block is a top level block
+                steps = steps.concat(this.blockToSteps(start));
             }
         });
 
-        const id = this.generateChallengeId(dom);
-
+        // Aliases were used to generate the steps, they are noit needed anymore
         dispose(this.aliases);
         this.aliases.length = 0;
 
-        let defaultApp = challenge.defaultApp;
+        // Load the parent default app
+        const app = JSON.parse(challenge.defaultApp);
+        // Set the source to the xml tree stripped out of its start blocks
+        app.source = Xml.domToText(dom);
 
-        try {
-            const app = JSON.parse(challenge.defaultApp);
-            app.source = Xml.domToText(dom);
-            defaultApp = JSON.stringify(app);
-        } catch (e) {}
-        
-        return Object.assign(challenge, { steps, id, defaultApp });
+        return Object.assign(challenge, { steps, id, defaultApp: JSON.stringify(app) });
     }
     generateChallengeId(dom : XMLDocument) {
         const field = dom.querySelector('block[type="generator_id"]>field[name="ID"]');
@@ -140,7 +133,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             const customStep = {
                 source: `block#${id}`,
                 data: {
-                    customStep: true,
+                    type: 'custom-step',
                     parent: this.getConnectionForStatementOrValue(block),
                     alias: this.createAlias('custom_step'),
                 },
@@ -167,7 +160,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                     },
                     parent: this.getConnectionForStatementOrValue(block),
                     alias: this.createAlias('custom_banner'),
-                    validation: 'banner-step',
+                    type: 'banner-step',
                 },
             } as IGeneratedStep;
             steps.push(step);
@@ -191,7 +184,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             data: {
                 alias: this.createAlias('start'),
                 parent: this.getConnectionForStatementOrValue(block),
-                validation: 'start-step',
+                type: 'start-step',
             }
         };
         this.stepsMap.set(step.source, step);
@@ -328,7 +321,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             return [];
         }
         const defaultValue = defaults[name].value;
-        if (!defaultValue) {
+        if (typeof defaultValue === 'undefined') {
             console.warn(`Could not infer step for challenge: Block '${parentType}' is missing a default declaration for value '${name}'`);
             return [];
         }

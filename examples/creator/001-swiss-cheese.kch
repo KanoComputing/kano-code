@@ -1,0 +1,102 @@
+{
+    "version": "1.0.0",
+    "id": "001-swiss-cheese",
+    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><block type=\\\"app_onStart\\\" id=\\\"default_app_onStart\\\" x=\\\"118\\\" y=\\\"470\\\"><field name=\\\"FLASH\\\"></field><statement name=\\\"CALLBACK\\\"></statement></block></xml>\"}",
+    "steps": [
+        {
+            "alias": "start_0",
+            "parent": "block#default_app_onStart>input#CALLBACK",
+            "type": "start-step"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_set_background_color",
+            "alias": "block_2",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#start_0>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_2>input#COLOR>shadow>input#COLOUR",
+            "value": "#FFEE58",
+            "bannerCopy": "Change this color from <kc-color-preview color=\"#ffffff\"></kc-color-preview> to <kc-color-preview color=\"#FFEE58\"></kc-color-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_color",
+            "alias": "block_3",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_2>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_3>input#COLOR>shadow>input#COLOUR",
+            "value": "#FFB300",
+            "bannerCopy": "Change this color from <kc-color-preview color=\"#000\"></kc-color-preview> to <kc-color-preview color=\"#FFB300\"></kc-color-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#control",
+            "blockType": "every_x_seconds",
+            "alias": "block_4",
+            "openFlyoutCopy": "Open the Control tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_3>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_4>input#UNIT",
+            "value": "frames",
+            "bannerCopy": "Change this value from <kano-value-preview><span>seconds</span></kano-value-preview> to <kano-value-preview><span>frames</span></kano-value-preview>"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_4>input#INTERVAL>shadow>input#NUM",
+            "value": "10",
+            "bannerCopy": "Change this number from <kc-string-preview>1</kc-string-preview> to <kc-string-preview>10</kc-string-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_move_to_random",
+            "alias": "block_5",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_4>input#DO",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_circle",
+            "alias": "block_6",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_5>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#math",
+            "blockType": "math_random",
+            "alias": "block_7",
+            "openFlyoutCopy": "Open the Math tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_6>input#RADIUS",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_7>input#MAX>shadow>input#NUM",
+            "value": "25",
+            "bannerCopy": "Change this number from <kc-string-preview>10</kc-string-preview> to <kc-string-preview>25</kc-string-preview>"
+        }
+    ]
+}

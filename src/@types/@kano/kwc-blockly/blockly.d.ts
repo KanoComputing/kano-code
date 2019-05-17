@@ -81,6 +81,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         public dispose() : void;
     }
     class FieldColour extends Field {}
+    class FieldNumber extends Field {}
     class FieldDropdown extends Field {
         getOptions() : [string, string][];
     }
@@ -223,5 +224,13 @@ declare module '@kano/kwc-blockly/blockly.js' {
         static domToText(dom : HTMLElement|XMLDocument) : string;
         static blockToDom(block : Block) : HTMLElement;
         static domToBlock(dom : HTMLElement, workspace : Workspace) : Block;
+    }
+    class VariableModel {
+        name : string;
+        getId() : string;
+        type : string;
+    }
+    class Variables {
+        static getVariable(workspace : Workspace, id : string|null, opt_name? : string, opt_type? : string) : VariableModel|null;
     }
 }

@@ -6,6 +6,7 @@ import { Engine } from '../../../challenge/engine.js';
 class BlocklyChallenge extends Engine {
     public workspace? : Workspace;
     protected eventsMap : { [K : string] : string };
+    public developmentMode = false;
     constructor(editor : Editor) {
         super(editor);
         if (this.editor.sourceType !== 'blockly') {
@@ -37,6 +38,7 @@ class BlocklyChallenge extends Engine {
 
         this.defineShorthand('create-block', this._createBlockShorthand.bind(this));
         this.defineShorthand('change-input', this._changeInputShorthand.bind(this));
+        this.defineShorthand('start-step', this._startStepShorthand.bind(this));
 
         this.defineBehavior('phantom_block', this._onPhantomBlockEnter.bind(this), this._onPhantomBlockLeave);
     }
@@ -144,6 +146,12 @@ class BlocklyChallenge extends Engine {
                 },
             },
         };
+    }
+    _startStepShorthand(data : any) {
+        if (!this.developmentMode) {
+            return [];
+        }
+        return data;
     }
     _createBlockShorthand(data : any) {
         const openFlyoutStep = this._getOpenFlyoutStep(data);

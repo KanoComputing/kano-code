@@ -5,7 +5,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { prismTheme } from '../../../elements/kano-code-display/kano-prism-theme.js';
 import { highlight } from '../../directives/prism.js';
 import { templateContent } from '../../directives/template-content.js';
-import { play, stop, clear, tick } from './icons.js';
+import { play, stop, clear, tick, previous, next } from './icons.js';
 import { KanoTooltip } from '../../../elements/kano-tooltip/kano-tooltip.js';
 import '@kano/styles/color.js';
 
@@ -61,6 +61,12 @@ export class CreatorUI extends LitElement {
 
     _onDidSelectFile : EventEmitter<string> = new EventEmitter();
     get onDidSelectFile() { return this._onDidSelectFile.event; }
+
+    _onDidClickNext : EventEmitter = new EventEmitter();
+    get onDidClickNext() { return this._onDidClickNext.event; }
+
+    _onDidClickPrevious : EventEmitter = new EventEmitter();
+    get onDidClickPrevious() { return this._onDidClickPrevious.event; }
 
     static get styles() {
         return [
@@ -191,9 +197,6 @@ export class CreatorUI extends LitElement {
                 height: 24px;
                 padding-left: 8px;
             }
-            .challenge-toggle svg {
-                fill: white;
-            }
             .bar button {
                 height: 24px;
                 padding: 4px;
@@ -209,8 +212,11 @@ export class CreatorUI extends LitElement {
                 outline: none;
                 background: rgba(255, 255, 255, 0.1);
             }
-            .challenge-toggle {
+            .icon-btn {
                 width: 24px;
+            }
+            .icon-btn svg {
+                fill: white;
             }
             .bar.edit {
                 background: #007acc;
@@ -245,8 +251,14 @@ export class CreatorUI extends LitElement {
     renderBar() {
         return html`
             <div class="bar ${this.mode}">
-                <button class="challenge-toggle" @click=${() => this._onChallengeToggleClick()}>
+                <button class="icon-btn" title="Previous step" @click=${() => this._onPreviousStepClick()}>
+                    ${templateContent(previous)}
+                </button>
+                <button class="icon-btn" title="Play/Stop challenge" @click=${() => this._onChallengeToggleClick()}>
                     ${this.mode === 'edit' ? templateContent(play) : templateContent(stop)}
+                </button>
+                <button class="icon-btn" title="Next step" @click=${() => this._onNextStepClick()}>
+                    ${templateContent(next)}
                 </button>
                 <button id="title" @click=${() => this.openTooltip()}>${this.title}</button>
                 ${this.offline ? this.renderConnectionStatus() : ''}
@@ -257,6 +269,12 @@ export class CreatorUI extends LitElement {
                 </div>
             </kano-tooltip>
         `;
+    }
+    _onPreviousStepClick() {
+        this._onDidClickPrevious.fire();
+    }
+    _onNextStepClick() {
+        this._onDidClickNext.fire();
     }
     static get fileStyles() {
         return css`

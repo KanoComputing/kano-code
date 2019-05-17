@@ -1,20 +1,24 @@
 import { Stepper } from '../../../../creator/stepper/stepper.js';
 import { BlocklySourceEditor } from '../../../blockly.js';
 import { Editor } from '../../../../editor/editor.js';
-import { Workspace, Connection, Xml } from '@kano/kwc-blockly/blockly.js';
+import { Workspace, Connection, Xml, Field } from '@kano/kwc-blockly/blockly.js';
 import { KanoCodeChallenge } from '../../challenge/kano-code.js';
 import '../../challenge/index.js';
 import { BlocklyMetaRenderer } from '../../api-renderer.js';
 import { parseXml } from '../xml.js';
 import { IDisposable, dispose } from '@kano/common/index.js';
+import { getHelpers, ICreatorHelper } from '../../../../creator/index.js';
+import { IChallengeData } from '../../../../challenge/index.js';
 
 export class BlocklyStepper extends Stepper {
     public engine : KanoCodeChallenge;
     private aliases : IDisposable[] = [];
+    protected helpers : ICreatorHelper[];
     constructor(editor : Editor) {
         super(editor);
         // CReate an engine to process the steps we will need to step through
         this.engine = new KanoCodeChallenge(this.editor);
+        this.helpers = getHelpers('blockly') || [];
     }
     reset() {
         super.reset();
@@ -23,6 +27,8 @@ export class BlocklyStepper extends Stepper {
     }
     stepTo(index : number, data : any) {
         super.stepTo(index, data);
+        // This makes sure the engine will generate even development steps
+        this.engine.developmentMode = this.developmentMode;
         const sourceEditor = this.editor.sourceEditor as BlocklySourceEditor;
         const workspace = sourceEditor.getWorkspace();
         // Give the steps to the engine and generate the expanded steps as well as the mappings
@@ -57,11 +63,11 @@ export class BlocklyStepper extends Stepper {
                 this.renderValue(workspace, step.validation.blockly.value, index, original);
             }
         } else {
-            if (step.customStep) {
+            if (step.type === 'custom-step') {
                 this.renderCustomStep(workspace, step, index, original);
-            } else if (step.validation === 'start-step') {
+            } else if (step.type === 'start-step') {
                 this.renderStartStep(workspace, step, index, original);
-            } else if (step.validation === 'banner-step') {
+            } else if (step.type === 'banner-step') {
                 this.renderBannerStep(workspace, step, index, original);
             }
         }
@@ -123,8 +129,17 @@ export class BlocklyStepper extends Stepper {
         if (result.field) {
             const selector = `block#${result.field.sourceBlock_.id}>input#${result.field.name}`;
             this.originalSteps.set(selector, original);
-            result.field.setValue(validation.value);
+            const value = this.runFieldHelper(result.field, validation.value, workspace);
+            result.field.setValue(value);
         }
+    }
+    runFieldHelper(field : Field, value : string, workspace : Workspace) {
+        this.helpers.forEach((helper) => {
+            if (typeof helper.loadField === 'function') {
+                value = helper.loadField(field, value, workspace);
+            }
+        });
+        return value;
     }
     renderGeneratorStep(workspace : Workspace, validation : any, index : number, type : string, original : any) {
         const block = this.createBlock(workspace, type);
@@ -171,12 +186,12 @@ export class BlocklyStepper extends Stepper {
         const block = workspace.newBlock(type);
         if (blockDef.shadow) {
             Object.keys(blockDef.shadow).forEach((name) => {
-                const dom = parseXml(blockDef.shadow[name]);
-                const bl = Xml.domToBlock(dom.documentElement, workspace);
                 const input = block.getInput(name);
                 if (!input || !input.connection) {
                     return;
                 }
+                const dom = parseXml(blockDef.shadow[name]);
+                const bl = Xml.domToBlock(dom.documentElement, workspace);
                 const targetConnection = bl.outputConnection || bl.previousConnection;
                 if (!targetConnection) {
                     return;
@@ -187,6 +202,24 @@ export class BlocklyStepper extends Stepper {
         block.initSvg();
         block.render();
         return block;
+    }
+    stripGeneratorSteps(data : IChallengeData) {
+        const connectionProxy = new Map<string, string>();
+        function findRootConnection(target : string) : string {
+            const proxy = connectionProxy.get(target);
+            if (!proxy) {
+                return target;
+            }
+            return findRootConnection(proxy);
+        }
+        data.steps.forEach((step) => {
+            if (step.type === 'start-step' || step.type === 'banner-step' || step.type === 'custom-step') {
+                connectionProxy.set(`alias#${step.alias}>next`, step.parent);
+            } else if (step.type === 'create-block') {
+                const proxy = findRootConnection(step.connectTo);
+                step.connectTo = proxy;
+            }
+        });
     }
     dispose() {
         super.dispose();

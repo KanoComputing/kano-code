@@ -53,7 +53,7 @@ export class Engine extends ChallengeEngine {
                 // Expand this step
                 const expanded = this._shorthands[step.type](step);
                 // Add the number of expanded steps
-                counter += expanded.length || 1;
+                counter += (Array.isArray(expanded) ? expanded.length : 1);
             } else {
                 // Add one only when no shorthand exist
                 counter += 1;

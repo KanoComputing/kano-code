@@ -1,4 +1,6 @@
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
+import { customElement } from 'lit-element/lit-element.js';
+
 const HEX_COLOR_REGEXP = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})/;
 
 const template = html`
@@ -31,7 +33,8 @@ const template = html`
     </div>
 `;
 
-class KCValuePreview extends HTMLElement {
+@customElement('kano-value-preview')
+export class KCValuePreview extends HTMLElement {
     public type : string|null = null;
     connectedCallback() {
         if (this.getAttribute('type')) {
@@ -56,5 +59,3 @@ class KCValuePreview extends HTMLElement {
         }
     }
 }
-
-customElements.define('kano-value-preview', KCValuePreview);

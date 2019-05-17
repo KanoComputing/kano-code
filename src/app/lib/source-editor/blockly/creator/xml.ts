@@ -21,46 +21,64 @@ export function getAncestor(target : Element, test : (node : Element) => boolean
     return walk(target.parentElement)
 }
 
+function isHTMLElement(v : HTMLElement|null) : v is HTMLElement {
+    return v instanceof HTMLElement;
+}
+
+function getRoot(node : Element) {
+    function up(n : Element) : Element {
+        if (n.parentElement) {
+            return up(n.parentElement);
+        }
+        return n;
+    }
+    return up(node);
+}
+
+/**
+ * Scans a XML document for start blocks. Returns a list of the blocks to start generating from.
+ * This will mutate the tree to separate the start node from the tree.
+ * @param root The XML document where the start nodes are
+ */
 export function findStartNodes(root : XMLDocument) {
-    const clone = root.cloneNode(true);
-    const entryNodes = [...clone.childNodes] as HTMLElement[];
-    return entryNodes.map((entryNode) => {
+    const entryNodes = [...root.childNodes] as HTMLElement[];
+    return entryNodes.filter(n => n.tagName.toLowerCase() === 'block').map((entryNode) => {
         const startNode = entryNode.querySelector('block[type="generator_start"]') as HTMLElement;
         if (!startNode) {
-            return {
-                preloaded: null,
-                start: entryNode,
-                root: entryNode,
-            };
+            entryNode.setAttribute('marker', '');
+            const cleanTree = root.cloneNode(true) as HTMLElement;
+            if (entryNode.parentNode) {
+                // Separate the node from its tree to help generating the defaultApp
+                entryNode.parentNode!.removeChild(entryNode);
+            }
+            const cleanEl = cleanTree.querySelector('[marker]') as HTMLElement;
+            entryNode.removeAttribute('marker');
+            if (!cleanEl) {
+                throw new Error('Could not find start nodes: Failed to find node with marker in cloned tree');
+            }
+            return entryNode;
         }
         const nextNode = startNode.querySelector('next>block');
         if (!nextNode) {
             if (startNode.parentNode) {
                 startNode.parentNode.removeChild(startNode);
             }
-            return {
-                preloaded: entryNode,
-                start: null,
-                root: null,
-            };
+            return null;
         }
-        // Tag the start of the challenge
-        startNode.setAttribute('challenge-start-node', '');
-        // Create a new tree for the generator to parse
-        const cleanRoot = entryNode.cloneNode(true) as HTMLElement;
-        // Grab the entry point of the challenge
-        const cleanStartNode = cleanRoot.querySelector('[challenge-start-node]') as HTMLElement;
+        startNode.setAttribute('marker', '');
+        const cleanTree = root.cloneNode(true) as HTMLElement;
         if (startNode.parentNode) {
             // Remove the start node from the original clone, this leaves the default blocks on
             // the workspace
             startNode.parentNode.removeChild(startNode);
         }
-        return {
-            preloaded: entryNode,
-            start: cleanStartNode,
-            root: cleanRoot,
-        };
-    });
+        const cleanEl = cleanTree.querySelector('[marker]') as HTMLElement;
+        startNode.removeAttribute('marker');
+        if (!cleanEl) {
+            throw new Error('Could not find start nodes: Failed to find node with marker in cloned tree');
+        }
+        return cleanEl;
+    }).filter(isHTMLElement);
 }
 
 export enum DiffResultType {

@@ -39,6 +39,9 @@ export const VariablesAPI = {
         variables_get: {
             VAR: 'item',
         },
+        math_number: {
+            NUM: '0',
+        },
     },
 };
 

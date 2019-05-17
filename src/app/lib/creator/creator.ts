@@ -64,6 +64,7 @@ export abstract class Creator<T extends Stepper> {
         this.editor = editor;
         this.subscriptions = [];
         this.stepper = this.createStepper();
+        this.stepper.developmentMode = true;
         if (this.editor.injected) {
             this.onInject();
         } else {
@@ -75,6 +76,8 @@ export abstract class Creator<T extends Stepper> {
         this.ui.domNode.onDidBlurStep(() => this.blurTarget(), this, this.subscriptions);
         this.ui.domNode.onDidClickChallengeToggle((step) => this.toggleMode(step), this, this.subscriptions);
         this.ui.domNode.onDidSelectFile((path) => this.selectFile(path), this, this.subscriptions);
+        this.ui.domNode.onDidClickPrevious(() => this.previousStep(), this, this.subscriptions);
+        this.ui.domNode.onDidClickNext(() => this.nextStep(), this, this.subscriptions);
         this.watchCodeChanges();
     }
     createChallenge(data : IChallengeData) {
@@ -124,7 +127,7 @@ export abstract class Creator<T extends Stepper> {
             this.stepsMap.set(step.source, step);
             this.editor.registerAlias(step.data.alias, step.source);
         });
-        return { id: '', steps, defaultApp: '' };
+        return { id: '', steps, defaultApp: '{}' };
     }
     generateChallenge() {
         const challenge = this.generate();
@@ -220,6 +223,7 @@ export abstract class Creator<T extends Stepper> {
         this.editor.load(this.app);
         // Generate the challenge from the app
         const data = this.generateChallenge();
+        this.stepper.stripGeneratorSteps(data);
         // Create a challenge instance to go thorugh the steps
         this.challenge = this.createChallenge(data);
         // Get the index of the step we want to preview
