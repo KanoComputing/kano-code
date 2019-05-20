@@ -1,11 +1,12 @@
 import { LitElement, customElement, html, css } from 'lit-element/lit-element.js';
 import { styleMap } from 'lit-html/directives/style-map.js';
 import '@kano/styles/typography.js';
-import { button } from '@kano/styles/button.js';
+import { closure } from '@kano/styles/closure.js';
 import { templateContent } from '../../directives/template-content.js';
 import { IPartAPI } from '../api.js';
 import { property } from '../decorators.js';
 import './kc-add-part-item.js';
+import { create } from './icons.js';
 
 @customElement('kc-add-part')
 export class KCAddPart extends LitElement {
@@ -23,31 +24,37 @@ export class KCAddPart extends LitElement {
                 color: white;
                 background-color: var(--kano-app-editor-workspace-background);
                 font-family: var(--font-body);
-                min-width: 240px;
-                /* TODO: make scrollable / new design ticket SX-798 */
-                max-height: 100vh;
-                overflow-y: scroll;
+                min-width: 800px;
+                border-radius: 5px;
+                border: 2px solid var(--kano-app-part-editor-border);
+                max-height: 100vh;       
             }
             header {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
                 flex-shrink: 0;
-                height: 58px;
+                height: 48px;
                 padding: 0 16px;
-                border-bottom: 2px solid #252A30;
+                border-bottom: 2px solid var(--kano-app-part-editor-border);
             }
-            header .label {
+            .label {
                 flex: 1;
                 flex-basis: 0.000000001px;
                 font-size: 16px;
                 font-weight: bold;
             }
+            .label-text {
+                padding-left: 4px;
+            }
             .parts {
-                padding: 16px;
+                padding: 32px 40px;
+                columns: 3;
+                column-gap: 24px;
             }
             kc-add-part-item {
                 margin-bottom: 8px;
+                break-inside: avoid;
             }
             kc-add-part-item svg {
                 width: 24px !important;
@@ -57,10 +64,13 @@ export class KCAddPart extends LitElement {
     }
     render() {
         return html`
-            ${templateContent(button)}
+            ${templateContent(closure)}
             <header>
-                <div class="label">Add Parts</div>
-                <button type="button" class="btn secondary" dialog-dismiss>Done</button>
+                <div class="label">
+                    ${templateContent(create)} 
+                    <span class="label-text">Add Parts</span>
+                </div>
+                <button class="closure secondary" dialog-dismiss></button>
             </header>
             <div class="parts">
                 ${this.getFilteredParts().map((part) => html`

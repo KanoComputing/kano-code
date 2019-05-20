@@ -125,6 +125,11 @@
   resolved "https://registry.yarnpkg.com/@kano/icons-rendering/-/icons-rendering-0.0.1-alpha.1.tgz#791ca960d242f41908c271c2ce12316bb4b945c5"
   integrity sha512-9kb6eLe/5Nive+q0w5RPdZKuvI+JxzFT9pHgGY0RJKOxOVC/ni+7HEz48G9PCZIrNgYAt5O25sI4Gr604hF4Dg==
 
+"@kano/icons-rendering@^3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@kano/icons-rendering/-/icons-rendering-3.0.16.tgz#a41691096adc045a5cf5072639006bd2b8e424dd"
+  integrity sha512-FHkdtwgOX2VuyMM3YsFQ0/VVMoB7i55Hb0skC1CvU99UZT3gzNQgPtrpAQOKiO9W42ewbNNhANkW50DHnJXqxg==
+
 "@kano/icons@^0.0.1-alpha.3":
   version "0.0.1-alpha.3"
   resolved "https://registry.yarnpkg.com/@kano/icons/-/icons-0.0.1-alpha.3.tgz#10dd70121b4c7ffbddcea99f28c40c41377062d9"
@@ -185,6 +190,16 @@
   dependencies:
     "@polymer/polymer" "^3.0.2"
 
+"@kano/kwc-picker@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@kano/kwc-picker/-/kwc-picker-0.0.4.tgz#b059032be17d33d869ad4db962a6267d78edbf1f"
+  integrity sha512-hshTpXk6s2NJyjnHz08sdLtQUPSxjdrF5HX4PQFb0kitIGGPOBar0N/tmpA4Zf0PHL82YJ4Y+k+DbREViqJhsA==
+  dependencies:
+    "@kano/kwc-style" "^3.0.0-beta.2"
+    "@polymer/iron-image" "^3.0.0-pre.21"
+    "@polymer/iron-selector" "^3.0.0-pre.21"
+    "@polymer/polymer" "^3.0.0"
+
 "@kano/kwc-style@^3.0.0-beta.2":
   version "3.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/@kano/kwc-style/-/kwc-style-3.0.0-beta.2.tgz#350947eefe1278658ae138646e961b13290e9057"
@@ -192,10 +207,12 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@kano/styles@^3.0.6":
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/@kano/styles/-/styles-3.0.6.tgz#fcb415f1f141378221cb3836bc4c858a582f43eb"
-  integrity sha512-qH9rhDK83qW8L0/08LCc0wm9CbqJb+cx4Fv1oOQKTKz0kn84ySrGUJb7H+h0cf7/1hrZpbCdbL4WKYEDZ3kM4A==
+"@kano/styles@^3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@kano/styles/-/styles-3.0.16.tgz#dbdeeec5c8c71ef95dfdd4f424fdc8b21ecd3659"
+  integrity sha512-smPlfZ8idOc476jfmD1aC6Lh+TxHv0SJChxhueZ7DblYE7COeEvByNBka9IXat0VoQvWBJdSfrHurQpu7TElXQ==
+  dependencies:
+    "@kano/icons-rendering" "^3.0.16"
 
 "@kano/telemetry@^1.0.0":
   version "1.0.2"
@@ -339,6 +356,13 @@
   version "3.0.0-pre.21"
   resolved "https://registry.yarnpkg.com/@polymer/iron-image/-/iron-image-3.0.0-pre.21.tgz#0838f7699c7ad7928cbbdcca894dd3e79b3ed6f0"
   integrity sha512-2gYmp4D/W6CEWdSIqajE85bm0wYTK49doKSFFsehnO8E7/DINV1PyS9yuH/Y9g+iHiWLFwFm/dYPkLbfMa+Fwg==
+  dependencies:
+    "@polymer/polymer" "^3.0.0"
+
+"@polymer/iron-image@^3.0.0-pre.21":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@polymer/iron-image/-/iron-image-3.0.2.tgz#425ee6269634e024dbea726a91a61724ae4402b6"
+  integrity sha512-VyYtnewGozDb5sUeoLR1OvKzlt5WAL6b8Od7fPpio5oYL+9t061/nTV8+ZMrpMgF2WgB0zqM/3K53o3pbK5v8Q==
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
