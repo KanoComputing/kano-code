@@ -31,7 +31,6 @@ export class KCAddPartItem extends LitElement {
                 opacity: 0.4;
                 cursor: default;
             }
-            
             #label {
                 margin-left: 8px;
                 color: white;
