@@ -63,8 +63,6 @@ export class KanoAnimatedSvg extends LitElement {
     updated(changes : Map<string, unknown>) {
         if (changes.has('width') || changes.has('height')) {
             this.updateViewBox();
-        } else if (changes.has('paths') || changes.has('selected')) {
-            this.updatePath();
         }
     }
     updateViewBox() {
@@ -74,11 +72,5 @@ export class KanoAnimatedSvg extends LitElement {
         this.svgEl.setAttribute('width', this.width.toString());
         this.svgEl.setAttribute('height', this.height.toString());
         this.svgEl.setAttribute('viewBox', `0 0 ${this.width} ${this.height}`);
-    }
-    updatePath () {
-        if (!this.pathEl || !this.selected) {
-            return;
-        }
-        this.pathEl.setAttribute('d', this.paths[this.selected] || '');
     }
 }
