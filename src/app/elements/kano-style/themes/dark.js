@@ -16,6 +16,7 @@ $_documentContainer.innerHTML = `<style is="custom-style">
         --kano-app-editor-workspace-controls-hover: #261e2c;
         --kano-app-editor-workspace-border: #22272d;
         --kano-app-part-editor-border: #202428;
+        --kano-app-part-editor-icons: #9fa4a8;
         --kwc-blockly-scrollbars-color: var(--kc-secondary-color);
         
         --kwc-blockly-toolbox: {

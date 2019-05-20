@@ -22,14 +22,18 @@ export class KCAddPartItem extends LitElement {
                 overflow: hidden;
                 justify-content: center;
                 height: 40px;
-                background-color: var(--color-chateau);
-                border-radius: 3px;
+                background-color: var(--kc-secondary-color);
+                border: 2px solid var(--kano-app-part-editor-border);
+                border-radius: 5px;
+                padding: 0 8px;
             }
             :host([disabled]) {
                 opacity: 0.4;
                 cursor: default;
             }
+            
             #label {
+                margin-left: 8px;
                 color: white;
             }
             button.body {
@@ -42,6 +46,7 @@ export class KCAddPartItem extends LitElement {
                 border: 0px;
                 font-size: 14px;
                 font-family: var(--font-body);
+                font-weight: bold;
                 cursor: pointer;
                 outline: none;
             }
@@ -59,8 +64,10 @@ export class KCAddPartItem extends LitElement {
                 /* terminal has width and height defined as 100%. This is a workaround to get proper rendering */
                 width: 24px !important;
                 height: 24px !important;
-                fill: #8F9195;
                 margin: 8px 12px 8px 8px;
+            }
+            .icon::slotted(*) {
+                fill: var(--kano-app-part-editor-icons);
             }
             :host(:hover) .icon::slotted(*) {
                 fill: var(--kc-add-part-item-hover-color);

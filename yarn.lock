@@ -127,6 +127,11 @@
   resolved "https://registry.yarnpkg.com/@kano/icons-rendering/-/icons-rendering-0.0.1-alpha.1.tgz#791ca960d242f41908c271c2ce12316bb4b945c5"
   integrity sha512-9kb6eLe/5Nive+q0w5RPdZKuvI+JxzFT9pHgGY0RJKOxOVC/ni+7HEz48G9PCZIrNgYAt5O25sI4Gr604hF4Dg==
 
+"@kano/icons-rendering@^3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@kano/icons-rendering/-/icons-rendering-3.0.16.tgz#a41691096adc045a5cf5072639006bd2b8e424dd"
+  integrity sha512-FHkdtwgOX2VuyMM3YsFQ0/VVMoB7i55Hb0skC1CvU99UZT3gzNQgPtrpAQOKiO9W42ewbNNhANkW50DHnJXqxg==
+
 "@kano/icons@^0.0.1-alpha.3":
   version "0.0.1-alpha.3"
   resolved "https://registry.yarnpkg.com/@kano/icons/-/icons-0.0.1-alpha.3.tgz#10dd70121b4c7ffbddcea99f28c40c41377062d9"
@@ -246,10 +251,12 @@
   dependencies:
     "@polymer/polymer" "^3.0.0"
 
-"@kano/styles@^3.0.6":
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/@kano/styles/-/styles-3.0.6.tgz#fcb415f1f141378221cb3836bc4c858a582f43eb"
-  integrity sha512-qH9rhDK83qW8L0/08LCc0wm9CbqJb+cx4Fv1oOQKTKz0kn84ySrGUJb7H+h0cf7/1hrZpbCdbL4WKYEDZ3kM4A==
+"@kano/styles@^3.0.16":
+  version "3.0.16"
+  resolved "https://registry.yarnpkg.com/@kano/styles/-/styles-3.0.16.tgz#dbdeeec5c8c71ef95dfdd4f424fdc8b21ecd3659"
+  integrity sha512-smPlfZ8idOc476jfmD1aC6Lh+TxHv0SJChxhueZ7DblYE7COeEvByNBka9IXat0VoQvWBJdSfrHurQpu7TElXQ==
+  dependencies:
+    "@kano/icons-rendering" "^3.0.16"
 
 "@kano/telemetry@^1.0.0":
   version "1.0.2"
