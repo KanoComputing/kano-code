@@ -73,7 +73,7 @@ class KCPlayerToolbar extends PolymerElement {
             <iron-icon icon="kc-ui:maximize"></iron-icon>
         </button>
         <button class="pause icon" on-click="pauseClicked">
-            <kano-animated-svg width="17" height="20" .paths="[[makeButtonIconPaths]]" .selected="[[_getRunningStatus(running)]]">
+            <kano-animated-svg width="17" height="20" paths="[[makeButtonIconPaths]]" selected="[[_getRunningStatus(running)]]">
             </kano-animated-svg>
         </button>
         <button class="reset icon" on-tap="resetClicked">
