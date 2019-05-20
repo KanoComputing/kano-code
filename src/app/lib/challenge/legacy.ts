@@ -216,10 +216,10 @@ function transformConnection(location : any, target : string) : string|null {
 }
 
 function transformBeacon(data : any) {
-    if (typeof data.target) {
+    if (data.target) {
         return `${transformLocation(data.target)}:100,50`;
     }
-    return null;
+    return data;
 }
 
 function transformPhantomBlock(data : any) {

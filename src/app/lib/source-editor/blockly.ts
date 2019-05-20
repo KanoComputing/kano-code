@@ -354,9 +354,10 @@ export class BlocklySourceEditor implements SourceEditor {
             if (!id) {
                 input = block.inputList[0];
             } else {
-                input = block.getInput(id.toUpperCase());
-                if (!input) {
-                    field = block.getField(id.toUpperCase());
+                // Fields are more specific than inputs, try to get the field first
+                field = block.getField(id.toUpperCase());
+                if (!field) {
+                    input = block.getInput(id.toUpperCase());
                 }
             }
             if (!input && !field) {

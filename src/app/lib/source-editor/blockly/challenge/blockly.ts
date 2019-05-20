@@ -219,10 +219,10 @@ class BlocklyChallenge extends Engine {
      */
     _matchCreate(validation : any, event : any) {
         const result = this.editor.querySelector(validation.type);
-        if (!result) {
+        if (!result || !result.block) {
             return false;
         }
-        const type = result.getId();
+        const { type } = result.block;
         // Check the type of the added block
         if (this._matchBlockType(type, event)) {
             // The new block created is added to the step, using its
