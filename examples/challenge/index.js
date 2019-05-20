@@ -8,12 +8,6 @@ const app = {"source":"<xml xmlns=\"http://www.w3.org/1999/xhtml\"><variables></
 const challengeData = {
     version: '2',
     defaultApp: JSON.stringify(app),
-    // partsWhitelist: {
-    //     'button': ['onClick'],
-    // },
-    // whitelist: {
-    //     color: ['colour_picker'],
-    // },
     steps: [{
         banner: {
             text: 'This is the button part ${part#button>toolbox} and this banner can have a lot of text, the overflow should be just fine',
@@ -109,15 +103,6 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
 
                 editor.onDidInject(() => {
                     const ch = challenge.createChallenge(editor, challengeData, { end: { showNextButton: true } });
-                    // ch.engine.setBannerIconProvider({
-                    //     domNode: null,
-                    //     getDomNode() {
-                    //         if (!this.domNode) {
-                    //             this.domNode = document.createElement('button');
-                    //         }
-                    //         return this.domNode;
-                    //     },
-                    // });
                     ch.start();
                 });
         

@@ -157,6 +157,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.bannerButton = this.banner.addButton('Next');
             this.bannerButton.onDidClick(() => this.nextStep());
         }
+        this.widgets.set('banner', this.banner);
         this.banner.show();
         // TODO: play card_set here
     }
@@ -360,7 +361,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         });
         if (this.banner) {
             this.banner.dispose();
-            this.editor.removeContentWidget(this.banner);
         }
         this.stylesheet.remove();
     }

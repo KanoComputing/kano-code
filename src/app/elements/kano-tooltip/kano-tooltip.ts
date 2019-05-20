@@ -305,8 +305,8 @@ export class KanoTooltip extends LitElement {
         let targetAnchorLeft = tRect.left + (tRect.width / 2);
         let targetAnchorTop = tRect.top + (tRect.height / 2);
 
-        let caretLeft = (rect.width / 2) - contextOffset.left;
-        let caretTop = (rect.height / 2) - contextOffset.top;
+        let caretLeft = (rect.width / 2);
+        let caretTop = (rect.height / 2);
 
         if (this.caret === 'start') {
             caretLeft = alignWidth ? 29 : 0;
@@ -315,8 +315,8 @@ export class KanoTooltip extends LitElement {
             targetAnchorTop = alignHeight ? targetAnchorTop : tRect.top;
         }
 
-        const widthCenter = targetAnchorLeft - caretLeft;
-        const heightCenter = targetAnchorTop - caretTop;
+        const widthCenter = targetAnchorLeft - caretLeft - contextOffset.left;
+        const heightCenter = targetAnchorTop - caretTop - contextOffset.top;
 
         if (['top', 'bottom'].indexOf(this.position) !== -1) {
             style.left = `${widthCenter}px`;

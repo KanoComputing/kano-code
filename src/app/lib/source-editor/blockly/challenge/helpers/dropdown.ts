@@ -32,7 +32,7 @@ export class DropdownFieldStepHelper extends BlocklyValueStepHelper {
             return false;
         }
         const field = this.getField(challenge, step);
-        return field instanceof FieldDropdown;
+        return field.constructor === FieldDropdown;
     }
     enter(challenge : KanoCodeChallenge, step : IStepData) {
         const field = this.getField(challenge, step) as FieldDropdown;

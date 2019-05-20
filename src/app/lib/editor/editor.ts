@@ -136,7 +136,7 @@ export class Editor extends EditorOrPlayer {
     /**
      * Apis to control the content widgets displayed in the editor
      */
-    private contentWidgets? : ContentWidgets;
+    public contentWidgets? : ContentWidgets;
 
     // Events
     private _onDidReset : EventEmitter = new EventEmitter();

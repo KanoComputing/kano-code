@@ -39,5 +39,8 @@ export function resolveShadowTree(param : MetaParameter) {
         case String: {
             return `<shadow type="text"><field name="TEXT">${param.def.default}</field></shadow>`;
         }
+        case 'Color': {
+            return `<shadow type="colour_picker"><field name="COLOUR">${param.def.default}</field></shadow>`;
+        }
     }
 }

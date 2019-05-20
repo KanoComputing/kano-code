@@ -5,14 +5,26 @@ export class ContentWidgets {
     private readonly domNode : HTMLElement;
     private readonly editor : Editor;
     private widgets : IEditorWidget[] = [];
+    private widgetLayerRect : DOMRect|ClientRect|null = null;
     constructor(editor : Editor, domNode : HTMLElement) {
         this.domNode = domNode;
         this.editor = editor;
         this.editor.onDidLayoutChange(() => {
+            // Read the width of the activity bar to offset the widget layer correctly
+            // Done as a hack as the activity bar is on its way to be deprecated
+            const barRect = (this.editor.activityBar as any)._barContainer.getBoundingClientRect();
+            this.domNode.style.left = `${barRect.width}px`;
+            this.widgetLayerRect = null;
             this.widgets.forEach((widget) => {
                 this.layoutWidget(widget);
             });
         });
+    }
+    getWidgetLayerRect() {
+        if (!this.widgetLayerRect) {
+            this.widgetLayerRect = this.domNode.getBoundingClientRect();
+        }
+        return this.widgetLayerRect;
     }
     addWidget(widget : IEditorWidget) {
         const domNode = widget.getDomNode();
@@ -29,6 +41,7 @@ export class ContentWidgets {
             }
             return;
         }
+        const parentRect = this.getWidgetLayerRect();
         const p = this.editor.queryPosition(position);
         const domNode = widget.getDomNode();
         if (!p) {
@@ -36,7 +49,7 @@ export class ContentWidgets {
             return;
         }
         domNode.style.display = 'block';
-        domNode.style.transform = `translate(${p.x}px, ${p.y}px)`;
+        domNode.style.transform = `translate(${p.x - parentRect.left}px, ${p.y - parentRect.top}px)`;
         // TODO: This is a hack to display widgets over dialogs. Implement a dialog tracker in the dialogs module and use it to query the highest z-index
         domNode.style.zIndex = '200';
     }

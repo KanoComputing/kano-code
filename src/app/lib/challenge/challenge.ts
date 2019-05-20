@@ -88,11 +88,11 @@ export class Challenge extends ChallengeBase {
             }
             return {
                 getHTMLElement() {
-                    return bannerEl.shadowRoot!.querySelector('#banner-button') as HTMLElement;
+                    return bannerEl.querySelector('button') as HTMLElement;
                 },
                 getId() {
                     return 'banner-button';
-                }
+                },
             };
         });
         this.subscriptions.push(sub);

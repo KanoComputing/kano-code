@@ -35,8 +35,11 @@ export class BlocklyEditorBannerWidget implements IEditorWidget {
         const workspace = this.getWorkspace(editor);
         const metrics = workspace.getMetrics();
         const flyout = workspace.getFlyout_();
-        const width = workspace.toolbox_ && !workspace.toolbox_.opened ? metrics.toolboxWidth : flyout.getWidth() + 35;
+        let width = workspace.toolbox_ && !workspace.toolbox_.opened ? metrics.toolboxWidth : flyout.getWidth() + 35;
         const bannerWidth = (metrics.viewWidth + metrics.toolboxWidth) - width;
+        if (editor.activityBar.entries.length) {
+            width += 48;
+        }
         domNode.style.left = `${width}px`;
         domNode.style.top = '0px';
         domNode.style.width = `${bannerWidth}px`;
