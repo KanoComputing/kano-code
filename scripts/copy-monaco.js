@@ -8,7 +8,7 @@ const mkdirp = promisify(mkdirpCb);
 const copyFile = promisify(fs.copyFile);
 
 const root = path.join(__dirname, '../node_modules');
-const vendor = path.join(__dirname, '../src/vendor');
+const vendor = path.join(__dirname, '../dist/vendor');
 
 fg('monaco-editor/esm/vs/**/*', { cwd: root })
     .then((files) => {

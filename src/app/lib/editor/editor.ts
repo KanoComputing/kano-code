@@ -31,7 +31,7 @@ import { extname } from '../util/path.js';
 import './loader/kcode.js';
 import { FileLoaders } from './loader/loader.js';
 import { aliasTagHandlerFactory } from './selector/alias.js';
-import { toDisposable } from '../../../vendor/monaco-editor/esm/vs/base/common/lifecycle.js';
+import { toDisposable } from '@kano/common/index.js';
 
 declare global {
     interface Window {

@@ -6,7 +6,7 @@ import { SimpleEditorModelResolverService } from '../../../../vendor/monaco-edit
  * https://github.com/Microsoft/monaco-editor/issues/779#issuecomment-374258435
  */
 SimpleEditorModelResolverService.prototype.findModel = function(editor: any, resource: { toString: () => void; }) {
-  return (monaco as any).editor.getModels().find((model: { uri: { toString: () => void; }; }) => model.uri.toString() === resource.toString());
+  return (window as any).monaco.editor.getModels().find((model: { uri: { toString: () => void; }; }) => model.uri.toString() === resource.toString());
 };
 
 declare global {
