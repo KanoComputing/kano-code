@@ -2,7 +2,7 @@ import BlocklyChallenge from './blockly.js';
 import { Editor } from '../../../editor/editor.js';
 import { BannerWidget, IBannerButton } from '../../../challenge/widget/banner.js';
 import { BeaconWidget } from '../../../challenge/widget/beacon.js';
-import { subscribeTimeout, IDisposable } from '@kano/common/index.js';
+import { subscribeTimeout, IDisposable, EventEmitter, dispose } from '@kano/common/index.js';
 import { Part } from '../../../parts/part.js';
 import { Tooltip } from '../../../widget/tooltip.js';
 import { challengeStyles } from '../../../challenge/styles.js';
@@ -20,10 +20,11 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     private _beaconSub? : IDisposable;
     private tooltips : Tooltip[] = [];
     public banner? : BannerWidget;
-    public bannerButton? : IBannerButton;
+    public bannerButtons : IBannerButton[] = [];
     private bannerIconProvider? : IBannerIconProvider;
     public progress : number = 0;
     private stylesheet : HTMLStyleElement;
+
     constructor(editor : Editor) {
         super(editor);
         this.editor = editor;
@@ -134,9 +135,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.banner = new BannerWidget();
             this.editor.addContentWidget(this.banner);
         }
-        if (this.bannerButton) {
-            this.bannerButton.dispose();
-        }
+        dispose(this.bannerButtons);
         let text;
         let nextButton = false;
         if (typeof data === 'string') {
@@ -154,8 +153,14 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             this.banner.setIconNode(null);
         }
         if (nextButton) {
-            this.bannerButton = this.banner.addButton('Next');
-            this.bannerButton.onDidClick(() => this.nextStep());
+            const button = this.banner.addButton(typeof nextButton === 'string' ? nextButton : 'Next');
+            button.onDidClick(() => this.nextStep());
+            this.bannerButtons.push(button);
+        }
+        if (data.nextChallengeButton) {
+            const nextChallengeButton = this.banner.addButton(typeof data.nextChallengeButton === 'string' ? data.nextChallengeButton : 'Next Challenge', true);
+            nextChallengeButton.onDidClick(() => this._onDidRequestNextChallenge.fire());
+            this.bannerButtons.push(nextChallengeButton);
         }
         this.widgets.set('banner', this.banner);
         this.banner.show();
@@ -208,7 +213,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
                 'open-parts': true,
             },
             beacon: 'add-part-button',
-            banner: data.openPartsCopy || 'Open the parts dialog',
+            banner: data.openPartsCopy,
         };
     }
     _getCreatePartStep(data : any) {
@@ -221,7 +226,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             },
             beacon: `part.${data.part}`,
             tooltips: [{
-                text: data.addPartCopy || `Click '${data.part}' to add it.`,
+                text: data.addPartCopy,
                 position: 'top',
                 target: 'add-part-menu',
             }],
@@ -298,34 +303,34 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     _getOpenFlyoutStep(data : any) {
         const step = super._getOpenFlyoutStep(data);
         return Object.assign(step, {
-            banner: data.openFlyoutCopy || `Open the ${data.category} category`,
+            banner: data.openFlyoutCopy,
             beacon: `${data.category}:100,50`,
         });
     }
     _getCreateBlockStep(data : any) {
         const step = super._getCreateBlockStep(data);
         return Object.assign(step, {
-            banner: data.grabBlockCopy || 'Grab this block',
+            banner: data.grabBlockCopy,
             beacon: `${data.category}>flyout-block.${data.blockType}`,
         });
     }
     _getConnectBlockStep(data : any) {
         const step = super._getConnectBlockStep(data);
         return Object.assign(step, {
-            banner: data.connectCopy || 'Connect to this block',
+            banner: data.connectCopy,
             beacon: data.connectTo,
         });
     }
     _getDropBlockStep(data : any) {
         const step = super._getDropBlockStep(data);
         return Object.assign(step, {
-            banner: data.dropCopy || 'Drop this block anywhere in your code space',
+            banner: data.dropCopy,
         });
     }
     _changeInputShorthand(data : any) {
         const step = super._changeInputShorthand(data);
         Object.assign(step, {
-            banner: data.bannerCopy || `Change this value to ${data.value}`,
+            banner: data.bannerCopy,
             beacon: data.target,
         });
         return step;
@@ -336,22 +341,6 @@ export class KanoCodeChallenge extends BlocklyChallenge {
      */
     setBannerIconProvider(provider : IBannerIconProvider) {
         this.bannerIconProvider = provider;
-    }
-    onEnd() {
-        super.onEnd();
-        // This is a end of challenge behavior
-        if (this.banner) {
-            // TODO: Set the end of challenge text
-            this.banner.setText('This is the end of the challenge, I hope you were engaged');
-            this.banner.setProgress(1);
-            // Add a button if the challenge is configured to do so
-            // if (this.options.end && this.options.end.showNextButton) {
-            //     const button = this.engine.banner.addButton('Next Challenge', true);
-            //     button.onDidClick(() => this._onDidRequestNextChallenge.fire());
-            // }
-            // Display the last banner
-            this.banner.show();
-        }
     }
     dispose() {
         super.dispose();

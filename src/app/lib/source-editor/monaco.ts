@@ -107,12 +107,6 @@ export class MonacoSourceEditor implements SourceEditor {
         this.subscriptions.forEach(d => d.dispose());
         this.subscriptions.length = 0;
     }
-    getCreator() {
-        if (!this.creator) {
-            this.creator = new MonacoCreator(this.editor);
-        }
-        return this.creator;
-    }
     getApiRenderer() {
         if (!this.apiRenderer) {
             this.apiRenderer = new TypeScriptMetaRenderer();

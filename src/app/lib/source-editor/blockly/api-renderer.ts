@@ -358,14 +358,20 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
                             blocklyInput = this.appendStatementInput(pName);
                         } else if (input.type === 'field_dropdown') {
                             blocklyInput = this.appendDummyInput(pName)
-                                .appendField(label, 'PREFIX')
-                                .appendField(new Blockly.FieldDropdown(p.def.enum), pName);
+                            if (label.length) {
+                                blocklyInput.appendField(label, 'PREFIX');
+                            }
+                            blocklyInput.appendField(new Blockly.FieldDropdown(p.def.enum), pName);
                         } else if (p.def.blockly && p.def.blockly.customField) {
                             blocklyInput = this.appendDummyInput(pName);
+                            blocklyInput.appendField(label);
                             blocklyInput.appendField(p.def.blockly.customField(Blockly, this), pName);
                         } else if (input.type === 'field_input') {
-                            blocklyInput = this.appendDummyInput()
-                                .appendField(new FieldTextInput(input.text), pName);
+                            blocklyInput = this.appendDummyInput();
+                            if (label.length) {
+                                blocklyInput.appendField(label, 'PREFIX');
+                            }
+                            blocklyInput.appendField(new FieldTextInput(input.text), pName);
                         } else {
                             blocklyInput = this.appendValueInput(pName)
                                 .setCheck(input.check);

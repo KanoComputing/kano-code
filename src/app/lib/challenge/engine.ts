@@ -16,6 +16,9 @@ export class Engine extends ChallengeEngine {
     public stepsMappings : Map<number, number> = new Map();
     protected aliases : IDisposable[] = [];
 
+    protected _onDidRequestNextChallenge = new EventEmitter();
+    get onDidRequestNextChallenge() { return this._onDidRequestNextChallenge.event; }
+
     private _onDidUpdateStepIndex : EventEmitter<number> = new EventEmitter();
     get onDidUpdateStepIndex() { return this._onDidUpdateStepIndex.event; }
 

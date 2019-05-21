@@ -12,6 +12,7 @@ import { CreatorDevTools } from './dev.js';
 import { dataURI } from '@kano/icons-rendering/index.js';
 import { download } from './ui/icons.js';
 import { dispose } from '@kano/common/index.js';
+import { ContributionManager } from '../contribution.js';
 
 export interface IStepData {
     [K : string] : any;
@@ -28,6 +29,12 @@ export interface IGeneratedChallenge {
     steps : IGeneratedStep[];
 }
 
+export interface ICopyGenerator {
+    [K : string] : (...args : any[]) => string;
+}
+
+export const CopyGenerators = new ContributionManager<ContributionManager<ICopyGenerator>>();
+
 export class CreatorWidget implements IEditorWidget {
     public domNode : CreatorUI = new CreatorUI();
     getDomNode() : CreatorUI {
@@ -41,6 +48,10 @@ export class CreatorWidget implements IEditorWidget {
         this.domNode.style.left = '0px';
         this.domNode.style.right = '0px';
     }
+}
+
+export interface ICreatorOptions {
+    copyGenerator? : string;
 }
 
 const VERSION = '1.0.0';
@@ -60,7 +71,8 @@ export abstract class Creator<T extends Stepper> {
     protected previewStepper : T|null = null;
     protected devTools = new CreatorDevTools();
     protected aliasCounter : number = -1;
-    constructor(editor : Editor) {
+    protected copyGenerator : ICopyGenerator;
+    constructor(editor : Editor, opts : ICreatorOptions = { copyGenerator: 'default' }) {
         this.editor = editor;
         this.subscriptions = [];
         this.stepper = this.createStepper();
@@ -78,6 +90,23 @@ export abstract class Creator<T extends Stepper> {
         this.ui.domNode.onDidSelectFile((path) => this.selectFile(path), this, this.subscriptions);
         this.ui.domNode.onDidClickPrevious(() => this.previousStep(), this, this.subscriptions);
         this.ui.domNode.onDidClickNext(() => this.nextStep(), this, this.subscriptions);
+
+        const copyGenerators = CopyGenerators.get(this.editor.sourceType);
+
+        if (!copyGenerators) {
+            throw new Error(`Could not instantiate creator: Copy generator for source type '${this.editor.sourceType}' was not imported`);
+        }
+
+        const generatorId = opts.copyGenerator || 'default';
+
+        const copyGenerator = copyGenerators.get(generatorId);
+
+        if (!copyGenerator) {
+            throw new Error(`Could not instantiate creator: Copy generator with id '${generatorId}' was not imported`);
+        }
+
+        this.copyGenerator = copyGenerator;
+
         this.watchCodeChanges();
     }
     createChallenge(data : IChallengeData) {
@@ -293,6 +322,12 @@ export abstract class Creator<T extends Stepper> {
         }
         this.editor.load(this.app);
         this.ui.domNode.mode = 'edit';
+    }
+    getCopy(type : string, ...args : any[]) {
+        if (typeof this.copyGenerator[type] !== 'function') {
+            throw new Error(`Could not generate copy: Generator for 'type' does not exist`);
+        }
+        return this.copyGenerator[type](...args);
     }
     dispose() {
         this.editor.removeContentWidget(this.ui);

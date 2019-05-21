@@ -53,9 +53,6 @@ export class Challenge extends ChallengeBase {
     onInject() {
         this.reset();
         const steps = this.data.steps || [];
-        // Add an extra empty step. The engine consider the last step as the end by default.
-        // This tricks it to thing it's the end. Remove this when the einge updates
-        steps.push({});
         const EngineContructor = registeredEngines.get(this.editor.sourceType);
         if (!EngineContructor) {
             throw new Error(`Could not create challenge: Challenge engine for source type '${this.editor.sourceType}' was not imported.`);
@@ -115,6 +112,8 @@ export class Challenge extends ChallengeBase {
         }
         // Engine is defined as the editor is injected
         const engine = this.engine!;
+        // Proxy the next challenge event from the engine
+        engine.onDidRequestNextChallenge(() => this._onDidRequestNextChallenge.fire(), this, this.subscriptions);
         // The engine uses a similar API to the DOM events
         subscribeDOM(engine as unknown as HTMLElement, 'done', () => {
             this.editor.toolbox.setWhitelist(null);

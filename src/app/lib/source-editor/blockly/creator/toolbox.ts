@@ -1,5 +1,4 @@
-import { Blockly, Block } from '@kano/kwc-blockly/blockly.js';
-import { TextareaField } from '../field/textarea.js';
+import { Block } from '@kano/kwc-blockly/blockly.js';
 import { IAPIDefinition } from '../../../meta-api/module.js';
 
 export const BlocklyCreatorToolbox : IAPIDefinition = {
@@ -26,9 +25,13 @@ export const BlocklyCreatorToolbox : IAPIDefinition = {
                 const text = block.getFieldValue('ID');
                 return `// @challenge-id: ${text}\n`;
             },
-            postProcess(block : Block) {
-                block.setPreviousStatement(false);
-                block.setNextStatement(false);
+        },
+    }, {
+        type: 'function',
+        name: 'start',
+        blockly: {
+            javascript(Blockly : Blockly) {
+                return '// @challenge-start\n';
             },
         },
     }, {
@@ -37,6 +40,7 @@ export const BlocklyCreatorToolbox : IAPIDefinition = {
         parameters: [{
             type: 'parameter',
             name: 'text',
+            verbose: '',
             default: 'Banner content',
             returnType: String,
             blockly: {
@@ -51,10 +55,22 @@ export const BlocklyCreatorToolbox : IAPIDefinition = {
         },
     }, {
         type: 'function',
-        name: 'start',
+        name: 'challengeEnd',
+        verbose: 'end of challenge',
+        parameters: [{
+            type: 'parameter',
+            name: 'text',
+            verbose: '',
+            default: 'content',
+            returnType: String,
+            blockly: {
+                field: true,
+            },
+        }],
         blockly: {
-            javascript(Blockly : Blockly) {
-                return '// @challenge-start\n';
+            javascript(Blockly : Blockly, block : Block) {
+                const bannerText = block.getFieldValue('TEXT');
+                return `// @end-of-challenge: ${bannerText}\n`;
             },
         },
     }, {
@@ -64,30 +80,6 @@ export const BlocklyCreatorToolbox : IAPIDefinition = {
         blockly: {
             javascript() {
                 return '// @step\n';
-            },
-        },
-    }, {
-        type: 'function',
-        name: 'metadata',
-        parameters: [{
-            type: 'parameter',
-            name: 'json',
-            returnType: String,
-            blockly: {
-                customField() {
-                    return new TextareaField(`{
-    
-}`);
-                },
-            },
-        }],
-        blockly: {
-            javascript() {
-                return '// @metadata\n';
-            },
-            postProcess(block : Block) {
-                block.setPreviousStatement(false);
-                block.setNextStatement(false);
             },
         },
     }],

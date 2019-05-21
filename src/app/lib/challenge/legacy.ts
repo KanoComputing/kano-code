@@ -1,8 +1,8 @@
 import { utils } from '@kano/kwc-blockly/blockly.js';
 
-const idMap : Map<string, string> = new Map();
+let idMap : Map<string, string> = new Map();
 
-const blockAliases : { [K : string] : any } = {};
+let blockAliases : { [K : string] : any } = {};
 
 const partBlocks : { [K : string] : any } = {
     mouse: {
@@ -25,6 +25,10 @@ const partBlocks : { [K : string] : any } = {
     },
     speaker: {
         speaker_sample: 'getSample',
+        speaker_play: 'play',
+        speaker_loop: 'loop',
+        speaker_volume_set: 'volume_set',
+        speaker_pitch_set: 'pitch_set',
     },
 };
 
@@ -447,9 +451,11 @@ function transformCreateBlockShorthand(step : any) {
                     if (blockName) {
                         step.blockType = blockName;
                     } else {
+                        step.blockType = step.blockType.type;
                         console.warn('[LEGACY CHALLENGE] Missing block mapping for part', original, step.blockType.type);
                     }
                 } else {
+                    step.blockType = step.blockType.type;
                     console.warn('[LEGACY CHALLENGE] Missing mapping for part', original)
                 }
             }
@@ -468,6 +474,9 @@ function transformCreateBlockShorthand(step : any) {
         let selector;
         if (step.connectTo.id) {
             selector = `alias#${step.connectTo.id}`;
+        } else if (step.connectTo.rawId) {
+            const id = idMap.get(step.connectTo.rawId);
+            selector = `block#${id}`;
         }
         if (step.connectTo.shadow) {
             selector += `>input#${step.connectTo.shadow}`;
@@ -487,6 +496,8 @@ function transformCreateBlockShorthand(step : any) {
 }
 
 export function transformChallenge(data : any) {
+    idMap = new Map();
+    blockAliases = {};
     transformDefaultApp(data);
     stripStickerSet(data);
     if (data.steps) {

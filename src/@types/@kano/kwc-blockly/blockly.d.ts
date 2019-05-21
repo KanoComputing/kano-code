@@ -32,8 +32,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getSvgRoot() : SVGElement;
         getField(name : string) : Field|null;
         getFieldValue<T = string>(name : string) : T;
-        setPreviousStatement(state : boolean) : Block;
-        setNextStatement(state : boolean) : Block;
+        setPreviousStatement(state : boolean, type? : string) : Block;
+        setNextStatement(state : boolean, type? : string) : Block;
         setColour(c : string) : Block;
         appendDummyInput(n? : string) : Input;
         getInput(n : string) : Input|null;

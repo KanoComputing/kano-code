@@ -1,4 +1,4 @@
-import { Creator, IGeneratedStep } from '../../../creator/creator.js';
+import { Creator, IGeneratedStep, ICreatorOptions } from '../../../creator/creator.js';
 import { BlocklySourceEditor } from '../../blockly.js';
 import { Xml, Block, Field } from '@kano/kwc-blockly/blockly.js';
 import { BlocklyCreatorToolbox } from './toolbox.js';
@@ -11,8 +11,9 @@ import { Editor } from '../../../editor/editor.js';
 import { BlocklyStepper } from './stepper/blockly-stepper.js';
 import { IDisposable, dispose } from '@kano/common/index.js';
 export * from './helpers.js';
+import './copy.js';
 
-const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id'];
+const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id', 'generator_challengeEnd'];
 
 function isBlocklySourceEditor(sourceEditor : SourceEditor) : sourceEditor is BlocklySourceEditor {
     return sourceEditor.editor.sourceType === 'blockly';
@@ -28,8 +29,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
     sourceEditor? : BlocklySourceEditor;
     helpers : ICreatorHelper[];
     aliases : IDisposable[] = [];
-    constructor(editor : Editor) {
-        super(editor);
+    constructor(editor : Editor, opts : ICreatorOptions) {
+        super(editor, opts);
         this.helpers = getHelpers('blockly') || [];
     }
     createStepper() {
@@ -55,6 +56,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         const workspace = this.sourceEditor.getWorkspace();
         const dom = Xml.workspaceToDom(workspace);
         const id = this.generateChallengeId(dom);
+        const lastStep = this.generateLastStep(dom);
         const startNodes = findStartNodes(dom);
         startNodes.forEach((start) => {
             // Start generating the steps
@@ -66,6 +68,10 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 steps = steps.concat(this.blockToSteps(start));
             }
         });
+
+        if (lastStep) {
+            steps.push(lastStep);
+        }
 
         // Aliases were used to generate the steps, they are noit needed anymore
         dispose(this.aliases);
@@ -84,6 +90,30 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             return '';
         }
         return field.textContent;
+    }
+    generateLastStep(dom : XMLDocument) {
+        const block = dom.querySelector('block[type="generator_challengeEnd"]');
+        if (!block) {
+            return null;
+        }
+        const id = block.getAttribute('id');
+        const field = block.querySelector('field[name="TEXT"]');
+        if (!field || !id) {
+            return null;
+        }
+        const step = {
+            source: `block#${id}`,
+            data: {
+                banner: {
+                    text: field.textContent,
+                    nextChallengeButton: true,
+                },
+                type: 'banner-step',
+            },
+        } as IGeneratedStep;
+        Object.assign(step.data, this.getOriginalStepFromSource(step.source));
+        this.stepsMap.set(step.source, step);
+        return step;
     }
     getConnectionForStatementOrValue(block : HTMLElement) : string|null {
         // Find the statement or value node that hosts the block. Make sure to not accept statements or values inside a shadow block
@@ -148,15 +178,18 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             return steps;
         } else if (type === 'generator_banner') {
             const field = block.querySelector('field[name="TEXT"]') as HTMLElement;
-            if (!field) {
+            const nextChallengeField = block.querySelector('field[name="NEXT"]') as HTMLElement;
+            if (!field || !nextChallengeField) {
                 return steps;
             }
+            const nextChallengeButton = nextChallengeField.textContent === 'TRUE';
             const step = {
                 source: `block#${id}`,
                 data: {
                     banner: {
                         text: field.innerText,
-                        nextButton: true,
+                        nextButton: !nextChallengeButton,
+                        nextChallengeButton,
                     },
                     parent: this.getConnectionForStatementOrValue(block),
                     alias: this.createAlias('custom_banner'),
@@ -236,16 +269,16 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 category,
                 blockType: type,
                 alias: this.createAlias(),
-                openFlyoutCopy: `Open the ${entry.getVerboseDisplay()} tray`,
-                grabBlockCopy: 'Pick up the block with your mouse or finger and drag it into the middle',
+                openFlyoutCopy: this.getCopy('openFlyout', category),
+                grabBlockCopy: this.getCopy('grabBlock'),
             },
         };
         // The connect field is only added when a connection is required
         if (connectionQuery) {
             createBlockStep.data.connectTo = connectionQuery;
-            createBlockStep.data.connectCopy = 'Connect please';
+            createBlockStep.data.connectCopy = this.getCopy('connect');
         } else {
-            createBlockStep.data.dropCopy = 'Drop it onto your code space to add it into your program.';
+            createBlockStep.data.dropCopy = this.getCopy('drop');
         }
         const originalStep = this.getOriginalStepFromSource(`block#${id}`) || {};
         // Apply sources
@@ -344,7 +377,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 type: 'change-input',
                 target,
                 value: currentValue,
-                bannerCopy: `Change the strength from <kano-value-preview><span>${defaultValue || 'ERROR'}</span></kano-value-preview> to <kano-value-preview><span>${currentValue || 'ERROR'}</span></kano-value-preview>`,
+                bannerCopy: this.getCopy('value', defaultValue || 'ERROR', currentValue || 'ERROR'),
             },
         };
         const originalStep = this.getOriginalStepFromSource(step.source);
@@ -420,7 +453,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                     type: 'change-input',
                     target: selector,
                     value: result.to,
-                    bannerCopy: `Change the strength from <kano-value-preview><span>${result.from}</span></kano-value-preview> to <kano-value-preview><span>${result.to}</span></kano-value-preview>`,
+                    bannerCopy: this.getCopy('value', result.from || 'ERROR', result.to || 'ERROR'),
                 },
             } as IGeneratedStep;
             const field = this.getFieldForInnerTextResult(result);
