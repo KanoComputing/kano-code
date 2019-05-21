@@ -34,7 +34,9 @@ export class TextInputPart extends DOMPart<HTMLInputElement> {
         this.core.invalidate();
     }
     getElement() : HTMLInputElement {
-        return document.createElement('input');
+        const el = document.createElement('input');
+        el.title = 'text-input';
+        return el;
     }
     render() {
         super.render();

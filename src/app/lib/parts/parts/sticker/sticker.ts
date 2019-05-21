@@ -41,6 +41,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         el.style.backgroundSize = 'contain';
         el.style.backgroundRepeat = 'no-repeat';
         el.style.backgroundPosition = 'center';
+        el.title = 'sticker';
         return el;
     }
     render() {

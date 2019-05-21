@@ -25,7 +25,9 @@ export class TextPart extends DOMPart<HTMLDivElement> {
         this.core.invalidate();
     }
     getElement() : HTMLDivElement {
-        return document.createElement('div');
+        const el = document.createElement('div');
+        el.title = 'text';
+        return el;
     }
     render() {
         super.render();

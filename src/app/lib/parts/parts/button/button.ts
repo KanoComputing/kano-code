@@ -49,6 +49,7 @@ export class ButtonPart extends DOMPart {
     getElement() {
         const el = document.createElement('button');
         el.classList.add('btn');
+        el.title = 'button';
         return el;
     }
     render() {

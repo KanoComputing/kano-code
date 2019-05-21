@@ -34,6 +34,7 @@ export class SliderPart extends DOMPart<HTMLInputElement> {
     }
     getElement() : HTMLInputElement {
         const el = document.createElement('input');
+        el.title = 'slider';
         el.setAttribute('type', 'range');
         return el;
     }
