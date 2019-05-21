@@ -453,27 +453,14 @@ function transformCreateBlockShorthand(step : any) {
                     console.warn('[LEGACY CHALLENGE] Missing mapping for part', original)
                 }
             }
-        } else if (step.blockType.rawPart) {
-            const map = partBlocks[step.blockType.rawPart];
-            if (map) {
-                const blockName = map[step.blockType.type];
-                if (blockName) {
-                    step.blockType = blockName;
-                } else {
-                    console.warn('[LEGACY CHALLENGE] Missing block mapping for part', step.blockType.rawPart, step.blockType.type);
-                }
-            } else {
-                console.warn('[LEGACY CHALLENGE] Missing mapping for part', step.blockType.rawPart)
-            }
-        }
-        if (step.blockType.type) {
+        } else if (step.blockType.type) {
             step.blockType = step.blockType.type;
         }
     }
     if (step.category.part) {
         step.category = `alias#${step.category.part}>toolbox`;
     } else if (step.category.rawPart) {
-        step.category = `part#${step.category.rawPart}`;
+        step.category = `part#${step.category.rawPart}>toolbox`;
     } else {
         step.category = `toolbox#${step.category}`;
     }
