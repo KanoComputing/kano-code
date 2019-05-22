@@ -14,6 +14,6 @@ registerCopyGenerator('blockly', 'default', {
         return 'Drop it onto your code space to add it into your program.';
     },
     value(defaultValue : string, currentValue : string) {
-        return `Change the strength from <kano-value-preview><span>${defaultValue}</span></kano-value-preview> to <kano-value-preview><span>${currentValue}</span></kano-value-preview>`;
+        return `Change this value from <kc-string-preview>${defaultValue}</kc-string-preview> to <kc-string-preview>${currentValue}</kc-string-preview>`;
     },
 });

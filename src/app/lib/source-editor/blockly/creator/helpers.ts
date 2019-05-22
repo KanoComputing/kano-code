@@ -51,7 +51,7 @@ registerCreatorFieldHelper(FieldDropdown, (field : FieldDropdown, prevValue : st
         if (!newOption) {
             throw new Error(`Could not find label for field '${field.name}' with value '${newValue}'`);
         }
-        step.data.bannerCopy = `Change this value from <kano-value-preview><span>${prevOption[0]}</span></kano-value-preview> to <kano-value-preview><span>${newOption[0]}</span></kano-value-preview>`;
+        step.data.bannerCopy = `Change this value from <kc-string-preview>${prevOption[0]}</kc-string-preview> to <kc-string-preview>${newOption[0]}</kc-string-preview>`;
         return step;
     }
 });
