@@ -5,15 +5,18 @@ registerCopyGenerator('blockly', 'default', {
         return `Open the \${${category}} tray`;
     },
     grabBlock() {
-        return 'Pick up the block with your mouse or finger and drag it into the middle';
+        return 'Drag this block with your mouse or finger into the code space';
     },
     connect() {
-        return 'Connect please';
+        return 'Connect to this block';
     },
     drop() {
-        return 'Drop it onto your code space to add it into your program.';
+        return 'Drop the block anywhere in your code space';
     },
     value(defaultValue : string, currentValue : string) {
-        return `Change this value from <kc-string-preview>${defaultValue}</kc-string-preview> to <kc-string-preview>${currentValue}</kc-string-preview>`;
+        return `Change <kc-string-preview>${defaultValue}</kc-string-preview> to <kc-string-preview>${currentValue}</kc-string-preview>`;
+    },
+    openParts(part : string) {
+        return `Add a \${${part}} part, use the Add Parts button`;
     },
 });

@@ -148,8 +148,7 @@ export abstract class Creator<T extends Stepper> {
                     type: 'create-part',
                     alias: this.createAlias('part'),
                     part: type,
-                    openPartsCopy: 'Open the parts dialog',
-                    addPartCopy: `Click \${part.${type}} to add it.`,
+                    openPartsCopy: this.getCopy('openParts', `part.${type}`),
                 },
             };
             steps.push(step);
@@ -324,7 +323,7 @@ export abstract class Creator<T extends Stepper> {
     }
     getCopy(type : string, ...args : any[]) {
         if (typeof this.copyGenerator[type] !== 'function') {
-            throw new Error(`Could not generate copy: Generator for 'type' does not exist`);
+            throw new Error(`Could not generate copy: Generator for '${type}' does not exist`);
         }
         return this.copyGenerator[type](...args);
     }

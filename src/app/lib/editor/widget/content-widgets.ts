@@ -50,8 +50,10 @@ export class ContentWidgets {
         }
         domNode.style.display = 'block';
         domNode.style.transform = `translate(${p.x - parentRect.left}px, ${p.y - parentRect.top}px)`;
-        // TODO: This is a hack to display widgets over dialogs. Implement a dialog tracker in the dialogs module and use it to query the highest z-index
-        domNode.style.zIndex = '200';
+        // TODO: This is a hack to display widgets over dialogs.
+        // Implement a dialog tracker in the dialogs module and use it to query the highest z-index
+        // This value is to make sure they appear on top of Blockly's widget div
+        domNode.style.zIndex = '200000';
     }
     removeWidget(widget : IEditorWidget) {
         this.domNode.removeChild(widget.getDomNode());

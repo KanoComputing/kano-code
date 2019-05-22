@@ -103,6 +103,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             if (tooltipData.position) {
                 tooltip.setPosition(tooltipData.position);
             }
+            tooltip.setCaret('center');
             tooltip.setOffset(tooltipData.offset || 0);
             if (tooltipData.target) {
                 const target = this.editor.queryElement(tooltipData.target);
@@ -225,11 +226,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
                 },
             },
             beacon: `part.${data.part}`,
-            tooltips: [{
-                text: data.addPartCopy,
-                position: 'top',
-                target: 'add-part-menu',
-            }],
+            banner: data.openPartsCopy,
         };
     }
     _createPartShorthand(data : any) {

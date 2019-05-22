@@ -188,10 +188,10 @@ export class Editor extends EditorOrPlayer {
         this.sourceEditor.onDidCodeChange((code) => {
             this.setCode(code);
         });
-        this.sourceEditor.onDidLayout(() => {
-            this._onDidLayoutChange.fire();
-        });
+        this.sourceEditor.onDidLayout(() => this._onDidLayoutChange.fire());
         this.sourceEditor.registerQueryHandlers(this.queryEngine);
+        
+        this.dialogs.onDidLayout(() => this._onDidLayoutChange.fire());
 
         this.queryEngine.registerTagHandler('alias', aliasTagHandlerFactory(this.queryEngine, this.selectorAliases));
 
@@ -201,6 +201,7 @@ export class Editor extends EditorOrPlayer {
         this.addPlugin(this.toolbox);
         this.addPlugin(this.creation);
         this.addPlugin(this.activityBar);
+
 
         this.fileUpload = new FileUpload(this.domNode, defaultDropOverlayProvider);
 
@@ -313,6 +314,7 @@ export class Editor extends EditorOrPlayer {
             window.Kano.Code.mainEditor = null;
         }
         this.telemetry.trackEvent({ name: 'ide_exited' });
+        this.dialogs.dispose();
     }
     /**
      * Load a previously saved app
