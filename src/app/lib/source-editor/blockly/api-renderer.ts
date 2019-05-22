@@ -187,10 +187,12 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
     }
     static verboseWithPrefix(m : Meta) {
         const root = m.getRoot();
+        const verbose = m.getVerboseDisplay();
         if (!root.def.blockly || !root.def.blockly.prefix) {
-            return m.getVerboseDisplay();
+            return verbose;
         }
-        return `${root.def.blockly.prefix} ${m.getVerboseDisplay()}`;
+        // Only apply the prefix if the block/field has a name
+        return verbose.length ? `${root.def.blockly.prefix} ${verbose}` : '';
     }
     static renderGetter(m : MetaVariable) : IRenderedBlock {
         const id = `${BlocklyMetaRenderer.getId(m)}_get`;
@@ -348,7 +350,10 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
                     blocksParams.forEach((p, index) => {
                         const pName = p.def.name.toUpperCase();
                         const input = BlocklyMetaRenderer.parseInputType(p.def.returnType, p);
-                        const label = index === 0 ? `${BlocklyMetaRenderer.verboseWithPrefix(m)} ${p.getVerboseDisplay()}` : p.getVerboseDisplay();
+                        const verbose = p.getVerboseDisplay();
+                        const prefix = BlocklyMetaRenderer.verboseWithPrefix(m);
+                        const verboseWithPrefix = verbose.length ? `${prefix} ${verbose}` : prefix;
+                        const label = index === 0 ? verboseWithPrefix : verbose;
                         let blocklyInput;
                         if (input.type === 'input_statement') {
                             const firstInput = this.appendDummyInput();
@@ -364,7 +369,9 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
                             blocklyInput.appendField(new Blockly.FieldDropdown(p.def.enum), pName);
                         } else if (p.def.blockly && p.def.blockly.customField) {
                             blocklyInput = this.appendDummyInput(pName);
-                            blocklyInput.appendField(label);
+                            if (label.length) {
+                                blocklyInput.appendField(label, 'PREFIX');
+                            }
                             blocklyInput.appendField(p.def.blockly.customField(Blockly, this), pName);
                         } else if (input.type === 'field_input') {
                             blocklyInput = this.appendDummyInput();

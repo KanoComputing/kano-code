@@ -1,7 +1,7 @@
 import * as code from '../../index.js';
 import * as i18n from '../../i18n.js';
 import * as creator from '../../creator.js';
-import '../../creator/blockly.contribution.js';
+import '../../source-editor/blockly/creator.contribution.js';
 
 const lang = i18n.getLang();
 

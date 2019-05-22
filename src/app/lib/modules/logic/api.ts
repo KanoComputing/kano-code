@@ -46,8 +46,7 @@ export const LogicAPI = {
         Blockly.JavaScript.controls_if_else_custom = Blockly.JavaScript.controls_if;
         Blockly.Blocks.controls_if_else_custom.init = function () {
             Blockly.Blocks.controls_if.init.call(this);
-            this.elseCount_ = true;
-            this.updateShape_();
+            this.setFieldValue(JSON.stringify({ elseIfs: this.elseifCount_, else: true, }), 'CONFIG');
         };
 
         // Assign custom color to blockly core blocks

@@ -270,7 +270,6 @@ export class Editor extends EditorOrPlayer {
             return;
         }
         this.ensureProfile();
-        this.injected = true;
         if (before) {
             element.insertBefore(this.domNode, before);
         } else {
@@ -293,6 +292,7 @@ export class Editor extends EditorOrPlayer {
             } else {
                 this.reset(false);
             }
+            this.injected = true;
             this._onDidInject.fire();
         });
     }

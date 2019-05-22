@@ -10,6 +10,7 @@ export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
     const getter : IMetaDefinition = {
         type: 'function',
         name: 'getSample',
+        verbose: '',
         parameters: [{
             type: 'parameter',
             name: 'sample',
