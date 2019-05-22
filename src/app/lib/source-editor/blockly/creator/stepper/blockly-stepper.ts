@@ -8,7 +8,6 @@ import { BlocklyMetaRenderer } from '../../api-renderer.js';
 import { parseXml } from '../xml.js';
 import { IDisposable, dispose } from '@kano/common/index.js';
 import { getHelpers, ICreatorHelper } from '../../../../creator/index.js';
-import { IChallengeData } from '../../../../challenge/index.js';
 
 export class BlocklyStepper extends Stepper {
     public engine : KanoCodeChallenge;
@@ -45,7 +44,9 @@ export class BlocklyStepper extends Stepper {
             const originalStep = this.getOriginalStep(data.steps, i, mappings);
             this.renderStep(workspace, steps[i], i, originalStep);
         }
-        this.renderId(workspace, data.id);
+        if (this.developmentMode) {
+            this.renderId(workspace, data.id);
+        }
         this.mappings = mappings;
     }
     renderId(workpsace: Workspace, id : string) {
@@ -202,24 +203,6 @@ export class BlocklyStepper extends Stepper {
         block.initSvg();
         block.render();
         return block;
-    }
-    stripGeneratorSteps(data : IChallengeData) {
-        const connectionProxy = new Map<string, string>();
-        function findRootConnection(target : string) : string {
-            const proxy = connectionProxy.get(target);
-            if (!proxy) {
-                return target;
-            }
-            return findRootConnection(proxy);
-        }
-        data.steps.forEach((step) => {
-            if (step.type === 'start-step' || step.type === 'banner-step' || step.type === 'custom-step') {
-                connectionProxy.set(`alias#${step.alias}>next`, step.parent);
-            } else if (step.type === 'create-block') {
-                const proxy = findRootConnection(step.connectTo);
-                step.connectTo = proxy;
-            }
-        });
     }
     dispose() {
         super.dispose();

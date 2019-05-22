@@ -2,7 +2,7 @@ import BlocklyChallenge from './blockly.js';
 import { Editor } from '../../../editor/editor.js';
 import { BannerWidget, IBannerButton } from '../../../challenge/widget/banner.js';
 import { BeaconWidget } from '../../../challenge/widget/beacon.js';
-import { subscribeTimeout, IDisposable, EventEmitter, dispose } from '@kano/common/index.js';
+import { subscribeTimeout, IDisposable, dispose } from '@kano/common/index.js';
 import { Part } from '../../../parts/part.js';
 import { Tooltip } from '../../../widget/tooltip.js';
 import { challengeStyles } from '../../../challenge/styles.js';
@@ -341,6 +341,28 @@ export class KanoCodeChallenge extends BlocklyChallenge {
      */
     setBannerIconProvider(provider : IBannerIconProvider) {
         this.bannerIconProvider = provider;
+    }
+    setSteps(steps : any[]) {
+        this.stripGeneratorSteps(steps);
+        super.setSteps(steps);
+    }
+    stripGeneratorSteps(steps : any[]) {
+        const connectionProxy = new Map<string, string>();
+        function findRootConnection(target : string) : string {
+            const proxy = connectionProxy.get(target);
+            if (!proxy) {
+                return target;
+            }
+            return findRootConnection(proxy);
+        }
+        steps.forEach((step) => {
+            if (step.type === 'start-step' || step.type === 'banner-step' || step.type === 'custom-step') {
+                connectionProxy.set(`alias#${step.alias}>next`, step.parent);
+            } else if (step.type === 'create-block') {
+                const proxy = findRootConnection(step.connectTo);
+                step.connectTo = proxy;
+            }
+        });
     }
     dispose() {
         super.dispose();

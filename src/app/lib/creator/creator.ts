@@ -252,7 +252,6 @@ export abstract class Creator<T extends Stepper> {
         this.editor.load(this.app);
         // Generate the challenge from the app
         const data = this.generateChallenge();
-        this.stepper.stripGeneratorSteps(data);
         // Create a challenge instance to go thorugh the steps
         this.challenge = this.createChallenge(data);
         // Get the index of the step we want to preview
