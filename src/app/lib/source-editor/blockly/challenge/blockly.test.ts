@@ -233,7 +233,10 @@ suite('BlocklyChallenge', () => {
     
             sinon.stub(editor, 'querySelector').returns({
                 getId() { return 'test'; },
-                getHTMLElement() { return document.body; }
+                getHTMLElement() { return document.body; },
+                block: {
+                    type: 'test',
+                },
             });
     
             const validation = {

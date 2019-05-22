@@ -1,7 +1,8 @@
 declare module '@kano/kwc-blockly/blockly.js' {
-    class BlockSvg {
+    class BlockSvg extends Block {
         static INLINE_PADDING_Y : number
         static SEP_SPACE_X : number;
+        initSvg() : void;
     }
     class Connection {
         targetBlock() : Block;
@@ -25,6 +26,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         setAlign(alignment : boolean) : Input;
     }
     class Block {
+        constructor(workspace : Workspace)
         id : string;
         type : string;
         inputList : Input[];
@@ -108,16 +110,16 @@ declare module '@kano/kwc-blockly/blockly.js' {
     class Variable {
         name : string;
     }
-    class Workspace {
+    class Workspace<T extends Block = Block> {
         getCanvas() : SVGElement;
-        getAllBlocks() : Block[];
-        getBlockById(id : string) : Block|null;
+        getAllBlocks() : T[];
+        getBlockById(id : string) : T|null;
         getMetrics() : any;
         getFlyout_() : Flyout;
         addChangeListener(callback : (e : any) => void) : (e : any) => void;
         removeChangeListener(callback : (e : any) => void) : void;
         getVariableById(id : string) : Variable|null;
-        newBlock(type : string, id? : string) : Block;
+        newBlock(type : string, id? : string) : T;
         cleanUp() : void;
         toolbox : Toolbox;
         toolbox_ : Toolbox;
@@ -125,6 +127,9 @@ declare module '@kano/kwc-blockly/blockly.js' {
         scale : number;
         dispose() : void;
         centerOnBlock(id : string) : void;
+    }
+    class WorkspaceSvg extends Workspace<BlockSvg> {
+        constructor(options : any)
     }
     const goog : any;
     const utils : {

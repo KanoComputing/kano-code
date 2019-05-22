@@ -269,32 +269,33 @@ export class Editor extends EditorOrPlayer {
         if (this.injected) {
             return;
         }
+        this.injected = true;
         this.ensureProfile();
         if (before) {
             element.insertBefore(this.domNode, before);
         } else {
             element.appendChild(this.domNode);
         }
-        this.domNode.updateComplete.then(() => {
-            this.appendSourceEditor();
-            this.appendWorkspaceView();
-            this.output.onInject();
-            if (this.workspaceProvider) {
-                this.workspaceProvider.onInject();
-            }
-            this.parts.onInject();
-            this.contentWidgets = new ContentWidgets(this, (this.domNode as any).widgetLayer);
-            this.runPluginTask('onInject');
-            this.telemetry.trackEvent({ name: 'ide_opened' });
-            if (this._queuedApp) {
-                this.load(this._queuedApp);
-                this._queuedApp = null;
-            } else {
-                this.reset(false);
-            }
-            this.injected = true;
-            this._onDidInject.fire();
-        });
+        // Force a synchronous component update. No performance implications as it is about to render anyway
+        // Makes inject a synchronous method. Way easier to handle injection 
+        (this.domNode as any).update();
+        this.appendSourceEditor();
+        this.appendWorkspaceView();
+        this.output.onInject();
+        if (this.workspaceProvider) {
+            this.workspaceProvider.onInject();
+        }
+        this.parts.onInject();
+        this.contentWidgets = new ContentWidgets(this, (this.domNode as any).widgetLayer);
+        this.runPluginTask('onInject');
+        this.telemetry.trackEvent({ name: 'ide_opened' });
+        if (this._queuedApp) {
+            this.load(this._queuedApp);
+            this._queuedApp = null;
+        } else {
+            this.reset(false);
+        }
+        this._onDidInject.fire();
     }
     /**
      * Gets rid of this editor. Free any allocated resources and remove the editor from the DOM if it was injected

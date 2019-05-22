@@ -19,7 +19,10 @@ export class Runner extends Plugin {
         return this.appModulesLoader!.appModules.modules[id];
     }
     getRegisteredModules() {
-        return Object.values(this.appModulesLoader!.appModules.modules);
+        if (!this.appModulesLoader) {
+            return [];
+        }
+        return Object.values(this.appModulesLoader.appModules.modules);
     }
     addModule(mod : AppModuleConstructor) {
         const mods = Array.isArray(mod) ? mod : [mod];

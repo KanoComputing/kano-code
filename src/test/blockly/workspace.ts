@@ -1,4 +1,4 @@
-import { Workspace, Xml, Blockly, Block } from '@kano/kwc-blockly/blockly.js';
+import { WorkspaceSvg, Xml, Blockly, Block } from '@kano/kwc-blockly/blockly.js';
 
 interface IBlockDefinition {
     [K : string] : any;
@@ -6,7 +6,7 @@ interface IBlockDefinition {
 }
 
 export class WorkspaceTester {
-    public workspace = new Workspace();
+    public workspace = new WorkspaceSvg({});
     private blocks : string[] = [];
     addBlock(id : string, def : IBlockDefinition) {
         Blockly.Blocks[id] = def;
