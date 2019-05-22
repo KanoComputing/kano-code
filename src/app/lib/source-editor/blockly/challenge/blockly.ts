@@ -175,6 +175,7 @@ class BlocklyChallenge extends Engine {
                     value: {
                         target: data.target,
                         value: data.value,
+                        skipCheck : data.skipCheck,
                     },
                 },
             },
@@ -380,7 +381,7 @@ class BlocklyChallenge extends Engine {
 
         // If the source matches, validate the provided value
         if (validateSource()) {
-            if (validation.value) {
+            if (validation.value && !validation.skipCheck) {
                 // Check whether the new value is a variable id, if so match against the variable name
                 const variable = workspace.getVariableById(event.newValue);
                 if (variable) {

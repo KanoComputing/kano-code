@@ -33,7 +33,7 @@ registerCreatorFieldHelper(FieldNumber, (field : FieldNumber, prevValue : string
 
 registerCreatorFieldHelper(FieldColour, (field : FieldColour, prevValue : string, newValue : string, step : IGeneratedStep) => {
     step.data.bannerCopy = `Change this color from <kc-color-preview color="${prevValue}"></kc-color-preview> to <kc-color-preview color="${newValue}"></kc-color-preview>`;
-    delete step.data.value;
+    step.data.skipCheck = true;
     return step;
 });
 
