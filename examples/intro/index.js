@@ -79,7 +79,7 @@ class EditorProfile extends code.DefaultEditorProfile {
         Player.registerProfile(this.outputProfile);
     }
     get creationPreviewProvider() {
-        return new code.CreationImagePreviewProvider({ width: 500, height: 500 }, 10, 10);
+        return new code.CreationImagePreviewProvider({ width: 800, height: 600 }, 10, 10);
     }
 }
 
