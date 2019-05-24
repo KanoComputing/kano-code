@@ -1,4 +1,5 @@
 import { KCEditableLabel } from './kc-editable-label.js';
+import './kc-editable-label.js';
 import { click } from '@polymer/iron-test-helpers/mock-interactions.js';
 import * as sinon from 'sinon/pkg/sinon-esm.js';
 
