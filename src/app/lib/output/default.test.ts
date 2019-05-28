@@ -256,7 +256,7 @@ suite('DefaultOutputViewProvider', () => {
         teardown(() => {
             sinon.restore();
         });
-        test('drawTextInputPart draws text onto the canvas', () => {
+        test('drawTextInputPart draws text and a bordered box onto the canvas', () => {
             output.drawTextInputPart(ctx, htmlEl);
             assert(fillTextStub.called);
             assert(fillRectStub.called);
@@ -290,7 +290,7 @@ suite('DefaultOutputViewProvider', () => {
         teardown(() => {
             sinon.restore();
         });
-        test('drawSliderPart draws text onto the canvas', () => {
+        test('drawSliderPart draws the correct shapes onto the canvas', () => {
             output.drawSliderPart(ctx, htmlEl);
             assert(ctxFillStub.calledTwice);
             assert(ctxStrokeStub.calledTwice);
@@ -318,7 +318,7 @@ suite('DefaultOutputViewProvider', () => {
         teardown(() => {
             sinon.restore();
         });
-        test('drawStickerPart draws text onto the canvas', () => {
+        test('drawStickerPart draws an image onto the canvas', () => {
             output.drawStickerPart(ctx, htmlEl, stickerImages);
             assert(drawImageStub.called);
         })
