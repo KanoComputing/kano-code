@@ -16,24 +16,24 @@ suite('Flash', () => {
             assert.notEqual(flash.domNode.style.fill, initialColor);
         }, 51);
     });
-});
-
-test('addFlashField()', () => {
-    const input = {
-        insertFieldAt: sinon.stub(),
-    };
-    class FakeBlock {
-        inputList : any[] = [];
-    }
-    const block = new FakeBlock();
-
-    // Does nothing when block has no input
-    addFlashField(block as Block);
-
-    block.inputList.push(input);
     
-    addFlashField(block as Block);
-
-    assert(input.insertFieldAt.calledWith(0));
-
+    test('addFlashField()', () => {
+        const input = {
+            insertFieldAt: sinon.stub(),
+        };
+        class FakeBlock {
+            inputList : any[] = [];
+        }
+        const block = new FakeBlock();
+        
+        // Does nothing when block has no input
+        addFlashField(block as Block);
+        
+        block.inputList.push(input);
+        
+        addFlashField(block as Block);
+        
+        assert(input.insertFieldAt.calledWith(0));
+        
+    });
 });

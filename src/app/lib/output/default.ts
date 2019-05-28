@@ -3,7 +3,7 @@ import { IVisualsContext, IAudioContext, IDOMContext } from './output.js';
 import { Microphone } from './microphone.js';
 import { EventEmitter } from '@kano/common/index.js';
 
-interface ITransform {
+export interface ITransform {
     x: number;
     y: number;
     scaleX: number;
@@ -70,37 +70,66 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         ctx.drawImage(this.canvas, 0, 0);
         let parts = [...this.root.children] as HTMLElement[];
         parts = parts.filter(el => el.title.length > 0);
+        const stickerImages = new Map();
+        const promises: Promise<{}>[] = [];
         parts.forEach(el => {
-            const transform: ITransform = this.getTransformData(el.style.transform);
-            ctx.fillStyle = '#000000';
-            this.drawPart(ctx, el, transform);
+            if (el.title !== 'sticker') {
+                return;
+            }
+            const fullUrlStr = el.style.backgroundImage;
+            if (!fullUrlStr) {
+                return;
+            }
+            const url = fullUrlStr.slice(5, -2);
+            if (stickerImages.has(url)) {
+                return;
+            }
+            const promise = new Promise((res) => {
+                const img = new Image();
+                img.onload = () => {
+                    res();
+                }
+                img.src = url;
+                stickerImages.set(url, img);
+            })
+            promises.push(promise);
+        });
+        return Promise.all(promises).then(() => {
+            parts.forEach(el => {
+                const transform: ITransform = this.getTransformData(el.style.transform);
+                ctx.fillStyle = '#000000';
+                this.drawPart(ctx, el, transform, stickerImages);
+            });
         });
     }
 
-    drawPart(ctx: CanvasRenderingContext2D, el: HTMLElement, transform: ITransform) {
+    drawPart(ctx: CanvasRenderingContext2D, el: HTMLElement, transform: ITransform, stickerImages: Map<string, HTMLImageElement>) {
         this.setTransforms(ctx, el, transform);
         switch(el.title) {
             case 'button':
-                this.drawButtonPart(ctx, el, transform);
+                this.drawButtonPart(ctx, el);
                 break;
             case 'text':
-                this.drawTextPart(ctx, el, transform);
+                this.drawTextPart(ctx, el);
                 break;
             case 'text-input':
-                this.drawTextInputPart(ctx, el as HTMLInputElement, transform);
+                this.drawTextInputPart(ctx, el as HTMLInputElement);
                 break;
             case 'slider':
-                this.drawSliderPart(ctx, el as HTMLInputElement, transform);
+                this.drawSliderPart(ctx, el as HTMLInputElement);
+                break;
+            case 'sticker':
+                this.drawStickerPart(ctx, el, stickerImages);
                 break;
             default:
-                this.drawOtherPart(ctx, el, transform);
+                this.drawOtherPart(ctx);
                 break;
         }
         // Reset scale, roation and translate of the canvas context
         this.resetTransforms(ctx);
     }
 
-    drawButtonPart(ctx: CanvasRenderingContext2D, el: HTMLElement, transform: ITransform) {
+    drawButtonPart(ctx: CanvasRenderingContext2D, el: HTMLElement) {
         const height = el.clientHeight;
         const halfHeight = height / 2;
 
@@ -129,14 +158,14 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         ctx.fillText(el.textContent || '', halfHeight - 2, 6 + (halfHeight));
     }
     
-    drawTextPart(ctx: CanvasRenderingContext2D, el: HTMLElement, transform: ITransform) {
+    drawTextPart(ctx: CanvasRenderingContext2D, el: HTMLElement) {
         const halfHeight = el.clientHeight / 2;
         ctx.fillStyle = el.style.color || '#ffffff';
         ctx.font = "16px Bariol";
         ctx.fillText(el.textContent || '', halfHeight - 2, 6 + (halfHeight));
     }
     
-    drawTextInputPart(ctx: CanvasRenderingContext2D, el: HTMLInputElement, transform: ITransform) {
+    drawTextInputPart(ctx: CanvasRenderingContext2D, el: HTMLInputElement) {
         const halfHeight = el.clientHeight / 2;
         ctx.fillStyle = '#FFFFFF';
         ctx.strokeStyle = '#8c8c8c';
@@ -149,7 +178,7 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         ctx.fillText(el.value || el.placeholder || '', halfHeight - 2, 6 + (halfHeight));
     }
 
-    drawSliderPart(ctx: CanvasRenderingContext2D, el: HTMLInputElement, transform: ITransform) {
+    drawSliderPart(ctx: CanvasRenderingContext2D, el: HTMLInputElement) {
         const value = el.value && parseInt(el.value) > 0 ? parseInt(el.value) / 100 * el.clientWidth : 0;
         ctx.fillStyle = '#8c8c8c';
         ctx.strokeStyle = '#444444';
@@ -168,7 +197,17 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         ctx.closePath();
     }
 
-    drawOtherPart(ctx: CanvasRenderingContext2D, el: HTMLElement, transform: ITransform) {
+    drawStickerPart(ctx: CanvasRenderingContext2D, el: HTMLElement, stickerImages: Map<string, HTMLImageElement>) {
+        const fullUrlStr = el.style.backgroundImage;
+        if (!fullUrlStr) {
+            return;
+        }
+        const url = fullUrlStr.slice(5, -2);
+        const img = stickerImages.get(url) as HTMLImageElement;
+        ctx.drawImage(img, 0, 0, 100, 100);
+    }
+
+    drawOtherPart(ctx: CanvasRenderingContext2D) {
         // Error shape so as not to fail silently
         ctx.fillRect(0, 0, 50, 10);
     }
