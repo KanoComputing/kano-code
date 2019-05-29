@@ -1,13 +1,14 @@
+import { EventEmitter } from '@kano/common/index.js';
 import { button } from '@kano/styles/button.js';
 import { KanoAlert } from '../../../elements/kano-alert/kano-alert.js';
 import { Alert, KanoAlertElement, IDialogAlertOptions } from './alert.js';
-import { EventEmitter } from '@kano/common/index.js';
+import { _ } from '../../i18n/index.js';
 
 export interface IDialogConfirmOptions extends IDialogAlertOptions {}
 
 const DEFAULT_OPTS = {
-    confirmLabel: 'Confirm',
-    dismissLabel: 'Cancel',
+    confirmLabel: _('CONFIRM', 'Confirm'),
+    dismissLabel: _('CANCEL', 'Cancel'),
 };
 
 export class Confirm extends Alert {

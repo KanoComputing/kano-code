@@ -7,6 +7,7 @@ import { IPartAPI } from '../api.js';
 import { property } from '../decorators.js';
 import './kc-add-part-item.js';
 import { create } from './icons.js';
+import { _ } from '../../i18n/index.js';
 
 @customElement('kc-add-part')
 export class KCAddPart extends LitElement {
@@ -68,7 +69,7 @@ export class KCAddPart extends LitElement {
             <header>
                 <div class="label">
                     ${templateContent(create)} 
-                    <span class="label-text">Add Parts</span>
+                    <span class="label-text">${_('ADD_PARTS_HEADING', 'Add Parts')}</span>
                 </div>
                 <button class="closure secondary" dialog-dismiss></button>
             </header>

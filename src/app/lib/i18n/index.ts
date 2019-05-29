@@ -33,6 +33,7 @@ function loadJSON(url : string) {
 }
 
 export function localize(key : string, fallback = '') {
+    console.log(key);
     return messages[key] || fallback;
 }
 
@@ -94,7 +95,10 @@ export function load(lang : string, opts : ILoadOptions = { modulesPath: DEFAULT
     return Promise.all(tasks);
 }
 
+export const _ = localize;
+
 export default {
+    _: localize,
     localize,
     addMessage,
     load,
