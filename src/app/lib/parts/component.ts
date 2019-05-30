@@ -177,4 +177,5 @@ export class PartComponent {
         });
         this.invalidate();
     }
+    render(ctx: CanvasRenderingContext2D, el : HTMLElement) {}
 }

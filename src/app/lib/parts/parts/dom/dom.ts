@@ -35,6 +35,33 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         }
         this.transform.apply();
     }
+    renderComponents(ctx: CanvasRenderingContext2D) : Promise<void> {
+        this.applyTransform(ctx);
+        this._components.forEach(component => component.render(ctx, this._el));
+        this.resetTransform(ctx);
+        return Promise.resolve();
+    }
+    applyTransform(ctx: CanvasRenderingContext2D) {
+        const { _el } = this;
+        const {
+            x,
+            y,
+            scaleX,
+            scaleY,
+            rotation,
+        } = this.transform;
+        const width = _el.clientWidth;
+        const height = _el.clientHeight;
+        const halfWidth = width / 2;
+        const halfHeight = height / 2;
+        ctx.fillStyle = _el.style.backgroundColor || '#000000';
+        // Translate to the middle of the element, then apply scale and rotation
+        ctx.translate(x + halfWidth, y + halfHeight);
+        ctx.rotate((Math.PI / 180) * rotation);
+        ctx.scale(scaleX, scaleY);
+        ctx.translate(-halfWidth, -halfHeight);
+        ctx.globalAlpha = parseFloat(_el.style.opacity || '1');
+    }
     abstract getElement() : T
     turnCW(a : number) {
         this.transform.rotation += a;

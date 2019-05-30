@@ -1,16 +1,9 @@
+import { subscribeDOM } from '@kano/common/index.js';
 import { DOMPart } from '../dom/dom.js';
-import { part, property, component } from '../../decorators.js';
-import { PartComponent } from '../../component.js';
-import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
+import { part, component } from '../../decorators.js';
 import { transformLegacySlider } from './legacy.js';
+import { SliderComponent } from './slider-component.js';
 
-class SliderComponent extends PartComponent {
-    @property({ type: Number, value: 0 })
-    public value : number = 0;
-
-    @property({ type: EventEmitter, value: new EventEmitter(), noReset: true })
-    public changed : EventEmitter = new EventEmitter();
-}
 
 @part('slider')
 export class SliderPart extends DOMPart<HTMLInputElement> {

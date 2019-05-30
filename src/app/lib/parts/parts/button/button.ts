@@ -1,22 +1,9 @@
-import { subscribeDOM, EventEmitter } from '@kano/common/index.js';
 import { button } from '@kano/styles/button.js';
 import { DOMPart } from '../dom/dom.js';
 import { IPartContext } from '../../part.js';
-import { Color } from '../../types/color.js';
-import { PartComponent } from '../../component.js';
-import { part, component, property } from '../../decorators.js';
+import { part, component } from '../../decorators.js';
 import { transformLegacyButton } from './legacy.js';
-
-class ButtonComponent extends PartComponent {
-    @property({ type: String, value: 'Click Me!' })
-    public label : string = 'Click Me!';
-    
-    @property({ type: Color, value: '#FF8F00' })
-    public backgroundColor : string = '#FF8F00';
-
-    @property({ type: Color, value: '#FFFFFF' })
-    public textColor : string = '#FFFFFF';
-}
+import { ButtonComponent } from './button-component.js';
 
 @part('button')
 export class ButtonPart extends DOMPart {
@@ -61,6 +48,7 @@ export class ButtonPart extends DOMPart {
             this.core.apply();
         }
     }
+
     get label() {
         return this.core.label;
     }
