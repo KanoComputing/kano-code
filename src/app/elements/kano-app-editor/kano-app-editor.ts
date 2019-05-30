@@ -206,6 +206,9 @@ export class KanoAppEditor extends LitElement {
                 pointer-events: none;
                 overflow: hidden;
             }
+            .ui-edition {
+                border-left: 2px solid var(--kc-border-color);
+            }
             #widget-layer * {
                 pointer-events: all;
             }

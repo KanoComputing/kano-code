@@ -468,7 +468,7 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
         return [{ register, id, defaults, toolbox }];
     }
     static isInToolbox(m : Meta) {
-        return !m.def.disabled && (!m.def.blockly || !m.def.blockly.toolbox);
+        return !m.def.disabled && (!m.def.blockly || typeof m.def.blockly.toolbox === 'undefined' || m.def.blockly.toolbox);
     }
     static parseInputType(type : any, param : Meta) {
         if (param.def.blockly && param.def.blockly.customField) {

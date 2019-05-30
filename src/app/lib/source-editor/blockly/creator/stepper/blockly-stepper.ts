@@ -63,6 +63,8 @@ export class BlocklyStepper extends Stepper {
             } else if (step.validation.blockly.value) {
                 this.renderValue(workspace, step.validation.blockly.value, index, original);
             }
+        } else if (step.validation && step.validation['add-part']) {
+            this.renderAddPart(step, index, original);
         } else {
             if (step.type === 'custom-step') {
                 this.renderCustomStep(workspace, step, index, original);
@@ -73,6 +75,22 @@ export class BlocklyStepper extends Stepper {
             }
         }
         workspace.cleanUp();
+    }
+    renderAddPart(step : any, index : number, original : any) {
+        const validation = step.validation['add-part'];
+        const parts = this.editor.parts.getRegisteredParts();
+        const partClass = parts.get(validation.type);
+        if (!partClass) {
+            throw new Error(`Could not simulate part creation: Part with type '${validation.type}' was not registered`);
+        }
+        const partRecord = this.editor.parts.addPart(partClass);
+        if (!partRecord) {
+            throw new Error('Could not simulate part creation: Part could not be created');
+        }
+        this.originalSteps.set(`part#${partRecord.part.id}`, original);
+        if (validation.alias) {
+            this.aliases.push(this.editor.registerAlias(validation.alias, `part#${partRecord.part.id}`));
+        }
     }
     renderCreate(workspace : Workspace, step : any, index : number, original : any) {
         const validation = step.validation.blockly.create;
