@@ -6,7 +6,7 @@ import { throttle } from '../lib/decorators.js';
 import { arrow } from '@kano/icons/ui.js';
 import { templateContent } from '../lib/directives/template-content.js';
 
-export interface IIndexedPickerSet {
+export interface IIndexedPickerSection {
     id : string;
     label : string;
     items : IIndexedPickerItem[];
@@ -21,7 +21,7 @@ export interface IIndexedPickerItem {
 @customElement('kc-indexed-picker')
 export class KCIndexedPicker extends LitElement {
     @property({ type: Array })
-    public items : IIndexedPickerSet[] = [];
+    public items : IIndexedPickerSection[] = [];
 
     @property({ type: String })
     public selectedSection? : string;
@@ -134,18 +134,18 @@ export class KCIndexedPicker extends LitElement {
     render() {
         return html`
             <div class="index">
-                ${this.items.map(set => html`
-                    <button @click=${() => this.onSetClick(set)} class=${classMap({ set: true, selected: this.selectedSection === set.id })}>
+                ${this.items.map(section => html`
+                    <button @click=${() => this.onSectionClick(section)} class=${classMap({ set: true, selected: this.selectedSection === section.id })}>
                         ${templateContent(arrow)}
-                        <span>${set.label}</span>
+                        <span>${section.label}</span>
                     </button>
                 `)}
             </div>
             <div class="padder">
                 <div class="items" @scroll=${this.onScroll}>
-                    ${this.items.map(set => html`
-                        <div class="section" id=${set.id}>
-                            ${set.items.map(item => this.renderItem(item))}
+                    ${this.items.map(section => html`
+                        <div class="section" id=${section.id}>
+                            ${section.items.map(item => this.renderItem(item))}
                         </div>
                     `)}
                 </div>
@@ -223,8 +223,8 @@ export class KCIndexedPicker extends LitElement {
         this.selectedSection = selectedSection.getAttribute('id') || undefined;
     }
 
-    protected onSetClick(set : IIndexedPickerSet) {
-        this.revealSet(set.id);
+    protected onSectionClick(section : IIndexedPickerSection) {
+        this.revealSection(section.id);
     }
 
     protected onItemClick(item : IIndexedPickerItem) {
@@ -243,11 +243,11 @@ export class KCIndexedPicker extends LitElement {
         el.scrollIntoView({ behavior: 'smooth' });
     }
 
-    revealSet(set : string) {
+    revealSection(section : string) {
         if (!this.renderRoot) {
             return;
         }
-        const el = this.renderRoot.querySelector(`#${set}`);
+        const el = this.renderRoot.querySelector(`#${section}`);
         if (!el) {
             return;
         }

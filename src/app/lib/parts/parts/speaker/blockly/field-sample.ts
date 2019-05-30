@@ -24,6 +24,7 @@ export class FieldSample extends Field {
             this.domNode.style.border = '2px solid var(--kc-border-color)';
             this.domNode.style.borderRadius = '6px';
             this.domNode.style.overflow = 'hidden';
+            this.domNode.style.boxShadow = '0px 4px 4px 0px rgba(0, 0, 0, 0.15)';
             this.domNode.items = this.items.map((set) => {
                 return {
                     id: set.id,
