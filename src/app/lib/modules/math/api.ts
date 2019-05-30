@@ -30,6 +30,7 @@ function processBlocklyMessages(options : [string, string][]) {
 export const MathAPI = {
     type: 'blockly',
     id: MathModule.id,
+    name: MathModule.id,
     typeScriptDefinition: `
         declare namespace math {
             declare function random(min: number, max: number): number;

@@ -18,6 +18,7 @@ const compareOptions : { [K : string] : string } = {
 export const LogicAPI = {
     type: 'blockly',
     id: ID,
+    name: ID,
     register(Blockly : Blockly) {
         Blockly.Blocks.logic_compare = {
             init() {
