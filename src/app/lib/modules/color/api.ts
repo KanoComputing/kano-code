@@ -1,5 +1,6 @@
 import { localize } from '../../i18n/index.js';
 import { Block, Field } from '@kano/kwc-blockly/blockly.js';
+import { _ } from '../../i18n/index.js';
 
 const COLOR = '#88c440';
 
@@ -28,7 +29,7 @@ const color = {
                 const json = {
                     id: 'random_colour',
                     colour: COLOR,
-                    message0: Blockly.Msg.COLOR_RANDOM,
+                    message0: Blockly.Msg.COLOUR_RANDOM_TITLE,
                     output: 'Colour',
                 };
                 this.jsonInit(json);
@@ -43,14 +44,14 @@ const color = {
         Blockly.Blocks.create_color = {
             inputs: {
                 rgb: {
-                    1: '% red',
-                    2: '% green',
-                    3: '% blue',
+                    1: _('PERCENT_RED', '% red'),
+                    2: _('PERCENT_GREEN', '% green'),
+                    3: _('PERCENT_BLUE', '% blue'),
                 },
                 hsv: {
-                    1: 'hue',
-                    2: 'saturation',
-                    3: 'value',
+                    1: _('HUE', 'hue'),
+                    2: _('SATURATION', 'saturation'),
+                    3: _('VALUE', 'value'),
                 },
             },
             init() {
@@ -61,7 +62,7 @@ const color = {
                 this.setColour(COLOR);
 
                 this.appendDummyInput()
-                    .appendField('new colour with')
+                    .appendField(_('BLOCK_CREATE_COLOR', 'new colour with'))
                     .appendField(dropdown, 'TYPE');
 
                 this.setOutput('Colour');
@@ -145,7 +146,7 @@ const color = {
     },
     category: {
         get name() {
-            return localize('CATEGORY_COLOR', 'Color');
+            return _('CATEGORY_COLOR', 'Color');
         },
         id: ID,
         colour: COLOR,

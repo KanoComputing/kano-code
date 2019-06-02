@@ -3,17 +3,18 @@ import { SequencerPart } from './sequencer.js';
 import { speaker } from '@kano/icons/parts.js';
 import { FieldSequence } from './blockly/field-sequence.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import Editor from '../../../editor/editor.js';
+import { Editor } from '../../../editor/editor.js';
 import { BlocklySourceEditor } from '../../../source-editor/blockly.js';
 import { FieldSequenceConfig } from './blockly/field-sequence-config.js';
 import { Meta } from '../../../meta-api/module.js';
 import { onDidCreateBlockType } from '../../../util/blockly.js';
 import { SequencerInlineDisplay } from './inline.js';
 import { WebAudioTimestamp } from '../../../types.js';
+import { _ } from '../../../i18n/index.js';
 
 export const SequencerAPI : IPartAPI = {
     type: SequencerPart.type,
-    label: 'Sequencer',
+    label: _('PART_SEQ_LABEL', 'Sequencer'),
     color: '#ef5284',
     icon: speaker,
     inlineDisplay: SequencerInlineDisplay,
@@ -85,18 +86,22 @@ export const SequencerAPI : IPartAPI = {
     }, {
         type: 'variable',
         name: 'bpm',
+        verbose: _('PART_SEQ_BPM', 'bpm'),
         setter: true,
         returnType: Number,
         default: 120,
     }, {
         type: 'function',
         name: 'start',
+        verbose: _('PART_SEQ_START', 'start'),
     }, {
         type: 'function',
         name: 'stop',
+        verbose: _('PART_SEQ_STOP', 'stop'),
     }, {
         type: 'function',
         name: 'shuffle',
+        verbose: _('PART_SEQ_SHUFFLE', 'shuffle'),
     }],
     onInstall(editor : Editor, part : SequencerPart) {
         if (editor.sourceType !== 'blockly') {

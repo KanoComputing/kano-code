@@ -1,10 +1,11 @@
 import { Blockly, Block } from '@kano/kwc-blockly/blockly.js';
+import { _ } from '../../../i18n/index.js';
 
 export const general : any[] = [{
     block: (part : any) => {
         return {
             id: 'set_background_color',
-            message0: `${part.name}: Set background color %1`,
+            message0: `${part.name}: ${_('DRAW_SET_BACKGROUND_COLOR', 'Set background color')} %1`,
             args0: [{
                 type: "input_value",
                 name: "COLOR",
@@ -25,7 +26,7 @@ export const general : any[] = [{
     block: (part : any) => {
         return {
             id: 'set_transparency',
-            message0: `${part.name}: Set transparentcy to %1`,
+            message0: `${part.name}: ${_('DRAW_SET_TRANSPARENCY', 'Set transparentcy to')} %1`,
             args0: [{
                 type: "input_value",
                 name: "ALPHA",

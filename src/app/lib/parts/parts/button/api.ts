@@ -22,12 +22,14 @@ export const ButtonAPI : IPartAPI = {
     }, {
         type: 'variable',
         name: 'background',
+        verbose: _('PART_BUTTON_BACKGROUND', 'background'),
         returnType: 'Color',
         default: '#FF8F00',
         setter: true,
     }, {
         type: 'variable',
         name: 'color',
+        verbose: _('PART_BUTTON_COLOR', 'color'),
         returnType: 'Color',
         default: '#FFFFFF',
         setter: true,

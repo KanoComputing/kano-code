@@ -1,4 +1,5 @@
 import { Blockly } from '@kano/kwc-blockly/blockly.js';
+import { _ } from '../../i18n/index.js';
 /**
  * Registers the logic blocks, and creates its category
  */
@@ -7,12 +8,12 @@ const COLOR = '#f75846';
 const ID = 'logic';
 
 const compareOptions : { [K : string] : string } = {
-    EQ: '= equal',
-    NEQ: '\u2260 not equal',
-    LT: '< less than',
-    LTE: '\u2264 less than or equal',
-    GT: '> greater than',
-    GTE: '\u2265 greater than or equal',
+    EQ: _('COMPARE_EQ', '= equal'),
+    NEQ: _('COMPARE_NEQ', '\u2260 not equal'),
+    LT: _('COMPARE_LT', '< less than'),
+    LTE: _('COMPARE_LTE', '\u2264 less than or equal'),
+    GT: _('COMPARE_GT', '> greater than'),
+    GTE: _('COMPARE_GTE', '\u2265 greater than or equal'),
 };
 
 export const LogicAPI = {

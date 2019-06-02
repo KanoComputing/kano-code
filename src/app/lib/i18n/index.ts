@@ -1,4 +1,5 @@
 import * as path from '../util/path.js';
+import { blocklyLangMap } from './blockly.js';
 
 interface IMessageStore {
     [K : string] : string;
@@ -88,8 +89,7 @@ export function load(lang : string, opts : ILoadOptions = { modulesPath: DEFAULT
     const tasks : Promise<void>[] = [loadMessages(path.join(kanoCodePath, `/locale/editor/${lang}.json`))];
     if (opts.blockly) {
         tasks.push(loadBlocklyMsg(path.join(kanoCodePath, `/locale/blockly/${lang}.json`)));
-        // TODO: This hardcodes english for now. Find a way to dynamically load a map between lang keys and blockly keys only when needed
-        tasks.push(loadBlocklyMsg(path.join(modulesPath, '/@kano/kwc-blockly/blockly_built/msg/json/en.json')));
+        tasks.push(loadBlocklyMsg(path.join(modulesPath, `/@kano/kwc-blockly/blockly_built/msg/json/${blocklyLangMap[lang]}.json`)));
         tasks.push(loadBlocklyMsg(path.join(modulesPath, '/@kano/kwc-blockly/blockly_built/msg/json/constants.json')));
     }
     return Promise.all(tasks);

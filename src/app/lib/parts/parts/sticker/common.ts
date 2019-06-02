@@ -2,6 +2,7 @@ import { IMetaDefinition } from '../../../meta-api/module.js';
 import { StickerPart } from './sticker.js';
 import { FieldSticker } from './blockly/field-sticker.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
+import { _ } from '../../../i18n/index.js';
 
 export const getter : IMetaDefinition = {
     type: 'function',
@@ -38,13 +39,14 @@ export const getter : IMetaDefinition = {
 export const random : IMetaDefinition = {
     type: 'function',
     name: 'random',
+    verbose: _('PART_STICKER_RANDOM', 'random'),
     returnType: 'Sticker',
 };
 
 export const randomFrom : IMetaDefinition = {
     type: 'function',
     name: 'randomFrom',
-    verbose: 'random',
+    verbose: _('PART_STICKER_RANDOM_FROM', 'random'),
     returnType: 'Sticker',
     parameters: [{
         type: 'parameter',

@@ -4,6 +4,7 @@ import { setters } from './blocks/setters.js';
 import { shapes } from './blocks/shapes.js';
 import { space } from './blocks/space.js';
 import { DrawModule } from './draw.js';
+import { _ } from '../../i18n/index.js';
 
 const COLOR = '#82C23D';
 let blocks : any[] = [];
@@ -13,7 +14,7 @@ blocks = blocks.concat(general);
 blocks.push({
     block: (part : any) => ({
         id: 'clear',
-        message0: `${part.name}: clear drawing`,
+        message0: `${part.name}: ${_('DRAW_CLEAR', 'clear drawing')}`,
         previousStatement: null,
         nextStatement: null,
     }),
@@ -46,7 +47,7 @@ const categoryBlocks = blocks.map((definition) => {
     };
 });
 const category = {
-    name: 'Draw',
+    name: _('MODULE_DRAW_NAME', 'Draw'),
     id: 'draw',
     colour: COLOR,
     blocks: categoryBlocks,
