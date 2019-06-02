@@ -1,19 +1,8 @@
 import { DOMPart } from '../dom/dom.js';
-import { part, property, component } from '../../decorators.js';
-import { PartComponent } from '../../component.js';
-import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
+import { part, component } from '../../decorators.js';
+import { subscribeDOM } from '@kano/common/index.js';
 import { transformLegacyTextInput } from './legacy.js';
-
-class TextInputComponent extends PartComponent {
-    @property({ type: String, value: '' })
-    public value : string = '';
-
-    @property({ type: String, value: '' })
-    public placeholder : string = '';
-
-    @property({ type: EventEmitter, value: new EventEmitter(), noReset: true })
-    public change : EventEmitter = new EventEmitter();
-}
+import { TextInputComponent } from './text-input-component.js';
 
 @part('text-input')
 export class TextInputPart extends DOMPart<HTMLInputElement> {
@@ -34,7 +23,9 @@ export class TextInputPart extends DOMPart<HTMLInputElement> {
         this.core.invalidate();
     }
     getElement() : HTMLInputElement {
-        return document.createElement('input');
+        const el = document.createElement('input');
+        el.title = 'text-input';
+        return el;
     }
     render() {
         super.render();

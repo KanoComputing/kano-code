@@ -128,4 +128,11 @@ export class Part {
         this.userSubscriptions.forEach(d => d.dispose());
         this.userSubscriptions.length = 0;
     }
+    renderComponents(ctx : CanvasRenderingContext2D) : Promise<void> {
+        return Promise.resolve();
+    }
+    resetTransform(ctx: CanvasRenderingContext2D) {
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+    }
+    applyTransform(ctx : CanvasRenderingContext2D) {}
 }

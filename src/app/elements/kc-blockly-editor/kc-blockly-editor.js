@@ -30,6 +30,7 @@ class KCBlocklyEditor extends PolymerElement {
             :host kwc-blockly {
                 --kwc-blockly-toolbox: {
                     background: var(--kc-secondary-color);
+                    border-right: 2px solid var(--kc-border-color);
                 };
             }
             [hidden] {

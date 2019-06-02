@@ -18,6 +18,7 @@ const CORE_BLOCKS = [
 export const ListsAPI = {
     type: 'blockly',
     id: ID,
+    name: ID,
     register(Blockly : Blockly) {
         CORE_BLOCKS.forEach((blockId) => {
             Blockly.Blocks[blockId].customColor = COLOR;

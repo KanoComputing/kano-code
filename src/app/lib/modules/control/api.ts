@@ -33,7 +33,9 @@ const inTimeUnits = [
 export const ControlAPI = {
     type: 'blockly',
     id: ID,
-    typeScriptDefinition: `const loop = {
+    name: ID,
+    typeScriptDefinition: `
+const loop = {
     forever(callback : function) : void;
 };
 

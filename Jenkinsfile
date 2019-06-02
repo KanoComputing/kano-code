@@ -26,6 +26,7 @@ pipeline {
                         sh "apk update && apk upgrade && apk add --no-cache bash git openssh"
                         sh "mkdir -p ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts"
                         sshagent(['read-only-github']) {
+                            sh "yarn"
                             sh "yarn build"
                         }
                     }

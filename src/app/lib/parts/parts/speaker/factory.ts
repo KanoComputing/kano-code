@@ -2,7 +2,7 @@ import { SpeakerPart } from './speaker.js';
 import { IPartAPI } from '../../api.js';
 import { speaker } from '@kano/icons/parts.js';
 import MetaModule, { IMetaDefinition } from '../../../meta-api/module.js';
-import { Block, Blockly } from '@kano/kwc-blockly/blockly.js';
+import { Block } from '@kano/kwc-blockly/blockly.js';
 import { FieldSample } from './blockly/field-sample.js';
 import { WebAudioTimestamp } from '../../../types.js';
 
@@ -23,15 +23,8 @@ export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
             },
         }],
         returnType: 'Sample',
-        toolbox: false,
         blockly: {
-            postProcess(block : Block) {
-                const input = block.getInput('SAMPLE');
-                if (!input) {
-                    return;
-                }
-                input.type = Blockly.DUMMY_INPUT;
-            },
+            toolbox: false,
             javascript(Blockly : Blockly, block : Block) {
                 const value = block.getFieldValue('SAMPLE');
                 return [`'${value || ''}'`, Blockly.JavaScript.ORDER_ATOMIC];

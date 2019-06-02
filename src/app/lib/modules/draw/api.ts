@@ -55,6 +55,7 @@ const category = {
 export const DrawAPI = {
     type: 'blockly',
     id: DrawModule.id,
+    name: DrawModule.id,
     typeScriptDefinition: `
         declare namespace draw {}
     `,

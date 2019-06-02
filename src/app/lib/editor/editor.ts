@@ -326,6 +326,7 @@ export class Editor extends EditorOrPlayer {
             this._queuedApp = safeApp;
             return;
         }
+        this.setCode();
         this.parts.reset();
         this.runPluginTask('onImport', safeApp);
         this.output.runPluginTask('onImport', safeApp);

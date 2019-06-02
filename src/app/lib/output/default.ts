@@ -1,10 +1,16 @@
 import { OutputViewProvider } from './index.js';
-import { IVisualsContext, IAudioContext, IDOMContext } from './output.js';
+import Output, { IVisualsContext, IAudioContext, IDOMContext } from './output.js';
+import { PartsManager } from '../parts/manager.js';
 import { Microphone } from './microphone.js';
 import { EventEmitter } from '@kano/common/index.js';
 
+function degreesToRadians(deg: number) {
+    return deg * (Math.PI / 180);
+}
+
 export class DefaultOutputViewProvider extends OutputViewProvider {
     private canvas : HTMLCanvasElement;
+    public parts?: PartsManager;
     private _audioContext : AudioContext = new AudioContext();
     private _microphone : Microphone;
     private _onDidResize : EventEmitter = new EventEmitter();
@@ -19,6 +25,10 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         this.root.appendChild(this.canvas);
 
         this._microphone = new Microphone(this._audioContext);
+    }
+    onInstall(output: Output) {
+        super.onInstall(output);
+        this.parts = output.parts;
     }
     getVisuals() : IVisualsContext {
         return {
@@ -56,7 +66,19 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         // Draw the current canvas over the background color
         ctx.drawImage(this.canvas, 0, 0);
+        if (!this.parts) {
+            return;
+        }
+        const parts = this.parts.getParts();
+        let chain : Promise<void> = Promise.resolve();
+        parts.forEach(el => {
+            chain = chain.then(() => {
+                return Promise.resolve(el.renderComponents(ctx));
+            }) as Promise<void>;
+        });
+        return chain.then(() => { return });
     }
+
 }
 
 export default DefaultOutputViewProvider;
