@@ -34,9 +34,8 @@ export class KCEditorBanner extends LitElement {
             :host {
                 position: relative;
                 display: flex;
-                flex-direction: row;
+                flex-direction: column;
                 align-items: stretch;
-                padding: 16px;
                 background: white;
                 box-sizing: border-box;
                 border-radius: 6px;
@@ -46,11 +45,15 @@ export class KCEditorBanner extends LitElement {
                 animation: pop-in 200ms linear 1;
             }
             kc-circle-progress,
-            slot[name="progress"]::slotted(*) {
+            slot[name="avatar"]::slotted(*) {
                 width: 56px;
                 height: 56px;
-                margin-right: 16px;
+                display: inline;
+                vertical-align: middle;
+                position: absolute;
+                top: -15px;
             }
+        
             .content {
                 flex: 1;
                 flex-basis: 0.000000001px;
@@ -63,6 +66,7 @@ export class KCEditorBanner extends LitElement {
                 color: #22272D;
                 min-width: 200px;
                 display: inline-block;
+                padding: 16px;
             }
             .actions{
                 display: flex;
@@ -71,6 +75,11 @@ export class KCEditorBanner extends LitElement {
             }
             .actions::slotted(*) {
                 margin-top: 4px;
+            }
+            .title {
+                color: rgb(62, 64, 66, 0.4);
+                font-weight: bold;
+                display: inline;
             }
             .markdown-html p {
                 line-height: 28px;
@@ -85,6 +94,15 @@ export class KCEditorBanner extends LitElement {
             [hidden] {
                 display: none !important;
             }
+            .block {
+                border-bottom: 1px solid rgb(62, 64, 66, 0.3);
+                padding: 10px 0 10px 16px;
+                font-family: var(--font-body);
+                font-size: 16px;
+            }
+            .remix {
+                border-top: 1px solid rgb(62, 64, 66, 0.3);
+            }
             .emoji {
                 max-width: 18px;
                 max-height: 18px;
@@ -95,15 +113,26 @@ export class KCEditorBanner extends LitElement {
     render() {
         return html`
         ${templateContent(button)}
-        <slot name="progress">
+        <!-- <slot name="progress">
             <kc-circle-progress .value=${this.progress}></kc-circle-progress>
-        </slot>
+        </slot> -->
+        <div class="block block-1">
+            <slot name="block-button"></slot>
+            <slot name="avatar"></slot>
+            <slot name="title" class="title"></slot>
+        </div>
         <div class="content">
+            <slot name="avatar"></slot>
             <div class="markdown-html" id="markdown-html">
                 ${marked(this.text)}
             </div>
             <slot name="actions" class="actions"></slot>
         </div>
+        <!-- <div class="block remix">
+            <slot name="title-remix" class="title-remix"></slot>
+            <slot name="tips" class="tips"></slot>
+            <slot name="block-remix-actions" class="actions"></slot>
+        </div> -->
 `;
     }
 }

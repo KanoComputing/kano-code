@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Editor Banner</title>
+    <style>
+        html, body {
+            background: lightblue;
+        }
+        kc-editor-banner {
+            margin: 32px;
+        }
+        #small {
+            max-width: 400px;
+        }
+    </style>
+    <script type="module" src="../../dist/app/elements/kano-editor-banner/kano-editor-banner.js"></script>
+</head>
+<body>
+    <kc-editor-banner progress="0.4" text="This is some content, lets have fun">
+        <button slot="actions">Next</button>
+    </kc-editor-banner>
+    <kc-editor-banner text="I can even change the progress into an image. For reasons">
+        <img src="https://i.etsystatic.com/5653735/r/il/c41b70/1501534905/il_570xN.1501534905_lgzj.jpg" slot="progress"/>
+    </kc-editor-banner>
+    <kc-editor-banner id="small" progress="1" text="Really long content can flow properly, even in a constrained environment. Less space, but double the fun!"></kc-editor-banner>
+</body>
+</html>
