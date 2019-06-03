@@ -120,7 +120,6 @@ export const SequencerAPI : IPartAPI = {
             const block = workspace.getBlockById(e.blockId)!;
             const field = block.getField('SEQUENCE') as FieldSequence;
             field.onDidChangeSteps(() => {
-                console.log('haha');
                 // sequence configuration changed, update the part
                 updateSequence(field);
             });
