@@ -3,6 +3,7 @@ import * as i18n from '../../i18n.js';
 import * as APIs from '../../toolbox.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js'
 import { Player } from '../../dist/app/lib/index.js';
+import { CreationImagePreviewProvider } from '../../dist/app/lib/creation/providers/image.js';
 
 const Shapes = {
     type: 'module',
@@ -79,7 +80,7 @@ class EditorProfile extends code.DefaultEditorProfile {
         Player.registerProfile(this.outputProfile);
     }
     get creationPreviewProvider() {
-        return new code.CreationImagePreviewProvider({ width: 800, height: 600 }, 10, 10);
+        return new CreationImagePreviewProvider({ width: 800, height: 600 }, 10, 10);
     }
 }
 

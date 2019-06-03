@@ -1,6 +1,6 @@
 import { Blockly } from '@kano/kwc-blockly/blockly.js';
 
-const COLOR = '#ccdd1e';
+const COLOR = '#BEC61A';
 
 const ID = 'lists';
 
