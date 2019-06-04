@@ -1,3 +1,5 @@
+import { EventEmitter } from '@kano/common/index.js';
+
 export interface IDialogBaseOptions {
     [K : string] : any;
     fitInto? : HTMLElement;
@@ -15,6 +17,10 @@ export abstract class Base<T extends DialogElement> {
     protected fitInto : HTMLElement;
     protected overlayInto? : HTMLElement;
     public root : T;
+    private _onDidOpen = new EventEmitter();
+
+    get onDidOpen() { return this._onDidOpen.event; }
+
     constructor(opts : IDialogBaseOptions= {}) {
         this.fitInto = opts.fitInto || document.body;
         this.overlayInto = opts.overlayInto;
@@ -27,6 +33,9 @@ export abstract class Base<T extends DialogElement> {
             this.resetBackdropSizing();
         }
         this.root.open();
+        requestAnimationFrame(() => {
+            this._onDidOpen.fire();
+        });
     }
     close() {
         this.root.close();

@@ -6,6 +6,7 @@ import { flash } from './icons.js';
 export class FlashField extends Field  {
     private path? : SVGElement;
     private timeoutSub : IDisposable|null = null;
+    static get EDITABLE() { return false; }
     constructor(text : string) {
         super(text);
         this.height_ = 16;

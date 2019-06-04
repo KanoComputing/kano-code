@@ -1,23 +1,33 @@
 import { Plugin } from './plugin.js';
 import Editor from './editor.js';
-import { EventEmitter } from '@kano/common/index.js';
+import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
+import { IEditorWidget } from './widget/widget.js';
 
-export interface IFileDropTarget extends HTMLElement {
+export interface IFileDropOverlayProvider {
+    [K : string] : any;
     animateDragEnter() : void;
     animateDragLeave() : void;
     animateDrop() : void;
+    getDomNode() : HTMLElement;
 }
 
-class FileUpload extends Plugin {
+export interface IDroppedFile {
+    file : File;
+    content : string|ArrayBuffer;
+}
+
+export class FileUpload extends Plugin {
     private targetEl : HTMLElement;
-    private overlay : IFileDropTarget;
+    private overlayProvider : IFileDropOverlayProvider;
+    private overlay? : IEditorWidget;
     private editor? : Editor;
-    private _onDidUpload : EventEmitter<any> = new EventEmitter();
+    private _onDidUpload : EventEmitter<IDroppedFile> = new EventEmitter();
+    private currentTarget : EventTarget|null = null;
     get onDidUpload() { return this._onDidUpload.event; }
-    constructor(targetEl : HTMLElement, overlay : IFileDropTarget) {
+    constructor(targetEl : HTMLElement, overlayProvider : IFileDropOverlayProvider) {
         super();
         this.targetEl = targetEl;
-        this.overlay = overlay;
+        this.overlayProvider = overlayProvider;
 
         this._onDrop = this._onDrop.bind(this);
         this._onDragenter = this._onDragenter.bind(this);
@@ -28,6 +38,25 @@ class FileUpload extends Plugin {
     }
     onInject() {
         this._bindEvents();
+    }
+    addOverlay() {
+        if (this.overlay || !this.editor) {
+            return;
+        }
+        const domNode = this.overlayProvider.getDomNode();
+
+        domNode.style.left = '0px';
+        domNode.style.top = '0px';
+        domNode.style.width = '100%';
+        domNode.style.height = '100%';
+        domNode.style.pointerEvents = 'none';
+
+        this.overlay = {
+            getDomNode() { return domNode; },
+            getPosition() { return null; },
+        };
+
+        this.editor.addContentWidget(this.overlay);
     }
     stop() {
         this._unbindEvents();
@@ -49,35 +78,37 @@ class FileUpload extends Plugin {
         e.stopPropagation();
         e.dataTransfer.dropEffect = 'copy';
     }
-    _onDrop(e : any) {
+    _onDrop(e : DragEvent) {
         e.preventDefault();
         e.stopPropagation();
         if (this.editor) {
             this.editor.domNode.style.pointerEvents = 'initial';
         }
         this._animateDrop();
-        const { files } = e.dataTransfer;
+        const { files } = e.dataTransfer!;
         if (!files.length) {
             return;
         }
         const [file] = files;
         FileUpload._readFile(file)
             .then((content) => {
-                this._onFileDropped(content);
+                this._onFileDropped({ file, content });
             })
             .catch((err) => {
                 console.error(err);
             });
     }
-    _onFileDropped(content : any) {
-        this._onDidUpload.fire(content);
+    _onFileDropped(file : IDroppedFile) {
+        this._onDidUpload.fire(file);
     }
-    static _readFile(f : Blob) {
+    static _readFile(f : Blob) : Promise<string|ArrayBuffer> {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
 
             reader.onload = () => {
-                resolve(reader.result as string);
+                if (reader.result) {
+                    resolve(reader.result);
+                }
             };
 
             reader.onerror = reject;
@@ -85,38 +116,43 @@ class FileUpload extends Plugin {
             reader.readAsText(f);
         });
     }
-    _onDragenter(e : any) {
-        if (e.dataTransfer.effectAllowed === 'move') {
+    _onDragenter(e : DragEvent) {
+        this.currentTarget = e.target;
+        if (e.dataTransfer && e.dataTransfer.effectAllowed === 'move') {
             return;
-        }
-        if (this.editor) {
-            this.editor.domNode.style.pointerEvents = 'none';
         }
         this._animateDragEnter();
     }
-    _onDragleave() {
-        if (this.editor) {
-            this.editor.domNode.style.pointerEvents = 'initial';
+    _onDragleave(e : DragEvent) {
+        if (this.currentTarget !== e.target) {
+            return;
         }
+        this.currentTarget = null;
         this._animateDragLeave();
     }
     _animateDragEnter() {
-        if (!this.overlay) {
+        if (!this.overlayProvider) {
             return;
         }
-        this.overlay.animateDragEnter();
+        this.addOverlay();
+        this.overlayProvider.animateDragEnter();
     }
     _animateDragLeave() {
-        if (!this.overlay) {
+        if (!this.overlayProvider) {
             return;
         }
-        this.overlay.animateDragLeave();
+        this.overlayProvider.animateDragLeave();
     }
     _animateDrop() {
-        if (!this.overlay) {
+        if (!this.overlayProvider) {
             return;
         }
-        this.overlay.animateDrop();
+        this.overlayProvider.animateDrop();
+    }
+    onDispose() {
+        if (this.editor && this.overlay) {
+            this.editor.removeContentWidget(this.overlay);
+        }
     }
 }
 

@@ -23,7 +23,6 @@ export function transformLegacyButton(app : any) {
                 block.setAttribute('type', `${id}_color_set`);
                 LegacyUtil.renameValue(block, 'COLOUR', 'COLOR');
             });
-            LegacyUtil.transformEventBlock(root, `${id}.clicked`, `${id}_onClick`, 'CALLBACK');
         });
         const serializer = new XMLSerializer();
         app.source = serializer.serializeToString(root);

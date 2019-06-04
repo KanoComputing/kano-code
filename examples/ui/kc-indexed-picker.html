@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>kc-indexed-picker</title>
+    <style>
+        kc-indexed-picker {
+            max-height: 240px;
+        }
+    </style>
+</head>
+<body>
+    <script type="module">
+        import '../../dist/app/elements/kc-indexed-picker.js';
+        import '../../dist/app/lib/parts/parts/speaker/components/kc-sample-picker.js';
+        const el = document.createElement('kc-indexed-picker');
+
+        el.items = [{
+            id: 'animals',
+            label: 'Animals',
+            items: [
+                { id: 'croc', label: 'Crocodile', image: '/assets/part/stickers/animals/animal-crocodile.svg' },
+                { id: 'croc2', label: 'Crocodile', image: '/assets/part/stickers/animals/animal-crocodile.svg' },
+                { id: 'croc3', label: 'Crocodile', image: '/assets/part/stickers/animals/animal-crocodile.svg' },
+                { id: 'croc4', label: 'Crocodile', image: '/assets/part/stickers/animals/animal-crocodile.svg' },
+                { id: 'croc5', label: 'Crocodile', image: '/assets/part/stickers/animals/animal-crocodile.svg' },
+                { id: 'croc6', label: 'Crocodile', image: '/assets/part/stickers/animals/animal-crocodile.svg' },
+                { id: 'croc7', label: 'Crocodile', image: '/assets/part/stickers/animals/animal-crocodile.svg' },
+            ],
+        }, {
+            id: 'holidays',
+            label: 'Holidays',
+            items: [
+                { id: 'candle', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle2', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle3', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle4', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle5', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle6', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle7', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle8', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle9', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle10', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle11', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle12', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle13', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle14', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle15', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle16', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle17', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle18', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle19', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+                { id: 'candle20', label: 'Candle', image: '/assets/part/stickers/holidays/holidays-candle.svg' },
+            ],
+        }, {
+            id: 'food',
+            label: 'Food',
+            items: [
+                { id: 'food', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food2', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food3', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food4', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food5', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food6', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food7', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food8', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food9', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food10', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food11', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food12', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food13', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food14', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food15', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food16', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food17', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food18', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food19', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+                { id: 'food20', label: 'Tempura', image: '/assets/part/stickers/food/food-shrimp.svg' },
+            ],
+        }];
+
+        el.value = 'candle9';
+
+        document.body.appendChild(el);
+
+        const el2 = document.createElement('kc-sample-picker');
+
+        el2.items = [{
+            id: 'animals',
+            label: 'Animals',
+            items: [
+                { id: 'croc', label: 'Crocodile' },
+                { id: 'croc2', label: 'Crocodile' },
+                { id: 'croc3', label: 'Crocodile' },
+                { id: 'croc4', label: 'Crocodile' },
+                { id: 'croc5', label: 'Crocodile' },
+                { id: 'croc6', label: 'Crocodile' },
+                { id: 'croc7', label: 'Crocodile' },
+            ],
+        }, {
+            id: 'holidays',
+            label: 'Holidays',
+            items: [
+                { id: 'candle', label: 'Candle' },
+                { id: 'candle2', label: 'Candle' },
+                { id: 'candle3', label: 'Candle' },
+                { id: 'candle4', label: 'Candle' },
+                { id: 'candle5', label: 'Candle' },
+                { id: 'candle6', label: 'Candle' },
+                { id: 'candle7', label: 'Candle' },
+                { id: 'candle8', label: 'Candle' },
+                { id: 'candle9', label: 'Candle' },
+                { id: 'candle10', label: 'Candle' },
+                { id: 'candle11', label: 'Candle' },
+                { id: 'candle12', label: 'Candle' },
+                { id: 'candle13', label: 'Candle' },
+                { id: 'candle14', label: 'Candle' },
+                { id: 'candle15', label: 'Candle' },
+                { id: 'candle16', label: 'Candle' },
+                { id: 'candle17', label: 'Candle' },
+                { id: 'candle18', label: 'Candle' },
+                { id: 'candle19', label: 'Candle' },
+                { id: 'candle20', label: 'Candle' },
+            ],
+        }, {
+            id: 'food',
+            label: 'Food',
+            items: [
+                { id: 'food', label: 'Tempura' },
+                { id: 'food2', label: 'Tempura' },
+                { id: 'food3', label: 'Tempura' },
+                { id: 'food4', label: 'Tempura' },
+                { id: 'food5', label: 'Tempura' },
+                { id: 'food6', label: 'Tempura' },
+                { id: 'food7', label: 'Tempura' },
+                { id: 'food8', label: 'Tempura' },
+                { id: 'food9', label: 'Tempura' },
+                { id: 'food10', label: 'Tempura' },
+                { id: 'food11', label: 'Tempura' },
+                { id: 'food12', label: 'Tempura' },
+                { id: 'food13', label: 'Tempura' },
+                { id: 'food14', label: 'Tempura' },
+                { id: 'food15', label: 'Tempura' },
+                { id: 'food16', label: 'Tempura' },
+                { id: 'food17', label: 'Tempura' },
+                { id: 'food18', label: 'Tempura' },
+                { id: 'food19', label: 'Tempura' },
+                { id: 'food20', label: 'Tempura' },
+            ],
+        }];
+
+        el2.value = 'candle9';
+
+        document.body.appendChild(el2);
+    </script>
+</body>
+</html>

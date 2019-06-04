@@ -12,9 +12,8 @@ import { Output } from '../output/output.js';
 import { ActivityBar } from './activity-bar.js';
 import { WorkspaceToolbar } from './workspace/toolbar.js';
 import { EditorPartsManager } from '../parts/editor.js';
-import { BlocklySourceEditor } from './source-editor/blockly.js';
 import { transformLegacyApp } from '../legacy/loader.js';
-import { SourceEditor } from './source-editor/source-editor.js';
+import { SourceEditor, getSourceEditor } from '../source-editor/source-editor.js';
 import { Plugin } from './plugin.js';
 import EditorProfile, { DefaultEditorProfile } from './profile.js';
 import { CreationCustomPreviewProvider } from '../creation/creation-preview-provider.js';
@@ -26,6 +25,13 @@ import { IEditorWidget } from './widget/widget.js';
 import { QueryEngine, IQueryResult } from './selector/selector.js';
 import { ContentWidgets } from './widget/content-widgets.js';
 import { KanoAppEditor } from '../../elements/kano-app-editor/kano-app-editor.js';
+import { FileUpload } from './file-upload.js';
+import { defaultDropOverlayProvider } from './file-drop-provider.js';
+import { extname } from '../util/path.js';
+import './loader/kcode.js';
+import { FileLoaders } from './loader/loader.js';
+import { aliasTagHandlerFactory } from './selector/alias.js';
+import { toDisposable } from '@kano/common/index.js';
 
 declare global {
     interface Window {
@@ -40,7 +46,7 @@ window.Kano = window.Kano || {};
 window.Kano.Code = window.Kano.Code || {};
 
 export interface IEditorOptions {
-    sourceType? : 'blockly'|'code';
+    sourceType? : string;
     mediaPath? : string;
     blockly? : any;
 }
@@ -64,7 +70,7 @@ export class Editor extends EditorOrPlayer {
     /**
      * The type of source for this editor. Defines what type of source editor will be provided to the user
      */
-    public sourceType : 'blockly'|'code' = 'blockly';
+    public sourceType : string = 'blockly';
     /**
      * The output being driven by this editor
      */
@@ -102,6 +108,10 @@ export class Editor extends EditorOrPlayer {
      */
     public parts : EditorPartsManager;
     /**
+     * The file upload plugin manages files droppped onto the editor
+     */
+    public fileUpload : FileUpload;
+    /**
      * API for the editor's activity bar
      */
     public activityBar : ActivityBar = new ActivityBar();
@@ -109,7 +119,6 @@ export class Editor extends EditorOrPlayer {
      * Whether the editor is part of a DOM tree right now
      */
     public injected : boolean = false;
-    private _registeredEvents : string[] = [];
     private _mediaPath : string = '';
     private _queuedApp : string|null = null;
     /**
@@ -123,10 +132,11 @@ export class Editor extends EditorOrPlayer {
     public creationPreviewProvider? : CreationCustomPreviewProvider;
     public creationStorageProvider? : CreationStorageProvider;
     public queryEngine : QueryEngine = new QueryEngine();
+    private selectorAliases : Map<string, string> = new Map();
     /**
      * Apis to control the content widgets displayed in the editor
      */
-    private contentWidgets? : ContentWidgets;
+    public contentWidgets? : ContentWidgets;
 
     // Events
     private _onDidReset : EventEmitter = new EventEmitter();
@@ -168,14 +178,22 @@ export class Editor extends EditorOrPlayer {
         this.sourceType = opts.sourceType || 'blockly';
         this._setupMediaPath(opts.mediaPath);
 
-        // No support for dynamic editor yet
-        if (this.sourceType === 'blockly') {
+        const SourceEditorClass = getSourceEditor(this.sourceType);
+
+        if (!SourceEditorClass) {
+            throw new Error(`Could not create Editor: Source editor '${this.sourceType}' was not registered. Make sure your import an editor from @kano/code/source-editor`);
         }
-        this.sourceEditor = new BlocklySourceEditor(this);
+
+        this.sourceEditor = new SourceEditorClass(this);
         this.sourceEditor.onDidCodeChange((code) => {
             this.setCode(code);
         });
+        this.sourceEditor.onDidLayout(() => this._onDidLayoutChange.fire());
         this.sourceEditor.registerQueryHandlers(this.queryEngine);
+        
+        this.dialogs.onDidLayout(() => this._onDidLayoutChange.fire());
+
+        this.queryEngine.registerTagHandler('alias', aliasTagHandlerFactory(this.queryEngine, this.selectorAliases));
 
         this.addPlugin(this.workspaceToolbar);
         this.addPlugin(this.dialogs);
@@ -183,6 +201,24 @@ export class Editor extends EditorOrPlayer {
         this.addPlugin(this.toolbox);
         this.addPlugin(this.creation);
         this.addPlugin(this.activityBar);
+
+
+        this.fileUpload = new FileUpload(this.domNode, defaultDropOverlayProvider);
+
+        this.fileUpload.onDidUpload((f) => {
+            const extension = extname(f.file.name);
+            if (!extension) {
+                return;
+            }
+            const loader = FileLoaders.get(extension);
+            if (!loader) {
+                this.logger.warn(`Could not load file '${f.file.name}': Not file loader exists for extension '${extension}'`);
+                return;
+            }
+            loader.load(this, f.content.toString());
+        });
+
+        this.addPlugin(this.fileUpload);
 
         this.toolbox.registerQueryHandlers(this.queryEngine);
 
@@ -214,8 +250,10 @@ export class Editor extends EditorOrPlayer {
         }
     }
     protected appendSourceEditor() {
-        if (this.domNode && this.domNode.sourceContainer) {
-            this.domNode.sourceContainer.appendChild(this.sourceEditor.domNode);
+        if (this.domNode) {
+            this.sourceEditor.domNode.setAttribute('slot', 'source-editor');
+            this.sourceEditor.domNode.style.flex = '1';
+            this.domNode.appendChild(this.sourceEditor.domNode);
         }
     }
     protected ensureProfile() {
@@ -232,32 +270,33 @@ export class Editor extends EditorOrPlayer {
         if (this.injected) {
             return;
         }
-        this.ensureProfile();
         this.injected = true;
+        this.ensureProfile();
         if (before) {
             element.insertBefore(this.domNode, before);
         } else {
             element.appendChild(this.domNode);
         }
-        this.domNode.updateComplete.then(() => {
-            this.appendSourceEditor();
-            this.appendWorkspaceView();
-            this.output.onInject();
-            if (this.workspaceProvider) {
-                this.workspaceProvider.onInject();
-            }
-            this.parts.onInject();
-            this.contentWidgets = new ContentWidgets(this, (this.domNode as any).widgetLayer);
-            this.runPluginTask('onInject');
-            this.telemetry.trackEvent({ name: 'ide_opened' });
-            if (this._queuedApp) {
-                this.load(this._queuedApp);
-                this._queuedApp = null;
-            } else {
-                this.reset(false);
-            }
-            this._onDidInject.fire();
-        });
+        // Force a synchronous component update. No performance implications as it is about to render anyway
+        // Makes inject a synchronous method. Way easier to handle injection 
+        (this.domNode as any).update();
+        this.appendSourceEditor();
+        this.appendWorkspaceView();
+        this.output.onInject();
+        if (this.workspaceProvider) {
+            this.workspaceProvider.onInject();
+        }
+        this.parts.onInject();
+        this.contentWidgets = new ContentWidgets(this, (this.domNode as any).widgetLayer);
+        this.runPluginTask('onInject');
+        this.telemetry.trackEvent({ name: 'ide_opened' });
+        if (this._queuedApp) {
+            this.load(this._queuedApp);
+            this._queuedApp = null;
+        } else {
+            this.reset(false);
+        }
+        this._onDidInject.fire();
     }
     /**
      * Gets rid of this editor. Free any allocated resources and remove the editor from the DOM if it was injected
@@ -275,6 +314,7 @@ export class Editor extends EditorOrPlayer {
             window.Kano.Code.mainEditor = null;
         }
         this.telemetry.trackEvent({ name: 'ide_exited' });
+        this.dialogs.dispose();
     }
     /**
      * Load a previously saved app
@@ -286,6 +326,7 @@ export class Editor extends EditorOrPlayer {
             this._queuedApp = safeApp;
             return;
         }
+        this.setCode();
         this.parts.reset();
         this.runPluginTask('onImport', safeApp);
         this.output.runPluginTask('onImport', safeApp);
@@ -553,6 +594,18 @@ export class Editor extends EditorOrPlayer {
      */
     querySelector(selector : string) {
         return this.queryEngine.query(selector);
+    }
+    /**
+     * Adds a method to the editor for develpoment convenience
+     */
+    exposeMethod(name : string, method : Function) {
+        (this as any)[name] = method;
+    }
+    registerAlias(alias : string, target : string) {
+        this.selectorAliases.set(alias, target);
+        return toDisposable(() => {
+            this.selectorAliases.delete(alias);
+        });
     }
 }
 

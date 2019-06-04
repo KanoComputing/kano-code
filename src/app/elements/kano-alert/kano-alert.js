@@ -165,9 +165,9 @@ export class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElem
                 duration: 200,
                 easing: 'ease-in',
                 fill: 'both',
-            }).finished.then(() => {
+            }).onfinish = () => {
                 super.close();
-            });
+            };
         } else {
             super.close();
         }

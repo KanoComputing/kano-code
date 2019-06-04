@@ -13,9 +13,6 @@ export const setters = [{
             }],
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                COLOR: '<shadow type="colour_picker"><field name="COLOUR">#000</field></shadow>',
-            },
         };
     },
     javascript: () => {
@@ -57,10 +54,6 @@ export const setters = [{
             }],
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'COLOR': `<shadow type="colour_picker"><field name="COLOUR">#000</field></shadow>`,
-                'SIZE': `<shadow type="math_number"><field name="NUM">1</field></shadow>`
-            }
         };
     },
     javascript: () => {

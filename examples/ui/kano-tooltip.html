@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tooltips</title>
+    <style>
+        html, body {
+            background: lightblue;
+        }
+        body {
+            padding: 64px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .target {
+            width: 100px;
+            height: 100px;
+            border: 1px solid yellowgreen;
+            margin: 48px 48px 64px;
+        }
+        .target.large {
+            width: 240px;
+            height: 240px;
+        }
+        .target.small {
+            height: 60px;
+        }
+        :root {
+            --kano-tooltip-border-color: grey;
+        }
+        kano-tooltip>* {
+            padding: 16px;
+        }
+    </style>
+    <script type="module" src="../../dist/app/elements/kano-tooltip/kano-tooltip.js"></script>
+</head>
+<body>
+    <div id="first" class="target"></div>
+    <div id="second" class="target"></div>
+    <div id="third" class="target"></div>
+    <div id="fourth" class="target"></div>
+    <div id="fifth" class="target small"></div>
+    <div id="sixth" class="target large"></div>
+    <div id="seventh" class="target large"></div>
+    <kano-tooltip data-target="first" position="top">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="second" position="left">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="third" position="bottom">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="second" position="right">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="fourth" position="top" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="fourth" position="bottom" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="fifth" position="right" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="fifth" position="left" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="sixth" position="top" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="sixth" position="bottom" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="seventh" position="right" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <kano-tooltip data-target="seventh" position="left" caret="start">
+        <div>Loerm lol not so <br/> much ipsum are we?<br/>Fancy dongle you got there</div>
+    </kano-tooltip>
+    <script type="module">
+        const tooltips = [...document.querySelectorAll('kano-tooltip')];
+        tooltips.forEach((t) => {
+            const target = document.querySelector(`#${t.dataset.target}`);
+            t.target = target;
+            t.offset = 0;
+            t.open();
+        });
+    </script>
+</body>
+</html>

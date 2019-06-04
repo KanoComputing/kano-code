@@ -55,6 +55,7 @@ const category = {
 export const DrawAPI = {
     type: 'blockly',
     id: DrawModule.id,
+    name: DrawModule.id,
     typeScriptDefinition: `
         declare namespace draw {}
     `,
@@ -81,7 +82,57 @@ export const DrawAPI = {
         });
     },
     category,
-    defaults: {},
+    defaults: {
+        draw_set_background_color: {
+            COLOR: '#ffffff',
+        },
+        draw_set_transparency: {
+            ALPHA: 100,
+        },
+        draw_line_to: {
+            X: 5,
+            Y: 5,
+        },
+        draw_line: {
+            X: 5,
+            Y: 5,
+        },
+        draw_color: {
+            COLOR: '#000',
+        },
+        draw_stroke: {
+            COLOR: '#000',
+            SIZE: 1,
+        },
+        draw_circle: {
+            RADIUS: 5,
+        },
+        draw_ellipse: {
+            RADIUSX: 5,
+            RADIUSY: 5,
+        },
+        draw_square: {
+            SIZE: 5,
+        },
+        draw_rectangle: {
+            WIDTH: 5,
+            HEIGHT: 5,
+        },
+        draw_arc: {
+            RADIUS: 5,
+            START: 0,
+            END: 1,
+            CLOSE: true,
+        },
+        draw_move_to: {
+            X: 5,
+            Y: 5,
+        },
+        draw_move: {
+            X: 5,
+            Y: 5,
+        },
+    },
 };
 
 export default DrawAPI;

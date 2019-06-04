@@ -99,6 +99,7 @@ interface ITooltipElement extends HTMLElement {
     offset? : number;
     autoClose? : boolean;
     target? : HTMLElement;
+    caret? : string;
     updatePosition() : void;
     open(e : any) : void;
 }
@@ -120,6 +121,7 @@ export class ActivityBarTooltipEntry extends ActivityBarEntry {
     onWillInject(container : HTMLElement) {
         this._tooltip = document.createElement('kano-tooltip') as ITooltipElement;
         this._tooltip.position = this._position;
+        this._tooltip.caret = 'start';
         this._tooltip.offset = this._offset;
         this._tooltip.autoClose = true;
         this._tooltip.appendChild(this._contents);

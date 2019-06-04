@@ -30,20 +30,6 @@ export class General {
         color = Utils.parseColor(color);
         this.session.ctx.canvas.style.backgroundColor = color;
         this.session.settings.bg = color;
-        // TODO
-        // The background of the canvas is set in CSS and when we make an image from canvas
-        // it does not render with the background colour.
-        // To add the background colour into the canvas in order to save as an image use something like this:
-
-        // let width = this.session.width * this.session.ratio,
-        //     height = this.session.height * this.session.ratio;
-        // const bgColor = this.session.settings.bg;
-        // this.session.ctx.globalCompositeOperation = 'destination-over';
-        // this.session.ctx.fillStyle = this.session.settings.bg;
-        // this.session.ctx.beginPath();
-        // this.session.ctx.rect(0, 0, width, height);
-        // this.session.ctx.closePath();
-        // this.session.ctx.fill();
     }
     /*
     * Reset this.session settings to default and clear the stage

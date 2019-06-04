@@ -1,11 +1,11 @@
-import { Field, BlockSvg, goog, utils } from '@kano/kwc-blockly/blockly.js';
+import { Field, goog, utils, WorkspaceSvg, Workspace } from '@kano/kwc-blockly/blockly.js';
 import { EventEmitter, IDisposable, subscribeDOM } from '@kano/common/index.js';
 
 let id = 0;
 
 const map = new Map();
 
-let added = false;
+const addedStyles = new WeakSet<Workspace>();
 
 export type ISequenceConfig = boolean[];
 
@@ -96,7 +96,7 @@ export class FieldSequence extends Field {
             this.cells.push(step);
             // Closure to keep the value of the index
             ((stepIndex) => {
-                const listener = subscribeDOM(step, 'mousedown', () => {
+                const listener = subscribeDOM(step, 'pointerdown', () => {
                     this._steps[stepIndex] = !this._steps[stepIndex];
                     this._onDidChangeSteps.fire(this._steps);
                     this.render_();
@@ -110,11 +110,27 @@ export class FieldSequence extends Field {
         }
     }   
     addStyles() {
-        if (added || !this.sourceBlock_) {
+        if (!this.sourceBlock_) {
             return;
         }
+        const workspace = this.sourceBlock_.workspace;
+        if (addedStyles.has(workspace)) {
+            return;
+        }
+
+        // TODO: Get rid of this once kwc-blockly's toolbox define the componentRoot properly
+        function getParent(workspace : WorkspaceSvg) {
+            const root = workspace.getParentSvg();
+            function next(el : HTMLElement|SVGElement) : HTMLElement {
+                if (!el.parentElement) {
+                    return el as HTMLElement;
+                }
+                return next(el.parentElement);
+            }
+            return next(root);
+        }
     
-        const parent = this.sourceBlock_.workspace.componentRoot_;
+        const parent = workspace.componentRoot_ || getParent(workspace as WorkspaceSvg);
         const style = document.createElement('style');
         style.innerHTML = `
             .blocklyFieldStep {
@@ -142,7 +158,7 @@ export class FieldSequence extends Field {
         }
     
         parent.appendChild(style);
-        added = true;
+        addedStyles.add(workspace);
     }
     init() {
         if (this.fieldGroup_) {

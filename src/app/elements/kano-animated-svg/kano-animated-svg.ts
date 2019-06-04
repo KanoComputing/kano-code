@@ -53,17 +53,16 @@ export class KanoAnimatedSvg extends LitElement {
         `];
     }
     render() {
+        const pathData = (this.paths && this.selected) ? this.paths[this.selected] : "";
         return html`
             <svg xmlns="http://www.w3.org/2000/svg" id="svg">
-                <path id="path" class="animatable"></path>
+                <path id="path" class="animatable" d=${pathData}></path>
             </svg>
         `;
     }
     updated(changes : Map<string, unknown>) {
         if (changes.has('width') || changes.has('height')) {
             this.updateViewBox();
-        } else if (changes.has('paths') || changes.has('selected')) {
-            this.updatePath();
         }
     }
     updateViewBox() {
@@ -73,11 +72,5 @@ export class KanoAnimatedSvg extends LitElement {
         this.svgEl.setAttribute('width', this.width.toString());
         this.svgEl.setAttribute('height', this.height.toString());
         this.svgEl.setAttribute('viewBox', `0 0 ${this.width} ${this.height}`);
-    }
-    updatePath () {
-        if (!this.pathEl || !this.selected) {
-            return;
-        }
-        this.pathEl.setAttribute('d', this.paths[this.selected] || '');
     }
 }

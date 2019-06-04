@@ -23,7 +23,7 @@ flex-direction: column;
                 width: 552px;
                 min-width: 340px;
                 border-radius: 6px;
-                border: 1px solid #202428;
+                border: 1px solid var(--kc-border-color);
             }
             #container {
                 display: flex;

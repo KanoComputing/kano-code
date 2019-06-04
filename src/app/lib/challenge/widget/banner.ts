@@ -1,92 +1,101 @@
-import Editor from '../../editor/editor.js';
 import { KCEditorBanner } from '../../../elements/kano-editor-banner/kano-editor-banner.js';
-import { IEditorWidget } from '../../editor/widget/widget.js';
-import { BlocklySourceEditor } from '../../editor/source-editor/blockly.js';
-import { Blockly } from '@kano/kwc-blockly/blockly.js';
-import { EventEmitter, subscribeDOM } from '@kano/common/index.js';
+import { EventEmitter, subscribeDOM, IEvent } from '@kano/common/index.js';
 import 'twemoji-min/2/twemoji.min.js';
+import { BlocklyEditorBannerWidget } from '../../widget/blockly-banner.js';
 
 export interface IBannerData {
     text : string;
     nextButton : boolean;
 }
 
-export class BannerWidget implements IEditorWidget {
-    private editor : Editor;
-    private domNode? : HTMLElement;
+export interface IBannerButton {
+    dispose() : void;
+    onDidClick : IEvent<void>;
+}
+
+export class BannerWidget extends BlocklyEditorBannerWidget {
     private bannerEl? : KCEditorBanner;
-    private workspaceListener? : (e : any) => void;
-    private _onDidClick : EventEmitter = new EventEmitter();
-    get onDidClick() { return this._onDidClick.event; }
-    constructor(editor : Editor) {
-        this.editor = editor;
-    }
+    private buttons : IBannerButton[] = [];
     getDomNode() {
-        if (!this.domNode) {
-            this.domNode = document.createElement('div');
-            this.domNode.style.padding = '16px';
-            this.domNode.style.display = 'flex';
-            this.domNode.style.flexDirection = 'column';
-            this.domNode.style.alignItems = 'center';
-            this.domNode.style.boxSizing = 'border-box';
-            this.domNode.style.pointerEvents = 'none';
+        const domNode = super.getDomNode();
+        if (!this.bannerEl) {
             this.bannerEl = new KCEditorBanner();
             this.bannerEl.style.width = '512px';
             this.bannerEl.style.maxWidth = '512px';
             this.bannerEl.style.pointerEvents = 'all';
-            this.domNode.appendChild(this.bannerEl);
-            subscribeDOM(this.bannerEl, 'button-clicked', () => this._onDidClick.fire());
+            domNode.appendChild(this.bannerEl);
         }
-        return this.domNode;
+        return domNode;
     }
-    getPosition() {
-        return null;
-    }
-    getWorkspace() {
-        return (this.editor.sourceEditor as BlocklySourceEditor).getWorkspace();
-    }
-    layout() {
-        if (this.editor.sourceType !== 'blockly') {
-            return;
-        }
-        const domNode = this.getDomNode();
-        const workspace = this.getWorkspace();
-        const metrics = workspace.getMetrics();
-        const flyout = workspace.getFlyout_();
-        const width = workspace.toolbox_ && !workspace.toolbox_.opened ? metrics.toolboxWidth : flyout.getWidth() + 35;
-        const bannerWidth = (metrics.viewWidth + metrics.toolboxWidth) - width;
-        domNode.style.left = `${width}px`;
-        domNode.style.top = '0px';
-        domNode.style.width = `${bannerWidth}px`;
-        domNode.style.maxWidth = `${bannerWidth}px`;
-    }
-    show() {
-        const workspace = this.getWorkspace();
-        this.editor.addContentWidget(this);
-        this.workspaceListener = workspace.addChangeListener((e : any) => {
-            if ([Blockly.Events.OPEN_FLYOUT, Blockly.Events.CLOSE_FLYOUT].indexOf(e.type) === -1) {
-                return;
-            }
-            setTimeout(() => {
-                this.layout();
-            });
-        });
-        this.layout();
-    }
-    hide() {
-        const workspace = this.getWorkspace();
-        workspace.removeChangeListener(this.workspaceListener!);
-        this.editor.removeContentWidget(this);
-    }
-    setData(data : IBannerData) {
+    getBannerEl() {
         if (!this.bannerEl) {
             this.getDomNode();
         }
-        this.bannerEl!.text = window.twemoji.parse(data.text);
-        this.bannerEl!.buttonState = data.nextButton ? 'active' : 'inactive';
+        return this.bannerEl!;
+    }
+    setText(text : string) {
+        const bannerEl = this.getBannerEl();
+        bannerEl.text = window.twemoji.parse(text);
+    }
+    setProgress(progress : number) {
+        const bannerEl = this.getBannerEl();
+        bannerEl.progress = progress;
+    }
+    setIconNode(node : HTMLElement|null) {
+        const bannerEl = this.getBannerEl();
+        const prevNode = bannerEl.querySelector('[slot="progress"]');
+        if (prevNode) {
+            prevNode.remove();
+        }
+        if (!node) {
+            return;
+        }
+        node.slot = 'progress';
+        bannerEl.appendChild(node);
+    }
+    addButton(text : string, primary = false) {
+        const bannerEl = this.getBannerEl();
+        const el = document.createElement('button');
+        el.textContent = text;
+        el.slot = 'actions';
+        el.classList.add('btn');
+        if (!primary) {
+            el.classList.add('secondary');
+        }
+
+        bannerEl.appendChild(el);
+
+        const emitter = new EventEmitter();
+
+        const sub = subscribeDOM(el, 'click', () => emitter.fire());
+
+        const button = {
+            dispose: () => {
+                el.remove();
+                emitter.dispose();
+                sub.dispose();
+            },
+            onDidClick: emitter.event,
+        };
+
+        return button;
+    }
+    hide() {
+        const domNode = this.getDomNode();
+        domNode.style.display = 'none';
+    }
+    show() {
+        const bannerEl = this.getBannerEl();
+        const domNode = this.getDomNode();
+        domNode.style.display = 'flex';
+        bannerEl.classList.remove('animate');
+        // This makes sure the class is added next frame and the CSS engine takes it in account
+        requestAnimationFrame(() => {
+            bannerEl.classList.add('animate');
+        });
     }
     dispose() {
-        this.hide();
-        this._onDidClick.dispose();
+        this.buttons.forEach(b => b.dispose());
+        this.buttons.length = 0;
     }
 }

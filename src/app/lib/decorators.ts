@@ -65,19 +65,19 @@ export function throttle(delay: number, immediate: boolean = false) {
 
 
 export function debounce(delay: number) {
-    return (target: any, key: string, descriptor: any) => {
+    return (target : any, key : string, descriptor : any) => {
         if (!descriptor) {
             return;
         }
         return {
             configurable: true,
             enumerable: descriptor.enumerable,
-            get: function getter(this: any) {
+            get: function getter(this : any) {
                 // Attach this function to the instance (not the class)
                 Object.defineProperty(this, key, {
                     configurable: true,
                     enumerable: descriptor.enumerable,
-                    value: deb(descriptor.value, delay),
+                    value: deb(descriptor.value.bind(this), delay),
                 });
                 return this[key];
             },

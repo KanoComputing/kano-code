@@ -4,6 +4,7 @@ import { StickerPart } from './sticker.js';
 import { TransformAPI, onTransformInstall } from '../transform/api.js';
 import { getter, random, randomFrom } from './common.js';
 import { Editor } from '../../../editor/editor.js';
+import MetaModule from '../../../meta-api/module.js';
 
 export const StickerAPI : IPartAPI = {
     type: StickerPart.type,
@@ -18,8 +19,8 @@ export const StickerAPI : IPartAPI = {
         returnType: 'Sticker',
         default: StickerPart.defaultSticker,
         blockly: {
-            shadow(def : string) {
-                return `<shadow type="sticker_getSticker"><field name="STICKER">${StickerPart.defaultSticker}</field></shadow>`;
+            shadow(def : string, m : MetaModule) {
+                return `<shadow type="${m.def.name}_getSticker"><field name="STICKER">${StickerPart.defaultSticker}</field></shadow>`;
             },
         },
     }, random, randomFrom, ...TransformAPI, getter],

@@ -42,6 +42,9 @@ export class EditorPartsManager {
     getRegisteredParts() {
         return this.editor.output.parts.getRegisteredParts();
     }
+    getAddedParts() {
+        return this.parts;
+    }
     setWhitelist(whitelist : IToolboxWhitelist) {
         this.whitelist = whitelist;
         if (!this.editor.workspaceView) {

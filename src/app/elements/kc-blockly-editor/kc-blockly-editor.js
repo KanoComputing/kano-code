@@ -30,6 +30,7 @@ class KCBlocklyEditor extends PolymerElement {
             :host kwc-blockly {
                 --kwc-blockly-toolbox: {
                     background: var(--kc-secondary-color);
+                    border-right: 2px solid var(--kc-border-color);
                 };
             }
             [hidden] {
@@ -65,7 +66,6 @@ class KCBlocklyEditor extends PolymerElement {
             },
             blocks: {
                 type: String,
-                observer: 'blocksChanged',
             },
             flyoutMode: {
                 type: Boolean,
@@ -89,8 +89,8 @@ class KCBlocklyEditor extends PolymerElement {
     _onCodeChanged(e) {
         this.dispatchEvent(new CustomEvent('code-changed', { detail: { value: e.detail.value } }));
     }
-    blocksChanged() {
-        this.$['code-editor'].loadBlocks(this.blocks);
+    loadBlocks(xmlString) {
+        this.$['code-editor'].loadBlocks(xmlString);
     }
     _onBlocklyChanged(e) {
         // Check if a create event follows a close-flyout event. If so, do not notify

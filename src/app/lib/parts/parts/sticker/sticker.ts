@@ -1,17 +1,12 @@
-import { part, property, component } from '../../decorators.js';
+import { part, component } from '../../decorators.js';
 import { DOMPart } from '../dom/dom.js';
-import { PartComponent } from '../../component.js';
-import { Sticker } from './types.js';
 import { stickers } from './data.js';
 import Output from '../../../output/output.js';
 import { join } from '../../../util/path.js';
+import { transformLegacySticker } from './legacy.js';
+import { StickerComponent } from './sticker-component.js';
 
 const all = stickers.reduce<{ [K : string] : string }>((acc, item) => Object.assign(acc, item.stickers), {});
-
-class StickerComponent extends PartComponent {
-    @property({ type: Sticker, value: () => new Sticker(StickerPart.defaultSticker) })
-    public image : Sticker = new Sticker(StickerPart.defaultSticker);
-}
 
 const ASSET_URL_PREFIX_KEY = 'sticker:base-url';
 
@@ -19,6 +14,9 @@ const ASSET_URL_PREFIX_KEY = 'sticker:base-url';
 export class StickerPart extends DOMPart<HTMLDivElement> {
     @component(StickerComponent)
     public core : StickerComponent;
+    static transformLegacy(app : any) {
+        transformLegacySticker(app);
+    }
     static get items() { return stickers; }
     static resolve(item : string) {
         const prefix = Output.config.get(ASSET_URL_PREFIX_KEY, '/assets/part/stickers/');
@@ -37,6 +35,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         el.style.backgroundSize = 'contain';
         el.style.backgroundRepeat = 'no-repeat';
         el.style.backgroundPosition = 'center';
+        el.title = 'sticker';
         return el;
     }
     render() {
@@ -50,6 +49,27 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
             this._el.style.backgroundImage = `url(${StickerPart.resolve(all[sticker])})`;
         }
         this.core.apply();
+    }
+    renderComponents(ctx: CanvasRenderingContext2D) : Promise<void> {
+        const transform = this._components.get('transform');
+        let url = '';
+        if (transform) {
+            this.applyTransform(ctx);
+        }
+        const sticker = this.core.image.get();
+        if (sticker && all[sticker]) {
+            url = StickerPart.resolve(all[sticker]);
+        }
+        const imageLoaded = new Promise((res) => {
+            const img = new Image();
+            img.onload = () => {
+                this._components.forEach(component => component.render(ctx, img));
+                this.resetTransform(ctx);
+                res();
+            }
+            img.src = url;
+        }) as Promise<void>;
+        return imageLoaded;
     }
     set image(id : string) {
         this.core.image.set(id);

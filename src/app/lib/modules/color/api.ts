@@ -5,21 +5,23 @@ const COLOR = '#88c440';
 
 const ID = 'color';
 
+const colorFormats = [
+    ['RGB', 'rgb'],
+    ['HSV', 'hsv'],
+];
+
 export const ColorAPI = {
     type: 'blockly',
     id: ID,
     name: ID,
     typeScriptDefinition: `
-        declare namespace colour {
-            declare enum type {
-                RGB: 'rgb',
-                HSV: 'hsv'
-            }
-            declare function random(): string;
-            declare function create(type: color.type, a: number, b: number, c: number): string;
-            declare function lerp(from: number, to: number, percent: number): string;
-        }
-    `,
+const color = {
+    random() : string;
+    create(type : 'rgb', r : number, g : number, b : number) : string;
+    create(type : 'hsv', h : number, s : number, v : number) : string;
+    lerp(from : number, to : number, percent : number) : string;
+};
+`,
     register(Blockly : Blockly) {
         Blockly.Blocks.random_colour = {
             init() {
@@ -52,12 +54,7 @@ export const ColorAPI = {
                 },
             },
             init() {
-                const PROPERTIES = [
-                    ['RGB', 'rgb'],
-                    ['HSV', 'hsv'],
-                ];
-
-                const dropdown = new Blockly.FieldDropdown(PROPERTIES, function (this : Field, option : any) {
+                const dropdown = new Blockly.FieldDropdown(colorFormats, function (this : Field, option : any) {
                     (this.sourceBlock_ as any).updateShape_(option);
                 });
 
@@ -168,11 +165,19 @@ export const ColorAPI = {
         },
         create_color: {
             TYPE: 'rgb',
+            '1': 0,
+            '2': 0,
+            '3': 0,
         },
         color_lerp: {
             FROM: '#000000',
             TO: '#ffffff',
             PERCENT: 50,
+        },
+    },
+    labels: {
+        create_color: {
+            TYPE: colorFormats,
         },
     },
 };

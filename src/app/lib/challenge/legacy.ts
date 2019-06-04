@@ -1,8 +1,8 @@
 import { utils } from '@kano/kwc-blockly/blockly.js';
 
-const idMap : Map<string, string> = new Map();
+let idMap : Map<string, string> = new Map();
 
-const blockAliases : { [K : string] : any } = {};
+let blockAliases : { [K : string] : any } = {};
 
 const partBlocks : { [K : string] : any } = {
     mouse: {
@@ -25,6 +25,10 @@ const partBlocks : { [K : string] : any } = {
     },
     speaker: {
         speaker_sample: 'getSample',
+        speaker_play: 'play',
+        speaker_loop: 'loop',
+        speaker_volume_set: 'volume_set',
+        speaker_pitch_set: 'pitch_set',
     },
 };
 
@@ -71,6 +75,8 @@ function transformLocation(location : any) {
         if (location.startsWith('parts-panel-')) {
             const partId = location.replace('parts-panel-', '');
             return `part.${partId}`;
+        } else if (location === 'banner-button') {
+            return 'banner-button';
         }
         return location;
     } else if (typeof location.category === 'string') {
@@ -214,10 +220,10 @@ function transformConnection(location : any, target : string) : string|null {
 }
 
 function transformBeacon(data : any) {
-    if (typeof data.target) {
+    if (data.target) {
         return `${transformLocation(data.target)}:100,50`;
     }
-    return null;
+    return data;
 }
 
 function transformPhantomBlock(data : any) {
@@ -246,23 +252,21 @@ export function transformTooltips(step : any, tooltips : any[]) {
     if (!tooltips.length) {
         return tooltips;
     }
-    const [tooltip] = tooltips;
-    if (!tooltip.location) {
-        return;
-    }
-    let selector;
-    // Ignore some location selectors
-    if (tooltip.location !== 'workspace-panel' && !step.beacon) {
-        selector = transformLocation(tooltip.location);
-        if (tooltip.position) {
-            selector += positionMap[tooltip.position];
+    return tooltips.map((tooltip) => {
+        if (!tooltip.location) {
+            return;
         }
-        step.beacon = selector;
-    }
-    if (tooltip.text) {
-        step.banner = tooltip.text;
-    }
-    return;
+        let selector;
+        // Ignore some location selectors
+        if (tooltip.location !== 'workspace-panel') {
+            selector = transformLocation(tooltip.location);
+            if (tooltip.position) {
+                selector += positionMap[tooltip.position];
+            }
+        }
+        tooltip.target = selector;
+        return tooltip;
+    });
 }
 
 function transformAlias(input : string) {
@@ -429,11 +433,11 @@ function transformChangeInputShorthand(step : any) {
     if (step.type !== 'change-input') {
         return;
     }
-    step.block = transformLocation({ block: step.block });
+    step.target = step.target || transformLocation({ block: step.block });
+    delete step.block;
 }
 
 function transformCreateBlockShorthand(step : any) {
-    const categoryBlacklist = ['control'];
     if (step.type !== 'create-block') {
         return;
     }
@@ -447,23 +451,22 @@ function transformCreateBlockShorthand(step : any) {
                     if (blockName) {
                         step.blockType = blockName;
                     } else {
+                        step.blockType = step.blockType.type;
                         console.warn('[LEGACY CHALLENGE] Missing block mapping for part', original, step.blockType.type);
                     }
                 } else {
+                    step.blockType = step.blockType.type;
                     console.warn('[LEGACY CHALLENGE] Missing mapping for part', original)
                 }
             }
-        }
-        if (step.blockType.type) {
+        } else if (step.blockType.type) {
             step.blockType = step.blockType.type;
         }
-    } else if (categoryBlacklist.indexOf(step.category) === -1) {
-        const pieces = step.blockType.split('_');
-        pieces.shift();
-        step.blockType = pieces.join('_');
     }
     if (step.category.part) {
         step.category = `alias#${step.category.part}>toolbox`;
+    } else if (step.category.rawPart) {
+        step.category = `part#${step.category.rawPart}>toolbox`;
     } else {
         step.category = `toolbox#${step.category}`;
     }
@@ -471,6 +474,9 @@ function transformCreateBlockShorthand(step : any) {
         let selector;
         if (step.connectTo.id) {
             selector = `alias#${step.connectTo.id}`;
+        } else if (step.connectTo.rawId) {
+            const id = idMap.get(step.connectTo.rawId);
+            selector = `block#${id}`;
         }
         if (step.connectTo.shadow) {
             selector += `>input#${step.connectTo.shadow}`;
@@ -490,6 +496,8 @@ function transformCreateBlockShorthand(step : any) {
 }
 
 export function transformChallenge(data : any) {
+    idMap = new Map();
+    blockAliases = {};
     transformDefaultApp(data);
     stripStickerSet(data);
     if (data.steps) {

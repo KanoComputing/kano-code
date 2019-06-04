@@ -1,0 +1,1 @@
+import '../dist/app/lib/source-editor/blockly/challenge/index.js'

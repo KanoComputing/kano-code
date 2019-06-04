@@ -38,12 +38,22 @@ i18n.load(lang, { blockly: true, kanoCodePath: '/' })
                     },
                 }
             }
-    
+            const button = document.createElement('button');
+            button.textContent = 'Hello :)'
+            button.style.margin = '32px';
+            
+            editor.activityBar.registerTooltipEntry({
+                title: 'Display hello',
+                icon: '/examples/activity-bar/icon.png',
+                root: button,
+            });
             // Add the button in the activity bar
             const entry = editor.activityBar.registerEntry({
                 title: 'Display types',
                 icon: '/examples/activity-bar/icon.png',
             });
+
+
     
             // On mouse click, tap, keyboard selection, etc...
             entry.onDidActivate(() => {

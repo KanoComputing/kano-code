@@ -18,6 +18,7 @@ const CORE_BLOCKS = [
 export const ListsAPI = {
     type: 'blockly',
     id: ID,
+    name: ID,
     register(Blockly : Blockly) {
         CORE_BLOCKS.forEach((blockId) => {
             Blockly.Blocks[blockId].customColor = COLOR;
@@ -32,6 +33,9 @@ export const ListsAPI = {
         blocks: CORE_BLOCKS,
     },
     defaults: {
+        lists_indexOf: {
+            END: 'FIRST',
+        },
         lists_getIndex: {
             MODE: 'GET',
             WHERE: 'FROM_START',
@@ -41,6 +45,19 @@ export const ListsAPI = {
             WHERE: 'FROM_START',
         },
     },
+    labels: {
+        lists_indexOf: {
+            END: [[Blockly.Msg.LISTS_INDEX_OF_FIRST, "FIRST"], [Blockly.Msg.LISTS_INDEX_OF_LAST, "LAST"]],
+        },
+        lists_getIndex: {
+            MODE: [[Blockly.Msg.LISTS_GET_INDEX_GET, "GET"], [Blockly.Msg.LISTS_GET_INDEX_GET_REMOVE, "GET_REMOVE"], [Blockly.Msg.LISTS_GET_INDEX_REMOVE, "REMOVE"]],
+            WHERE: [[Blockly.Msg.LISTS_GET_INDEX_FROM_START, "FROM_START"], [Blockly.Msg.LISTS_GET_INDEX_FROM_END, "FROM_END"], [Blockly.Msg.LISTS_GET_INDEX_FIRST, "FIRST"], [Blockly.Msg.LISTS_GET_INDEX_LAST, "LAST"], [Blockly.Msg.LISTS_GET_INDEX_RANDOM, "RANDOM"]],
+        },
+        lists_setIndex: {
+            MODE: [[Blockly.Msg.LISTS_SET_INDEX_SET, "SET"], [Blockly.Msg.LISTS_SET_INDEX_INSERT, "INSERT"]],
+            WHERE: [[Blockly.Msg.LISTS_GET_INDEX_FROM_START, "FROM_START"], [Blockly.Msg.LISTS_GET_INDEX_FROM_END, "FROM_END"], [Blockly.Msg.LISTS_GET_INDEX_FIRST, "FIRST"], [Blockly.Msg.LISTS_GET_INDEX_LAST, "LAST"], [Blockly.Msg.LISTS_GET_INDEX_RANDOM, "RANDOM"]],
+        },
+    }
 };
 
 export default ListsAPI;

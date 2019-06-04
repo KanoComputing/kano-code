@@ -24,6 +24,9 @@ declare module 'challenge-engine/definition.js' {
         nextStep() : void;
         triggerEvent(name : string, data? : any) : void;
         definePropertyProcessor(props : string[], processor : Function) : void;
+        _expandSteps() : any[];
+        _steps : any[];
+        _shorthands : { [K : string] : Function };
     }
     export default Challenge;
 }

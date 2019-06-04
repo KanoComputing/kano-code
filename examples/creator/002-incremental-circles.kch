@@ -1,0 +1,156 @@
+{
+    "version": "1.0.0",
+    "id": "002-incremental-circles",
+    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><variables><variable type=\\\"\\\" id=\\\"`-?1{sy%2)Orb%FV)BIg\\\">circleSize</variable></variables><block type=\\\"app_onStart\\\" id=\\\"default_app_onStart\\\" x=\\\"118\\\" y=\\\"91\\\"><field name=\\\"FLASH\\\"></field><statement name=\\\"CALLBACK\\\"></statement></block></xml>\"}",
+    "steps": [
+        {
+            "alias": "start_0",
+            "parent": "block#default_app_onStart>input#CALLBACK",
+            "type": "start-step"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_set_background_color",
+            "alias": "block_1",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#start_0>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_1>input#COLOR>shadow>input#COLOUR",
+            "value": "#03A9F5",
+            "bannerCopy": "Change this color from <kc-color-preview color=\"#ffffff\"></kc-color-preview> to <kc-color-preview color=\"#03A9F5\"></kc-color-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_stroke",
+            "alias": "block_2",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_1>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_2>input#COLOR>shadow>input#COLOUR",
+            "value": "#FFEB3C",
+            "bannerCopy": "Change this color from <kc-color-preview color=\"#000\"></kc-color-preview> to <kc-color-preview color=\"#FFEB3C\"></kc-color-preview>"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_2>input#SIZE>shadow>input#NUM",
+            "value": "5",
+            "bannerCopy": "Change this number from <kc-string-preview>1</kc-string-preview> to <kc-string-preview>5</kc-string-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_no_fill",
+            "alias": "block_3",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_2>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#variables",
+            "blockType": "variables_set",
+            "alias": "block_4",
+            "openFlyoutCopy": "Open the Variables tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_3>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_4>input#VAR",
+            "value": "circleSize",
+            "bannerCopy": "Change this variable from <kc-string-preview>item</kc-string-preview> to <kc-string-preview>circleSize</kc-string-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#variables",
+            "blockType": "math_number",
+            "alias": "block_5",
+            "openFlyoutCopy": "Open the Variables tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_4>input#VALUE",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_5>input#NUM",
+            "value": "5",
+            "bannerCopy": "Change this number from <kc-string-preview>0</kc-string-preview> to <kc-string-preview>5</kc-string-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#control",
+            "blockType": "repeat_x_times",
+            "alias": "block_6",
+            "openFlyoutCopy": "Open the Control tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_4>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_6>input#N>shadow>input#NUM",
+            "value": "40",
+            "bannerCopy": "Change this number from <kc-string-preview>10</kc-string-preview> to <kc-string-preview>40</kc-string-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#math",
+            "blockType": "unary",
+            "alias": "block_7",
+            "openFlyoutCopy": "Open the Math tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_6>input#DO",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_7>input#LEFT_HAND",
+            "value": "circleSize",
+            "bannerCopy": "Change this variable from <kc-string-preview>item</kc-string-preview> to <kc-string-preview>circleSize</kc-string-preview>"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_7>input#RIGHT_HAND>shadow>input#NUM",
+            "value": "20",
+            "bannerCopy": "Change this number from <kc-string-preview>1</kc-string-preview> to <kc-string-preview>20</kc-string-preview>"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_circle",
+            "alias": "block_8",
+            "openFlyoutCopy": "Open the Draw tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_7>next",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#variables",
+            "blockType": "variables_get",
+            "alias": "block_9",
+            "openFlyoutCopy": "Open the Variables tray",
+            "grabBlockCopy": "Pick up the block with your mouse or finger and drag it into the middle",
+            "connectTo": "alias#block_8>input#RADIUS",
+            "connectCopy": "Connect please"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_9>input#VAR",
+            "value": "circleSize",
+            "bannerCopy": "Change this variable from <kc-string-preview>item</kc-string-preview> to <kc-string-preview>circleSize</kc-string-preview>"
+        }
+    ]
+}

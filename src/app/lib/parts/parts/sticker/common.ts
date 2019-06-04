@@ -1,11 +1,12 @@
 import { IMetaDefinition } from '../../../meta-api/module.js';
 import { StickerPart } from './sticker.js';
 import { FieldSticker } from './blockly/field-sticker.js';
-import { Block, Blockly } from '@kano/kwc-blockly/blockly.js';
+import { Block } from '@kano/kwc-blockly/blockly.js';
 
 export const getter : IMetaDefinition = {
     type: 'function',
     name: 'getSticker',
+    verbose: '',
     parameters: [{
         type: 'parameter',
         name: 'sticker',
@@ -15,6 +16,7 @@ export const getter : IMetaDefinition = {
             customField() {
                 const items = StickerPart.items.map((item) => {
                     return {
+                        id: item.id,
                         label: item.label,
                         stickers: Object.keys(item.stickers).map(id => ({ id, src: StickerPart.resolve(item.stickers[id]) })),
                     };
@@ -24,15 +26,8 @@ export const getter : IMetaDefinition = {
         },
     }],
     returnType: 'Sticker',
-    toolbox: false,
     blockly: {
-        postProcess(block : Block) {
-            const input = block.getInput('STICKER');
-            if (!input) {
-                return;
-            }
-            input.type = Blockly.DUMMY_INPUT;
-        },
+        toolbox: false,
         javascript(Blockly : Blockly, block : Block) {
             const value = block.getFieldValue('STICKER');
             return [`'${value || ""}'`, Blockly.JavaScript.ORDER_ATOMIC];

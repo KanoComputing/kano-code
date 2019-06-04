@@ -1,41 +1,64 @@
-import { Field, Blockly, utils, goog } from '@kano/kwc-blockly/blockly.js';
-import { ISampleSet } from '../data';
-import { html, render } from 'lit-html/lit-html.js';
+import { Blockly, utils, goog, Field } from '@kano/kwc-blockly/blockly.js';
+import '@kano/styles/color.js';
+import '@kano/styles/typography.js';
+import '../components/kc-sample-picker.js';
+import { subscribeDOM } from '@kano/common/index.js';
+import { KCSamplePicker } from '../components/kc-sample-picker.js';
 
-function getTemplate(items : ISampleSet[], callback : (id : string) => any) {
-    return html`
-        ${items.map((set) => html`
-            <div>${set.label}</div>
-            <div>
-                ${set.samples.map((sample) => html`
-                    <button @click=${() => callback(sample.id)}>${sample.label}</button>
-                `)}
-            </div>
-        `)}
-    `;
+interface IItemData {
+    id : string;
+    label : string;
+    samples : { id : string, src : string, label : string }[];
 }
 
 export class FieldSample extends Field {
-    private items : ISampleSet[];
-    private domNode : HTMLDivElement = document.createElement('div');
-    constructor(value : string, items : ISampleSet[], optValidator? : () => void) {
-        super(null, optValidator);
+    private domNode : KCSamplePicker|null = null;
+    private items : IItemData[];
+    constructor(value : string, items : IItemData[], optValidator? : () => void) {
+        super(value, optValidator);
         this.items = items;
-        this.setValue(value);
     }
     showEditor_() {
+        if (!this.domNode) {
+            this.domNode = document.createElement('kc-sample-picker') as KCSamplePicker;
+            this.domNode.style.border = '2px solid var(--kc-border-color)';
+            this.domNode.style.borderRadius = '6px';
+            this.domNode.style.overflow = 'hidden';
+            this.domNode.style.boxShadow = '0px 4px 4px 0px rgba(0, 0, 0, 0.15)';
+            this.domNode.items = this.items.map((set) => {
+                return {
+                    id: set.id,
+                    label: set.label,
+                    items: set.samples.map((sample) => ({ id: sample.id, label: sample.label, image: sample.src })),
+                };
+            });
+            subscribeDOM(this.domNode, 'value-changed', (e : CustomEvent) => {
+                this.setValue(e.detail);
+            });
+        }
         Blockly.WidgetDiv.show(
             this,
             this.sourceBlock_.RTL,
             FieldSample.widgetDispose_,
         );
         const div = Blockly.WidgetDiv.DIV;
-        this.domNode.style.background = 'white';
-        render(getTemplate(this.items, (id) => {
-            this.setValue(id);
-        }), this.domNode);
         div.appendChild(this.domNode);
+        this.domNode.value = this.getValue();
         this.position();
+        if ('animate' in HTMLElement.prototype) {
+            div.animate({
+                opacity: [0, 1],
+            }, {
+                duration: 100,
+                easing: 'ease-out',
+            });
+        }
+        setTimeout(() => {
+            if (!this.domNode) {
+                return;
+            }
+            this.domNode.revealSelectedElement();
+        });
     }
     position() {
         const viewportBBox = utils.getViewportBBox();

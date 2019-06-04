@@ -3,7 +3,7 @@ import '@polymer/iron-image/iron-image.js';
 import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import '@kano/kwc-style/input.js';
+import '@kano/Styles/input.js';
 import { I18nMixin } from '../../i18n/index.js';
 import { BlockAnimation } from '../../splash.js';
 

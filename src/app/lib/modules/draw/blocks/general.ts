@@ -13,9 +13,6 @@ export const general : any[] = [{
             inlineInputs: true,
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'COLOR': `<shadow type="colour_picker"><field name="COLOUR">#ffffff</field></shadow>`,
-            },
         };
     },
     javascript: () => {
@@ -37,9 +34,6 @@ export const general : any[] = [{
             inlineInputs: true,
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'ALPHA': `<shadow type="math_number"><field name="NUM">100</field></shadow>`,
-            },
         };
     },
     javascript: () => {

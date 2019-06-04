@@ -1,10 +1,43 @@
 import { Editor } from './editor.js';
+import { SourceEditor, registerSourceEditor } from '../source-editor/source-editor.js';
+import { QueryEngine } from './selector/selector.js';
+import { IMetaRenderer } from '../meta-api/module.js';
+import { EventEmitter } from '@kano/common/index.js';
+
+class TestSourceEditor implements SourceEditor {
+    onDidCodeChange = (new EventEmitter<string>()).event;
+    onDidLayout = (new EventEmitter()).event;
+    setToolbox(toolbox : any) {}
+    setSource(source : string) {}
+    getSource() : string {
+        return '';
+    }
+    domNode : HTMLElement = document.createElement('div');
+    registerQueryHandlers(engine : QueryEngine) {}
+    getApiRenderer() : IMetaRenderer {
+        return {
+            renderToolboxEntry() {
+                return null;
+            },
+            disposeToolboxEntry() {},
+        };
+    }
+    editor : Editor
+    constructor(editor : Editor) {
+        this.editor = editor;
+    }
+}
+
+registerSourceEditor('test', TestSourceEditor);
 
 suite('Editor', () => {
     suite('#inject', () => {
         let editor : Editor;
         setup(() => {
-            editor = new Editor();
+            editor = new Editor({ sourceType: 'test' });
+        });
+        teardown(() => {
+            editor.dispose();
         });
         test('should add itself to the document body by default', () => {
             editor.inject();
@@ -40,9 +73,6 @@ suite('Editor', () => {
 
 
             assert(editorIndex < referenceIndex);
-        });
-        teardown(() => {
-            editor.dispose();
         });
     });
 });

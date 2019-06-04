@@ -13,6 +13,7 @@ export interface IMetaRenderer {
 }
 
 export interface IMetaDefinition {
+    id? : string;
     symbols? : IMetaDefinition[];
     name : string;
     type : 'module'|'variable'|'function'|'parameter'|'blockly';

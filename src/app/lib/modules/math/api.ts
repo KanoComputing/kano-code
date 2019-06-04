@@ -1,11 +1,36 @@
-import { Blockly, Block } from '@kano/kwc-blockly/blockly.js';
+import { Blockly, Block, utils } from '@kano/kwc-blockly/blockly.js';
 import { MathModule } from './math.js';
 
 const COLOR = '#ff9800';
 
+const arithmeticOptions : { [K : string] : string } = {
+    ADD: '%{BKY_MATH_ADDITION_SYMBOL} add',
+    MINUS: '%{BKY_MATH_SUBTRACTION_SYMBOL} subtract',
+    MULTIPLY: '%{BKY_MATH_MULTIPLICATION_SYMBOL} multiply',
+    DIVIDE: '%{BKY_MATH_DIVISION_SYMBOL} divide',
+    POWER: '%{BKY_MATH_POWER_SYMBOL} to the power of',
+};
+
+const minMaxOptions = [
+    ['min', 'min'],
+    ['max', 'max'],
+];
+
+const unaryOptions = [
+    ['+=', '+='],
+    ['-=', '-='],
+    ['*=', '*='],
+    ['/=', '/='],
+];
+
+function processBlocklyMessages(options : [string, string][]) {
+    return options.map(([label, value]) => [utils.replaceMessageReferences(label), value]);
+}
+
 export const MathAPI = {
     type: 'blockly',
     id: MathModule.id,
+    name: MathModule.id,
     typeScriptDefinition: `
         declare namespace math {
             declare function random(min: number, max: number): number;
@@ -22,18 +47,11 @@ export const MathAPI = {
                     ['%{BKY_MATH_DIVISION_SYMBOL}', 'DIVIDE'],
                     ['%{BKY_MATH_POWER_SYMBOL}', 'POWER'],
                 ];
-                const labels = {
-                    ADD: '%{BKY_MATH_ADDITION_SYMBOL} add',
-                    MINUS: '%{BKY_MATH_SUBTRACTION_SYMBOL} subtract',
-                    MULTIPLY: '%{BKY_MATH_MULTIPLICATION_SYMBOL} multiply',
-                    DIVIDE: '%{BKY_MATH_DIVISION_SYMBOL} divide',
-                    POWER: '%{BKY_MATH_POWER_SYMBOL} to the power of',
-                };
                 this.appendValueInput('A')
                     .setCheck('Number');
 
                 this.appendDummyInput()
-                    .appendField(new Blockly.FieldCustomDropdown(options, labels), 'OP');
+                    .appendField(new Blockly.FieldCustomDropdown(options, arithmeticOptions), 'OP');
 
                 this.appendValueInput('B')
                     .setCheck('Number');
@@ -63,10 +81,7 @@ export const MathAPI = {
                     }, {
                         type: 'field_dropdown',
                         name: 'MINMAX',
-                        options: [
-                            ['min', 'min'],
-                            ['max', 'max'],
-                        ],
+                        options: minMaxOptions,
                     }],
                     inputsInline: true,
                     output: 'Number',
@@ -273,12 +288,7 @@ export const MathAPI = {
                     }, {
                         type: 'field_dropdown',
                         name: 'OPERATOR',
-                        options: [
-                            ['+=', '+='],
-                            ['-=', '-='],
-                            ['*=', '*='],
-                            ['/=', '/='],
-                        ],
+                        options: unaryOptions,
                     }, {
                         type: 'input_value',
                         name: 'RIGHT_HAND',
@@ -358,7 +368,7 @@ export const MathAPI = {
     },
     defaults: {
         math_number: {
-            NUM: 0,
+            NUM: '0',
         },
         math_arithmetic: {
             OP: 'ADD',
@@ -384,8 +394,11 @@ export const MathAPI = {
         math_constant: {
             CONSTANT: "PI"
         },
+        math_min_max: {
+            MINMAX: 'min',
+        },
         math_number_property: {
-            PROPERTY: "ODD"
+            PROPERTY: "EVEN"
         },
         math_single: {
             OP: "ROOT"
@@ -394,6 +407,39 @@ export const MathAPI = {
             OP: "ROUND"
         },
     },
+    labels: {
+        math_arithmetic: {
+            OP: Object.keys(arithmeticOptions).map(value => [utils.replaceMessageReferences(arithmeticOptions[value]), value])
+        },
+        math_unary: {
+            OPERATOR: unaryOptions,
+        },
+        math_trig: {
+            OP: [
+                ['sin', 'SIN'],
+                ['cos', 'COS'],
+                ['tan', 'TAN'],
+                ['asin', 'ASIN'],
+                ['acos', 'ACOS'],
+                ['atan', 'ATAN'],
+            ],
+        },
+        math_constant: {
+            CONSTANT: [["\u03c0", "PI"], ["e", "E"], ["\u03c6", "GOLDEN_RATIO"], ["sqrt(2)", "SQRT2"], ["sqrt(\u00bd)", "SQRT1_2"], ["\u221e", "INFINITY"]],
+        },
+        math_min_max: {
+            MINMAX: minMaxOptions,
+        },
+        math_number_property: {
+            PROPERTY: processBlocklyMessages([["%{BKY_MATH_IS_EVEN}", "EVEN"], ["%{BKY_MATH_IS_ODD}", "ODD"], ["%{BKY_MATH_IS_PRIME}", "PRIME"], ["%{BKY_MATH_IS_WHOLE}", "WHOLE"], ["%{BKY_MATH_IS_POSITIVE}", "POSITIVE"], ["%{BKY_MATH_IS_NEGATIVE}", "NEGATIVE"], ["%{BKY_MATH_IS_DIVISIBLE_BY}", "DIVISIBLE_BY"]]),
+        },
+        math_single: {
+            OP: processBlocklyMessages([["%{BKY_MATH_SINGLE_OP_ROOT}", "ROOT"], ["%{BKY_MATH_SINGLE_OP_ABSOLUTE}", "ABS"], ["-", "NEG"], ["ln", "LN"], ["log10", "LOG10"], ["e^", "EXP"], ["10^", "POW10"]]),
+        },
+        math_round: {
+            OP: processBlocklyMessages([["%{BKY_MATH_ROUND_OPERATOR_ROUND}", "ROUND"], ["%{BKY_MATH_ROUND_OPERATOR_ROUNDUP}", "ROUNDUP"], ["%{BKY_MATH_ROUND_OPERATOR_ROUNDDOWN}", "ROUNDDOWN"]]),
+        },
+    }
 };
 
 export default MathAPI;

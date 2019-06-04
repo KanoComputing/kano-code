@@ -1,9 +1,12 @@
 import { subscribeTimeout, IDisposable, EventEmitter } from '@kano/common/index.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { flash } from './icons.js';
-import { BlocklySourceEditor } from '../../editor/source-editor/blockly.js';
-import Editor from '../../editor/editor.js';
+import { BlocklySourceEditor } from '../../source-editor/blockly.js';
+import { Editor } from '../../editor/editor.js';
 import { FlashField } from './field.js';
+import { MonacoSourceEditor } from '../../source-editor/monaco.js';
+import * as monaco from '../../source-editor/monaco/editor.js';
+import { dataURI } from '@kano/icons-rendering/index.js';
 
 export class Flash {
     public domNode: HTMLDivElement = document.createElement('div');
@@ -46,6 +49,21 @@ export function addFlashField(block : Block) {
     block.inputList[0].insertFieldAt(0, new FlashField(''), 'FLASH');
 }
 
+let flashCssAdded = false;
+
+function addFlashCss() {
+    if (flashCssAdded) {
+        return;
+    }
+    flashCssAdded = true;
+    const copy = flash.cloneNode(true) as HTMLTemplateElement;
+    const icon = copy.content.querySelector('svg')!;
+    icon.style.fill = 'yellow';
+    const style = document.createElement('style');
+    style.textContent = `.flash { background: url('${dataURI(copy)}'); opacity: 0.3; } .flash.on { background: url('${dataURI(copy)}'); opacity: 1 }`;
+    document.head.appendChild(style);
+}
+
 /**
  * Subscribe to the provided event, find all blocks listening to the event and trigger their flash field
  * @param editor The target editor
@@ -54,17 +72,50 @@ export function addFlashField(block : Block) {
  * @param method The name of the method reacting to the event
  */
 export function setupFlash(editor : Editor, id : string, emitter : EventEmitter, method : string) {
-    if (editor.sourceType !== 'blockly') {
-        return;
-    }
-    const sourceEditor = editor.sourceEditor as BlocklySourceEditor;
-    emitter.event(() => {
-        const workspace = sourceEditor.getWorkspace();
-        const blocks = workspace.getAllBlocks();
-        blocks.filter((block) => block.type === `${id}_${method}`)
-            .forEach((block) => {
-                const field = block.getField('FLASH') as FlashField;
-                field.trigger();
+    if (editor.sourceType === 'blockly') {
+        const sourceEditor = editor.sourceEditor as BlocklySourceEditor;
+        emitter.event(() => {
+            const workspace = sourceEditor.getWorkspace();
+            const blocks = workspace.getAllBlocks();
+            blocks.filter((block) => block.type === `${id}_${method}`)
+                .forEach((block) => {
+                    const field = block.getField('FLASH') as FlashField;
+                    field.trigger();
+                });
+        });
+    } else if (editor.sourceType === 'monaco') {
+        const sourceEditor = editor.sourceEditor as MonacoSourceEditor;
+        let decorations : string[] = [];
+        let found : { key : string; range : monaco.Range }[];
+        function getDecoration(range : monaco.Range, on : boolean) {
+            return {
+                range,
+                options: {
+                    glyphMarginClassName: `flash ${on ? 'on' : 'off'}`,
+                },
+            }
+        }
+        sourceEditor.monacoEditor.onDidChangeModelContent((e) => {
+            const key = `${id}.${method}`
+            const matches = sourceEditor.monacoEditor.getModel()!.findMatches(`${key}(`, false, false, true, '', true);
+            found = matches.map((m) => {
+                return {
+                    key,
+                    range: m.range,
+                };
             });
-    });
+            decorations = sourceEditor.monacoEditor.deltaDecorations(decorations, found.map(f => getDecoration(f.range, false)));
+        });
+        emitter.event(() => {
+            if (!found) {
+                return;
+            }
+            decorations = sourceEditor.monacoEditor.deltaDecorations(decorations, found.map(f => getDecoration(f.range, true)));
+            subscribeTimeout(() => {
+                decorations = sourceEditor.monacoEditor.deltaDecorations(decorations, found.map(f => getDecoration(f.range, false)));
+            }, 100);
+        });
+        addFlashCss();
+    }
 }
+ 

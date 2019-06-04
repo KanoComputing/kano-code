@@ -1,15 +1,7 @@
 import { DOMPart } from '../dom/dom.js';
-import { part, property, component } from '../../decorators.js';
-import { PartComponent } from '../../component.js';
+import { part, component } from '../../decorators.js';
 import { transformLegacyText } from './legacy.js';
-
-class TextComponent extends PartComponent {
-    @property({ type: String, value: 'Text' })
-    public value : string = 'Text';
-
-    @property({ type: String, value: '#000000' })
-    public color : string = '#000000';
-}
+import { TextComponent } from './text-component.js';
 
 @part('text')
 export class TextPart extends DOMPart<HTMLDivElement> {
@@ -25,7 +17,9 @@ export class TextPart extends DOMPart<HTMLDivElement> {
         this.core.invalidate();
     }
     getElement() : HTMLDivElement {
-        return document.createElement('div');
+        const el = document.createElement('div');
+        el.title = 'text';
+        return el;
     }
     render() {
         super.render();

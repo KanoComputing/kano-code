@@ -46,7 +46,7 @@ export class KCPartsControls extends LitElement {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                border-bottom: 1px solid #202428;
+                border-bottom: 1px solid var(--kc-border-color);
             }
             .add-parts label {
                 margin: 0;
@@ -96,7 +96,7 @@ export class KCPartsControls extends LitElement {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
-                border-bottom: 1px solid #202428;
+                border-bottom: 1px solid var(--kc-border-color);
                 height: 40px;
                 color: #fff;
             }

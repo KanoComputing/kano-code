@@ -153,3 +153,6 @@ export class CreationPlugin extends Plugin {
 }
 
 export default CreationPlugin;
+
+export * from './creation-preview-provider.js';
+export * from './creation-storage-provider.js';

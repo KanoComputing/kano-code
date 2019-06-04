@@ -7,6 +7,7 @@ const ID = 'variables';
 export const VariablesAPI = {
     type: 'blockly',
     id: ID,
+    name: ID,
     register(Blockly : Blockly) {
         [
             'math_number',
@@ -38,6 +39,9 @@ export const VariablesAPI = {
         },
         variables_get: {
             VAR: 'item',
+        },
+        math_number: {
+            NUM: '0',
         },
     },
 };

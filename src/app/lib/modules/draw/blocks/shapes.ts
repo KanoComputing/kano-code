@@ -15,9 +15,6 @@ export const shapes = [{
             }],
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'RADIUS': `<shadow type="math_number"><field name="NUM">5</field></shadow>`
-            }
         };
     },
     javascript: () => {
@@ -44,10 +41,6 @@ export const shapes = [{
             }],
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'RADIUSX': `<shadow type="math_number"><field name="NUM">5</field></shadow>`,
-                'RADIUSY': `<shadow type="math_number"><field name="NUM">5</field></shadow>`
-            }
         };
     },
     javascript: () => {
@@ -70,9 +63,6 @@ export const shapes = [{
             }],
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'SIZE': `<shadow type="math_number"><field name="NUM">5</field></shadow>`
-            }
         };
     },
     javascript: (part : any) => {
@@ -99,10 +89,6 @@ export const shapes = [{
             }],
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'WIDTH': `<shadow type="math_number"><field name="NUM">5</field></shadow>`,
-                'HEIGHT': `<shadow type="math_number"><field name="NUM">5</field></shadow>`
-            }
         };
     },
     javascript: (part : any) => {
@@ -137,12 +123,6 @@ export const shapes = [{
             }],
             previousStatement: null,
             nextStatement: null,
-            shadow: {
-                'RADIUS': `<shadow type="math_number"><field name="NUM">5</field></shadow>`,
-                'START': `<shadow type="math_number"><field name="NUM">0</field></shadow>`,
-                'END': `<shadow type="math_number"><field name="NUM">1</field></shadow>`,
-                'CLOSE': `<shadow type="logic_boolean"></shadow>`
-            }
         };
     },
     javascript: (part : any) => {
