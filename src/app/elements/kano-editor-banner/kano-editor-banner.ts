@@ -20,31 +20,17 @@ export class KCEditorBanner extends LitElement {
 
     static get styles() {
         return [css`
-            @keyframes pop-in {
-                0% {
-                    transform: scale(1, 1);
-                }
-                50% {
-                    transform: scale(1.1, 1.1);
-                }
-                100% {
-                    transform: scale(1.0, 1.0);
-                }
-            }
+        
             :host {
                 position: relative;
                 display: flex;
                 flex-direction: column;
-                align-items: stretch;
-                background: white;
+                background: #FFFF;
                 box-sizing: border-box;
                 border-radius: 6px;
                 box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
             }
-            :host(.animate) {
-                animation: pop-in 200ms linear 1;
-            }
-            kc-circle-progress,
+
             slot[name="avatar"]::slotted(*) {
                 width: 56px;
                 height: 56px;
@@ -55,24 +41,14 @@ export class KCEditorBanner extends LitElement {
             }
         
             .content {
-                flex: 1;
-                flex-basis: 0.000000001px;
-                display: flex;
                 flex-direction: column;
-                height: 100%;
-                box-sizing: border-box;
                 font-family: var(--font-body);
                 font-size: 16px;
                 color: #22272D;
                 min-width: 200px;
-                display: inline-block;
                 padding: 16px;
             }
-            .actions{
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-            }
+
             .actions::slotted(*) {
                 margin-top: 4px;
             }
@@ -103,11 +79,7 @@ export class KCEditorBanner extends LitElement {
             .remix {
                 border-top: 1px solid rgb(62, 64, 66, 0.3);
             }
-            .emoji {
-                max-width: 18px;
-                max-height: 18px;
-                transform: translateY(4px);
-            }
+
         `, challengeStyles];
     }
     render() {
@@ -125,7 +97,7 @@ export class KCEditorBanner extends LitElement {
             </div>
             <slot name="actions" class="actions"></slot>
         </div>
-        <!-- @TODO are we supporting remix for first release? should they have their own banner given design blocks differ? -->
+        <!-- @TODO are we supporting remix for first release? should they have their own banner given markup design differ? -->
         <!-- <div class="block remix">
             <slot name="title-remix" class="title-remix"></slot>
             <slot name="tips" class="tips"></slot>
