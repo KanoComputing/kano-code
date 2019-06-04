@@ -129,7 +129,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         centerOnBlock(id : string) : void;
     }
     class WorkspaceSvg extends Workspace<BlockSvg> {
-        constructor(options : any)
+        constructor(options : any);
+        getParentSvg() : SVGElement;
     }
     const goog : any;
     const utils : {

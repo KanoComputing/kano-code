@@ -7,7 +7,7 @@
     <title>Editor Banner</title>
     <style>
         html, body {
-            background: lightblue;
+            background: gray;
         }
         kc-editor-banner {
             margin: 32px;
@@ -15,16 +15,89 @@
         #small {
             max-width: 400px;
         }
+        button, .block-button {
+            color: #FFFF;
+            background-color: #3e4042;
+            opacity: 0.5;
+            border-radius: 15px;
+            padding: 3px 12px;
+            font-weight: bold;
+            font-family: var(--font-body);
+            font-size: 16px;
+        }
+        span.block-button {
+            position: absolute;
+            top: 2px;
+            right: 0;
+            padding: 0 5px;
+            cursor: pointer;
+        }
+        hr {
+            width: 9px;
+            height: 2px;
+            color: #FFFF;
+            background-color: #FFFF;
+        }
+         p {
+             margin: 5px 0;
+             display: inline;
+         }
+         .title--avatar {
+             padding-left: 60px;
+         }
+         .title-remix {
+            font-family: var(--font-body);
+            font-size: 16px;
+            color: #22272D;
+            display: block;
+            font-weight: bold;
+         }
+         .tips {
+             font-size: 12px;
+             color: #3e4042;
+             opacity: 0.5;
+             display: block;
+             font-weight: bold;
+         }
+         .block-button {
+             float: right;
+             margin: 5px 10px 0 0;
+             border-radius: 6px;
+             padding: 1px;
+         }
     </style>
     <script type="module" src="../../dist/app/elements/kano-editor-banner/kano-editor-banner.js"></script>
 </head>
 <body>
-    <kc-editor-banner progress="0.4" text="This is some content, lets have fun">
+    <kc-editor-banner progress="0.4" text="Vanilla step by step banner with a button" >
+        <p slot="title"> Step by Step</p>
         <button slot="actions">Next</button>
+        <span class="block-button" slot="block-button"><hr/></span>
     </kc-editor-banner>
-    <kc-editor-banner text="I can even change the progress into an image. For reasons">
-        <img src="https://i.etsystatic.com/5653735/r/il/c41b70/1501534905/il_570xN.1501534905_lgzj.jpg" slot="progress"/>
+
+    <kc-editor-banner text="This is SW one, and here are some steps">
+        <img src="/assets/sw/droid.svg" slot="avatar"/>
+        <p slot="title" class="title--avatar"> Step by Step</p>
+        <span class="block-button" slot="actions"><hr/></span>
+        <button slot="actions">Next</button>
+        <p class="title-remix" slot="title-remix">Choose a lightsaber hilt</p>
+        <p class="tips" slot="tips"> Show tips</p>
+        <button class="finish" slot="block-remix-actions">Finish</button>
     </kc-editor-banner>
-    <kc-editor-banner id="small" progress="1" text="Really long content can flow properly, even in a constrained environment. Less space, but double the fun!"></kc-editor-banner>
+
+    <kc-editor-banner text="Vanilla step by step banner without a button" >
+        <p slot="title"> Step by Step</p>
+        <span class="block-button" slot="block-button"><hr/></span>
+    </kc-editor-banner>
+
+    <kc-editor-banner text="Vanilla puzzle banner without a button">
+        <p slot="title"> Puzzle</p>
+        <span class="block-button" slot="block-button"><hr/></span>
+    </kc-editor-banner>
+
+    <kc-editor-banner id="small" progress="1" text="Really long content can flow properly, even in a constrained environment. Less space, but double the fun!">
+        <p slot="title"> Challenge</p>
+        <span class="block-button" slot="block-button"><hr/></span>
+    </kc-editor-banner>
 </body>
 </html>
