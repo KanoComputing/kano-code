@@ -113,9 +113,6 @@ export class KCEditorBanner extends LitElement {
     render() {
         return html`
         ${templateContent(button)}
-        <!-- <slot name="progress">
-            <kc-circle-progress .value=${this.progress}></kc-circle-progress>
-        </slot> -->
         <div class="block block-1">
             <slot name="block-button"></slot>
             <slot name="avatar"></slot>
@@ -128,6 +125,7 @@ export class KCEditorBanner extends LitElement {
             </div>
             <slot name="actions" class="actions"></slot>
         </div>
+        <!-- @TODO are we supporting remix for first release? should they have their own banner given design blocks differ? -->
         <!-- <div class="block remix">
             <slot name="title-remix" class="title-remix"></slot>
             <slot name="tips" class="tips"></slot>

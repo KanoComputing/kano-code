@@ -7,7 +7,7 @@
     <title>Editor Banner</title>
     <style>
         html, body {
-            background: lightblue;
+            background: gray;
         }
         kc-editor-banner {
             margin: 32px;
@@ -42,7 +42,7 @@
              display: inline;
          }
          .title--avatar {
-             padding-left: 40px;
+             padding-left: 60px;
          }
          .title-remix {
             font-family: var(--font-body);
@@ -67,28 +67,28 @@
     <script type="module" src="../../dist/app/elements/kano-editor-banner/kano-editor-banner.js"></script>
 </head>
 <body>
-    <kc-editor-banner progress="0.4" text="This is some content, lets have fun" >
+    <kc-editor-banner progress="0.4" text="Vanilla step by step banner with a button" >
         <p slot="title"> Step by Step</p>
         <button slot="actions">Next</button>
         <span class="block-button" slot="block-button"><hr/></span>
     </kc-editor-banner>
 
-    <kc-editor-banner text="I can even change the progress into an image. For reasons">
-        <img src="https://cdn.pixabay.com/photo/2018/01/22/18/48/statue-3099675_960_720.png" slot="avatar"/>
+    <kc-editor-banner text="This is SW one, and here are some steps">
+        <img src="/assets/sw/droid.svg" slot="avatar"/>
         <p slot="title" class="title--avatar"> Step by Step</p>
         <span class="block-button" slot="actions"><hr/></span>
         <button slot="actions">Next</button>
-        <!-- <p class="title-remix" slot="title-remix">Choose a lightsaber hilt</p>
+        <p class="title-remix" slot="title-remix">Choose a lightsaber hilt</p>
         <p class="tips" slot="tips"> Show tips</p>
-        <button class="finish" slot="block-remix-actions">Finish</button> -->
+        <button class="finish" slot="block-remix-actions">Finish</button>
     </kc-editor-banner>
 
-    <kc-editor-banner text="Change this variable from" >
+    <kc-editor-banner text="Vanilla step by step banner without a button" >
         <p slot="title"> Step by Step</p>
         <span class="block-button" slot="block-button"><hr/></span>
     </kc-editor-banner>
 
-    <kc-editor-banner text="I can even change the progress into an image. For reasons">
+    <kc-editor-banner text="Vanilla puzzle banner without a button">
         <p slot="title"> Puzzle</p>
         <span class="block-button" slot="block-button"><hr/></span>
     </kc-editor-banner>
