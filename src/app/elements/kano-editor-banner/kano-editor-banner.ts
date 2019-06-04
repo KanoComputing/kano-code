@@ -53,7 +53,8 @@ export class KCEditorBanner extends LitElement {
                 margin-top: 4px;
             }
             .title {
-                color: rgb(62, 64, 66, 0.4);
+                color: #3e4042;
+                opacity: 0.4;
                 font-weight: bold;
                 display: inline;
             }
