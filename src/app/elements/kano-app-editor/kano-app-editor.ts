@@ -144,6 +144,9 @@ export class KanoAppEditor extends LitElement {
             kc-workspace-toolbar {
                 padding: 20px 0;
             }
+            .top-container-wrapper {
+                display: block;
+            }
             .top-container {
                 display: flex;
                 margin: 0 12px -16px 20px;
@@ -224,16 +227,18 @@ export class KanoAppEditor extends LitElement {
                      @mousemove=${(e : MouseEvent) => this.mouseMoved(e)}
                      @mouseup=${() => this.completedResizing()}>
                 <div class="ui-edition" id="workspace-panel">
-                    <div class="top-container">
-                        <div class="tabs"
-                                    attr-for-selected="id"
-                                    .selected=${this.workspaceTab}
-                                    autoselect>
-                            ${this.getTab('Artboard', 'workspace')}
-                            ${this.getTab('Code', 'code-display')}
-                        </div>
-                        <div class="controls">
-                            <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>
+                    <div class="top-container-wrapper">
+                        <div class="top-container">
+                            <div class="tabs"
+                                        attr-for-selected="id"
+                                        .selected=${this.workspaceTab}
+                                        autoselect>
+                                ${this.getTab('Artboard', 'workspace')}
+                                ${this.getTab('Code', 'code-display')}
+                            </div>
+                            <div class="controls">
+                                <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>
+                            </div>
                         </div>
                     </div>
                     <div id="workspace-host" ?hidden=${this.workspaceTab !== 'workspace'}></div>

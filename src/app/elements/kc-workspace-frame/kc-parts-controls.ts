@@ -30,6 +30,9 @@ export class KCPartsControls extends LitElement {
     @property({ type: Boolean })
     public addPartsHidden : boolean = false;
 
+    @property({ type: Number })
+    public canvasHeight : Number = 0;
+
     public get onDidClickAddParts() {
         return this._onDidClickAddParts.event;
     }
@@ -83,13 +86,12 @@ export class KCPartsControls extends LitElement {
             paper-dialog {
                 background: transparent;
             }
-            .part-list {
+            #part-list {
                 flex: 1;
                 flex-basis: 0.000000001px;
                 display: flex;
                 flex-direction: column;
                 overflow: auto;
-                padding-bottom: 40px;
             }
             .part {
                 flex: none;
@@ -130,31 +132,36 @@ export class KCPartsControls extends LitElement {
     }
     render() {
         return html`
-        <div class="add-parts">
-            <button id="add-part-button" type="button" @click=${this._addPartClicked} ?hidden=${this.addPartsHidden}>
-                <label for="add-part-button">Add Parts</label>
-                <div class="icon">${templateContent(add)}</div>
-            </button>
-        </div>
-        <div class="part-list">
-            <slot name="extra-parts"></slot>
-            ${this.parts.map(part => html`
-            <div class="part" id="part-${part.id}">
-                <kc-part-list-item .label=${part.name}
-                                   .icon=${part.icon}
-                                   .validator=${this._validatePartName.bind(this)}
-                                   style=${styleMap({ '--kano-part-list-item-highlight-color': part.color })}
-                                   @click=${()=> this._partItemTapped(part)}
-                                   @label-change=${(e : CustomEvent) => this._onNameChange(e, part)}>
-                    ${part.inlineDisplay.domNode}
-                </kc-part-list-item>
-                <button type="button" class="remove" @click=${()=> this._removePartClicked(part)}>
-                    ${templateContent(close)}
+            <div class="add-parts">
+                <button id="add-part-button" type="button" @click=${this._addPartClicked} ?hidden=${this.addPartsHidden}>
+                    <label for="add-part-button">Add Parts</label>
+                    <div class="icon">${templateContent(add)}</div>
                 </button>
             </div>
-            `)}
-        </div>
-`;
+            <div id="part-list">
+                <slot name="extra-parts"></slot>
+                ${this.parts.map(part => html`
+                <div class="part" id="part-${part.id}">
+                    <kc-part-list-item .label=${part.name}
+                                    .icon=${part.icon}
+                                    .validator=${this._validatePartName.bind(this)}
+                                    style=${styleMap({ '--kano-part-list-item-highlight-color': part.color })}
+                                    @click=${()=> this._partItemTapped(part)}
+                                    @label-change=${(e : CustomEvent) => this._onNameChange(e, part)}>
+                        ${part.inlineDisplay.domNode}
+                    </kc-part-list-item>
+                    <button type="button" class="remove" @click=${()=> this._removePartClicked(part)}>
+                        ${templateContent(close)}
+                    </button>
+                </div>
+                `)}
+            </div>
+        `;
+    }
+    updated() {
+        if (this.canvasHeight) {
+            this.updatePartListHeight();
+        }
     }
     get addPartsButton() {
         return this.renderRoot!.querySelector('#add-part-button');
@@ -176,6 +183,13 @@ export class KCPartsControls extends LitElement {
             throw new Error('Could not get part DOM node: renderRoot was not set');
         }
         return this.renderRoot.querySelector(`#part-${id}`) as HTMLElement;
+    }
+    updatePartListHeight() {
+        const partList = this.renderRoot!.querySelector('#part-list') as HTMLElement;
+        if (partList) {
+            const height = window.innerHeight - partList.offsetTop;
+            partList.style.height = `${height}px`;
+        }
     }
     addEntry(model : IStackEntry) : IPartsControlsEntry {
         const item = model;

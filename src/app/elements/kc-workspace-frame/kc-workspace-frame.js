@@ -144,6 +144,9 @@ class KcWorkspaceFrame extends PolymerElement {
                 value: false,
                 observer: '_fullscreenChanged',
             },
+            canvasHeight: {
+                type: Number,
+            }
         };
     }
     constructor() {
@@ -193,6 +196,9 @@ class KcWorkspaceFrame extends PolymerElement {
                 style.top = 'auto';
                 style.left = 'auto';
             }
+            this.dispatchEvent(new CustomEvent('canvas-height', {
+                detail: parseInt(style.height)
+            }));
         });
         this.$.content.resizeView();
     }

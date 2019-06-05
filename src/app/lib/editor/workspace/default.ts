@@ -47,6 +47,9 @@ export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
         subscribeDOM(this.frame, 'close-fullscreen', () => {
             this.editor!.output.setFullscreen(false)
         });
+        subscribeDOM(this.frame, 'canvas-height', (e: { detail: Number; }) => {
+            this.partsControls.canvasHeight = e.detail;
+        });
 
         (this.frame as any).width = this.editor.output.visuals.width;
         (this.frame as any).height = this.editor.output.visuals.height;
