@@ -1,4 +1,5 @@
 import { Blockly, Block } from '@kano/kwc-blockly/blockly.js';
+import { _ } from '../../i18n/index.js';
 
 const COLOR = '#1198ff';
 
@@ -6,26 +7,26 @@ const ID = 'control';
 
 const everyUnits = [
     [
-        'seconds',
+        _('SECONDS', 'seconds'),
         'seconds',
     ],
     [
-        'milliseconds',
+        _('MILLISECONDS', 'milliseconds'),
         'milliseconds',
     ],
     [
-        'frames',
+        _('FRAMES', 'frames'),
         'frames',
     ],
 ];
 
 const inTimeUnits = [
     [
-        'seconds',
+        _('SECONDS', 'seconds'),
         'seconds',
     ],
     [
-        'milliseconds',
+        _('MILLISECONDS', 'milliseconds'),
         'milliseconds',
     ],
 ];

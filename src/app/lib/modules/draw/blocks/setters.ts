@@ -1,4 +1,5 @@
 import { Blockly, Block } from '@kano/kwc-blockly/blockly.js';
+import { _ } from '../../../i18n/index.js';
 
 export const setters = [{
     block: (part : any) => {

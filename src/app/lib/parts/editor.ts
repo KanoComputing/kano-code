@@ -10,6 +10,7 @@ import Editor from '../editor/editor.js';
 import { ToolboxEntry, IToolboxWhitelist } from '../editor/toolbox.js';
 import { QueryEngine } from '../editor/selector/selector.js';
 import { IPartsControlsEntry } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
+import { _ } from '../i18n/index.js';
 
 interface IPartRecord {
     type : string;
@@ -240,9 +241,9 @@ export class EditorPartsManager {
         }
         if (this.checkBlockDependency(id)) {
             const alertDelete = this.editor.dialogs.registerAlert({
-                heading: 'Oh oh',
-                text: `You can't delete '${partRecord.part.name}' because it is used in the code`,
-                buttonLabel: 'Ok',
+                heading: _('DELETE_PART_OH_OH_HEADING', 'Oh oh'),
+                text: `${_('YOU_CANT_DELETE_PART', 'You can\'t delete')} '${partRecord.part.name}' ${_('CANT_DELETE_PART_USED_IN_CODE', 'because it is used in the code')}`,
+                buttonLabel: _('OK', 'Ok'),
             });
             alertDelete.onDidClose(() => {
                 alertDelete.dispose();
@@ -251,8 +252,8 @@ export class EditorPartsManager {
             alertDelete.open();
         } else {
             const confirmDelete = this.editor.dialogs.registerConfirm({
-                heading: 'Are you sure',
-                text: `You are about to delete '${partRecord.part.name}'`,
+                heading: _('DELETE_PART_ARE_YOU_SURE', 'Are you sure'),
+                text: `${_('DELETE_PART_ABOUT_TO_DELETE', 'You are about to delete')} '${partRecord.part.name}'`,
             });
             confirmDelete.onDidConfirm(() => {
                 this.removePart(id);

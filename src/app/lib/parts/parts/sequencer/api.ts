@@ -2,20 +2,21 @@ import { IPartAPI } from '../../api.js';
 import { SequencerPart } from './sequencer.js';
 import { FieldSequence } from './blockly/field-sequence.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import Editor from '../../../editor/editor.js';
+import { Editor } from '../../../editor/editor.js';
 import { BlocklySourceEditor } from '../../../source-editor/blockly.js';
 import { FieldSequenceConfig } from './blockly/field-sequence-config.js';
 import { Meta } from '../../../meta-api/module.js';
 import { onDidCreateBlockType } from '../../../util/blockly.js';
 import { SequencerInlineDisplay } from './inline.js';
 import { WebAudioTimestamp } from '../../../types.js';
+import { _ } from '../../../i18n/index.js';
 import { svg } from '@kano/icons-rendering/index.js';
 
 const icon = svg`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><title>Asset 4</title><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path d="M45,0H3A3,3,0,0,0,0,3V45a3,3,0,0,0,3,3H45a3,3,0,0,0,3-3V3A3,3,0,0,0,45,0ZM22.39,38.12a2.34,2.34,0,0,1-.71,1.7,2.28,2.28,0,0,1-1.71.7H10a2.39,2.39,0,0,1-2.42-2.4v-10a2.27,2.27,0,0,1,.7-1.7A2.23,2.23,0,0,1,10,25.69H20a2.23,2.23,0,0,1,1.71.69,2.36,2.36,0,0,1,.71,1.7Zm0-18.12A2.42,2.42,0,0,1,20,22.39H10a2.32,2.32,0,0,1-1.72-.71A2.24,2.24,0,0,1,7.54,20V10a2.24,2.24,0,0,1,.7-1.68A2.36,2.36,0,0,1,10,7.57H20a2.37,2.37,0,0,1,1.71.71A2.33,2.33,0,0,1,22.39,10ZM40.47,38.12a2.39,2.39,0,0,1-2.42,2.4H28a2.28,2.28,0,0,1-1.71-.7,2.34,2.34,0,0,1-.71-1.7v-10a2.36,2.36,0,0,1,.71-1.7A2.23,2.23,0,0,1,28,25.69h10a2.23,2.23,0,0,1,1.72.69,2.27,2.27,0,0,1,.7,1.7Zm0-18.12a2.24,2.24,0,0,1-.7,1.68,2.32,2.32,0,0,1-1.72.71H28A2.42,2.42,0,0,1,25.62,20V10a2.33,2.33,0,0,1,.71-1.68A2.37,2.37,0,0,1,28,7.57h10a2.36,2.36,0,0,1,1.72.71,2.24,2.24,0,0,1,.7,1.68Z"/></g></g></svg>`;
 
 export const SequencerAPI : IPartAPI = {
     type: SequencerPart.type,
-    label: 'Sequencer',
+    label: _('PART_SEQ_LABEL', 'Sequencer'),
     color: '#ef5284',
     icon,
     inlineDisplay: SequencerInlineDisplay,
@@ -87,18 +88,22 @@ export const SequencerAPI : IPartAPI = {
     }, {
         type: 'variable',
         name: 'bpm',
+        verbose: _('PART_SEQ_BPM', 'bpm'),
         setter: true,
         returnType: Number,
         default: 120,
     }, {
         type: 'function',
         name: 'start',
+        verbose: _('PART_SEQ_START', 'start'),
     }, {
         type: 'function',
         name: 'stop',
+        verbose: _('PART_SEQ_STOP', 'stop'),
     }, {
         type: 'function',
         name: 'shuffle',
+        verbose: _('PART_SEQ_SHUFFLE', 'shuffle'),
     }],
     onInstall(editor : Editor, part : SequencerPart) {
         if (editor.sourceType !== 'blockly') {

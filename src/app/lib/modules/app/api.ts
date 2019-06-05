@@ -2,16 +2,17 @@ import { ApplicationModule } from './app.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { addFlashField, setupFlash } from '../../plugins/flash/flash.js';
 import { IAPIDefinition } from '../../meta-api/module.js';
+import { _ } from '../../i18n/index.js';
 
 export const AppAPI : IAPIDefinition = {
     type: 'module',
     name: ApplicationModule.id,
     color: '#5fc9f3',
-    verbose: 'App',
+    verbose: _('MODULE_APP', 'App'),
     symbols: [{
         type: 'function',
         name: 'onStart',
-        verbose: 'when app starts',
+        verbose: _('WHEN_APP_STARTS', 'when app starts'),
         parameters: [{
             type: 'parameter',
             name: 'callback',

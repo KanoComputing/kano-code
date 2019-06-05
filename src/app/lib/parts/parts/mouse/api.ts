@@ -3,44 +3,51 @@ import { IPartAPI } from '../../api.js';
 import { svg } from '@kano/icons-rendering/index.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import Editor from '../../../editor/editor.js';
+import { Editor } from '../../../editor/editor.js';
 import * as StickerBlocks from '../sticker/common.js';
 import { StickerPart } from '../sticker/sticker.js';
+import { _ } from '../../../i18n/index.js';
+import MetaModule from '../../../meta-api/module.js';
 
 const mouse = svg`<svg viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g><path d="M28.73,27.18l9.68-9.68-.58-.58a15.11,15.11,0,0,0-20.41-1Z"></path><path d="M29.46,29.78h0L19,40.3l7.77,7.77A14.94,14.94,0,1,0,47.86,26.94l-7.77-7.77Z"></path><path d="M26.87,29,15.72,17.64a15.11,15.11,0,0,0,1,20.41l.58.58Z"></path></g></svg>`;
 
 export const MouseAPI : IPartAPI = {
     type: MousePart.type,
-    label: 'Mouse',
+    label: _('PART_MOUSE_LABEL', 'Mouse'),
     icon: mouse,
     color: '#ef5284',
     symbols: [{
         type: 'variable',
         name: 'x',
+        verbose: _('PART_MOUSE_X', 'x'),
         returnType: Number,
     }, {
         type: 'variable',
         name: 'y',
+        verbose: _('PART_MOUSE_Y', 'y'),
         returnType: Number,
     }, {
         type: 'variable',
         name: 'dx',
+        verbose: _('PART_MOUSE_DX', 'dx'),
         returnType: Number,
     }, {
         type: 'variable',
         name: 'dy',
+        verbose: _('PART_MOUSE_DY', 'dy'),
         returnType: Number,
     },
     {
         type: 'variable',
         name: 'cursor',
+        verbose: _('PART_MOUSE_CURSOR', 'cursor'),
         setter: true,
         getter: false,
         returnType: 'Sticker',
         default: StickerPart.defaultSticker,
         blockly: {
-            shadow(def : string) {
-                return `<shadow type="mouse_getSticker"><field name="STICKER">${StickerPart.defaultSticker}</field></shadow>`;
+            shadow(def : string, mod : MetaModule) {
+                return `<shadow type="${mod.def.name}_getSticker"><field name="STICKER">${StickerPart.defaultSticker}</field></shadow>`;
             },
         },
     },
@@ -49,7 +56,7 @@ export const MouseAPI : IPartAPI = {
     {
         type: 'function',
         name: 'onDown',
-        verbose: 'on click',
+        verbose: _('PART_MOUSE_ON_DOWN', 'on click'),
         parameters: [{
             type: 'parameter',
             name: 'callback',
@@ -66,7 +73,7 @@ export const MouseAPI : IPartAPI = {
     }, {
         type: 'function',
         name: 'onUp',
-        verbose: 'on release',
+        verbose: _('PART_MOUSE_ON_UP', 'on release'),
         parameters: [{
             type: 'parameter',
             name: 'callback',
@@ -83,7 +90,7 @@ export const MouseAPI : IPartAPI = {
     }, {
         type: 'function',
         name: 'onMove',
-        verbose: 'on move',
+        verbose: _('PART_MOUSE_ON_MOVE', 'on move'),
         parameters: [{
             type: 'parameter',
             name: 'callback',

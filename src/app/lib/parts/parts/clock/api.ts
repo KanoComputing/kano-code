@@ -2,17 +2,18 @@ import { ClockPart } from './clock.js';
 import { IPartAPI } from '../../api.js';
 import { clock } from '@kano/icons/parts.js'
 import { ClockInlineDisplay } from './inline.js';
+import { _ } from '../../../i18n/index.js';
 
 export const ClockAPI : IPartAPI = {
     type: ClockPart.type,
     color: '#9b61bd',
-    label: 'Clock',
+    label: _('PART_CLOCK_LABEL', 'Clock'),
     icon: clock,
     inlineDisplay: ClockInlineDisplay,
     symbols: [{
         type: 'function',
         name: 'getCurrent',
-        verbose: 'current',
+        verbose: _('PART_CLOCK_CURRENT', 'current'),
         returnType: Number,
         parameters: [{
             type: 'parameter',
@@ -21,31 +22,31 @@ export const ClockAPI : IPartAPI = {
             returnType: 'Enum',
             enum: [
                 [
-                    'Year',
+                    _('PART_CLOCK_YEAR', 'Year'),
                     'year',
                 ],
                 [
-                    'Month',
+                    _('PART_CLOCK_MONTH', 'Month'),
                     'month',
                 ],
                 [
-                    'Day',
+                    _('PART_CLOCK_DAY', 'Day'),
                     'day',
                 ],
                 [
-                    'Hour',
+                    _('PART_CLOCK_HOUR', 'Hour'),
                     'hour',
                 ],
                 [
-                    'Minute',
+                    _('PART_CLOCK_MINUTE', 'Minute'),
                     'minute',
                 ],
                 [
-                    'Seconds',
+                    _('PART_CLOCK_SECONDS', 'Seconds'),
                     'seconds',
                 ],
                 [
-                    'Milliseconds',
+                    _('PART_CLOCK_MILLISECONDS', 'Milliseconds'),
                     'milliseconds',
                 ],
             ]
@@ -53,7 +54,7 @@ export const ClockAPI : IPartAPI = {
     }, {
         type: 'function',
         name: 'get',
-        verbose: 'current',
+        verbose: _('PART_CLOCK_CURRENT', 'current'),
         returnType: String,
         parameters: [{
             type: 'parameter',
@@ -62,11 +63,11 @@ export const ClockAPI : IPartAPI = {
             returnType: 'Enum',
             enum: [
                 [
-                    'Date',
+                    _('PART_CLOCK_DATE', 'Date'),
                     'date',
                 ],
                 [
-                    'Time',
+                    _('PART_CLOCK_TIME', 'Time'),
                     'time',
                 ],
             ]

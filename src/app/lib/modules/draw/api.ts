@@ -3,7 +3,9 @@ import { paths } from './blocks/paths.js';
 import { setters } from './blocks/setters.js';
 import { shapes } from './blocks/shapes.js';
 import { space } from './blocks/space.js';
+import { registerRepeatDrawing } from './blocks/repeats.js';
 import { DrawModule } from './draw.js';
+import { _ } from '../../i18n/index.js';
 
 const COLOR = '#82C23D';
 let blocks : any[] = [];
@@ -13,7 +15,7 @@ blocks = blocks.concat(general);
 blocks.push({
     block: (part : any) => ({
         id: 'clear',
-        message0: `${part.name}: clear drawing`,
+        message0: `${part.name}: ${_('DRAW_CLEAR', 'clear drawing')}`,
         previousStatement: null,
         nextStatement: null,
     }),
@@ -45,8 +47,14 @@ const categoryBlocks = blocks.map((definition) => {
         shadow: block.shadow,
     };
 });
+
+categoryBlocks.push({
+    id: 'draw_repeat_drawing',
+    colour: COLOR,
+});
+
 const category = {
-    name: 'Draw',
+    name: _('MODULE_DRAW_NAME', 'Draw'),
     id: 'draw',
     colour: COLOR,
     blocks: categoryBlocks,
@@ -80,6 +88,7 @@ export const DrawAPI = {
             }
             Blockly.JavaScript[id] = definition.javascript(DrawAPI.category);
         });
+        registerRepeatDrawing(Blockly, COLOR);
     },
     category,
     defaults: {
@@ -132,6 +141,10 @@ export const DrawAPI = {
             X: 5,
             Y: 5,
         },
+        draw_repeat_drawing: {
+            REPEATS: 6,
+            ROTATION: 60
+        }
     },
 };
 

@@ -2,6 +2,7 @@ import { Palette } from './modules/palette.js';
 import { Space } from './modules/space.js';
 import { General } from './modules/general.js';
 import { Paths } from './modules/paths.js';
+import { Repeats } from './modules/repeats.js';
 import { Setters } from './modules/setters.js';
 import { Shapes } from './modules/shapes.js';
 import { Text } from './modules/text.js';
@@ -19,6 +20,7 @@ export class Canvas {
     public general : General;
     public palette = Palette;
     public paths : Paths;
+    public repeats: Repeats;
     public setters : Setters;
     public shapes : Shapes;
     public space : Space;
@@ -27,6 +29,7 @@ export class Canvas {
         this.session = this.createSession(settings);
         this.general = new General(this.session);
         this.paths = new Paths(this.session);
+        this.repeats = new Repeats(this.session);
         this.setters = new Setters(this.session);
         this.shapes = new Shapes(this.session);
         this.space = new Space(this.session);
