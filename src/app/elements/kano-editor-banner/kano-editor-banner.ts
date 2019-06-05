@@ -29,6 +29,7 @@ export class KCEditorBanner extends LitElement {
                 box-sizing: border-box;
                 border-radius: 6px;
                 box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+                width: 300px;
             }
 
             slot[name="avatar"]::slotted(*) {
@@ -46,7 +47,7 @@ export class KCEditorBanner extends LitElement {
                 font-size: 16px;
                 color: #22272D;
                 min-width: 200px;
-                padding: 16px;
+                padding: 10px 14px 14px 14px;
             }
 
             .actions::slotted(*) {
