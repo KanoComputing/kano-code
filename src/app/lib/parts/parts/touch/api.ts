@@ -3,7 +3,8 @@ import { IPartAPI } from '../../api.js';
 import { svg } from '@kano/icons-rendering/index.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import Editor from '../../../editor/editor.js';
+import { Editor } from '../../../editor/editor.js';
+import { _ } from '../../../i18n/index.js';
 
 const touch = svg`<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><title>Kano-Iconset</title><path d="M32,56A24,24,0,1,1,56,32,24,24,0,0,1,32,56Zm0-44.72A20.75,20.75,0,1,0,52.75,32,20.77,20.77,0,0,0,32,11.25Z"/><path d="M32,48.84A16.84,16.84,0,1,1,48.85,32,16.86,16.86,0,0,1,32,48.84Zm0-30.46A13.62,13.62,0,1,0,45.62,32,13.64,13.64,0,0,0,32,18.38Z"/><path d="M32,41.06A9.06,9.06,0,1,1,41.07,32,9.07,9.07,0,0,1,32,41.06Z"/></svg>`;
 const XPosition = Symbol();
@@ -11,13 +12,13 @@ const YPosition = Symbol();
 
 export const TouchAPI : IPartAPI = {
     type: TouchPart.type,
-    label: 'Touch',
+    label: _('PART_TOUCH_LABEL', 'Touch'),
     icon: touch,
     color: '#ef5284',
     symbols: [{
         type: 'function',
         name: 'onTouchStart',
-        verbose: 'on touch',
+        verbose: _('PART_TOUCH_ON_TOUCH', 'on touch'),
         parameters: [{
             type: 'parameter',
             name: 'callback',
@@ -34,7 +35,7 @@ export const TouchAPI : IPartAPI = {
     }, {
         type: 'function',
         name: 'onTouchEnd',
-        verbose: 'on release',
+        verbose: _('PART_TOUCH_ON_RELEASE', 'on release'),
         parameters: [{
             type: 'parameter',
             name: 'callback',
@@ -51,7 +52,7 @@ export const TouchAPI : IPartAPI = {
     }, {
         type: 'function',
         name: 'onTouchMove',
-        verbose: 'on move',
+        verbose: _('PART_TOUCH_ON_MOVE', 'on move'),
         parameters: [{
             type: 'parameter',
             name: 'callback',
@@ -68,7 +69,7 @@ export const TouchAPI : IPartAPI = {
     }, {
         type: 'function',
         name: 'forEach',
-        verbose: 'for each finger',
+        verbose: _('PART_TOUCH_FOR_EACH', 'for each finger'),
         parameters: [{
             type: 'parameter',
             name: 'callback',
@@ -95,7 +96,7 @@ export const TouchAPI : IPartAPI = {
     }, {
         type: 'variable',
         name: 'firstX',
-        verbose: 'x',
+        verbose: _('PART_TOUCH_X', 'x'),
         returnType: Number,
         // Become an argument if this type exists in the scope
         blockly: {
@@ -104,7 +105,7 @@ export const TouchAPI : IPartAPI = {
     }, {
         type: 'variable',
         name: 'firstY',
-        verbose: 'y',
+        verbose: _('PART_TOUCH_Y', 'y'),
         returnType: Number,
         // Become an argument if this type exists in the scope
         blockly: {

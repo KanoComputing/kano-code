@@ -3,12 +3,13 @@ import '@kano/styles/color.js';
 import '@kano/styles/typography.js';
 import { close } from '@kano/icons/ui.js';
 import './kc-part-list-item.js';
-import { EventEmitter, IDisposable, IEvent } from '@kano/common/index.js';
+import { EventEmitter, IEvent } from '@kano/common/index.js';
 import { templateContent } from '../../lib/directives/template-content.js';
 import { PartInlineDisplay } from '../../lib/parts/inline-display.js';
 import { add } from './icons.js';
 import { styleMap } from 'lit-html/directives/style-map';
 import { Editor } from '../../lib/index.js';
+import { _ } from '../../lib/i18n/index.js';
 
 export interface IStackEntry {
     id : string;
@@ -132,7 +133,7 @@ export class KCPartsControls extends LitElement {
         return html`
         <div class="add-parts">
             <button id="add-part-button" type="button" @click=${this._addPartClicked} ?hidden=${this.addPartsHidden}>
-                <label for="add-part-button">Add Parts</label>
+                <label for="add-part-button">${_('ADD_PARTS_BUTTON', 'Add Parts')}</label>
                 <div class="icon">${templateContent(add)}</div>
             </button>
         </div>

@@ -5,6 +5,7 @@ import MetaModule, { IMetaDefinition } from '../../../meta-api/module.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { FieldSample } from './blockly/field-sample.js';
 import { WebAudioTimestamp } from '../../../types.js';
+import { _ } from '../../../i18n/index.js';
 
 export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
     const getter : IMetaDefinition = {
@@ -34,12 +35,13 @@ export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
     
     return {
         type: partClass.type,
-        label: 'Speaker',
+        label: _('PART_SPEAKER_LABEL', 'Speaker'),
         icon: speaker,
         color: '#ef5284',
         symbols: [{
             type: 'function',
             name: 'play',
+            verbose: _('PART_SPEAKER_PLAY', 'play'),
             parameters: [{
                 type: 'parameter',
                 name: 'sample',
@@ -62,6 +64,7 @@ export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
         }, {
             type: 'function',
             name: 'loop',
+            verbose: _('PART_SPEAKER_LOOP', 'loop'),
             parameters: [{
                 type: 'parameter',
                 name: 'sample',
@@ -77,15 +80,18 @@ export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
         }, {
             type: 'function',
             name: 'stop',
+            verbose: _('PART_SPEAKER_STOP', 'stop'),
         }, {
             type: 'variable',
             name: 'pitch',
+            verbose: _('PART_SPEAKER_PITCH', 'pitch'),
             setter: true,
             returnType: Number,
             default: 100,
         }, {
             type: 'variable',
             name: 'volume',
+            verbose: _('PART_SPEAKER_VOLUME', 'volume'),
             setter: true,
             returnType: Number,
             default: 100,

@@ -5,15 +5,17 @@ import { TransformAPI, onTransformInstall } from '../transform/api.js';
 import { getter, random, randomFrom } from './common.js';
 import { Editor } from '../../../editor/editor.js';
 import MetaModule from '../../../meta-api/module.js';
+import { _ } from '../../../i18n/index.js';
 
 export const StickerAPI : IPartAPI = {
     type: StickerPart.type,
-    label: 'Sticker',
+    label: _('PART_STICKER_LABEL', 'Sticker'),
     icon: sticker,
     color: '#00c7b6',
     symbols: [{
         type: 'variable',
         name: 'image',
+        verbose: _('PART_STICKER_IMAGE', 'image'),
         setter: true,
         getter: false,
         returnType: 'Sticker',

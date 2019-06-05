@@ -5,24 +5,26 @@ import { slider } from '@kano/icons/parts.js';
 import { SliderInlineDisplay } from './inline.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
-import Editor from '../../../editor/editor.js';
+import { Editor } from '../../../editor/editor.js';
+import { _ } from '../../../i18n/index.js';
 
 export const SliderAPI : IPartAPI = {
     type: SliderPart.type,
     color: '#00c7b6',
-    label: 'Slider',
+    label: _('PART_SLIDER_NAME', 'Slider'),
     icon: slider,
     inlineDisplay: SliderInlineDisplay,
     symbols: [{
         type: 'variable',
         name: 'value',
+        verbose: _('PART_SLIDER_VALUE', 'value'),
         returnType: Number,
         default: 0,
         setter: true,
     }, {
         type: 'function',
         name: 'onChange',
-        verbose: 'on change',
+        verbose: _('PART_SLIDER_ON_CHANGE', 'on change'),
         parameters: [{
             type: 'parameter',
             name: 'callback',

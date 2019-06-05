@@ -1,5 +1,6 @@
 import { Blockly, Block, utils } from '@kano/kwc-blockly/blockly.js';
 import { MathModule } from './math.js';
+import { _ } from '../../i18n/index.js';
 
 const COLOR = '#ff9800';
 
@@ -12,8 +13,8 @@ const arithmeticOptions : { [K : string] : string } = {
 };
 
 const minMaxOptions = [
-    ['min', 'min'],
-    ['max', 'max'],
+    [_('MIN', 'min'), 'min'],
+    [_('MAX', 'max'), 'max'],
 ];
 
 const unaryOptions = [
@@ -104,7 +105,7 @@ export const MathAPI = {
                 const json = {
                     id: 'math_max',
                     colour: COLOR,
-                    message0: 'max %1 %2',
+                    message0: `${_('MAX', 'max')} %1 %2`,
                     args0: [{
                         type: 'input_value',
                         name: 'ARG1',
@@ -134,7 +135,7 @@ export const MathAPI = {
                 const json = {
                     id: 'math_min',
                     colour: COLOR,
-                    message0: 'min %1 %2',
+                    message0: `${_('MIN', 'min')} %1 %2`,
                     args0: [{
                         type: 'input_value',
                         name: 'ARG1',
@@ -164,7 +165,7 @@ export const MathAPI = {
                 const json = {
                     id: 'math_sign',
                     colour: COLOR,
-                    message0: 'sign %1',
+                    message0: `${_('SIGN', 'sign')} %1`,
                     args0: [{
                         type: 'input_value',
                         name: 'ARG',
@@ -189,7 +190,7 @@ export const MathAPI = {
                 const json = {
                     id: 'math_random',
                     colour: COLOR,
-                    message0: 'random number from %1 to %2',
+                    message0: _('BLOCK_RANDOM_NUMBER_BETWEEN', 'random number from %1 to %2'),
                     args0: [{
                         type: 'input_value',
                         name: 'MIN',

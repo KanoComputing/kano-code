@@ -45,6 +45,7 @@ export class DrawModule extends AppModule {
             moveToRandom: this.modules.space.moveToRandom.bind(this.modules.space),
             move: this.modules.space.move.bind(this.modules.space),
             reset: this.modules.general.reset.bind(this.modules.general),
+            repeatDrawing: this.modules.repeats.repeatDrawing.bind(this.modules.repeats),
             set opacity(a : number) {
                 a = Math.max(0, Math.min(100, a));
                 ctx!.globalAlpha = a / 100;

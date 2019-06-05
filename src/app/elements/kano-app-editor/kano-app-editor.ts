@@ -3,6 +3,7 @@ import '../kano-code-display/kano-code-display.js';
 import { property, customElement, css, LitElement, html, query } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map';
 import '../kc-workspace-toolbar/kc-workspace-toolbar.js';
+import { localize as _ } from '../../lib/i18n/index.js';
 
 @customElement('kano-app-editor')
 export class KanoAppEditor extends LitElement {
@@ -229,8 +230,8 @@ export class KanoAppEditor extends LitElement {
                                     attr-for-selected="id"
                                     .selected=${this.workspaceTab}
                                     autoselect>
-                            ${this.getTab('Artboard', 'workspace')}
-                            ${this.getTab('Code', 'code-display')}
+                            ${this.getTab(_('ARTBOARD', 'Artboard'), 'workspace')}
+                            ${this.getTab(_('CODE_DISPLAY', 'Code'), 'code-display')}
                         </div>
                         <div class="controls">
                             <kc-workspace-toolbar id="toolbar"></kc-workspace-toolbar>

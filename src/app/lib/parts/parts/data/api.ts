@@ -2,15 +2,17 @@ import { IMetaDefinition } from '../../../meta-api/module.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { DataPart } from './data.js';
-import Editor from '../../../editor/editor.js';
+import { Editor } from '../../../editor/editor.js';
+import { _ } from '../../../i18n/index.js';
 
 export const DataAPI : IMetaDefinition[] = [{
     type: 'function',
     name: 'refresh',
+    verbose: _('PART_DATA_REFRESH', 'refresh'),
 }, {
     type: 'function',
     name: 'onUpdate',
-    verbose: 'when updated',
+    verbose: _('PART_DATA_WHEN_UDPATED', 'when updated'),
     parameters: [{
         type: 'parameter',
         name: 'callback',
