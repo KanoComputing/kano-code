@@ -25,7 +25,10 @@ export interface IChallengeData {
     partsWhitelist? : IToolboxWhitelist;
     whitelist? : IToolboxWhitelist;
 }
-
+/**
+ * A Stepp-by-step controller Code editor
+ * [[include:challenge-widgets.md]]
+ */
 export class Challenge extends ChallengeBase {
     public editor : Editor;
     public data : IChallengeData;

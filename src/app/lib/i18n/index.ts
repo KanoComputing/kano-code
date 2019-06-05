@@ -34,7 +34,6 @@ function loadJSON(url : string) {
 }
 
 export function localize(key : string, fallback = '') {
-    console.log(key);
     return messages[key] || fallback;
 }
 

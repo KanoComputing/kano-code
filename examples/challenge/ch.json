@@ -9,33 +9,21 @@
             }
         },
         {
-            "banner": "Oopen the ${toolbox#math} thing",
-            "beacon": "toolbox#math:100,50",
+            "banner": "Oopen the ${toolbox#draw} thing",
+            "beacon": "toolbox#draw:100,50",
             "validation": {
                 "blockly": {
-                    "open-flyout": "toolbox#math"
+                    "open-flyout": "toolbox#draw"
                 }
             }
         },
         {
-            "beacon": "toolbox#math>flyout-block.math_arithmetic",
+            "beacon": "toolbox#draw>flyout-block.draw_circle",
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "toolbox#math>flyout-block.math_arithmetic",
+                        "type": "toolbox#draw>flyout-block.draw_circle",
                         "alias": "math"
-                    }
-                }
-            }
-        },
-        {
-            "beacon": "alias#math>input#OP",
-            "banner": "Change the value in the drop",
-            "validation": {
-                "blockly": {
-                    "value": {
-                        "target": "alias#math>input#OP",
-                        "value": "MINUS"
                     }
                 }
             }
@@ -46,8 +34,14 @@
             "tooltips": [
                 {
                     "target": "toolbox#draw",
-                    "text": "Here ${toolbox#draw} 🎂",
+                    "text": "Here ${toolbox#draw} have some cake for your birthday 🎂",
                     "position": "right"
+                },
+                {
+                    "target": "add-part-button",
+                    "text": "Want to have some fun with parts?<br>(You can't dismiss me BTW)",
+                    "position": "left",
+                    "sticky": true
                 }
             ],
             "validation": {

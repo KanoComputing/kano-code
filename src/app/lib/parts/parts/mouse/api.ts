@@ -29,12 +29,12 @@ export const MouseAPI : IPartAPI = {
     }, {
         type: 'variable',
         name: 'dx',
-        verbose: _('PART_MOUSE_DX', 'dx'),
+        verbose: _('PART_MOUSE_DX', 'speed x'),
         returnType: Number,
     }, {
         type: 'variable',
         name: 'dy',
-        verbose: _('PART_MOUSE_DY', 'dy'),
+        verbose: _('PART_MOUSE_DY', 'speed y'),
         returnType: Number,
     },
     {

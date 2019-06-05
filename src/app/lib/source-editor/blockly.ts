@@ -40,6 +40,9 @@ export class BlocklySourceEditor implements SourceEditor {
                     this.triggerLayout();
                 }
             });
+            const blocklyEl = (this.domNode as any).$['code-editor'];
+            const toolbox = blocklyEl.getToolbox();
+            subscribeDOM(toolbox, 'scroll', () => this.triggerLayout());
         });
         this.editor.exposeMethod('logBlock', () => this.logBlockUnderCursor());
     }
