@@ -10,7 +10,9 @@ class KcWorkspaceFrame extends PolymerElement {
         ${button}
         <style>
             :host {
-                display: block;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
             }
             :host(.fullscreen) #content {
                 position: fixed;
