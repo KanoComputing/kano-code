@@ -143,8 +143,7 @@ export const DrawAPI = {
         },
         draw_repeat_drawing: {
             REPEATS: 6,
-            ROTATION: 60,
-            MOVEMENT: 60
+            ROTATION: 60
         }
     },
 };

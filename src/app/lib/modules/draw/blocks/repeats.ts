@@ -5,7 +5,7 @@ export const registerRepeatDrawing = (Blockly : Blockly, defaultColor: string) =
         init() {
             const json = {
                 id: 'draw_repeat_drawing',
-                lookup: 'repeat_drawing(repeats, rotation, movement)',
+                lookup: 'repeat_drawing(repeats, rotation, movementX, movementY)',
                 message0: `Draw: ${Blockly.Msg.BLOCK_CANVAS_REPEAT_DRAWING}`,
                 args0: [{
                     type: "input_value",
@@ -14,11 +14,18 @@ export const registerRepeatDrawing = (Blockly : Blockly, defaultColor: string) =
                 },{
                     type: "input_value",
                     name: "ROTATION",
-                    check: 'Number'
+                    check: 'Number',
+                    align: 'RIGHT'
                 },{
                     type: "input_value",
-                    name: "MOVEMENT",
-                    check: 'Number'
+                    name: "MOVEMENTX",
+                    check: 'Number',
+                    align: 'RIGHT'
+                },{
+                    type: "input_value",
+                    name: "MOVEMENTY",
+                    check: 'Number',
+                    align: 'RIGHT'
                 }],
                 message1: `%1`,
                 args1: [{
@@ -37,9 +44,10 @@ export const registerRepeatDrawing = (Blockly : Blockly, defaultColor: string) =
         let statement = Blockly.JavaScript.statementToCode(block, 'STATEMENT'),
         repeats = Blockly.JavaScript.valueToCode(block, 'REPEATS', Blockly.JavaScript.ORDER_COMMA) || 'null',
         rotation = Blockly.JavaScript.valueToCode(block, 'ROTATION', Blockly.JavaScript.ORDER_COMMA) || 'null',
-        movement = Blockly.JavaScript.valueToCode(block, 'MOVEMENT', Blockly.JavaScript.ORDER_COMMA) || 'null';
+        movementX = Blockly.JavaScript.valueToCode(block, 'MOVEMENTX', Blockly.JavaScript.ORDER_COMMA) || 'null',
+        movementY = Blockly.JavaScript.valueToCode(block, 'MOVEMENTY', Blockly.JavaScript.ORDER_COMMA) || 'null';
 
-        return `ctx.repeatDrawing(${repeats}, ${rotation}, ${movement}, function(){\n${statement}});`;
+        return `ctx.repeatDrawing(${repeats}, ${rotation}, ${movementX}, ${movementY}, function(){\n${statement}});`;
     };
 }
 
