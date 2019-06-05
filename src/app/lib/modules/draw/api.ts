@@ -3,6 +3,7 @@ import { paths } from './blocks/paths.js';
 import { setters } from './blocks/setters.js';
 import { shapes } from './blocks/shapes.js';
 import { space } from './blocks/space.js';
+import { registerRepeatDrawing } from './blocks/repeats.js';
 import { DrawModule } from './draw.js';
 import { _ } from '../../i18n/index.js';
 
@@ -46,6 +47,12 @@ const categoryBlocks = blocks.map((definition) => {
         shadow: block.shadow,
     };
 });
+
+categoryBlocks.push({
+    id: 'draw_repeat_drawing',
+    colour: COLOR,
+});
+
 const category = {
     name: _('MODULE_DRAW_NAME', 'Draw'),
     id: 'draw',
@@ -81,6 +88,7 @@ export const DrawAPI = {
             }
             Blockly.JavaScript[id] = definition.javascript(DrawAPI.category);
         });
+        registerRepeatDrawing(Blockly, COLOR);
     },
     category,
     defaults: {
@@ -133,6 +141,11 @@ export const DrawAPI = {
             X: 5,
             Y: 5,
         },
+        draw_repeat_drawing: {
+            REPEATS: 6,
+            ROTATION: 60,
+            MOVEMENT: 60
+        }
     },
 };
 
