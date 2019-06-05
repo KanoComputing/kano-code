@@ -24,6 +24,7 @@ export interface IChallengeData {
     defaultApp? : string;
     partsWhitelist? : IToolboxWhitelist;
     whitelist? : IToolboxWhitelist;
+    flyoutMode?: boolean
 }
 
 export class Challenge extends ChallengeBase {
@@ -104,6 +105,9 @@ export class Challenge extends ChallengeBase {
         }
         if (this.data.whitelist) {
             this.editor.toolbox.setWhitelist(this.data.whitelist);
+        }
+        if (this.data.flyoutMode) {
+            this.editor.sourceEditor.setFlyoutMode(this.data.flyoutMode);
         }
     }
     start() {
