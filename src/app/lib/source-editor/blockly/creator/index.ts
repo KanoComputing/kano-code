@@ -299,6 +299,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         for (const child of block.children) {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
+        this.addToWhitelist(entry.def.name, type);
         return blockSteps;
     }
     getOriginalStepFromSource(source : string) {

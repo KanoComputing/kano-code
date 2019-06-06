@@ -64,6 +64,7 @@ export abstract class Creator<T extends Stepper> {
     protected highlighter : Highlighter = new Highlighter();
     protected generatedSteps? : IGeneratedStep[];
     protected stepsMap : Map<string, IGeneratedStep> = new Map();
+    protected whitelist : {[s: string] : string[]} = {};
     protected stepper : T;
     private codeChangesSub? : IDisposable;
     protected app? : any;
@@ -159,6 +160,7 @@ export abstract class Creator<T extends Stepper> {
         return { id: '', name: '', steps, defaultApp: '{}' };
     }
     generateChallenge() {
+        this.whitelist = {};
         const challenge = this.generate();
         const steps = challenge.steps.map((generatedStep) => generatedStep.data);
         return {
@@ -167,7 +169,23 @@ export abstract class Creator<T extends Stepper> {
             name: challenge.name,
             defaultApp: challenge.defaultApp,
             steps,
+            whitelist: this.whitelist,
         };
+    }
+    addToWhitelist(category: string, id: string | null) {
+        if (!id) {
+            return;
+        }
+        const blocksOfType = this.whitelist[category];
+        let alreadyInWhitelist = false;
+        if (!blocksOfType) {
+            this.whitelist[category] = [];
+        } else {
+            alreadyInWhitelist = this.whitelist[category].indexOf(id) >= 0;
+        }
+        if (!alreadyInWhitelist) {
+            this.whitelist[category].push(id);
+        }
     }
     loadChallenge(d : any) {
         // Copy the current state, will be used to re-apply the step after everything is re-loaded
