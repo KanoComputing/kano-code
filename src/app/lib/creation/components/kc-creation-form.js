@@ -4,6 +4,7 @@ import { PolymerElement } from '@polymer/polymer/polymer-element.js';
 import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
 import '@kano/Styles/input.js';
+import '@kano/kwc-icons/kwc-ui-icons.js';
 import { I18nMixin } from '../../i18n/index.js';
 import { BlockAnimation } from '../../splash.js';
 
@@ -542,7 +543,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
         <section class="preview">
             <button class="dismiss" on-tap="dismiss">
                 <span>[[localize('CLOSE', 'Close')]]</span>
-                <iron-icon icon="clear"></iron-icon>
+                <iron-icon icon="kwc-ui-icons:close"></iron-icon>
             </button>
             <slot name="preview"></slot>
         </section>
