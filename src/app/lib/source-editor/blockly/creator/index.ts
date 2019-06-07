@@ -238,6 +238,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
     blockToSteps(block : HTMLElement) : IGeneratedStep[] {
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
         const type = block.getAttribute('type');
+        let blockName = type;
         const id = block.getAttribute('id');
         if (!type) {
             return [];
@@ -266,6 +267,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 // No step or the step didn't define an alias, use the part id
                 category = `part#${matchingPart.id}>toolbox`;
             }
+            blockName = this.parseBlockName(type);
+            this.addToPartsList(matchingPart.id);
         }
         // Resolve an eventual parent connection
         let connectionQuery = this.getConnectionForStatementOrValue(block);
@@ -299,8 +302,17 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         for (const child of block.children) {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
-        this.addToWhitelist(entry.def.name, type);
+        if (entry.def.name === 'app') {
+            blockName = this.parseBlockName(type);
+        } else if (entry.def.name === 'draw') {
+            entry.def.name = 'ctx';
+        }
+        this.addToWhitelist(entry.def.name, blockName);
         return blockSteps;
+    }
+    parseBlockName(type: string) : string {
+        const index = type.indexOf('_') + 1;
+        return type.slice(index);
     }
     getOriginalStepFromSource(source : string) {
         return this.stepper.originalSteps.get(source);

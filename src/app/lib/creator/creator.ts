@@ -5,7 +5,8 @@ import { ToolbarEntryPosition } from '../../elements/kc-workspace-toolbar/entry.
 import { downloadFile } from '../util/file.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
 import { Stepper } from './stepper/stepper.js';
-import { IChallengeData, Challenge, createChallenge } from '../challenge/index.js';
+import { createChallenge } from '../challenge/index.js';
+import { IChallengeData, Challenge } from '../challenge.js';
 import { IDisposable } from 'monaco-editor';
 import { KanoCodeChallenge } from '../source-editor/blockly/challenge/kano-code.js';
 import { CreatorDevTools } from './dev.js';
@@ -65,6 +66,7 @@ export abstract class Creator<T extends Stepper> {
     protected generatedSteps? : IGeneratedStep[];
     protected stepsMap : Map<string, IGeneratedStep> = new Map();
     protected whitelist : {[s: string] : string[]} = {};
+    protected partsList : string[] = [];
     protected stepper : T;
     private codeChangesSub? : IDisposable;
     protected app? : any;
@@ -170,6 +172,7 @@ export abstract class Creator<T extends Stepper> {
             defaultApp: challenge.defaultApp,
             steps,
             whitelist: this.whitelist,
+            parts: this.partsList,
         };
     }
     addToWhitelist(category: string, id: string | null) {
@@ -185,6 +188,15 @@ export abstract class Creator<T extends Stepper> {
         }
         if (!alreadyInWhitelist) {
             this.whitelist[category].push(id);
+        }
+    }
+    addToPartsList(id: string | undefined) {
+        if (!id) {
+            return;
+        }
+        const alreadyInWhitelist = this.partsList.indexOf(id) >= 0;
+        if (!alreadyInWhitelist) {
+            this.partsList.push(id);
         }
     }
     loadChallenge(d : any) {
@@ -273,6 +285,7 @@ export abstract class Creator<T extends Stepper> {
         const data = this.generateChallenge();
         // Create a challenge instance to go thorugh the steps
         this.challenge = this.createChallenge(data);
+        this.challenge.reset();
         // Get the index of the step we want to preview
         const stepIndex = this.generatedSteps!.indexOf(step);
         const engine = this.challenge.engine as KanoCodeChallenge;
