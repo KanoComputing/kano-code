@@ -25,6 +25,7 @@ export interface IGeneratedStep {
 
 export interface IGeneratedChallenge {
     id : string;
+    name: string;
     defaultApp : string;
     steps : IGeneratedStep[];
 }
@@ -155,7 +156,7 @@ export abstract class Creator<T extends Stepper> {
             this.stepsMap.set(step.source, step);
             this.editor.registerAlias(step.data.alias, step.source);
         });
-        return { id: '', steps, defaultApp: '{}' };
+        return { id: '', name: '', steps, defaultApp: '{}' };
     }
     generateChallenge() {
         const challenge = this.generate();
@@ -163,6 +164,7 @@ export abstract class Creator<T extends Stepper> {
         return {
             version: VERSION,
             id: challenge.id,
+            name: challenge.name,
             defaultApp: challenge.defaultApp,
             steps,
         };
