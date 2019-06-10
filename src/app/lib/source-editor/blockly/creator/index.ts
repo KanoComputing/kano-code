@@ -13,7 +13,7 @@ import { IDisposable, dispose } from '@kano/common/index.js';
 export * from './helpers.js';
 import './copy.js';
 
-const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id', 'generator_challengeEnd'];
+const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id', 'generator_name', 'generator_challengeEnd'];
 
 function isBlocklySourceEditor(sourceEditor : SourceEditor) : sourceEditor is BlocklySourceEditor {
     return sourceEditor.editor.sourceType === 'blockly';
@@ -56,6 +56,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         const workspace = this.sourceEditor.getWorkspace();
         const dom = Xml.workspaceToDom(workspace);
         const id = this.generateChallengeId(dom);
+        const name = this.generateChallengeName(dom);
         const lastStep = this.generateLastStep(dom);
         const startNodes = findStartNodes(dom);
         startNodes.forEach((start) => {
@@ -82,10 +83,17 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         // Set the source to the xml tree stripped out of its start blocks
         app.source = Xml.domToText(dom);
 
-        return Object.assign(challenge, { steps, id, defaultApp: JSON.stringify(app) });
+        return Object.assign(challenge, { steps, id, name, defaultApp: JSON.stringify(app) });
     }
     generateChallengeId(dom : XMLDocument) {
         const field = dom.querySelector('block[type="generator_id"]>field[name="ID"]');
+        if (!field) {
+            return '';
+        }
+        return field.textContent;
+    }
+    generateChallengeName(dom : XMLDocument) {
+        const field = dom.querySelector('block[type="generator_name"]>field[name="NAME"]');
         if (!field) {
             return '';
         }

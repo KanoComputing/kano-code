@@ -19,6 +19,7 @@ window.Kano.Code = window.Kano.Code || {};
 
 export interface IChallengeData {
     id : string,
+    name : string,
     version? : string;
     steps : any[];
     defaultApp? : string;
