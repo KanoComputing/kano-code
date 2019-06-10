@@ -19,19 +19,58 @@ function isBlocklySourceEditor(sourceEditor : SourceEditor) : sourceEditor is Bl
     return sourceEditor.editor.sourceType === 'blockly';
 }
 
+// Hardcoded legacy block name conversions
+function blockExceptionMap() {
+    const exceptions = {
+        app: {
+            category: undefined,
+            blocks: new Map<string, string>([['app_onStart', 'onStart']]),
+        },
+        draw: {
+            category: 'ctx',
+            blocks: [],
+        },
+        button: {
+            category: undefined,
+            blocks: new Map<string, string>([
+                ['label_set', 'label'],
+                ['label_get', 'label'],
+                ['color_set', 'color'],
+                ['color_get', 'color'],
+                ['background_set', 'background'],
+                ['background_get', 'background'],
+                ['x_set', 'x'],
+                ['x_get', 'x'],
+                ['y_set', 'y'],
+                ['y_get', 'y'],
+                ['opacity_set', 'opacity'],
+                ['opacity_get', 'opacity'],
+            ]),
+        }
+    }
+    return new Map<string, any>(Object.entries(exceptions));
+}
+
 interface IConnectionInfo {
     name : string;
     parentStep? : IGeneratedStep;
     id? : string;
 }
 
+interface IException {
+    category: string | undefined;
+    blocks : Map<string, string>;
+}
+
 export class BlocklyCreator extends Creator<BlocklyStepper> {
     sourceEditor? : BlocklySourceEditor;
     helpers : ICreatorHelper[];
     aliases : IDisposable[] = [];
+    blockExceptionMap : Map<string, IException> | undefined;
     constructor(editor : Editor, opts : ICreatorOptions) {
         super(editor, opts);
         this.helpers = getHelpers('blockly') || [];
+        this.blockExceptionMap = blockExceptionMap();
     }
     createStepper() {
         return new BlocklyStepper(this.editor);
@@ -237,8 +276,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
     }
     blockToSteps(block : HTMLElement) : IGeneratedStep[] {
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
-        const type = block.getAttribute('type');
-        let blockName = type;
+        let type = block.getAttribute('type');
         const id = block.getAttribute('id');
         if (!type) {
             return [];
@@ -267,8 +305,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 // No step or the step didn't define an alias, use the part id
                 category = `part#${matchingPart.id}>toolbox`;
             }
-            blockName = this.parseBlockName(type);
             this.addToPartsList(matchingPart.id);
+            type = this.removeParentNameFromBlock(type);
         }
         // Resolve an eventual parent connection
         let connectionQuery = this.getConnectionForStatementOrValue(block);
@@ -302,15 +340,28 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         for (const child of block.children) {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
-        if (entry.def.name === 'app') {
-            blockName = this.parseBlockName(type);
-        } else if (entry.def.name === 'draw') {
-            entry.def.name = 'ctx';
-        }
-        this.addToWhitelist(entry.def.name, blockName);
+        const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, type);
+        this.addToWhitelist(blockCategory, blockName);
         return blockSteps;
     }
-    parseBlockName(type: string) : string {
+    checkForBlockExceptions(legacyCategory: string, legacyType: string) : string[] {
+        if (!this.blockExceptionMap) {
+            return [];
+        }
+        const categoryExceptions = this.blockExceptionMap.get(legacyCategory);
+        if (!categoryExceptions) {
+            return [legacyCategory, legacyType];
+        }
+        let category;
+        let type;
+
+        category = categoryExceptions.category || legacyCategory;
+        const { blocks } = categoryExceptions;
+        type = blocks.get(legacyType) || legacyType;
+        return [category, type];
+
+    }
+    removeParentNameFromBlock(type : string) : string {
         const index = type.indexOf('_') + 1;
         return type.slice(index);
     }

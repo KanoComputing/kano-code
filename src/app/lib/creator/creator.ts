@@ -163,6 +163,7 @@ export abstract class Creator<T extends Stepper> {
     }
     generateChallenge() {
         this.whitelist = {};
+        this.partsList = [];
         const challenge = this.generate();
         const steps = challenge.steps.map((generatedStep) => generatedStep.data);
         return {
@@ -266,6 +267,7 @@ export abstract class Creator<T extends Stepper> {
         this.devTools.connect();
     }
     playStep(step : IGeneratedStep) {
+        this.editor.parts.setWhitelist(this.whitelist);
         this.ui.domNode.mode = 'play';
         // Hide any leftover highlight from hovering
         this.highlighter.clear();
