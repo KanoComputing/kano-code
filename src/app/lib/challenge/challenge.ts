@@ -108,7 +108,6 @@ export class Challenge extends ChallengeBase {
             this.editor.parts.setWhitelist(this.data.partsWhitelist);
         }
         if (this.data.whitelist) {
-            // this.editor.parts.setWhitelist(this.data.whitelist);
             this.editor.toolbox.setWhitelist(this.data.whitelist);
         }
         if (this.data.flyoutMode) {

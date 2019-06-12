@@ -29,7 +29,7 @@ function blockExceptionMap() {
         },
         draw: {
             category: 'ctx',
-            blocks: [],
+            blocks: new Map<string, string>(),
         },
     }
     return new Map<string, any>(Object.entries(exceptions));
