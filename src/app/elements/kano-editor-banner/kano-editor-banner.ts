@@ -113,6 +113,9 @@ export class KCEditorBanner extends LitElement {
                 border-color: initial;
                 border-image: initial;
             }
+            .btn:focus {
+                outline: none;
+            }
         `, challengeStyles];
     }
     render() {
