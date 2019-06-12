@@ -12,6 +12,7 @@ import { BlocklyStepper } from './stepper/blockly-stepper.js';
 import { IDisposable, dispose } from '@kano/common/index.js';
 export * from './helpers.js';
 import './copy.js';
+import { Part } from '../../../parts/part.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id', 'generator_name', 'generator_challengeEnd'];
 
@@ -30,23 +31,6 @@ function blockExceptionMap() {
             category: 'ctx',
             blocks: [],
         },
-        button: {
-            category: undefined,
-            blocks: new Map<string, string>([
-                ['label_set', 'label'],
-                ['label_get', 'label'],
-                ['color_set', 'color'],
-                ['color_get', 'color'],
-                ['background_set', 'background'],
-                ['background_get', 'background'],
-                ['x_set', 'x'],
-                ['x_get', 'x'],
-                ['y_set', 'y'],
-                ['y_get', 'y'],
-                ['opacity_set', 'opacity'],
-                ['opacity_get', 'opacity'],
-            ]),
-        }
     }
     return new Map<string, any>(Object.entries(exceptions));
 }
@@ -276,17 +260,17 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
     }
     blockToSteps(block : HTMLElement) : IGeneratedStep[] {
         const renderer = this.editor.toolbox.renderer as BlocklyMetaRenderer;
-        let type = block.getAttribute('type');
+        let blockType = block.getAttribute('type');
         const id = block.getAttribute('id');
-        if (!type) {
+        if (!blockType) {
             return [];
         }
         // Handle the blocks from the generator category separately
-        if (CUSTOM_BLOCKS.indexOf(type) !== -1) {
+        if (CUSTOM_BLOCKS.indexOf(blockType) !== -1) {
             return this.customBlockToSteps(block);
         }
         // Find the toolbox entry that matches this block type
-        const entry = renderer.getEntryForBlock(type);
+        const entry = renderer.getEntryForBlock(blockType);
         if (!entry) {
             return [];
         }
@@ -305,8 +289,11 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 // No step or the step didn't define an alias, use the part id
                 category = `part#${matchingPart.id}>toolbox`;
             }
-            this.addToPartsList(matchingPart.id);
-            type = this.removeParentNameFromBlock(type);
+            blockType = this.removeParentNameFromBlock(blockType);
+            const partType = (matchingPart.constructor as typeof Part).type;
+            // TODO: Find a better way of dealing with the generation of setters and getters
+            const whitelistBlockType = this.checkIfGetterOrSetter(blockType);
+            this.addToPartsList(partType, whitelistBlockType);
         }
         // Resolve an eventual parent connection
         let connectionQuery = this.getConnectionForStatementOrValue(block);
@@ -316,7 +303,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             data: {
                 type: 'create-block',
                 category,
-                blockType: type,
+                blockType,
                 alias: this.createAlias(),
                 openFlyoutCopy: this.getCopy('openFlyout', category),
                 grabBlockCopy: this.getCopy('grabBlock'),
@@ -340,9 +327,16 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         for (const child of block.children) {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
-        const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, type);
+        const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, blockType);
         this.addToWhitelist(blockCategory, blockName);
         return blockSteps;
+    }
+    checkIfGetterOrSetter(blockType : string) : string {
+        const endOfBlock = blockType.slice(-4);
+        if (endOfBlock === '_get' || endOfBlock === '_set') {
+            return blockType.slice(0, -4);
+        }
+        return blockType;
     }
     checkForBlockExceptions(legacyCategory: string, legacyType: string) : string[] {
         if (!this.blockExceptionMap) {

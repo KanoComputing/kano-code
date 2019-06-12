@@ -66,6 +66,7 @@ export abstract class Creator<T extends Stepper> {
     protected generatedSteps? : IGeneratedStep[];
     protected stepsMap : Map<string, IGeneratedStep> = new Map();
     protected whitelist : {[s: string] : string[]} = {};
+    protected partsWhitelist : {[s: string] : string[]} = {};
     protected partsList : string[] = [];
     protected stepper : T;
     private codeChangesSub? : IDisposable;
@@ -163,6 +164,7 @@ export abstract class Creator<T extends Stepper> {
     }
     generateChallenge() {
         this.whitelist = {};
+        this.partsWhitelist = {};
         this.partsList = [];
         const challenge = this.generate();
         const steps = challenge.steps.map((generatedStep) => generatedStep.data);
@@ -173,6 +175,7 @@ export abstract class Creator<T extends Stepper> {
             defaultApp: challenge.defaultApp,
             steps,
             whitelist: this.whitelist,
+            partsWhitelist: this.partsWhitelist,
             parts: this.partsList,
         };
     }
@@ -191,13 +194,18 @@ export abstract class Creator<T extends Stepper> {
             this.whitelist[category].push(id);
         }
     }
-    addToPartsList(id: string | undefined) {
-        if (!id) {
+    addToPartsList(partType: string | undefined, blockId: string | undefined,) {
+        if (!partType || !blockId) {
             return;
         }
-        const alreadyInWhitelist = this.partsList.indexOf(id) >= 0;
+        const alreadyInWhitelist = this.partsList.indexOf(partType) >= 0;
         if (!alreadyInWhitelist) {
-            this.partsList.push(id);
+            this.partsList.push(partType);
+            this.partsWhitelist[partType] = [];
+        }
+        const alreadyInPartWhitelist = this.partsWhitelist[partType].indexOf(blockId) >= 0;
+        if (!alreadyInPartWhitelist) {
+            this.partsWhitelist[partType].push(blockId);
         }
     }
     loadChallenge(d : any) {
@@ -267,7 +275,7 @@ export abstract class Creator<T extends Stepper> {
         this.devTools.connect();
     }
     playStep(step : IGeneratedStep) {
-        this.editor.parts.setWhitelist(this.whitelist);
+        this.editor.parts.setWhitelist(this.partsWhitelist);
         this.ui.domNode.mode = 'play';
         // Hide any leftover highlight from hovering
         this.highlighter.clear();
