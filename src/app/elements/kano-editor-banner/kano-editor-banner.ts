@@ -2,9 +2,7 @@
 import '@kano/styles/color.js';
 import '../kc-circle-progress/kc-circle-progress.js';
 import { LitElement, css, html, customElement, property } from 'lit-element/lit-element.js';
-import { templateContent } from '../../lib/directives/template-content.js';
 import { marked } from '../../lib/directives/marked.js';
-import { button } from '@kano/styles/button.js';
 import '../kano-blockly-block/kano-blockly-block.js';
 import './kano-value-preview.js';
 import { challengeStyles } from '../../lib/challenge/styles.js';
@@ -97,30 +95,10 @@ export class KCEditorBanner extends LitElement {
             .block.block-1 {
                 height: 32px;
             }
-            .btn {
-                font-weight: bold;
-                color: rgb(255, 255, 255);
-                background-color: rgb(255, 105, 0);
-                width: fit-content;
-                font-size: 14px;
-                font-family: var(--font-body);
-                text-decoration: none;
-                border-radius: 25px;
-                padding: 5px 15px;
-                outline: none;
-                border-width: initial;
-                border-style: none;
-                border-color: initial;
-                border-image: initial;
-            }
-            .btn:focus {
-                outline: none;
-            }
         `, challengeStyles];
     }
     render() {
         return html`
-        ${templateContent(button)}
         <div class="block block-1">
             <slot name="block-button"></slot>
             <slot name="avatar"></slot>

@@ -11,6 +11,7 @@ import '../../../challenge/components/kc-toolbox-entry-preview.js';
 import '../../../challenge/components/kc-part-api-preview.js';
 import { dataURI } from '@kano/icons-rendering/index.js';
 import { DropdownFieldStepHelper } from './helpers/dropdown.js';
+import { button } from '@kano/styles/button.js';
 
 export interface IBannerIconProvider {
     getDomNode() : HTMLElement;
@@ -56,6 +57,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         this.stylesheet = document.createElement('style');
         this.stylesheet.textContent = challengeStyles.cssText;
         this.editor.domNode.shadowRoot!.appendChild(this.stylesheet);
+        this.editor.domNode.shadowRoot!.appendChild(button.content.cloneNode(true));
 
         this.helpers.push(new DropdownFieldStepHelper());
     }
