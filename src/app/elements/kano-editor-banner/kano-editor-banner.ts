@@ -47,7 +47,6 @@ export class KCEditorBanner extends LitElement {
                 color: #22272D;
                 padding: 12px;
             }
-
             .actions::slotted(*) {
                 margin-top: 12px;
             }
@@ -98,7 +97,22 @@ export class KCEditorBanner extends LitElement {
             .block.block-1 {
                 height: 32px;
             }
-
+            .btn {
+                font-weight: bold;
+                color: rgb(255, 255, 255);
+                background-color: rgb(255, 105, 0);
+                width: fit-content;
+                font-size: 14px;
+                font-family: var(--font-body);
+                text-decoration: none;
+                border-radius: 25px;
+                padding: 5px 15px;
+                outline: none;
+                border-width: initial;
+                border-style: none;
+                border-color: initial;
+                border-image: initial;
+            }
         `, challengeStyles];
     }
     render() {
