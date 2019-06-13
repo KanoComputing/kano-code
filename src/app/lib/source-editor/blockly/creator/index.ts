@@ -290,8 +290,6 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 category = `part#${matchingPart.id}>toolbox`;
             }
             const partType = (matchingPart.constructor as typeof Part).type;
-            // TODO: Find a better way of dealing with the generation of setters and getters
-
             const metaPartBlock = renderer.getIdForBlock(blockType);
             if (metaPartBlock) {
                 this.addToPartsList(partType, metaPartBlock.def.name);
@@ -354,7 +352,6 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         const { blocks } = categoryExceptions;
         type = blocks.get(legacyType) || legacyType;
         return [category, type];
-
     }
     getOriginalStepFromSource(source : string) {
         return this.stepper.originalSteps.get(source);
