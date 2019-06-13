@@ -39,12 +39,24 @@ const definitionsMap : Map<string, Meta> = new Map();
 export class BlocklyMetaRenderer implements IMetaRenderer {
     public defaultsMap : Map<string, IBlockDefaults> = new Map();
     public blocksMap : Map<string, MetaModule> = new Map();
+    public blockIdsMap : Map<string, string> = new Map();
     public legacyBlocksMap : Map<string, ILegacyModule> = new Map();
     getEntryForBlock(blockType : string) {
         return this.blocksMap.get(blockType);
     }
     getDefaultsForBlock(blockType : string) {
         return this.defaultsMap.get(blockType);
+    }
+    getIdForBlock(blockType : string) {
+        return this.blockIdsMap.get(blockType);
+    }
+    getSymbolForBlock(blockType : string, blockId : string) {
+        const entry = this.getEntryForBlock(blockType);
+        if (entry && entry.symbols) {
+            const blockDef = entry.symbols.find(sym => sym.def.id === blockId);
+            return blockDef ? blockDef.def.name : blockId;
+        }
+        return blockId;
     }
     renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : string[]|null) {
         mod.def.register(Blockly);
@@ -133,8 +145,24 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
         // Keep a reference to the blocks for outside reference
         category.blocks.forEach((block) => {
             this.blocksMap.set(block.id, mod);
+            if (!mod || !mod.symbols) {
+                return;
+            }
+            const sym = mod.symbols.find(sym => {
+                let idToCheck = sym.def.whitelistException ? this.checkIfGetterOrSetter(block.id) : block.id;
+                return BlocklyMetaRenderer.getId(sym) === idToCheck;
+            });
+            const id : string = sym ? sym.def.name : 'something wrong';
+            this.blockIdsMap.set(block.id, id)
         });
         return category as ICategory;
+    }
+    checkIfGetterOrSetter(blockType : string) : string {
+        const endOfBlock = blockType.slice(-4);
+        if (endOfBlock === '_get' || endOfBlock === '_set') {
+            return blockType.slice(0, -4);
+        }
+        return blockType;
     }
     disposeToolboxEntry(category : ICategory) {
 

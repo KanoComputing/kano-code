@@ -327,7 +327,8 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         for (const child of block.children) {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
-        const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, blockType);
+        const blockId = renderer.getIdForBlock(blockType) || blockType;
+        const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, blockId);
         this.addToWhitelist(blockCategory, blockName);
         return blockSteps;
     }
