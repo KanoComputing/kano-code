@@ -289,11 +289,13 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
                 // No step or the step didn't define an alias, use the part id
                 category = `part#${matchingPart.id}>toolbox`;
             }
-            blockType = this.removeParentNameFromBlock(blockType);
             const partType = (matchingPart.constructor as typeof Part).type;
             // TODO: Find a better way of dealing with the generation of setters and getters
-            const whitelistBlockType = this.checkIfGetterOrSetter(blockType);
-            this.addToPartsList(partType, whitelistBlockType);
+
+            const metaPartBlock = renderer.getIdForBlock(blockType);
+            if (metaPartBlock) {
+                this.addToPartsList(partType, metaPartBlock.def.name);
+            }
         }
         // Resolve an eventual parent connection
         let connectionQuery = this.getConnectionForStatementOrValue(block);
@@ -327,17 +329,15 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         for (const child of block.children) {
             blockSteps = blockSteps.concat(this.nodeToSteps(child as HTMLElement));
         }
-        const blockId = renderer.getIdForBlock(blockType) || blockType;
-        const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, blockId);
-        this.addToWhitelist(blockCategory, blockName);
-        return blockSteps;
-    }
-    checkIfGetterOrSetter(blockType : string) : string {
-        const endOfBlock = blockType.slice(-4);
-        if (endOfBlock === '_get' || endOfBlock === '_set') {
-            return blockType.slice(0, -4);
+        const metaBlock = renderer.getIdForBlock(blockType);
+        if (metaBlock) {
+            const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, metaBlock.def.name);
+            this.addToWhitelist(blockCategory, blockName);
+        } else {
+            const [ blockCategory, blockName ] = this.checkForBlockExceptions(entry.def.name, blockType);
+            this.addToWhitelist(blockCategory, blockName);
         }
-        return blockType;
+        return blockSteps;
     }
     checkForBlockExceptions(legacyCategory: string, legacyType: string) : string[] {
         if (!this.blockExceptionMap) {
@@ -355,10 +355,6 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
         type = blocks.get(legacyType) || legacyType;
         return [category, type];
 
-    }
-    removeParentNameFromBlock(type : string) : string {
-        const index = type.indexOf('_') + 1;
-        return type.slice(index);
     }
     getOriginalStepFromSource(source : string) {
         return this.stepper.originalSteps.get(source);
