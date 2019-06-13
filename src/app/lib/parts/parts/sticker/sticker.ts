@@ -67,6 +67,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
                 this.resetTransform(ctx);
                 res();
             }
+            img.crossOrigin = "Anonymous";
             img.src = url;
         }) as Promise<void>;
         return imageLoaded;
