@@ -194,7 +194,7 @@ export abstract class Creator<T extends Stepper> {
             this.whitelist[category].push(id);
         }
     }
-    addToPartsList(partType: string | undefined, blockId: string | undefined,) {
+    addToPartsList(partType? : string, blockId?: string,) {
         if (!partType || !blockId) {
             return;
         }
@@ -275,7 +275,6 @@ export abstract class Creator<T extends Stepper> {
         this.devTools.connect();
     }
     playStep(step : IGeneratedStep) {
-        this.editor.parts.setWhitelist(this.partsWhitelist);
         this.ui.domNode.mode = 'play';
         // Hide any leftover highlight from hovering
         this.highlighter.clear();

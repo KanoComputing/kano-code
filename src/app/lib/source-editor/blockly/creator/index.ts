@@ -13,26 +13,12 @@ import { IDisposable, dispose } from '@kano/common/index.js';
 export * from './helpers.js';
 import './copy.js';
 import { Part } from '../../../parts/part.js';
+import { blockExceptions, IExceptionMapItem } from './block-exceptions.js';
 
 const CUSTOM_BLOCKS = ['generator_step', 'generator_banner', 'generator_id', 'generator_name', 'generator_challengeEnd'];
 
 function isBlocklySourceEditor(sourceEditor : SourceEditor) : sourceEditor is BlocklySourceEditor {
     return sourceEditor.editor.sourceType === 'blockly';
-}
-
-// Hardcoded legacy block name conversions
-function blockExceptionMap() {
-    const exceptions = {
-        app: {
-            category: undefined,
-            blocks: new Map<string, string>([['app_onStart', 'onStart']]),
-        },
-        draw: {
-            category: 'ctx',
-            blocks: new Map<string, string>(),
-        },
-    }
-    return new Map<string, any>(Object.entries(exceptions));
 }
 
 interface IConnectionInfo {
@@ -41,20 +27,15 @@ interface IConnectionInfo {
     id? : string;
 }
 
-interface IException {
-    category: string | undefined;
-    blocks : Map<string, string>;
-}
-
 export class BlocklyCreator extends Creator<BlocklyStepper> {
     sourceEditor? : BlocklySourceEditor;
     helpers : ICreatorHelper[];
     aliases : IDisposable[] = [];
-    blockExceptionMap : Map<string, IException> | undefined;
+    blockExceptionMap: Map<string, IExceptionMapItem> | undefined;
     constructor(editor : Editor, opts : ICreatorOptions) {
         super(editor, opts);
         this.helpers = getHelpers('blockly') || [];
-        this.blockExceptionMap = blockExceptionMap();
+        this.blockExceptionMap = blockExceptions;
     }
     createStepper() {
         return new BlocklyStepper(this.editor);
