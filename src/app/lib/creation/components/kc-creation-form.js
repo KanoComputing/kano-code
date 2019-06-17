@@ -515,7 +515,7 @@ class KCCreationForm extends I18nMixin(PolymerElement) {
                 </form>
                 <div id="saving-process" class="saving" name="saving">
                     <div class="blocks" id="gif-creation-blocks"></div>
-                    <span>[[localize('Saving', 'Saving')]]…</span>
+                    <span>[[localize('SAVING', 'Saving')]]…</span>
                 </div>
                 <div class="fail" name="failure">
                     <div class="title">[[localize('SAVING_FAILED', 'Saving failed')]]</div>
