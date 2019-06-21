@@ -3,7 +3,7 @@ import { IGeneratedStep } from '../../../creator/creator.js';
 import { Field, FieldColour, FieldDropdown, FieldVariable, Workspace, Variables, FieldNumber } from '@kano/kwc-blockly/blockly.js';
 import '../challenge/ui/kc-color-preview.js';
 import '../challenge/ui/kc-string-preview.js';
-import { FieldSticker } from '../../../parts/parts/sticker/blockly/field-sticker.js';
+import { StampsField } from '../../../blockly/fields/stamps-field.js';
 
 export function registerCreatorFieldHelper<T extends Field>(fieldConstructor : any, helper : (field : T, prevValue : string, newValue : string, step : IGeneratedStep) => IGeneratedStep) {
     registerCreatorHelper('blockly', {
@@ -38,7 +38,7 @@ registerCreatorFieldHelper(FieldColour, (field : FieldColour, prevValue : string
     return step;
 });
 
-registerCreatorFieldHelper(FieldSticker, (field : FieldSticker, prevValue : string, newValue : string, step : IGeneratedStep) => {
+registerCreatorFieldHelper(StampsField, (field : StampsField, prevValue : string, newValue : string, step : IGeneratedStep) => {
     const originalImg = field.getItemForValue(prevValue)!;
     const targetImg = field.getItemForValue(newValue)!;
     step.data.bannerCopy = `Change <kc-string-preview><img width="12" height="12" src="${originalImg.src}" />${prevValue}</kc-string-preview> to <kc-string-preview><img width="12" height="12" src="${targetImg.src}" />${newValue}</kc-string-preview>`;

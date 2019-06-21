@@ -2,11 +2,13 @@ import { Part, IPartContext } from '../../part.js';
 import { part, property, component } from '../../decorators.js';
 import { subscribeDOM, EventEmitter } from '@kano/common/index.js';
 import { PartComponent } from '../../component.js';
-import { StickerPart } from '../sticker/sticker.js';
 import { Sticker } from '../sticker/types.js';
 import { transformLegacyMouse } from './legacy.js';
+import { stamps } from '../../../modules/stamp/data.js';
+import * as StampFunctions from '../../../modules/stamp/stamp.js';
+import { resolve, reduceAllImages } from '../../../util/image-stamp.js';
 
-const all = StickerPart.items.reduce<{ [K : string] : string }>((acc, item) => Object.assign(acc, item.stickers), {});
+const all = reduceAllImages(stamps);
 
 class MouseComponent extends PartComponent {
     @property({ type: EventEmitter, value: new EventEmitter(), noReset: true })
@@ -103,7 +105,7 @@ export class MousePart extends Part {
         }
         const sticker = this.core.cursor.get();
         if (sticker && all[sticker]) {
-            this.loadImage(StickerPart.resolve(all[sticker]))
+            this.loadImage(resolve(all[sticker]))
                 .then((url) => {
                     this._root!.style.cursor = `url('${url}'), auto`;
                 });
@@ -136,6 +138,12 @@ export class MousePart extends Part {
     set cursor(c : string) {
         this.core.cursor.set(c);
         this.core.invalidate();
+    }
+    random() {
+        return StampFunctions.random();
+    }
+    randomFrom(index : string) {
+        return StampFunctions.randomFrom(index);
     }
     loadImage(url : string) : Promise<string> {
         if (this._imageCache.has(url)) {

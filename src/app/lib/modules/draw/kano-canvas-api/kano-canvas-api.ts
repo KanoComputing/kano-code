@@ -5,6 +5,7 @@ import { Paths } from './modules/paths.js';
 import { Repeats } from './modules/repeats.js';
 import { Setters } from './modules/setters.js';
 import { Shapes } from './modules/shapes.js';
+import { Stamp } from './modules/stamp.js';
 import { Text } from './modules/text.js';
 import { ISession } from './utils.js';
 
@@ -24,6 +25,7 @@ export class Canvas {
     public setters : Setters;
     public shapes : Shapes;
     public space : Space;
+    public stamp: Stamp;
     public text : Text;
     constructor(settings : ICanvasAPISettings) {
         this.session = this.createSession(settings);
@@ -33,6 +35,7 @@ export class Canvas {
         this.setters = new Setters(this.session);
         this.shapes = new Shapes(this.session);
         this.space = new Space(this.session);
+        this.stamp = new Stamp(this.session);
         this.text = new Text(this.session);
         this.reset(settings);
     }

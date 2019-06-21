@@ -3,7 +3,9 @@ import { paths } from './blocks/paths.js';
 import { setters } from './blocks/setters.js';
 import { shapes } from './blocks/shapes.js';
 import { space } from './blocks/space.js';
+import { stamp } from './blocks/stamp.js';
 import { registerRepeatDrawing } from './blocks/repeats.js';
+import { defaultStamp } from '../stamp/data.js';
 import { DrawModule } from './draw.js';
 import { _ } from '../../i18n/index.js';
 
@@ -29,6 +31,7 @@ blocks = blocks.concat(setters);
 blocks = blocks.concat(space);
 blocks = blocks.concat(paths);
 blocks = blocks.concat(shapes);
+blocks = blocks.concat(stamp);
 
 const categoryBlocks = blocks.map((definition) => {
     if (typeof definition === 'string') {
@@ -50,6 +53,14 @@ const categoryBlocks = blocks.map((definition) => {
 
 categoryBlocks.push({
     id: 'draw_repeat_drawing',
+    colour: COLOR,
+});
+categoryBlocks.push({
+    id: 'stamp_random',
+    colour: COLOR,
+});
+categoryBlocks.push({
+    id: 'stamp_randomFrom',
     colour: COLOR,
 });
 
@@ -144,6 +155,13 @@ export const DrawAPI = {
         draw_repeat_drawing: {
             REPEATS: 6,
             ROTATION: 60
+        },
+        draw_stamp: {
+            STICKER: {
+                shadow: `<shadow type="stamp_getImage"><field name="STICKER">${defaultStamp}</field></shadow>`
+            },
+            SIZE: 100,
+            ROTATION: 0
         }
     },
 };
