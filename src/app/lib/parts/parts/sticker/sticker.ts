@@ -1,6 +1,6 @@
 import { part, component } from '../../decorators.js';
 import { DOMPart } from '../dom/dom.js';
-import { stamps } from '../../../modules/stamp/data.js';
+import { stamps, defaultStamp } from '../../../modules/stamp/data.js';
 import { reduceAllImages, resolve } from '../../../util/image-stamp.js';
 import { transformLegacySticker } from './legacy.js';
 import { StickerComponent } from './sticker-component.js';
@@ -16,7 +16,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         transformLegacySticker(app);
     }
     static get items() { return stamps; }
-    static get defaultSticker() { return 'crocodile'; }
+    static get defaultSticker() { return defaultStamp; }
     constructor() {
         super();
         this.core = this._components.get('core') as StickerComponent;
