@@ -1,6 +1,5 @@
 export const defaultStamp = 'crocodile';
-
-export const stamps : { id: string, label : string, stickers : { [K : string] : string } }[] = [{
+export const stamps: { id: string, label: string, stickers: { [K: string]: string } }[] = [{
     label: 'Animals',
     id: 'animals',
     stickers: {
