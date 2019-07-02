@@ -44,27 +44,34 @@ const color = {
         Blockly.Blocks.create_color = {
             inputs: {
                 rgb: {
-                    1: _('PERCENT_RED', '% red'),
-                    2: _('PERCENT_GREEN', '% green'),
-                    3: _('PERCENT_BLUE', '% blue'),
+                    1: {
+                        label: _('PERCENT_RED', '% red'),
+                        defaultVal: '0',
+                    },
+                    2: {
+                        label: _('PERCENT_GREEN', '% green'),
+                        defaultVal: '0',
+                    },
+                    3: {
+                        label: _('PERCENT_BLUE', '% blue'),
+                        defaultVal: '0',
+                    },
                 },
-                rgbDefaults: [
-                    { key: '1', val: '0' },
-                    { key: '2', val: '0' },
-                    { key: '3', val: '0' },
-                ],
                 hsv: {
-                    1: _('HUE', 'hue'),
-                    2: _('SATURATION', 'saturation'),
-                    3: _('VALUE', 'value'),
+                    1: {
+                        label: _('HUE', 'hue'),
+                        defaultVal: '0',
+                    },
+                    2: {
+                        label: _('SATURATION', 'saturation'),
+                        defaultVal: '100',
+                    },
+                    3: {
+                        label: _('VALUE', 'value'),
+                        defaultVal: '100',
+                    },
                 },
-                hsvDefaults: [
-                    { key: '1', val: '0' },
-                    { key: '2', val: '100' },
-                    { key: '3', val: '100' },
-                ],
             },
-            prevConnections: [],
             init() {
                 const dropdown = new Blockly.FieldDropdown(colorFormats, function (this : Field, option : any) {
                     (this.sourceBlock_ as any).updateShape_(option);
@@ -81,17 +88,14 @@ const color = {
                 this.createInputs_('rgb');
             },
             updateShape_(option : string) {
-                this.setMovable(false);
-                const defaultsArr = option === 'hsv' ? this.inputs.hsvDefaults : this.inputs.rgbDefaults;
-
                 // for each input default
-                defaultsArr.forEach((it : any) => {
-                    const input = this.getInput(it.key);
+                Object.keys(this.inputs[option]).forEach((key) => {
+                    const input = this.getInput(key);
                     const connection = input.connection;
                     const targetConnection = connection.targetConnection;
 
                     // Update field label to match type
-                    input.appendField(this.inputs[option][it.key]).removeField();
+                    input.appendField(this.inputs[option][key].label).removeField();
                     
                     // Update target connection to reflect default values
                     if (targetConnection) {
@@ -101,22 +105,21 @@ const color = {
                         if(sourceBlock.isShadow_) {
                             const field = sourceBlock.getField("NUM");
                             const val = field ? field.getValue() : false;
-                            if (val && (val === it.val || (it.key === '2' || it.key === '3') && (val === '0' || val === '100'))) {
-                                field.setValue(it.val);
+                            const defaultVal = this.inputs[option][key].defaultVal;
+                            if (val && (val === defaultVal || (key === '2' || key === '3') && (val === '0' || val === '100'))) {
+                                field.setValue(defaultVal);
                             }
                         }
                     }
 
                 });
-
-                this.setMovable(true);
             },
             createInputs_(option : string) {
                 Object.keys(this.inputs[option]).forEach((key) => {
-                    this.appendValueInput(key)
+                    const input = this.appendValueInput(key)
                         .setCheck('Number')
                         .setAlign(Blockly.ALIGN_RIGHT)
-                        .appendField(this.inputs[option][key]);
+                        .appendField(this.inputs[option][key].label);
                 });
             },
             domToMutation(xmlElement : HTMLElement) {
