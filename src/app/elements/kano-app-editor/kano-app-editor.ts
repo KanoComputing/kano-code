@@ -110,6 +110,7 @@ export class KanoAppEditor extends LitElement {
             }
             :host kano-code-display {
                 margin: 16px;
+                overflow: auto;
             }
             :host [main] {
                 display: flex;
@@ -147,6 +148,7 @@ export class KanoAppEditor extends LitElement {
             }
             .top-container {
                 display: flex;
+                flex: 0 0 auto;
                 margin: 0 12px -16px 20px;
             }
             #workspace-host {
