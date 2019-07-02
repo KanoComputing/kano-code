@@ -104,7 +104,6 @@ class KanoUIViewport extends PolymerElement {
         }
         let scale;
         window.requestAnimationFrame(() => {
-            console.log('requestAnimationFrame');
             switch (this.mode) {
             case 'responsive':
                 this.resize();
