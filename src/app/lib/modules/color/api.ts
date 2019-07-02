@@ -48,12 +48,23 @@ const color = {
                     2: _('PERCENT_GREEN', '% green'),
                     3: _('PERCENT_BLUE', '% blue'),
                 },
+                rgbDefaults: [
+                    { key: '1', val: '0' },
+                    { key: '2', val: '0' },
+                    { key: '3', val: '0' },
+                ],
                 hsv: {
                     1: _('HUE', 'hue'),
                     2: _('SATURATION', 'saturation'),
                     3: _('VALUE', 'value'),
                 },
+                hsvDefaults: [
+                    { key: '1', val: '0' },
+                    { key: '2', val: '100' },
+                    { key: '3', val: '100' },
+                ],
             },
+            prevConnections: [],
             init() {
                 const dropdown = new Blockly.FieldDropdown(colorFormats, function (this : Field, option : any) {
                     (this.sourceBlock_ as any).updateShape_(option);
@@ -70,11 +81,35 @@ const color = {
                 this.createInputs_('rgb');
             },
             updateShape_(option : string) {
-                this.removeInput('1');
-                this.removeInput('2');
-                this.removeInput('3');
+                this.setMovable(false);
+                const defaultsArr = option === 'hsv' ? this.inputs.hsvDefaults : this.inputs.rgbDefaults;
 
-                this.createInputs_(option);
+                // for each input default
+                defaultsArr.forEach((it : any) => {
+                    const input = this.getInput(it.key);
+                    const connection = input.connection;
+                    const targetConnection = connection.targetConnection;
+
+                    // Update field label to match type
+                    input.appendField(this.inputs[option][it.key]).removeField();
+                    
+                    // Update target connection to reflect default values
+                    if (targetConnection) {
+                        const sourceBlock = targetConnection.getSourceBlock();
+
+                        // If block is a default field then update
+                        if(sourceBlock.isShadow_) {
+                            const field = sourceBlock.getField("NUM");
+                            const val = field ? field.getValue() : false;
+                            if (val && (val === it.val || (it.key === '2' || it.key === '3') && (val === '0' || val === '100'))) {
+                                field.setValue(it.val);
+                            }
+                        }
+                    }
+
+                });
+
+                this.setMovable(true);
             },
             createInputs_(option : string) {
                 Object.keys(this.inputs[option]).forEach((key) => {
