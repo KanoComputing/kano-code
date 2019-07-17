@@ -4,7 +4,7 @@ import { svg } from '@kano/icons-rendering/index.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { Editor } from '../../../editor/editor.js';
-import { random, randomFrom } from '../../../modules/stamp/api.js';
+import { random, randomFrom } from '../../../modules/stamp/common.js';
 import { StickerPart } from '../sticker/sticker.js';
 import { _ } from '../../../i18n/index.js';
 

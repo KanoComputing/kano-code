@@ -130,6 +130,16 @@ export function findFirstTreeDiff(treeA : HTMLElement, treeB : HTMLElement) : ID
                 return { type: DiffResultType.INNER_TEXT, from: aText, to: bText, aNode: a, bNode: b }; 
             }
         }
+        // Value blocks behave differently as they can host both shadows and blocks
+        // THe value block might have 2 children. I which case, a block was added to replace the shadow block
+        if (a.tagName.toLowerCase() === 'value' && b.children.length === 2 && a.children.length === 1) {
+            // Find the normal block in the target tree
+            for (let i = 0; i < b.children.length; i += 1) {
+                if (b.children[i].tagName.toLowerCase() === 'block') {
+                    return { type: DiffResultType.NODE, from: a.children[0] as HTMLElement, to: b.children[i] as HTMLElement };
+                }
+            }
+        }
         let aChild;
         let bChild;
         const biggest = Math.max(a.children.length, b.children.length);

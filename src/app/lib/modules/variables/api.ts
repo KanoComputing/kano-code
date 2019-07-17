@@ -43,6 +43,9 @@ export const VariablesAPI = {
         math_number: {
             NUM: '0',
         },
+        text: {
+            TEXT: '',
+        },
     },
 };
 

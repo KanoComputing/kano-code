@@ -1,6 +1,6 @@
 import { registerCreatorHelper } from '../../../creator/index.js';
 import { IGeneratedStep } from '../../../creator/creator.js';
-import { Field, FieldColour, FieldDropdown, FieldVariable, Workspace, Variables, FieldNumber } from '@kano/kwc-blockly/blockly.js';
+import { Field, FieldColour, FieldDropdown, FieldVariable, Workspace, Variables, FieldNumber, FieldTextInput } from '@kano/kwc-blockly/blockly.js';
 import '../challenge/ui/kc-color-preview.js';
 import '../challenge/ui/kc-string-preview.js';
 import { StampsField } from '../../../blockly/fields/stamps-field.js';
@@ -26,6 +26,14 @@ export function registerStepperFieldHelper<T extends Field>(fieldConstructor : a
         }
     });
 }
+
+registerCreatorFieldHelper(FieldTextInput, (field : FieldTextInput, prevValue : string, newValue : string, step : IGeneratedStep) => {
+    // For text input blocks with a default being an empty string, customise the message
+    if (prevValue === '') {
+        step.data.bannerCopy = `Type <kc-string-preview>${newValue}</kc-string-preview> here`;
+    }
+    return step;
+});
 
 registerCreatorFieldHelper(FieldNumber, (field : FieldNumber, prevValue : string, newValue : string, step : IGeneratedStep) => {
     step.data.bannerCopy = `Change <kc-string-preview>${prevValue}</kc-string-preview> to <kc-string-preview>${newValue}</kc-string-preview>`;

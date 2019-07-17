@@ -3,8 +3,7 @@ import { Block } from '@kano/kwc-blockly/blockly.js';
 import { StampsField } from '../../blockly/fields/stamps-field.js';
 import { defaultStamp, stamps } from './data.js';
 import { resolve } from '../../util/image-stamp.js';
-import { _ } from '../../i18n/index.js';
-
+import { random, randomFrom } from './common.js';
 
 const getImage : IMetaDefinition = {
     type: 'function',
@@ -37,27 +36,6 @@ const getImage : IMetaDefinition = {
         },
     }
 };
-
-export const random : IMetaDefinition = {
-    type: 'function', 
-    name: 'random',
-    verbose: _('PART_STICKER_RANDOM', 'random'),
-    returnType: 'Sticker'
-};
-
-export const randomFrom : IMetaDefinition = {
-    type: 'function',
-    name: 'randomFrom',
-    verbose: _('PART_STICKER_RANDOM_FROM', 'random'),
-    returnType: 'Sticker',
-    parameters: [{
-        type: 'parameter',
-        name: 'set',
-        verbose: '',
-        returnType: 'Enum',
-        enum: stamps.map<[string, string]>(stamp => [stamp.label, stamp.id]),
-    }]
-}
 
 function hideBlock(block : IMetaDefinition) {
     const newBlock = Object.assign({}, block);

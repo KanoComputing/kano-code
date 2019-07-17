@@ -32,6 +32,7 @@ export const TransformAPI : IMetaDefinition[] = [
                 ['\u21BA', 'counterclockwise'],
                 [_('PART_TRANSFORM_TURN_TO', 'to'), 'to'],
             ],
+            default: 'clockwise',
         }, {
             type: 'parameter',
             name: 'rotation',
