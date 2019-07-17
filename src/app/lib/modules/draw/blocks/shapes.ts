@@ -162,12 +162,8 @@ export const shapes = [{
             * Populate the block with inputs mapping to the points
             */
             _initShape () {
-                let inputName,
-                    closeInput = this.getInput('CLOSE');
+                let inputName;
 
-                if (closeInput) {
-                    this.removeInput('CLOSE');
-                }
                 for (let i = 1; i <= this.points; i++) {
                     inputName = `X${i}`;
                     if (!this.getInput(inputName)) {
@@ -184,18 +180,21 @@ export const shapes = [{
                             .appendField(`y${i}`);
                     }
                 }
-                this.appendValueInput('CLOSE')
-                    .setCheck('Boolean')
-                    .setAlign(Blockly.ALIGN_RIGHT)
-                    .appendField('close path');
+                if (!this.getInput('CLOSE')) {
+                    this.appendValueInput('CLOSE')
+                        .setCheck('Boolean')
+                        .setAlign(Blockly.ALIGN_RIGHT)
+                        .appendField('close path');
+                }
             },
             /**
             * Check the inputs for the last and before last points and add/delete inputs accordingly
             */
             _updateShape () {
-                let xInput = this.getInput(`X${this.points}`),
-                    yInput;
-                this.removeInput('CLOSE');
+                let xInput = this.getInput(`X${this.points}`)
+                if (this.getInput('CLOSE')) {
+                    this.removeInput('CLOSE');
+                }
                 if (!xInput) {
                     this.appendValueInput(`X${this.points}`)
                         .setCheck('Number')
@@ -207,7 +206,7 @@ export const shapes = [{
                         .appendField(`y${this.points}`);
                 }
                 xInput = this.getInput(`X${this.points}`);
-                yInput = this.getInput(`Y${this.points}`);
+                let yInput = this.getInput(`Y${this.points}`);
                 if (xInput.connection.targetConnection || yInput.connection.targetConnection) {
                     this.points++;
                     this._updateShape();

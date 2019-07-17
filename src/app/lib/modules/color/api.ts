@@ -44,14 +44,32 @@ const color = {
         Blockly.Blocks.create_color = {
             inputs: {
                 rgb: {
-                    1: _('PERCENT_RED', '% red'),
-                    2: _('PERCENT_GREEN', '% green'),
-                    3: _('PERCENT_BLUE', '% blue'),
+                    1: {
+                        label: _('PERCENT_RED', '% red'),
+                        defaultVal: '0',
+                    },
+                    2: {
+                        label: _('PERCENT_GREEN', '% green'),
+                        defaultVal: '0',
+                    },
+                    3: {
+                        label: _('PERCENT_BLUE', '% blue'),
+                        defaultVal: '0',
+                    },
                 },
                 hsv: {
-                    1: _('HUE', 'hue'),
-                    2: _('SATURATION', 'saturation'),
-                    3: _('VALUE', 'value'),
+                    1: {
+                        label: _('HUE', 'hue'),
+                        defaultVal: '0',
+                    },
+                    2: {
+                        label: _('SATURATION', 'saturation'),
+                        defaultVal: '100',
+                    },
+                    3: {
+                        label: _('VALUE', 'value'),
+                        defaultVal: '100',
+                    },
                 },
             },
             init() {
@@ -70,18 +88,38 @@ const color = {
                 this.createInputs_('rgb');
             },
             updateShape_(option : string) {
-                this.removeInput('1');
-                this.removeInput('2');
-                this.removeInput('3');
+                // for each input default
+                Object.keys(this.inputs[option]).forEach((key) => {
+                    const input = this.getInput(key);
+                    const connection = input.connection;
+                    const targetConnection = connection.targetConnection;
 
-                this.createInputs_(option);
+                    // Update field label to match type
+                    input.appendField(this.inputs[option][key].label).removeField();
+                    
+                    // Update target connection to reflect default values
+                    if (targetConnection) {
+                        const sourceBlock = targetConnection.getSourceBlock();
+
+                        // If block is a default field then update
+                        if(sourceBlock.isShadow_) {
+                            const field = sourceBlock.getField("NUM");
+                            const val = field ? field.getValue() : false;
+                            const defaultVal = this.inputs[option][key].defaultVal;
+                            if (val && (val === defaultVal || (key === '2' || key === '3') && (val === '0' || val === '100'))) {
+                                field.setValue(defaultVal);
+                            }
+                        }
+                    }
+
+                });
             },
             createInputs_(option : string) {
                 Object.keys(this.inputs[option]).forEach((key) => {
-                    this.appendValueInput(key)
+                    const input = this.appendValueInput(key)
                         .setCheck('Number')
                         .setAlign(Blockly.ALIGN_RIGHT)
-                        .appendField(this.inputs[option][key]);
+                        .appendField(this.inputs[option][key].label);
                 });
             },
             domToMutation(xmlElement : HTMLElement) {

@@ -99,7 +99,7 @@ class KanoUIViewport extends PolymerElement {
         ];
     }
     resizeView() {
-        if (!this.viewWidth || !this.viewHeight) {
+        if (!this.isVisible || !this.viewWidth || !this.viewHeight) {
             return;
         }
         let scale;
@@ -195,6 +195,9 @@ class KanoUIViewport extends PolymerElement {
         }
         const numbers = aspect.split(':');
         return parseInt(numbers[0], 10) / parseInt(numbers[1], 10);
+    }
+    get isVisible() {
+        return !!( this.offsetWidth || this.offsetHeight || this.getClientRects().length )
     }
 }
 

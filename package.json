@@ -5,7 +5,7 @@
     "url": "https://github.com/KanoComputing/kano-code.git"
   },
   "name": "@kano/code",
-  "version": "3.0.0-rc.11",
+  "version": "3.0.0-rc.26",
   "main": "index.js",
   "scripts": {
     "typedoc": "typedoc",
@@ -29,7 +29,8 @@
     "transform-monaco-css": "node ./scripts/transform-monaco.js",
     "bundle-monaco-worker:editor": "rollup node_modules/monaco-editor/esm/vs/editor/editor.worker.js -f iife --name editorWorker -o ./dist/vendor/monaco-workers/editor.worker.js",
     "bundle-monaco-worker:ts": "rollup node_modules/monaco-editor/esm/vs/language/typescript/ts.worker.js -f iife --name tsWorker -o ./dist/vendor/monaco-workers/ts.worker.js",
-    "bundle-monaco-workers": "yarn bundle-monaco-worker:editor && yarn bundle-monaco-worker:ts"
+    "bundle-monaco-workers": "yarn bundle-monaco-worker:editor && yarn bundle-monaco-worker:ts",
+    "generate-locales": "i18n-generator ./dist/app/**/*.js !./dist/app/**/*.test.js -o ./locale/editor/en-US.json"
   },
   "publishConfig": {
     "access": "restricted"
@@ -57,9 +58,10 @@
   },
   "dependencies": {
     "@kano/common": "^1.0.3",
+    "@kano/i18n": "^1.0.4",
     "@kano/icons": "^0.0.1-alpha.3",
     "@kano/icons-rendering": "^3.0.16",
-    "@kano/kwc-blockly": "^3.1.2",
+    "@kano/kwc-blockly": "^3.1.3",
     "@kano/kwc-color-picker": "^3.0.0-beta.6",
     "@kano/kwc-icons": "^3.0.0-beta.3",
     "@kano/kwc-picker": "^0.0.4",

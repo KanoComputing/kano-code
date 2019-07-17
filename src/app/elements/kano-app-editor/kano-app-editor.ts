@@ -68,12 +68,14 @@ export class KanoAppEditor extends LitElement {
                 background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
             }
             .tabs {
-                height: 100%;
                 background-color: var(--kano-app-editor-workspace-background, #f2f2f2);
                 display: flex;
                 flex-direction: row;
+                /* 
+                height: 100%;
                 align-self: flex-end;
-                margin-top: 10px;
+                margin-top: 10px; 
+                */
             }
             .tab {
                 align-self: center;
@@ -110,6 +112,7 @@ export class KanoAppEditor extends LitElement {
             }
             :host kano-code-display {
                 margin: 16px;
+                overflow: auto;
             }
             :host [main] {
                 display: flex;
@@ -147,9 +150,14 @@ export class KanoAppEditor extends LitElement {
             }
             .top-container {
                 display: flex;
+                flex: 0 0 auto;
                 margin: 0 12px -16px 20px;
             }
-
+            #workspace-host {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+            }
             .controls {
                 display: flex;
                 flex: 1;

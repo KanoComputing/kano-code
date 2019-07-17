@@ -9,21 +9,33 @@
             }
         },
         {
-            "banner": "Oopen the ${toolbox#draw} thing",
-            "beacon": "toolbox#draw:100,50",
+            "banner": "Oopen the ${toolbox#math} thing",
+            "beacon": "toolbox#math:100,50",
             "validation": {
                 "blockly": {
-                    "open-flyout": "toolbox#draw"
+                    "open-flyout": "toolbox#math"
                 }
             }
         },
         {
-            "beacon": "toolbox#draw>flyout-block.draw_circle",
+            "beacon": "toolbox#math>flyout-block.math_arithmetic",
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "toolbox#draw>flyout-block.draw_circle",
+                        "type": "toolbox#math>flyout-block.math_arithmetic",
                         "alias": "math"
+                    }
+                }
+            }
+        },
+        {
+            "beacon": "alias#math>input#OP",
+            "banner": "Change the value in the drop",
+            "validation": {
+                "blockly": {
+                    "value": {
+                        "target": "alias#math>input#OP",
+                        "value": "MINUS"
                     }
                 }
             }
@@ -34,14 +46,8 @@
             "tooltips": [
                 {
                     "target": "toolbox#draw",
-                    "text": "Here ${toolbox#draw} have some cake for your birthday 🎂",
+                    "text": "Here ${toolbox#draw} 🎂",
                     "position": "right"
-                },
-                {
-                    "target": "add-part-button",
-                    "text": "Want to have some fun with parts?<br>(You can't dismiss me BTW)",
-                    "position": "left",
-                    "sticky": true
                 }
             ],
             "validation": {
@@ -51,11 +57,11 @@
             }
         },
         {
-            "beacon": "toolbox#draw>flyout-block.draw_set_background_color",
+            "beacon": "toolbox#ctx>flyout-block.draw_set_background_color",
             "validation": {
                 "blockly": {
                     "create": {
-                        "type": "toolbox#draw>flyout-block.draw_set_background_color",
+                        "type": "toolbox#ctx>flyout-block.draw_set_background_color",
                         "alias": "set_back"
                     }
                 }
@@ -97,5 +103,24 @@
                 "nextChallengeButton": "Give me more"
             }
         }
-    ]
+    ],
+    "parts": ["button"],
+    "whitelist": {
+        "app": [
+            "onStart"
+        ],
+        "button": [
+            "onClick"
+        ],
+        "math": [
+            "math_arithmetic"
+        ],
+        "color": [
+            "colour_picker"
+        ],
+        "draw": [
+            "draw_set_background_color"
+        ]
+    },
+    "flyoutMode": true
 }

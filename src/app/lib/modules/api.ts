@@ -6,3 +6,4 @@ export * from './logic/api.js';
 export * from './variables/api.js';
 export * from './math/api.js';
 export * from './control/api.js';
+export * from './stamp/api.js';

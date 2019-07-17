@@ -4,10 +4,15 @@ import { LitElement, customElement, html, property, css, CSSResultArray } from '
 export class KCEditableLabel extends LitElement {
     @property({ type: Boolean })
     public editing : boolean = false;
+    @property({ type: Boolean })
+    public singleline : boolean = false;
     @property({ type: String })
     public label : string = '';
     static get styles() : CSSResultArray {
         return [css`
+            label, input {
+                font-weight: inherit;
+            }
             input {
                 font-family: inherit;
                 font-size: inherit;
@@ -18,6 +23,15 @@ export class KCEditableLabel extends LitElement {
                 padding: 2px;
                 margin: -3px;
             }
+            label {
+                width: var(--editable-label-width, auto);
+            }
+            label.single-line {
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         `];
     }
     render() {
@@ -27,7 +41,8 @@ export class KCEditableLabel extends LitElement {
         return html`<input type="text" .value=${this.label} @keydown=${this._onInputKeyDown} @blur=${this._onInputBlur} />`;
     }
     get labelEl() {
-        return html`<label @click=${this._onLabelClick}>${this.label}</label>`;
+        const additionalClass = this.singleline ? 'single-line' : '';
+        return html`<label class="${additionalClass}" @click=${this._onLabelClick}>${this.label}</label>`;
     }
     get input() {
         return this.renderRoot!.querySelector('input');

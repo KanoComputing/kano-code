@@ -6,4 +6,12 @@ export const challengeStyles = css`
         max-height: 18px;
         transform: translateY(4px);
     }
+    kc-editor-banner {
+        width: 272px;
+    }
+    @media only screen and (max-width: 980px) {
+        kc-editor-banner {
+            width: 195px;
+        }
+    }
 `;

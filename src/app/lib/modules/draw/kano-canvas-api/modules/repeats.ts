@@ -14,10 +14,11 @@ export class Repeats {
     * @return void
     */
    repeatDrawing(repeats : number, rotation : number, movementX : number, movementY : number, callback: Function) {
-        let previousX = this.session.pos.x,
-        previousY = this.session.pos.y,
-        moveX = movementX ? movementX : 0,
-        moveY = movementY ? movementY : 0
+        
+       const previousX = this.session.pos.x;
+       const previousY = this.session.pos.y;
+       const moveX = movementX ? movementX : 0;
+       const moveY = movementY ? movementY : 0;
 
         // moves drawing context to centre around rotation point
         this.session.ctx.translate(previousX, previousY);
@@ -28,12 +29,18 @@ export class Repeats {
             callback()
             this.session.ctx.rotate(rotation * Math.PI / 180)
         }
+        
 
         // resets changes
-        this.session.ctx.setTransform(1, 0, 0, 1, 0, 0);
-        this.session.pos = {x: previousX, y: previousY};
-
+        const totalRotation = repeats * rotation * Math.PI / 180;
+        this.session.ctx.rotate(-totalRotation);
+        
+        this.session.ctx.translate(-previousX, -previousY);
+        this.session.pos.x = previousX
+        this.session.pos.y = previousY
     };
+
+
 }
 
 export default Repeats;

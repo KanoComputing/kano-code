@@ -20,9 +20,9 @@ export class KcToolboxEntryPreview extends LitElement {
                 font-weight: bold;
                 text-align: left;
                 box-sizing: border-box;
-                padding: 0px 8px;;
-                border-radius: 6px;
-                height: 28px;
+                padding: 0px 5px;
+                border-radius: 4px;
+                height: 20px;
             }
         `];
     }

@@ -48,6 +48,7 @@ class EditorProfile extends code.DefaultEditorProfile {
             APIs.ColorAPI,
             APIs.ListsAPI,
             APIs.DrawAPI,
+            APIs.StampAPI,
         ];
         this.outputProfile = new OutputProfile();
     }

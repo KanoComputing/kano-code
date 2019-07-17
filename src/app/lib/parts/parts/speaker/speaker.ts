@@ -1,6 +1,6 @@
 import { Part, IPartContext } from '../../part.js';
 import { part, property, component } from '../../decorators.js';
-import { samples, ISample } from './data.js';
+import { samples, ISample, ISampleSet } from './data.js';
 import { SamplePlayer } from '../../../music/sample-player.js';
 import { PartComponent } from '../../component.js';
 import Output from '../../../output/output.js';
@@ -26,6 +26,8 @@ export class SpeakerPart extends Part {
     @component(SpeakerComponent)
     public core : SpeakerComponent;
     private samplesMap : Map<string, ISample> = new Map();
+    private _samples : ISampleSet[] = [];
+    private _defaultSample : string = '';
     static get defaultSample() { return 'claves'; }
     static get items() { return samples; }
     static resolve(id : string) {
@@ -37,12 +39,16 @@ export class SpeakerPart extends Part {
     }
     constructor() {
         super();
-        // Build a map of id => sample data to access those swiftly
         (this.constructor as typeof SpeakerPart).items.forEach((set) => {
+            const sampleSet : ISampleSet = { id: set.id, label: set.label, samples: [] }
+            this._samples.push(sampleSet);
             set.samples.forEach((sample) => {
+                sampleSet.samples.push(Object.assign(sample, {}));
+                // Build a map of id => sample data to access those swiftly
                 this.samplesMap.set(sample.id, sample);
             });
         });
+        this._defaultSample = (this.constructor as typeof SpeakerPart).defaultSample;
         this.core = this._components.get('core') as SpeakerComponent;
         this.core.onDidInvalidate(() => {
             this.render();
@@ -117,6 +123,14 @@ export class SpeakerPart extends Part {
             } catch (e) {}
         });
         this.players.length = 0;
+    }
+    randomFrom(id: string) {
+        const set = this._samples.find(set => set.id === id);
+        if (!set) {
+            return this._defaultSample;
+        }
+        const sample = set.samples[Math.floor(Math.random() * set.samples.length)];
+        return sample.id;
     }
     set pitch(r : number) {
         this.core.playbackRate = Math.min(Math.max(r, 0), 200) / 100;

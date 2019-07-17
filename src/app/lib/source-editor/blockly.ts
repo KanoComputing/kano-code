@@ -40,6 +40,9 @@ export class BlocklySourceEditor implements SourceEditor {
                     this.triggerLayout();
                 }
             });
+            const blocklyEl = (this.domNode as any).$['code-editor'];
+            const toolbox = blocklyEl.getToolbox();
+            subscribeDOM(toolbox, 'scroll', () => this.triggerLayout());
         });
         this.editor.exposeMethod('logBlock', () => this.logBlockUnderCursor());
     }
@@ -62,6 +65,9 @@ export class BlocklySourceEditor implements SourceEditor {
     setSource(source : string) {
         (this.domNode as any).blocks = source;
         (this.domNode as any).loadBlocks(source);
+    }
+    setFlyoutMode(flyoutMode: boolean) {
+        (this.domNode as any).flyoutMode = flyoutMode;
     }
     getSource() {
         return (this.domNode as any).getSource();
@@ -321,7 +327,7 @@ export class BlocklySourceEditor implements SourceEditor {
                     };
                 } else if (selector.class) {
                     const workspace = this.getWorkspace();
-                    const flyout = workspace.toolbox.flyout_;
+                    const flyout = workspace.getFlyout_();
                     if (!flyout) {
                         engine.warn('Could not find block in flyout: No flyout is opened');
                         return null;

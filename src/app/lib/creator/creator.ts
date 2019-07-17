@@ -5,7 +5,8 @@ import { ToolbarEntryPosition } from '../../elements/kc-workspace-toolbar/entry.
 import { downloadFile } from '../util/file.js';
 import { IEditorWidget } from '../editor/widget/widget.js';
 import { Stepper } from './stepper/stepper.js';
-import { IChallengeData, Challenge, createChallenge } from '../challenge/index.js';
+import { createChallenge } from '../challenge/index.js';
+import { IChallengeData, Challenge } from '../challenge.js';
 import { IDisposable } from 'monaco-editor';
 import { KanoCodeChallenge } from '../source-editor/blockly/challenge/kano-code.js';
 import { CreatorDevTools } from './dev.js';
@@ -25,6 +26,7 @@ export interface IGeneratedStep {
 
 export interface IGeneratedChallenge {
     id : string;
+    name: string;
     defaultApp : string;
     steps : IGeneratedStep[];
 }
@@ -63,6 +65,9 @@ export abstract class Creator<T extends Stepper> {
     protected highlighter : Highlighter = new Highlighter();
     protected generatedSteps? : IGeneratedStep[];
     protected stepsMap : Map<string, IGeneratedStep> = new Map();
+    protected whitelist : {[s: string] : string[]} = {};
+    protected partsWhitelist : {[s: string] : string[]} = {};
+    protected partsList : string[] = [];
     protected stepper : T;
     private codeChangesSub? : IDisposable;
     protected app? : any;
@@ -155,17 +160,53 @@ export abstract class Creator<T extends Stepper> {
             this.stepsMap.set(step.source, step);
             this.editor.registerAlias(step.data.alias, step.source);
         });
-        return { id: '', steps, defaultApp: '{}' };
+        return { id: '', name: '', steps, defaultApp: '{}' };
     }
     generateChallenge() {
+        this.whitelist = {};
+        this.partsWhitelist = {};
+        this.partsList = [];
         const challenge = this.generate();
         const steps = challenge.steps.map((generatedStep) => generatedStep.data);
         return {
             version: VERSION,
             id: challenge.id,
+            name: challenge.name,
             defaultApp: challenge.defaultApp,
             steps,
+            whitelist: this.whitelist,
+            partsWhitelist: this.partsWhitelist,
+            parts: this.partsList,
         };
+    }
+    addToWhitelist(category: string, id: string | null) {
+        if (!id) {
+            return;
+        }
+        const blocksOfType = this.whitelist[category];
+        let alreadyInWhitelist = false;
+        if (!blocksOfType) {
+            this.whitelist[category] = [];
+        } else {
+            alreadyInWhitelist = this.whitelist[category].indexOf(id) >= 0;
+        }
+        if (!alreadyInWhitelist) {
+            this.whitelist[category].push(id);
+        }
+    }
+    addToPartsList(partType? : string, blockId?: string,) {
+        if (!partType || !blockId) {
+            return;
+        }
+        const alreadyInWhitelist = this.partsList.indexOf(partType) >= 0;
+        if (!alreadyInWhitelist) {
+            this.partsList.push(partType);
+            this.partsWhitelist[partType] = [];
+        }
+        const alreadyInPartWhitelist = this.partsWhitelist[partType].indexOf(blockId) >= 0;
+        if (!alreadyInPartWhitelist) {
+            this.partsWhitelist[partType].push(blockId);
+        }
     }
     loadChallenge(d : any) {
         // Copy the current state, will be used to re-apply the step after everything is re-loaded
@@ -253,6 +294,7 @@ export abstract class Creator<T extends Stepper> {
         const data = this.generateChallenge();
         // Create a challenge instance to go thorugh the steps
         this.challenge = this.createChallenge(data);
+        this.challenge.reset();
         // Get the index of the step we want to preview
         const stepIndex = this.generatedSteps!.indexOf(step);
         const engine = this.challenge.engine as KanoCodeChallenge;

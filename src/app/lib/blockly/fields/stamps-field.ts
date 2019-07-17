@@ -1,9 +1,9 @@
 import { Blockly, utils, goog } from '@kano/kwc-blockly/blockly.js';
-import { FieldIcon } from '../../../../blockly/fields/icon.js';
+import { FieldIcon } from './icon.js';
 import '@kano/styles/color.js';
 import '@kano/styles/typography.js';
-import '../../../../../elements/kc-indexed-picker.js';
-import { KCIndexedPicker } from '../../../../../elements/kc-indexed-picker.js';
+import '../../../elements/kc-indexed-picker.js';
+import { KCIndexedPicker } from '../../../elements/kc-indexed-picker.js';
 import { subscribeDOM } from '@kano/common/index.js';
 
 interface IItemData {
@@ -12,7 +12,7 @@ interface IItemData {
     stickers : { id : string, src : string }[];
 }
 
-export class FieldSticker extends FieldIcon {
+export class StampsField extends FieldIcon {
     private domNode : KCIndexedPicker|null = null;
     private items : IItemData[];
     constructor(value : string, items : IItemData[], optValidator? : () => void) {
@@ -40,7 +40,7 @@ export class FieldSticker extends FieldIcon {
         Blockly.WidgetDiv.show(
             this,
             this.sourceBlock_.RTL,
-            FieldSticker.widgetDispose_,
+            StampsField.widgetDispose_,
         );
         const div = Blockly.WidgetDiv.DIV;
         div.appendChild(this.domNode);

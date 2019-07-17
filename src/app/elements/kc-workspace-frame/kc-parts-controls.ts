@@ -40,7 +40,9 @@ export class KCPartsControls extends LitElement {
     static get styles() {
         return css`
             :host {
-                display: block;
+                display: flex;
+                flex: 1;
+                flex-direction: column;
                 font-family: var(--font-body);
             }
             .add-parts {
@@ -90,7 +92,24 @@ export class KCPartsControls extends LitElement {
                 display: flex;
                 flex-direction: column;
                 overflow: auto;
-                padding-bottom: 40px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .part-list::-webkit-scrollbar {
+                width: 5px;
+            }
+            .part-list::-webkit-scrollbar-track,
+            .part-list::-webkit-scrollbar-thumb {
+                border-radius: 8px;
+            }
+            .part-list::-webkit-scrollbar-track {
+                background: #414A51;
+                margin: 9px 0 8px;
+            }
+            .part-list::-webkit-scrollbar-thumb {
+                background: #22272D;
+            }
+            .part-list::-webkit-scrollbar-thumb:hover {
+                cursor: pointer;
             }
             .part {
                 flex: none;

@@ -10,7 +10,9 @@ class KcWorkspaceFrame extends PolymerElement {
         ${button}
         <style>
             :host {
-                display: block;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
             }
             :host(.fullscreen) #content {
                 position: fixed;
@@ -170,6 +172,9 @@ class KcWorkspaceFrame extends PolymerElement {
         window.requestAnimationFrame(() => {
             let aspectRatio = this.height / this.width;
             const { style } = this.$.content;
+            if (!this.$.content.isVisible) {
+                return;
+            }
             if (this.fullscreen) {
                 // Portrait
                 if (window.innerHeight > window.innerWidth * aspectRatio) {

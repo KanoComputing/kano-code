@@ -95,6 +95,18 @@ export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
             setter: true,
             returnType: Number,
             default: 100,
+        }, {
+            type: 'function',
+            name: 'randomFrom',
+            verbose: _('PART_SPEAKER_RANDOM_FROM', 'random from'),
+            returnType: 'Sample',
+            parameters: [{
+                type: 'parameter',
+                name: 'set',
+                verbose: '',
+                returnType: 'Enum',
+                enum: partClass.items.map<[string, string]>(set => [set.label, set.id]),
+            }],
         }, getter],
     };
 }

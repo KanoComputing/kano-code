@@ -19,6 +19,7 @@ export class DefaultWorkspaceViewProvider extends WorkspaceViewProvider {
     }
     createDOM() {
         this.root = document.createElement('div');
+        this.root.style.height = '100%';
         this.frame = document.createElement('kc-workspace-frame');
         this.frame.style.margin = '0 20px';
         this.partsControls.setAttribute('slot', 'controls');

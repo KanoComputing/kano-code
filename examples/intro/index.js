@@ -1,7 +1,7 @@
 import * as code from '../../index.js';
 import * as i18n from '../../i18n.js';
 import * as APIs from '../../toolbox.js';
-import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js'
+import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js';
 import { Player } from '../../dist/app/lib/index.js';
 import { CreationImagePreviewProvider } from '../../dist/app/lib/creation/providers/image.js';
 
@@ -75,6 +75,7 @@ class EditorProfile extends code.DefaultEditorProfile {
             APIs.ColorAPI,
             APIs.ListsAPI,
             APIs.DrawAPI,
+            APIs.StampAPI,
         ];
         this.outputProfile = new OutputProfile();
         Player.registerProfile(this.outputProfile);

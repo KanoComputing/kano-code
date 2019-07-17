@@ -28,6 +28,26 @@ export const BlocklyCreatorToolbox : IAPIDefinition = {
         },
     }, {
         type: 'function',
+        name: 'name',
+        verbose: 'Challenge name',
+        parameters: [{
+            type: 'parameter',
+            name: 'name',
+            verbose: '',
+            default: 'Challenge Name',
+            returnType: String,
+            blockly: {
+                field: true,
+            },
+        }],
+        blockly: {
+            javascript(Blockly : Blockly, block : Block) {
+                const text = block.getFieldValue('NAME');
+                return `// @challenge-name: ${text}\n`;
+            },
+        },
+    }, {
+        type: 'function',
         name: 'start',
         blockly: {
             javascript(Blockly : Blockly) {

@@ -65,6 +65,7 @@ export class KCIndexedPicker extends LitElement {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
+                flex-shrink: 0;
             }
             .index {
                 display: flex;

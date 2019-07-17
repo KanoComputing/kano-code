@@ -9,6 +9,7 @@ class TestSourceEditor implements SourceEditor {
     onDidLayout = (new EventEmitter()).event;
     setToolbox(toolbox : any) {}
     setSource(source : string) {}
+    setFlyoutMode(flyoutMode: boolean) {}
     getSource() : string {
         return '';
     }

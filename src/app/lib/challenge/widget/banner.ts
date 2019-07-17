@@ -20,8 +20,8 @@ export class BannerWidget extends BlocklyEditorBannerWidget {
         const domNode = super.getDomNode();
         if (!this.bannerEl) {
             this.bannerEl = new KCEditorBanner();
-            this.bannerEl.style.width = '512px';
-            this.bannerEl.style.maxWidth = '512px';
+            this.bannerEl.style.margin = '7px';
+            this.bannerEl.style.alignSelf = 'flex-end';
             this.bannerEl.style.pointerEvents = 'all';
             domNode.appendChild(this.bannerEl);
         }
@@ -33,6 +33,10 @@ export class BannerWidget extends BlocklyEditorBannerWidget {
         }
         return this.bannerEl!;
     }
+    setTitle(title : string) {
+        const bannerEl = this.getBannerEl();
+        bannerEl.title = title;
+    }
     setText(text : string) {
         const bannerEl = this.getBannerEl();
         bannerEl.text = window.twemoji.parse(text);
@@ -43,14 +47,14 @@ export class BannerWidget extends BlocklyEditorBannerWidget {
     }
     setIconNode(node : HTMLElement|null) {
         const bannerEl = this.getBannerEl();
-        const prevNode = bannerEl.querySelector('[slot="progress"]');
+        const prevNode = bannerEl.querySelector('[slot="avatar"]');
         if (prevNode) {
             prevNode.remove();
         }
         if (!node) {
             return;
         }
-        node.slot = 'progress';
+        node.slot = 'avatar';
         bannerEl.appendChild(node);
     }
     addButton(text : string, primary = false) {

@@ -19,13 +19,18 @@ window.Kano.Code = window.Kano.Code || {};
 
 export interface IChallengeData {
     id : string,
+    name : string,
     version? : string;
     steps : any[];
     defaultApp? : string;
     partsWhitelist? : IToolboxWhitelist;
     whitelist? : IToolboxWhitelist;
+    flyoutMode?: boolean
 }
-
+/**
+ * A Stepp-by-step controller Code editor
+ * [[include:challenge-widgets.md]]
+ */
 export class Challenge extends ChallengeBase {
     public editor : Editor;
     public data : IChallengeData;
@@ -105,6 +110,9 @@ export class Challenge extends ChallengeBase {
         if (this.data.whitelist) {
             this.editor.toolbox.setWhitelist(this.data.whitelist);
         }
+        if (this.data.flyoutMode) {
+            this.editor.sourceEditor.setFlyoutMode(this.data.flyoutMode);
+        }
     }
     start() {
         if (!this.editor.injected) {
@@ -116,7 +124,8 @@ export class Challenge extends ChallengeBase {
         engine.onDidRequestNextChallenge(() => this._onDidRequestNextChallenge.fire(), this, this.subscriptions);
         // The engine uses a similar API to the DOM events
         subscribeDOM(engine as unknown as HTMLElement, 'done', () => {
-            this.editor.toolbox.setWhitelist(null);
+            this.editor.toolbox.setWhitelist({});
+            this.editor.parts.setWhitelist({});
             this._onDidEnd.fire();
         }, this, this.subscriptions);
         engine.start();

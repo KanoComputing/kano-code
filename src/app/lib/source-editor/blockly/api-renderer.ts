@@ -46,6 +46,9 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
     getDefaultsForBlock(blockType : string) {
         return this.defaultsMap.get(blockType);
     }
+    getIdForBlock(blockType : string) : Meta | undefined {
+        return definitionsMap.get(blockType);
+    }
     renderLegacyToolboxEntry(mod : ILegacyModule, whitelist : string[]|null) {
         mod.def.register(Blockly);
         if (!mod.def.category) {
@@ -220,6 +223,7 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
             };
         };
         const toolbox = BlocklyMetaRenderer.isInToolbox(m);
+        definitionsMap.set(id, m);
         return { register, id, toolbox };
     }
     static renderSetter(m : MetaVariable) : IRenderedBlock {
@@ -269,6 +273,7 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
         } else {
             defaults[blocklyName].shadow = resolveShadowTree(m);
         }
+        definitionsMap.set(id, m);
         return { register, id, toolbox, defaults };
     }
     static formatFieldValue(value : any, def : any) {
