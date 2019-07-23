@@ -145,6 +145,7 @@ export class Resource<T> implements IResourceInformation {
     syncLoadImg(src : string, timeout = 50) {
         const img = new Image();
         const started = Date.now();
+        img.crossOrigin = "Anonymous";
         img.src = src;
         while(true) {
             if (img.complete || img.naturalWidth || Date.now() - started > timeout) {
