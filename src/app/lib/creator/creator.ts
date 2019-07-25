@@ -161,7 +161,7 @@ export abstract class Creator<T extends Stepper> {
             this.editor.registerAlias(step.data.alias, step.source);
         });
         const app = this.editor.save();
-        (app as any).part = [];
+        (app as any).parts = [];
         return { id: '', name: '', steps, defaultApp: JSON.stringify(app) };
     }
     generateChallenge() {
