@@ -159,8 +159,8 @@ export abstract class Creator<T extends Stepper> {
             steps.push(step);
             this.stepsMap.set(step.source, step);
             this.editor.registerAlias(step.data.alias, step.source);
-        });
-        return { id: '', name: '', steps, defaultApp: '{}' };
+        });        
+        return { id: '', name: '', steps, defaultApp: JSON.stringify(this.editor.save()) };
     }
     generateChallenge() {
         this.whitelist = {};

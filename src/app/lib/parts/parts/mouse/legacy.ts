@@ -21,6 +21,9 @@ export function transformLegacyMouse(app : any) {
         LegacyUtil.transformBlock(root, `block[type="${id}#mouse_speed_y"]`, (block) => {
             block.setAttribute('type', `${id}_dy_get`);
         });
+        LegacyUtil.transformBlock(root, `block[type="${id}#mouse_set_cursor"]`, (block) => {
+            block.setAttribute('type', `${id}_cursor_set`);
+        });
         // TODO: Missing API
     });
     const serializer = new XMLSerializer();
