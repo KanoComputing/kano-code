@@ -160,7 +160,11 @@ export abstract class Creator<T extends Stepper> {
             this.stepsMap.set(step.source, step);
             this.editor.registerAlias(step.data.alias, step.source);
         });
-        return { id: '', name: '', steps, defaultApp: JSON.stringify(this.editor.save()) };
+        const scene = (this.editor.save() as any).scene;
+        const sceneApp = JSON.stringify({
+            "scene": scene || ''
+        });
+        return { id: '', name: '', steps, defaultApp: sceneApp };
     }
     generateChallenge() {
         this.whitelist = {};
