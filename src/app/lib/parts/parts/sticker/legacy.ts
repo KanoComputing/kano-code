@@ -19,4 +19,3 @@ export function transformLegacySticker(app) {
         app.source = serializer.serializeToString(root);
     }
 }
-//# sourceMappingURL=legacy.js.map
