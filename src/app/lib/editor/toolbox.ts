@@ -84,16 +84,18 @@ export class Toolbox extends Plugin {
             return;
         }
         let entries = this.entries;
+        entries = entries.map(el => {
+            if (typeof el === 'function' && this.editor) {
+                return el(this.editor);
+            }
+            return el;
+        });
         if (this.whitelist) {
             const modules = Object.keys(this.whitelist);
-            entries = this.entries.filter(e => modules.indexOf(e.name) !== -1);
+            entries = entries.filter(e => modules.indexOf(e.name) !== -1);
         }
         const toolbox = entries
             .map(entry => {
-                if (typeof entry === 'function' && this.editor) {
-                    entry = entry(this.editor);
-                }
-
                 let moduleWhitelist : string[]|null = null;
                 if (this.whitelist && this.whitelist[entry.name]) {
                     moduleWhitelist = this.whitelist[entry.name];
