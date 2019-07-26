@@ -42,7 +42,8 @@ function getRoot(node : Element) {
  */
 export function findStartNodes(root : XMLDocument) {
     const entryNodes = [...root.childNodes] as HTMLElement[];
-    return entryNodes.filter(n => n.tagName.toLowerCase() === 'block').map((entryNode) => {
+    const startBlocks : HTMLElement[] = [];
+    entryNodes.filter(n => n.tagName.toLowerCase() === 'block').forEach((entryNode) => {
         const startNode = entryNode.querySelector('block[type="generator_start"]') as HTMLElement;
         if (!startNode) {
             entryNode.setAttribute('marker', '');
@@ -56,29 +57,54 @@ export function findStartNodes(root : XMLDocument) {
             if (!cleanEl) {
                 throw new Error('Could not find start nodes: Failed to find node with marker in cloned tree');
             }
-            return entryNode;
+            startBlocks.push(entryNode);
+            return;
         }
+        // Maybe the start node was in a statement 
+        const parentStatement = getAncestor(startNode, (node) => {
+            return node.tagName.toLowerCase() === 'statement';
+        });
         const nextNode = startNode.querySelector('next>block');
         if (!nextNode) {
             if (startNode.parentNode) {
                 startNode.parentNode.removeChild(startNode);
             }
-            return null;
+            return;
         }
         startNode.setAttribute('marker', '');
         const cleanTree = root.cloneNode(true) as HTMLElement;
-        if (startNode.parentNode) {
+        if (startNode.parentElement) {
             // Remove the start node from the original clone, this leaves the default blocks on
             // the workspace
-            startNode.parentNode.removeChild(startNode);
+            startNode.parentElement.removeChild(startNode);
         }
         const cleanEl = cleanTree.querySelector('[marker]') as HTMLElement;
         startNode.removeAttribute('marker');
+        startBlocks.push(cleanEl);
         if (!cleanEl) {
             throw new Error('Could not find start nodes: Failed to find node with marker in cloned tree');
         }
-        return cleanEl;
-    }).filter(isHTMLElement);
+        // Found a parent statement, get the block it comes from and split the tree again
+        if (parentStatement && parentStatement.parentElement) {
+            // Get the block inside the next element
+            const next = [...parentStatement.parentElement.children].find(node => node.tagName.toLowerCase() === 'next');
+            if (next && next.firstElementChild) {
+                const nextBlock = next.firstElementChild;
+                // Mark the next block
+                nextBlock.setAttribute('marker', '');
+                // Clone the tree to keep the ancestry on the start block
+                const c = root.cloneNode(true) as HTMLElement;
+                // Remove the block from the original tree
+                nextBlock.remove();
+                // Retrieve the marked block from the tree
+                const copy = c.querySelector('[marker]') as HTMLElement;
+                // Cleanup the original tree
+                nextBlock.removeAttribute('marker');
+                startBlocks.push(copy);
+            }
+        }
+    });
+    return startBlocks;
 }
 
 export enum DiffResultType {
