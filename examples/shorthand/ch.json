@@ -1,0 +1,48 @@
+{
+    "version": "1.0.0",
+    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><variables></variables><block type=\\\"app_onStart\\\" id=\\\"default_app_onStart\\\" x=\\\"118\\\" y=\\\"91\\\"><field name=\\\"FLASH\\\"></field><statement name=\\\"CALLBACK\\\"><block type=\\\"button_background_set\\\" id=\\\"bpN^4*Dg-KXuv,l*vOxD\\\"><value name=\\\"BACKGROUND\\\"><shadow type=\\\"colour_picker\\\" id=\\\"Nm8-O4aePXTld$G%G2Tr\\\"><field name=\\\"COLOUR\\\">#01579B</field></shadow></value></block></statement></block><block type=\\\"button_onClick\\\" id=\\\"Dhl_@,ICJMrobV3oBJWR\\\" x=\\\"117\\\" y=\\\"222\\\"><field name=\\\"FLASH\\\"></field></block></xml>\",\"code\":\"app.onStart(function() {\\n  button.background = '#01579B';\\n\\n});\\n\\nbutton.onClick(function() {\\n\\n});\\n\",\"parts\":[{\"type\":\"button\",\"id\":\"button\",\"name\":\"Button\"}]}",
+    "steps": [
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "set_background_color",
+            "alias": "block_1",
+            "openFlyoutCopy": "Open the ${toolbox#draw} tray",
+            "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
+            "dropCopy": "Drop the block anywhere in your code space",
+            "override": {
+                "open": {
+                    "tooltips": [{
+                        "target": "add-part-button",
+                        "position": "left",
+                        "text": "I was added by overriding the output of the shorthand"
+                    }]
+                },
+                "grab": {
+                    "tooltips": [{
+                        "target": "part#button",
+                        "position": "left",
+                        "text": "I was also added by overriding the output of the shorthand, <br>but this time it's the drag step"
+                    }]
+                },
+                "connect": {},
+                "drop": {}
+            }
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_1>input#COLOR",
+            "bannerCopy": "Change this to any color",
+            "override": {
+                "banner": null,
+                "tooltips": [{
+                    "target": "alias#block_1>input#COLOR",
+                    "position": "right",
+                    "text": "Me too! I even removed the banner by setting it to `null`"
+                }]
+            }
+        },
+        {},
+        {}
+    ]
+}

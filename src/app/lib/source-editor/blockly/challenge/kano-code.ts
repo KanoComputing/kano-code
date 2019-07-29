@@ -150,6 +150,9 @@ export class KanoCodeChallenge extends BlocklyChallenge {
      * @param data Banner data from a challenge step
      */
     protected displayBanner(data : any) {
+        if (!data) {
+            return;
+        }
         if (!this.banner) {
             this.banner = new BannerWidget();
             this.editor.addContentWidget(this.banner);
@@ -200,6 +203,9 @@ export class KanoCodeChallenge extends BlocklyChallenge {
      * @param data Beacon data from a challenge step
      */
     protected displayBeacon(data : any) {
+        if (!data) {
+            return;
+        }
         if (typeof data !== 'string') {
             throw new Error('Beacon prop must be a string');
         }
@@ -318,37 +324,42 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     }
     _getOpenFlyoutStep(data : any) {
         const step = super._getOpenFlyoutStep(data);
+        const override = data.override && data.override.open ? data.override.open : {};
         return Object.assign(step, {
             banner: data.openFlyoutCopy,
             beacon: `${data.category}:100,50`,
-        });
+        }, override);
     }
     _getCreateBlockStep(data : any) {
         const step = super._getCreateBlockStep(data);
+        const override = data.override && data.override.grab ? data.override.grab : {};
         return Object.assign(step, {
             banner: data.grabBlockCopy,
             beacon: `${data.category}>flyout-block.${data.blockType}`,
-        });
+        }, override);
     }
     _getConnectBlockStep(data : any) {
         const step = super._getConnectBlockStep(data);
+        const override = data.override && data.override.connect ? data.override.connect : {};
         return Object.assign(step, {
             banner: data.connectCopy,
             beacon: data.connectTo,
-        });
+        }, override);
     }
     _getDropBlockStep(data : any) {
         const step = super._getDropBlockStep(data);
+        const override = data.override && data.override.drop ? data.override.drop : {};
         return Object.assign(step, {
             banner: data.dropCopy,
-        });
+        }, override);
     }
     _changeInputShorthand(data : any) {
         const step = super._changeInputShorthand(data);
+        const override = data.override ? data.override : {};
         Object.assign(step, {
             banner: data.bannerCopy,
             beacon: data.target,
-        });
+        }, override);
         return step;
     }
     /**

@@ -3,6 +3,7 @@ import Output, { IVisualsContext, IAudioContext, IDOMContext } from './output.js
 import { PartsManager } from '../parts/manager.js';
 import { Microphone } from './microphone.js';
 import { EventEmitter } from '@kano/common/index.js';
+import { DefaultResources } from './default-resources.js';
 
 function degreesToRadians(deg: number) {
     return deg * (Math.PI / 180);
@@ -28,6 +29,7 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
     }
     onInstall(output: Output) {
         super.onInstall(output);
+        output.registerResources(new DefaultResources());
         this.parts = output.parts;
     }
     getVisuals() : IVisualsContext {
