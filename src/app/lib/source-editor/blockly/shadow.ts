@@ -29,7 +29,7 @@ export function resolveLegacyShadowTree(value : string|{ shadow : string }) {
 }
 
 export function resolveShadowTree(param : MetaParameter) {
-    if (param.def.blockly && param.def.blockly.field) {
+    if (param.def.blockly && (param.def.blockly.field || param.def.blockly.customField)) {
         return null;
     }
     switch(param.getReturnType()) {
