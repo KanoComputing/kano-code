@@ -2,6 +2,6 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "$id": "http://example.com/product.schema.json",
     "title": "Location",
-    "description": "An editor query selector for any UI element on the screen",
-    "type": "string"
+    "type": "string",
+    "pattern": "((.+?)[#\\.]?(.+?)(>|$))+"
   }
