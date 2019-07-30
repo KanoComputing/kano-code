@@ -1,0 +1,62 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "title": "Step",
+    "description": "A step in a step-by-step challenge",
+    "type": "object",
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": ["create-block", "change-input", "create-part", "banner-step"]
+        }
+    },
+    "allOf": [{
+        "if": {
+            "properties": {
+                "type": {
+                    "const": "create-block"
+                }
+            },
+            "required": ["type"]
+        },
+        "then": {
+            "$ref": "./shorthands/create-block.json"
+        }
+    }, {
+        "if": {
+            "properties": {
+                "type": {
+                    "const": "change-input"
+                }
+            },
+            "required": ["type"]
+        },
+        "then": {
+            "$ref": "./shorthands/change-input.json"
+        }
+    }, {
+        "if": {
+            "properties": {
+                "type": {
+                    "const": "banner-step"
+                }
+            },
+            "required": ["type"]
+        },
+        "then": {
+            "properties": {
+                "banner": {
+                    "$ref": "./widgets/banner.json"
+                }
+            }
+        }
+    }, {
+        "if": {
+            "not": { "required": [ "type" ] }
+        },
+        "then": {
+            "$ref": "./classic-step.json",
+            "additionalProperties": false
+        }
+    }]
+  }

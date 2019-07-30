@@ -1,0 +1,34 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "title": "Create block shorthand",
+    "description": "Can generate the 3 steps required to prompt the user to add a block to their project",
+    "type": "object",
+    "properties": {
+        "type": {
+            "const": "change-input"
+        },
+        "target": {
+            "markdownDescription": "The field that need to change. Use a regular editor selector",
+            "type": "string"
+        },
+        "value": {
+            "markdownDescription": "What is the expected final value after the change",
+            "type": "string"
+        },
+        "skipCheck": {
+            "markdownDescription": "If set to true, will not check for the exact value, but will validate on any change to that field the user makes",
+            "type": "boolean"
+        },
+        "bannerCopy": {
+            "markdownDescription": "The message displayed in the guide widget prompting the user to change the value",
+            "type": "string"
+        },
+        "override": {
+            "description": "Define extra data to override the generated step",
+            "$ref": "../classic-step.json"
+        }
+    },
+    "required": ["target"],
+    "additionalProperties": false
+  }

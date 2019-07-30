@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "title": "Tooltip",
+    "description": "A tooltip pointing at an element on screen with rich content inside",
+    "type": "object",
+    "properties": {
+        "target": {
+            "markdownDescription": "Where should the tooltip be positioned. The caret of the tooltip will point to that element",
+            "type": "string"
+        },
+        "position": {
+            "description": "How should the tooltip be positionined",
+            "enum": ["top", "right", "bottom", "left"]
+        },
+        "text": {
+            "description": "The markdown text to display in the banner",
+            "type": "string"
+        },
+        "sticky": {
+            "description": "Whether the tooltip should not be dismissable. Defaults to false",
+            "type": "boolean"
+        }
+    },
+    "required": ["target", "text"],
+    "additionalProperties": false
+  }

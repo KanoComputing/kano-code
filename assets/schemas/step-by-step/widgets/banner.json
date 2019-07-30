@@ -1,0 +1,27 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "title": "Banner",
+    "description": "A banner definition for a step",
+    "anyOf": [{
+        "type": ["string", "null"],
+        "description": "The markdown text to display in a default banner"
+    }, {
+        "type": "object",
+        "properties": {
+            "text": {
+                "description": "The markdown text to display in the banner",
+                "type": "string"
+            },
+            "nextButton": {
+                "description": "Display a next button that will jump to the next step or not. Defaults to false",
+                "type": "boolean"
+            },
+            "nextChallengeButton": {
+                "description": "Display the next challenge button. Clicking on this button will go to the next challenge",
+                "type": "boolean"
+            }
+        },
+        "additionalProperties": false
+    }]
+  }

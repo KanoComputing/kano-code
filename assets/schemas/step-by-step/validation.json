@@ -1,0 +1,74 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "http://example.com/product.schema.json",
+    "title": "Validation",
+    "description": "A validation for a step",
+    "type": "object",
+    "properties": {
+        "blockly": {
+            "type": "object",
+            "description": "Defines the validation for the blockly source editor",
+            "properties": {
+                "open-flyout": {
+                    "description": "Check whether the user opens a category. Only a toolbox query is allowed. Example: toolbox#app",
+                    "type": "string"
+                },
+                "create": {
+                    "description": "Checks whether the user created a specific block. Can be done through dragging from the toolbox or copy/paste/duplicate",
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "description": "The type of block to be created. Must be a query selector to a type of flyout block. Example toolbox#draw>flyout_block.draw_circle",
+                            "type": "string"
+                        },
+                        "alias": {
+                            "markdownDescription": "An **alias** to give this block once the user created it. Use this to refer to that block in the following steps using the querying syntax. Example: You create the alias `block_0`, you will be able to refer to it with `alias#block_0`",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["type"],
+                    "additionalProperties": false
+                },
+                "connect": {
+                    "description": "Checks whether the user connects a block to another",
+                    "type": "object",
+                    "properties": {
+                        "parent": {
+                            "description": "The parent connection the user should connect the target block to",
+                            "type": "string"
+                        },
+                        "target": {
+                            "markdownDescription": "The target block the user should connect to the parent connection",
+                            "type": "string"
+                        }
+                    },
+                    "required": ["parent", "target"],
+                    "additionalProperties": false
+                },
+                "value": {
+                    "description": "Checks if the user changes a field",
+                    "type": "object",
+                    "properties": {
+                        "target": {
+                            "markdownDescription": "The field that need to change. Use a regular editor selector",
+                            "type": "string"
+                        },
+                        "value": {
+                            "markdownDescription": "What is the expected final value after the change",
+                            "type": "string"
+                        },
+                        "skipCheck": {
+                            "markdownDescription": "If set to true, will not check for the exact value, but will validate on any change to that field the user makes",
+                            "type": "boolean"
+                        }
+                    },
+                    "required": ["target"],
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        },
+        "additionalProperties": false
+    },
+    "additionalProperties": false
+  }
