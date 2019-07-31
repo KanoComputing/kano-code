@@ -95,14 +95,29 @@ export class KCEditorBanner extends LitElement {
             .block.block-1 {
                 height: 32px;
             }
+            button.stuck {
+                border-radius: 5px;
+                color: orange;
+                border: none;
+                font-weight: bold;
+                font-family: var(--font-body);
+                font-size: 16px;
+                color: #FF6900;
+                cursor: pointer;
+                outline: none;
+            }
+            button.stuck:hover {
+                color: #D95000;
+            }
         `, challengeStyles];
     }
     render() {
         return html`
         <div class="block block-1">
-            <slot name="block-button"></slot>
+            <!-- <slot name="block-button"></slot> -->
             <slot name="avatar"></slot>
             <div class="title">${this.title}</div>
+            <button class="stuck">Stuck?</button>
         </div>
         <div class="content">
             <slot name="avatar"></slot>
