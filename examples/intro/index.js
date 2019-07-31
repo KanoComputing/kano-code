@@ -4,7 +4,6 @@ import * as APIs from '../../toolbox.js';
 import { LocalStoragePlugin } from '../../dist/app/lib/storage/local-storage.js';
 import { Player } from '../../dist/app/lib/index.js';
 import { CreationImagePreviewProvider } from '../../dist/app/lib/creation/providers/image.js';
-import { DefaultResources } from '../../dist/app/lib/output/default-resources.js';
 
 const Shapes = {
     type: 'module',
@@ -56,7 +55,6 @@ class ShapesModule extends code.AppModule {
 
 class OutputProfile extends code.DefaultOutputProfile {
     onInstall(output) {
-        output.registerResources(new DefaultResources());
         super.onInstall(output);
         this.modules.push(ShapesModule);
     }
