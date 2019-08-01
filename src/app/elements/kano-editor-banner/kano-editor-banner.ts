@@ -95,7 +95,7 @@ export class KCEditorBanner extends LitElement {
             .block.block-1 {
                 height: 32px;
             }
-            button.stuck {
+            button.hint {
                 border-radius: 5px;
                 color: orange;
                 border: none;
@@ -106,7 +106,7 @@ export class KCEditorBanner extends LitElement {
                 cursor: pointer;
                 outline: none;
             }
-            button.stuck:hover {
+            button.hint:hover {
                 color: #D95000;
             }
         `, challengeStyles];
@@ -117,7 +117,8 @@ export class KCEditorBanner extends LitElement {
             <!-- <slot name="block-button"></slot> -->
             <slot name="avatar"></slot>
             <div class="title">${this.title}</div>
-            <button class="stuck">Stuck?</button>
+            <slot name="hint" class="hint"></slot>
+            <!-- <button class="hint">Stuck?</button> -->
         </div>
         <div class="content">
             <slot name="avatar"></slot>
