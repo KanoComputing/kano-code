@@ -174,6 +174,14 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         } else {
             this.banner.setIconNode(null);
         }
+        if (data.hint) {
+            this.banner.setHint(data.hint);
+            const button = this.banner.addHintButton('Stuck?');
+            button.onDidClick(() => {
+                if(!this.banner) return;
+                this.banner.showHint();
+            });
+        }
         this.banner.setTitle(this.bannerTitle);
         if (nextButton) {
             const button = this.banner.addButton(typeof nextButton === 'string' ? nextButton : 'Next');
