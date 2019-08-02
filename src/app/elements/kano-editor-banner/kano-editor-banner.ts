@@ -19,6 +19,12 @@ export class KCEditorBanner extends LitElement {
     @property({ type: String })
     public title = '';
 
+    @property({ type: String })
+    public hintText: string = '';
+
+    @property({ type: Boolean })
+    public hintDisplayed: boolean = false;
+
     static get styles() {
         return [css`
             :host {
@@ -37,7 +43,20 @@ export class KCEditorBanner extends LitElement {
                 height: 56px;
                 margin-bottom: 25px;
             }
-        
+            slot[name="hint-button"]::slotted(button) {
+                border-radius: 5px;
+                color: orange;
+                border: none;
+                font-weight: bold;
+                font-family: var(--font-body);
+                font-size: 16px;
+                color: #FF6900;
+                cursor: pointer;
+                outline: none;
+            }
+            slot[name="hintbutton"]::slotted(button:hover) {
+                color: #D95000;
+            }s
             .content {
                 flex-direction: column;
                 font-family: var(--font-body);
@@ -48,6 +67,7 @@ export class KCEditorBanner extends LitElement {
             .actions::slotted(*) {
                 margin-top: 12px;
             }
+ 
             .title {
                 color: var(--color-grey);
                 font-weight: bold;
@@ -95,44 +115,30 @@ export class KCEditorBanner extends LitElement {
             .block.block-1 {
                 height: 32px;
             }
-            button.hint {
-                border-radius: 5px;
-                color: orange;
-                border: none;
-                font-weight: bold;
-                font-family: var(--font-body);
-                font-size: 16px;
-                color: #FF6900;
-                cursor: pointer;
-                outline: none;
-            }
-            button.hint:hover {
-                color: #D95000;
-            }
+       
         `, challengeStyles];
     }
+    renderHint() {
+        if (!this.hintText.length || !this.hintDisplayed) return;
+        return html`<div class="hint">${marked(this.hintText)}</div>`;
+    }
+
     render() {
         return html`
         <div class="block block-1">
-            <!-- <slot name="block-button"></slot> -->
             <slot name="avatar"></slot>
-            <div class="title">${this.title}</div>
-            <slot name="hint" class="hint"></slot>
-            <!-- <button class="hint">Stuck?</button> -->
+            <div class="title">${this.title}
+            <slot name="hint-button"></slot>
+        </div>
         </div>
         <div class="content">
             <slot name="avatar"></slot>
             <div class="markdown-html" id="markdown-html">
                 ${marked(this.text)}
             </div>
+            ${this.renderHint()}
             <slot name="actions" class="actions"></slot>
         </div>
-        <!-- @TODO are we supporting remix for first release? should they have their own banner given markup design differ? -->
-        <!-- <div class="block remix">
-            <slot name="title-remix" class="title-remix"></slot>
-            <slot name="tips" class="tips"></slot>
-            <slot name="block-remix-actions" class="actions"></slot>
-        </div> -->
 `;
     }
 }
