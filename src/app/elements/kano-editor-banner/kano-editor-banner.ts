@@ -54,7 +54,7 @@ export class KCEditorBanner extends LitElement {
                 cursor: pointer;
                 outline: none;
             }
-            slot[name="hintbutton"]::slotted(button:hover) {
+            slot[name="hint-button"]::slotted(button:hover) {
                 color: #D95000;
             }s
             .content {
