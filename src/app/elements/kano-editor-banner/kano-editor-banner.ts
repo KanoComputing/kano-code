@@ -49,14 +49,14 @@ export class KCEditorBanner extends LitElement {
         
             slot[name="hint-button"]::slotted(button) {
                 border-radius: 5px;
-                color: orange;
                 border: none;
                 font-weight: bold;
                 font-family: var(--font-body);
                 font-size: 16px;
-                color: #FF6900;
+                color: var(--color-kano-orange);
                 cursor: pointer;
                 outline: none;
+                background-color: var(--color-white);
             }
             slot[name="hint-button"]::slotted(button:hover) {
                 color: #D95000;
@@ -131,6 +131,14 @@ export class KCEditorBanner extends LitElement {
                 height: 32px;
                 border-radius: 6px 6px 0 0;
                 background-color: var(--button-action-background);
+            }
+            .hint {
+                margin: 5px;
+                border-radius: 5px;
+                font-weight: bold;
+                background-color: var(--color-stone);
+                border-top: 1px solid var(--color-stone);
+                padding: 5px 10px;
             }
         `, challengeStyles];
     }
