@@ -176,7 +176,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         }
         
         if (data.hint) {
-            this.banner.setHint(data.hint);
+            this.banner.setHint(this.processRichText(data.hint));
             const button = this.banner.addHintButton('Stuck?');
             this.bannerButtons.push(button);
             button.onDidClick(() => {
