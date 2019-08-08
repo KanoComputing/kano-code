@@ -60,7 +60,7 @@ class VM {
         pieces = pieces.concat(exclude.map(keyword => `${keyword} = undefined`));
 
         // Create the wrapped code
-        const wrapper = `window.userCode = function (${contextKeywords.join(', ')}){\nvar ${pieces.join(', ')};\n${script}}`;
+        const wrapper = `window.userCode = async function (${contextKeywords.join(', ')}){\nvar ${pieces.join(', ')};\n${script}}`;
 
         // This will create the `userCode` function in the window Object
         eval(wrapper);

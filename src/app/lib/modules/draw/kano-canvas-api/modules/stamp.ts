@@ -14,29 +14,29 @@ export class Stamp {
     * @param {Number} rotation
     * @return void
     */
-    stamp(sticker: Sticker, size: number, rotation: number) {
+    async stamp(sticker: Sticker, size: number, rotation: number) {
         const previousX = this.session.pos.x;
         const previousY = this.session.pos.y;
         const percent = size / 100;
         const session = this.session;
-        
+
         if (!sticker) {
             return;
         }
 
         if (session && session.stickers) {
-            const stamp = session.stickers.cacheValue(sticker);
+            const stamp = await session.stickers.cacheValue(sticker);
 
             if (!stamp) {
-                return
+                return;
             }
-    
+
             const scale = stamp.width / stamp.height;
-            session.ctx.translate(previousX, previousY);
-            session.ctx.moveTo(0,0);
-            session.ctx.rotate(rotation * Math.PI / 180);
-            session.ctx.translate(-previousX, -previousY);
-    
+            const r = rotation * Math.PI / 180;
+            const xx = Math.cos(r) * scale;
+            const xy = Math.sin(r) * scale;
+            session.ctx.setTransform(xx, xy, -xy, xx, session.pos.x, session.pos.y);
+
             session.ctx.drawImage(
                 stamp,
                 session.pos.x - (stamp.width * percent / 2),
@@ -44,15 +44,10 @@ export class Stamp {
                 scale * stamp.height * percent,
                 (stamp.width / scale) * percent,
             );
-    
+
             // reset transformation
-            session.ctx.translate(previousX, previousY);
-            session.ctx.rotate(-rotation * (Math.PI / 180));
-            session.ctx.moveTo(0,0);
-            session.ctx.translate(-previousX, -previousY);
+            session.ctx.resetTransform();
         }
-
-
     };
 };
 

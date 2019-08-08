@@ -43,7 +43,7 @@ export class MousePart extends Part {
             getUrl: () => { return '' },
             getRandom: () => { return '' },
             getRandomFrom: () => { return '' },
-            cacheValue: () => { return new HTMLImageElement() }
+            cacheValue: () => { return Promise.resolve(new HTMLCanvasElement()) }
         };
     }
     onInstall(context : IPartContext) {
@@ -79,7 +79,7 @@ export class MousePart extends Part {
 
             // Update last event time
             this._lastMoveEvent = now;
-            
+
             this.core.move.fire();
         }, this, this.subscriptions);
         // On mouse down fire the down event. Also starts listening to the up event.
@@ -96,7 +96,7 @@ export class MousePart extends Part {
         this.resize(context);
         this.core.onDidInvalidate(() => this.render(), this, this.subscriptions);
         this._root = context.dom.root;
-        
+
         if (context.resources.get('stickers')) {
             this._stickers = context.resources.get('stickers');
         }

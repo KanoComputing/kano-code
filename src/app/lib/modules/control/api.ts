@@ -70,7 +70,7 @@ const time = {
 
         Blockly.JavaScript.loop_forever = (block : Block) => {
             const statement = Blockly.JavaScript.statementToCode(block, 'DO');
-            return `loop.forever(function () {\n${statement}});\n`;
+            return `loop.forever(async function () {\n${statement}});\n`;
         };
 
 
@@ -104,7 +104,7 @@ const time = {
             const statement = Blockly.JavaScript.statementToCode(block, 'DO');
             const interval = Blockly.JavaScript.valueToCode(block, 'INTERVAL', Blockly.JavaScript.ORDER_COMMA) || 5;
             const unit = block.getFieldValue('UNIT') || 'seconds';
-            return `time.every(${interval}, '${unit}', function () {\n${statement}});\n`;
+            return `time.every(${interval}, '${unit}', async function () {\n${statement}});\n`;
         };
 
         Blockly.Blocks.in_x_time = {
@@ -137,7 +137,7 @@ const time = {
             const statement = Blockly.JavaScript.statementToCode(block, 'DO');
             const delay = Blockly.JavaScript.valueToCode(block, 'DELAY', Blockly.JavaScript.ORDER_COMMA) || 1;
             const unit = block.getFieldValue('UNIT') || 'seconds';
-            return `time.later(${delay}, '${unit}', function () {\n${statement}});\n`;
+            return `time.later(${delay}, '${unit}', async function () {\n${statement}});\n`;
         };
 
         Blockly.Blocks.repeat_x_times = {

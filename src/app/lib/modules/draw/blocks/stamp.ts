@@ -31,8 +31,8 @@ export const stamp = [{
             const image = Blockly.JavaScript.valueToCode(block, 'STICKER', Blockly.JavaScript.ORDER_NONE) || 'null';
             const size = Blockly.JavaScript.valueToCode(block, 'SIZE', Blockly.JavaScript.ORDER_NONE) || 'null';
             const rotation = Blockly.JavaScript.valueToCode(block, 'ROTATION', Blockly.JavaScript.ORDER_NONE) || 'null';
-    
-            return `ctx.stamp(${image}, ${size}, ${rotation});`;
+
+            return `await ctx.stamp(${image}, ${size}, ${rotation});`;
         }
     }
 }]

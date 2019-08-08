@@ -53,7 +53,7 @@ export class Canvas {
                 getUrl: () => { return '' },
                 getRandom: () => { return '' },
                 getRandomFrom: () => { return '' },
-                cacheValue: () => { return new HTMLImageElement()}
+                cacheValue: () => { return Promise.resolve(new HTMLCanvasElement()) }
             },
             pos: {
                 x: settings.width / 2,

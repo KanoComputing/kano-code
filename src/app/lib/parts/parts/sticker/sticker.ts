@@ -21,7 +21,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
             getUrl: () => { return '' },
             getRandom: () => { return '' },
             getRandomFrom: () => { return '' },
-            cacheValue: () => { return new HTMLImageElement() }
+            cacheValue: () => { return Promise.resolve(new HTMLCanvasElement()) }
         };
         this.core = this._components.get('core') as StickerComponent;
         this.core.invalidate();
@@ -66,7 +66,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
             this.applyTransform(ctx);
         }
         const sticker = this.core.image.get();
-        
+
         if (sticker && this._stickers) {
             url = this._stickers.getUrl(sticker);
         }
@@ -94,6 +94,6 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
     randomFrom(setId : string) {
         if (this._stickers) {
             return this._stickers.getRandomFrom(setId);
-        }    
+        }
     }
 }
