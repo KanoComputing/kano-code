@@ -10,7 +10,7 @@ export class SamplePlayer {
     private buffer : AudioBuffer;
     private gainControl : GainNode;
     public output : AudioNode;
-    private _volume : number = 1;
+    private _volume : number = 0.4;
     private paused : boolean = true;
     private playing : boolean = true;
     public source : AudioBufferSourceNode|null = null;
@@ -33,7 +33,7 @@ export class SamplePlayer {
 
         this.output = this.gainControl;
 
-        this.volume = 1;
+        this.volume = 0.4;
     }
     set volume(v : number) {
         this._volume = Math.max(0, Math.min(1, v));

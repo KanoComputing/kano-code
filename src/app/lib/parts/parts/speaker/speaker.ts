@@ -12,8 +12,8 @@ const bufferCache : Map<string, AudioBuffer> = new Map();
 class SpeakerComponent extends PartComponent {
     @property({ type: Number, value: 1 })
     public playbackRate : number = 1;
-    @property({ type: Number, value: 1 })
-    public volume : number = 1;
+    @property({ type: Number, value: 0.4 })
+    public volume : number = 0.4;
 }
 
 const SAMPLE_URL_PREFIX_KEY = 'speaker:base-url';
