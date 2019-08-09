@@ -153,7 +153,7 @@ export class Resource<T> implements IResourceInformation {
         return canvas;
     }
 
-    syncLoadImg(src : string, timeout = 500): Promise<HTMLImageElement> {
+    syncLoadImg(src : string): Promise<HTMLImageElement> {
         return new Promise((resolve) => {
             const img = new Image();
             img.crossOrigin = "Anonymous";
