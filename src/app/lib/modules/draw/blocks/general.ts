@@ -26,7 +26,7 @@ export const general : any[] = [{
     block: (part : any) => {
         return {
             id: 'set_transparency',
-            message0: `${part.name}: ${_('DRAW_SET_TRANSPARENCY', 'Set transparentcy to')} %1`,
+            message0: `${part.name}: ${_('DRAW_SET_TRANSPARENCY', 'Set transparency to')} %1`,
             args0: [{
                 type: "input_value",
                 name: "ALPHA",
