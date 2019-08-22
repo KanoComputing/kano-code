@@ -1,11 +1,11 @@
 import { OutputProfile, DefaultOutputProfile } from '../output/profile.js';
 import { Editor } from './editor.js';
-import { CreationCustomPreviewProvider } from '../creation/creation-preview-provider.js';
-import CreationStorageProvider from '../creation/creation-storage-provider.js';
+import { CreationCustomPreviewProvider } from '../preview/creation-preview-provider.js';
 import WorkspaceViewProvider from './workspace/index.js';
 import * as PartAPIs from '../parts/parts/api.js'; 
 import * as APIs from '../modules/api.js';
 import DefaultWorkspaceViewProvider from './workspace/default.js';
+import { CreationImagePreviewProvider } from '../preview/providers/image.js';
 
 export abstract class EditorProfile {
     abstract workspaceViewProvider? : WorkspaceViewProvider;
@@ -22,7 +22,6 @@ export abstract class EditorProfile {
     abstract toolbox? : any[];
     abstract outputProfile? : OutputProfile;
     abstract creationPreviewProvider? : CreationCustomPreviewProvider;
-    abstract creationStorageProvider? : CreationStorageProvider;
 }
 
 export class DefaultEditorProfile extends EditorProfile {
@@ -31,7 +30,6 @@ export class DefaultEditorProfile extends EditorProfile {
     toolbox? : any[];
     workspaceViewProvider? : DefaultWorkspaceViewProvider;
     creationPreviewProvider? : CreationCustomPreviewProvider;
-    creationStorageProvider? : CreationStorageProvider;
     outputProfile? : OutputProfile;
     onInstall(editor: Editor) {
         this.workspaceViewProvider = new DefaultWorkspaceViewProvider();

@@ -5,7 +5,6 @@ import { Logger } from '../log/index.js';
 import { DefaultWorkspaceViewProvider } from './workspace/default.js';
 import { Dialogs } from './dialogs/index.js';
 import { Keybindings } from './keybindings/index.js';
-import { CreationPlugin } from '../creation/index.js';
 import '../../elements/kano-app-editor/kano-app-editor.js';
 import { EditorOrPlayer } from './editor-or-player.js';
 import { Output } from '../output/output.js';
@@ -16,8 +15,7 @@ import { transformLegacyApp } from '../legacy/loader.js';
 import { SourceEditor, getSourceEditor } from '../source-editor/source-editor.js';
 import { Plugin } from './plugin.js';
 import EditorProfile, { DefaultEditorProfile } from './profile.js';
-import { CreationCustomPreviewProvider } from '../creation/creation-preview-provider.js';
-import CreationStorageProvider from '../creation/creation-storage-provider.js';
+import { CreationCustomPreviewProvider } from '../preview/creation-preview-provider.js';
 import { deprecated } from '../decorators.js';
 import { WorkspaceViewProvider } from './workspace/index.js';
 import { EventEmitter } from '@kano/common/index.js';
@@ -100,10 +98,6 @@ export class Editor extends EditorOrPlayer {
      */
     public toolbox : Toolbox = new Toolbox();
     /**
-     * The creation plugin adds the option to save an app as a creation with a cover and the app's source
-     */
-    public creation : CreationPlugin = new CreationPlugin();
-    /**
      * The parts editor manager handles the creation of parts in the editor
      */
     public parts : EditorPartsManager;
@@ -130,7 +124,6 @@ export class Editor extends EditorOrPlayer {
      */
     public profile? : EditorProfile;
     public creationPreviewProvider? : CreationCustomPreviewProvider;
-    public creationStorageProvider? : CreationStorageProvider;
     public queryEngine : QueryEngine = new QueryEngine();
     private selectorAliases : Map<string, string> = new Map();
     /**
@@ -199,7 +192,6 @@ export class Editor extends EditorOrPlayer {
         this.addPlugin(this.dialogs);
         this.addPlugin(this.keybindings);
         this.addPlugin(this.toolbox);
-        this.addPlugin(this.creation);
         this.addPlugin(this.activityBar);
 
 
@@ -439,16 +431,6 @@ export class Editor extends EditorOrPlayer {
         }
         return this.creationPreviewProvider.display(blob);
     }
-    storeCreation(creationBundle : ICreationBundle) {
-        if (!this.creationStorageProvider) {
-            return Promise.reject(new Error('Could not store creation: No CreationStorageProvider was registered'));
-        }
-        const p = this.creationStorageProvider.write(creationBundle);
-        if (p instanceof Promise) {
-            return p;
-        }
-        return Promise.resolve(p);
-    }
     save() {
         return this.export();
     }
@@ -495,10 +477,6 @@ export class Editor extends EditorOrPlayer {
         if (this.profile.creationPreviewProvider) {
             this.creationPreviewProvider = this.profile.creationPreviewProvider;
             this.addPlugin(this.creationPreviewProvider);
-        }
-        if (this.profile.creationStorageProvider) {
-            this.creationStorageProvider = this.profile.creationStorageProvider;
-            this.addPlugin(this.creationStorageProvider);
         }
     }
     registerWorkspaceViewProvider(provider : WorkspaceViewProvider) {

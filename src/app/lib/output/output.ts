@@ -223,6 +223,7 @@ export class Output extends PluginReceiver {
         const parts = this.parts.save();
         const exp = this.plugins.reduce((d, plugin) => plugin.onExport(d), data);
         exp.parts = parts;
+        exp.profile = this.id;
         return exp;
     }
     onImport(data : any) {

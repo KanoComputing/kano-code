@@ -3,7 +3,6 @@ export * from './editor/editor.js';
 export * from './player/index.js';
 export * from './editor/plugin.js';
 export * from './editor/dialogs/dialog-provider.js';
-export * from './creation/index.js';
 export * from './output/output.js';
 export * from './output/profile.js';
 export * from './editor/profile.js';
