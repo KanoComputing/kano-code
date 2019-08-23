@@ -161,17 +161,17 @@ class KCPlayer extends PolymerElement {
         fetch(this.src)
             .then(r => r.json())
             .then((creation) => {
-            this.player.inject(this.$.container);
-            return this.player.load(creation);
-        })
+                this.player.inject(this.$.container);
+                return this.player.load(creation);
+            })
             .then(() => {
-            this.player.setRunningState(true);
-        })
+                this.player.setRunningState(true);
+            })
             .catch((e) => {
-            this.failed = true;
-            this.player.dispose();
-            throw e;
-        });
+                this.failed = true;
+                this.player.dispose();
+                throw e;
+            });
     }
     disconnectedCallback() {
         super.disconnectedCallback();
