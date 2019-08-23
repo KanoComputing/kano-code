@@ -5,16 +5,19 @@ import '../kano-animated-svg/kano-animated-svg.js';
 
 class KCPlayerToolbar extends PolymerElement {
     static get template() {
-        return html`
+        return html `
         <style>
             :host {
-                display: block;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
                 align-items: center;
                 padding: 4px 4px;
                 color: white;
+                position: inherit;
+                bottom: 20px;
+                width: 100%;
+                margin: 0 auto;
             }
             :host *:focus {
                 outline: none;
@@ -68,6 +71,11 @@ class KCPlayerToolbar extends PolymerElement {
             .icon:hover {
                 background-color: var(--color-kano-orange);
             }
+            @media all and (max-width: 600px) {
+                :host {
+                bottom: 0;
+                }
+            }
         </style>
         <button class="fullscreen icon" on-click="fullscreenClicked">
             <iron-icon icon="kc-ui:maximize"></iron-icon>
@@ -108,5 +116,4 @@ class KCPlayerToolbar extends PolymerElement {
         return running ? 'running' : 'stopped';
     }
 }
-
 customElements.define('kc-player-toolbar', KCPlayerToolbar);

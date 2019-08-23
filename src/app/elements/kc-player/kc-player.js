@@ -1,9 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@kano/kwc-icons/kwc-icons.js';
 import '../kc-player-toolbar/kc-player-toolbar.js';
-
 import { Player } from '../../lib/player/index.js';
-
 /**
 @group Kano Elements
 @hero hero.svg
@@ -11,7 +9,7 @@ import { Player } from '../../lib/player/index.js';
 */
 class KCPlayer extends PolymerElement {
     static get template() {
-        return html`
+        return html `
         <style>
             :host {
                 display: flex;
@@ -106,8 +104,9 @@ class KCPlayer extends PolymerElement {
                 display: none !important;
             }
             kc-player-toolbar {
-                margin-top: 16px;
+                z-index: 10;
             }
+
         </style>
         <div id="container">
             <template is="dom-if" if="[[failed]]">
@@ -159,21 +158,20 @@ class KCPlayer extends PolymerElement {
         }
         this.player = new Player();
         this.player.disableFullscreen();
-
         fetch(this.src)
             .then(r => r.json())
             .then((creation) => {
-                this.player.inject(this.$.container);
-                return this.player.load(creation);
-            })
+            this.player.inject(this.$.container);
+            return this.player.load(creation);
+        })
             .then(() => {
-                this.player.setRunningState(true);
-            })
+            this.player.setRunningState(true);
+        })
             .catch((e) => {
-                this.failed = true;
-                this.player.dispose();
-                throw e;
-            });
+            this.failed = true;
+            this.player.dispose();
+            throw e;
+        });
     }
     disconnectedCallback() {
         super.disconnectedCallback();
@@ -194,5 +192,4 @@ class KCPlayer extends PolymerElement {
         this.fullscreen = this.player.getFullscreen();
     }
 }
-
 customElements.define('kc-player', KCPlayer);
