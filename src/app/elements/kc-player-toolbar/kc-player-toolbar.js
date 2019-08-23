@@ -5,7 +5,7 @@ import '../kano-animated-svg/kano-animated-svg.js';
 
 class KCPlayerToolbar extends PolymerElement {
     static get template() {
-        return html `
+        return html`
         <style>
             :host {
                 display: flex;
@@ -73,7 +73,7 @@ class KCPlayerToolbar extends PolymerElement {
             }
             @media all and (max-width: 600px) {
                 :host {
-                bottom: 0;
+                    bottom: 0;
                 }
             }
         </style>
