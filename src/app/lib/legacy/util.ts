@@ -1,3 +1,5 @@
+import { stickersMap } from '../parts/parts/sticker/legacy.js';
+
 export const LegacyUtil = {
     getDOM(source : string) {
         const parser = new DOMParser();
@@ -5,6 +7,35 @@ export const LegacyUtil = {
         if (DOM.documentElement.nodeName !== 'parsererror') {
             return DOM.documentElement;
         }
+    },
+    addPartBlocks(partData : any, root : HTMLElement) {
+        const tpl = document.createElement('template');
+
+        function mathValue(input : string, value : number) {
+            return `<value name="${input}"><shadow type="math_number"><field name="NUM">${value}</field></shadow></value>`
+        }
+
+        if (partData.position) {
+            tpl.innerHTML += `<block type="${partData.id}_moveTo">${mathValue('X', partData.position.x)}${mathValue('Y', partData.position.y)}</block>`;
+        }
+        if (partData.scale) {
+            tpl.innerHTML += `<block type="${partData.id}_setScale">${mathValue('SCALE', partData.scale)}</block>`
+        }
+        console.log(partData);
+        if (partData.type === 'text') {
+            if (partData.userProperties.text) {
+                tpl.innerHTML += `<block type="${partData.id}_value_set"><value name="VALUE"><shadow type="text"><field name="TEXT">${partData.userProperties.text}</field></shadow></value></block>`;
+            }
+        }
+        if (partData.type === 'sticker') {
+            if (partData.userProperties.src) {
+                const oldValue = partData.userProperties.src.split('/').pop().split('.').shift();
+                console.log(oldValue);
+                tpl.innerHTML += `<block type="${partData.id}_image_set"><value name="IMAGE"><shadow type="stamp_getImage"><field name="STICKER">${stickersMap[oldValue]}</field></shadow></value></block>`
+            }
+        }
+        root.appendChild(tpl.content);
+        return root;
     },
     transformBlock(root : HTMLElement, selector : string, mutator : (block : HTMLElement) => void) {
         const all = [...root.querySelectorAll(selector)] as HTMLElement[]

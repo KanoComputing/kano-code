@@ -9,6 +9,8 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
     protected _el : T;
     @component(Transform)
     public transform : Transform;
+    private _rect : DOMRect|null = null;
+    private _visuals : { canvas: HTMLCanvasElement; width: number; height: number; }|null = null;
     constructor() {
         super();
         this.transform = this._components.get('transform') as Transform;
@@ -26,11 +28,25 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         }, this, this.subscriptions);
     }
     onInstall(context : IPartContext) {
+        this._visuals = context.visuals;
+        context.dom.onDidResize(() => {
+            this.resize(context);
+        });
+        // Trigger an initial resize to populate the scale and rect
+        this.resize(context);
         context.dom.root.appendChild(this._el);
+        this.transform.invalidate();
+    }
+    resize(context : IPartContext) {
+        this._rect = context.dom.root.getBoundingClientRect() as DOMRect;
     }
     render() {
+        // Don't render until we got the output rect
+        if (!this._rect || !this._visuals) {
+            return;
+        }
         if (this.transform.invalidated) {
-            this._el.style.transform = `translate(${this.transform.x}px, ${this.transform.y}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
+            this._el.style.transform = `translate(${this.transform.x / this._visuals.width * this._rect.width}px, ${this.transform.y / this._visuals.height * this._rect.height}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
             this._el.style.opacity = this.transform.opacity.toString();
         }
         this.transform.apply();

@@ -313,7 +313,7 @@ export class Editor extends EditorOrPlayer {
      * @param app A JSON object representation of an app
      */
     load(app : any) {
-        const safeApp = transformLegacyApp(app, this);
+        const safeApp = transformLegacyApp(app, this.output);
         if (!this.injected) {
             this._queuedApp = safeApp;
             return;

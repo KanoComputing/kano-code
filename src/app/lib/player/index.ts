@@ -1,7 +1,11 @@
 import { EditorOrPlayer } from '../editor/editor-or-player.js';
 import { Output, IOutputProfile } from '../output/output.js';
+import { DefaultOutputProfile } from '../output/profile.js';
+import { transformLegacyCreation } from './legacy.js';
 
 const profiles = new Map();
+
+profiles.set('default', new DefaultOutputProfile());
 
 export class Player extends EditorOrPlayer {
     public output : Output;
@@ -30,13 +34,17 @@ export class Player extends EditorOrPlayer {
         this._fullscreenEnabled = true;
     }
     load(data : any) {
-        const profile = profiles.get(data.profile);
+        // Assume default profile. This will help creations with no saved profile
+        const profile = profiles.get(data.profile || 'default');
         if (!profile) {
             throw new Error(`Could not load creation: Profile '${data.profile}' not registered`);
         }
         this.output.registerProfile(profile);
         this._injectOutputView();
-        return this.output.onCreationImport(data);
+        return transformLegacyCreation(data, this.output)
+            .then((cookedData) => {
+                return this.output.onCreationImport(cookedData);
+            });
     }
     _injectOutputView() {
         if (!this.element) {

@@ -27,6 +27,7 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         this.core.invalidate();
     }
     onInstall(context : IPartContext) {
+        super.onInstall(context);
         if (context.resources.get('stickers')) {
             this._stickers = context.resources.get('stickers');
         }
@@ -34,7 +35,6 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
             this.core.image.set(this._stickers.default)
             this.core.invalidate();
         }
-        context.dom.root.appendChild(this._el);
     }
     getElement() : HTMLDivElement {
         const el = document.createElement('div');
