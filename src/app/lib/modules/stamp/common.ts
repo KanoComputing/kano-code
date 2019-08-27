@@ -2,23 +2,17 @@ import { IMetaDefinition } from '../../meta-api/module.js';
 import { Editor } from '../../editor/editor.js';
 import { _ } from '../../i18n/index.js';
 
-export const random : IMetaDefinition = {
-        type: 'function', 
-        name: 'random',
-        verbose: _('PART_STICKER_RANDOM', 'random'),
-        returnType: 'Sticker'
-    };
-
-export function randomFrom(editor : Editor) : IMetaDefinition {
+export function random(editor : Editor) : IMetaDefinition {
     const stickers = editor.output.resources.get('stickers');
     let stickerEnum : [string, string][] = [];
     if (stickers) {
         stickerEnum = stickers.categoryEnum;
     }
+    stickerEnum.unshift([_('ALL', 'All'), 'all']);
     return {
         type: 'function',
-        name: 'randomFrom',
-        verbose: _('PART_STICKER_RANDOM_FROM', 'random'),
+        name: 'random',
+        verbose: _('PART_STICKER_RANDOM_FROM', 'random from'),
         returnType: 'Sticker',
         parameters: [{
             type: 'parameter',

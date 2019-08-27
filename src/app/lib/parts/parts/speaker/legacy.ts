@@ -6,6 +6,8 @@ export function transformLegacySpeaker(app : any) {
     }
     const root = LegacyUtil.getDOM(app.source);
     if (root) {
+        const ttsId = 'voice';
+        let usesTTS = false;
         LegacyUtil.forEachPart(app, 'speaker', ({ id }) => {
             LegacyUtil.transformBlock(root, `block[type="${id}#speaker_playback_rate"]`, (block) => {
                 LegacyUtil.renameValue(block, 'RATE', 'PITCH');
@@ -20,13 +22,27 @@ export function transformLegacySpeaker(app : any) {
             LegacyUtil.transformBlock(root, `block[type="${id}#speaker_stop"]`, (block) => {
                 block.setAttribute('type', `${id}_stop`);
             });
+            LegacyUtil.transformBlock(root, `block[type="${id}#say"]`, (block) => {
+                usesTTS = true;
+                block.setAttribute('type', `${ttsId}_say`);
+            });
             LegacyUtil.transformBlock(root, `block[type="${id}#speaker_sample"]`, (block) => {
+                const setField = block.querySelector('field[name="SET"]');
+                if (setField) {
+                    setField.remove();
+                }
                 block.setAttribute('type', `${id}_getSample`);
             });
             LegacyUtil.transformBlock(root, `block[type="${id}#speaker_set_volume"]`, (block) => {
                 block.setAttribute('type', `${id}_volume_set`);
             });
         });
+        if (usesTTS) {
+            if (!app.parts) {
+                app.parts = [];
+            }
+            app.parts.push({ type: 'voice', id: ttsId, name: 'Voice' });
+        }
         const serializer = new XMLSerializer();
         app.source = serializer.serializeToString(root);
     }

@@ -36,6 +36,7 @@ export class TextPart extends DOMPart<HTMLDivElement> {
     set value(v : string) {
         this.core.value = v;
         this.core.invalidate();
+        this.updateSize();
     }
     get color() {
         return this.core.color;

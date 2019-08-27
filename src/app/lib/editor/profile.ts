@@ -5,7 +5,6 @@ import WorkspaceViewProvider from './workspace/index.js';
 import * as PartAPIs from '../parts/parts/api.js'; 
 import * as APIs from '../modules/api.js';
 import DefaultWorkspaceViewProvider from './workspace/default.js';
-import { CreationImagePreviewProvider } from '../preview/providers/image.js';
 
 export abstract class EditorProfile {
     abstract workspaceViewProvider? : WorkspaceViewProvider;

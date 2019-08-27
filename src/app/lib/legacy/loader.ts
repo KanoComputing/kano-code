@@ -1,7 +1,7 @@
 import { AppModule } from '../app-modules/app-module.js';
-import { Editor } from '../editor/editor.js';
 import { LegacyUtil } from './util.js';
 import { utils } from '@kano/kwc-blockly/blockly.js';
+import { Output } from '../index.js';
 
 function rewriteSource(app : any) {
     if (app.code && app.code.snapshot) {
@@ -29,12 +29,17 @@ function rewriteBlocks(app : any) {
     app.source = newSource;
 }
 
-function rewriteParts(app : any, editor : Editor) {
-    const registered = editor.parts.getRegisteredParts();
+function rewriteParts(app : any, output : Output) {
+    const registered = output.parts.getRegisteredParts();
     registered.forEach((partClass) => partClass.transformLegacy(app));
+    const root = LegacyUtil.getDOM(app.source);
+    if (root) {
+        app.parts.forEach((d : any) => LegacyUtil.addPartBlocks(d, root));
+        app.source = root.outerHTML;
+    }
 }
-function rewriteModules(app : any, editor : Editor) {
-    const modules = editor.output.runner.getRegisteredModules();
+function rewriteModules(app : any, output : Output) {
+    const modules = output.runner.getRegisteredModules();
     modules.forEach((mod) => {
         const moduleClass = (mod.constructor as typeof AppModule);
         if (!moduleClass.transformLegacy) {
@@ -44,12 +49,16 @@ function rewriteModules(app : any, editor : Editor) {
     });
 }
 
-export function transformLegacyApp(app : any, editor : Editor) {
-    if (!app) {
+function isLegacyApp(app : any) {
+    return app.code && app.code.snapshot;
+}
+
+export function transformLegacyApp(app : any, output : Output) {
+    if (!app || !isLegacyApp(app)) {
         return app;
     }
     rewriteSource(app);
-    rewriteModules(app, editor);
-    rewriteParts(app, editor);
+    rewriteModules(app, output);
+    rewriteParts(app, output);
     return app;
 }

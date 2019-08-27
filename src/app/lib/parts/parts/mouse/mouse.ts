@@ -52,15 +52,15 @@ export class MousePart extends Part {
             this.resize(context);
         });
         subscribeDOM(context.dom.root, 'mousemove', (e : MouseEvent) => {
-            let { x, y } = e;
+            let { pageX, pageY } = e;
             // In case no resize event is triggered before the mouse part is added
             if (!this._rect) {
                 return;
             }
             // Adjust the cursor position by making the coordinates relative to the top left corner of the output
             // Also applies the scale
-            x = Math.max(0, Math.min(context.visuals.width, (x - this._rect.left) * this._scale));
-            y = Math.max(0, Math.min(context.visuals.height, (y - this._rect.top) * this._scale));
+            const x = Math.max(0, Math.min(context.visuals.width, (pageX - this._rect.left) * this._scale));
+            const y = Math.max(0, Math.min(context.visuals.height, (pageY - this._rect.top) * this._scale));
 
             // Record the current timestamp
             const now = Date.now();
@@ -148,15 +148,14 @@ export class MousePart extends Part {
         this.core.cursor.set(c);
         this.core.invalidate();
     }
-    random() {
-        if (this._stickers) {
-            return this._stickers.getRandom();
+    random(id : string) {
+        if (!this._stickers) {
+            return '';
         }
-    }
-    randomFrom(index : string) {
-        if (this._stickers) {
-            return this._stickers.getRandomFrom(index);
+        if (id === 'all') {
+            return this._stickers.getRandom()
         }
+        return this._stickers.getRandomFrom(id);
     }
     loadImage(url : string) : Promise<string> {
         if (this._imageCache.has(url)) {

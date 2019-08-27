@@ -1,5 +1,6 @@
 import { Blockly } from '@kano/kwc-blockly/blockly.js';
 import { _ } from '../../i18n/index.js';
+import { transformLegacyLogic } from './legacy.js';
 /**
  * Registers the logic blocks, and creates its category
  */

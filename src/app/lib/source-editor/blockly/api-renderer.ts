@@ -315,7 +315,7 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
                 return false;
             }
             // These are the callback function's defined arguments. One might gives us the value we need
-            const param = funcParams.find((param) => param.blockly && param.blockly.scope === returnType);
+            const param = funcParams.find((param) => !!(param.blockly && param.blockly.scope === returnType));
             if (!param) {
                 return false;
             }

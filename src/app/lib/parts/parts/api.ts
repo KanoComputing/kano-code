@@ -14,3 +14,4 @@ export * from './mouse/api.js';
 export * from './speaker/api.js';
 export * from './sequencer/api.js';
 export * from './touch/api.js';
+export * from './voice/api.js';

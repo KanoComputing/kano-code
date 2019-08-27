@@ -2,7 +2,7 @@ import { sticker } from '@kano/icons/parts.js';
 import { IPartAPI } from '../../api.js';
 import { StickerPart } from './sticker.js';
 import { TransformAPI, onTransformInstall } from '../transform/api.js';
-import { random, randomFrom } from '../../../modules/stamp/common.js';
+import { random } from '../../../modules/stamp/common.js';
 import { Editor } from '../../../editor/editor.js';
 import { _ } from '../../../i18n/index.js';
 
@@ -27,7 +27,7 @@ export function StickerAPI(editor: Editor) : IPartAPI {
                     return `<shadow type="stamp_getImage"><field name="STICKER">${defaultValue}</field></shadow>`;
                 },
             },
-        }, random, randomFrom(editor), ...TransformAPI],
+        }, random(editor), ...TransformAPI],
         onInstall(editor : Editor, part : StickerPart) {
             onTransformInstall(editor, part);
         },

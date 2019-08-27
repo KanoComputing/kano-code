@@ -159,12 +159,12 @@ export class Resource<T> implements IResourceInformation {
         return this.resourceSet[Math.floor(Math.random() * this.resourceSet.length)].id;
     }
 
-    getRandomFrom(id: string) {
+    getRandomFrom(id : string) {
         if (!this.categories[id]) {
-            console.warn('Category does not exist')
-            return this.default
+            console.warn('Category does not exist');
+            return this.default;
         } else {
-            const randomKey = Object.keys(this.categories[id].resources)[Math.floor(Math.random() * Object.keys(this.categories[id].resources).length)]
+            const randomKey = Object.keys(this.categories[id].resources)[Math.floor(Math.random() * Object.keys(this.categories[id].resources).length)];
             return this.categories[id].resources[randomKey].id;
         }
     }

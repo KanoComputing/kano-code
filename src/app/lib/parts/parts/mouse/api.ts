@@ -4,7 +4,7 @@ import { svg } from '@kano/icons-rendering/index.js';
 import { addFlashField, setupFlash } from '../../../plugins/flash/flash.js';
 import { Block } from '@kano/kwc-blockly/blockly.js';
 import { Editor } from '../../../editor/editor.js';
-import { random, randomFrom } from '../../../modules/stamp/common.js';
+import { random } from '../../../modules/stamp/common.js';
 import { _ } from '../../../i18n/index.js';
 
 const mouse = svg`<svg viewBox="0 0 64 64" preserveAspectRatio="xMidYMid meet" focusable="false" style="pointer-events: none; display: block; width: 100%; height: 100%;"><g><path d="M28.73,27.18l9.68-9.68-.58-.58a15.11,15.11,0,0,0-20.41-1Z"></path><path d="M29.46,29.78h0L19,40.3l7.77,7.77A14.94,14.94,0,1,0,47.86,26.94l-7.77-7.77Z"></path><path d="M26.87,29,15.72,17.64a15.11,15.11,0,0,0,1,20.41l.58.58Z"></path></g></svg>`;
@@ -53,8 +53,7 @@ export function MouseAPI(editor: Editor) : IPartAPI {
                 },
             },
         },
-        random,
-        randomFrom(editor),
+        random(editor),
         {
             type: 'function',
             name: 'onDown',

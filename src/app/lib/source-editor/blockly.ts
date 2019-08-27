@@ -10,7 +10,7 @@ import BlocklyMetaRenderer from './blockly/api-renderer.js';
 import { debounce } from '../decorators.js';
 import { Highlighter } from '../creator/ui/highlighter.js';
 
-// Exclude those characters. This will allow the editor's quirying system to query block ids
+// Exclude those characters. This will allow the editor's querying system to query block ids
 utils.genUid.soup_ = utils.genUid.soup_.replace(/#|>|\.|:/g, '');
 
 export class BlocklySourceEditor implements SourceEditor {
