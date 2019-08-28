@@ -60,12 +60,6 @@ export class CollidableField extends FieldIcon {
                 easing: 'ease-out',
             });
         }
-        setTimeout(() => {
-            if (!this.domNode) {
-                return;
-            }
-            // this.domNode.revealSelectedElement();
-        });
     }
     position() {
         const viewportBBox = utils.getViewportBBox();

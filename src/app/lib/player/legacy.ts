@@ -25,8 +25,6 @@ class FakeEditor {
         this.profile.parts!.forEach(p => this.parts.registerAPI(p));
         // The editor has to be injected for the blockly instance to work.
         // We do not support headless editors.
-        // this.sourceEditor.domNode.style.width = '800px';
-        // this.sourceEditor.domNode.style.height = '600px';
         this.sourceEditor.domNode.style.display = 'none';
         document.body.appendChild(this.sourceEditor.domNode);
         this.toolbox = new Toolbox();

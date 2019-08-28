@@ -52,7 +52,6 @@ export function StampAPI (editor: Editor) {
         symbols: [
             getImage(editor),
             hideBlock(random(editor)),
-            hideBlock(random(editor))
         ]
     }
 }
