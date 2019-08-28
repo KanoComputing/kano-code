@@ -33,7 +33,7 @@ export class CollidableField extends FieldIcon {
     showEditor_() {
         if (!this.domNode) {
             this.domNode = document.createElement('kwc-picker');
-            this.domNode.name = _('COLLIDABLE_PARTS', 'Parts');
+            (this.domNode as any).name = _('COLLIDABLE_PARTS', 'Parts');
             this.domNode.style.border = '2px solid var(--kc-border-color)';
             this.domNode.style.borderRadius = '6px';
             this.domNode.style.overflow = 'hidden';
@@ -50,7 +50,7 @@ export class CollidableField extends FieldIcon {
         );
         const div = Blockly.WidgetDiv.DIV;
         div.appendChild(this.domNode);
-        this.domNode.value = this.getValue();
+        (this.domNode as any).value = this.getValue();
         this.position();
         if ('animate' in HTMLElement.prototype) {
             div.animate({
