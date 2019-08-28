@@ -1,5 +1,6 @@
 import AppModule from '../app-modules/app-module.js';
 import Editor from '../editor/editor.js';
+import { Field, Blockly, Block } from '@kano/kwc-blockly/blockly.js';
 
 export interface ICategory {
     name : string,
@@ -24,7 +25,18 @@ export interface IMetaDefinition {
     parameters? : IMetaDefinition[];
     default? : any;
     enum? : [string, string][];
-    blockly? : any;
+    blockly? : {
+        customField?(Blockly : Blockly, block : Block) : Field;
+        field? : boolean;
+        javascript?(Blockly : Blockly, block : Block, m : MetaFunction) : string|string[];
+        toolbox? : boolean;
+        aliases? : string[];
+        scope? : Symbol;
+        postProcess?(block : Block) : void;
+        shadow?(def : any, root : Meta) : string;
+        prefix? : string;
+        idPrefix? : string;
+    };
     toolbox? : boolean;
     getter? : boolean;
     setter? : boolean;

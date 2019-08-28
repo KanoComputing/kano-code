@@ -27,7 +27,9 @@ export class Toolbox extends Plugin {
     private editor? : Editor;
     public renderer? : IMetaRenderer;
     private entries : IAPIJointDefinition[] = [];
+    private _entries : IAPIDefinition[] = [];
     private whitelist : IToolboxWhitelist|null = null;
+    private installedEntries = new Set<IAPIDefinition>();
     onInstall(editor : Editor) {
         this.editor = editor;
         this.renderer = this.editor.sourceEditor.getApiRenderer();
@@ -35,14 +37,33 @@ export class Toolbox extends Plugin {
     setEntries(entries : IAPIDefinition[]) {
         this.entries = entries;
     }
-    addEntry(entry : IAPIDefinition, position? : number) {
-        const mod = this.editor!.output.runner.getModule((entry as any).id || entry.name);
+    /**
+     * Runs the onInstall function of the entry if available.
+     * Will avoid running the onInstall more than once for the current toolbox
+     * @param entry A toolbox entry
+     */
+    installEntry(entry : IAPIJointDefinition) {
+        if (!this.editor || this.installedEntries.has(entry)) {
+            return;
+        }
+        let realEntry : IAPIDefinition = entry;
+        if (typeof entry === 'function') {
+            realEntry = entry(this.editor);
+        }
+        const mod = this.editor.output.runner.getModule(realEntry.id || realEntry.name);
+        if (typeof realEntry.onInstall === 'function') {
+            realEntry.onInstall(this.editor, mod);
+        }
+        this._entries.push(realEntry);
+        this.installedEntries.add(entry);
+    }
+    addEntry(entry : IAPIJointDefinition, position? : number) {
+        if (!this.editor) {
+            throw new Error('Could not add entry: The editor was not defined');
+        }
         const injectIndex = typeof position === 'undefined' ? this.entries.length : position;
         const disposableEntry = new ToolboxEntry(this, entry);
         this.entries.splice(injectIndex, 0, entry);
-        if (typeof entry.onInstall === 'function') {
-            entry.onInstall(this.editor!, mod);
-        }
         this.update();
         return disposableEntry;
     }
@@ -83,13 +104,10 @@ export class Toolbox extends Plugin {
         if (!this.editor || !this.renderer) {
             return;
         }
-        let entries = this.entries;
-        entries = entries.map(el => {
-            if (typeof el === 'function' && this.editor) {
-                return el(this.editor);
-            }
-            return el;
+        this.entries.forEach((entry) => {
+            this.installEntry(entry);
         });
+        let entries = this._entries;
         if (this.whitelist) {
             const modules = Object.keys(this.whitelist);
             entries = entries.filter(e => modules.indexOf(e.name) !== -1);

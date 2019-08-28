@@ -70,6 +70,9 @@ export class Part {
             this._components.set(key, component);
         });
     }
+    getComponent(id : string) {
+        return this._components.get(id);
+    }
     /**
      * Called when the part is added to an output. Whether it is from an editor or a Player
      * @param context The context given by the output. Allowws to access the different output APIs

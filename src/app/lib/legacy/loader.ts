@@ -36,7 +36,6 @@ function rewriteParts(app : any, output : Output) {
     if (root) {
         app.parts.forEach((d : any) => LegacyUtil.addPartBlocks(d, root));
         app.source = root.outerHTML;
-        console.log(root);
     }
 }
 function rewriteModules(app : any, output : Output) {
@@ -50,8 +49,12 @@ function rewriteModules(app : any, output : Output) {
     });
 }
 
+function isLegacyApp(app : any) {
+    return app.code && app.code.snapshot;
+}
+
 export function transformLegacyApp(app : any, output : Output) {
-    if (!app) {
+    if (!app || !isLegacyApp(app)) {
         return app;
     }
     rewriteSource(app);

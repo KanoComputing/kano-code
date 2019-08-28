@@ -1,4 +1,4 @@
-import { stickersMap } from '../parts/parts/sticker/legacy.js';
+import { getStickerIdForLegacy } from '../parts/parts/sticker/legacy.js';
 
 export const LegacyUtil = {
     getDOM(source : string) {
@@ -9,31 +9,77 @@ export const LegacyUtil = {
         }
     },
     addPartBlocks(partData : any, root : HTMLElement) {
+        // TODO: This work could make legacy shares upscale to the new width and height
+        const xS = 1;
+        const yS = 1;
         const tpl = document.createElement('template');
 
         function mathValue(input : string, value : number) {
             return `<value name="${input}"><shadow type="math_number"><field name="NUM">${value}</field></shadow></value>`
         }
+        function textValue(input : string, value : string) {
+            return `<value name="${input}"><shadow type="text"><field name="TEXT">${value}</field></shadow></value>`
+        }
+        function colorValue(input : string, value : string) {
+            return `<value name="${input}"><shadow type="colour_picker"><field name="COLOUR">${value}</field></shadow></value>`
+        }
 
-        if (partData.position) {
-            tpl.innerHTML += `<block type="${partData.id}_moveTo">${mathValue('X', partData.position.x)}${mathValue('Y', partData.position.y)}</block>`;
+        const uiParts = ['button', 'text', 'text-input', 'sticker', 'slider'];
+
+        const blocks = [];
+
+        if (uiParts.indexOf(partData.type) !== -1) {
+            if (partData.position) {
+                blocks.push(`<block type="${partData.id}_moveTo">${mathValue('X', partData.position.x * xS)}${mathValue('Y', partData.position.y * yS)}</block>`);
+            }
+            if (partData.scale) {
+                blocks.push(`<block type="${partData.id}_setScale">${mathValue('SCALE', partData.scale * xS)}</block>`);
+            }
         }
-        if (partData.scale) {
-            tpl.innerHTML += `<block type="${partData.id}_setScale">${mathValue('SCALE', partData.scale)}</block>`
-        }
-        console.log(partData);
+
         if (partData.type === 'text') {
             if (partData.userProperties.text) {
-                tpl.innerHTML += `<block type="${partData.id}_value_set"><value name="VALUE"><shadow type="text"><field name="TEXT">${partData.userProperties.text}</field></shadow></value></block>`;
+                blocks.push(`<block type="${partData.id}_value_set">${textValue('VALUE', partData.userProperties.text)}</block>`);
+            }
+            if (partData.userStyle.color) {
+                blocks.push(`<block type="${partData.id}_color_set">${colorValue('COLOR', partData.userStyle.color)}</block>`);
+            }
+        }
+        if (partData.type === 'button') {
+            if (partData.userProperties.label) {
+                blocks.push(`<block type="${partData.id}_label_set">${textValue('LABEL', partData.userProperties.label)}</block>`);
+            }
+            if (partData.userStyle['background-color']) {
+                blocks.push(`<block type="${partData.id}_background_set">${colorValue('BACKGROUND', partData.userStyle['background-color'])}</block>`);
             }
         }
         if (partData.type === 'sticker') {
             if (partData.userProperties.src) {
-                const oldValue = partData.userProperties.src.split('/').pop().split('.').shift();
-                console.log(oldValue);
-                tpl.innerHTML += `<block type="${partData.id}_image_set"><value name="IMAGE"><shadow type="stamp_getImage"><field name="STICKER">${stickersMap[oldValue]}</field></shadow></value></block>`
+                const pieces = partData.userProperties.src.split('/')
+                const oldValue = pieces.pop().split('.').shift();
+                const oldSet = pieces.pop();
+                const newSticker = getStickerIdForLegacy(oldSet, oldValue);
+                blocks.push(`<block type="${partData.id}_image_set"><value name="IMAGE"><shadow type="stamp_getImage"><field name="STICKER">${newSticker}</field></shadow></value></block>`);
             }
         }
+        if (partData.type === 'oscillator') {
+            if (partData.userProperties.delay) {
+                blocks.push(`<block type="${partData.id}_delay_set">${mathValue('DELAY', partData.userProperties.delay)}</block>`);
+            }
+            if (partData.userProperties.speed) {
+                blocks.push(`<block type="${partData.id}_speed_set">${mathValue('SPEED', partData.userProperties.speed)}</block>`);
+            }
+            if (partData.userProperties.wave) {
+                blocks.push(`<block type="${partData.id}_wave_set"><field name="WAVE">${partData.userProperties.wave}</field></block>`);
+            }
+        }
+
+        const blockChain = blocks.reduce((acc, blockString) => {
+            return `${blockString.replace('</block>', '')}<next>${acc}</next></block>`;
+        }, '');
+
+        tpl.innerHTML = `<block type="app_onStart"><statement name="CALLBACK">${blockChain}</statement></block>`
+
         root.appendChild(tpl.content);
         return root;
     },

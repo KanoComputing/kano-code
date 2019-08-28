@@ -14,3 +14,4 @@ export * from './mouse/mouse.js';
 export * from './speaker/speaker.js';
 export * from './sequencer/sequencer.js';
 export * from './touch/touch.js';
+export * from './voice/voice.js';

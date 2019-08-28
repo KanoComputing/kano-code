@@ -86,14 +86,13 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         this.core.image.set(id);
         this.core.invalidate();
     }
-    random() {
-        if (this._stickers) {
-            return this._stickers.getRandom();
+    random(id : string) {
+        if (!this._stickers) {
+            return '';
         }
-    }
-    randomFrom(setId : string) {
-        if (this._stickers) {
-            return this._stickers.getRandomFrom(setId);
-        }    
+        if (id === 'all') {
+            return this._stickers.getRandom()
+        }
+        return this._stickers.getRandomFrom(id);
     }
 }

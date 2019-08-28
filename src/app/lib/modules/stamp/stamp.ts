@@ -8,16 +8,14 @@ export class StampModule extends AppModule {
         super(output);
         const stickers = output.resources.get('stickers');
 
-        function random () {
-            return stickers.getRandom()
-        }
-
-        function randomFrom (id : string) {
+        function random(id : string) {
+            if (id === 'all') {
+                return stickers.getRandom()
+            }
             return stickers.getRandomFrom(id);
         }
         
         this.addMethod('random', random);
-        this.addMethod('randomFrom', randomFrom);
     }
 
 }

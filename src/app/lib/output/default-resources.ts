@@ -121,7 +121,7 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                 id: 'kano',
                 resources: {
                     arrow: { id: 'arrow', label: 'Arrow', path: 'kano/arrow.svg' },
-                    face: { id: 'face', label: 'Face', path: 'kano/judoka-face.svg' },
+                    judoka: { id: 'judoka', label: 'Judoka', path: 'kano/judoka-face.svg' },
                     record: { id: 'record', label: 'Record', path: 'kano/judoka-record.svg' },
                     planet: { id: 'planet', label: 'Planet', path: 'kano/planet.svg' },
                     robotnik: { id: 'robotnik', label: 'Robotnik', path: 'kano/robotnik.svg' },
@@ -136,18 +136,18 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     bear: { id: 'bear', label: 'Bear', path: 'masks/mask-bear.svg' },
                     blank: { id: 'blank', label: 'Blank', path: 'masks/mask-blank.svg' },
                     boar: { id: 'boar', label: 'Boar', path: 'masks/mask-boar.svg' },
-                    'cat face': { id: 'cat face', label: 'Cat face', path: 'masks/mask-cat.svg' },
-                    'chicken face':
-                    { id: 'chicken face',
-                    label: 'Chicken face',
+                    'cat-head': { id: 'cat-head', label: 'Cat head', path: 'masks/mask-cat.svg' },
+                    'chicken-head':
+                    { id: 'chicken-head',
+                    label: 'Chicken head',
                     path: 'masks/mask-chicken.svg' },
                     cool: { id: 'cool', label: 'Cool', path: 'masks/mask-cool.svg' },
-                    'cow face': { id: 'cow face', label: 'Cow face', path: 'masks/mask-cow.svg' },
+                    'cow-head': { id: 'cow-head', label: 'Cow head', path: 'masks/mask-cow.svg' },
                     deer: { id: 'deer', label: 'Deer', path: 'masks/mask-deer.svg' },
                     devil: { id: 'devil', label: 'Devil', path: 'masks/mask-devil.svg' },
-                    'dog face': { id: 'dog face', label: 'Dog face', path: 'masks/mask-dog.svg' },
-                    'easter island':
-                    { id: 'easter island',
+                    'dog-head': { id: 'dog-head', label: 'Dog head', path: 'masks/mask-dog.svg' },
+                    'easter-island':
+                    { id: 'easter-island',
                     label: 'Easter island',
                     path: 'masks/mask-easter-island.svg' },
                     fox: { id: 'fox', label: 'Fox', path: 'masks/mask-fox.svg' },
@@ -165,13 +165,13 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     path: 'masks/mask-laughcry.svg' },
                     lion: { id: 'lion', label: 'Lion', path: 'masks/mask-lion.svg' },
                     meh: { id: 'meh', label: 'Meh', path: 'masks/mask-meh.svg' },
-                    mokey: { id: 'mokey', label: 'Mokey', path: 'masks/mask-mokey.svg' },
-                    'mouse face':
-                    { id: 'mouse face',
-                    label: 'Mouse face',
+                    mokey: { id: 'monkey', label: 'Monkey', path: 'masks/mask-mokey.svg' },
+                    'mouse-head':
+                    { id: 'mouse-head',
+                    label: 'Mouse head',
                     path: 'masks/mask-mouse.svg' },
                     panda: { id: 'panda', label: 'Panda', path: 'masks/mask-panda.svg' },
-                    'pig face': { id: 'pig face', label: 'Pig face', path: 'masks/mask-pig.svg' },
+                    'pig-head': { id: 'pig-head', label: 'Pig head', path: 'masks/mask-pig.svg' },
                     pumpkin:
                     { id: 'pumpkin',
                     label: 'Pumpkin',
@@ -190,9 +190,9 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     label: 'Small mouse',
                     path: 'masks/mask-small-mouse.svg' },
                     smile: { id: 'smile', label: 'Smile', path: 'masks/mask-smile.svg' },
-                    'tiger face':
-                    { id: 'tiger face',
-                    label: 'Tiger face',
+                    'tiger-head':
+                    { id: 'tiger-head',
+                    label: 'Tiger head',
                     path: 'masks/mask-tiger.svg' },
                     traditional:
                     { id: 'traditional',
@@ -212,8 +212,8 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     candy: { id: 'candy', label: 'Candy', path: 'food/food-candy.svg' },
                     cheese: { id: 'cheese', label: 'Cheese', path: 'food/food-cheese.svg' },
                     cherry: { id: 'cherry', label: 'Cherry', path: 'food/food-cherry.svg' },
-                    'chicken leg':
-                    { id: 'chicken leg',
+                    'chicken-leg':
+                    { id: 'chicken-leg',
                     label: 'Chicken leg',
                     path: 'food/food-chicken.svg' },
                     donut: { id: 'donut', label: 'Donut', path: 'food/food-donut.svg' },
@@ -278,38 +278,38 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     { id: 'creeper',
                         label: 'Creeper',
                         path: 'street-art/creeper.svg' },
-                    'doubting donut':
-                    { id: 'doubting donut',
+                    'doubting-donut':
+                    { id: 'doubting-donut',
                         label: 'Doubting donut',
                         path: 'street-art/doubting-donut.svg' },
-                    'krink marker':
-                    { id: 'krink marker',
+                    'krink-marker':
+                    { id: 'krink-marker',
                         label: 'Krink marker',
                         path: 'street-art/krink-marker.svg' },
                     markers:
                     { id: 'markers',
                         label: 'Markers',
                         path: 'street-art/markers.svg' },
-                    'mouse art':
-                    { id: 'mouse art',
+                    'mouse-art':
+                    { id: 'mouse-art',
                         label: 'Mouse art',
                         path: 'street-art/mouse.svg' },
                     mrsprinkles:
                     { id: 'mrsprinkles',
                         label: 'Mrsprinkles',
                         path: 'street-art/mrsprinkles.svg' },
-                    'old schooler':
-                    { id: 'old schooler',
+                    'old-schooler':
+                    { id: 'old-schooler',
                         label: 'Old schooler',
                         path: 'street-art/old-schooler.svg' },
                     peace: { id: 'peace', label: 'Peace', path: 'street-art/peace.svg' },
-                    'pixel spraycan':
-                    { id: 'pixel spraycan',
+                    'pixel-spraycan':
+                    { id: 'pixel-spraycan',
                         label: 'Pixel spraycan',
                         path: 'street-art/pixel-spraycan.svg' },
                     point: { id: 'point', label: 'Point', path: 'street-art/point.svg' },
-                    'rainbow roller':
-                    { id: 'rainbow roller',
+                    'rainbow-roller':
+                    { id: 'rainbow-roller',
                         label: 'Rainbow roller',
                         path: 'street-art/rainbow-roller.svg' },
                     soydog: { id: 'soydog', label: 'Soydog', path: 'street-art/soydog.svg' },
@@ -321,8 +321,8 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     { id: 'spraying',
                         label: 'Spraying',
                         path: 'street-art/spraying.svg' },
-                    'graffiti star':
-                    { id: 'graffiti star',
+                    'graffiti-star':
+                    { id: 'graffiti-star',
                         label: 'Graffiti star',
                         path: 'street-art/star.svg' },
                     supreme:
@@ -375,9 +375,9 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     { id: 'eightball',
                         label: 'Eightball',
                         path: 'other/other-eightball.svg' },
-                    'other face':
-                    { id: 'other face',
-                        label: 'Other face',
+                    face:
+                    { id: 'face',
+                        label: 'Face',
                         path: 'other/other-face.svg' },
                     ghost: { id: 'ghost', label: 'Ghost', path: 'other/other-ghost.svg' },
                     hotdog: { id: 'hotdog', label: 'Hotdog', path: 'other/other-hotdog.svg' },
@@ -426,8 +426,8 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     { id: 'popcorn',
                         label: 'Popcorn',
                         path: 'other/other-popcorn.svg' },
-                    'space invader':
-                    { id: 'space invader',
+                    'space-invader':
+                    { id: 'space-invader',
                         label: 'Space invader',
                         path: 'other/other-space-invader.svg' },
                     spider2:
@@ -444,9 +444,9 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                         label: 'Toadstool',
                         path: 'other/other-toadstool.svg' },
                     trophy: { id: 'trophy', label: 'Trophy', path: 'other/other-trophy.svg' },
-                    waffles:
-                    { id: 'waffles',
-                        label: 'Waffles',
+                    pancakes:
+                    { id: 'pancakes',
+                        label: 'Pancakes',
                         path: 'other/other-waffles.svg' }
                 },
             }, 
@@ -454,8 +454,8 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                 label: 'Photo',
                 id: 'data',
                 resources: {
-                    animal:
-                    { id: 'animal',
+                    'animal-nose':
+                    { id: 'animal-nose',
                       label: 'Animal',
                       path: 'photo-play/photo-animal-nose.svg' },
                     boom: { id: 'boom', label: 'Boom', path: 'photo-play/photo-boom.svg' },
@@ -463,16 +463,16 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                         { id: 'see',
                         label: 'See',
                         path: 'photo-play/photo-bubble-see-speech.svg' },
-                    'speech left':
-                        { id: 'speech left',
+                    'speech-left':
+                        { id: 'speech-left',
                         label: 'Speech left',
                         path: 'photo-play/photo-bubble-speech-left.svg' },
-                    'speech right':
-                        { id: 'speech right',
+                    'speech-right':
+                        { id: 'speech-right',
                         label: 'Speech right',
                         path: 'photo-play/photo-bubble-speech-right.svg' },
-                    'speech urgent':
-                        { id: 'speech urgent',
+                    'speech-urgent':
+                        { id: 'speech-urgent',
                         label: 'Speech urgent',
                         path: 'photo-play/photo-bubble-speech-urgent.svg' },
                     thought:
@@ -530,8 +530,8 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     moon6: { id: 'moon6', label: 'Moon6', path: 'space/moon-6.svg' },
                     moon7: { id: 'moon7', label: 'Moon7', path: 'space/moon-7.svg' },
                     moon8: { id: 'moon8', label: 'Moon8', path: 'space/moon-8.svg' },
-                    'moon smiling':
-                        { id: 'moon smiling',
+                    'moon-smiling':
+                        { id: 'moon-smiling',
                         label: 'Moon smiling',
                         path: 'space/moon-smiling.svg' },
                     night: { id: 'night', label: 'Night', path: 'space/night-sky.svg' },
@@ -540,12 +540,12 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                         label: 'Satellite',
                         path: 'space/satellite.svg' },
                     rocket: { id: 'rocket', label: 'Rocket', path: 'space/space-rocket.svg' },
-                    'shining star':
-                        { id: 'shining star',
+                    'shining-star':
+                        { id: 'shining-star',
                         label: 'Shining star',
                         path: 'space/star.svg' },
-                    'sun smiling':
-                        { id: 'sun smiling',
+                    'sun-smiling':
+                        { id: 'sun-smiling',
                         label: 'Sun smiling',
                         path: 'space/sun-smiling.svg' },
                     telescope:
@@ -561,15 +561,15 @@ class DefaultStickers extends Resource<HTMLImageElement> {
                     { id: 'ambulance',
                       label: 'Ambulance',
                       path: 'vehicles/ambulance.svg' },
-                    'fire engine':
+                    'fire-engine':
                         { id: 'fire engine',
                         label: 'Fire engine',
                         path: 'vehicles/fire-engine.svg' },
-                    police:
-                        { id: 'police',
+                    'police-car':
+                        { id: 'police-car',
                         label: 'Police',
                         path: 'vehicles/police-car.svg' },
-                    'red car': { id: 'red car', label: 'Red car', path: 'vehicles/red-car.svg' },
+                    'red-car': { id: 'red-car', label: 'Red car', path: 'vehicles/red-car.svg' },
                     taxi: { id: 'taxi', label: 'Taxi', path: 'vehicles/taxi.svg' } },
             }
         }

@@ -55,6 +55,7 @@ export class ButtonPart extends DOMPart {
     set label(label : string) {
         this.core.label = label;
         this.core.invalidate();
+        this.updateSize();
     }
     set color(color : string) {
         this.core.textColor = color;

@@ -11,6 +11,7 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
     public transform : Transform;
     private _rect : DOMRect|null = null;
     private _visuals : { canvas: HTMLCanvasElement; width: number; height: number; }|null = null;
+    protected size : { width: number, height : number } = { width : 0, height: 0 };
     constructor() {
         super();
         this.transform = this._components.get('transform') as Transform;
@@ -50,6 +51,10 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
             this._el.style.opacity = this.transform.opacity.toString();
         }
         this.transform.apply();
+        // Update the size once
+        if (this.size.width === 0) {
+            this.updateSize();
+        }
     }
     renderComponents(ctx: CanvasRenderingContext2D) : Promise<void> {
         this.applyTransform(ctx);
@@ -77,6 +82,35 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         ctx.scale(scaleX, scaleY);
         ctx.translate(-halfWidth, -halfHeight);
         ctx.globalAlpha = parseFloat(_el.style.opacity || '1');
+    }
+    updateSize() {
+        this.size = { width: this._el.offsetWidth, height: this._el.offsetHeight };
+    }
+    /**
+     * Actual width, including the scale
+     **/
+    getCollidableWidth() {
+        return this.size.width * (this.transform.scale);
+    }
+    /**
+     * Actual height, including the scale
+     **/
+    getCollidableHeight() {
+        return this.size.height * (this.transform.scale);
+    }
+    getCollidableRect() {
+        let x = 0;
+        let y = 0;
+        if (this._visuals && this._rect) {
+            x = this.transform.x / this._visuals.width * this._rect.width;
+            y = this.transform.y / this._visuals.height * this._rect.height;
+        }
+        return {
+            x: x - (((this.size.width * this.transform.scale) / 2) - (this.size.width / 2)),
+            y: y - (((this.size.height * this.transform.scale) / 2) - (this.size.height / 2)),
+            width: this.getCollidableWidth(),
+            height: this.getCollidableHeight()
+        };
     }
     abstract getElement() : T
     turnCW(a : number) {

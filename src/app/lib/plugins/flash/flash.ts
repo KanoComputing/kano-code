@@ -71,14 +71,18 @@ function addFlashCss() {
  * @param emitter The event emitter triggering the event to flash
  * @param method The name of the method reacting to the event
  */
-export function setupFlash(editor : Editor, id : string, emitter : EventEmitter, method : string) {
+export function setupFlash<T = void>(editor : Editor, id : string, emitter : EventEmitter<T>, method : string, shouldFlash? : (block : Block, data : T) => boolean) {
     if (editor.sourceType === 'blockly') {
         const sourceEditor = editor.sourceEditor as BlocklySourceEditor;
-        emitter.event(() => {
+        emitter.event((data) => {
             const workspace = sourceEditor.getWorkspace();
             const blocks = workspace.getAllBlocks();
             blocks.filter((block) => block.type === `${id}_${method}`)
                 .forEach((block) => {
+                    // Run the provided function. Whoever set the flash logic can bail out if the data is not interesting
+                    if (shouldFlash && !shouldFlash(block, data)) {
+                        return;
+                    }
                     const field = block.getField('FLASH') as FlashField;
                     field.trigger();
                 });

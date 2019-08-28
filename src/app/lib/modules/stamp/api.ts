@@ -3,7 +3,7 @@ import { Block } from '@kano/kwc-blockly/blockly.js';
 import { StampsField } from '../../blockly/fields/stamps-field.js';
 import { _ } from '../../i18n/index.js';
 import { Editor } from '../../editor/editor.js';
-import { random, randomFrom } from './common.js';
+import { random } from './common.js';
 
 function getImage(editor : Editor) : IMetaDefinition {
     return {
@@ -17,11 +17,12 @@ function getImage(editor : Editor) : IMetaDefinition {
             returnType: 'Sticker',
             blockly: {
                 customField() {
-                    const stickers = editor.output.resources.get('stickers')
-                    if (stickers) {
-                        const defaultSticker = stickers.default ? stickers.default : ''
-                        return new StampsField(defaultSticker, stickers.categorisedResource);
+                    const stickers = editor.output.resources.get('stickers');
+                    if (!stickers) {
+                        throw new Error('Could not create StampsField: stickers resource is not defined');
                     }
+                    const defaultSticker = stickers.default ? stickers.default : ''
+                    return new StampsField(defaultSticker, stickers.categorisedResource);
                 },
             },
         }],
@@ -50,8 +51,8 @@ export function StampAPI (editor: Editor) {
         color: '#00c7b6',
         symbols: [
             getImage(editor),
-            hideBlock(random),
-            hideBlock(randomFrom(editor))
+            hideBlock(random(editor)),
+            hideBlock(random(editor))
         ]
     }
 }

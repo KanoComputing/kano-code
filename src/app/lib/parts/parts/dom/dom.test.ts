@@ -42,6 +42,9 @@ suite('DOMPart', () => {
             part.transform.scale = scale;
             part.transform.rotation = rotation;
 
+            (part as any)._rect = { x: 0, y: 0, width: 800, height: 600 };
+            (part as any)._visuals = { x: 0, y: 0, width: 800, height: 600 };
+
             part.render();
 
             assert.equal((part as any)._el.style.transform, `translate(${x}px, ${y}px) scale(${scale}, ${scale}) rotate(${rotation}deg)`);
