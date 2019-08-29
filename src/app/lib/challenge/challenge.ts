@@ -100,10 +100,6 @@ export class Challenge extends ChallengeBase {
         this.subscriptions.push(sub);
     }
     reset() {
-        // Load the default app if provided
-        if (this.data.defaultApp) {
-            this.editor.load(JSON.parse(this.data.defaultApp));
-        }
         if (this.data.partsWhitelist) {
             this.editor.parts.setWhitelist(this.data.partsWhitelist);
         }
@@ -112,6 +108,10 @@ export class Challenge extends ChallengeBase {
         }
         if (this.data.flyoutMode) {
             this.editor.sourceEditor.setFlyoutMode(this.data.flyoutMode);
+        }
+        // Load the default app if provided
+        if (this.data.defaultApp) {
+            this.editor.load(JSON.parse(this.data.defaultApp));
         }
     }
     start() {
