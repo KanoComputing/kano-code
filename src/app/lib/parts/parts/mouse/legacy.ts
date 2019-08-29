@@ -41,8 +41,8 @@ export function transformLegacyMouse(app : any) {
         LegacyUtil.transformBlock(root, `block[type="${id}#mouse_set_cursor"]`, (block) => {
             block.setAttribute('type', `${id}_cursor_set`);
         });
-        LegacyUtil.transformBlock(root, `block[type="${id}#set_cursor"] [type="assets_get_sticker"]`, (block) => {
-            block.setAttribute('type', 'stamp_randomFrom');
+        LegacyUtil.transformBlock(root, `block[type="${id}#set_cursor"] [type="assets_random_sticker"]`, (block) => {
+            block.setAttribute('type', 'stamp_random');
         });
         LegacyUtil.transformBlock(root, `block[type="${id}#mouse_event"]`, (block) => {
             const typeMap : { [K : string] : string } = {

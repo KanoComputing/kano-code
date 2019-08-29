@@ -1,22 +1,23 @@
 {
     "version": "1.0.0",
-    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><variables></variables></xml>\",\"code\":\"app.onStart(function() {\\n  button.background = '#01579B';\\n\\n});\\n\\nbutton.onClick(function() {\\n\\n});\\n\",\"parts\":[{\"type\":\"speaker\",\"id\":\"talkMachine\",\"name\":\"Talk Machine\"}]}",
-    "parts": ["speaker"],
+    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><variables></variables></xml>\",\"code\":\"app.onStart(function() {\\n  button.background = '#01579B';\\n\\n});\\n\\nbutton.onClick(function() {\\n\\n});\\n\",\"parts\":[{\"type\":\"speaker\",\"id\":\"speakert\",\"name\":\"Talk Machine\"}]}",
     "whitelist": {
         "app": ["onStart"]
     },
     "partsWhitelist": {
         "speaker": ["volume"]
     },
+    "flyoutMode": true,
     "steps": [
         {
             "type": "create-block",
-            "category": "part#talkMachine>toolbox",
+            "category": "part#speakert>toolbox",
             "blockType": "volume_set",
-            "alias": "block_1",
-            "openFlyoutCopy": "Open the ${part#talkMachine>toolbox} tray",
+            "alias": "block_2",
+            "openFlyoutCopy": "Open the ${part#speakert>toolbox} tray",
             "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
-            "dropCopy": "Drop the block anywhere in your code space"
+            "connectTo": "alias#start_1>next",
+            "connectCopy": "Connect to this block"
         },
         {
             "banner": {
