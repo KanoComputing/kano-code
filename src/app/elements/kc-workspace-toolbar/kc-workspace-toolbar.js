@@ -11,7 +11,7 @@ import { I18nMixin } from '../../lib/i18n/index.js';
 import { button } from './style.js';
 import { ToolbarEntry, ToolbarSettingsEntry, ToolbarEntryPosition } from './entry.js';
 
-class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
+export class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
     static get is() { return 'kc-workspace-toolbar'; }
     static get template() {
         return html`
@@ -304,6 +304,9 @@ class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
     }
     _settingsPostion(fullscreen) {
         return fullscreen ? 'rightTop' : 'bottom';
+    }
+    getDomForEntry(entry) {
+        return this.shadowRoot.querySelector(`#entry-${entry.id}`);
     }
     _openTooltip(id) {
         const tooltip = this.shadowRoot.querySelector(`#tooltip-${id}`);

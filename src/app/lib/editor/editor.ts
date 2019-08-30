@@ -30,6 +30,8 @@ import './loader/kcode.js';
 import { FileLoaders } from './loader/loader.js';
 import { aliasTagHandlerFactory } from './selector/alias.js';
 import { toDisposable } from '@kano/common/index.js';
+import ToolbarEntry from '../../elements/kc-workspace-toolbar/entry.js';
+import { registerUITagHandlers } from './selector/ui.js';
 
 declare global {
     interface Window {
@@ -187,6 +189,7 @@ export class Editor extends EditorOrPlayer {
         this.dialogs.onDidLayout(() => this._onDidLayoutChange.fire());
 
         this.queryEngine.registerTagHandler('alias', aliasTagHandlerFactory(this.queryEngine, this.selectorAliases));
+        this.registerTagHandlers();
 
         this.addPlugin(this.workspaceToolbar);
         this.addPlugin(this.dialogs);
@@ -584,6 +587,9 @@ export class Editor extends EditorOrPlayer {
         return toDisposable(() => {
             this.selectorAliases.delete(alias);
         });
+    }
+    private registerTagHandlers() {
+        registerUITagHandlers(this);
     }
 }
 

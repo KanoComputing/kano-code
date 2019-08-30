@@ -34,6 +34,9 @@ Here is the list of tags available for this querying language:
 |---|---|---|---|
 |`add-part-button`|Returns the Add Part button|`N/A`|`add-part-button`|
 |`part`|Returns a part definition or instance|`#`, `.`|`part#button`, `part.button#toolbox`, `part.button>toolbox>flyout-block.onClick`|
+|`output`|Returns the output canvas|||
+|`button`|Returns a button in the editor|`#`, `.`|`button.restart`, `button.fullscreen`, `button.play`|
+|`tab`|Returns the artboard/code tab|`#`, `.`|`tab.artboard`, `tab.code`|
 
 ### Blockly:
 

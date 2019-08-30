@@ -4,6 +4,7 @@ import { property, customElement, css, LitElement, html, query } from 'lit-eleme
 import { classMap } from 'lit-html/directives/class-map';
 import '../kc-workspace-toolbar/kc-workspace-toolbar.js';
 import { localize as _ } from '../../lib/i18n/index.js';
+import { KCWorkspaceToolbar } from '../kc-workspace-toolbar/kc-workspace-toolbar.js';
 
 @customElement('kano-app-editor')
 export class KanoAppEditor extends LitElement {
@@ -16,6 +17,9 @@ export class KanoAppEditor extends LitElement {
 
     @query('#section')
     private section? : HTMLElement;
+
+    @query('kc-workspace-toolbar')
+    public workspaceToolbar? : KCWorkspaceToolbar;
 
     @query('#workspace-panel')
     private workspacePanel? : HTMLElement;
@@ -105,10 +109,6 @@ export class KanoAppEditor extends LitElement {
                 flex: 1;
                 flex-basis: 0.000000001px;
                 overflow: visible;
-            }
-            :host #workspace-panel kano-workspace {
-                flex: 1;
-                flex-basis: 0.000000001px;
             }
             :host kano-code-display {
                 margin: 16px;
@@ -260,8 +260,14 @@ export class KanoAppEditor extends LitElement {
     }
     getTab(label : string, id : string) {
         return html`
-            <button class="tab ${classMap({ selected: this.workspaceTab === id })}" @click=${() => this.workspaceTab = id}>${label}</button>
+            <button class="tab ${classMap({ selected: this.workspaceTab === id })}" @click=${() => this.workspaceTab = id} id=${id}>${label}</button>
         `;
+    }
+    getTabDom(id : string) {
+        if (!this.renderRoot) {
+            return null;
+        }
+        return this.renderRoot.querySelector(`.tab#${id}`);
     }
     _onSelectedChanged(e : CustomEvent) {
         this.workspaceTab = e.detail.value;
