@@ -116,7 +116,7 @@ export class SynthPart extends Part {
         }
         this.monotron = null;
     }
-    setPitch(freq : number) {
+    set pitch(freq : number) {
         freq = this.clamp(freq, 0, 100);
 
         if (this.monotron) {
@@ -125,7 +125,7 @@ export class SynthPart extends Part {
             this.monotron.noteOn(freq);
         }
     }
-    setWave(wave : OscillatorType) {
+    set wave(wave : OscillatorType) {
         this.waveType = wave;
         if (!this.monotron) {
             return;
