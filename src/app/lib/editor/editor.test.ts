@@ -11,6 +11,7 @@ class TestSourceEditor implements SourceEditor {
     setToolbox(toolbox : any) {}
     setSource(source : string) {}
     setFlyoutMode(flyoutMode: boolean) {}
+    setInputDisabled(isInputDisabled: boolean) {}
     getSource() : string {
         return '';
     }

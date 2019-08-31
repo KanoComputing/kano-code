@@ -103,6 +103,7 @@ export class MonacoSourceEditor implements SourceEditor {
             }
         });
     }
+    setInputDisabled(isInputDisabled: boolean) {}
     setFlyoutMode(flyoutMode: boolean) {}
     dispose() {
         this.subscriptions.forEach(d => d.dispose());

@@ -8,6 +8,7 @@ export interface SourceEditor {
     onDidCodeChange : IEvent<string>;
     onDidLayout : IEvent<void>;
     setFlyoutMode(flyoutMode: boolean) : void;
+    setInputDisabled(isInputDisabled: boolean) : void;
     setToolbox(toolbox : any) : void;
     setSource(source : string) : void;
     getSource() : string;

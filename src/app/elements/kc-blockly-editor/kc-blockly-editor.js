@@ -33,6 +33,11 @@ class KCBlocklyEditor extends PolymerElement {
                     border-right: 2px solid var(--kc-border-color);
                 };
             }
+
+            :host kwc-blockly[disabled] {
+                pointer-events: none
+            }
+
             [hidden] {
                 display: none !important;
             }
@@ -73,17 +78,26 @@ class KCBlocklyEditor extends PolymerElement {
             media: {
                 type: String,
             },
+            inputDisabled: {
+                type: Boolean,
+            },
         };
     }
     static get observers() {
         return [
             'computeToolbox(defaultCategories.*)',
             'computeToolbox(flyoutMode)',
+            'setDisabled(inputDisabled)'
         ];
     }
     connectedCallback() {
         super.connectedCallback();
         this.toolboxReady = false;
+    }
+
+    setDisabled(isDisabled) {
+        const codeEditor = this.$['code-editor'];
+        isDisabled ? codeEditor.setAttribute('disabled', '') : codeEditor.removeAttribute('disabled');
     }
 
     _onCodeChanged(e) {
