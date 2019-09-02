@@ -224,6 +224,9 @@ export class KanoAppEditor extends LitElement {
             [hidden] {
                 display: none !important;
             }
+            :host([disabled]) {
+                pointer-events: none;
+            }
         `];
     }
     render() {

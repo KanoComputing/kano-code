@@ -241,6 +241,14 @@ export class Editor extends EditorOrPlayer {
             plugin.onInject();
         }
     }
+    setInputDisabled(isInputDisabled : boolean) {
+        if (isInputDisabled) {
+            this.domNode.setAttribute('disabled', '');
+        }
+        else {
+            this.domNode.removeAttribute('disabled');
+        }
+    }
     protected appendSourceEditor() {
         if (this.domNode) {
             this.sourceEditor.domNode.setAttribute('slot', 'source-editor');
