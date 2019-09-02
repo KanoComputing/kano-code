@@ -66,7 +66,10 @@ class BlocklyChallenge extends Engine {
         this.stepIndex -= 1;
     }
     _onPhantomBlockEnter(phantom_block : any) {
-        if (typeof phantom_block !== 'string' ||
+        if (phantom_block.connectOffset) {
+            this.setPhantomBlockByPosition();
+            return;
+        } else if (typeof phantom_block !== 'string' ||
             !Blockly.selected) {
             return;
         }
@@ -89,6 +92,16 @@ class BlocklyChallenge extends Engine {
         }
         connection = input.connection;
         Blockly.setPhantomBlock(connection, target);
+    }
+    setPhantomBlockByPosition() {
+        const target = Blockly.selected;
+        const workspace = this.getWorkspace();
+        const topBlock = workspace.topBlocks_[0];
+        const position = {
+            x: 0,
+            y: 0,
+        };
+        Blockly.setPhantomBlockByPosition(workspace, target);
     }
     _onPhantomBlockLeave() {
         Blockly.removePhantomBlock();
@@ -147,6 +160,18 @@ class BlocklyChallenge extends Engine {
             },
         };
     }
+    _getDropBlockOffsetStep(data : any) {
+        return {
+            validation: {
+                blockly: {
+                    drop: {
+                        target: `alias#${data.alias}>offset`,
+                    },
+                },
+            },
+            phantom_block: data,
+        };
+    }
     _startStepShorthand(data : any) {
         if (!this.developmentMode) {
             return [];
@@ -161,7 +186,9 @@ class BlocklyChallenge extends Engine {
         if (workspace.toolbox_) {
             steps.unshift(openFlyoutStep);
         }
-        if (data.connectTo) {
+        if (data.connectOffset) {
+            steps.push(this._getDropBlockOffsetStep(data));
+        } else if (data.connectTo) {
             steps.push(this._getConnectBlockStep(data));
         } else {
             steps.push(this._getDropBlockStep(data));
