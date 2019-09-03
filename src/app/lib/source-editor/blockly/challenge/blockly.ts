@@ -156,18 +156,7 @@ class BlocklyChallenge extends Engine {
                     },
                 },
             },
-        };
-    }
-    _getDropBlockOffsetStep(data : any) {
-        return {
-            validation: {
-                blockly: {
-                    drop: {
-                        target: `alias#${data.alias}`,
-                    },
-                },
-            },
-            phantom_block: data,
+            phantom_block: data.positionUnder ? data : null,
         };
     }
     _startStepShorthand(data : any) {
@@ -184,9 +173,7 @@ class BlocklyChallenge extends Engine {
         if (workspace.toolbox_) {
             steps.unshift(openFlyoutStep);
         }
-        if (data.positionUnder) {
-            steps.push(this._getDropBlockOffsetStep(data));
-        } else if (data.connectTo) {
+        if (data.connectTo) {
             steps.push(this._getConnectBlockStep(data));
         } else {
             steps.push(this._getDropBlockStep(data));
