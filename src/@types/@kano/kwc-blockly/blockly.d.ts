@@ -220,7 +220,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         WidgetDiv : typeof WidgetDiv;
         Events : Events;
         setPhantomBlock(connection : Connection, target : Block) : void;
-        setPhantomBlockByPosition() : void;
+        setPhantomBlockByPosition(workspace : Workspace, target : Block) : void;
         removePhantomBlock() : void;
         selected? : Block;
         FieldConfig : typeof FieldConfig;

@@ -96,11 +96,9 @@ class BlocklyChallenge extends Engine {
     setPhantomBlockByPosition() {
         const target = Blockly.selected;
         const workspace = this.getWorkspace();
-        const topBlock = workspace.topBlocks_[0];
-        const position = {
-            x: 0,
-            y: 0,
-        };
+        if (!target) {
+            return;
+        }
         Blockly.setPhantomBlockByPosition(workspace, target);
     }
     _onPhantomBlockLeave() {
