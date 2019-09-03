@@ -425,10 +425,6 @@ export class BlocklySourceEditor implements SourceEditor {
             const block = parent.getBlock() as Block;
             return {
                 getId() { return block.id },
-                getPosition: () => {
-                    const rect = this.getInputPosition(block);
-                    return { x: rect.left, y: rect.top + 50 };
-                },
                 getHTMLElement() {
                     return block.getSvgRoot();
                 },
