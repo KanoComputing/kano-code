@@ -107,6 +107,9 @@ class KCPlayer extends PolymerElement {
             }
             kc-player-toolbar {
                 margin-top: 16px;
+                position: absolute;
+                align-self: center;
+                bottom: 35px;
             }
         </style>
         <div id="container">
