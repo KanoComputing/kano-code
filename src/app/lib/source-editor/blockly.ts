@@ -417,19 +417,6 @@ export class BlocklySourceEditor implements SourceEditor {
                 },
             };
         });
-        engine.registerTagHandler('offset', (selector : ISelector, parent : IQueryResult|null) => {
-            if (!parent || typeof parent.getBlock !== 'function') {
-                engine.warn('Could not query input: Parent selector is not a block');
-                return null;
-            }
-            const block = parent.getBlock() as Block;
-            return {
-                getId() { return block.id },
-                getHTMLElement() {
-                    return block.getSvgRoot();
-                },
-            };
-        });
     }
     getInputPosition(block : Block, name? : string) {
         let connection,

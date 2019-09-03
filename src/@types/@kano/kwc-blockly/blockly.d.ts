@@ -111,9 +111,9 @@ declare module '@kano/kwc-blockly/blockly.js' {
         name : string;
     }
     class Workspace<T extends Block = Block> {
-        topBlocks_: any;
         getCanvas() : SVGElement;
         getAllBlocks() : T[];
+        getTopBlocks() : T[];
         getBlockById(id : string) : T|null;
         getMetrics() : any;
         getFlyout_() : Flyout;

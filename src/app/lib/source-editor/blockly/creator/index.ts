@@ -295,11 +295,7 @@ export class BlocklyCreator extends Creator<BlocklyStepper> {
             createBlockStep.data.connectTo = connectionQuery;
             createBlockStep.data.connectCopy = this.getCopy('connect');
         } else {
-            const workspace = this.sourceEditor!.getWorkspace();
-            const topBlock = workspace.topBlocks_[workspace.topBlocks_.length - 2];
-            if (topBlock && topBlock.rendered) {
-                createBlockStep.data.connectOffset = true;
-            }
+            createBlockStep.data.positionUnder = true;
             createBlockStep.data.dropCopy = this.getCopy('drop');
         }
         const originalStep = this.getOriginalStepFromSource(`block#${id}`) || {};

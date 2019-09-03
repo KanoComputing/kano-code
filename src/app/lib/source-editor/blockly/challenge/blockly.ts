@@ -66,7 +66,7 @@ class BlocklyChallenge extends Engine {
         this.stepIndex -= 1;
     }
     _onPhantomBlockEnter(phantom_block : any) {
-        if (phantom_block.connectOffset) {
+        if (phantom_block.positionUnder) {
             this.setPhantomBlockByPosition();
             return;
         } else if (typeof phantom_block !== 'string' ||
@@ -163,7 +163,7 @@ class BlocklyChallenge extends Engine {
             validation: {
                 blockly: {
                     drop: {
-                        target: `alias#${data.alias}>offset`,
+                        target: `alias#${data.alias}`,
                     },
                 },
             },
@@ -184,7 +184,7 @@ class BlocklyChallenge extends Engine {
         if (workspace.toolbox_) {
             steps.unshift(openFlyoutStep);
         }
-        if (data.connectOffset) {
+        if (data.positionUnder) {
             steps.push(this._getDropBlockOffsetStep(data));
         } else if (data.connectTo) {
             steps.push(this._getConnectBlockStep(data));
