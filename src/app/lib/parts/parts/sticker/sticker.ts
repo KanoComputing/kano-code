@@ -53,8 +53,8 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         }
 
         const sticker = this.core.image.get();
-        if (sticker && this._stickers) {
-            this._el.style.backgroundImage = `url(${this._stickers.getUrl(sticker)})`;
+        if (this._stickers) {
+            this._el.style.backgroundImage = `url(${this._stickers.getUrl(sticker || this._stickers.default || '')})`;
         }
 
         this.core.apply();
@@ -67,16 +67,17 @@ export class StickerPart extends DOMPart<HTMLDivElement> {
         }
         const sticker = this.core.image.get();
         
-        if (sticker && this._stickers) {
-            url = this._stickers.getUrl(sticker);
+        if (this._stickers) {
+            url = this._stickers.getUrl(sticker || this._stickers.default || '');
         }
-        const imageLoaded = new Promise((res) => {
+        const imageLoaded = new Promise((res, reject) => {
             const img = new Image();
             img.onload = () => {
                 this._components.forEach(component => component.render(ctx, img));
                 this.resetTransform(ctx);
                 res();
-            }
+            };
+            img.onerror = reject;
             img.crossOrigin = "Anonymous";
             img.src = url;
         }) as Promise<void>;
