@@ -66,7 +66,10 @@ class BlocklyChallenge extends Engine {
         this.stepIndex -= 1;
     }
     _onPhantomBlockEnter(phantom_block : any) {
-        if (typeof phantom_block !== 'string' ||
+        if (phantom_block.positionUnder) {
+            this.setPhantomBlockByPosition();
+            return;
+        } else if (typeof phantom_block !== 'string' ||
             !Blockly.selected) {
             return;
         }
@@ -89,6 +92,14 @@ class BlocklyChallenge extends Engine {
         }
         connection = input.connection;
         Blockly.setPhantomBlock(connection, target);
+    }
+    setPhantomBlockByPosition() {
+        const target = Blockly.selected;
+        const workspace = this.getWorkspace();
+        if (!target) {
+            return;
+        }
+        Blockly.setPhantomBlockByPosition(workspace, target);
     }
     _onPhantomBlockLeave() {
         Blockly.removePhantomBlock();
@@ -145,6 +156,7 @@ class BlocklyChallenge extends Engine {
                     },
                 },
             },
+            phantom_block: data.positionUnder ? data : null,
         };
     }
     _startStepShorthand(data : any) {

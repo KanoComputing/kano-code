@@ -113,6 +113,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
     class Workspace<T extends Block = Block> {
         getCanvas() : SVGElement;
         getAllBlocks() : T[];
+        getTopBlocks() : T[];
         getBlockById(id : string) : T|null;
         getMetrics() : any;
         getFlyout_() : Flyout;
@@ -219,6 +220,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         WidgetDiv : typeof WidgetDiv;
         Events : Events;
         setPhantomBlock(connection : Connection, target : Block) : void;
+        setPhantomBlockByPosition(workspace : Workspace, target : Block) : void;
         removePhantomBlock() : void;
         selected? : Block;
         FieldConfig : typeof FieldConfig;
