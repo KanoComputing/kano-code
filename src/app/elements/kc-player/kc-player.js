@@ -19,6 +19,7 @@ class KCPlayer extends PolymerElement {
                 flex-direction: column;
                 justify-content: center;
                 align-items: stretch;
+                overflow: hidden;
             }
             :host([fullscreen]) {
                 padding: 64px 16px;
@@ -84,7 +85,7 @@ class KCPlayer extends PolymerElement {
             .close:hover iron-icon {
                 color: #FFF;
             }
-            #container {
+            /* #container {
                 position: relative;
                 flex: 1;
                 display: flex;
@@ -99,7 +100,7 @@ class KCPlayer extends PolymerElement {
             #container>* {
                 width: 100%;
                 height: 100%;
-            }
+            } */
             .error-message {
                 color: var(--color-porcelain);
                 font-size: 21px;
@@ -107,12 +108,15 @@ class KCPlayer extends PolymerElement {
                 align-items: center;
                 justify-content: center;
             }
+            /* canvas {
+                margin-bottom: 90px;
+            } */
             *[hidden] {
                 display: none !important;
             }
             kc-player-toolbar {
-                margin-top: 16px;
-                position: absolute;
+                margin: 16px auto;
+                position: relative;
                 align-self: center;
                 bottom: 12px;
             }
