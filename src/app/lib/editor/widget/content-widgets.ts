@@ -1,5 +1,6 @@
 import { Editor } from '../editor.js';
 import { IEditorWidget } from './widget.js';
+import { BeaconWidget } from '../../challenge/widget/beacon.js';
 
 export class ContentWidgets {
     private readonly domNode : HTMLElement;
@@ -43,10 +44,15 @@ export class ContentWidgets {
         }
         const parentRect = this.getWidgetLayerRect();
         const p = this.editor.queryPosition(position);
+
         const domNode = widget.getDomNode();
         if (!p) {
             domNode.style.display = 'none';
             return;
+        }
+        if (widget instanceof BeaconWidget) {
+            widget.setResolvedPosition(p.x, p.y);
+            widget.setBlockPosition(p.isBlock);
         }
         domNode.style.display = 'block';
         domNode.style.transform = `translate(${p.x - parentRect.left}px, ${p.y - parentRect.top}px)`;

@@ -563,9 +563,11 @@ export class Editor extends EditorOrPlayer {
         if (!result) {
             return null;
         }
+
         // A position is provided, use it
         if (typeof result.getPosition === 'function') {
-            return result.getPosition();
+            const position = result.getPosition();
+            return { x: position.x, y: position.y, isBlock: true }
         }
         // Otherwise, generate the position using the DOMRect and alignment
         const rect = result.getHTMLElement().getBoundingClientRect();
@@ -575,7 +577,7 @@ export class Editor extends EditorOrPlayer {
             x += rect.width * (root.position.x || 0) / 100;
             y += rect.height * (root.position.y || 0) / 100;
         }
-        return { x, y };
+        return { x, y, isBlock : false };
     }
     /**
      * Uses the [[QueryEngine]] to query for an element using that selector and returns the result

@@ -127,7 +127,14 @@ declare module '@kano/kwc-blockly/blockly.js' {
         componentRoot_ : HTMLElement;
         scale : number;
         dispose() : void;
+        scrollCenter() : void;
+        getWidth() : number;
+        scrollbar : ScrollbarPair;
         centerOnBlock(id : string) : void;
+    }
+    class ScrollbarPair {
+        resize() : void;
+        set(x : number, y : number) : void;
     }
     class WorkspaceSvg extends Workspace<BlockSvg> {
         constructor(options : any);

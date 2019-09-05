@@ -213,6 +213,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         }
         this.banner.hide();
     }
+
     /**
      * Displays a beacon as a content widget on the editor
      * @param data Beacon data from a challenge step
@@ -231,6 +232,21 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             widget.setPosition(data);
             this.editor.addContentWidget(widget);
             this.widgets.set('beacon', widget);
+
+            const workspace = this.getWorkspace();
+
+            const resolvedPosition = widget.getResolvedPosition();
+            const metrics = workspace.getMetrics();
+
+            if (widget.isBlockPosition && resolvedPosition && resolvedPosition.x > metrics.viewWidth) {
+                const scrollTotal = metrics.contentWidth - metrics.viewWidth;
+                const x = (resolvedPosition.x / metrics.contentWidth) * scrollTotal;
+
+                // @ts-ignore
+                const { handlePosition_, ratio_ } = workspace.scrollbar.vScroll;
+                workspace.scrollbar.set(x, handlePosition_ / ratio_);
+            }
+
         }, 300);
     }
     /**
