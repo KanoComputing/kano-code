@@ -90,7 +90,10 @@ class KCPlayer extends PolymerElement {
                 flex-direction: column;
                 justify-content: center;
                 align-items: stretch;
-                padding-bottom: 124px;
+                overflow: hidden;
+                /* Hack to make it seem not broken */
+                /* Rebuilding the CSS for this In Progress - Paul McK 05/09/19 */
+                margin-top: 7px;
             }
             #container>* {
                 width: 100%;
