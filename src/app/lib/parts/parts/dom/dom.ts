@@ -47,7 +47,7 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
             return;
         }
         if (this.transform.invalidated) {
-            this._el.style.transform = `translate(${this.transform.x / this._visuals.width * this._rect.width}px, ${this.transform.y / this._visuals.height * this._rect.height}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
+            this._el.style.transform = `translate(${this.transform.x}px, ${this.transform.y}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
             this._el.style.opacity = this.transform.opacity.toString();
         }
         this.transform.apply();
@@ -102,8 +102,8 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         let x = 0;
         let y = 0;
         if (this._visuals && this._rect) {
-            x = this.transform.x / this._visuals.width * this._rect.width;
-            y = this.transform.y / this._visuals.height * this._rect.height;
+            x = this.transform.x / window.devicePixelRatio;
+            y = this.transform.y / window.devicePixelRatio;
         }
         return {
             x: x - (((this.size.width * this.transform.scale) / 2) - (this.size.width / 2)),
