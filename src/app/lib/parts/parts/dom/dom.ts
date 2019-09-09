@@ -47,7 +47,7 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
             return;
         }
         if (this.transform.invalidated) {
-            this._el.style.transform = `translate(${this.transform.x}px, ${this.transform.x}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
+            this._el.style.transform = `translate(${this.transform.x}px, ${this.transform.y}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
             this._el.style.opacity = this.transform.opacity.toString();
         }
         this.transform.apply();
