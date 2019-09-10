@@ -1,5 +1,6 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@kano/kwc-icons/kwc-icons.js';
+import { subscribeDOM } from '@kano/common/index.js';
 import '../kc-player-toolbar/kc-player-toolbar.js';
 
 import { Player } from '../../lib/player/index.js';
@@ -167,7 +168,7 @@ class KCPlayer extends PolymerElement {
         this.player = new Player();
         this.player.disableFullscreen();
 
-        window.addEventListener('resize', () => this._triggerResize());
+        this.sub = subscribeDOM(window, 'resize', () => this._triggerResize());
 
         fetch(this.src)
             .then(r => r.json())
@@ -189,7 +190,9 @@ class KCPlayer extends PolymerElement {
         if (this.player) {
             this.player.dispose();
         }
-        window.removeEventListener('resize', () => this._triggerResize());
+        if (this.sub) {
+            this.sub.dispose();
+        }
     }
     _triggerResize() {
         if (this.player.output.outputViewProvider) {
