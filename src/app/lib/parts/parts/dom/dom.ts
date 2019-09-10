@@ -11,6 +11,7 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
     public transform : Transform;
     private _rect : DOMRect|null = null;
     private _visuals : { canvas: HTMLCanvasElement; width: number; height: number; }|null = null;
+    private _canvasScale : number|null = null;
     protected size : { width: number, height : number } = { width : 0, height: 0 };
     constructor() {
         super();
@@ -39,6 +40,15 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         this.transform.invalidate();
     }
     resize(context : IPartContext) {
+        if (!this._visuals) {
+            return;
+        }
+        const scale = Math.min(this._visuals.canvas.offsetWidth / this._visuals.width, this._visuals.canvas.offsetHeight / this._visuals.height);
+        if (this._canvasScale !== scale) {
+            this._canvasScale = scale;
+            this.transform.invalidate();
+        }
+        this._canvasScale = scale;
         this._rect = context.dom.root.getBoundingClientRect() as DOMRect;
     }
     render() {
@@ -46,13 +56,14 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         if (!this._rect || !this._visuals) {
             return;
         }
-        if (this.transform.invalidated) {
-            const scale = Math.min(this._visuals.canvas.offsetWidth / this._visuals.width, this._visuals.canvas.offsetHeight / this._visuals.height);
+        if (this.transform.invalidated && this._canvasScale) {
+            // this._el.offset / 2 is for transforming to center of image instead of corner
             const transform = {
-                x: this.transform.x * scale,
-                y: this.transform.y * scale,
+                x: (this.transform.x * this._canvasScale) - (this._el.offsetWidth / 2),
+                y: (this.transform.y * this._canvasScale) - (this._el.offsetHeight / 2),
+                scale: this.transform.scale * this._canvasScale,
             };
-            this._el.style.transform = `translate(${transform.x}px, ${transform.y}px) scale(${this.transform.scale}, ${this.transform.scale}) rotate(${this.transform.rotation}deg)`;
+            this._el.style.transform = `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale}, ${transform.scale}) rotate(${this.transform.rotation}deg)`;
             this._el.style.opacity = this.transform.opacity.toString();
         }
         this.transform.apply();

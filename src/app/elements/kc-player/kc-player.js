@@ -167,6 +167,8 @@ class KCPlayer extends PolymerElement {
         this.player = new Player();
         this.player.disableFullscreen();
 
+        window.addEventListener('resize', () => this._triggerResize());
+
         fetch(this.src)
             .then(r => r.json())
             .then((creation) => {
@@ -187,6 +189,12 @@ class KCPlayer extends PolymerElement {
         if (this.player) {
             this.player.dispose();
         }
+        window.removeEventListener('resize', () => this._triggerResize());
+    }
+    _triggerResize() {
+        if (this.player.output.outputViewProvider) {
+            this.player.output.outputViewProvider.resize();
+        };
     }
     _toggleRunning() {
         this.player.toggleRunningState();
