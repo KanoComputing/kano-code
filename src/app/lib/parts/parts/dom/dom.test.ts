@@ -44,10 +44,12 @@ suite('DOMPart', () => {
 
             (part as any)._rect = { x: 0, y: 0, width: 800, height: 600 };
             (part as any)._visuals = { x: 0, y: 0, width: 800, height: 600 };
+            (part as any)._canvasScale = 1;
+            (part as any).size = { width: 10, height: 10 };
 
             part.render();
 
-            assert.equal((part as any)._el.style.transform, `translate(${x}px, ${y}px) scale(${scale}, ${scale}) rotate(${rotation}deg)`);
+            assert.equal((part as any)._el.style.transform, `translate(${x - 10/2}px, ${y - 10/2}px) scale(${scale}, ${scale}) rotate(${rotation}deg)`);
         });
         test('#rotation', () => {
             return new Promise((resolve) => {
