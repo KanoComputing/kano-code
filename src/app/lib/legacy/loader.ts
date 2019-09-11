@@ -59,6 +59,8 @@ export function transformLegacyApp(app : any, output : Output) {
     }
     rewriteSource(app);
     rewriteModules(app, output);
-    rewriteParts(app, output);
+    if (app.parts && app.parts.length > 0) {
+        rewriteParts(app, output);
+    }
     return app;
 }
