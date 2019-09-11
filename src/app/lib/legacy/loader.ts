@@ -54,7 +54,7 @@ function isLegacyApp(app : any) {
 }
 
 export function transformLegacyApp(app : any, output : Output) {
-    if (!app || !isLegacyApp(app)) {
+    if (!app) {
         return app;
     }
     rewriteSource(app);
