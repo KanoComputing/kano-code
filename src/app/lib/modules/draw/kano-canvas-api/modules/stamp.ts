@@ -35,7 +35,7 @@ export class Stamp {
             const r = rotation * (Math.PI / 180);
             const xx = Math.cos(r) * scale;
             const xy = Math.sin(r) * scale;
-            session.ctx.setTransform(xx, xy, -xy, xx, session.pos.x, session.pos.y);
+            session.ctx.setTransform(xx, xy, -xy, xx, 0, 0);
 
             session.ctx.drawImage(
                 stamp,
