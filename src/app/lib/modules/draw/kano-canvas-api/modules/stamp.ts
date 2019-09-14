@@ -15,8 +15,6 @@ export class Stamp {
     * @return void
     */
     stamp(sticker: Sticker, size: number, rotation: number) {
-        const previousX = this.session.pos.x;
-        const previousY = this.session.pos.y;
         const percent = size / 100;
         const session = this.session;
 
@@ -35,8 +33,9 @@ export class Stamp {
             const r = rotation * (Math.PI / 180);
             const xx = Math.cos(r) * scale;
             const xy = Math.sin(r) * scale;
-            session.ctx.setTransform(xx, xy, -xy, xx, 0, 0);
 
+            session.ctx.setTransform(xx, xy, -xy, xx, session.pos.x, session.pos.y);
+            session.ctx.translate(-session.pos.x, -session.pos.y);
             session.ctx.drawImage(
                 stamp,
                 session.pos.x - (stamp.width * percent / 2),
@@ -46,7 +45,7 @@ export class Stamp {
             );
 
             // reset transformation
-            session.ctx.resetTransform();
+            session.ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
 
 
