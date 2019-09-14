@@ -34,8 +34,11 @@ export class Stamp {
             const xx = Math.cos(r) * scale;
             const xy = Math.sin(r) * scale;
 
+            session.ctx.save();
             session.ctx.setTransform(xx, xy, -xy, xx, session.pos.x, session.pos.y);
             session.ctx.translate(-session.pos.x, -session.pos.y);
+            session.ctx.restore();
+
             session.ctx.drawImage(
                 stamp,
                 session.pos.x - (stamp.width * percent / 2),
@@ -43,9 +46,6 @@ export class Stamp {
                 scale * stamp.height * percent,
                 (stamp.width / scale) * percent,
             );
-
-            // reset transformation
-            session.ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
 
 

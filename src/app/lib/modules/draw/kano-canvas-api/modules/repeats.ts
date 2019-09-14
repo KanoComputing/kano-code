@@ -25,8 +25,8 @@ export class Repeats {
 
         for( var i = 0; i < repeats; i++ ) {
             this.session.pos = {x: 0 + moveX * i, y: 0 + moveY * i};
-            callback()
-            this.session.ctx.rotate(rotation * Math.PI / 180)
+            callback();
+            this.session.ctx.rotate(rotation * Math.PI / 180);
         }
         
 
