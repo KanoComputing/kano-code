@@ -28,8 +28,8 @@ export class Repeats {
             callback();
             this.session.ctx.rotate(rotation * Math.PI / 180);
         }
-        
 
+        
         // resets changes
         const totalRotation = repeats * rotation * Math.PI / 180;
         this.session.ctx.rotate(-totalRotation);

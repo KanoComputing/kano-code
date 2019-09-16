@@ -34,11 +34,43 @@ export class Stamp {
             const xx = Math.cos(r) * scale;
             const xy = Math.sin(r) * scale;
 
-            session.ctx.save();
-            session.ctx.setTransform(xx, xy, -xy, xx, session.pos.x, session.pos.y);
-            session.ctx.translate(-session.pos.x, -session.pos.y);
-            session.ctx.restore();
+            const multiply = (a: any, b: any) => {
+                const aNumRows = a.length;
+                const aNumCols = a[0].length; 
+                const bNumCols = b[0].length;
+                const m = new Array(aNumRows);
+                for (let r = 0; r < aNumRows; r+=1) {
+                    m[r] = new Array(bNumCols);
+                    for (let c = 0; c < bNumCols; c+=1) {
+                        m[r][c] = 0;
+                        for (var i = 0; i < aNumCols; i+=1) {
+                            m[r][c] += a[r][i] * b[i][c];
+                        }
+                    }
+                }
+                return m;
+            }
 
+            const translate1 = [
+                [Math.cos(0),-Math.sin(0), session.pos.x],
+                [Math.sin(0),Math.cos(0), session.pos.y],
+                [0, 0, 1],
+            ];
+            const rotate = [
+                [xx, -xy, 0],
+                [xy, xx, 0],
+                [0, 0, 1],
+            ];
+            const translate2 = [
+                [Math.cos(0),-Math.sin(0), -session.pos.x],
+                [Math.sin(0),Math.cos(0), -session.pos.y],
+                [0, 0, 1],
+            ];
+            
+            const all = multiply(multiply(translate1, rotate), translate2);
+            
+            session.ctx.save();
+            session.ctx.transform(all[0][0], all[1][0], all[0][1], all[1][1], all[0][2], all[1][2])
             session.ctx.drawImage(
                 stamp,
                 session.pos.x - (stamp.width * percent / 2),
@@ -46,9 +78,10 @@ export class Stamp {
                 scale * stamp.height * percent,
                 (stamp.width / scale) * percent,
             );
+
+            // reset transformation
+            session.ctx.restore();
         }
-
-
     };
 };
 
