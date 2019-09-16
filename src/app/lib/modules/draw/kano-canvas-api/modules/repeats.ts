@@ -35,8 +35,8 @@ export class Repeats {
         this.session.ctx.rotate(-totalRotation);
         
         this.session.ctx.translate(-previousX, -previousY);
-        this.session.pos.x = previousX
-        this.session.pos.y = previousY
+        this.session.pos.x = previousX;
+        this.session.pos.y = previousY;
     };
 
     /*

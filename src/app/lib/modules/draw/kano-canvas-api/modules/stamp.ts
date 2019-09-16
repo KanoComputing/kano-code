@@ -15,6 +15,8 @@ export class Stamp {
     * @return void
     */
     stamp(sticker: Sticker, size: number, rotation: number) {
+        const previousX = this.session.pos.x;
+        const previousY = this.session.pos.y;
         const percent = size / 100;
         const session = this.session;
 
@@ -52,8 +54,8 @@ export class Stamp {
             }
 
             const translate1 = [
-                [Math.cos(0),-Math.sin(0), session.pos.x],
-                [Math.sin(0),Math.cos(0), session.pos.y],
+                [Math.cos(0),-Math.sin(0), -previousX],
+                [Math.sin(0), Math.cos(0), -previousY],
                 [0, 0, 1],
             ];
             const rotate = [
@@ -62,21 +64,21 @@ export class Stamp {
                 [0, 0, 1],
             ];
             const translate2 = [
-                [Math.cos(0),-Math.sin(0), -session.pos.x],
-                [Math.sin(0),Math.cos(0), -session.pos.y],
+                [Math.cos(0), -Math.sin(0), previousX],
+                [Math.sin(0), Math.cos(0), previousY],
                 [0, 0, 1],
             ];
             
-            const all = multiply(multiply(translate1, rotate), translate2);
+            const all = multiply(multiply(translate2, rotate), translate1);
             
             session.ctx.save();
             session.ctx.transform(all[0][0], all[1][0], all[0][1], all[1][1], all[0][2], all[1][2])
             session.ctx.drawImage(
                 stamp,
-                session.pos.x - (stamp.width * percent / 2),
-                session.pos.y - (stamp.height * percent / 2),
-                scale * stamp.height * percent,
-                (stamp.width / scale) * percent,
+                previousX - (stamp.width * percent / 2),
+                previousY - (stamp.height * percent / 2),
+                stamp.width * percent,
+                stamp.height * percent,
             );
 
             // reset transformation
