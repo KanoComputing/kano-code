@@ -18,7 +18,7 @@ export const general : any[] = [{
     },
     javascript: () => {
         return function (block : Block) {
-            let c = Blockly.JavaScript.valueToCode(block, 'COLOR', Blockly.JavaScript.ORDER_ASSIGNMENT) || '#ffffff';
+            let c = Blockly.JavaScript.valueToCode(block, 'COLOR', Blockly.JavaScript.ORDER_ASSIGNMENT) || `'#ffffff'`;
             return `ctx.background = ${c};\n`;
         };
     }
