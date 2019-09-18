@@ -12,6 +12,6 @@ export const blockExceptions = new Map<string, IExceptionMapItem>([
     }],
     ['draw', {
         category: 'ctx',
-        blocks: new Map<string, string>(),
+        blocks: new Map<string, string>([['random', 'stamp_random']]),
     }],
 ]);
