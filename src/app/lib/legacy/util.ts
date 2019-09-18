@@ -54,7 +54,7 @@ export const LegacyUtil = {
             }
         }
         if (partData.type === 'sticker') {
-            if (partData.userProperties.src) {
+            if (partData.userProperties && partData.userProperties.src) {
                 const pieces = partData.userProperties.src.split('/')
                 const oldValue = pieces.pop().split('.').shift();
                 const oldSet = pieces.pop();
