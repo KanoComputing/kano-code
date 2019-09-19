@@ -39,6 +39,11 @@ export const TransformAPI : IMetaDefinition[] = [
             verbose: _('PART_TRANSFORM_ROTATION', 'rotation'),
             returnType: Number,
             default: 0,
+            blockly: {
+                shadow(defaultValue: number) {
+                    return `<shadow type="angle"><field name="VALUE">${defaultValue}</field></shadow>`
+                }
+            }
         }],
         blockly: {
             javascript(Blockly : Blockly, block : Block, m : Meta) {

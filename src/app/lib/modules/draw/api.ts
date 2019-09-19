@@ -5,6 +5,7 @@ import { shapes } from './blocks/shapes.js';
 import { space } from './blocks/space.js';
 import { stamp } from './blocks/stamp.js';
 import { registerRepeatDrawing, registerRepeatInCircle } from './blocks/repeats.js';
+import { registerAnglePicker } from './fields/angle-picker.js';
 import { DrawModule } from './draw.js';
 import { _ } from '../../i18n/index.js';
 import Editor from '../../editor/editor.js';
@@ -102,6 +103,7 @@ export function DrawAPI (editor: Editor) {
             });
             registerRepeatDrawing(Blockly, COLOR);
             registerRepeatInCircle(Blockly, COLOR);
+            registerAnglePicker(Blockly);
         },
         category,
         defaults: {
@@ -156,7 +158,11 @@ export function DrawAPI (editor: Editor) {
             },
             draw_repeat_drawing: {
                 REPEATS: 6,
-                ROTATION: 60
+                ROTATION: {
+                    shadow: `<shadow type="angle"><field name="VALUE">60</field></shadow>`
+                },
+                MOVEMENTX: 0,
+                MOVEMENTY: 0,
             },
             draw_repeat_in_circle: {
                 REPEATS: 6,
@@ -166,7 +172,9 @@ export function DrawAPI (editor: Editor) {
                     shadow: `<shadow type="stamp_getImage"><field name="STICKER">${stickers ? stickers.default : ''}</field></shadow>`
                 },
                 SIZE: 100,
-                ROTATION: 0
+                ROTATION: {
+                    shadow: `<shadow type="angle"><field name="VALUE">0</field></shadow>`
+                }
             }
         },
     }

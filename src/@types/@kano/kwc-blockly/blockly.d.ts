@@ -83,7 +83,6 @@ declare module '@kano/kwc-blockly/blockly.js' {
         public dispose() : void;
     }
     class FieldColour extends Field {}
-    class FieldNumber extends Field {}
     class FieldDropdown extends Field {
         getOptions() : [string, string][];
     }
@@ -151,10 +150,11 @@ declare module '@kano/kwc-blockly/blockly.js' {
         addClass(el : SVGElement, cl : string) : void;
         removeClass(el : SVGElement, cl : string) : void;
         replaceMessageReferences(message: string|any): string;
+        isRightButton(e : MouseEvent) : boolean;
     }
     class Generator {
         valueToCode(block : Block, name : string, outerOrder : number) : string;
-
+        angle: any;
         ORDER_ATOMIC : number;
         ORDER_NEW : number;
         ORDER_MEMBER : number;
@@ -192,6 +192,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         ORDER_NONE : number;
     }
     class WidgetDiv {
+        static calculateY_(viewportBBox: any, anchorBBox: any, elementSize: any) : number;
         static isVisible() : boolean;
         static hide() : void;
         static DIV : HTMLDivElement;
@@ -215,6 +216,10 @@ declare module '@kano/kwc-blockly/blockly.js' {
     class FieldConfig extends Field {
         position() : void;
     }
+    class FieldNumber extends Field {
+        onHtmlInputChange_() : void;
+        showInlineEditor_(bool: boolean) : void;
+    }
     const Blockly : {
         DUMMY_INPUT : number;
         ALIGN_RIGHT : string;
@@ -231,6 +236,8 @@ declare module '@kano/kwc-blockly/blockly.js' {
         removePhantomBlock() : void;
         selected? : Block;
         FieldConfig : typeof FieldConfig;
+        FieldNumber: typeof FieldNumber;
+        FieldTextInput: typeof FieldTextInput;
     }
     class Xml {
         static workspaceToDom(workspace : Workspace) : XMLDocument;
