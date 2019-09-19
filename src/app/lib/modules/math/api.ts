@@ -372,7 +372,9 @@ export const MathAPI = {
             NUM: '0',
         },
         math_arithmetic: {
+            A: 0,
             OP: 'ADD',
+            B: 0,
         },
         unary: {
             LEFT_HAND: 'item',
@@ -395,11 +397,23 @@ export const MathAPI = {
         math_constant: {
             CONSTANT: "PI"
         },
+        math_modulo: {
+            DIVIDEND: 0,
+            DIVISOR: 0,
+        },
+        math_constrain: {
+            VALUE: 0,
+            LOW: 0,
+            HIGH: 0,
+        },
         math_min_max: {
             MINMAX: 'min',
+            ARG1: 0,
+            ARG2: 0,
         },
         math_number_property: {
-            PROPERTY: "EVEN"
+            PROPERTY: "EVEN",
+            NUMBER_TO_CHECK: 0,
         },
         math_single: {
             OP: "ROOT"
@@ -407,6 +421,9 @@ export const MathAPI = {
         math_round: {
             OP: "ROUND"
         },
+        math_sign: {
+            ARG: 0,
+        }
     },
     labels: {
         math_arithmetic: {
