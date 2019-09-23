@@ -428,20 +428,7 @@ export class BlocklyMetaRenderer implements IMetaRenderer {
                             case Blockly.INPUT_VALUE: {
                                 value = Blockly.JavaScript.valueToCode(block, argName, Blockly.JavaScript.ORDER_COMMA);
                                 if (!value) {
-                                    value = params[index].def.default;
-                                    switch(typeof value) {
-                                        case 'object':
-                                            value = JSON.stringify(value);
-                                            break;
-                                        case 'string':
-                                            value = `"${value}"`;
-                                            break;
-                                        case 'number':
-                                            break;
-                                        default:
-                                            value = 'null';
-                                            break;
-                                    }
+                                    value = null;
                                 }
                                 break;
                             }
