@@ -91,7 +91,6 @@ export class KCEditorBanner extends LitElement {
             .markdown-html p {
                 line-height: 20px;
                 margin: 0px;
-                font-weight: bold;
             }
 
             [hidden] {

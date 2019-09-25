@@ -20,6 +20,7 @@ export class KcStringPreview extends LitElement {
                 text-align: center;
                 padding: 0px 2px;
                 box-sizing: border-box;
+                font-weight: bold;
             }
         `];
     }
