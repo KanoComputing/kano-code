@@ -161,6 +161,9 @@ export class KanoTooltip extends LitElement {
             .pop-out {
                 animation-direction: reverse;
             }
+            .markdown-html p {
+                font-weight: normal;
+            }
         `];
     }
     render() {

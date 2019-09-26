@@ -36,7 +36,7 @@ export class Tooltip implements IEditorWidget {
             this.domNode.style.setProperty('--kano-tooltip-border-color', 'var(--color-abbey)');
             this.domNode.style.color = 'black';
             this.domNode.style.fontFamily = 'var(--font-body)';
-            this.domNode.style.fontWeight = 'bold';
+            this.domNode.style.fontWeight = 'normal';
         }
         return this.domNode;
     }

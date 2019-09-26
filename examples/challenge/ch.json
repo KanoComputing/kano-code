@@ -1,119 +1,112 @@
 {
     "version": "1.0.0",
-    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"><variables></variables></xml>\",\"code\":\"app.onStart(function() {\\n  button.background = '#01579B';\\n\\n});\\n\\nbutton.onClick(function() {\\n\\n});\\n\",\"parts\":[{\"type\":\"speaker\",\"id\":\"speakert\",\"name\":\"Talk Machine\"}]}",
-    "whitelist": {
-        "app": ["onStart"]
-    },
-    "partsWhitelist": {
-        "speaker": ["volume"]
-    },
-    "flyoutMode": true,
+    "id": "",
+    "name": "",
+    "defaultApp": "{\"source\":\"<xml xmlns=\\\"http://www.w3.org/1999/xhtml\\\"></xml>\",\"code\":\"app.onStart(function() {\\n  ctx.background = '#BF360C';\\n  ctx.color('#1A237E');\\n  time.every(1, 'seconds', function () {\\n    ctx.moveToRandom();\\n    ctx.circle(5);\\n  });\\n\\n});\\n\",\"parts\":[],\"profile\":\"default\"}",
     "steps": [
         {
             "type": "create-block",
-            "category": "part#speakert>toolbox",
-            "blockType": "volume_set",
-            "alias": "block_2",
-            "openFlyoutCopy": "Open the ${part#speakert>toolbox} tray",
+            "category": "toolbox#app",
+            "blockType": "app_onStart",
+            "alias": "block_0",
+            "openFlyoutCopy": "Open the ${toolbox#app} tray",
             "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
-            "connectTo": "alias#start_1>next",
+            "positionUnder": true,
+            "dropCopy": "Drop the block anywhere in your code space"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_set_background_color",
+            "alias": "block_1",
+            "openFlyoutCopy": "Open the ${toolbox#draw} tray",
+            "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
+            "connectTo": "alias#block_0>input#CALLBACK",
             "connectCopy": "Connect to this block"
         },
         {
-            "banner": {
-                "text": "This is the button part ${part#button>toolbox} and this banner can have a lot of text, the overflow should be just fine",
-                "nextButton": true,
-                "hint": "Drag ${part#button>toolbox} here"
-            }
-        },
-        {
-            "banner": "Oopen the ${toolbox#draw} thing",
-            "beacon": "toolbox#draw:100,50",
-            "validation": {
-                "blockly": {
-                    "open-flyout": "toolbox#draw"
-                }
-            }
-        },
-        {
-            "beacon": "toolbox#draw>flyout-block.draw_circle",
-            "validation": {
-                "blockly": {
-                    "create": {
-                        "type": "toolbox#draw>flyout-block.draw_circle",
-                        "alias": "math"
-                    }
-                }
-            }
-        },
-        {
-            "banner": "Some markdown syntax ${toolbox#color}",
-            "beacon": "toolbox#draw:100,50",
-            "tooltips": [
-                {
-                    "target": "toolbox#draw",
-                    "text": "Here ${toolbox#draw} have some cake for your birthday 🎂",
-                    "position": "right"
-                },
-                {
-                    "target": "add-part-button",
-                    "text": "Want to have some fun with parts?<br>(You can't dismiss me BTW)",
-                    "position": "left",
-                    "sticky": true
-                }
-            ],
-            "validation": {
-                "blockly": {
-                    "open-flyout": "toolbox#draw"
-                }
-            }
-        },
-        {
-            "beacon": "toolbox#draw>flyout-block.draw_set_background_color",
-            "validation": {
-                "blockly": {
-                    "create": {
-                        "type": "toolbox#draw>flyout-block.draw_set_background_color",
-                        "alias": "set_back"
-                    }
-                }
-            }
-        },
-        {
-            "beacon": "part#button>block.onClick",
-            "tooltips": [
-                {
-                    "target": "part#button>block.onClick",
-                    "text": "Jello 🤷‍♀️",
-                    "position": "right"
-                }
-            ],
-            "phantom_block": "part#button>block.onClick>input#CALLBACK",
-            "validation": {
-                "blockly": {
-                    "connect": {
-                        "parent": "part#button>block.onClick>input#CALLBACK",
-                        "target": "alias#set_back"
-                    }
-                }
-            }
-        },
-        {
-            "beacon": "alias#set_back>input#COLOR",
-            "banner": "Change the color there",
-            "validation": {
-                "blockly": {
-                    "value": {
-                        "target": "alias#set_back>input#COLOR>shadow>input#COLOUR"
-                    }
-                }
-            }
+            "type": "change-input",
+            "target": "alias#block_1>input#COLOR>shadow>input#COLOUR",
+            "value": "#BF360C",
+            "bannerCopy": "Change <kc-color-preview color=\"#ffffff\"></kc-color-preview> to <kc-color-preview color=\"#BF360C\"></kc-color-preview>",
+            "skipCheck": true
         },
         {
             "banner": {
-                "text": "This is the end of a challenge, this text can be change per challenge",
-                "nextChallengeButton": "Give me more"
-            }
+                "text": "The colors now mix from yellow to pink, using lerp you can see all the colors between these two and create art like sunsets",
+                "nextChallengeButton": true
+            },
+            "tooltips": [
+                {
+                    "text": "Try changing the colors here to create cool effects",
+                    "target": "alias#block_1>input#COLOR>shadow>input#COLOUR",
+                    "position": "top"
+                }
+            ],
+            "type": "banner-step"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_color",
+            "alias": "block_2",
+            "openFlyoutCopy": "Open the ${toolbox#draw} tray",
+            "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
+            "connectTo": "alias#block_1>next",
+            "connectCopy": "Connect to this block"
+        },
+        {
+            "type": "change-input",
+            "target": "alias#block_2>input#COLOR>shadow>input#COLOUR",
+            "value": "#1A237E",
+            "bannerCopy": "Change <kc-color-preview color=\"#000\"></kc-color-preview> to <kc-color-preview color=\"#1A237E\"></kc-color-preview>",
+            "skipCheck": true
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#control",
+            "blockType": "every_x_seconds",
+            "alias": "block_3",
+            "openFlyoutCopy": "Open the ${toolbox#control} tray",
+            "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
+            "connectTo": "alias#block_2>next",
+            "connectCopy": "Connect to this block"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_move_to_random",
+            "alias": "block_4",
+            "openFlyoutCopy": "Open the ${toolbox#draw} tray",
+            "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
+            "connectTo": "alias#block_3>input#DO",
+            "connectCopy": "Connect to this block"
+        },
+        {
+            "type": "create-block",
+            "category": "toolbox#draw",
+            "blockType": "draw_circle",
+            "alias": "block_5",
+            "openFlyoutCopy": "Open the ${toolbox#draw} tray",
+            "grabBlockCopy": "Drag this block with your mouse or finger into the code space",
+            "connectTo": "alias#block_4>next",
+            "connectCopy": "Connect to this block"
         }
-    ]
+    ],
+    "whitelist": {
+        "ctx": [
+            "draw_circle",
+            "draw_move_to_random",
+            "draw_color",
+            "draw_set_background_color"
+        ],
+        "control": [
+            "every_x_seconds"
+        ],
+        "app": [
+            "onStart"
+        ]
+    },
+    "partsWhitelist": {},
+    "parts": []
 }
