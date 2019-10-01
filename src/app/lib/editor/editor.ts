@@ -577,7 +577,7 @@ export class Editor extends EditorOrPlayer {
             x += rect.width * (root.position.x || 0) / 100;
             y += rect.height * (root.position.y || 0) / 100;
         }
-        return { x, y, isBlock : false };
+        return { x, y, isBlock : (typeof result.getBlock === 'function') };
     }
     /**
      * Uses the [[QueryEngine]] to query for an element using that selector and returns the result
