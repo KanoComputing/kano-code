@@ -95,8 +95,8 @@ export class KanoAppEditor extends LitElement {
                 opacity: 0.8;
                 color: rgba(255, 255, 255, 0.5);
                 border-radius: 50px;
-                margin: 10px;
-                padding: 10px;
+                margin: 10px 10px 10px 0;
+                padding: 7px 17px;
             }
             .tab.selected {
                 color: #fff;

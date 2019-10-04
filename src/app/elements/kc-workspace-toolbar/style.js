@@ -22,7 +22,7 @@ export const button = html`
         }
         button.tool:hover,
         button.tool:focus {
-            background-color: #ff842a;
+            background-color: #FF6900;
             outline: 0;
         }
         button.tool>* {

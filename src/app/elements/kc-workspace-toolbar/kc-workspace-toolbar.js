@@ -21,7 +21,7 @@ export class KCWorkspaceToolbar extends I18nMixin(PolymerElement) {
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
-                margin-right:18px;
+                margin-right:10px;
                 align-items: center;
             }
             :host([show-settings]) {
