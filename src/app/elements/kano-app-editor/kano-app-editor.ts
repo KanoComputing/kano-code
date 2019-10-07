@@ -90,18 +90,26 @@ export class KanoAppEditor extends LitElement {
                 font-weight: bold;
                 cursor: pointer;
                 font-weight: bold;
-                font-size: 14px;
+                font-size: 16px;
                 outline: none;
                 opacity: 0.8;
-                color: rgba(255, 255, 255, 0.5);
+                color: var(--color-grey);
                 border-radius: 50px;
                 margin: 10px 10px 10px 0;
-                padding: 7px 17px;
+                padding: 6px 10px;
+                transition: all 0.15s ease-in-out;
+            }
+            .tab:hover {
+                color: #fff;
+                opacity: 1;
             }
             .tab.selected {
                 color: #fff;
                 opacity: 1;
-                background: #394148;
+                background: #606467;
+            }
+            .tab:first-child {
+                margin-left: 0;
             }
             :host iron-pages.workspace-pages {
                 display: flex;
@@ -151,7 +159,7 @@ export class KanoAppEditor extends LitElement {
             .top-container {
                 display: flex;
                 flex: 0 0 auto;
-                margin: 0 12px -16px 20px;
+                margin: 0 20px -16px;
             }
             #workspace-host {
                 display: flex;

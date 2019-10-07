@@ -72,6 +72,7 @@ export class KCPartsControls extends LitElement {
                 margin-bottom: 10px;
                 border: none;
                 font-family: inherit;
+                font-weight: bold;
             }
             button#add-part-button:hover {
                 background: #fd6a21;
