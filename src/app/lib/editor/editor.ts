@@ -324,7 +324,8 @@ export class Editor extends EditorOrPlayer {
      * @param app A JSON object representation of an app
      */
     load(app : any) {
-        const safeApp = transformLegacyApp(app, this.output);
+        const replacedApp = this.replaceSource(app);
+        const safeApp = transformLegacyApp(replacedApp, this.output);
         if (!this.injected) {
             this._queuedApp = safeApp;
             return;

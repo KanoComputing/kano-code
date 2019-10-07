@@ -34,14 +34,15 @@ export class Player extends EditorOrPlayer {
         this._fullscreenEnabled = true;
     }
     load(data : any) {
+        const transformedData = this.replaceSource(data);
         // Assume default profile. This will help creations with no saved profile
-        const profile = profiles.get(data.profile || 'default');
+        const profile = profiles.get(transformedData.profile || 'default');
         if (!profile) {
-            throw new Error(`Could not load creation: Profile '${data.profile}' not registered`);
+            throw new Error(`Could not load creation: Profile '${transformedData.profile}' not registered`);
         }
         this.output.registerProfile(profile);
         this._injectOutputView();
-        return transformLegacyCreation(data, this.output)
+        return transformLegacyCreation(transformedData, this.output)
             .then((cookedData) => {
                 return this.output.onCreationImport(cookedData);
             });
