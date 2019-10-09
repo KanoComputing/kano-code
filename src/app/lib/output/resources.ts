@@ -19,7 +19,7 @@ export interface IResourceCategory {
 export interface IResourceArrayWithSrc {
     id : string;
     label : string;
-    resources : { id : string, src : string, label: string }[];
+    resources : { id : string, src : string }[];
 }
 
 export interface IResourceArrayCategory {
