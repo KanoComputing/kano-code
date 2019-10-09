@@ -22,7 +22,6 @@ export class ColorFieldStepHelper extends BlocklyValueStepHelper {
                 return;
             }
             // TODO: Do something with this or remove this helper
-            console.log((field as any).customEl);
         });
     }
     leave() {}

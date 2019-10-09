@@ -15,7 +15,7 @@ export interface IIndexedPickerSection {
 export interface IIndexedPickerItem {
     id : string;
     label : string;
-    image : string;
+    image? : string;
 }
 
 @customElement('kc-indexed-picker')
@@ -55,11 +55,11 @@ export class KCIndexedPicker extends LitElement {
                 display: flex;
                 flex-direction: column;
                 overflow-y: auto;
+                max-height: 320px;
                 position: relative;
                 flex: 1;
                 border-left: 2px solid var(--kc-border-color);
                 padding: 8px;
-                max-height: 320px;
             }
             .section {
                 display: flex;
@@ -68,8 +68,12 @@ export class KCIndexedPicker extends LitElement {
                 flex-shrink: 0;
             }
             .index {
+                position: relative;
+                flex: 1;
                 display: flex;
                 flex-direction: column;
+                overflow-y: auto;
+                max-height: 320px;
                 padding: 8px;
             }
             .set {
@@ -84,6 +88,7 @@ export class KCIndexedPicker extends LitElement {
                 font-size: 18px;
                 cursor: pointer;
                 display: flex;
+                flex-shrink: 0;
                 flex-direction: row;
                 align-items: center;
                 /* Adds 13px (9 + 4) to emulate the caret being there. This makes sure the container keeps its width at all time */
@@ -129,6 +134,14 @@ export class KCIndexedPicker extends LitElement {
             .items::-webkit-scrollbar-thumb:hover {
                 cursor: pointer;
             }
+            h3 {
+                width: 100%;
+                color: white;
+                font-family: var(--font-body);
+                font-weight: bold;
+                font-size: 18px;
+                margin: 10px 5px;
+            }
         `]);
     }
 
@@ -146,6 +159,7 @@ export class KCIndexedPicker extends LitElement {
                 <div class="items" @scroll=${this.onScroll}>
                     ${this.items.map(section => html`
                         <div class="section" id=${section.id}>
+                            <h3>${section.label}</h3>
                             ${section.items.map(item => this.renderItem(item))}
                         </div>
                     `)}
@@ -163,13 +177,21 @@ export class KCIndexedPicker extends LitElement {
                 font-family: inherit;
                 font-size: inherit;
                 color: inherit;
-                width: 64px;
-                height: 64px;
+                width: 100%;
                 border-radius: 3px;
                 border: 2px solid transparent;
                 background: rgba(255, 255, 255, 0.1);
                 margin: 4px;
                 cursor: pointer;
+                color: #ffffff;
+                font-family: var(--font-body);
+                font-size: 16px;
+                text-align: left;
+            }
+            .item.image {
+                width: 64px;
+                height: 64px;
+                text-align: center;
             }
             .item.selected {
                 border-color: white;
@@ -186,10 +208,22 @@ export class KCIndexedPicker extends LitElement {
 
     renderItem(item : IIndexedPickerItem) {
         return html`
-            <button class=${classMap({ item: true, selected: this.value === item.id })} id=${item.id} @click=${() => this.onItemClick(item)}>
-                <img src=${item.image} />
+            <button class=${classMap({ 
+                    item: true, 
+                    image: item.image !== undefined && item.image.length, 
+                    selected: this.value === item.id,
+                })}
+                id=${item.id} @click=${() => this.onItemClick(item)}>
+                ${this.renderItemContent(item)}
             </button>
         `;
+    }
+
+    renderItemContent(item : IIndexedPickerItem) {
+        if(item.image !== undefined && item.image.length) {
+            return html`<img src=${item.image} />`;
+        }
+        return html`<span>${item.label}</span>`;
     }
 
     connectedCallback() {
@@ -252,6 +286,6 @@ export class KCIndexedPicker extends LitElement {
         if (!el) {
             return;
         }
-        el.scrollIntoView({ behavior: 'smooth' });
+        el.scrollIntoView({ block: 'start', behavior: 'smooth' });
     }
 }
