@@ -22,7 +22,7 @@ function getImage(editor : Editor) : IMetaDefinition {
                         throw new Error('Could not create StampsField: stickers resource is not defined');
                     }
                     const defaultSticker = stickers.default ? stickers.default : ''
-                    return new StampsField(defaultSticker, stickers.categorisedResource);
+                    return new StampsField(defaultSticker, stickers.categorisedResource, () => {}, stickers.legacyIdMap);
                 },
             },
         }],

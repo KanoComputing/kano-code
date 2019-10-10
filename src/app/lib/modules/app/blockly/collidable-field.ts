@@ -75,5 +75,9 @@ export class CollidableField extends FieldIcon {
     getIcon() {
         return '';
     }
+    // Does this need to be implemented?
+    getLabel() {
+        return '';
+    }
     static widgetDispose_() {}
 }

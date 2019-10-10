@@ -27,7 +27,7 @@ export class KCIndexedPicker extends LitElement {
     public selectedSection? : string;
 
     @property({ type: String })
-    public value : string|null = null;
+    public value : string = '';
 
     @query('.items')
     protected scrollContainer? : HTMLElement;
@@ -211,7 +211,7 @@ export class KCIndexedPicker extends LitElement {
             <button class=${classMap({ 
                     item: true, 
                     image: item.image !== undefined && item.image.length, 
-                    selected: this.value === item.id,
+                    selected: this.id === item.id,
                 })}
                 id=${item.id} @click=${() => this.onItemClick(item)}>
                 ${this.renderItemContent(item)}
@@ -263,15 +263,15 @@ export class KCIndexedPicker extends LitElement {
     }
 
     protected onItemClick(item : IIndexedPickerItem) {
-        this.value = item.id;
-        this.dispatchEvent(new CustomEvent('value-changed', { composed: true, bubbles: true, detail: this.value }));
+        this.id = item.id
+        this.dispatchEvent(new CustomEvent('value-changed', { composed: true, bubbles: true, detail: item}));
     }
 
     revealSelectedElement() {
-        if (!this.renderRoot) {
+        if (!this.renderRoot || !this.id) {
             return;
         }
-        const el = this.renderRoot.querySelector(`#${this.value}`);
+        const el = this.renderRoot.querySelector(`#${this.id}`);
         if (!el) {
             return;
         }

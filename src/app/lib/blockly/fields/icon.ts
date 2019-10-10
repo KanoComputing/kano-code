@@ -4,6 +4,7 @@ export abstract class FieldIcon extends Field {
     private spacing: number = 6;
     private sizeParams: { width: number, height: number, padding: [number, number, number, number] };
     private textHide: boolean = false;
+    private legacyIdMap: Map<string, string>;
     protected imageElement_: SVGElement | null = null;
     protected textElement_: SVGTextElement | null = null;
     constructor(value: string, optValidator?: () => void) {
@@ -15,6 +16,7 @@ export abstract class FieldIcon extends Field {
         };
         // External size used by blockly to layout the field in the block
         this.size_.height = this.sizeParams.height;
+        this.legacyIdMap = new Map();
         this.setValue(value);
     }
     init() {
@@ -59,6 +61,7 @@ export abstract class FieldIcon extends Field {
             this.size_.width = 0;
             return;
         }
+        this.legacyValueCheck(this.getValue());
         const url = this.getIcon(this.getValue());
         this.textElement_.textContent = this.getDisplayText_();
         this.imageElement_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', url || '');
@@ -95,6 +98,16 @@ export abstract class FieldIcon extends Field {
             e.stopPropagation();
         }
     }
+    legacyValueCheck(value : string) {
+        const newId = this.legacyIdMap.get(value);
+        if (newId) {
+            this.setValue(newId);
+        }
+    }
+    setLegacyIdMap(map : Map<string, string>) {
+        this.legacyIdMap = map;
+    }
     abstract showEditor_(): void;
-    abstract getIcon(value: string): string;
+    abstract getIcon(id: string): string;
+    abstract getLabel(): string;
 }

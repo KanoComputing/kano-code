@@ -19,7 +19,7 @@ export interface IResourceCategory {
 export interface IResourceArrayWithSrc {
     id : string;
     label : string;
-    resources : { id : string, src : string }[];
+    resources : { id : string, label: string, src : string }[];
 }
 
 export interface IResourceArrayCategory {
@@ -39,6 +39,7 @@ export interface IResourceInformation {
     getRandomFrom : (id : string) => string;
     cacheValue: (id : string | Sticker) => HTMLCanvasElement | undefined;
     load: (resource : IResource) => Promise<any>;
+    legacyIdMap? : Map<string, string>;
 }
 
 export interface IResources {
@@ -53,6 +54,7 @@ export class Resource<T> implements IResourceInformation {
     all : IResource[];
     allCategorised : IResourceArrayWithSrc[];
     cache = new Map<string | Sticker, HTMLCanvasElement | undefined>();
+    legacyIdMap : Map<string, string> = new Map();
 
     constructor() {
         this.default = '';
@@ -90,6 +92,10 @@ export class Resource<T> implements IResourceInformation {
         return encodeURI(join(prefix, path));
     }
 
+    addLegacyIdMap(map : Map<string, string>) {
+        this.legacyIdMap = map;
+    }
+
     get resourceSet() {
         if (this.all.length > 0) {
             return this.all;
@@ -114,8 +120,9 @@ export class Resource<T> implements IResourceInformation {
                 label: this.categories[category].label,
                 resources: [],
             };
-            Object.keys(this.categories[category].resources).forEach(sticker => {
-                const stickerObject = {id: sticker, src: this.getUrl(sticker)};
+            Object.keys(this.categories[category].resources).forEach(stickerKey => {
+                const sticker = this.categories[category].resources[stickerKey];
+                const stickerObject = {id: sticker.id, label: sticker.label,  src: this.getUrl(sticker.id)};
                 categoryObject.resources.push( stickerObject );
             });
             this.allCategorised.push(categoryObject);

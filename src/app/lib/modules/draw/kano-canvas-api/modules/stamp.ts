@@ -3,6 +3,14 @@ import { calculateFullTransform } from '../transformation.js';
 import { Sticker } from '../../../../parts/parts/sticker/types.js';
 import { RESOURCE_CACHE_RESOLUTION_MULTIPLIER } from '../../../../output/resources.js';
 
+const legacyValueCheck = (value : string | Sticker, legacyIdMap: any) : string | Sticker => {
+    const newId = legacyIdMap.get(value);
+    if (newId) {
+        return newId;
+    }
+    return value;
+}
+
 export class Stamp {
     private session : ISession;
     constructor(session : ISession) {
@@ -28,7 +36,12 @@ export class Stamp {
         }
 
         if (session && session.stickers) {
-            const stamp = session.stickers.cacheValue(sticker);
+            let stickerName : string | Sticker = sticker;
+
+            if (session.stickers.legacyIdMap) {
+                stickerName = legacyValueCheck(sticker, session.stickers.legacyIdMap);
+            }
+            const stamp = session.stickers.cacheValue(stickerName);
 
             if (!stamp) {
                 return;
