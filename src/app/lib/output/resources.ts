@@ -101,9 +101,9 @@ export class Resource<T> implements IResourceInformation {
             return this.all;
         }
 
-        Object.keys(this.categories).forEach(category => {
-            Object.keys(this.categories[category].resources).forEach(sticker => {
-                this.all.push(this.categories[category].resources[sticker]);
+        Object.values(this.categories).forEach(category => {
+            Object.values(category.resources).forEach(sticker => {
+                this.all.push(sticker);
             });
         });
         return this.all;
@@ -114,14 +114,13 @@ export class Resource<T> implements IResourceInformation {
             return this.allCategorised;
         }
 
-        Object.keys(this.categories).forEach(category => {
+        Object.values(this.categories).forEach(category => {
             let categoryObject : IResourceArrayWithSrc = {
-                id: this.categories[category].id,
-                label: this.categories[category].label,
+                id: category.id,
+                label: category.label,
                 resources: [],
             };
-            Object.keys(this.categories[category].resources).forEach(stickerKey => {
-                const sticker = this.categories[category].resources[stickerKey];
+            Object.values(category.resources).forEach(sticker => {
                 const stickerObject = {id: sticker.id, label: sticker.label,  src: this.getUrl(sticker.id)};
                 categoryObject.resources.push( stickerObject );
             });
@@ -131,7 +130,7 @@ export class Resource<T> implements IResourceInformation {
     }
 
     get categoryEnum() {
-        return Object.keys(this.categories).map<[string, string]>(category => [this.categories[category].label, this.categories[category].id]);
+        return Object.values(this.categories).map<[string, string]>(category => [category.label, category.id]);
     }
 
     cacheValue(id : string | Sticker, type = 'image') {
