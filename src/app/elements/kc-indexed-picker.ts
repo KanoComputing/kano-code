@@ -211,7 +211,7 @@ export class KCIndexedPicker extends LitElement {
             <button class=${classMap({ 
                     item: true, 
                     image: item.image !== undefined && item.image.length, 
-                    selected: this.id === item.id,
+                    selected: this.value === item.id,
                 })}
                 id=${item.id} @click=${() => this.onItemClick(item)}>
                 ${this.renderItemContent(item)}
@@ -263,15 +263,15 @@ export class KCIndexedPicker extends LitElement {
     }
 
     protected onItemClick(item : IIndexedPickerItem) {
-        this.id = item.id
+        this.value = item.id;
         this.dispatchEvent(new CustomEvent('value-changed', { composed: true, bubbles: true, detail: item}));
     }
 
     revealSelectedElement() {
-        if (!this.renderRoot || !this.id) {
+        if (!this.renderRoot || !this.value) {
             return;
         }
-        const el = this.renderRoot.querySelector(`#${this.id}`);
+        const el = this.renderRoot.querySelector(`#${this.value}`);
         if (!el) {
             return;
         }
