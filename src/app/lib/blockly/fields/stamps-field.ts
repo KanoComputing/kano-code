@@ -6,10 +6,16 @@ import '../../../elements/kc-indexed-picker.js';
 import { KCIndexedPicker } from '../../../elements/kc-indexed-picker.js';
 import { subscribeDOM } from '@kano/common/index.js';
 
-interface IItemData {
+export interface IItemDataResource {
     id : string;
     label : string;
-    resources : { id : string, label: string, src : string }[];
+    src : string;
+}
+
+export interface IItemData {
+    id : string;
+    label : string;
+    resources: IItemDataResource[];
 }
 
 export class StampsField extends FieldIcon {
@@ -115,6 +121,9 @@ export class StampsField extends FieldIcon {
             return item.label;
         }
         return '';
+    }
+    getOptions() {
+        return this.items;
     }
     static widgetDispose_() {}
 }

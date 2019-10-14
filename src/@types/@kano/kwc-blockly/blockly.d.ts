@@ -75,6 +75,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         static getCachedWidth(text : SVGElement) : number;
         setText(v : string) : void;
         getScaledBBox_() : any;
+        getSvgRoot() : any;
         protected getDisplayText_() : string;
         protected updateWidth() : void;
         protected render_() : void;
@@ -118,6 +119,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
         getFlyout_() : Flyout;
         addChangeListener(callback : (e : any) => void) : (e : any) => void;
         removeChangeListener(callback : (e : any) => void) : void;
+        fireChangeListener(e: Event) : void;
         getVariableById(id : string) : Variable|null;
         newBlock(type : string, id? : string) : T;
         cleanUp() : void;
@@ -205,6 +207,7 @@ declare module '@kano/kwc-blockly/blockly.js' {
     }
     class Events {
         UI : string;
+        Ui(a : any, b : any, c : any, d : any) : void;
         CREATE : string;
         MOVE : string;
         OPEN_FLYOUT : string;

@@ -94,6 +94,11 @@ export abstract class FieldIcon extends Field {
             Blockly.WidgetDiv.hide();
         } else if (!this.sourceBlock_.isInFlyout) {
             this.showEditor_();
+            // Seeing as preventdefault is being called, and we want some of 
+            // the default functionality, triggering a UI Event click to tell the 
+            // workspace that the widget has been opened. 
+            const event = new (Blockly.Events.Ui as any)(this.sourceBlock_, 'click', undefined, undefined);
+            Blockly.Events.fire(event);
             e.preventDefault();
             e.stopPropagation();
         }

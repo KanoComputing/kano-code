@@ -14,7 +14,7 @@ export class KcStringPreview extends LitElement {
                 vertical-align: middle;
                 border-radius: 3px;
                 border: 1px solid var(--color-grey);
-                height: 18px;
+                min-height: 18px;
                 min-width: 18px;
                 line-height: 18px;
                 text-align: center;
