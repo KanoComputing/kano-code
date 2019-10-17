@@ -18,6 +18,14 @@ class SpeakerComponent extends PartComponent {
 
 const SAMPLE_URL_PREFIX_KEY = 'speaker:base-url';
 
+const legacyValueCheck = (value: string, legacyIdMap: Map<string, string>): string => {
+    const newId = legacyIdMap.get(value);
+    if (newId) {
+        return newId;
+    }
+    return value;
+}
+
 @part('speaker')
 export class SpeakerPart extends Part {
     private ctx? : AudioContext;
@@ -28,8 +36,10 @@ export class SpeakerPart extends Part {
     private samplesMap : Map<string, ISample> = new Map();
     private _samples : ISampleSet[] = [];
     private _defaultSample : string = '';
+    private legacyIdMap : Map<string, string> = new Map();
     static get defaultSample() { return 'claves'; }
     static get items() { return samples; }
+    static get legacyIdMap() : Map<string, string> { return new Map(); }
     static resolve(id : string) {
         const prefix = Output.config.get(SAMPLE_URL_PREFIX_KEY, '/assets/audio/samples/');
         return join(prefix, id);
@@ -40,10 +50,10 @@ export class SpeakerPart extends Part {
     constructor() {
         super();
         (this.constructor as typeof SpeakerPart).items.forEach((set) => {
-            const sampleSet : ISampleSet = { id: set.id, label: set.label, samples: [] }
+            const sampleSet : ISampleSet = { id: set.id, label: set.label, resources: [] }
             this._samples.push(sampleSet);
-            set.samples.forEach((sample) => {
-                sampleSet.samples.push(Object.assign(sample, {}));
+            set.resources.forEach((sample) => {
+                sampleSet.resources.push(Object.assign(sample, {}));
                 // Build a map of id => sample data to access those swiftly
                 this.samplesMap.set(sample.id, sample);
             });
@@ -64,14 +74,15 @@ export class SpeakerPart extends Part {
             .then(r => this.ctx!.decodeAudioData(r));
     }
     getSample(src : string) : Promise<AudioBuffer>{
-        if (!bufferCache.has(src)) {
-            return this.loadSample(src)
+        const srcRes = legacyValueCheck(src, this.legacyIdMap);
+        if (!bufferCache.has(srcRes)) {
+            return this.loadSample(srcRes)
                 .then((buffer) => {
-                    bufferCache.set(src, buffer);
+                    bufferCache.set(srcRes, buffer);
                     return buffer;
                 });
         }
-        return Promise.resolve(bufferCache.get(src)!);
+        return Promise.resolve(bufferCache.get(srcRes)!);
     }
     onStop() {
         super.onStop();
@@ -131,8 +142,14 @@ export class SpeakerPart extends Part {
         if (!set) {
             return this._defaultSample;
         }
-        const sample = set.samples[Math.floor(Math.random() * set.samples.length)];
+        const sample = set.resources[Math.floor(Math.random() * set.resources.length)];
         return sample.id;
+    }
+    setLegacyIdMap(map: Map<string, string>) {
+        this.legacyIdMap = map;
+    }
+    getLegacyIdMap(): Map<string, string> {
+        return this.legacyIdMap;
     }
     set pitch(r : number) {
         this.core.playbackRate = Math.min(Math.max(r, 0), 200) / 100;

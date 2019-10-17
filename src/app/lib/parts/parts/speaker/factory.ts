@@ -19,7 +19,7 @@ export function SpeakerAPIFactory(partClass : typeof SpeakerPart) : IPartAPI {
             returnType: 'Sample',
             blockly: {
                 customField() {
-                    return new FieldSample(partClass.defaultSample, partClass.items);
+                    return new FieldSample(partClass.defaultSample, partClass.items, partClass.legacyIdMap);
                 },
             },
         }],

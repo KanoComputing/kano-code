@@ -8,13 +8,13 @@ export interface ISample {
 export interface ISampleSet {
     id : string;
     label : string;
-    samples : ISample[];
+    resources : ISample[];
 }
 
 export const samples : ISampleSet[] = [{
     label: 'Drum Machine',
     id: 'drum-machine',
-    samples: [{
+    resources: [{
         id: 'claves',
         label: 'Claves',
         src: 'claves.wav',
@@ -82,7 +82,7 @@ export const samples : ISampleSet[] = [{
 }, {
     label: 'Acoustic Guitar',
     id: 'acoustic-guitar',
-    samples: [{
+    resources: [{
         src: 'guitar_1st_E.wav',
         id: 'guitar_1st_E',
         label: 'Note 1',
@@ -106,7 +106,7 @@ export const samples : ISampleSet[] = [{
 }, {
     label: 'Electric Guitar',
     id: 'electric-guitar',
-    samples: [{
+    resources: [{
         src: 'electric_guitar_1.wav',
         id: 'electric_guitar_1',
         label: 'Note 1',
@@ -130,7 +130,7 @@ export const samples : ISampleSet[] = [{
 }, {
     label: 'Instruments',
     id: 'instruments',
-    samples: [{
+    resources: [{
         src: 'ambi_piano.wav',
         id: 'ambi_piano',
         label: 'Ambi Piano',
@@ -166,7 +166,7 @@ export const samples : ISampleSet[] = [{
 }, {
     label: 'Kano',
     id: 'kano',
-    samples: [{
+    resources: [{
         src: 'boot_up_v2.wav',
         id: 'boot_up_v2',
         label: 'Boot Up',
@@ -206,7 +206,7 @@ export const samples : ISampleSet[] = [{
 }, {
     label: 'Loops',
     id: 'loops',
-    samples: [{
+    resources: [{
         src: 'loop_amen_full.wav',
         id: 'loop_amen_full',
         label: 'Amen',
@@ -238,7 +238,7 @@ export const samples : ISampleSet[] = [{
 }, {
     label: 'Sounds',
     id: 'sounds',
-    samples: [{
+    resources: [{
         src: 'perc_bell.wav',
         id: 'perc_bell',
         label: 'Bell',

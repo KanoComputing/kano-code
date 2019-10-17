@@ -4,20 +4,24 @@ import '@kano/styles/typography.js';
 import '../components/kc-sample-picker.js';
 import { subscribeDOM } from '@kano/common/index.js';
 import { KCSamplePicker } from '../components/kc-sample-picker.js';
+import { IItemDataResource, IItemData } from '../../../../blockly/fields/stamps-field.js';
+import { FieldWithLabelMixin } from '../../../../blockly/fields/field-with-label-mixin.js';
 
-interface IItemData {
-    id : string;
-    label : string;
-    samples : { id : string, src : string, label : string }[];
-}
-
-export class FieldSample extends Field {
+export class FieldSample extends FieldWithLabelMixin(Field) {
     private domNode : KCSamplePicker|null = null;
-    private items : IItemData[];
-    constructor(value : string, items : IItemData[], optValidator? : () => void) {
+    private legacyIdMap: Map<string, string>;
+    constructor(value : string, items : IItemData[], legacyIdMap : Map<string, string>, optValidator? : () => void) {
         super(value, optValidator);
         this.items = items;
+        this.legacyIdMap = legacyIdMap;
     }
+
+    render_() {
+        this.legacyValueCheck(this.getValue());
+        this.label = this.getLabelFromValue(this.getValue());
+        super.render_();
+    }
+
     showEditor_() {
         if (!this.domNode) {
             this.domNode = document.createElement('kc-sample-picker') as KCSamplePicker;
@@ -29,11 +33,12 @@ export class FieldSample extends Field {
                 return {
                     id: set.id,
                     label: set.label,
-                    items: set.samples.map((sample) => ({ id: sample.id, label: sample.label, image: sample.src })),
+                    items: set.resources.map((sample) => ({ id: sample.id, label: sample.label, image: sample.src })),
                 };
             });
-            subscribeDOM(this.domNode, 'value-changed', (e : CustomEvent) => {
-                this.setValue(e.detail);
+            subscribeDOM(this.domNode, 'value-changed', (e: CustomEvent) => {
+                this.setLabel(e.detail.label);
+                this.setValue(e.detail.id);
             });
         }
         Blockly.WidgetDiv.show(
@@ -70,6 +75,41 @@ export class FieldSample extends Field {
             elementSize,
             this.sourceBlock_.RTL,
         );
+    }
+    getDisplayText_() {
+        return this.getLabel();
+    }
+    legacyValueCheck(value: string) {
+        const newId = this.legacyIdMap.get(value);
+        if (newId) {
+            this.setValue(newId);
+            this.setLabel(this.getLabelFromValue(newId));
+        }
+    }
+    setLegacyIdMap(map: Map<string, string>) {
+        this.legacyIdMap = map;
+    }
+    getItemForValue(value: string): { id: string, label: string, src: string } | null {
+        for (let i = 0; i < this.items.length; i += 1) {
+            const found = this.items[i].resources.find(s => s.id === value);
+            if (found) {
+                return found;
+            }
+        }
+        return null;
+    }
+    getLabelFromValue(value: string): string {
+        const item = this.getItemForValue(value);
+        if (item) {
+            return item.label;
+        }
+        return '';
+    }
+    setLabel(label: string) {
+        this.label = label;
+    }
+    getLabel() {
+        return this.label;
     }
     static widgetDispose_() {}
 }
