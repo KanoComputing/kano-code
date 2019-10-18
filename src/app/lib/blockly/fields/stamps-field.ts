@@ -22,8 +22,6 @@ export interface IItemData {
 
 export class StampsField extends FieldWithLabelMixin(FieldIcon) {
     private domNode : KCIndexedPicker|null = null;
-    private items : IItemData[];
-    // private label : string = '';
     constructor(value : string, items : IItemData[], optValidator? : () => void, legacyIds? : Map<string, string>) {
         super(value, optValidator);
         this.items = items;

@@ -8,7 +8,7 @@ import { BeaconWidget } from '../../../../challenge/widget/beacon.js';
 import { IDisposable } from '@kano/common/index.js';
 import { IItemData, IItemDataResource } from '../../../../blockly/fields/stamps-field.js';
 import { throttle } from '../../../../decorators.js';
-import { Resource } from '../../../../output/resources.js';
+import { FieldSample } from '../../../../parts/parts/speaker/blockly/field-sample.js';
 
 class IndexedPickerBeaconWidget extends BeaconWidget {
     getPosition() { return 'picker-target:0,50'; }
@@ -26,7 +26,7 @@ export class IndexedPickerFieldStepHelper extends BlocklyValueStepHelper {
 
     testCase(challenge: KanoCodeChallenge, step: IStepData) {
         const field = this.getField(challenge, step);
-        return field && field.constructor === StampsField;
+        return field && field.constructor === StampsField || field.constructor === FieldSample;
     }
 
     test(challenge: KanoCodeChallenge, step: IStepData) {

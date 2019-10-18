@@ -1,8 +1,6 @@
 import { Field } from "@kano/kwc-blockly/blockly.js";
 import { IItemData, IItemDataResource } from "./stamps-field";
 
-type Constructor<T> = Function & { prototype: T };
-
 const sampleData = [
     {
         id: '',
@@ -16,10 +14,13 @@ const sampleData = [
         ],
     },
 ];
-export function FieldWithLabelMixin<T extends Constructor<object>>(Base: any) {
+export function FieldWithLabelMixin(Base: any) {
     return class extends Base {
         label: string = '';
         items: IItemData[] = sampleData;
+        constructor(...args: any[]) {
+            super(...args);
+        }
         getItemForValue(value: string): { id: string, label: string, src: string } | null {
             for (let i = 0; i < this.items.length; i += 1) {
                 const found = this.items[i].resources.find((s : IItemDataResource) => s.id === value);

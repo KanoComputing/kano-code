@@ -89,27 +89,10 @@ export class FieldSample extends FieldWithLabelMixin(Field) {
     setLegacyIdMap(map: Map<string, string>) {
         this.legacyIdMap = map;
     }
-    getItemForValue(value: string): { id: string, label: string, src: string } | null {
-        for (let i = 0; i < this.items.length; i += 1) {
-            const found = this.items[i].resources.find(s => s.id === value);
-            if (found) {
-                return found;
-            }
-        }
-        return null;
+
+    getOptions() {
+        return this.items;
     }
-    getLabelFromValue(value: string): string {
-        const item = this.getItemForValue(value);
-        if (item) {
-            return item.label;
-        }
-        return '';
-    }
-    setLabel(label: string) {
-        this.label = label;
-    }
-    getLabel() {
-        return this.label;
-    }
+
     static widgetDispose_() {}
 }
