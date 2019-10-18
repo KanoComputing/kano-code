@@ -1,6 +1,6 @@
 import { Field, utils, Blockly } from '@kano/kwc-blockly/blockly.js';
 
-export abstract class FieldIcon extends Field {
+export class FieldIcon extends Field {
     private spacing: number = 6;
     private sizeParams: { width: number, height: number, padding: [number, number, number, number] };
     private textHide: boolean = false;
@@ -112,7 +112,7 @@ export abstract class FieldIcon extends Field {
     setLegacyIdMap(map : Map<string, string>) {
         this.legacyIdMap = map;
     }
-    abstract showEditor_(): void;
-    abstract getIcon(id: string): string;
-    abstract getLabel(): string;
+    showEditor_() {};
+    getIcon(id: string) { return ''; };
+    getLabel() { return ''; };
 }

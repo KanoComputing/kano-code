@@ -5,8 +5,6 @@ import '@kano/styles/typography.js';
 import '../../../elements/kc-indexed-picker.js';
 import { KCIndexedPicker } from '../../../elements/kc-indexed-picker.js';
 import { subscribeDOM } from '@kano/common/index.js';
-import { FieldWithLabelMixin } from './field-with-label-mixin.js';
-
 
 export interface IItemDataResource {
     id : string;
@@ -20,8 +18,10 @@ export interface IItemData {
     resources: IItemDataResource[];
 }
 
-export class StampsField extends FieldWithLabelMixin(FieldIcon) {
+export class StampsField extends FieldIcon {
     private domNode : KCIndexedPicker|null = null;
+    private label: string = '';
+    private items: IItemData[];
     constructor(value : string, items : IItemData[], optValidator? : () => void, legacyIds? : Map<string, string>) {
         super(value, optValidator);
         this.items = items;
@@ -102,6 +102,28 @@ export class StampsField extends FieldWithLabelMixin(FieldIcon) {
     }
     getOptions() {
         return this.items;
+    }
+    getItemForValue(value: string): { id: string, label: string, src: string } | null {
+        for (let i = 0; i < this.items.length; i += 1) {
+            const found = this.items[i].resources.find((s: IItemDataResource) => s.id === value);
+            if (found) {
+                return found;
+            }
+        }
+        return null;
+    }
+    getLabelFromValue(value: string): string {
+        const item = this.getItemForValue(value);
+        if (item) {
+            return item.label;
+        }
+        return '';
+    }
+    setLabel(label: string) {
+        this.label = label;
+    }
+    getLabel() {
+        return this.label;
     }
     static widgetDispose_() {}
 }

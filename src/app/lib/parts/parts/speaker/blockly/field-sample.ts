@@ -5,11 +5,12 @@ import '../components/kc-sample-picker.js';
 import { subscribeDOM } from '@kano/common/index.js';
 import { KCSamplePicker } from '../components/kc-sample-picker.js';
 import { IItemDataResource, IItemData } from '../../../../blockly/fields/stamps-field.js';
-import { FieldWithLabelMixin } from '../../../../blockly/fields/field-with-label-mixin.js';
 
-export class FieldSample extends FieldWithLabelMixin(Field) {
+export class FieldSample extends Field {
     private domNode : KCSamplePicker|null = null;
     private legacyIdMap: Map<string, string>;
+    private label: string = '';
+    private items: IItemData[];
     constructor(value : string, items : IItemData[], legacyIdMap : Map<string, string>, optValidator? : () => void) {
         super(value, optValidator);
         this.items = items;
@@ -92,6 +93,29 @@ export class FieldSample extends FieldWithLabelMixin(Field) {
 
     getOptions() {
         return this.items;
+    }
+
+    getItemForValue(value: string): { id: string, label: string, src: string } | null {
+        for (let i = 0; i < this.items.length; i += 1) {
+            const found = this.items[i].resources.find((s: IItemDataResource) => s.id === value);
+            if (found) {
+                return found;
+            }
+        }
+        return null;
+    }
+    getLabelFromValue(value: string): string {
+        const item = this.getItemForValue(value);
+        if (item) {
+            return item.label;
+        }
+        return '';
+    }
+    setLabel(label: string) {
+        this.label = label;
+    }
+    getLabel() {
+        return this.label;
     }
 
     static widgetDispose_() {}
