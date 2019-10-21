@@ -9,7 +9,7 @@ import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
 import { ToolboxEntry, IToolboxWhitelist } from '../editor/toolbox.js';
 import { QueryEngine } from '../editor/selector/selector.js';
-import { IPartsControlsEntry } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
+import { IPartsControlsEntry, KCPartsControls } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
 import { _ } from '../i18n/index.js';
 
 type PartAPIOrFactory = IPartAPI | IPartFactory // update this
@@ -59,6 +59,18 @@ export class EditorPartsManager {
             return;
         }
         const partsWhitelist = Object.keys(this.whitelist);
+        partsControls.addPartsHidden = !partsWhitelist.length;
+    }
+    // Reset workspace to include all parts
+    clearWhiteList() {
+        if (!this.editor.workspaceView || !this.editor.workspaceView.partsControls) {
+            return;
+        }
+        const { partsControls } = this.editor.workspaceView;
+        this.whitelist = null;
+        const partsWhitelist = Array.from(this.apiRegistry.keys());
+        // set whitelist to list all available parts
+        this.addDialogProvider.setWhitelist(partsWhitelist);
         partsControls.addPartsHidden = !partsWhitelist.length;
     }
     onInject() {
