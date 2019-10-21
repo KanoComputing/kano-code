@@ -40,12 +40,14 @@ Custom property | Description | Default
 import { PaperDialogBehavior } from '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
 import '@polymer/marked-element/marked-element.js';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { customElement, property } from '@polymer/decorators/lib/decorators.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
 import '@kano/styles/typography.js';
 import { button } from '@kano/styles/button.js';
 import { warning } from './icons.js';
 
-export class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElement) {
+@customElement('kano-alert')
+export class KanoAlert extends (mixinBehaviors([PaperDialogBehavior], PolymerElement) as new () => PolymerElement & PaperDialogBehavior) {
     static get template() {
         return html`
         ${button}
@@ -137,14 +139,10 @@ export class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElem
         </div>
         `;
     }
-    static get properties() {
-        return {
-            heading: String,
-            text: String,
-        };
-    }
+    @property({ type: String }) heading = '';
+    @property({ type: String }) text = '';
     open() {
-        this.backdropElement.style.background = '#414a51';
+        (this.backdropElement as HTMLElement).style.background = '#414a51';
         super.open();
         if ('animate' in HTMLElement.prototype) {
             this.animate({
@@ -173,6 +171,3 @@ export class KanoAlert extends mixinBehaviors([PaperDialogBehavior], PolymerElem
         }
     }
 }
-
-customElements.define('kano-alert', KanoAlert);
-
