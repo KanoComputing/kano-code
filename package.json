@@ -15,7 +15,7 @@
     "build:src": "tsc",
     "build": "yarn clean && yarn vendor && yarn build:src && yarn build:def",
     "clean": "rimraf ./dist",
-    "serve": "es6-server",
+    "serve": "es-dev-server --node-resolve --watch",
     "docs": "yarn typedoc --options tdconfig.json",
     "serve-test": "web-tester serve dist/**/*.test.js",
     "test": "web-tester run dist/**/*.test.js",
@@ -38,7 +38,6 @@
   "author": "Paul Varache <perso@paulvarache.ninja>",
   "license": "ISC",
   "devDependencies": {
-    "@kano/es6-server": "^1.0.3",
     "@kano/web-tester": "^1.0.0-alpha.20",
     "@polymer/iron-test-helpers": "^3.0.1",
     "@types/chai": "^4.1.7",
@@ -47,6 +46,7 @@
     "@webcomponents/shadycss": "^1.9.1",
     "@webcomponents/webcomponentsjs": "^2.2.8",
     "chokidar": "^2.1.6",
+    "es-dev-server": "^1.18.4",
     "fast-glob": "^2.2.6",
     "mkdirp": "^0.5.1",
     "rimraf": "^2.6.3",
@@ -89,6 +89,6 @@
     "monaco-editor": "^0.16.2",
     "omggif": "^1.0.9",
     "prismjs": "^1.15.0",
-    "tone": "^0.12.80"
+    "tone": "^13.8.25"
   }
 }
