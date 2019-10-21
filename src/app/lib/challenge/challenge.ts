@@ -125,7 +125,7 @@ export class Challenge extends ChallengeBase {
         // The engine uses a similar API to the DOM events
         subscribeDOM(engine as unknown as HTMLElement, 'done', () => {
             this.editor.toolbox.setWhitelist({});
-            this.editor.parts.setWhitelist({});
+            this.editor.parts.setWhitelist(null);
             this._onDidEnd.fire();
         }, this, this.subscriptions);
         engine.start();
