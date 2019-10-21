@@ -26,6 +26,14 @@ export class KCEditorBanner extends LitElement {
 
     static get styles() {
         return [css`
+            @keyframes pop-in {
+                0% {
+                    transform: scale(1.1, 1.1);
+                }
+                100% {
+                    transform: scale(1, 1);
+                }
+            }
             :host {
                 position: relative;
                 display: flex;
@@ -35,6 +43,9 @@ export class KCEditorBanner extends LitElement {
                 border-radius: 6px;
                 box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
                 width: 300px;
+            }
+            :host(.animate) {
+                animation: pop-in 200ms ease-in-out;
             }
 
             slot[name="avatar"]::slotted(*) {
@@ -144,6 +155,19 @@ export class KCEditorBanner extends LitElement {
     renderHint() {
         if (!this.hintText.length || !this.hintDisplayed) return;
         return html`<div class="hint">${marked(this.hintText)}</div>`;
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.classList.add('animate');
+    }
+
+    updated(props : Map<string, any>) {
+        super.updated(props);
+        this.classList.remove('animate');
+        setTimeout(() => {
+            this.classList.add('animate');
+        }, 0);
     }
 
     render() {
