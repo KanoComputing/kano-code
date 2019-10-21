@@ -9,7 +9,7 @@ import { DefaultInlineDisplay } from './inline-display.js';
 import Editor from '../editor/editor.js';
 import { ToolboxEntry, IToolboxWhitelist } from '../editor/toolbox.js';
 import { QueryEngine } from '../editor/selector/selector.js';
-import { IPartsControlsEntry, KCPartsControls } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
+import { IPartsControlsEntry } from '../../elements/kc-workspace-frame/kc-parts-controls.js';
 import { _ } from '../i18n/index.js';
 
 type PartAPIOrFactory = IPartAPI | IPartFactory // update this
