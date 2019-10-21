@@ -1,6 +1,6 @@
 import { KCEditorBanner } from '../../../elements/kano-editor-banner/kano-editor-banner.js';
 import { EventEmitter, subscribeDOM, IEvent } from '@kano/common/index.js';
-import 'twemoji-min/2/twemoji.min.js';
+import { twemoji } from '@kano/twemoji/index.es.js';
 import { BlocklyEditorBannerWidget } from '../../widget/blockly-banner.js';
 import { eye, reset } from '@kano/icons/ui.js';
 
@@ -40,7 +40,7 @@ export class BannerWidget extends BlocklyEditorBannerWidget {
     }
     setText(text : string) {
         const bannerEl = this.getBannerEl();
-        bannerEl.text = window.twemoji.parse(text);
+        bannerEl.text = twemoji.parse(text);
     }
     setProgress(progress : number) {
         const bannerEl = this.getBannerEl();
@@ -61,7 +61,7 @@ export class BannerWidget extends BlocklyEditorBannerWidget {
 
     setHint(text : string) {
         const bannerEl = this.getBannerEl();
-        bannerEl.hintText = window.twemoji.parse(text);
+        bannerEl.hintText = twemoji.parse(text);
     }
     
     addHintButton(text : string) {

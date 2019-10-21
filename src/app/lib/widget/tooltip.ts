@@ -1,7 +1,7 @@
 import '@kano/styles/typography.js';
 import '@kano/styles/color.js';
 import 'marked/lib/marked.js';
-import 'twemoji-min/2/twemoji.min.js';
+import { twemoji } from '@kano/twemoji/index.es.js';
 import { KanoTooltip, CaretType } from '../../elements/kano-tooltip/kano-tooltip.js';
 import { html, render } from 'lit-html/lit-html.js';
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js';
@@ -48,7 +48,7 @@ export class Tooltip implements IEditorWidget {
         domNode.caret = caret;
     }
     setText(text : string) {
-        const emojiReady = window.twemoji.parse(text);
+        const emojiReady = twemoji.parse(text);
         this.update(window.marked(emojiReady));
     }
     setPosition(position : string) {
