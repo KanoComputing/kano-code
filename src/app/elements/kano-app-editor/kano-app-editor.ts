@@ -111,13 +111,6 @@ export class KanoAppEditor extends LitElement {
             .tab:first-child {
                 margin-left: 0;
             }
-            :host iron-pages.workspace-pages {
-                display: flex;
-                flex-direction: column;
-                flex: 1;
-                flex-basis: 0.000000001px;
-                overflow: visible;
-            }
             :host kano-code-display {
                 margin: 16px;
                 overflow: auto;

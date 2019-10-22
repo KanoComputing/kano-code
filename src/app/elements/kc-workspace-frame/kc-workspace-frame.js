@@ -44,11 +44,6 @@ class KcWorkspaceFrame extends PolymerElement {
                 align-items: center;
                 justify-content: center;
             }
-            .pause-overlay iron-image {
-                width: 40%;
-                height: 40%;
-                cursor: pointer;
-            }
             #workspace-placeholder {
                 height: 100%;
             }

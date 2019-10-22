@@ -38,10 +38,10 @@ Custom property | Description | Default
 */
 
 import { PaperDialogBehavior } from '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
-import '@polymer/marked-element/marked-element.js';
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { customElement, property } from '@polymer/decorators/lib/decorators.js';
 import { mixinBehaviors } from '@polymer/polymer/lib/legacy/class.js';
+import 'marked/lib/marked.js';
 import '@kano/styles/typography.js';
 import { button } from '@kano/styles/button.js';
 import { warning } from './icons.js';
@@ -127,8 +127,8 @@ export class KanoAlert extends (mixinBehaviors([PaperDialogBehavior], PolymerEle
         </slot>
         <div class="dialog-text">
             <h2>[[heading]]</h2>
+            <div class="markdown-html" slot="markdown-html" inner-h-t-m-l="[[markedText]]"></div>
             <marked-element markdown="[[text]]">
-                <div class="markdown-html" slot="markdown-html"></div>
             </marked-element>
             <div class="actions">
                 <slot name="actions">
@@ -141,6 +141,10 @@ export class KanoAlert extends (mixinBehaviors([PaperDialogBehavior], PolymerEle
     }
     @property({ type: String }) heading = '';
     @property({ type: String }) text = '';
+    @property({ type: String, computed: '_computedMarked(text)' }) markedText = '';
+    _computedMarked(src : string) {
+        return window.marked(src);
+    }
     open() {
         (this.backdropElement as HTMLElement).style.background = '#414a51';
         super.open();
