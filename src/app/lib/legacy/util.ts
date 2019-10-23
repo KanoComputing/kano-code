@@ -38,18 +38,18 @@ export const LegacyUtil = {
         }
 
         if (partData.type === 'text') {
-            if (partData.userProperties.text) {
+            if (partData.userProperties && partData.userProperties.text) {
                 blocks.push(`<block type="${partData.id}_value_set">${textValue('VALUE', partData.userProperties.text)}</block>`);
             }
-            if (partData.userStyle.color) {
+            if (partData.userStyle && partData.userStyle.color) {
                 blocks.push(`<block type="${partData.id}_color_set">${colorValue('COLOR', partData.userStyle.color)}</block>`);
             }
         }
         if (partData.type === 'button') {
-            if (partData.userProperties.label) {
+            if (partData.userProperties && partData.userProperties.label) {
                 blocks.push(`<block type="${partData.id}_label_set">${textValue('LABEL', partData.userProperties.label)}</block>`);
             }
-            if (partData.userStyle['background-color']) {
+            if (partData.userStyle && partData.userStyle['background-color']) {
                 blocks.push(`<block type="${partData.id}_background_set">${colorValue('BACKGROUND', partData.userStyle['background-color'])}</block>`);
             }
         }
@@ -63,13 +63,13 @@ export const LegacyUtil = {
             }
         }
         if (partData.type === 'oscillator') {
-            if (partData.userProperties.delay) {
+            if (partData.userProperties && partData.userProperties.delay) {
                 blocks.push(`<block type="${partData.id}_delay_set">${mathValue('DELAY', partData.userProperties.delay)}</block>`);
             }
-            if (partData.userProperties.speed) {
+            if (partData.userProperties && partData.userProperties.speed) {
                 blocks.push(`<block type="${partData.id}_speed_set">${mathValue('SPEED', partData.userProperties.speed)}</block>`);
             }
-            if (partData.userProperties.wave) {
+            if (partData.userProperties && partData.userProperties.wave) {
                 blocks.push(`<block type="${partData.id}_wave_set"><field name="WAVE">${partData.userProperties.wave}</field></block>`);
             }
         }
