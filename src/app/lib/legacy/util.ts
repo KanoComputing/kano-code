@@ -74,13 +74,16 @@ export const LegacyUtil = {
             }
         }
 
-        const blockChain = blocks.reduce((acc, blockString) => {
-            return `${blockString.replace('</block>', '')}<next>${acc}</next></block>`;
-        }, '');
+        if (blocks.length) {
+            const blockChain = blocks.reduce((acc, blockString) => {
+                return `${blockString.replace('</block>', '')}<next>${acc}</next></block>`;
+            }, '');
+    
+            tpl.innerHTML = `<block type="app_onStart"><statement name="CALLBACK">${blockChain}</statement></block>`
+    
+            root.appendChild(tpl.content);
+        }
 
-        tpl.innerHTML = `<block type="app_onStart"><statement name="CALLBACK">${blockChain}</statement></block>`
-
-        root.appendChild(tpl.content);
         return root;
     },
     transformBlock(root : HTMLElement, selector : string, mutator : (block : HTMLElement) => void) {
