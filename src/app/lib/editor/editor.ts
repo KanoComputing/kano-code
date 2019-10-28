@@ -227,10 +227,10 @@ export class Editor extends EditorOrPlayer {
         this.parts = new EditorPartsManager(this);
         this.parts.registerQueryHandlers(this.queryEngine);
         this.parts.onDidOpenAddParts(() => {
-            this.playUISound('computer_toggle');
+            this.playUISound('toggle-open');
         });
         this.parts.onDidAddPart(() => {
-            this.playUISound('pop');
+            this.playUISound('add');
         });
         window.Kano.Code.mainEditor = this;
     }

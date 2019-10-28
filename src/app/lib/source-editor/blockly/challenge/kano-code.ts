@@ -255,7 +255,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         }, 300);
 
         this._beaconSoundSub = subscribeTimeout(() => {
-            this.editor.playUISound('echo');
+            this.editor.playUISound('beacon');
         }, 3000);
     }
     /**

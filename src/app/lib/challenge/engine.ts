@@ -30,6 +30,7 @@ export class Engine extends ChallengeEngine {
     constructor(editor : Editor) {
         super();
         this.editor = editor;
+        this.editor.playUISound('start-challenge');
         subscribeDOM(this as unknown as HTMLElement, 'done', () => this.onEnd(), this, this.subscriptions);
     }
     _updateStep() {
@@ -38,12 +39,19 @@ export class Engine extends ChallengeEngine {
         if (!step) {
             return;
         }
+        const firstOrLastStep = this.stepIndex === 0
+            || this.stepIndex === this._steps.length - 1;
+        if (!firstOrLastStep && step.type) {
+            this.editor.playUISound('banner-change');
+        }
         this.stepHelpers.forEach(helper => helper.leave(this, step));
         this.stepHelpers = this.helpers.filter(helper => helper.test(this, step));
         this.stepHelpers.forEach(helper => helper.enter(this, step));
         this._onDidUpdateStepIndex.fire({ index: this.stepIndex, step });
     }
-    onEnd() {}
+    onEnd() {
+        this.editor.playUISound('win');
+    }
     registerAlias(alias : string, target : string) {
         this.aliases.push(this.editor.registerAlias(alias, target));
     }
