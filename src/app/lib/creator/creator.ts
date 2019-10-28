@@ -309,10 +309,10 @@ export abstract class Creator<T extends Stepper> {
         // Jump to the specific step
         engine.stepIndex = realIndex;
         // Watch step changes to update the UI accordingly
-        this.challenge.engine!.onDidUpdateStepIndex((detail) => {
+        this.challenge.engine!.onDidUpdateStepIndex((index) => {
             // Retrieve the source step using the stepper's mappings
             if (this.previewStepper && this.previewStepper.mappings) {
-                const originalIndex = this.previewStepper.mappings.get(detail.index);
+                const originalIndex = this.previewStepper.mappings.get(index);
                 if (typeof originalIndex !== 'undefined') {
                     this.ui.domNode.selectedStepIndex = originalIndex;
                 }

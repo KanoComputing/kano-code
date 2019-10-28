@@ -4,11 +4,6 @@ import { IEditorWidget } from '../editor/widget/widget.js';
 import { subscribeDOM, IDisposable, EventEmitter, dispose } from '@kano/common/index.js';
 import { IStepHelper } from './helper.js';
 
-interface IStepEventDetail {
-    index : number;
-    step : any;
-}
-
 // Trick to make the custom emitter from the challenge engine have a normal eventemitter api
 (ChallengeEngine.prototype as any).on = (ChallengeEngine.prototype as any).addEventListener;
 
@@ -24,7 +19,7 @@ export class Engine extends ChallengeEngine {
     protected _onDidRequestNextChallenge = new EventEmitter();
     get onDidRequestNextChallenge() { return this._onDidRequestNextChallenge.event; }
 
-    private _onDidUpdateStepIndex : EventEmitter<IStepEventDetail> = new EventEmitter();
+    private _onDidUpdateStepIndex : EventEmitter<number> = new EventEmitter();
     get onDidUpdateStepIndex() { return this._onDidUpdateStepIndex.event; }
 
     constructor(editor : Editor) {
@@ -47,7 +42,7 @@ export class Engine extends ChallengeEngine {
         this.stepHelpers.forEach(helper => helper.leave(this, step));
         this.stepHelpers = this.helpers.filter(helper => helper.test(this, step));
         this.stepHelpers.forEach(helper => helper.enter(this, step));
-        this._onDidUpdateStepIndex.fire({ index: this.stepIndex, step });
+        this._onDidUpdateStepIndex.fire(this.stepIndex);
     }
     onEnd() {
         this.editor.playUISound('win');

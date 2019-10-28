@@ -256,7 +256,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
 
         this._beaconSoundSub = subscribeTimeout(() => {
             this.editor.playUISound('beacon');
-        }, 3000);
+        }, 5000);
     }
     /**
      * Removes a previously added beacon
