@@ -161,7 +161,14 @@ export class Editor extends EditorOrPlayer {
      * @event
      */
     get onDidLayoutChange() { return this._onDidLayoutChange.event }
-    
+
+    private _onWillPlaySound: EventEmitter<string> = new EventEmitter();
+    /**
+     * Fired when the an editor element requests a sound be played
+     * @event
+     */
+    get onWillPlaySound() { return this._onWillPlaySound.event; };
+
     /**
      * Creates a new Editor. This editor can then be injected into any web page
      * @param opts Options for the editor
@@ -219,6 +226,12 @@ export class Editor extends EditorOrPlayer {
 
         this.parts = new EditorPartsManager(this);
         this.parts.registerQueryHandlers(this.queryEngine);
+        this.parts.onDidOpenAddParts(() => {
+            this.playUISound('computer_toggle');
+        });
+        this.parts.onDidAddPart(() => {
+            this.playUISound('pop');
+        });
         window.Kano.Code.mainEditor = this;
     }
     private _setupMediaPath(path = '/node_modules/@kano/code') {
@@ -598,6 +611,9 @@ export class Editor extends EditorOrPlayer {
         return toDisposable(() => {
             this.selectorAliases.delete(alias);
         });
+    }
+    playUISound(name : string) {
+        this._onWillPlaySound.fire(name);
     }
     private registerTagHandlers() {
         registerUITagHandlers(this);

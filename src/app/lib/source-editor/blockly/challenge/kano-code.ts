@@ -1,20 +1,20 @@
+import { button } from '@kano/styles/button.js';
+import { dataURI } from '@kano/icons-rendering/index.js';
+import { subscribeTimeout, IDisposable, dispose } from '@kano/common/index.js';
 import BlocklyChallenge from './blockly.js';
 import { Editor } from '../../../editor/editor.js';
 import { BannerWidget, IBannerButton } from '../../../challenge/widget/banner.js';
 import { BeaconWidget } from '../../../challenge/widget/beacon.js';
-import { subscribeTimeout, IDisposable, dispose } from '@kano/common/index.js';
 import { Part } from '../../../parts/part.js';
 import { Tooltip } from '../../../widget/tooltip.js';
 import { DismissableTooltip } from '../../../widget/dismissable-tooltip.js';
 import { challengeStyles } from '../../../challenge/styles.js';
 import '../../../challenge/components/kc-toolbox-entry-preview.js';
 import '../../../challenge/components/kc-part-api-preview.js';
-import { dataURI } from '@kano/icons-rendering/index.js';
 import { DropdownFieldStepHelper } from './helpers/dropdown.js';
 import { IndexedPickerFieldStepHelper } from './helpers/indexed-picker.js';
 import { QuotePickerFieldStepHelper } from './helpers/quote-picker.js';
 import { BannerHelper } from './helpers/banner.js';
-import { button } from '@kano/styles/button.js';
 
 export interface IBannerIconProvider {
     getDomNode() : HTMLElement;
@@ -23,6 +23,7 @@ export interface IBannerIconProvider {
 export class KanoCodeChallenge extends BlocklyChallenge {
     public editor : Editor;
     private _beaconSub? : IDisposable;
+    private _beaconSoundSub? : IDisposable;
     private tooltips : Tooltip[] = [];
     public banner? : BannerWidget;
     public bannerButtons : IBannerButton[] = [];
@@ -252,6 +253,10 @@ export class KanoCodeChallenge extends BlocklyChallenge {
             }
 
         }, 300);
+
+        this._beaconSoundSub = subscribeTimeout(() => {
+            this.editor.playUISound('echo');
+        }, 3000);
     }
     /**
      * Removes a previously added beacon
@@ -260,6 +265,9 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         // If a beacon is queued for display, cancel the timeout
         if (this._beaconSub) {
             this._beaconSub.dispose();
+        }
+        if (this._beaconSoundSub) {
+            this._beaconSoundSub.dispose();
         }
         const widget = this.widgets.get('beacon');
         if (!widget) {
