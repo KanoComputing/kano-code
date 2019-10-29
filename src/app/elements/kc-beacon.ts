@@ -74,7 +74,7 @@ export class KCBeacon extends LitElement {
                 border-radius: 50%;
                 border: 2px solid white;
                 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
-                animation: 2s ease-out infinite beat;
+                animation: 2s ease-out 1s infinite beat;
             }
             .ring {
                 position: absolute;
@@ -88,7 +88,7 @@ export class KCBeacon extends LitElement {
                 transform: scale(0, 0);
             }
             .ring.animate {
-                animation: 2s ease-out infinite ring;
+                animation: 2s ease-out 1s infinite ring;
             }
         `];
     }

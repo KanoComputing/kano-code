@@ -162,12 +162,13 @@ export class Editor extends EditorOrPlayer {
      */
     get onDidLayoutChange() { return this._onDidLayoutChange.event }
 
-    private _onWillPlaySound: EventEmitter<string> = new EventEmitter();
+    private _onRequestPlaySound: EventEmitter<string> = new EventEmitter();
     /**
      * Fired when the an editor element requests a sound be played
+     * [[include:play-ui-sounds.md]]
      * @event
      */
-    get onWillPlaySound() { return this._onWillPlaySound.event; };
+    get onRequestPlaySound() { return this._onRequestPlaySound.event; };
 
     /**
      * Creates a new Editor. This editor can then be injected into any web page
@@ -613,7 +614,7 @@ export class Editor extends EditorOrPlayer {
         });
     }
     playUISound(name : string) {
-        this._onWillPlaySound.fire(name);
+        this._onRequestPlaySound.fire(name);
     }
     private registerTagHandlers() {
         registerUITagHandlers(this);

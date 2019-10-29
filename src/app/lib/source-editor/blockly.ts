@@ -68,6 +68,7 @@ export class BlocklySourceEditor implements SourceEditor {
     }
     setFlyoutMode(flyoutMode: boolean) {
         (this.domNode as any).flyoutMode = flyoutMode;
+        this.triggerLayout();
     }
     setInputDisabled(isInputDisabled: boolean) {
         (this.domNode as any).inputDisabled = isInputDisabled;

@@ -1,6 +1,6 @@
 import { button } from '@kano/styles/button.js';
 import { dataURI } from '@kano/icons-rendering/index.js';
-import { subscribeTimeout, IDisposable, dispose } from '@kano/common/index.js';
+import { subscribeTimeout, IDisposable, dispose, subscribeInterval } from '@kano/common/index.js';
 import BlocklyChallenge from './blockly.js';
 import { Editor } from '../../../editor/editor.js';
 import { BannerWidget, IBannerButton } from '../../../challenge/widget/banner.js';
@@ -254,9 +254,9 @@ export class KanoCodeChallenge extends BlocklyChallenge {
 
         }, 300);
 
-        this._beaconSoundSub = subscribeTimeout(() => {
+        this._beaconSoundSub = subscribeInterval(() => {
             this.editor.playUISound('beacon');
-        }, 5000);
+        }, 6000);
     }
     /**
      * Removes a previously added beacon
