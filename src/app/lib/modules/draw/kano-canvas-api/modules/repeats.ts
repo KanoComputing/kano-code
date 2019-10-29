@@ -17,6 +17,7 @@ export class Repeats {
     repeatDrawing(repeats : number, rotation : number, movementX : number, movementY : number, callback: Function) {
         const previousX = this.session.pos.x;
         const previousY = this.session.pos.y;
+        console.log(`x: ${this.session.pos.x}, y: ${this.session.pos.y}`);
         const moveX = movementX ? movementX : 0;
         const moveY = movementY ? movementY : 0;
         if(!this.session.transformation) {
@@ -44,11 +45,7 @@ export class Repeats {
             previousTransform[1][2]
         );
 
-        this.session.transformation = [
-            [1, 0, 0],
-            [0, 1, 0],
-            [0, 0, 1],
-        ];
+        this.session.transformation = previousTransform;
 
         this.session.ctx.closePath();
 
