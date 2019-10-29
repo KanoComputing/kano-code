@@ -47,6 +47,7 @@ suite('BlocklyChallenge', () => {
                         return workspaceTester.workspace;
                     },
                 },
+                playUISound() {},
                 querySelector() {}
             } as unknown as Editor;
             ch = new BlocklyChallenge(editor);
@@ -110,6 +111,7 @@ suite('BlocklyChallenge', () => {
                         return workspaceTester.workspace;
                     },
                 },
+                playUISound() {},
                 querySelector() {}
             } as unknown as Editor;
             ch = new BlocklyChallenge(editor);
@@ -183,6 +185,7 @@ suite('BlocklyChallenge', () => {
                         return workspaceTester.workspace;
                     },
                 },
+                playUISound() {},
                 querySelector() {}
             } as unknown as Editor;
             ch = new BlocklyChallenge(editor);
@@ -226,6 +229,7 @@ suite('BlocklyChallenge', () => {
                         return workspaceTester.workspace;
                     },
                 },
+                playUISound() {},
                 querySelector() {}
             } as unknown as Editor;
     
@@ -260,6 +264,7 @@ suite('BlocklyChallenge', () => {
                         return workspaceTester.workspace;
                     },
                 },
+                playUISound() {},
                 querySelector() {}
             } as unknown as Editor;
     
