@@ -439,6 +439,7 @@ export class KanoCodeChallenge extends BlocklyChallenge {
     }
     dispose() {
         super.dispose();
+        this.hideBeacon();
         this.tooltips.forEach((t) => {
             t.dispose();
             this.editor.removeContentWidget(t);
