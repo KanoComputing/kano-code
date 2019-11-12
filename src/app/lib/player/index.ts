@@ -11,7 +11,7 @@ export class Player extends EditorOrPlayer {
     public output : Output;
     public profiles : Map<string, IOutputProfile> = new Map();
     private _fullscreenEnabled : boolean = true;
-    private _fullscreen : boolean = true;
+    private _fullscreen : boolean = false;
     public element? : HTMLElement;
     public outputRoot? : HTMLElement;
     public before? : HTMLElement;
@@ -102,20 +102,35 @@ export class Player extends EditorOrPlayer {
         if (!this.outputRoot || !this._fullscreenEnabled) {
             return;
         }
+        // TODO: This is not working correctly but is getting there.
+        // Will fix up in next iteration - Paul McK 20191112
+        let aspectRatio = 300 / 400;
+        const { style } = this.outputRoot;
         if (this._fullscreen) {
-            this.outputRoot.style.position = 'fixed';
-            this.outputRoot.style.top = '0';
-            this.outputRoot.style.left = '0';
-            this.outputRoot.style.width = '100%';
-            this.outputRoot.style.height = '100%';
+            // Portrait
+            if (window.innerHeight > window.innerWidth * aspectRatio) {
+                style.width = '84vw';
+                style.height = `calc(84vw * ${aspectRatio})`;
+                style.top = `calc(50% - (84vw * ${aspectRatio} / 2))`;
+                style.left = '8vw';
+            } else {
+                // Landscape
+                aspectRatio = 1 / aspectRatio;
+                style.height = '84vh';
+                style.width = `calc(84vh * ${aspectRatio})`;
+                style.top = 'calc(50% - 42vh)';
+                style.left = `8vw`;
+            }
         } else {
-            this.outputRoot.style.position = '';
-            this.outputRoot.style.top = '';
-            this.outputRoot.style.left = '';
-            this.outputRoot.style.width = '';
-            this.outputRoot.style.height = '';
+            // We are not fullscreen so set the viewport
+            // height relative to the width of the workspace
+            style.width = 'auto';
+            style.height = `auto`;
+            style.top = 'auto';
+            style.left = 'auto';
         }
     }
+
     dispose() {
         if (this.element && this.outputRoot && this.outputRoot.parentNode === this.element) {
             this.element.removeChild(this.outputRoot);

@@ -96,7 +96,7 @@ class KCPlayerToolbar extends PolymerElement {
         };
     }
     fullscreenClicked() {
-        this.dispatchEvent(new CustomEvent('fullscreen-button-clicked'));
+        this.dispatchEvent(new CustomEvent('fullscreen-clicked'));
     }
     pauseClicked() {
         this.dispatchEvent(new CustomEvent('run-clicked'));

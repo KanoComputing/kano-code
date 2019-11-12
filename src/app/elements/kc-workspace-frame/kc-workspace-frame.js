@@ -87,12 +87,20 @@ class KcWorkspaceFrame extends PolymerElement {
             button .icon {
                 fill: #8F9195;
                 width: 8px;
+                height: 8px;
             }
             button#fullscreen-close {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 fill: rgba(255, 255, 255, 0.75);
+            }
+            button#fullscreen-close .icon {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                line-height: 8px;
             }
             button#fullscreen-close:hover .icon {
                 fill: rgba(255, 255, 255, 1);
@@ -173,17 +181,17 @@ class KcWorkspaceFrame extends PolymerElement {
             if (this.fullscreen) {
                 // Portrait
                 if (window.innerHeight > window.innerWidth * aspectRatio) {
-                    style.width = '70vw';
-                    style.height = `calc(70vw * ${aspectRatio})`;
-                    style.top = `calc(50% - (70vw * ${aspectRatio} / 2))`;
-                    style.left = 'calc(50% - 35vw)';
+                    style.width = '84vw';
+                    style.height = `calc(84vw * ${aspectRatio})`;
+                    style.top = `calc(50% - (84vw * ${aspectRatio} / 2))`;
+                    style.left = 'calc(50% - 42vw)';
                 } else {
                     // Landscape
                     aspectRatio = 1 / aspectRatio;
-                    style.height = '70vh';
-                    style.width = `calc(70vh * ${aspectRatio})`;
-                    style.top = 'calc(50% - 35vh)';
-                    style.left = `calc(50% - (70vh * ${aspectRatio} / 2))`;
+                    style.height = '84vh';
+                    style.width = `calc(84vh * ${aspectRatio})`;
+                    style.top = 'calc(50% - 42vh)';
+                    style.left = `calc(50% - (84vh * ${aspectRatio} / 2))`;
                 }
             } else {
                 // We are not fullscreen so set the viewport
