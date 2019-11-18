@@ -62,7 +62,9 @@ export class ContentWidgets {
         domNode.style.zIndex = '200000';
     }
     removeWidget(widget : IEditorWidget) {
-        this.domNode.removeChild(widget.getDomNode());
+        if (this.domNode.contains(widget.getDomNode())) {
+            this.domNode.removeChild(widget.getDomNode());
+        }
         const idx = this.widgets.indexOf(widget);
         this.widgets.splice(idx, 1);
     }

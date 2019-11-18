@@ -26,7 +26,7 @@ export class IndexedPickerFieldStepHelper extends BlocklyValueStepHelper {
 
     testCase(challenge: KanoCodeChallenge, step: IStepData) {
         const field = this.getField(challenge, step);
-        return field && field.constructor === StampsField || field.constructor === FieldSample;
+        return field && (field.constructor === StampsField || field.constructor === FieldSample);
     }
 
     test(challenge: KanoCodeChallenge, step: IStepData) {
