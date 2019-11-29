@@ -2,6 +2,7 @@ import { EventEmitter, subscribeDOM, IDisposable } from '@kano/common/index.js';
 import { SourceEditor } from './source-editor.js';
 import '../../elements/kc-blockly-editor/kc-blockly-editor.js';
 import { Workspace, Block, Input, utils, Connection, Field } from '@kano/kwc-blockly/blockly.js';
+import './blockly/patches/index.js';
 import Editor from '../editor/editor.js';
 import { QueryEngine, ISelector, IQueryResult } from '../editor/selector/selector.js';
 import { memoize } from '../util/decorators.js';

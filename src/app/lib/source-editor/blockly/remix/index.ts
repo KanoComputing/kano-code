@@ -1,9 +1,10 @@
 import { RemixFloatingMenu } from './widget/floating-menu.js';
-import { registerRemix, IRemix, Remix } from '../../../remix/index.js';
+import { registerRemix, IRemix, Remix, IRemixSuggestion } from '../../../remix/index.js';
 import { Confirm } from '../../../editor/dialogs/confirm.js';
 import { button } from '@kano/styles/button.js';
 import { EventEmitter } from '@kano/common/index.js';
 import { _ } from '../../../i18n/index.js';
+import { debounce } from '../../../decorators.js';
 
 export class BlocklyRemix extends Remix {
     resetConfirm? : Confirm;
@@ -65,6 +66,19 @@ export class BlocklyRemix extends Remix {
         this.menu.onDidEnd(() => this._onDidEnd.fire());
         this.menu.onDidRequestNextChallenge(() => this._onDidRequestNextChallenge.fire())
         this.editor.addContentWidget(this.menu);
+    }
+    @debounce(100)
+    selectSuggestion(suggestion : IRemixSuggestion) {
+        super.selectSuggestion(suggestion);
+        const pos = this.editor.queryPosition(suggestion.target) as { x: number, y: number, isBlock: boolean};
+        if (pos.isBlock) {
+            // @ts-ignore
+            const workspace = this.editor.sourceEditor.domNode.getBlocklyWorkspace() as Workspace;
+            const block = this.editor.querySelector(suggestion.target);
+            if (block) {
+                workspace.centerOnBlock(block.getId());
+            }
+        }
     }
     deselectSuggestion() {
         super.deselectSuggestion();

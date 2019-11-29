@@ -44,9 +44,7 @@ export class Remix extends ChallengeBase {
         this.editor.load(this.data.app);
     }
 
-    @debounce(100)
     selectSuggestion(suggestion : IRemixSuggestion) {
-        
         if (this.tooltip) {
             this.editor.removeContentWidget(this.tooltip);
             this.tooltip.dispose();
@@ -62,19 +60,6 @@ export class Remix extends ChallengeBase {
         });
         this.editor.addContentWidget(this.tooltip);
         this.tooltip.setTarget(target as HTMLElement);
-        
-        const pos = this.editor.queryPosition(suggestion.target) as { x: number, y: number, isBlock: boolean};
-        
-        if (pos.isBlock) {
-            // @ts-ignore
-            const workspace = this.editor.sourceEditor.domNode.getBlocklyWorkspace() as Workspace;
-            const block = this.editor.querySelector(suggestion.target);
-            if (block) {
-                workspace.centerOnBlock(block.getId());
-            }
-        }
-        
-        
     }
     
     deselectSuggestion() {
