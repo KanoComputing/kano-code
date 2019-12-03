@@ -5,9 +5,7 @@ import { Microphone } from './microphone.js';
 import { EventEmitter } from '@kano/common/index.js';
 import { DefaultResources } from './default-resources.js';
 
-function degreesToRadians(deg: number) {
-    return deg * (Math.PI / 180);
-}
+window.AudioContext = window.AudioContext || (window as any).webkitAudioContext;
 
 export class DefaultOutputViewProvider extends OutputViewProvider {
     private canvas : HTMLCanvasElement;
