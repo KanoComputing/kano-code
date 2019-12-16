@@ -6,12 +6,15 @@ import { EventEmitter } from '@kano/common/index.js';
 import { DefaultResources } from './default-resources.js';
 
 let audioContextSingleton : AudioContext|null = null;
+window.AudioContext = window.AudioContext || (window as any).webkitAudioContext;
 
 /**
  * Returns a singleton instance of an audio context
  */
+
 function getAudioContext() {
-    if (!audioContextSingleton) {
+    if (!audioContextSingleton || audioContextSingleton.state === 'closed') {
+        audioContextSingleton = null;
         audioContextSingleton = new (AudioContext || (window as any).webkitAudioContext)();
     }
     return audioContextSingleton;
