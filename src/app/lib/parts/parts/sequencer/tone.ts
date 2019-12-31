@@ -1,9 +1,9 @@
-import { Sequence, Transport } from '../../../../../modules/tone.js';
+import Tone from '../../../../../modules/tone.js';
 import { EventEmitter } from '@kano/common/index.js';
 
 export class Sequencer {
     public steps : boolean[];
-    public loop : Sequence;
+    public loop : Tone.Sequence;
     private _onDidStep : EventEmitter<number> = new EventEmitter();
     private _onDidStepsChange : EventEmitter = new EventEmitter();
     private _onHit : EventEmitter<number> = new EventEmitter();
@@ -17,19 +17,19 @@ export class Sequencer {
             columns.push(i);
             this.steps.push(false);
         }
-        this.loop = new Sequence((time, col) => {
+        this.loop = new Tone.Sequence((time, col) => {
             this._onDidStep.fire(col);
             if (this.steps[col]) {
                 this._onHit.fire(time);
             }
         }, columns, `${size}n`);
-        if (Transport.state !== 'started') {
-            Transport.start();
+        if (Tone.Transport.state !== 'started') {
+            Tone.Transport.start();
         }
         this.setBPM(bpm);
     }
     setBPM(v : number) {
-        const rate = v / Transport.bpm.value;
+        const rate = v / Tone.Transport.bpm.value;
         this.loop.playbackRate = rate;
     }
     setSteps(steps : boolean[]) {
