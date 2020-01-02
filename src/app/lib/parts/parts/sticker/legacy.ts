@@ -72,7 +72,7 @@ export const stickersMap : { [K : string] : string } = {
     'mask-horse': 'horse',
     'mask-koala': 'koala',
     'mask-lion': 'lion',
-    'mask-mokey': 'monkey',
+    'mask-monkey': 'monkey-head',
     'mask-mouse': 'mouse-head',
     'mask-panda': 'panda',
     'mask-pig': 'pig-head',
