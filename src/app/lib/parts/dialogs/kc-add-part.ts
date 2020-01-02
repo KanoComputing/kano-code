@@ -25,7 +25,8 @@ export class KCAddPart extends LitElement {
                 color: white;
                 background-color: var(--kano-app-editor-workspace-background);
                 font-family: var(--font-body);
-                min-width: 800px;
+                width: 800px;
+                max-width: 100%;
                 border-radius: 5px;
                 border: 2px solid var(--kano-app-part-editor-border);
                 max-height: 100vh;       

@@ -18,6 +18,7 @@ export class TextInputPart extends DOMPart<HTMLInputElement> {
             if (!this.core) {
                 return;
             }
+            this.core.value = this._el.value;
             this.core.change.fire();
         }, this, this.subscriptions);
         this.core.invalidate();
