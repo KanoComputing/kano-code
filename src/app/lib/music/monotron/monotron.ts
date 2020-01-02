@@ -41,7 +41,7 @@ class Monotron {
 
     noteOn(freq : number, time? : number) {
         time = (typeof time === 'undefined') ? this.ctx.currentTime : time;
-        this.vco.frequency.setValueAtTime(freq, time);
+        this.vco.frequency.setValueAtTime(Math.round(freq), Math.round(time));
         this.output.gain.linearRampToValueAtTime(1.0, time + 0.1);
     }
 
