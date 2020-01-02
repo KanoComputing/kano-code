@@ -43,7 +43,7 @@ export class KCOscillatorDisplay extends LitElement {
                 ${this.canvas}
             </div>
             <div class="data">
-                <kano-value-rendering width="12" height="12" .value=${this.value}></kano-value-rendering>
+                <kano-value-rendering width="20" height="12" .value=${this.value}></kano-value-rendering>
             </div>
         `;
     }
@@ -130,8 +130,8 @@ export class KCOscillatorDisplay extends LitElement {
         this.ctx.fillStyle = 'black';
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
         const iterations = Math.ceil(width / 50);
-        const start = -(iterations / 2) - 1;
-        const end = iterations / 2;
+        const start = -(Math.ceil((iterations / 2) + 1));
+        const end = Math.ceil(iterations / 2);
         for (let i = start; i < end; i += 1) {
             this.ctx.drawImage(waveCache, Math.round(width / 2 + (i * 50 + (this.part.core.x / 2))), 0);
         }
