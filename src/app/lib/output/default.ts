@@ -33,6 +33,7 @@ export class DefaultOutputViewProvider extends OutputViewProvider {
         this.canvas.height = 600;
         this.canvas.style.width = '100%';
         this.canvas.style.background = 'white';
+        this.canvas.style.display = 'block';
 
         this._progressBar = document.createElement('div') as HTMLDivElement;
         this._progressBar.style.width = '0%';

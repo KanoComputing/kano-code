@@ -90,6 +90,7 @@ class KCPlayer extends PolymerElement {
             #container {
                 box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.15);
                 margin-bottom: 20px;
+                overflow: hidden;
             }
             .error-message {
                 color: var(--color-porcelain);
