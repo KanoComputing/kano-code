@@ -164,7 +164,8 @@ export abstract class DOMPart<T extends HTMLElement = HTMLElement> extends Part 
         this.transform.invalidate();
     }
     get opacity() {
-        return this.transform.opacity;
+        // User facing opacity values are 0-100
+        return this.transform.opacity * 100;
     }
     get x() {
         return this.transform.x;
