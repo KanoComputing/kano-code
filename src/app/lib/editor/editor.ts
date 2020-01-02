@@ -349,7 +349,9 @@ export class Editor extends EditorOrPlayer {
         this.runPluginTask('onImport', safeApp);
         this.output.runPluginTask('onImport', safeApp);
         this.parts.onImport(safeApp);
-        this.sourceEditor.setSource(safeApp.source);
+        if (safeApp.source.startsWith('<xml')) {
+            this.sourceEditor.setSource(safeApp.source);
+        }
         this._onDidLoad.fire();
         this.telemetry.trackEvent({ name: 'app_imported' });
     }
