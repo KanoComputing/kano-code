@@ -50,6 +50,10 @@ class Monotron {
         this.output.gain.linearRampToValueAtTime(0.0, time + 0.1);
     }
 
+    setVolume(volume: number) {
+        this.output.gain.value = volume / 100;
+    }
+
     stop() {
         this.noteOff();
     }

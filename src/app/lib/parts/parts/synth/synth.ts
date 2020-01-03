@@ -125,6 +125,13 @@ export class SynthPart extends Part {
             this.monotron.noteOn(freq);
         }
     }
+    set volume(volume : number) {
+        let volumeNorm = this.clamp(volume, 0, 100);
+
+        if (this.monotron) {
+            this.monotron.setVolume(volumeNorm);
+        }
+    }
     set wave(wave : OscillatorType) {
         this.waveType = wave;
         if (!this.monotron) {

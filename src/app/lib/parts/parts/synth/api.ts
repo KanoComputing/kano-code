@@ -15,6 +15,7 @@ export const SynthAPI : IPartAPI = {
         name: 'volume',
         verbose: _('PART_SYNTH_VOLUME', 'volume'),
         setter: true,
+        getter: false,
         returnType: Number,
         default: 100,
     }, {
@@ -47,6 +48,7 @@ export const SynthAPI : IPartAPI = {
         name: 'pitch',
         verbose: _('PART_SYNTH_PITCH', 'pitch'),
         setter: true,
+        getter: false,
         returnType: Number,
         default: 25,
     }, {
