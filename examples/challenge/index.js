@@ -4,7 +4,7 @@ import * as i18n from '../../i18n.js';
 
 const lang = i18n.getLang();
 
-i18n.load('ja-jp', { blockly: true, kanoCodePath: '/' })
+i18n.load(lang, { blockly: true, kanoCodePath: '/' })
     .then(() => {
         const editor = new code.Editor();
 

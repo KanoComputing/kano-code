@@ -30,7 +30,7 @@
     "bundle-monaco-worker:editor": "rollup node_modules/monaco-editor/esm/vs/editor/editor.worker.js -f iife --name editorWorker -o ./dist/vendor/monaco-workers/editor.worker.js",
     "bundle-monaco-worker:ts": "rollup node_modules/monaco-editor/esm/vs/language/typescript/ts.worker.js -f iife --name tsWorker -o ./dist/vendor/monaco-workers/ts.worker.js",
     "bundle-monaco-workers": "yarn bundle-monaco-worker:editor && yarn bundle-monaco-worker:ts",
-    "generate-locales": "i18n-generator ./dist/app/**/*.js !./dist/app/**/*.test.js -o ./locale/editor/en-US.json",
+    "generate-locales": "i18n-generator ./dist/app/**/*.js !./dist/app/**/*.test.js -o ./locale/editor/en-us.json",
     "license:check": "license-check-and-add check -f ./license.conf.json",
     "license:add": "license-check-and-add add -f ./license.conf.json"
   },
