@@ -12,8 +12,10 @@ export * from '@kano/i18n/dist/polymer.js';
 
 const DEFAULT_MODULES_PATH = '/node_modules/';
 
-addSupportedLanguage('es-AR');
-addSupportedLanguage('fr-FR');
+const DEFAULT_LOCALE = 'en-us';
+const SUPPORTED_LOCALES = [DEFAULT_LOCALE, 'ja-jp'];
+
+addSupportedLanguage('ja-jp');
 
 function addBlocklyMsg(m : IMessageDB) {
     if ('Blockly' in window) {
@@ -39,12 +41,13 @@ export interface ILoadOptions {
 }
 
 export function load(lang : string, opts : ILoadOptions = { modulesPath: DEFAULT_MODULES_PATH }) {
+    const locale = SUPPORTED_LOCALES.includes(lang.toLowerCase()) ? lang : DEFAULT_LOCALE;
     const modulesPath = opts.modulesPath || DEFAULT_MODULES_PATH;
     const kanoCodePath = opts.kanoCodePath || path.join(modulesPath, '/@kano/code');
-    const tasks : Promise<IMessageDB>[] = [loadMessages(path.join(kanoCodePath, `/locale/editor/${lang}.json`))];
+    const tasks : Promise<IMessageDB>[] = [loadMessages(path.join(kanoCodePath, `/locale/editor/${locale}.json`))];
     if (opts.blockly) {
-        tasks.push(loadBlocklyMsg(path.join(kanoCodePath, `/locale/blockly/${lang}.json`)));
-        tasks.push(loadBlocklyMsg(path.join(modulesPath, `/@kano/kwc-blockly/blockly_built/msg/json/${blocklyLangMap[lang]}.json`)));
+        tasks.push(loadBlocklyMsg(path.join(kanoCodePath, `/locale/blockly/${blocklyLangMap[locale][1]}.json`)));
+        tasks.push(loadBlocklyMsg(path.join(modulesPath, `/@kano/kwc-blockly/blockly_built/msg/json/${blocklyLangMap[locale][0]}.json`)));
         tasks.push(loadBlocklyMsg(path.join(modulesPath, '/@kano/kwc-blockly/blockly_built/msg/json/constants.json')));
     }
     return Promise.all(tasks);

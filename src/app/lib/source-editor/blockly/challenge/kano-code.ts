@@ -20,6 +20,7 @@ import { DropdownFieldStepHelper } from './helpers/dropdown.js';
 import { IndexedPickerFieldStepHelper } from './helpers/indexed-picker.js';
 import { QuotePickerFieldStepHelper } from './helpers/quote-picker.js';
 import { BannerHelper } from './helpers/banner.js';
+import { _ } from '../../../i18n/index.js';
 
 export interface IBannerIconProvider {
     getDomNode() : HTMLElement;
@@ -201,12 +202,12 @@ export class KanoCodeChallenge extends BlocklyChallenge {
         }
         this.banner.setTitle(this.bannerTitle);
         if (nextButton) {
-            const button = this.banner.addButton(typeof nextButton === 'string' ? nextButton : 'Next');
+            const button = this.banner.addButton(typeof nextButton === 'string' ? nextButton : _('KANO_CHALLENGE_UI_NEXT', 'Next'));
             button.onDidClick(() => this.nextStep());
             this.bannerButtons.push(button);
         }
         if (data.nextChallengeButton) {
-            const nextChallengeButton = this.banner.addButton(typeof data.nextChallengeButton === 'string' ? data.nextChallengeButton : 'Next Challenge', true);
+            const nextChallengeButton = this.banner.addButton(typeof data.nextChallengeButton === 'string' ? data.nextChallengeButton : _('NEXT_CHALLENGE', 'Next Challenge'), true);
             nextChallengeButton.onDidClick(() => this._onDidRequestNextChallenge.fire());
             this.bannerButtons.push(nextChallengeButton);
         }

@@ -10,6 +10,7 @@ import { close } from '@kano/icons/ui.js';
 import { Tooltip } from './tooltip.js';
 import { templateContent } from '../directives/template-content.js';
 import { EventEmitter } from '@kano/common/index.js';
+import { _ } from '../i18n/index.js';
 
 export class DismissableTooltip extends Tooltip {
     private _onDidDismiss = new EventEmitter();
@@ -57,7 +58,7 @@ export class DismissableTooltip extends Tooltip {
                 }
             </style>
             ${super.render(markdown)}
-            <button class="tooltip-button" @click=${() => this._onClick()}>${templateContent(close)}<span>Got it</span></button>
+            <button class="tooltip-button" @click=${() => this._onClick()}>${templateContent(close)}<span>${_('GOT_IT', 'Got it')}</span></button>
         `;
     }
     _onClick() {
