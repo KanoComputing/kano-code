@@ -39,7 +39,7 @@ And open the prompted URL to run your tests. You can click on a suite to only ru
 
 ## Documentation
 
-Documentation is hosted at https://code-docs.kano.me. The website infrastructure is deployed using terraform. To update the infrastructure, change the files under `terraform` and run:
+Documentation is hosted at [https://code-docs.kano.me](https://code-docs.kano.me/3.0.1-alpha.49/index.html). The website infrastructure is deployed using terraform. To update the infrastructure, change the files under `terraform` and run:
 
 ```
 cd terraform
