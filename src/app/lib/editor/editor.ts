@@ -385,6 +385,8 @@ export class Editor extends EditorOrPlayer {
      * @param content the generated code
      */
     setCode(content? : string) {
+        // reset parts on code change
+        this.parts.getAddedParts().forEach(part => part.part.reset());
         this.output.setCode(content);
         this.domNode.code = content;
         this.output.restart();
