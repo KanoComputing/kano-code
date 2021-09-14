@@ -1,0 +1,34 @@
+name: Test
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 14.x ]
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.GH_TOKEN }}
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: yarn install
+
+    - name: Build
+      run: TSC_COMPILE_ON_ERROR=true yarn build
+
+    - name: Run tests
+      run: |
+        yarn ci:test
+        yarn ci:coverage
